@@ -1,10 +1,11 @@
 import FirebaseContext from '../contexts/firebase.context';
+import Header from '../components/organisms/Header';
 
 const Home = () => {
 	return (
 		<FirebaseContext.Consumer>
 			{(firebase) => {
-				return <h1>Communalists Homepage</h1>;
+				return <Header />;
 			}}
 		</FirebaseContext.Consumer>
 	);

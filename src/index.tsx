@@ -10,11 +10,15 @@ import firebaseConfig from './firebase.config';
 import FirebaseContext from './contexts/firebase.context';
 
 // style
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './theme.css';
 import './normalize.css';
 
 // pages
 import Home from './pages/Home';
+
+// components
+import Navigation from './components/organisms/Navigation';
 
 const elem = document.getElementById('root')!;
 const root = ReactDOM.createRoot(elem);
@@ -23,6 +27,7 @@ const app = initializeApp(firebaseConfig);
 root.render(
 	<React.StrictMode>
 		<FirebaseContext.Provider value={{ app }}>
+			<Navigation />
 			<Router>
 				<Routes>
 					<Route path="/" element={<Home />}></Route>

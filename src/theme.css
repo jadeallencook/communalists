@@ -1,10 +1,12 @@
 html,
 body {
 	font-family: Arial, Helvetica, sans-serif;
+	background-color: var(--bs-dark);
 }
 
 :root {
 	/* colors */
 	--white: #fff;
 	--black: #000;
+	--primary: #931f1d;
 }
