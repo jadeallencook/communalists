@@ -1,6 +1,7 @@
-import { Container, Row, Col, ButtonGroup, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
+import { Link } from 'react-router-dom';
 
 const Header: StyledComponent = styled(({ className }) => {
 	return (
@@ -13,8 +14,12 @@ const Header: StyledComponent = styled(({ className }) => {
 							Used by organizations, collectives, volunteers, and
 							service providers.
 						</p>
-						<Button variant="dark">Browse Resources</Button>
-						<Button variant="secondary">Create Account</Button>
+						<Link to="/resources">
+							<Button variant="dark">Browse Resources</Button>
+						</Link>
+						<Link to="/create-account">
+							<Button variant="secondary">Create Account</Button>
+						</Link>
 					</Col>
 				</Row>
 			</Container>
