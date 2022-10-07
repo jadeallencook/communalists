@@ -1,11 +1,15 @@
-import { Pronouns } from '../types/';
-import { Location } from './';
+import {
+	PrimaryOrThirdPersonPronounType,
+	SecondayOrPossessivePronounType,
+	CountryType,
+} from '../types/';
 
-interface User {
+export interface UserInterface {
 	name: string;
-	pronouns: Pronouns;
-	location: Location;
+	PrimaryOrThirdPersonPronoun: PrimaryOrThirdPersonPronounType;
+	SecondayOrPossessivePronoun: SecondayOrPossessivePronounType;
+	country: CountryType;
+	zipcode: string;
 	isRemote: boolean;
 }
 
-export default User;

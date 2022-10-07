@@ -1,4 +1,4 @@
-type Race =
+export type RaceType =
 	| 'African American'
 	| 'Alaska Native'
 	| 'American Indian'
@@ -14,5 +14,3 @@ type Race =
 	| 'Samoan'
 	| 'Vietnamese'
 	| 'White';
-
-export default Race;

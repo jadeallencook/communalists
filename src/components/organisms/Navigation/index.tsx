@@ -11,12 +11,8 @@ const Navigation: StyledComponent = styled(({ className }) => {
 					<Link to="/">Communalists</Link>
 				</Navbar.Brand>
 				<Nav className="justify-content-end">
-					<Nav.Link>
 						<Link to="/resources">Resources</Link>
-					</Nav.Link>
-					<Nav.Link>
 						<Link to="/dashboard">Account</Link>
-					</Nav.Link>
 				</Nav>
 			</Container>
 		</Navbar>

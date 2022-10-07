@@ -1,10 +1,6 @@
-import { Country, USState, Zipcode } from '../types';
+import { CountryType, ZipcodeType } from '../types';
 
-interface Location {
-	country: Country;
-	state: USState;
-	zipcode: Zipcode;
-	street?: string;
+export interface LocationInterface {
+	country: CountryType;
+	zipcode: ZipcodeType;
 }
-
-export default Location;

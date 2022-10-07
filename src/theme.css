@@ -10,6 +10,10 @@ a {
 	color: var(--bs-link-color);
 }
 
+.text-muted {
+	color: var(--bs-gray-500) !important;
+}
+
 :root {
 	/* colors */
 	--white: #fff;

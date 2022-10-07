@@ -1,4 +1,4 @@
-type USState =
+export type USStateType =
 	| 'AL'
 	| 'AK'
 	| 'AS'
@@ -59,4 +59,3 @@ type USState =
 	| 'WI'
 	| 'WY';
 
-export default USState;

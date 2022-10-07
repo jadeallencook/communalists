@@ -1,5 +1,6 @@
 import FirebaseContext from '../contexts/firebase.context';
 import { Container } from 'react-bootstrap';
+import CreateAccountForm from '../components/organisms/CreateAccountForm';
 
 const CreateAccount = () => {
 	return (
@@ -7,7 +8,8 @@ const CreateAccount = () => {
 			{(firebase) => {
 				return (
 					<Container>
-						<h1>Create Account</h1>
+						<h1>Let's Get Started</h1>
+						<CreateAccountForm />
 					</Container>
 				);
 			}}

@@ -1,4 +1,4 @@
-type Country =
+export type CountryType =
 	| 'AF'
 	| 'AX'
 	| 'AL'
@@ -251,5 +251,3 @@ type Country =
 	| 'YE'
 	| 'ZM'
 	| 'ZW';
-
-export default Country;

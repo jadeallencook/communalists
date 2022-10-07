@@ -3,7 +3,6 @@ const style = () => ({
 	paddingBottom: '150px',
 	backgroundColor: 'var(--primary)',
 	color: 'var(--white)',
-	textAlign: 'center',
 	h1: {
 		margin: 0,
 		fontWeight: 'bold'

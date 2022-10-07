@@ -1,3 +1,2 @@
-type Zipcode = number;
+export type ZipcodeType = number;
 
-export default Zipcode;
