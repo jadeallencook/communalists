@@ -1,13 +1,13 @@
 import {
-	PrimaryOrThirdPersonPronounType,
-	SecondayOrPossessivePronounType,
+	SubjectPronounType,
+	ObjectPronounType,
 	CountryType,
 } from '../types/';
 
 export interface UserInterface {
 	name: string;
-	PrimaryOrThirdPersonPronoun: PrimaryOrThirdPersonPronounType;
-	SecondayOrPossessivePronoun: SecondayOrPossessivePronounType;
+	SubjectPronoun: SubjectPronounType;
+	ObjectPronoun: ObjectPronounType;
 	country: CountryType;
 	zipcode: string;
 	isRemote: boolean;

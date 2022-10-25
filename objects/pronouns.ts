@@ -1,9 +1,9 @@
 import {
-	PrimaryOrThirdPersonPronounType,
-	SecondayOrPossessivePronounType,
+	SubjectPronounType,
+	ObjectPronounType,
 } from '../types/pronouns';
 
-export const PRIMARY_OR_THIRD_PERSON_PRONOUNS: PrimaryOrThirdPersonPronounType[] =
+export const SUBJECT_PRONOUNS: SubjectPronounType[] =
 	['they', 'she', 'he', 'xe', 'ze', 'any'];
-export const SECONDARY_OR_POSSESSIVE_PRONOUNS: SecondayOrPossessivePronounType[] =
+export const OBJECT_PRONOUNS: ObjectPronounType[] =
 	['them', 'her', 'him', 'they', 'xem', 'hir', 'all'];
