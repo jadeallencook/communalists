@@ -1,14 +1,10 @@
-import FirebaseContext from '../contexts/firebase.context';
 import Header from '../components/organisms/Header';
+import { Container } from 'react-bootstrap';
 
-const Home = () => {
-	return (
-		<FirebaseContext.Consumer>
-			{(firebase) => {
-				return <Header />;
-			}}
-		</FirebaseContext.Consumer>
-	);
-};
+const Home = () => (
+	<Container>
+		<Header />
+	</Container>
+);
 
 export default Home;
