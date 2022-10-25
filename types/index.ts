@@ -1,7 +1,7 @@
 export {
 	PronounsType,
-	PrimaryOrThirdPersonPronounType,
-	SecondayOrPossessivePronounType,
+	SubjectPronounType,
+	ObjectPronounType,
 } from './pronouns';
 export { RaceType } from './race';
 export { CountryType } from './country';

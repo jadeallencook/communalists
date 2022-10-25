@@ -1,11 +1,11 @@
-export type PrimaryOrThirdPersonPronounType =
+export type SubjectPronounType =
 	| 'they'
 	| 'she'
 	| 'he'
 	| 'xe'
 	| 'ze'
 	| 'any';
-export type SecondayOrPossessivePronounType =
+export type ObjectPronounType =
 	| 'them'
 	| 'her'
 	| 'him'
@@ -15,6 +15,6 @@ export type SecondayOrPossessivePronounType =
 	| 'all';
 
 export type PronounsType = [
-	PrimaryOrThirdPersonPronounType,
-	SecondayOrPossessivePronounType
+	SubjectPronounType,
+	ObjectPronounType
 ];
