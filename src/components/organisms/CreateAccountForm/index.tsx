@@ -7,19 +7,18 @@ import validate from './validate';
 import Loading from '../../molecules/Loading';
 import { AccountInterface } from '../../../../interfaces/account';
 import {
-	PRIMARY_OR_THIRD_PERSON_PRONOUNS,
-	SECONDARY_OR_POSSESSIVE_PRONOUNS,
+	SUBJECT_PRONOUNS,
+	OBJECT_PRONOUNS,
 } from '../../../../objects/pronouns';
+import { createAccount } from '../../../../api/create-account';
 
-const handler = (values, { setSubmitting }) => {
-	setSubmitting(true);
-	console.log(values);
-};
+// const handler = (values: AccountInterface, { setSubmitting }) =>
+// 	createAccount(values).then(() => setSubmitting(false));
 
 const CreateAccountForm: StyledComponent = styled(({ className }) => (
 	<Formik
 		initialValues={initialValues}
-		onSubmit={handler}
+		onSubmit={() => null}
 		validate={validate}
 		validateOnChange={false}
 		validateOnBlur={false}
@@ -90,14 +89,14 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => (
 						/>
 					</Form.Group>
 					<Form.Group className="mb-3">
-						<Form.Label>Primary or Third Person Pronoun</Form.Label>
+						<Form.Label>Subject Pronoun</Form.Label>
 						<Form.Select
 							aria-label="Select pronouns"
-							name="PrimaryOrThirdPersonPronoun"
-							value={values.PrimaryOrThirdPersonPronoun}
+							name="SubjectPronoun"
+							value={values.SubjectPronoun}
 							onChange={handleChange}
 						>
-							{PRIMARY_OR_THIRD_PERSON_PRONOUNS.map((string) => (
+							{SUBJECT_PRONOUNS.map((string) => (
 								<option key={string} value={string}>
 									{string}
 								</option>
@@ -105,29 +104,18 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => (
 						</Form.Select>
 					</Form.Group>
 					<Form.Group className="mb-3">
-						<Form.Label>Secondary or Possessive Pronoun</Form.Label>
+						<Form.Label>Object Pronoun</Form.Label>
 						<Form.Select
 							aria-label="Select pronouns"
-							name="SecondayOrPossessivePronoun"
-							value={values.SecondayOrPossessivePronoun}
+							name="ObjectPronoun"
+							value={values.ObjectPronoun}
 							onChange={handleChange}
 						>
-							{SECONDARY_OR_POSSESSIVE_PRONOUNS.map((string) => (
+							{OBJECT_PRONOUNS.map((string) => (
 								<option key={string} value={string}>
 									{string}
 								</option>
 							))}
-						</Form.Select>
-					</Form.Group>
-					<Form.Group className="mb-3">
-						<Form.Label>Country</Form.Label>
-						<Form.Select
-							aria-label="Default select example"
-							name="country"
-							value={values.country}
-							onChange={handleChange}
-						>
-							<option value="US">US</option>
 						</Form.Select>
 					</Form.Group>
 					<Form.Group className="mb-3">
