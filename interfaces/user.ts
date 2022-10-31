@@ -1,15 +1,11 @@
-import {
-	SubjectPronounType,
-	ObjectPronounType,
-	CountryType,
-} from '../types/';
+import { AddressInterface } from './address';
+import { SubjectPronounType, ObjectPronounType } from '../types';
 
 export interface UserInterface {
 	name: string;
-	SubjectPronoun: SubjectPronounType;
-	ObjectPronoun: ObjectPronounType;
-	country: CountryType;
-	zipcode: string;
+	organizations?: { [key: string]: 1 | 0 };
+	address?: AddressInterface;
+	subjectPronoun: SubjectPronounType;
+	objectPronoun: ObjectPronounType;
 	isRemote: boolean;
 }
-

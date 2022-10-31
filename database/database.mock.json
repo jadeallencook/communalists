@@ -1,0 +1,111 @@
+{
+	"products": {
+		"product1": { "title": "Product 1", "unit": "unit(s)" },
+		"product2": { "title": "Product 2", "unit": "unit(s)" },
+		"product3": { "title": "Product 3", "unit": "unit(s)" },
+		"product4": { "title": "Product 4", "unit": "unit(s)" }
+	},
+	"resources": {
+		"santa-clara": {
+			"user1": {
+				"resource1": {
+					"product": "product1",
+					"warehouse": "warehouse1",
+					"stock": 1,
+					"description": "",
+					"image": ""
+				},
+				"resource2": {
+					"product": "product2",
+					"warehouse": "warehouse2",
+					"stock": 2,
+					"description": "",
+					"image": ""
+				}
+			},
+			"organization1": {
+				"resource3": {
+					"product": "product3",
+					"warehouse": "warehouse3",
+					"stock": 3,
+					"description": "",
+					"image": ""
+				},
+				"resource4": {
+					"product": "product4",
+					"warehouse": "warehouse4",
+					"stock": 4,
+					"description": "",
+					"image": ""
+				}
+			}
+		}
+	},
+	"warehouses": {
+		"organization1": {
+			"warehouse1": {
+				"street": "1 Main Street",
+				"city": "San Jose",
+				"state": "CA",
+				"zipcode": 95112,
+				"county": "Santa Clara"
+			},
+			"warehouse2": {
+				"street": "2 Main Street",
+				"city": "San Jose",
+				"state": "CA",
+				"zipcode": 95113,
+				"county": "Santa Clara"
+			},
+			"warehouse3": {
+				"street": "3 Main Street",
+				"city": "San Jose",
+				"state": "CA",
+				"zipcode": 95113,
+				"county": "Santa Clara"
+			}
+		},
+		"user1": {
+			"warehouse4": {
+				"street": "4 Main Street",
+				"city": "San Jose",
+				"state": "CA",
+				"zipcode": 95113,
+				"county": "Santa Clara"
+			}
+		}
+	},
+	"organizations": {
+		"organization1": {
+			"name": "Organization 1",
+			"bio": "",
+			"website": "",
+			"phone": 5555555555,
+			"email": "",
+			"address": {
+				"street": "1 Main Street",
+				"city": "San Jose",
+				"state": "CA",
+				"zipcode": 95112,
+				"county": "Santa Clara"
+			}
+		}
+	},
+	"users": {
+		"user1": {
+			"name": "John Doe",
+			"organizations": { "organization1": 1 },
+			"address": {
+				"street": "1 Main Street",
+				"city": "San Jose",
+				"state": "CA",
+				"zipcode": 95112,
+				"county": "Santa Clara"
+			},
+			"subjectPronoun": "they",
+			"objectPronoun": "them",
+			"isRemote": true
+		}
+	},
+	"handles": { "handle1": "organization1" }
+}
