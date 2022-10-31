@@ -10,9 +10,6 @@ import {
 	OBJECT_PRONOUNS,
 } from '../../../../objects/pronouns';
 
-// const handler = (values: AccountInterface, { setSubmitting }) =>
-// 	createAccount(values).then(() => setSubmitting(false));
-
 const CreateAccountForm: StyledComponent = styled(({ className }) => (
 	<Formik
 		initialValues={initialValues}
