@@ -1,28 +1,31 @@
 import { ProductInterface } from '../interfaces';
 
-const product1: ProductInterface = {
-	title: 'Product 1',
+const bedframe: ProductInterface = {
+	title: 'Bed Frame',
 	unit: 'unit(s)',
+	types: ['Twin', 'Double', 'Queen', 'King'],
 };
 
-const product2: ProductInterface = {
-	title: 'Product 2',
-	unit: 'unit(s)',
+const shampoo: ProductInterface = {
+	title: 'Shampoo',
+	unit: 'bottle(s)',
+	types: ['8oz', '16oz'],
 };
 
-const product3: ProductInterface = {
-	title: 'Product 3',
-	unit: 'unit(s)',
+const bodysoap: ProductInterface = {
+	title: 'Body Soap',
+	unit: 'bar(s)',
 };
 
-const product4: ProductInterface = {
-	title: 'Product 4',
-	unit: 'unit(s)',
+const cannedsoup: ProductInterface = {
+	title: 'Canned Soup',
+	unit: 'can(s)',
+	types: ['Cream of Mushroom', 'Clam Chowder'],
 };
 
 export const products: { [key: string]: ProductInterface } = {
-	product1,
-	product2,
-	product3,
-	product4,
+	bedframe,
+	shampoo,
+	bodysoap,
+	cannedsoup,
 };

@@ -1,73 +1,75 @@
 {
 	"products": {
-		"product1": { "title": "Product 1", "unit": "unit(s)" },
-		"product2": { "title": "Product 2", "unit": "unit(s)" },
-		"product3": { "title": "Product 3", "unit": "unit(s)" },
-		"product4": { "title": "Product 4", "unit": "unit(s)" }
+		"bedframe": {
+			"title": "Bed Frame",
+			"unit": "unit(s)",
+			"types": ["Twin", "Double", "Queen", "King"]
+		},
+		"shampoo": {
+			"title": "Shampoo",
+			"unit": "bottle(s)",
+			"types": ["8oz", "16oz"]
+		},
+		"bodysoap": { "title": "Body Soap", "unit": "bar(s)" },
+		"cannedsoup": {
+			"title": "Canned Soup",
+			"unit": "can(s)",
+			"types": ["Cream of Mushroom", "Clam Chowder"]
+		}
 	},
 	"resources": {
 		"santa-clara": {
-			"user1": {
-				"resource1": {
-					"product": "product1",
-					"warehouse": "warehouse1",
+			"janedoe": {
+				"janedoeresource1": {
+					"product": "bedframe",
+					"warehouse": "organization1warehouse",
 					"stock": 1,
 					"description": "",
-					"image": ""
+					"image": "",
+					"type": 1
 				},
-				"resource2": {
-					"product": "product2",
-					"warehouse": "warehouse2",
-					"stock": 2,
+				"janedoeresource2": {
+					"product": "bodysoap",
+					"warehouse": "organization1warehouse",
+					"stock": 5,
 					"description": "",
-					"image": ""
+					"image": "",
+					"type": 1
 				}
 			},
-			"organization1": {
-				"resource3": {
-					"product": "product3",
-					"warehouse": "warehouse3",
-					"stock": 3,
+			"johndoe": {
+				"johndoeresource1": {
+					"product": "bedframe",
+					"warehouse": "johndoewarehouse",
+					"stock": 1,
 					"description": "",
-					"image": ""
+					"image": "",
+					"type": 1
 				},
-				"resource4": {
-					"product": "product4",
-					"warehouse": "warehouse4",
-					"stock": 4,
+				"johndoeresource2": {
+					"product": "bodysoap",
+					"warehouse": "johndoewarehouse",
+					"stock": 5,
 					"description": "",
-					"image": ""
+					"image": "",
+					"type": 0
 				}
 			}
 		}
 	},
 	"warehouses": {
 		"organization1": {
-			"warehouse1": {
-				"street": "1 Main Street",
-				"city": "San Jose",
-				"state": "CA",
-				"zipcode": 95112,
-				"county": "Santa Clara"
-			},
-			"warehouse2": {
-				"street": "2 Main Street",
-				"city": "San Jose",
-				"state": "CA",
-				"zipcode": 95113,
-				"county": "Santa Clara"
-			},
-			"warehouse3": {
-				"street": "3 Main Street",
+			"organization1warehouse": {
+				"street": "23 Second Street",
 				"city": "San Jose",
 				"state": "CA",
 				"zipcode": 95113,
 				"county": "Santa Clara"
 			}
 		},
-		"user1": {
-			"warehouse4": {
-				"street": "4 Main Street",
+		"johndoe": {
+			"johndoewarehouse": {
+				"street": "23 Second Street",
 				"city": "San Jose",
 				"state": "CA",
 				"zipcode": 95113,
@@ -77,13 +79,13 @@
 	},
 	"organizations": {
 		"organization1": {
-			"name": "Organization 1",
+			"name": "South Bay Mutual Aid",
 			"bio": "",
 			"website": "",
 			"phone": 5555555555,
 			"email": "",
 			"address": {
-				"street": "1 Main Street",
+				"street": "46 Santa Clara Avenue",
 				"city": "San Jose",
 				"state": "CA",
 				"zipcode": 95112,
@@ -92,11 +94,24 @@
 		}
 	},
 	"users": {
-		"user1": {
-			"name": "John Doe",
-			"organizations": { "organization1": 1 },
+		"janedoe": {
+			"name": "Jane Doe",
+			"organizations": { "organization1": 0 },
 			"address": {
-				"street": "1 Main Street",
+				"street": "954 Main Street",
+				"city": "San Jose",
+				"state": "CA",
+				"zipcode": 95112,
+				"county": "Santa Clara"
+			},
+			"subjectPronoun": "she",
+			"objectPronoun": "her",
+			"isRemote": true
+		},
+		"johndoe": {
+			"name": "John Doe",
+			"address": {
+				"street": "12 Washington Street",
 				"city": "San Jose",
 				"state": "CA",
 				"zipcode": 95112,
@@ -107,5 +122,5 @@
 			"isRemote": true
 		}
 	},
-	"handles": { "handle1": "organization1" }
+	"handles": { "sbma": "organization1" }
 }
