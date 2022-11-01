@@ -2,7 +2,7 @@ import { DatabaseInterface } from '../interfaces/database';
 
 export const johndoe: DatabaseInterface = {
 	resources: {
-		'santa-clara': {
+		'santa-clara-ca': {
 			johndoe: {
 				johndoeresource1: {
 					product: 'bedframe',

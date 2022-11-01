@@ -2,7 +2,7 @@ import { DatabaseInterface } from '../interfaces/database';
 
 export const janedoe: DatabaseInterface = {
 	resources: {
-		'santa-clara': {
+		'santa-clara-ca': {
 			janedoe: {
 				janedoeresource1: {
 					product: 'bedframe',

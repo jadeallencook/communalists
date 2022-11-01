@@ -7,9 +7,9 @@ import { janedoe } from './janedoe';
 export const database: DatabaseInterface = {
 	products,
 	resources: {
-		'santa-clara': {
-			...janedoe.resources['santa-clara'],
-			...johndoe.resources['santa-clara'],
+		'santa-clara-ca': {
+			...janedoe.resources['santa-clara-ca'],
+			...johndoe.resources['santa-clara-ca'],
 		},
 	},
 	warehouses: {
