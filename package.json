@@ -15,7 +15,8 @@
 	"homepage": "https://www.communalists.com",
 	"scripts": {
 		"start": "webpack serve  --hot --open --mode development",
-		"build": "webpack --config webpack.config.js --mode production"
+		"build": "webpack --config webpack.config.js --mode production",
+		"mock": "ts-node ./jobs/mock-database.ts"
 	},
 	"dependencies": {
 		"@types/jest": "^29.0.3",
@@ -44,6 +45,7 @@
 		"ts-loader": "^9.4.0",
 		"webpack": "^5.74.0",
 		"webpack-cli": "^4.10.0",
+		"ts-node": "^10.9.1",
 		"webpack-dev-server": "^4.11.0"
 	},
 	"resolutions": {

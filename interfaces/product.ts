@@ -1,5 +1,5 @@
 export interface ProductInterface {
 	title: string;
 	unit: string;
-	types?: string[];
+	attributes?: { [key: string]: { [key: string]: string } };
 }

@@ -4,5 +4,5 @@ export interface ResourceInterface {
 	stock: number;
 	description?: string;
 	image?: string;
-	type: number;
+	attributes?: [string, string][];
 }

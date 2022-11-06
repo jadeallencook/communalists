@@ -10,7 +10,7 @@ export const johndoe: DatabaseInterface = {
 					stock: 1,
 					description: '',
 					image: '',
-					type: 1,
+					attributes: [['size', 'king']],
 				},
 				johndoeresource2: {
 					product: 'bodysoap',
@@ -18,7 +18,7 @@ export const johndoe: DatabaseInterface = {
 					stock: 5,
 					description: '',
 					image: '',
-					type: 0,
+					attributes: [['size', 'eight']],
 				},
 			},
 		},

@@ -1,126 +1,135 @@
 {
-	"products": {
-		"bedframe": {
-			"title": "Bed Frame",
-			"unit": "unit(s)",
-			"types": ["Twin", "Double", "Queen", "King"]
+	"database": {
+		"products": {
+			"bedframe": {
+				"title": "Bed Frame",
+				"unit": "unit(s)",
+				"attributes": {
+					"sizes": {
+						"twin": "Twin",
+						"double": "Double",
+						"queen": "Queen",
+						"king": "King"
+					}
+				}
+			},
+			"shampoo": {
+				"title": "Shampoo",
+				"unit": "bottle(s)",
+				"attributes": { "sizes": { "eight": "8oz", "sixteen": "16oz" } }
+			},
+			"bodysoap": {
+				"title": "Body Soap",
+				"unit": "bar(s)",
+				"attributes": { "sizes": { "eight": "8oz", "sixteen": "16oz" } }
+			},
+			"cannedsoup": { "title": "Canned Soup", "unit": "can(s)" }
 		},
-		"shampoo": {
-			"title": "Shampoo",
-			"unit": "bottle(s)",
-			"types": ["8oz", "16oz"]
-		},
-		"bodysoap": { "title": "Body Soap", "unit": "bar(s)" },
-		"cannedsoup": {
-			"title": "Canned Soup",
-			"unit": "can(s)",
-			"types": ["Cream of Mushroom", "Clam Chowder"]
-		}
-	},
-	"resources": {
-		"santa-clara-ca": {
-			"janedoe": {
-				"janedoeresource1": {
-					"product": "bedframe",
-					"warehouse": "organization1warehouse",
-					"stock": 1,
-					"description": "",
-					"image": "",
-					"type": 1
+		"resources": {
+			"santa-clara-ca": {
+				"janedoe": {
+					"janedoeresource1": {
+						"product": "bedframe",
+						"warehouse": "organization1warehouse",
+						"stock": 1,
+						"description": "",
+						"image": "",
+						"attributes": [["size", "twin"]]
+					},
+					"janedoeresource2": {
+						"product": "shampoo",
+						"warehouse": "organization1warehouse",
+						"stock": 5,
+						"description": "",
+						"image": "",
+						"attributes": [["size", "eight"]]
+					}
 				},
-				"janedoeresource2": {
-					"product": "bodysoap",
-					"warehouse": "organization1warehouse",
-					"stock": 5,
-					"description": "",
-					"image": "",
-					"type": 1
+				"johndoe": {
+					"johndoeresource1": {
+						"product": "bedframe",
+						"warehouse": "johndoewarehouse",
+						"stock": 1,
+						"description": "",
+						"image": "",
+						"attributes": [["size", "king"]]
+					},
+					"johndoeresource2": {
+						"product": "bodysoap",
+						"warehouse": "johndoewarehouse",
+						"stock": 5,
+						"description": "",
+						"image": "",
+						"attributes": [["size", "eight"]]
+					}
+				}
+			}
+		},
+		"warehouses": {
+			"organization1": {
+				"organization1warehouse": {
+					"street": "23 Second Street",
+					"city": "San Jose",
+					"state": "CA",
+					"zipcode": 95113,
+					"county": "Santa Clara"
 				}
 			},
 			"johndoe": {
-				"johndoeresource1": {
-					"product": "bedframe",
-					"warehouse": "johndoewarehouse",
-					"stock": 1,
-					"description": "",
-					"image": "",
-					"type": 1
-				},
-				"johndoeresource2": {
-					"product": "bodysoap",
-					"warehouse": "johndoewarehouse",
-					"stock": 5,
-					"description": "",
-					"image": "",
-					"type": 0
+				"johndoewarehouse": {
+					"street": "23 Second Street",
+					"city": "San Jose",
+					"state": "CA",
+					"zipcode": 95113,
+					"county": "Santa Clara"
 				}
 			}
-		}
-	},
-	"warehouses": {
-		"organization1": {
-			"organization1warehouse": {
-				"street": "23 Second Street",
-				"city": "San Jose",
-				"state": "CA",
-				"zipcode": 95113,
-				"county": "Santa Clara"
+		},
+		"organizations": {
+			"organization1": {
+				"name": "South Bay Mutual Aid",
+				"bio": "",
+				"website": "",
+				"phone": 5555555555,
+				"email": "",
+				"address": {
+					"street": "46 Santa Clara Avenue",
+					"city": "San Jose",
+					"state": "CA",
+					"zipcode": 95112,
+					"county": "Santa Clara"
+				}
 			}
 		},
-		"johndoe": {
-			"johndoewarehouse": {
-				"street": "23 Second Street",
-				"city": "San Jose",
-				"state": "CA",
-				"zipcode": 95113,
-				"county": "Santa Clara"
-			}
-		}
-	},
-	"organizations": {
-		"organization1": {
-			"name": "South Bay Mutual Aid",
-			"bio": "",
-			"website": "",
-			"phone": 5555555555,
-			"email": "",
-			"address": {
-				"street": "46 Santa Clara Avenue",
-				"city": "San Jose",
-				"state": "CA",
-				"zipcode": 95112,
-				"county": "Santa Clara"
-			}
-		}
-	},
-	"users": {
-		"janedoe": {
-			"name": "Jane Doe",
-			"organizations": { "organization1": 0 },
-			"address": {
-				"street": "954 Main Street",
-				"city": "San Jose",
-				"state": "CA",
-				"zipcode": 95112,
-				"county": "Santa Clara"
+		"users": {
+			"janedoe": {
+				"name": "Jane Doe",
+				"organizations": { "organization1": 0 },
+				"address": {
+					"street": "954 Main Street",
+					"city": "San Jose",
+					"state": "CA",
+					"zipcode": 95112,
+					"county": "Santa Clara"
+				},
+				"subjectPronoun": "she",
+				"objectPronoun": "her",
+				"isRemote": true
 			},
-			"subjectPronoun": "she",
-			"objectPronoun": "her",
-			"isRemote": true
+			"johndoe": {
+				"name": "John Doe",
+				"address": {
+					"street": "12 Washington Street",
+					"city": "San Jose",
+					"state": "CA",
+					"zipcode": 95112,
+					"county": "Santa Clara"
+				},
+				"subjectPronoun": "they",
+				"objectPronoun": "them",
+				"isRemote": true
+			}
 		},
-		"johndoe": {
-			"name": "John Doe",
-			"address": {
-				"street": "12 Washington Street",
-				"city": "San Jose",
-				"state": "CA",
-				"zipcode": 95112,
-				"county": "Santa Clara"
-			},
-			"subjectPronoun": "they",
-			"objectPronoun": "them",
-			"isRemote": true
-		}
-	},
-	"handles": { "sbma": "organization1" }
+		"handles": { "sbma": "organization1" }
+	}
 }
