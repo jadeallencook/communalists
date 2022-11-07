@@ -1,6 +1,4 @@
-import {AccountInterface} from '../../../../interfaces/account';
-
-const initialValues: AccountInterface = {
+const initialValues: any = {
 	name: '',
 	email: '',
 	password: '',

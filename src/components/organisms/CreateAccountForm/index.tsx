@@ -5,15 +5,10 @@ import { Formik } from 'formik';
 import initialValues from './initial-values';
 import validate from './validate';
 import Loading from '../../molecules/Loading';
-import { AccountInterface } from '../../../../interfaces/account';
 import {
 	SUBJECT_PRONOUNS,
 	OBJECT_PRONOUNS,
 } from '../../../../objects/pronouns';
-import { createAccount } from '../../../../api/create-account';
-
-// const handler = (values: AccountInterface, { setSubmitting }) =>
-// 	createAccount(values).then(() => setSubmitting(false));
 
 const CreateAccountForm: StyledComponent = styled(({ className }) => (
 	<Formik
@@ -30,7 +25,7 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => (
 			handleSubmit,
 			isSubmitting,
 		}: {
-			values: AccountInterface;
+			values: any;
 			errors: any;
 			handleChange: any;
 			handleSubmit: any;
@@ -92,8 +87,8 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => (
 						<Form.Label>Subject Pronoun</Form.Label>
 						<Form.Select
 							aria-label="Select pronouns"
-							name="SubjectPronoun"
-							value={values.SubjectPronoun}
+							name="subjectPronoun"
+							value={values.subjectPronoun}
 							onChange={handleChange}
 						>
 							{SUBJECT_PRONOUNS.map((string) => (
@@ -107,8 +102,8 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => (
 						<Form.Label>Object Pronoun</Form.Label>
 						<Form.Select
 							aria-label="Select pronouns"
-							name="ObjectPronoun"
-							value={values.ObjectPronoun}
+							name="objectPronoun"
+							value={values.objectPronoun}
 							onChange={handleChange}
 						>
 							{OBJECT_PRONOUNS.map((string) => (

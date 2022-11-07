@@ -7,7 +7,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 // firebase
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from './firebase.config';
-import FirebaseContext from './contexts/firebase.context';
+import { database } from '../database';
 
 // style
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -31,21 +31,19 @@ const app = initializeApp(firebaseConfig);
 
 root.render(
 	<React.StrictMode>
-		<FirebaseContext.Provider value={{ app }}>
-			<Router>
-				<Navigation />
-				<Routes>
-					<Route path="/" element={<Home />}></Route>
-					<Route path="/resources" element={<Resources />}></Route>
-					<Route path="/login" element={<Login />}></Route>
-					<Route path="/dashboard" element={<Dashboard />}></Route>
-					<Route
-						path="/create-account"
-						element={<CreateAccount />}
-					></Route>
-				</Routes>
-				<Footer />
-			</Router>
-		</FirebaseContext.Provider>
+		<Router>
+			<Navigation />
+			<Routes>
+				<Route path="/" element={<Home />}></Route>
+				<Route path="/resources" element={<Resources />}></Route>
+				<Route path="/login" element={<Login />}></Route>
+				<Route path="/dashboard" element={<Dashboard />}></Route>
+				<Route
+					path="/create-account"
+					element={<CreateAccount />}
+				></Route>
+			</Routes>
+			<Footer />
+		</Router>
 	</React.StrictMode>
 );
