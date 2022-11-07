@@ -1,5 +1,5 @@
-import { HandlesInterface } from '../interfaces/handles';
+import { HandleInterface } from '../interfaces/handle';
 
-export const handles: HandlesInterface = {
+export const handles: HandleInterface = {
 	sbma: 'organization1',
 };

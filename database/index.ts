@@ -1,23 +1,23 @@
 import { DatabaseInterface } from '../interfaces/database';
-import { products } from './products';
+import { items } from './items';
 import { handles } from './handles';
 import { johndoe } from './johndoe';
 import { janedoe } from './janedoe';
 
 export const database: DatabaseInterface = {
-	products,
-	resources: {
+	items,
+	listings: {
 		'santa-clara-ca': {
-			...janedoe.resources['santa-clara-ca'],
-			...johndoe.resources['santa-clara-ca'],
+			...janedoe.listings['santa-clara-ca'],
+			...johndoe.listings['santa-clara-ca'],
 		},
 	},
-	warehouses: {
-		...janedoe.warehouses,
-		...johndoe.warehouses,
+	locations: {
+		...janedoe.locations,
+		...johndoe.locations,
 	},
-	organizations: {
-		...janedoe.organizations,
+	groups: {
+		...janedoe.groups,
 	},
 	users: {
 		...janedoe.users,

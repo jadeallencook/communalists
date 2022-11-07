@@ -1,19 +1,19 @@
 import { UserInterface } from './user';
-import { ResourceInterface } from './resource';
-import { OrganizationInterface } from './organization';
-import { ProductInterface } from './product';
+import { ListingInterface } from './listing';
+import { GroupInterface } from './group';
+import { ItemInterface } from './item';
 import { CountyKeyType } from '../types';
-import { WarehouseInterface } from './warehouse';
+import { LocationInterface } from './locations';
 
 export interface DatabaseInterface {
 	users?: { [key: string]: UserInterface };
-	resources?: {
+	listings?: {
 		[key in CountyKeyType]?: {
-			[key: string]: { [key: string]: ResourceInterface };
+			[key: string]: { [key: string]: ListingInterface };
 		};
 	};
-	organizations?: { [key: string]: OrganizationInterface };
-	products?: { [key: string]: ProductInterface };
-	warehouses?: { [key: string]: { [key: string]: WarehouseInterface } };
+	groups?: { [key: string]: GroupInterface };
+	items?: { [key: string]: ItemInterface };
+	locations?: { [key: string]: { [key: string]: LocationInterface } };
 	handles?: { [key: string]: string };
 }

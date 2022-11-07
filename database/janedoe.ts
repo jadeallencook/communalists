@@ -1,20 +1,20 @@
 import { DatabaseInterface } from '../interfaces/database';
 
 export const janedoe: DatabaseInterface = {
-	resources: {
+	listings: {
 		'santa-clara-ca': {
 			janedoe: {
-				janedoeresource1: {
-					product: 'bedframe',
-					warehouse: 'organization1warehouse',
+				janedoelisting1: {
+					item: 'bedframe',
+					location: 'group1location',
 					stock: 1,
 					description: '',
 					image: '',
 					attributes: [['size', 'twin']],
 				},
-				janedoeresource2: {
-					product: 'shampoo',
-					warehouse: 'organization1warehouse',
+				janedoelisting2: {
+					item: 'shampoo',
+					location: 'group1location',
 					stock: 5,
 					description: '',
 					image: '',
@@ -23,8 +23,8 @@ export const janedoe: DatabaseInterface = {
 			},
 		},
 	},
-	organizations: {
-		organization1: {
+	groups: {
+		group1: {
 			name: 'South Bay Mutual Aid',
 			bio: '',
 			website: '',
@@ -39,9 +39,9 @@ export const janedoe: DatabaseInterface = {
 			},
 		},
 	},
-	warehouses: {
-		organization1: {
-			organization1warehouse: {
+	locations: {
+		group1: {
+			group1location: {
 				street: '23 Second Street',
 				city: 'San Jose',
 				state: 'CA',
@@ -53,7 +53,7 @@ export const janedoe: DatabaseInterface = {
 	users: {
 		janedoe: {
 			name: 'Jane Doe',
-			organizations: { organization1: 0 },
+			groups: { group1: 0 },
 			address: {
 				street: '954 Main Street',
 				city: 'San Jose',

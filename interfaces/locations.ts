@@ -1,5 +1,5 @@
 import { AddressInterface } from './address';
 
-export interface WarehouseInterface extends AddressInterface {
+export interface LocationInterface extends AddressInterface {
 	name?: string;
 }

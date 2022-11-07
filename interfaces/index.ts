@@ -1,4 +1,7 @@
 export { UserInterface } from './user';
-export { ResourceInterface } from './resource';
-export { ProductInterface } from './product';
-export { WarehouseInterface } from './warehouse';
+export { ListingInterface } from './listing';
+export { ItemInterface } from './item';
+export { LocationInterface } from './locations';
+export { HandleInterface } from './handle';
+export { AddressInterface } from './address';
+export { GroupInterface } from './group';

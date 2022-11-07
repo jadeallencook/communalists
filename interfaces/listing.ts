@@ -1,6 +1,6 @@
-export interface ResourceInterface {
-	product: string;
-	warehouse: string;
+export interface ListingInterface {
+	item: string;
+	location: string;
 	stock: number;
 	description?: string;
 	image?: string;

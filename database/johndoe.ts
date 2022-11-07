@@ -1,20 +1,20 @@
 import { DatabaseInterface } from '../interfaces/database';
 
 export const johndoe: DatabaseInterface = {
-	resources: {
+	listings: {
 		'santa-clara-ca': {
 			johndoe: {
-				johndoeresource1: {
-					product: 'bedframe',
-					warehouse: 'johndoewarehouse',
+				johndoelisting1: {
+					item: 'bedframe',
+					location: 'johndoelocation',
 					stock: 1,
 					description: '',
 					image: '',
 					attributes: [['size', 'king']],
 				},
-				johndoeresource2: {
-					product: 'bodysoap',
-					warehouse: 'johndoewarehouse',
+				johndoelisting2: {
+					item: 'bodysoap',
+					location: 'johndoelocation',
 					stock: 5,
 					description: '',
 					image: '',
@@ -23,9 +23,9 @@ export const johndoe: DatabaseInterface = {
 			},
 		},
 	},
-	warehouses: {
+	locations: {
 		johndoe: {
-			johndoewarehouse: {
+			johndoelocation: {
 				street: '23 Second Street',
 				city: 'San Jose',
 				state: 'CA',

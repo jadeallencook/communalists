@@ -2,48 +2,55 @@
 
 Reference guide to database architecture and design.
 
+- Items
+- Listings
+- Locations
+- Groups
+- Users
+- Handles
+
+## Items
+
+To prevent discrepancies, only admins can add items.
+
+This data is cached when the user visits the resources page.
+
+## Listings
+
+You're able to view all resource listings for a specific county:
+
+`listings/santa-clara-ca`
+
+You can also view all resource listings for a specific user or organization:
+
+`listings/santa-clara-ca/USER_UID`
+`listings/santa-clara-ca/ORG_UID`
+
+## Locations
+
+We store locations to cordinate resource pickups.
+
+You can view all locations for a specific group or user:
+
+`locations/USER_UID`
+`locations/ORG_UID`
+
+## Groups
+
+This stores all of the information for a group.
+
 ## Users
 
 User data is under each user's UID, you can request user data:
 
 `/users/USER_UID`
 
-## Resources
-
-You're able to view all resources for a specific county:
-
-`resources/santa-clara-ca`
-
-You can also view all resources for a specific user or organization:
-
-`resources/santa-clara-ca/USER_UID`
-`resources/santa-clara-ca/ORG_UID`
-
-## Organizations
-
-This stores all of the information for an organization.
-
-## Products
-
-To prevent product discrepancies, only admins can add products.
-
-This data is cached when the user visits the resources page.
-
-## Warehouses
-
-Warehouses are were users are able to pickup resources.
-
-You can view all warehouses for a specific organization or user:
-
-`warehouses/USER_UID`
-`warehouses/ORG_UID`
-
 ## Handles
 
-Set of key value pairs to redirect user to organization page. When a user visits `communalists.com/organizations/sbma` we are grab the organization's UID and load the page.
+Set of key value pairs to redirect user to a group's page. When a user visits `communalists.com/groups/sbma` we are grab the groups's UID and load the page.
 
 ```js
 {
-	"sbma": "organization123"
+	"sbma": "group123"
 }
 ```

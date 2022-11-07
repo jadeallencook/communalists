@@ -1,10 +1,10 @@
-import { ProductInterface } from '../interfaces';
+import { ItemInterface } from '../interfaces';
 
-const bedframe: ProductInterface = {
+const bedframe: ItemInterface = {
 	title: 'Bed Frame',
 	unit: 'unit(s)',
 	attributes: {
-		sizes: {
+		size: {
 			twin: 'Twin',
 			double: 'Double',
 			queen: 'Queen',
@@ -13,34 +13,34 @@ const bedframe: ProductInterface = {
 	},
 };
 
-const shampoo: ProductInterface = {
+const shampoo: ItemInterface = {
 	title: 'Shampoo',
 	unit: 'bottle(s)',
 	attributes: {
-		sizes: {
+		size: {
 			eight: '8oz',
 			sixteen: '16oz',
 		},
 	},
 };
 
-const bodysoap: ProductInterface = {
+const bodysoap: ItemInterface = {
 	title: 'Body Soap',
 	unit: 'bar(s)',
 	attributes: {
-		sizes: {
+		size: {
 			eight: '8oz',
 			sixteen: '16oz',
 		},
 	},
 };
 
-const cannedsoup: ProductInterface = {
+const cannedsoup: ItemInterface = {
 	title: 'Canned Soup',
 	unit: 'can(s)',
 };
 
-export const products: { [key: string]: ProductInterface } = {
+export const items: { [key: string]: ItemInterface } = {
 	bedframe,
 	shampoo,
 	bodysoap,

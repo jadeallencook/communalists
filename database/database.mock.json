@@ -1,11 +1,11 @@
 {
 	"database": {
-		"products": {
+		"items": {
 			"bedframe": {
 				"title": "Bed Frame",
 				"unit": "unit(s)",
 				"attributes": {
-					"sizes": {
+					"size": {
 						"twin": "Twin",
 						"double": "Double",
 						"queen": "Queen",
@@ -16,29 +16,29 @@
 			"shampoo": {
 				"title": "Shampoo",
 				"unit": "bottle(s)",
-				"attributes": { "sizes": { "eight": "8oz", "sixteen": "16oz" } }
+				"attributes": { "size": { "eight": "8oz", "sixteen": "16oz" } }
 			},
 			"bodysoap": {
 				"title": "Body Soap",
 				"unit": "bar(s)",
-				"attributes": { "sizes": { "eight": "8oz", "sixteen": "16oz" } }
+				"attributes": { "size": { "eight": "8oz", "sixteen": "16oz" } }
 			},
 			"cannedsoup": { "title": "Canned Soup", "unit": "can(s)" }
 		},
-		"resources": {
+		"listings": {
 			"santa-clara-ca": {
 				"janedoe": {
-					"janedoeresource1": {
-						"product": "bedframe",
-						"warehouse": "organization1warehouse",
+					"janedoelisting1": {
+						"item": "bedframe",
+						"location": "group1location",
 						"stock": 1,
 						"description": "",
 						"image": "",
 						"attributes": [["size", "twin"]]
 					},
-					"janedoeresource2": {
-						"product": "shampoo",
-						"warehouse": "organization1warehouse",
+					"janedoelisting2": {
+						"item": "shampoo",
+						"location": "group1location",
 						"stock": 5,
 						"description": "",
 						"image": "",
@@ -46,17 +46,17 @@
 					}
 				},
 				"johndoe": {
-					"johndoeresource1": {
-						"product": "bedframe",
-						"warehouse": "johndoewarehouse",
+					"johndoelisting1": {
+						"item": "bedframe",
+						"location": "johndoelocation",
 						"stock": 1,
 						"description": "",
 						"image": "",
 						"attributes": [["size", "king"]]
 					},
-					"johndoeresource2": {
-						"product": "bodysoap",
-						"warehouse": "johndoewarehouse",
+					"johndoelisting2": {
+						"item": "bodysoap",
+						"location": "johndoelocation",
 						"stock": 5,
 						"description": "",
 						"image": "",
@@ -65,9 +65,9 @@
 				}
 			}
 		},
-		"warehouses": {
-			"organization1": {
-				"organization1warehouse": {
+		"locations": {
+			"group1": {
+				"group1location": {
 					"street": "23 Second Street",
 					"city": "San Jose",
 					"state": "CA",
@@ -76,7 +76,7 @@
 				}
 			},
 			"johndoe": {
-				"johndoewarehouse": {
+				"johndoelocation": {
 					"street": "23 Second Street",
 					"city": "San Jose",
 					"state": "CA",
@@ -85,8 +85,8 @@
 				}
 			}
 		},
-		"organizations": {
-			"organization1": {
+		"groups": {
+			"group1": {
 				"name": "South Bay Mutual Aid",
 				"bio": "",
 				"website": "",
@@ -104,7 +104,7 @@
 		"users": {
 			"janedoe": {
 				"name": "Jane Doe",
-				"organizations": { "organization1": 0 },
+				"groups": { "group1": 0 },
 				"address": {
 					"street": "954 Main Street",
 					"city": "San Jose",

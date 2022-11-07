@@ -1,6 +1,6 @@
 import { AddressInterface } from './address';
 
-export interface OrganizationInterface {
+export interface GroupInterface {
 	name: string;
 	bio: string;
 	website: string;
