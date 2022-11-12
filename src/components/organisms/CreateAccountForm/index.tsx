@@ -114,14 +114,10 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => (
 						</Form.Select>
 					</Form.Group>
 					<Form.Group className="mb-3">
-						<Form.Label>Zipcode</Form.Label>
-						<Form.Control
-							type="text"
-							name="zipcode"
-							placeholder="Zipcode"
-							value={values.zipcode}
-							onChange={handleChange}
-						/>
+						<Form.Label>County</Form.Label>
+						<Form.Select>
+							<option value="santa-clara-ca">Santa Clara</option>
+						</Form.Select>
 					</Form.Group>
 					<Form.Group className="mb-3" controlId="formBasicCheckbox">
 						<Form.Check
