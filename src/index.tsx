@@ -20,6 +20,7 @@ import Resources from './pages/Resources';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import CreateAccount from './pages/CreateAccount';
+import SignIn from './pages/SignIn';
 
 // components
 import Navigation from './components/organisms/Navigation';
@@ -38,6 +39,7 @@ root.render(
 				<Route path="/resources" element={<Resources />}></Route>
 				<Route path="/login" element={<Login />}></Route>
 				<Route path="/dashboard" element={<Dashboard />}></Route>
+				<Route path="/sign-in" element={<SignIn />}></Route>
 				<Route
 					path="/create-account"
 					element={<CreateAccount />}
