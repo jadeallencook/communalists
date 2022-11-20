@@ -14,8 +14,8 @@ const Header: StyledComponent = styled(({ className }) => {
 							Used by organizations, collectives, volunteers, and
 							service providers.
 						</p>
-						<Link to="/resources">
-							<Button variant="dark">Browse Resources</Button>
+						<Link to="/listings">
+							<Button variant="dark">Browse Listings</Button>
 						</Link>
 						<Link to="/create-account">
 							<Button variant="secondary">Create Account</Button>

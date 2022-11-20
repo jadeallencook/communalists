@@ -13,7 +13,7 @@ const Resources = () => {
 		: null;
 	return (
 		<Container>
-			<h1>Resources</h1>
+			<h1>Listings</h1>
 			<Form onSubmit={() => null}>
 				<Form.Group className="mb-3">
 					<Form.Select
