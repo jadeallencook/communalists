@@ -1,13 +1,15 @@
-import { Container, Row, Col, Image } from 'react-bootstrap';
+import { Container, Row, Col, Image, ListGroup } from 'react-bootstrap';
+import { UserInterface } from '../../../../interfaces/user';
+import defaultImage from './defaultUserPfp.jpg'
 
-const DisplayUserInfo = (user) => (
+const DisplayUserInfo = (user : UserInterface) => (
 	<Container className="bg-secondary shadow-1-strong rounded-2">
         <Row>
             <h1>Account Information</h1>
         </Row>
         <Row>
             <Col lg="2">
-                <Image src="https://c4.wallpaperflare.com/wallpaper/392/1018/527/flcl-red-background-cat-animals-wallpaper-preview.jpg" rounded fluid height="auto"></Image>
+                <Image src={defaultImage} rounded fluid height="auto"></Image>
             </Col>
             <Col>
                 <Row>
@@ -18,6 +20,11 @@ const DisplayUserInfo = (user) => (
                 </Row>
             </Col>
         </Row>    
+        <Row>
+            <h1>Organization Quick Access</h1>
+            <ListGroup>
+            </ListGroup>
+        </Row>
 	</Container>
 );
 
