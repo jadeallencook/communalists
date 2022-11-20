@@ -128,11 +128,7 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => (
 							onChange={handleChange}
 						/>
 					</Form.Group>
-					<Button
-						variant="dark"
-						type="submit"
-						disabled={isSubmitting}
-					>
+					<Button type="submit" disabled={isSubmitting}>
 						Create Account
 					</Button>
 				</Form>

@@ -17,7 +17,6 @@ import './normalize.css';
 import Home from './pages/Home';
 import Listings from './pages/Listings';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
 import CreateAccount from './pages/CreateAccount';
 import SignIn from './pages/SignIn';
 
@@ -43,7 +42,10 @@ root.render(
 				<Route path="/" element={<Home />}></Route>
 				<Route path="/listings" element={<Listings />}></Route>
 				<Route path="/login" element={<Login />}></Route>
-				<Route path="/dashboard" element={<Dashboard />}></Route>
+				<Route
+					path="/dashboard"
+					element={<DashboardListings />}
+				></Route>
 				<Route
 					path="/dashboard/profile"
 					element={<DashboardProfile />}

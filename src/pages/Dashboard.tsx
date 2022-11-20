@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Container, Nav } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -11,7 +10,8 @@ const DashboardRouter: { title: string; link: string }[] = [
 
 const Dashboard = ({ children = [], title = 'Dashboard' }) => {
 	const navigate = useNavigate();
-	const { pathname } = useLocation();
+	let { pathname } = useLocation();
+	if (pathname === '/dashboard') pathname = '/dashboard/listings';
 	const handleSelect = (route) => navigate(route);
 
 	return (

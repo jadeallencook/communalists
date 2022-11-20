@@ -12,6 +12,9 @@ const style = () => ({
 	'a:hover': {
 		color: 'var(--white)',
 	},
+	'a.active': {
+		color: 'var(--white)',
+	},
 });
 
 export default style;
