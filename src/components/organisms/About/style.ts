@@ -1,12 +1,16 @@
 const style = () => ({
-	paddingTop: '150px',
-	paddingBottom: '150px',
-	backgroundColor: 'var(--bs-blue)',
-	color: 'var(--white)',
+	margin: '15px 0px',
+	paddingTop: '50px',
+	paddingBottom: '50px',
+	backgroundColor: 'var(--bs-secondary)',
 	borderRadius: 'var(--bs-border-radius)',
+	color: 'var(--white)',
 	h1: {
-		margin: 0,
+		marginTop: '0px',
 		fontWeight: 'bold',
+	},
+	p: {
+		margin: '0px',
 	},
 	'button.btn-secondary': {
 		marginLeft: '15px',

@@ -9,10 +9,12 @@ import {
 	SUBJECT_PRONOUNS,
 	OBJECT_PRONOUNS,
 } from '../../../../objects/pronouns';
+import { database } from '../../../../database';
+const user = database.users['janedoe'];
 
-const CreateAccountForm: StyledComponent = styled(({ className }) => (
+const EditProfileForm: StyledComponent = styled(({ className }) => (
 	<Formik
-		initialValues={initialValues}
+		initialValues={{...initialValues, ...user}}
 		onSubmit={() => null}
 		validate={validate}
 		validateOnChange={false}
@@ -47,41 +49,6 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => (
 								{errors.name as string}
 							</Form.Text>
 						)}
-					</Form.Group>
-					<Form.Group className="mb-3">
-						<Form.Label>Email address</Form.Label>
-						<Form.Control
-							type="email"
-							name="email"
-							placeholder="Enter email"
-							value={values.email}
-							onChange={handleChange}
-						/>
-						{errors.email && (
-							<Form.Text className="text-danger">
-								{errors.email as string}
-							</Form.Text>
-						)}
-					</Form.Group>
-					<Form.Group className="mb-3">
-						<Form.Label>Password</Form.Label>
-						<Form.Control
-							type="password"
-							name="password"
-							placeholder="Password"
-							value={values.password}
-							onChange={handleChange}
-						/>
-					</Form.Group>
-					<Form.Group className="mb-3">
-						<Form.Label>Confirm Password</Form.Label>
-						<Form.Control
-							type="password"
-							name="passwordConfirmation"
-							placeholder="Confirm Password"
-							value={values.passwordConfirmation}
-							onChange={handleChange}
-						/>
 					</Form.Group>
 					<Form.Group className="mb-3">
 						<Form.Label>Subject Pronoun</Form.Label>
@@ -129,7 +96,7 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => (
 						/>
 					</Form.Group>
 					<Button type="submit" disabled={isSubmitting}>
-						Create Account
+						Save Changes
 					</Button>
 				</Form>
 			) : (
@@ -139,4 +106,4 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => (
 	</Formik>
 ))(style);
 
-export default CreateAccountForm;
+export default EditProfileForm;

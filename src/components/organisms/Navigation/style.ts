@@ -1,4 +1,5 @@
 const style = () => ({
+	backgroundColor: 'var(--bs-gray-800) !important',
 	'.navbar-brand': {
 		fontWeight: 'bold',
 	},
@@ -9,6 +10,9 @@ const style = () => ({
 		marginLeft: '15px',
 	},
 	'a:hover': {
+		color: 'var(--white)',
+	},
+	'a.active': {
 		color: 'var(--white)',
 	},
 });

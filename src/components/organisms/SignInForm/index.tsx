@@ -58,11 +58,7 @@ const SignInForm: StyledComponent = styled(({ className }) => {
 								</Form.Text>
 							)}
 						</Form.Group>
-						<Button
-							variant="dark"
-							type="submit"
-							disabled={isSubmitting}
-						>
+						<Button type="submit" disabled={isSubmitting}>
 							Sign In
 						</Button>
 						<Button variant="secondary">Create Account</Button>
