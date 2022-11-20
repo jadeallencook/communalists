@@ -14,7 +14,7 @@ const DashboardListings = () => {
 						<th>Title</th>
 						<th>Date</th>
 						<th>Status</th>
-						<th>Cancel</th>
+						<th>Options</th>
 					</tr>
 				</thead>
 				<tbody>
