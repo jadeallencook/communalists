@@ -13,6 +13,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
 				<Nav className="justify-content-end">
 						<Link to="/resources">Resources</Link>
 						<Link to="/dashboard">Account</Link>
+						<Link to="/sign-in">Sign In</Link>
 				</Nav>
 			</Container>
 		</Navbar>

@@ -19,4 +19,7 @@ a {
 	--white: #fff;
 	--black: #000;
 	--primary: #931f1d;
+	--spacing-small: 5px;
+	--spacing-medium: 10px;
+	--spacing-large: 25px;
 }
