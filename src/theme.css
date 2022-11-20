@@ -1,7 +1,7 @@
 html,
 body {
 	font-family: Arial, Helvetica, sans-serif;
-	background-color: var(--bs-gray-dark);
+	background-color: var(--bs-gray-900);
 	color: var(--white);
 }
 

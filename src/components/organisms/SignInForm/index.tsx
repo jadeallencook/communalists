@@ -59,7 +59,7 @@ const SignInForm: StyledComponent = styled(({ className }) => {
 							)}
 						</Form.Group>
 						<Button
-							variant="dark"
+							variant="primary"
 							type="submit"
 							disabled={isSubmitting}
 						>

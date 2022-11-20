@@ -1,7 +1,7 @@
 const style = () => ({
 	paddingTop: '150px',
 	paddingBottom: '150px',
-	backgroundColor: 'var(--primary)',
+	backgroundColor: 'var(--bs-blue)',
 	color: 'var(--white)',
 	h1: {
 		margin: 0,

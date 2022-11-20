@@ -1,4 +1,5 @@
 const style = () => ({
+	backgroundColor: 'var(--bs-gray-800) !important',
 	'.navbar-brand': {
 		fontWeight: 'bold',
 	},
