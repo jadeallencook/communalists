@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Container, Nav } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -8,7 +9,13 @@ const DashboardRouter: { title: string; link: string }[] = [
 	{ title: 'Profile', link: '/dashboard/profile' },
 ];
 
-const Dashboard = ({ children = [], title = 'Dashboard' }) => {
+const Dashboard = ({
+	children,
+	title = 'Dashboard',
+}: {
+	children?: ReactNode;
+	title?: string;
+}) => {
 	const navigate = useNavigate();
 	let { pathname } = useLocation();
 	if (pathname === '/dashboard') pathname = '/dashboard/orders';
@@ -28,7 +35,12 @@ const Dashboard = ({ children = [], title = 'Dashboard' }) => {
 					</Nav.Item>
 				))}
 			</Nav>
-			{children ? [...children] : null}
+			<br />
+			{children && Array.isArray(children)
+				? [...children]
+				: children
+				? children
+				: null}
 		</Container>
 	);
 };
