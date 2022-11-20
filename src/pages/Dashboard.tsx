@@ -2,16 +2,16 @@ import { Container, Nav } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const DashboardRouter: { title: string; link: string }[] = [
-	{ title: 'Profile', link: '/dashboard/profile' },
+	{ title: 'Orders', link: '/dashboard/orders' },
 	{ title: 'Listings', link: '/dashboard/listings' },
 	{ title: 'Organizations', link: '/dashboard/organizations' },
-	{ title: 'Orders', link: '/dashboard/orders' },
+	{ title: 'Profile', link: '/dashboard/profile' },
 ];
 
 const Dashboard = ({ children = [], title = 'Dashboard' }) => {
 	const navigate = useNavigate();
 	let { pathname } = useLocation();
-	if (pathname === '/dashboard') pathname = '/dashboard/listings';
+	if (pathname === '/dashboard') pathname = '/dashboard/orders';
 	const handleSelect = (route) => navigate(route);
 
 	return (

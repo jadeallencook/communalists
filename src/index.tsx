@@ -44,7 +44,7 @@ root.render(
 				<Route path="/login" element={<Login />}></Route>
 				<Route
 					path="/dashboard"
-					element={<DashboardListings />}
+					element={<DashboardOrders />}
 				></Route>
 				<Route
 					path="/dashboard/profile"
