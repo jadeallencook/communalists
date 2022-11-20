@@ -25,6 +25,8 @@ import DashboardProfile from './pages/DashboardProfile';
 import DashboardListings from './pages/DashboardListings';
 import DashboardOrganizations from './pages/DashboardOrganizations';
 import DashboardOrders from './pages/DashboardOrders';
+import DashboardSettings from './pages/DashboardSettings';
+import DashboardAdmin from './pages/DashboardAdmin';
 
 // components
 import Navigation from './components/organisms/Navigation';
@@ -42,10 +44,7 @@ root.render(
 				<Route path="/" element={<Home />}></Route>
 				<Route path="/listings" element={<Listings />}></Route>
 				<Route path="/login" element={<Login />}></Route>
-				<Route
-					path="/dashboard"
-					element={<DashboardOrders />}
-				></Route>
+				<Route path="/dashboard" element={<DashboardOrders />}></Route>
 				<Route
 					path="/dashboard/profile"
 					element={<DashboardProfile />}
@@ -61,6 +60,14 @@ root.render(
 				<Route
 					path="/dashboard/orders"
 					element={<DashboardOrders />}
+				></Route>
+				<Route
+					path="/dashboard/settings"
+					element={<DashboardSettings />}
+				></Route>
+				<Route
+					path="/dashboard/admin"
+					element={<DashboardAdmin />}
 				></Route>
 				<Route path="/sign-in" element={<SignIn />}></Route>
 				<Route

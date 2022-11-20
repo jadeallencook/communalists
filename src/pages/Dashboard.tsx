@@ -7,15 +7,11 @@ const DashboardRouter: { title: string; link: string }[] = [
 	{ title: 'Listings', link: '/dashboard/listings' },
 	{ title: 'Organizations', link: '/dashboard/organizations' },
 	{ title: 'Profile', link: '/dashboard/profile' },
+	{ title: 'Settings', link: '/dashboard/settings' },
+	{ title: 'Admin', link: '/dashboard/admin' },
 ];
 
-const Dashboard = ({
-	children,
-	title = 'Dashboard',
-}: {
-	children?: ReactNode;
-	title?: string;
-}) => {
+const Dashboard = ({ children }: { children?: ReactNode }) => {
 	const navigate = useNavigate();
 	let { pathname } = useLocation();
 	if (pathname === '/dashboard') pathname = '/dashboard/orders';
@@ -23,7 +19,7 @@ const Dashboard = ({
 
 	return (
 		<Container>
-			<h1>{title}</h1>
+			<br />
 			<Nav
 				variant="pills"
 				defaultActiveKey={pathname}

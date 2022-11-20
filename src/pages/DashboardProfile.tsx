@@ -3,7 +3,7 @@ import EditProfileForm from '../components/organisms/EditProfileForm';
 
 const DashboardProfile = () => {
 	return (
-		<Dashboard title="Your Profile">
+		<Dashboard>
 			<EditProfileForm />
 		</Dashboard>
 	);
