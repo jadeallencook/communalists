@@ -1,7 +1,11 @@
 import Dashboard from './Dashboard';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, Modal } from 'react-bootstrap';
+import { useState } from 'react';
 
 const DashboardListings = () => {
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 	return (
 		<Dashboard>
 			<Table striped bordered hover variant="dark">
@@ -21,7 +25,23 @@ const DashboardListings = () => {
 					</tr>
 				</tbody>
 			</Table>
-			<Button>Create Listing</Button>
+			<Modal show={show} onHide={handleClose} size="lg">
+				<Modal.Header closeButton>
+					<Modal.Title>Create Listing</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					Form to create a listing goes here...
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={handleClose}>
+						Close
+					</Button>
+					<Button variant="primary" onClick={handleClose}>
+						Post Listing
+					</Button>
+				</Modal.Footer>
+			</Modal>
+			<Button onClick={handleShow}>Create Listing</Button>
 		</Dashboard>
 	);
 };

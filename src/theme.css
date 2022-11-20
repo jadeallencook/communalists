@@ -5,6 +5,10 @@ body {
 	color: var(--white);
 }
 
+.modal {
+	color: var(--black);
+}
+
 a {
 	text-decoration: none;
 	color: var(--bs-link-color);
