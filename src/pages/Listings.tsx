@@ -32,7 +32,7 @@ const Resources = () => {
 						<th>Title</th>
 						<th>Stock</th>
 						<th>Attributes</th>
-						<th>Quick Add</th>
+						<th>Options</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -61,8 +61,26 @@ const Resources = () => {
 										)}
 									</td>
 									<td>
-										<Badge key={key} bg="primary" text="light">
-											Add To Cart
+										<Badge
+											key={key}
+											bg="primary"
+											text="light"
+											style={{
+												marginRight: '5px',
+												cursor: 'pointer',
+											}}
+										>
+											Order
+										</Badge>
+										<Badge
+											key={key}
+											bg="secondary"
+											text="light"
+											style={{
+												cursor: 'pointer',
+											}}
+										>
+											Details
 										</Badge>
 									</td>
 								</tr>
