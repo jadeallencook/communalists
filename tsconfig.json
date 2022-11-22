@@ -2,6 +2,18 @@
 	"compilerOptions": {
 		"sourceMap": true,
 		"esModuleInterop": true,
-		"jsx": "react-jsx"
+		"jsx": "react-jsx",
+		"paths": {
+			"@pages/*": ["./src/pages/*"],
+			"@components/*": ["./src/components/*"],
+			"@atoms/*": ["./src/components/atoms/*"],
+			"@molecules/*": ["./src/components/molecules/*"],
+			"@organisms/*": ["./src/components/organisms/*"],
+			"@assets/*": ["./src/assets/*"],
+			"@database/*": ["./database/*"],
+			"@interfaces/*": ["./interfaces/*"],
+			"@objects/*": ["./objects/*"],
+			"@types/*": ["./types/*"]
+		}
 	}
 }

@@ -1,5 +1,5 @@
 import { Container } from 'react-bootstrap';
-import SignInForm from '../components/organisms/SignInForm';
+import SignInForm from '@organisms/SignInForm';
 
 const SignIn = () => (
 	<Container>
