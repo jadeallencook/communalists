@@ -4,10 +4,6 @@ import ReactDOM from 'react-dom/client';
 // router
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
-// firebase
-import { initializeApp } from 'firebase/app';
-import firebaseConfig from './firebase.config';
-
 // style
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './theme.css';
@@ -34,7 +30,6 @@ import Footer from './components/organisms/Footer';
 
 const elem = document.getElementById('root')!;
 const root = ReactDOM.createRoot(elem);
-const app = initializeApp(firebaseConfig);
 
 root.render(
 	<React.StrictMode>
