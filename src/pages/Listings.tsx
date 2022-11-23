@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Table, Form, Badge } from 'react-bootstrap';
-import database from '../../database/database.mock.json';
-import { ListingInterface } from '../../interfaces';
+import database from '@database/database.mock.json';
+import { ListingInterface } from '@interfaces/listing';
 
 const Resources = () => {
 	const { items } = database;

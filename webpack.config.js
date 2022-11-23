@@ -15,6 +15,18 @@ module.exports = {
 	resolve: {
 		modules: [__dirname, 'src', 'node_modules'],
 		extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+		alias: {
+			'@pages': path.resolve(__dirname, 'src/pages'),
+			'@components': path.resolve(__dirname, 'src/components'),
+			'@atoms': path.resolve(__dirname, 'src/components/atoms'),
+			'@molecules': path.resolve(__dirname, 'src/components/molecules'),
+			'@organisms': path.resolve(__dirname, 'src/components/organisms'),
+			'@assets': path.resolve(__dirname, 'src/assets'),
+			'@database': path.resolve(__dirname, 'database'),
+			'@interfaces': path.resolve(__dirname, 'interfaces'),
+			'@objects': path.resolve(__dirname, 'objects'),
+			'@types': path.resolve(__dirname, 'types'),
+		},
 	},
 	module: {
 		rules: [

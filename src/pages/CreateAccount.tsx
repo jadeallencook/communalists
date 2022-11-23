@@ -1,5 +1,5 @@
 import { Container } from 'react-bootstrap';
-import CreateAccountForm from '../components/organisms/CreateAccountForm';
+import CreateAccountForm from '@organisms/CreateAccountForm';
 
 const CreateAccount = () => (
 	<Container>

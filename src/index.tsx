@@ -14,23 +14,23 @@ import './theme.css';
 import './normalize.css';
 
 // pages
-import Home from './pages/Home';
-import Listings from './pages/Listings';
-import Login from './pages/Login';
-import CreateAccount from './pages/CreateAccount';
-import SignIn from './pages/SignIn';
+import Home from '@pages/Home';
+import Listings from '@pages/Listings';
+import Login from '@pages/Login';
+import CreateAccount from '@pages/CreateAccount';
+import SignIn from '@pages/SignIn';
 
 // dashboard
-import DashboardProfile from './pages/DashboardProfile';
-import DashboardListings from './pages/DashboardListings';
-import DashboardOrganizations from './pages/DashboardOrganizations';
-import DashboardOrders from './pages/DashboardOrders';
-import DashboardSettings from './pages/DashboardSettings';
-import DashboardAdmin from './pages/DashboardAdmin';
+import DashboardProfile from '@pages/DashboardProfile';
+import DashboardListings from '@pages/DashboardListings';
+import DashboardOrganizations from '@pages/DashboardOrganizations';
+import DashboardOrders from '@pages/DashboardOrders';
+import DashboardSettings from '@pages/DashboardSettings';
+import DashboardAdmin from '@pages/DashboardAdmin';
 
 // components
-import Navigation from './components/organisms/Navigation';
-import Footer from './components/organisms/Footer';
+import Navigation from '@organisms/Navigation';
+import Footer from '@organisms/Footer';
 
 const elem = document.getElementById('root')!;
 const root = ReactDOM.createRoot(elem);

@@ -1,5 +1,5 @@
 import Dashboard from './Dashboard';
-import EditProfileForm from '../components/organisms/EditProfileForm';
+import EditProfileForm from '@organisms/EditProfileForm';
 
 const DashboardProfile = () => {
 	return (

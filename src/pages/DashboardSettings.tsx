@@ -1,6 +1,6 @@
 import Dashboard from './Dashboard';
 import { Table, Button } from 'react-bootstrap';
-import UserSettingsForm from '../components/organisms/UserSettingsForm';
+import UserSettingsForm from '@organisms/UserSettingsForm';
 
 const DashboardSettings = () => {
 	return (
