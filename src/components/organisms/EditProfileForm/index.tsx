@@ -8,8 +8,8 @@ import Loading from '../../molecules/Loading';
 import {
 	SUBJECT_PRONOUNS,
 	OBJECT_PRONOUNS,
-} from '../../../../objects/pronouns';
-import { database } from '../../../../database';
+} from '@objects/pronouns';
+import { database } from '@database/index';
 const user = database.users['janedoe'];
 
 const EditProfileForm: StyledComponent = styled(({ className }) => (

@@ -1,6 +1,6 @@
-import Header from '../components/organisms/Header';
+import Header from '@organisms/Header';
 import { Container } from 'react-bootstrap';
-import About from '../components/organisms/About';
+import About from '@organisms/About';
 
 const Home = () => (
 	<Container>
