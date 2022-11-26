@@ -1,4 +1,5 @@
 import Dashboard from './Dashboard';
+import CreateListingForm from '@components/organisms/CreateListingForm';
 import { Table, Button, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 
@@ -30,7 +31,7 @@ const DashboardListings = () => {
 					<Modal.Title>Create Listing</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					Form to create a listing goes here...
+					<CreateListingForm />
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleClose}>

@@ -69,7 +69,6 @@ root.render(
 					path="/create-account"
 					element={<CreateAccount />}
 				></Route>
-				<Route path="/user/:userId/create-listing" element={<CreateListing />}></Route>
 			</Routes>
 			<Footer />
 		</Router>

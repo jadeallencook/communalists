@@ -1,8 +1,8 @@
 const initialValues: any = {
-	item: 'Bed Frame',
+	item: 'bedframe',
     description: 'Listing Description',
     stock: 1,
-    location: '',
+    location: 'Location 1',
     attributes: {}
 };
 
