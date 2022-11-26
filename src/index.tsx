@@ -15,6 +15,7 @@ import Listings from '@pages/Listings';
 import Login from '@pages/Login';
 import CreateAccount from '@pages/CreateAccount';
 import SignIn from '@pages/SignIn';
+import ForgotPassword from '@pages/ForgotPassword';
 
 // dashboard
 import DashboardProfile from '@pages/DashboardProfile';
@@ -39,6 +40,7 @@ root.render(
 				<Route path="/" element={<Home />}></Route>
 				<Route path="/listings" element={<Listings />}></Route>
 				<Route path="/login" element={<Login />}></Route>
+				<Route path="/forgot-password" element={<ForgotPassword />}></Route>
 				<Route path="/dashboard" element={<DashboardOrders />}></Route>
 				<Route
 					path="/dashboard/profile"
