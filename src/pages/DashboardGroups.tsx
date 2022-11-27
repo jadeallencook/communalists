@@ -1,7 +1,7 @@
 import Dashboard from './Dashboard';
 import { Table } from 'react-bootstrap';
 
-const DashboardOrganizations = () => {
+const DashboardGroups = () => {
 	return (
 		<Dashboard>
 			<Table striped bordered hover variant="dark">
@@ -25,4 +25,4 @@ const DashboardOrganizations = () => {
 	);
 };
 
-export default DashboardOrganizations;
+export default DashboardGroups;
