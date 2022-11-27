@@ -29,9 +29,7 @@ const DashboardListings = () => {
 				<Modal.Header closeButton>
 					<Modal.Title>Create Listing</Modal.Title>
 				</Modal.Header>
-				<Modal.Body>
-					Form to create a listing goes here...
-				</Modal.Body>
+				<Modal.Body>Form to create a listing goes here...</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleClose}>
 						Close

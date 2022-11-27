@@ -1,10 +1,4 @@
-export type SubjectPronounType =
-	| 'they'
-	| 'she'
-	| 'he'
-	| 'xe'
-	| 'ze'
-	| 'any';
+export type SubjectPronounType = 'they' | 'she' | 'he' | 'xe' | 'ze' | 'any';
 export type ObjectPronounType =
 	| 'them'
 	| 'her'
@@ -14,7 +8,4 @@ export type ObjectPronounType =
 	| 'hir'
 	| 'all';
 
-export type PronounsType = [
-	SubjectPronounType,
-	ObjectPronounType
-];
+export type PronounsType = [SubjectPronounType, ObjectPronounType];

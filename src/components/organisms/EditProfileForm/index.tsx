@@ -5,16 +5,13 @@ import { Formik } from 'formik';
 import initialValues from './initial-values';
 import validate from './validate';
 import Loading from '../../molecules/Loading';
-import {
-	SUBJECT_PRONOUNS,
-	OBJECT_PRONOUNS,
-} from '@objects/pronouns';
+import { SUBJECT_PRONOUNS, OBJECT_PRONOUNS } from '@objects/pronouns';
 import { database } from '@database/index';
 const user = database.users['janedoe'];
 
 const EditProfileForm: StyledComponent = styled(({ className }) => (
 	<Formik
-		initialValues={{...initialValues, ...user}}
+		initialValues={{ ...initialValues, ...user }}
 		onSubmit={() => null}
 		validate={validate}
 		validateOnChange={false}
