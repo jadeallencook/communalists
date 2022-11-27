@@ -5,6 +5,9 @@ const style = () => ({
 	'select, input[name="stock"]': {
 		maxWidth: '200px',
 	},
+	label: {
+		textTransform: 'capitalize'
+	}
 });
 
 export default style;
