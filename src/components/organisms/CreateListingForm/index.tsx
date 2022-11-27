@@ -33,9 +33,8 @@ const CreateListingForm: StyledComponent = styled(({ className }) => {
 		<Form className={className} onSubmit={handleSubmit}>
 			<Form.Group className="mb-3">
 				<Form.Label>Item</Form.Label>
-				<Form.Control
+				<Form.Select
 					className="form-control"
-					as="select"
 					onChange={handleItemChange}
 					name="item"
 					value={itemKey}
@@ -45,7 +44,7 @@ const CreateListingForm: StyledComponent = styled(({ className }) => {
 							{title}
 						</option>
 					))}
-				</Form.Control>
+				</Form.Select>
 			</Form.Group>
 			<Form.Group className="mb-3">
 				<Form.Label>Listing Description</Form.Label>
@@ -70,9 +69,8 @@ const CreateListingForm: StyledComponent = styled(({ className }) => {
 					([attributeKey, attributeValues]) => (
 						<Form.Group className="mb-3" key={attributeKey}>
 							<Form.Label>{attributeKey}</Form.Label>
-							<Form.Control
+							<Form.Select
 								className="form-control"
-								as="select"
 								name={attributeKey}
 							>
 								{Object.entries(attributeValues).map(
@@ -84,13 +82,13 @@ const CreateListingForm: StyledComponent = styled(({ className }) => {
 										);
 									}
 								)}
-							</Form.Control>
+							</Form.Select>
 						</Form.Group>
 					)
 				)}
 			<Form.Group className="mb-3">
 				<Form.Label>Storage Location</Form.Label>
-				<Form.Control
+				<Form.Select
 					className="form-control"
 					as="select"
 					name="itemType"
@@ -98,7 +96,7 @@ const CreateListingForm: StyledComponent = styled(({ className }) => {
 					{locations.map((location: string) => (
 						<option key={location}> {location}</option>
 					))}
-				</Form.Control>
+				</Form.Select>
 			</Form.Group>
 			<Button type="submit">Create Listing</Button>
 		</Form>
