@@ -5,8 +5,10 @@ import { useState } from 'react';
 
 const DashboardListings = () => {
 	const [show, setShow] = useState(false);
+	const [shouldSubmit, setShouldSubmit] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+
 	return (
 		<Dashboard>
 			<Table striped bordered hover variant="dark">
@@ -31,13 +33,21 @@ const DashboardListings = () => {
 					<Modal.Title>Create Listing</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<CreateListingForm />
+					<CreateListingForm 
+						shouldSubmit={shouldSubmit} 
+						setShouldSubmit={setShouldSubmit}
+						handleCloseModal={handleClose}
+					/>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleClose}>
 						Close
 					</Button>
-					<Button variant="primary" onClick={handleClose}>
+					<Button variant="primary" onClick={() => {
+						setShouldSubmit(true)
+						// closing should be handled in CreateListingForm after api call
+						// handleClose()
+					}}>
 						Post Listing
 					</Button>
 				</Modal.Footer>

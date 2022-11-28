@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
@@ -7,10 +7,32 @@ import { database } from '@database/index';
 // Incoming data and related parsing will need to be rewritten when the APIs become available.
 const locations: string[] = ['Location 1', 'Location 2', 'Location 3'];
 
-const CreateListingForm: StyledComponent = styled(({ className }) => {
+interface CreateListingFormProps {
+	className: string,
+	shouldSubmit: string,
+	setShouldSubmit: Function,
+	handleCloseModal: Function
+}
+
+const CreateListingForm: StyledComponent = styled(({ 
+	className, 
+	shouldSubmit, 
+	setShouldSubmit, 
+	handleCloseModal 
+}: CreateListingFormProps) => {
 	const { items } = database;
 	const [itemKey, setItemKey] = useState(Object.keys(items)[0]);
 	const item = items[itemKey];
+	
+	useEffect(() => {
+		setShouldSubmit(false)
+		if(shouldSubmit){
+			const submitButton = document.getElementById("submit-button")
+			submitButton.click()
+			// HandleCloseModal should only run after validation/api call finishes -> TBD
+			// handleCloseModal()
+		}
+	}, [shouldSubmit, setShouldSubmit])
 
 	const handleItemChange = (event) => {
 		const key = event.target.value;
@@ -20,6 +42,7 @@ const CreateListingForm: StyledComponent = styled(({ className }) => {
 	const handleSubmit = (event): void => {
 		event.preventDefault();
 		const inputs = event.target.querySelectorAll('input, select');
+		// setShouldSubmit(false)
 		for (const input of inputs) {
 			const value = input.value;
 			const key = input.getAttribute('name');
@@ -98,7 +121,7 @@ const CreateListingForm: StyledComponent = styled(({ className }) => {
 					))}
 				</Form.Select>
 			</Form.Group>
-			<Button type="submit">Create Listing</Button>
+			<Button id="submit-button" type="submit">Create Listing</Button>
 		</Form>
 	);
 })(style);

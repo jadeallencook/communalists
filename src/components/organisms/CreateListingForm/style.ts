@@ -1,3 +1,5 @@
+import { NONAME } from "dns";
+
 const style = () => ({
 	input: {
 		maxWidth: '500px',
@@ -7,6 +9,9 @@ const style = () => ({
 	},
 	label: {
 		textTransform: 'capitalize'
+	},
+	'#submit-button': {
+		display: 'none'
 	}
 });
 
