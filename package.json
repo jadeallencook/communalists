@@ -16,7 +16,8 @@
 	"scripts": {
 		"start": "webpack serve  --hot --open --mode development",
 		"build": "webpack --config webpack.config.js --mode production",
-		"mock": "ts-node ./jobs/mock-database.ts"
+		"mock": "ts-node ./jobs/mock-database.ts",
+		"pretty": "prettier --write \"./**/*.{ts,tsx,css,json}\""
 	},
 	"lint-staged": {
 		"**/*.js": "prettier --write --ignore-unknown"
