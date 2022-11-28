@@ -1,13 +1,13 @@
-import ForgotPasswordForm from "@organisms/ForgotPasswordForm";
-import { Container } from "react-bootstrap";
+import ForgotPasswordForm from '@organisms/ForgotPasswordForm';
+import { Container } from 'react-bootstrap';
 
 const ForgotPassword = () => {
-    return (
-        <Container>
+	return (
+		<Container>
 			<h1>Forgot Password</h1>
-            <ForgotPasswordForm />
-        </Container>
-    )
-}
+			<ForgotPasswordForm />
+		</Container>
+	);
+};
 
-export default ForgotPassword
+export default ForgotPassword;

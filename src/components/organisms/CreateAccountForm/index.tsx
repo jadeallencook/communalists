@@ -5,10 +5,7 @@ import { Formik } from 'formik';
 import initialValues from './initial-values';
 import validate from './validate';
 import Loading from '@molecules/Loading';
-import {
-	SUBJECT_PRONOUNS,
-	OBJECT_PRONOUNS,
-} from '@objects/pronouns';
+import { SUBJECT_PRONOUNS, OBJECT_PRONOUNS } from '@objects/pronouns';
 
 const CreateAccountForm: StyledComponent = styled(({ className }) => (
 	<Formik

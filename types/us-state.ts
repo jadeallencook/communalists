@@ -58,4 +58,3 @@ export type USStateType =
 	| 'WV'
 	| 'WI'
 	| 'WY';
-

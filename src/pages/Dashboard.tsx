@@ -1,15 +1,7 @@
 import { ReactNode } from 'react';
 import { Container, Nav } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-const DashboardRouter: { title: string; link: string }[] = [
-	{ title: 'Orders', link: '/dashboard/orders' },
-	{ title: 'Listings', link: '/dashboard/listings' },
-	{ title: 'Groups', link: '/dashboard/groups' },
-	{ title: 'Profile', link: '/dashboard/profile' },
-	{ title: 'Settings', link: '/dashboard/settings' },
-	{ title: 'Admin', link: '/dashboard/admin' },
-];
+import DashboardRouter from '@objects/dashboard-router';
 
 const Dashboard = ({ children }: { children?: ReactNode }) => {
 	const navigate = useNavigate();

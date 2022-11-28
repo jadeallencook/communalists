@@ -3,14 +3,15 @@ import { Button, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { Formik, ErrorMessage } from 'formik';
-import validationSchema from './validate'
+import validationSchema from './validate';
 
 const ForgotPasswordForm: StyledComponent = styled(({ className }) => {
+	const renderError = (message: string) => (
+		<p className="help is-danger">{message}</p>
+	);
 
-    const renderError = (message: string) => <p className="help is-danger">{message}</p>;
-
-    return (
-        <Formik
+	return (
+		<Formik
 			initialValues={{}}
 			onSubmit={() => null}
 			validationSchema={validationSchema}
@@ -39,7 +40,7 @@ const ForgotPasswordForm: StyledComponent = styled(({ className }) => {
 								value={values.name}
 								onChange={handleChange}
 							/>
-                            <ErrorMessage name="email" render={renderError} />
+							<ErrorMessage name="email" render={renderError} />
 						</Form.Group>
 						<Button type="submit" disabled={isSubmitting}>
 							Send Recovery Link
@@ -50,7 +51,7 @@ const ForgotPasswordForm: StyledComponent = styled(({ className }) => {
 				)
 			}
 		</Formik>
-    )
+	);
 })(style);
 
-export default ForgotPasswordForm
+export default ForgotPasswordForm;
