@@ -3,7 +3,4 @@ export type CountyKeyType =
 	| 'san-francisco-ca'
 	| 'santa-clara-ca';
 
-export type CountyType =
-	| 'San Mateo'
-	| 'San Francisco'
-	| 'Santa Clara';
+export type CountyType = 'San Mateo' | 'San Francisco' | 'Santa Clara';

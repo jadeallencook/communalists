@@ -2,27 +2,50 @@ import { useState } from 'react';
 import { Container, Table, Form, Badge } from 'react-bootstrap';
 import database from '@database/database.mock.json';
 import { ListingInterface } from '@interfaces/listing';
+import locationMap from '@objects/location-map';
 
 const Resources = () => {
 	const { items } = database;
-	const [location, setLocation] = useState<string>('santa-clara-ca');
-	const ref = database.listings[location];
+	const [state, setState] = useState(Object.keys(locationMap)[0]);
+	const [county, setCounty] = useState<string>('santa-clara-ca');
+	const ref = database.listings[county];
 	const users: string[] = ref ? Object.keys(ref).map((user) => user) : null;
 	const listings: { [key in string]: ListingInterface } = users
 		? users.reduce((listings, user) => ({ ...listings, ...ref[user] }), {})
 		: null;
+
+	const handleStateChange = (event) =>
+		setState(() => {
+			const { value } = event.target;
+			setCounty(Object.keys(locationMap[value])[0]);
+			return value;
+		});
+
 	return (
 		<Container>
 			<h1>Listings</h1>
 			<Form onSubmit={() => null}>
 				<Form.Group className="mb-3">
+					<Form.Label>State</Form.Label>
+					<Form.Select onChange={handleStateChange} value={state}>
+						{Object.keys(locationMap).map((key) => (
+							<option key={key} value={key}>
+								{key}
+							</option>
+						))}
+					</Form.Select>
+				</Form.Group>
+				<Form.Group className="mb-3">
+					<Form.Label>County</Form.Label>
 					<Form.Select
-						onChange={(event) => setLocation(event.target.value)}
+						onChange={(event) => setCounty(event.target.value)}
+						value={county}
 					>
-						<option value="santa-clara-ca">Santa Clara</option>
-						<option value="san-mateo-ca">San Mateo</option>
-						<option value="san-francisco-ca">San Francisco</option>
-						<option value="alameda-ca">Alameda</option>
+						{Object.keys(locationMap[state]).map((key) => (
+							<option key={key} value={key}>
+								{locationMap[state][key]}
+							</option>
+						))}
 					</Form.Select>
 				</Form.Group>
 			</Form>
@@ -62,7 +85,7 @@ const Resources = () => {
 									</td>
 									<td>
 										<Badge
-											key={key}
+											key={`${key}-order`}
 											bg="primary"
 											text="light"
 											style={{
@@ -73,7 +96,7 @@ const Resources = () => {
 											Order
 										</Badge>
 										<Badge
-											key={key}
+											key={`${key}-details`}
 											bg="secondary"
 											text="light"
 											style={{
