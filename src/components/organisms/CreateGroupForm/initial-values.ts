@@ -3,7 +3,7 @@ const initialValues = {
     bio: '',
     website: '',
     phone: '',
-    primaryEmail: '',
+    email: '',
     address: {
         street: '',
         city: '',

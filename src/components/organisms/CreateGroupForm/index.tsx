@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
@@ -6,32 +6,42 @@ import { ErrorMessage, Formik } from 'formik';
 import initialValues from './initial-values';
 import validationSchema from './validate';
 import Loading from '@molecules/Loading';
-import { SocketAddress } from 'net';
+import locationMap from '@objects/location-map';
+import { CreateGroupFormInterface } from '@interfaces/CreateGroupForm'
 
-// States should eventually be pulled from a database
-const locations = {
-    "CA": {
-        "santa-clara-ca": "Santa Clara",
-        "alameda-ca": "Alameda"
-    },
-    "WA": {
-        "king-wa": "King"
-    }
-}
+const CreateGroupForm: StyledComponent = styled(({ 
+    className, 
+    shouldSubmit, 
+    setShouldSubmit, 
+    handleClose 
+}: CreateGroupFormInterface) => {
 
-const CreateGroupForm: StyledComponent = styled(({ className }) => {
     const [stateKey, setStateKey] = useState("CA")
+
     const handleStateChange = (event) => {
 		const key = event.target.value;
 		setStateKey(key);
 	};
+
+    useEffect(() => {
+		setShouldSubmit(false)
+		if(shouldSubmit){
+			const submitButton = document.getElementById("submit-button")
+			submitButton.click()
+		}
+	}, [shouldSubmit, setShouldSubmit])
+
+    const handleSubmit = () => (values: any) => {
+		console.log(values)
+		handleClose()
+	}
     
     const renderError = (message: string) => <p className="help is-danger">{message}</p>;
 
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={() => null}
+            onSubmit={handleSubmit()}
             validationSchema={validationSchema}
             validateOnChange={false}
             validateOnBlur={true}
@@ -97,7 +107,7 @@ const CreateGroupForm: StyledComponent = styled(({ className }) => {
                                 </Form.Group>
                             </Col>
                             <Col>
-                            <Form.Group className="mb-3">
+                                <Form.Group className="mb-3">
                                     <Form.Label>Email*</Form.Label>
                                     <Form.Control
                                         type="text"
@@ -145,7 +155,7 @@ const CreateGroupForm: StyledComponent = styled(({ className }) => {
                                         name="address.state"
                                         // value={itemKey}
                                     >
-                                        {Object.keys(locations).map(state => (
+                                        {Object.keys(locationMap).map(state => (
                                             <option key={state} value={state}>
                                                 {state}
                                             </option>
@@ -178,7 +188,7 @@ const CreateGroupForm: StyledComponent = styled(({ className }) => {
                                             name="address.state"
                                             value={values.address.county}
                                         >
-                                            {Object.entries(locations[stateKey]).map(([key, value]: [string, string]) => (
+                                            {Object.entries(locationMap[stateKey]).map(([key, value]: [string, string]) => (
                                                 <option key={key} value={value}>
                                                     {value}
                                                 </option>
@@ -188,7 +198,7 @@ const CreateGroupForm: StyledComponent = styled(({ className }) => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button type="submit" disabled={isSubmitting}>
+                        <Button id="submit-button" type="submit" disabled={isSubmitting}>
                             Create Account
                         </Button>
                     </Form>

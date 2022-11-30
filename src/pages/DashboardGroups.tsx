@@ -7,6 +7,7 @@ const DashboardGroups = () => {
 	const [show, setShow] = useState(false)
 	const handleShow = () => setShow(true)
 	const handleClose = () => setShow(false)
+	const [shouldSubmit, setShouldSubmit] = useState(false);
 
 	return (
 		<Dashboard>
@@ -33,13 +34,17 @@ const DashboardGroups = () => {
 					<Modal.Title>Create Group</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<CreateGroupForm />
+					<CreateGroupForm 
+						shouldSubmit={shouldSubmit} 
+						setShouldSubmit={setShouldSubmit}
+						handleClose={handleClose}
+						/>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleClose}>
 						Close
 					</Button>
-					<Button variant="primary" onClick={handleClose}>
+					<Button variant="primary" onClick={() => setShouldSubmit(true)}>
 						Create Group
 					</Button>
 				</Modal.Footer>

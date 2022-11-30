@@ -5,3 +5,4 @@ export { LocationInterface } from './locations';
 export { HandleInterface } from './handle';
 export { AddressInterface } from './address';
 export { GroupInterface } from './group';
+export { CreateGroupFormInterface } from './createGroupForm';
