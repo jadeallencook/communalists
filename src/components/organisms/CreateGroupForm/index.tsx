@@ -7,7 +7,7 @@ import initialValues from './initial-values';
 import validationSchema from './validate';
 import Loading from '@molecules/Loading';
 import locationMap from '@objects/location-map';
-import { CreateGroupFormInterface } from '@interfaces/CreateGroupForm'
+import { CreateGroupFormInterface } from '@interfaces/createGroupForm'
 
 const CreateGroupForm: StyledComponent = styled(({ 
     className, 
