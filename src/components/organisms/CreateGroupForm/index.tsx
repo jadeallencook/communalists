@@ -4,6 +4,7 @@ import { ErrorMessage, Formik } from 'formik';
 import initialValues from './initial-values';
 import validationSchema from './validate';
 import Loading from '@molecules/Loading';
+import { USStateType } from '@custom-types/us-state';
 import locationMap from '@objects/location-map';
 // import { USStateType } from '@types/index';
 import { USStateType } from '../../../../types/index';

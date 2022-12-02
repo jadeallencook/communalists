@@ -13,7 +13,7 @@
 			"@database/*": ["./database/*"],
 			"@interfaces/*": ["./interfaces/*"],
 			"@objects/*": ["./objects/*"],
-			"@types/*": ["./types/*"]
+			"@custom-types/*": ["./types/*"]
 		}
 	}
 }
