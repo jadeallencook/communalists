@@ -25,7 +25,7 @@ module.exports = {
 			'@database': path.resolve(__dirname, 'database'),
 			'@interfaces': path.resolve(__dirname, 'interfaces'),
 			'@objects': path.resolve(__dirname, 'objects'),
-			'@types': path.resolve(__dirname, 'types'),
+			'@custom-types': path.resolve(__dirname, 'types'),
 		},
 	},
 	module: {

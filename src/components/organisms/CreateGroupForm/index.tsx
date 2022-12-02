@@ -6,14 +6,15 @@ import { ErrorMessage, Formik } from 'formik';
 import initialValues from './initial-values';
 import validationSchema from './validate';
 import Loading from '@molecules/Loading';
+import { USStateType } from '@custom-types/us-state';
 import locationMap from '@objects/location-map';
 import { CreateGroupFormInterface } from '@interfaces/createGroupForm'
 
-const CreateGroupForm: StyledComponent = styled(({ 
-    className, 
-    shouldSubmit, 
-    setShouldSubmit, 
-    handleClose 
+const CreateGroupForm: StyledComponent = styled(({
+    className,
+    shouldSubmit,
+    setShouldSubmit,
+    handleClose
 }: CreateGroupFormInterface) => {
 
     const [stateKey, setStateKey] = useState("CA")
@@ -35,7 +36,7 @@ const CreateGroupForm: StyledComponent = styled(({
 		console.log(values)
 		handleClose()
 	}
-    
+
     const renderError = (message: string) => <p className="help is-danger">{message}</p>;
 
     return (
