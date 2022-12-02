@@ -1,47 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import styled, { StyledComponent } from 'styled-components';
-import style from './style';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { ErrorMessage, Formik } from 'formik';
 import initialValues from './initial-values';
 import validationSchema from './validate';
 import Loading from '@molecules/Loading';
 import locationMap from '@objects/location-map';
-import { CreateGroupFormInterface } from '@interfaces/createGroupForm'
+// import { USStateType } from '@types/index';
+import { USStateType } from '../../../../types/index';
+import { GroupInterface } from '@interfaces/group';
+import renderError from '@components/atoms/RenderError';
 
-const CreateGroupForm: StyledComponent = styled(({ 
-    className, 
-    shouldSubmit, 
-    setShouldSubmit, 
-    handleClose 
+export interface CreateGroupFormInterface {
+    isModal: boolean,
+    handleClose: Function
+}
+
+const CreateGroupForm = ({
+    isModal = false,
+    handleClose
 }: CreateGroupFormInterface) => {
 
-    const [stateKey, setStateKey] = useState("CA")
+    // TODO: Pull default state from user settings, user?.address?.state
+    const [stateKey, setStateKey] = useState<USStateType>('CA')
 
-    const handleStateChange = (event) => {
-		const key = event.target.value;
-		setStateKey(key);
-	};
+    const handleStateChange: React.ChangeEventHandler<HTMLSelectElement> = ({ target: { value } }) => {
+        setStateKey(value as USStateType);
+    };
 
-    useEffect(() => {
-		setShouldSubmit(false)
-		if(shouldSubmit){
-			const submitButton = document.getElementById("submit-button")
-			submitButton.click()
-		}
-	}, [shouldSubmit, setShouldSubmit])
-
-    const handleSubmit = () => (values: any) => {
-		console.log(values)
-		handleClose()
-	}
-    
-    const renderError = (message: string) => <p className="help is-danger">{message}</p>;
+    const handleSubmit = (values: any) => {
+        console.log(values)
+        handleClose()
+    }
 
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={handleSubmit()}
+            onSubmit={handleSubmit}
             validationSchema={validationSchema}
             validateOnChange={false}
             validateOnBlur={true}
@@ -52,13 +46,13 @@ const CreateGroupForm: StyledComponent = styled(({
                 handleSubmit,
                 isSubmitting,
             }: {
-                values: any;
-                handleChange: any;
-                handleSubmit: any;
-                isSubmitting: any;
+                values: GroupInterface;
+                handleChange: React.ChangeEventHandler<any>;
+                handleSubmit: React.FormEventHandler<HTMLFormElement>;
+                isSubmitting: boolean;
             }) =>
                 !isSubmitting ? (
-                    <Form className={className} onSubmit={handleSubmit}>
+                    <Form  onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>Group Name*</Form.Label>
                             <Form.Control
@@ -153,7 +147,7 @@ const CreateGroupForm: StyledComponent = styled(({
                                         className="form-control"
                                         onChange={handleStateChange}
                                         name="address.state"
-                                        // value={itemKey}
+                                    // value={itemKey}
                                     >
                                         {Object.keys(locationMap).map(state => (
                                             <option key={state} value={state}>
@@ -181,32 +175,45 @@ const CreateGroupForm: StyledComponent = styled(({
                             </Col>
                             <Col>
                                 <Form.Group className="mb-3">
-                                        <Form.Label>County*</Form.Label>
-                                        <Form.Select
-                                            className="form-control"
-                                            onChange={handleChange}
-                                            name="address.state"
-                                            value={values.address.county}
-                                        >
-                                            {Object.entries(locationMap[stateKey]).map(([key, value]: [string, string]) => (
-                                                <option key={key} value={value}>
-                                                    {value}
-                                                </option>
-                                            ))}
-                                        </Form.Select>
+                                    <Form.Label>County*</Form.Label>
+                                    <Form.Select
+                                        className="form-control"
+                                        onChange={handleChange}
+                                        name="address.county"
+                                        value={values.address.county}
+                                    >
+                                        {Object.entries(locationMap[stateKey]).map(([key, value]: [string, string]) => (
+                                            <option key={key} value={value}>
+                                                {value}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
                                     <ErrorMessage name="address.county" render={renderError} />
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button id="submit-button" type="submit" disabled={isSubmitting}>
-                            Create Account
-                        </Button>
+
+                        {!isModal && 
+                            <Button type="submit" disabled={isSubmitting}>
+                                Create Account
+                            </Button>}
+
+                        {isModal &&
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => handleClose()}>
+                                    Close
+                                </Button>
+                                <Button type="submit" disabled={isSubmitting}>
+                                    Create Account
+                                </Button>
+                            </Modal.Footer>}
                     </Form>
                 ) : (
                     <Loading />
                 )
             }
         </Formik>
-)})(style);
+    )
+};
 
 export default CreateGroupForm

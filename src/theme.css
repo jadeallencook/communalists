@@ -18,6 +18,22 @@ a {
 	color: var(--bs-gray-500) !important;
 }
 
+p.is-danger{
+	color: var(--bs-danger)
+}
+
+input{
+	max-width: 500px;
+}
+
+input[name="phone"], input[name="email"], input[name="address.city"], input[name="address.zipcode"] {
+	max-width: 250px;
+}
+
+/* input[type="text"] {
+	max-width: 100px;
+} */
+
 :root {
 	/* colors */
 	--white: #fff;

@@ -1,4 +1,6 @@
-const initialValues = {
+import { GroupInterface } from '@interfaces/index';
+
+const initialValues: GroupInterface = {
     name: '',
     bio: '',
     website: '',
@@ -9,7 +11,7 @@ const initialValues = {
         city: '',
         state: 'CA',
         zipcode: '',
-        county: 'santa-clara-ca'
+        county: 'Santa Clara'
     }
 }
 

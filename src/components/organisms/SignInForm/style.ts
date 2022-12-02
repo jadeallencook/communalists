@@ -1,7 +1,7 @@
 const style = () => ({
-	input: {
-		maxWidth: '500px',
-	},
+	// input: {
+	// 	maxWidth: '500px',
+	// },
 	button: {
 		marginRight: 'var(--spacing-medium)',
 	},
