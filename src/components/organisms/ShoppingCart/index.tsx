@@ -3,16 +3,20 @@ import ShoppingCartIcon from './icon';
 import style from './style';
 import { Badge, Offcanvas } from 'react-bootstrap';
 import { useState } from 'react';
+import { useContext } from 'react';
+import GlobalContext from '../../../context';
 
 const ShoppingCart: StyledComponent = styled(({ className }) => {
-	const [show, setShow] = useState(false);
+	const [show, setShow] = useState<boolean>(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+	const { shoppingCartItems } = useContext(GlobalContext);
+
 	return (
 		<>
 			<Badge bg="primary" className={className} onClick={handleShow}>
 				<ShoppingCartIcon />
-				<span>0</span>
+				<span>{Object.keys(shoppingCartItems).length}</span>
 			</Badge>
 			<Offcanvas
 				show={show}
@@ -24,7 +28,7 @@ const ShoppingCart: StyledComponent = styled(({ className }) => {
 					<Offcanvas.Title>Checkout</Offcanvas.Title>
 				</Offcanvas.Header>
 				<Offcanvas.Body>
-
+					{JSON.stringify(shoppingCartItems)}
 				</Offcanvas.Body>
 			</Offcanvas>
 		</>

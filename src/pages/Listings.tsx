@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Container, Table, Form, Badge } from 'react-bootstrap';
 import database from '@database/database.mock.json';
 import { ListingInterface } from '@interfaces/listing';
 import locationMap from '@objects/location-map';
+import GlobalContext from '../context';
 
 const Resources = () => {
 	const { items } = database;
@@ -13,6 +14,7 @@ const Resources = () => {
 	const listings: { [key in string]: ListingInterface } = users
 		? users.reduce((listings, user) => ({ ...listings, ...ref[user] }), {})
 		: null;
+	const { addToShoppingCart } = useContext(GlobalContext);
 
 	const handleStateChange = (event) =>
 		setState(() => {
@@ -92,6 +94,13 @@ const Resources = () => {
 												marginRight: '5px',
 												cursor: 'pointer',
 											}}
+											onClick={() =>
+												addToShoppingCart({
+													item,
+													quantity: 1,
+													listing: key,
+												})
+											}
 										>
 											Order
 										</Badge>
