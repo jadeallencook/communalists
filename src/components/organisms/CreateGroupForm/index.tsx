@@ -6,10 +6,9 @@ import validationSchema from './validate';
 import Loading from '@molecules/Loading';
 import { USStateType } from '@custom-types/us-state';
 import locationMap from '@objects/location-map';
-// import { USStateType } from '@types/index';
-import { USStateType } from '../../../../types/index';
 import { GroupInterface } from '@interfaces/group';
 import renderError from '@components/atoms/RenderError';
+import { formOptionMapValueByValues } from '../../../utils/formUtils';
 
 export interface CreateGroupFormInterface {
     isModal: boolean,
@@ -121,7 +120,7 @@ const CreateGroupForm = ({
                             <Form.Control
                                 type="text"
                                 name="address.street"
-                                placeholder=""
+                                placeholder="Street"
                                 value={values.address.street}
                                 onChange={handleChange}
                             />
@@ -134,7 +133,7 @@ const CreateGroupForm = ({
                                     <Form.Control
                                         type="text"
                                         name="address.city"
-                                        placeholder=""
+                                        placeholder="City"
                                         value={values.address.city}
                                         onChange={handleChange}
                                     />
@@ -148,7 +147,6 @@ const CreateGroupForm = ({
                                         className="form-control"
                                         onChange={handleStateChange}
                                         name="address.state"
-                                    // value={itemKey}
                                     >
                                         {Object.keys(locationMap).map(state => (
                                             <option key={state} value={state}>
@@ -163,11 +161,11 @@ const CreateGroupForm = ({
                         <Row>
                             <Col>
                                 <Form.Group className="mb-3">
-                                    <Form.Label>Zip*</Form.Label>
+                                    <Form.Label>Zipcode*</Form.Label>
                                     <Form.Control
                                         type="text"
                                         name="address.zipcode"
-                                        placeholder=""
+                                        placeholder="Zipcode"
                                         value={values.address.zipcode}
                                         onChange={handleChange}
                                     />
@@ -183,11 +181,7 @@ const CreateGroupForm = ({
                                         name="address.county"
                                         value={values.address.county}
                                     >
-                                        {Object.entries(locationMap[stateKey]).map(([key, value]: [string, string]) => (
-                                            <option key={key} value={value}>
-                                                {value}
-                                            </option>
-                                        ))}
+                                        {formOptionMapValueByValues(locationMap[stateKey])}
                                     </Form.Select>
                                     <ErrorMessage name="address.county" render={renderError} />
                                 </Form.Group>
