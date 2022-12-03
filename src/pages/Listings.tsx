@@ -1,123 +1,58 @@
 import { useState } from 'react';
-import { Container, Table, Form, Badge } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import database from '@database/database.mock.json';
 import { ListingInterface } from '@interfaces/listing';
 import locationMap from '@objects/location-map';
+import BrowseListingsForm from '@organisms/BrowseListingsForm';
+import ListingResultsTable from '@organisms/ListingResultsTable';
 
 const Resources = () => {
-	const { items } = database;
-	const [state, setState] = useState(Object.keys(locationMap)[0]);
-	const [county, setCounty] = useState<string>('santa-clara-ca');
-	const ref = database.listings[county];
-	const users: string[] = ref ? Object.keys(ref).map((user) => user) : null;
-	const listings: { [key in string]: ListingInterface } = users
-		? users.reduce((listings, user) => ({ ...listings, ...ref[user] }), {})
+	const [filters, setFilters] = useState({
+		state: Object.keys(locationMap)[0],
+		county: 'santa-clara-ca',
+		item: '',
+	});
+
+	const response = database.listings[filters.county];
+
+	const users: string[] = response
+		? Object.keys(response).map((user) => user)
 		: null;
 
-	const handleStateChange = (event) =>
-		setState(() => {
-			const { value } = event.target;
-			setCounty(Object.keys(locationMap[value])[0]);
-			return value;
-		});
+	const listings: { [key in string]: ListingInterface } = users
+		? users.reduce(
+				(listings, user) => {
+					// add logic here to filter items
+					return { ...listings, ...response[user] }
+				},
+				{}
+		  )
+		: null;
+
+	const handleFilterChange = (event) => {
+		const { name, value } = event.target;
+		if (name === 'state') {
+			setFilters((prev) => ({
+				...prev,
+				county: Object.keys(locationMap[value])[0],
+				state: value,
+			}));
+		} else {
+			setFilters((prev) => ({
+				...prev,
+				[name]: value,
+			}));
+		}
+	};
 
 	return (
 		<Container>
 			<h1>Listings</h1>
-			<Form onSubmit={() => null}>
-				<Form.Group className="mb-3">
-					<Form.Label>State</Form.Label>
-					<Form.Select onChange={handleStateChange} value={state}>
-						{Object.keys(locationMap).map((key) => (
-							<option key={key} value={key}>
-								{key}
-							</option>
-						))}
-					</Form.Select>
-				</Form.Group>
-				<Form.Group className="mb-3">
-					<Form.Label>County</Form.Label>
-					<Form.Select
-						onChange={(event) => setCounty(event.target.value)}
-						value={county}
-					>
-						{Object.keys(locationMap[state]).map((key) => (
-							<option key={key} value={key}>
-								{locationMap[state][key]}
-							</option>
-						))}
-					</Form.Select>
-				</Form.Group>
-			</Form>
-			<Table striped bordered hover variant="dark">
-				<thead>
-					<tr>
-						<th>Title</th>
-						<th>Stock</th>
-						<th>Attributes</th>
-						<th>Options</th>
-					</tr>
-				</thead>
-				<tbody>
-					{listings ? (
-						Object.keys(listings).map((key) => {
-							const listing = listings[key];
-							const { item, stock } = listing;
-							const { title, unit, attributes } = items[item];
-							return (
-								<tr key={key}>
-									<td>{title}</td>
-									<td>
-										{stock} {unit}
-									</td>
-									<td>
-										{listing.attributes.map(
-											([key, value]) => (
-												<Badge
-													key={key}
-													bg="light"
-													text="dark"
-												>
-													{attributes[key][value]}
-												</Badge>
-											)
-										)}
-									</td>
-									<td>
-										<Badge
-											key={`${key}-order`}
-											bg="primary"
-											text="light"
-											style={{
-												marginRight: '5px',
-												cursor: 'pointer',
-											}}
-										>
-											Order
-										</Badge>
-										<Badge
-											key={`${key}-details`}
-											bg="secondary"
-											text="light"
-											style={{
-												cursor: 'pointer',
-											}}
-										>
-											Details
-										</Badge>
-									</td>
-								</tr>
-							);
-						})
-					) : (
-						<tr>
-							<td colSpan={4} style={{ textAlign: 'center' }}>
-								There are no listings for this location...
-							</td>
-						</tr>
-					)}
-				</tbody>
-			</Table>
+			<BrowseListingsForm
+				handleChange={handleFilterChange}
+				{...filters}
+			/>
+			<ListingResultsTable listings={listings} />
 		</Container>
 	);
 };
