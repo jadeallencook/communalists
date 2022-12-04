@@ -11,7 +11,7 @@ const style = () => ({
 		height: '15px',
 		float: 'left',
 		marginTop: '2px'
-	},
+	}
 });
 
 export default style;

@@ -28,7 +28,7 @@ root.render(
 						<Route key={path} path={path} element={element}></Route>
 					))}
 				</Routes>
-				<Footer />
+				<Footer center />
 			</Router>
 		</GlobalProvider>
 	</React.StrictMode>
