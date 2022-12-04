@@ -2,7 +2,7 @@ import styled, { StyledComponent } from 'styled-components';
 import ShoppingCartIcon from './icon';
 import style from './style';
 import { Badge, Offcanvas } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useContext } from 'react';
 import GlobalContext, {ShoppingCartItemInterface} from '../../../context';
 
