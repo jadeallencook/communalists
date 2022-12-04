@@ -26,13 +26,13 @@ input{
 	max-width: 500px;
 }
 
-input[name="phone"], input[name="email"], input[name="address.city"], input[name="address.zipcode"] {
+input.form.form-sm {
 	max-width: 250px;
 }
 
-/* input[type="text"] {
-	max-width: 100px;
-} */
+.form-select.form.form-sm{
+	max-width:250px;
+}
 
 :root {
 	/* colors */

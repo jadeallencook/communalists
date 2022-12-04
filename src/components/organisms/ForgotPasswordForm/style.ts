@@ -1,7 +1,7 @@
 const style = () => ({
-	// input: {
-	// 	maxWidth: '500px',
-	// },
+	input: {
+		maxWidth: '500px',
+	},
 	button: {
 		marginRight: 'var(--spacing-medium)',
 	},
@@ -9,10 +9,6 @@ const style = () => ({
 	a: {
 		display: 'block',
 		marginTop: 'var(--spacing-medium)',
-	},
-	'p.help.is-danger': {
-		color: 'red',
-		marginTop: '0.6rem',
 	},
 });
 

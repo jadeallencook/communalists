@@ -7,8 +7,8 @@ import Loading from '@molecules/Loading';
 import { USStateType } from '@custom-types/us-state';
 import locationMap from '@objects/location-map';
 import { GroupInterface } from '@interfaces/group';
-import renderError from '@components/atoms/RenderError';
-import { formOptionMapValueByValues } from '../../../utils/formUtils';
+import RenderError from '@components/atoms/RenderError';
+import { getLocationKeysAndValuesByState } from '@utils/formUtils';
 
 export interface CreateGroupFormInterface {
     isModal: boolean,
@@ -41,7 +41,7 @@ const CreateGroupForm = ({
             validateOnBlur={true}
         >
             {({
-                values,
+                values: { name, bio, website, phone, email, address: { street, city, zipcode, county } },
                 handleChange,
                 handleSubmit,
                 isSubmitting,
@@ -52,17 +52,17 @@ const CreateGroupForm = ({
                 isSubmitting: boolean;
             }) =>
                 !isSubmitting ? (
-                    <Form  onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>Group Name*</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="name"
                                 placeholder="Display Name"
-                                value={values.name}
+                                value={name}
                                 onChange={handleChange}
                             />
-                            <ErrorMessage name="name" render={renderError} />
+                            <ErrorMessage name="name" render={RenderError} />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Bio*</Form.Label>
@@ -70,10 +70,10 @@ const CreateGroupForm = ({
                                 type="text"
                                 name="bio"
                                 placeholder="Group Bio"
-                                value={values.bio}
+                                value={bio}
                                 onChange={handleChange}
                             />
-                            <ErrorMessage name="bio" render={renderError} />
+                            <ErrorMessage name="bio" render={RenderError} />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Website</Form.Label>
@@ -81,36 +81,38 @@ const CreateGroupForm = ({
                                 type="text"
                                 name="website"
                                 placeholder="https://communalists.com"
-                                value={values.website}
+                                value={website}
                                 onChange={handleChange}
                             />
-                            <ErrorMessage name="website" render={renderError} />
+                            <ErrorMessage name="website" render={RenderError} />
                         </Form.Group>
                         <Row>
                             <Col>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Phone*</Form.Label>
                                     <Form.Control
+                                        className="form form-sm"
                                         type="text"
                                         name="phone"
                                         placeholder="+19999999999"
-                                        value={values.phone}
+                                        value={phone}
                                         onChange={handleChange}
                                     />
-                                    <ErrorMessage name="phone" render={renderError} />
+                                    <ErrorMessage name="phone" render={RenderError} />
                                 </Form.Group>
                             </Col>
                             <Col>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Email*</Form.Label>
                                     <Form.Control
+                                        className="form form-sm"
                                         type="text"
                                         name="email"
                                         placeholder="contact@communalists.com"
-                                        value={values.email}
+                                        value={email}
                                         onChange={handleChange}
                                     />
-                                    <ErrorMessage name="email" render={renderError} />
+                                    <ErrorMessage name="email" render={RenderError} />
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -121,30 +123,31 @@ const CreateGroupForm = ({
                                 type="text"
                                 name="address.street"
                                 placeholder="Street"
-                                value={values.address.street}
+                                value={street}
                                 onChange={handleChange}
                             />
-                            <ErrorMessage name="address.street" render={renderError} />
+                            <ErrorMessage name="address.street" render={RenderError} />
                         </Form.Group>
                         <Row>
                             <Col>
                                 <Form.Group className="mb-3">
                                     <Form.Label>City*</Form.Label>
                                     <Form.Control
+                                        className="form form-sm"
                                         type="text"
                                         name="address.city"
                                         placeholder="City"
-                                        value={values.address.city}
+                                        value={city}
                                         onChange={handleChange}
                                     />
-                                    <ErrorMessage name="address.city" render={renderError} />
+                                    <ErrorMessage name="address.city" render={RenderError} />
                                 </Form.Group>
                             </Col>
                             <Col>
                                 <Form.Group className="mb-3">
                                     <Form.Label>State*</Form.Label>
                                     <Form.Select
-                                        className="form-control"
+                                        className="form form-sm"
                                         onChange={handleStateChange}
                                         name="address.state"
                                     >
@@ -154,7 +157,7 @@ const CreateGroupForm = ({
                                             </option>
                                         ))}
                                     </Form.Select>
-                                    <ErrorMessage name="address.state" render={renderError} />
+                                    <ErrorMessage name="address.state" render={RenderError} />
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -163,37 +166,40 @@ const CreateGroupForm = ({
                                 <Form.Group className="mb-3">
                                     <Form.Label>Zipcode*</Form.Label>
                                     <Form.Control
+                                        className="form form-sm"
                                         type="text"
                                         name="address.zipcode"
                                         placeholder="Zipcode"
-                                        value={values.address.zipcode}
+                                        value={zipcode}
                                         onChange={handleChange}
                                     />
-                                    <ErrorMessage name="address.zipcode" render={renderError} />
+                                    <ErrorMessage name="address.zipcode" render={RenderError} />
                                 </Form.Group>
                             </Col>
                             <Col>
                                 <Form.Group className="mb-3">
                                     <Form.Label>County*</Form.Label>
                                     <Form.Select
-                                        className="form-control"
+                                        className="form form-sm"
                                         onChange={handleChange}
                                         name="address.county"
-                                        value={values.address.county}
+                                        value={county}
                                     >
-                                        {formOptionMapValueByValues(locationMap[stateKey])}
+                                        {getLocationKeysAndValuesByState(stateKey).map((option) => (
+                                            <option key={option.key} value={option.value}>
+                                                {option.value}
+                                            </option>
+                                        ))}
                                     </Form.Select>
-                                    <ErrorMessage name="address.county" render={renderError} />
+                                    <ErrorMessage name="address.county" render={RenderError} />
                                 </Form.Group>
                             </Col>
                         </Row>
 
-                        {!isModal && 
+                        {!isModal ?
                             <Button type="submit" disabled={isSubmitting}>
                                 Create Account
-                            </Button>}
-
-                        {isModal &&
+                            </Button> :
                             <Modal.Footer>
                                 <Button variant="secondary" onClick={() => handleClose()}>
                                     Close
