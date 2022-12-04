@@ -198,14 +198,14 @@ const CreateGroupForm = ({
 
                         {!isModal ?
                             <Button type="submit" disabled={isSubmitting}>
-                                Create Account
+                                Create Group
                             </Button> :
                             <Modal.Footer>
                                 <Button variant="secondary" onClick={() => handleClose()}>
                                     Close
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    Create Account
+                                    Create Group
                                 </Button>
                             </Modal.Footer>}
                     </Form>
