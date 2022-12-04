@@ -10,9 +10,6 @@ const style = () => ({
 	label: {
 		textTransform: 'capitalize'
 	},
-	'#submit-button': {
-		display: 'none'
-	}
 });
 
 export default style;

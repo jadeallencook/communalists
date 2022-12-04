@@ -35,7 +35,7 @@ const DashboardListings = () => {
 				<Modal.Body>
 					<CreateListingForm 
 						isModal
-						handleCloseModal={handleClose}
+						handleClose={handleClose}
 					/>
 				</Modal.Body>
 			</Modal>

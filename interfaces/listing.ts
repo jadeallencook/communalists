@@ -5,4 +5,5 @@ export interface ListingInterface {
 	description?: string;
 	image?: string;
 	attributes?: [string, string][];
+	// attributes?: {[key: string]: string}
 }
