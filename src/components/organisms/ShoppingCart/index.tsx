@@ -4,14 +4,14 @@ import style from './style';
 import { Badge, Offcanvas } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { useContext } from 'react';
-import GlobalContext from '../../../context';
+import GlobalContext, {ShoppingCartItemInterface} from '../../../context';
 
 const ShoppingCart: StyledComponent = styled(({ className }) => {
 	const [show, setShow] = useState<boolean>(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 	const { shoppingCartItems } = useContext(GlobalContext);
-	const numberOfItemsInCart: number = Object.keys(shoppingCartItems).length;
+	const numberOfItemsInCart: number = Object.values(shoppingCartItems).reduce((acc, { quantity }: ShoppingCartItemInterface) => acc += quantity, 0);
 
 	return (
 		<>
@@ -24,7 +24,7 @@ const ShoppingCart: StyledComponent = styled(({ className }) => {
 			<Offcanvas
 				show={show}
 				onHide={handleClose}
-				placement="top"
+				placement="end"
 				style={{ color: '#000' }}
 			>
 				<Offcanvas.Header closeButton>
