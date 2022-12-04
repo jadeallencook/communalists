@@ -14,7 +14,7 @@ const Resources = () => {
 	const listings: { [key in string]: ListingInterface } = users
 		? users.reduce((listings, user) => ({ ...listings, ...ref[user] }), {})
 		: null;
-	const { addToShoppingCart } = useContext(GlobalContext);
+	const { addToShoppingCart, shoppingCartItems, removeFromShoppingCart } = useContext(GlobalContext);
 
 	const handleStateChange = (event) =>
 		setState(() => {
@@ -97,12 +97,27 @@ const Resources = () => {
 											onClick={() =>
 												addToShoppingCart({
 													item,
-													quantity: 1,
+													quantity: stock,
 													listing: key,
 												})
 											}
 										>
 											Order
+										</Badge>
+
+										<Badge
+											key={`${key}-delete`}
+											bg="primary"
+											text="light"
+											style={{
+												marginRight: '5px',
+												cursor: 'pointer',
+											}}
+											onClick={() =>
+												removeFromShoppingCart(key)
+											}
+										>
+											Delete
 										</Badge>
 										<Badge
 											key={`${key}-details`}
