@@ -2,7 +2,7 @@ import styled, { StyledComponent } from 'styled-components';
 import ShoppingCartIcon from './icon';
 import style from './style';
 import { Badge, Offcanvas } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useContext } from 'react';
 import GlobalContext from '../../../context';
 
@@ -11,12 +11,15 @@ const ShoppingCart: StyledComponent = styled(({ className }) => {
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 	const { shoppingCartItems } = useContext(GlobalContext);
+	const numberOfItemsInCart: number = Object.keys(shoppingCartItems).length;
 
 	return (
 		<>
 			<Badge bg="primary" className={className} onClick={handleShow}>
 				<ShoppingCartIcon />
-				<span>{Object.keys(shoppingCartItems).length}</span>
+				{numberOfItemsInCart ? (
+					<span>{numberOfItemsInCart}</span>
+				) : null}
 			</Badge>
 			<Offcanvas
 				show={show}
