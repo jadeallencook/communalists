@@ -22,7 +22,11 @@ export const GlobalProvider = ({ children }) => {
 	}: ShoppingCartItemInterface) =>
 		setShoppingCartItems((prev) => ({
 			...prev,
-			[listing]: { item, quantity: prev[listing] ? quantity + 1 : quantity, listing },
+			[listing]: {
+				item,
+				quantity: prev[listing] ? prev[listing].quantity + quantity : 1,
+				listing,
+			},
 		}));
 
 	return (
