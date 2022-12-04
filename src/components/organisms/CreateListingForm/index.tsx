@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { database } from '@database/index';
@@ -7,37 +7,25 @@ import { database } from '@database/index';
 // Incoming data and related parsing will need to be rewritten when the APIs become available.
 const locations: string[] = ['Location 1', 'Location 2', 'Location 3'];
 
-interface CreateListingFormProps {
+interface CreateListingFormInterface {
 	className: string,
-	shouldSubmit: string,
-	setShouldSubmit: Function,
-	handleCloseModal: Function
+	isModal: boolean,
+	handleClose: Function
 }
 
 const CreateListingForm: StyledComponent = styled(({ 
 	className, 
-	shouldSubmit, 
-	setShouldSubmit, 
-	handleCloseModal 
-}: CreateListingFormProps) => {
+	isModal = false,
+	handleClose
+}: CreateListingFormInterface) => {
 	const { items } = database;
+	// Add type here
 	const [itemKey, setItemKey] = useState(Object.keys(items)[0]);
 	const item = items[itemKey];
-	
-	useEffect(() => {
-		setShouldSubmit(false)
-		if(shouldSubmit){
-			const submitButton = document.getElementById("submit-button")
-			submitButton.click()
-			// HandleCloseModal should only run after validation/api call finishes -> TBD
-			// handleCloseModal()
-		}
-	}, [shouldSubmit, setShouldSubmit])
 
-	const handleItemChange = (event) => {
-		const key = event.target.value;
-		setItemKey(key);
-	};
+	const handleItemChange: React.ChangeEventHandler<HTMLSelectElement> = ({ target: { value } }) => {
+        setItemKey(value);
+    };
 
 	const handleSubmit = (event): void => {
 		event.preventDefault();
@@ -121,6 +109,20 @@ const CreateListingForm: StyledComponent = styled(({
 					))}
 				</Form.Select>
 			</Form.Group>
+
+			{!isModal ?
+				<Button type="submit">
+					Create Listing
+				</Button> :
+				<Modal.Footer>
+					<Button variant="secondary" onClick={() => handleClose()}>
+						Close
+					</Button>
+					<Button type="submit">
+						Create Listing
+					</Button>
+				</Modal.Footer>}
+
 			<Button id="submit-button" type="submit">Create Listing</Button>
 		</Form>
 	);

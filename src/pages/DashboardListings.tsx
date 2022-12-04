@@ -34,23 +34,10 @@ const DashboardListings = () => {
 				</Modal.Header>
 				<Modal.Body>
 					<CreateListingForm 
-						shouldSubmit={shouldSubmit} 
-						setShouldSubmit={setShouldSubmit}
+						isModal
 						handleCloseModal={handleClose}
 					/>
 				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleClose}>
-						Close
-					</Button>
-					<Button variant="primary" onClick={() => {
-						setShouldSubmit(true)
-						// closing should be handled in CreateListingForm after api call
-						// handleClose()
-					}}>
-						Post Listing
-					</Button>
-				</Modal.Footer>
 			</Modal>
 			<Button onClick={handleShow}>Create Listing</Button>
 		</Dashboard>
