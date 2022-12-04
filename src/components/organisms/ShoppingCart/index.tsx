@@ -19,7 +19,7 @@ const ShoppingCart: StyledComponent = styled(({ className }) => {
 		0
 	);
 
-	console.log({shoppingCartItems});
+	console.log({ shoppingCartItems });
 	return (
 		<>
 			<Badge bg="primary" className={className} onClick={handleShow}>

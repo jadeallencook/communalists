@@ -10,8 +10,8 @@ const style = () => ({
 	svg: {
 		height: '15px',
 		float: 'left',
-		marginTop: '2px'
-	}
+		marginTop: '2px',
+	},
 });
 
 export default style;

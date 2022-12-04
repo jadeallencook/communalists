@@ -1,5 +1,12 @@
 import { useState, useContext } from 'react';
-import { Container, Table, Form, Badge, Button, InputGroup } from 'react-bootstrap';
+import {
+	Container,
+	Table,
+	Form,
+	Badge,
+	Button,
+	InputGroup,
+} from 'react-bootstrap';
 import database from '@database/database.mock.json';
 import { ListingInterface } from '@interfaces/listing';
 import locationMap from '@objects/location-map';
@@ -14,7 +21,8 @@ const Resources = () => {
 	const listings: { [key in string]: ListingInterface } = users
 		? users.reduce((listings, user) => ({ ...listings, ...ref[user] }), {})
 		: null;
-	const { addToShoppingCart, shoppingCartItems, removeFromShoppingCart } = useContext(GlobalContext);
+	const { addToShoppingCart, shoppingCartItems, removeFromShoppingCart } =
+		useContext(GlobalContext);
 
 	const handleStateChange = (event) =>
 		setState(() => {
@@ -86,28 +94,71 @@ const Resources = () => {
 										)}
 									</td>
 									<td>
-										{!shoppingCartItems[key] ? <Badge
-											key={`${key}-order`}
-											bg="primary"
-											text="light"
-											style={{
-												marginRight: '5px',
-												cursor: 'pointer',
-											}}
-											onClick={() =>
-												addToShoppingCart({
-													item,
-													quantity: stock,
-													listing: key,
-												})
-											}
-										>
-											Order
-										</Badge> : <InputGroup>
-											<Button>+</Button>
-											<InputGroup.Text>0.00</InputGroup.Text>
-											<Button>-</Button>
-										</InputGroup>}
+										{!shoppingCartItems[key] ? (
+											<Badge
+												key={`${key}-order`}
+												bg="primary"
+												text="light"
+												style={{
+													marginRight: '5px',
+													cursor: 'pointer',
+												}}
+												onClick={() =>
+													addToShoppingCart({
+														item,
+														quantity: stock,
+														listing: key,
+													})
+												}
+											>
+												Order
+											</Badge>
+										) : (
+											<InputGroup size="sm">
+												<Badge
+													bg="primary"
+													text="light"
+													onClick={() =>
+														removeFromShoppingCart(
+															key
+														)
+													}
+													style={{
+														cursor: 'pointer',
+													}}
+												>
+													-
+												</Badge>
+												<InputGroup.Text
+													style={{
+														paddingTop: '0',
+														paddingBottom: '0',
+													}}
+												>
+													{
+														shoppingCartItems[key]
+															.quantity
+													}
+												</InputGroup.Text>
+												<Badge
+													bg="primary"
+													text="light"
+													onClick={() =>
+														addToShoppingCart({
+															item,
+															quantity: stock,
+															listing: key,
+														})
+													}
+													style={{
+														cursor: 'pointer',
+													}}
+												>
+													+
+												</Badge>
+												
+											</InputGroup>
+										)}
 										<Badge
 											key={`${key}-details`}
 											bg="secondary"
