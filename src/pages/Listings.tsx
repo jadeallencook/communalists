@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { Container, Table, Form, Badge } from 'react-bootstrap';
+import { Container, Table, Form, Badge, Button, InputGroup } from 'react-bootstrap';
 import database from '@database/database.mock.json';
 import { ListingInterface } from '@interfaces/listing';
 import locationMap from '@objects/location-map';
@@ -86,7 +86,7 @@ const Resources = () => {
 										)}
 									</td>
 									<td>
-										<Badge
+										{!shoppingCartItems[key] ? <Badge
 											key={`${key}-order`}
 											bg="primary"
 											text="light"
@@ -103,22 +103,11 @@ const Resources = () => {
 											}
 										>
 											Order
-										</Badge>
-
-										<Badge
-											key={`${key}-delete`}
-											bg="primary"
-											text="light"
-											style={{
-												marginRight: '5px',
-												cursor: 'pointer',
-											}}
-											onClick={() =>
-												removeFromShoppingCart(key)
-											}
-										>
-											Delete
-										</Badge>
+										</Badge> : <InputGroup>
+											<Button>+</Button>
+											<InputGroup.Text>0.00</InputGroup.Text>
+											<Button>-</Button>
+										</InputGroup>}
 										<Badge
 											key={`${key}-details`}
 											bg="secondary"
