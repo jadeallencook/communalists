@@ -5,6 +5,8 @@ import style from './style';
 import { database } from '@database/index';
 import initialValues from './initial-values';
 import { ListingInterface } from '@interfaces/listing';
+import validationSchema from './validate';
+import { ValidationError } from 'yup';
 
 // Incoming data and related parsing will need to be rewritten when the APIs become available.
 const locations: string[] = ['Location 1', 'Location 2', 'Location 3'];
@@ -13,6 +15,22 @@ interface CreateListingFormInterface {
 	className: string,
 	isModal: boolean,
 	handleClose: Function
+}
+
+interface FormErrorsInterface {
+	item: string,
+	description: string,
+	attributes: string,
+	stock: string,
+	location: string
+}
+
+const initialFormErrors: FormErrorsInterface = {
+	item: '',
+	description: '',
+	attributes: '',
+	stock: '',
+	location: ''
 }
 
 const CreateListingForm: StyledComponent = styled(({
@@ -24,9 +42,9 @@ const CreateListingForm: StyledComponent = styled(({
 	const [inputs, setInputs] = useState<ListingInterface>(initialValues)
 	const { item, description, stock, attributes, location } = inputs
 	const itemObj = items[item];
+	const [formErrors, setFormErrors] = useState<FormErrorsInterface>(initialFormErrors)
 
 	// On item change (select) reset the default attribute values in input state
-	// initialValues seems to override this the first time component renders, for now storing basic attributes in initialValues
 	useEffect(() => {
 		let newAttributes = []
 		if (itemObj.attributes)
@@ -35,8 +53,6 @@ const CreateListingForm: StyledComponent = styled(({
 			)
 		setInputs((prevInputs) => ({ ...prevInputs, attributes: [...newAttributes] }))
 	}, [item, itemObj])
-
-	// useEffect(() => console.log(item, attributes), [attributes])
 
 	// Set location on component load, this will eventually be tied to user data
 	useEffect(() => {
@@ -63,14 +79,31 @@ const CreateListingForm: StyledComponent = styled(({
 				attributes: [...newAttributes]
 			}))
 		}
-
 	};
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		console.log(inputs)
+		setFormErrors(initialFormErrors)
+		validationSchema.validate(inputs, {abortEarly: false})
+			.then(() => console.log("validated"))
+			.catch((err) => {
+				const validationErrors = convertYupValidationErrorToObj(err) as FormErrorsInterface
+				setFormErrors(validationErrors)
+				console.log(validationErrors)
+			})
 		return null;
 	};
+
+	// put in utils folder after feat/create-group gets pushed to develop
+	const convertYupValidationErrorToObj = (errs: ValidationError) => {
+		const validationErrors = {}
+	
+		errs.inner.forEach((err: any) => {
+			if (err.path) validationErrors[err.path] = err.errors[0]
+		})
+	
+		return validationErrors
+	}
 
 	return (
 		<Form className={className} onSubmit={handleSubmit}>
@@ -88,6 +121,7 @@ const CreateListingForm: StyledComponent = styled(({
 						</option>
 					))}
 				</Form.Select>
+				{formErrors.item ? (<p className="is-danger">{formErrors.item}</p>) : null}
 			</Form.Group>
 			<Form.Group className="mb-3">
 				<Form.Label>Listing Description</Form.Label>
@@ -97,8 +131,8 @@ const CreateListingForm: StyledComponent = styled(({
 					placeholder="Brand, condition, etc."
 					value={description}
 					onChange={handleChange}
-					required
 				/>
+				{formErrors.description ? (<p className="is-danger">{formErrors.description}</p>) : null}
 			</Form.Group>
 			<Form.Group className="mb-3">
 				<Form.Label>Stock</Form.Label>
@@ -107,8 +141,8 @@ const CreateListingForm: StyledComponent = styled(({
 					name="stock"
 					value={stock}
 					onChange={handleChange}
-					required
 				/>
+				{formErrors.stock ? (<p className="is-danger">{formErrors.stock}</p>) : null}
 			</Form.Group>
 			{itemObj && itemObj.attributes &&
 				Object.entries(itemObj.attributes).map(
@@ -147,6 +181,7 @@ const CreateListingForm: StyledComponent = styled(({
 						<option key={location}> {location}</option>
 					))}
 				</Form.Select>
+				{formErrors.location ? (<p className="is-danger">{formErrors.location}</p>) : null}
 			</Form.Group>
 
 			{!isModal ?
