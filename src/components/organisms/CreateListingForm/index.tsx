@@ -95,10 +95,10 @@ const CreateListingForm: StyledComponent = styled(({
 	};
 
 	// put in utils folder after feat/create-group gets pushed to develop
-	const convertYupValidationErrorToObj = (errs: ValidationError) => {
+	const convertYupValidationErrorToObj = (errors: ValidationError) => {
 		const validationErrors = {}
 	
-		errs.inner.forEach((err: any) => {
+		errors.inner.forEach((err: any) => {
 			if (err.path) validationErrors[err.path] = err.errors[0]
 		})
 	
