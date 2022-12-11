@@ -12,6 +12,9 @@ const style = () => ({
 		float: 'left',
 		marginTop: '2px',
 	},
+	'td > span': {
+		marginLeft: '5px'
+	}
 });
 
 export default style;

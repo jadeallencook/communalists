@@ -24,11 +24,10 @@ export const GlobalProvider = ({ children }) => {
 		setShoppingCartItems((prev) => {
 			let prevItem = prev[listing];
 			if (prevItem) {
-				if (prevItem.quantity + 1 > quantity) {
-					prevItem = { ...prevItem, quantity };
-				} else {
-					prevItem = { ...prevItem, quantity: prevItem.quantity + 1 };
-				}
+				prevItem = {
+					...prevItem,
+					quantity: prevItem.quantity + quantity,
+				};
 			} else {
 				prevItem = { item, quantity: 1, listing };
 			}
@@ -38,14 +37,12 @@ export const GlobalProvider = ({ children }) => {
 	const removeFromShoppingCart = (listing: string) =>
 		setShoppingCartItems((prev) => {
 			let prevItem = prev[listing];
-			if (prevItem) {
-				if (prevItem.quantity <= 0) {
-					delete prev[listing];
-					return { ...prev };
-				} else {
-					prevItem = { ...prevItem, quantity: prevItem.quantity - 1 };
-					return { ...prev, [listing]: prevItem };
-				}
+			if (prevItem && prevItem.quantity === 1) {
+				delete prev[listing];
+				return { ...prev };
+			} else if (prevItem) {
+				prevItem = { ...prevItem, quantity: prevItem.quantity - 1 };
+				return { ...prev, [listing]: prevItem };
 			} else {
 				return { ...prev };
 			}

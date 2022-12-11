@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import GlobalContext, { ShoppingCartItemInterface } from '../../../context';
 import { database } from '@database/index';
 import Footer from '../Footer';
+import ShoppingCartIncrementor from '../ShoppingCartIncrementor';
 
 const ShoppingCart: StyledComponent = styled(({ className }) => {
 	const [show, setShow] = useState<boolean>(false);
@@ -18,8 +19,6 @@ const ShoppingCart: StyledComponent = styled(({ className }) => {
 		(acc, { quantity }: ShoppingCartItemInterface) => (acc += quantity),
 		0
 	);
-
-	console.log({ shoppingCartItems });
 	return (
 		<>
 			<Badge bg="primary" className={className} onClick={handleShow}>
@@ -55,7 +54,10 @@ const ShoppingCart: StyledComponent = styled(({ className }) => {
 											No description available.
 										</Card.Body>
 										<Card.Footer className="text-muted">
-											<span>Quanity:</span> {quantity}
+											<ShoppingCartIncrementor
+												listingKey={key}
+												itemKey={item}
+											/>
 										</Card.Footer>
 									</Card>
 								)
