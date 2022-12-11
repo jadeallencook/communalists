@@ -22,15 +22,15 @@ p.is-danger{
 	color: var(--bs-danger)
 }
 
-input{
+form.standard-form input{
 	max-width: 500px;
 }
 
-input.form.form-sm {
+form.standard-form input.input-sm {
 	max-width: 250px;
 }
 
-.form-select.form.form-sm{
+form.standard-form .form-select.select-sm{
 	max-width:250px;
 }
 

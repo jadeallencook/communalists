@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { ErrorMessage, Formik } from 'formik';
 import initialValues from './initial-values';
@@ -12,7 +12,7 @@ import { getLocationKeysAndValuesByState } from '@utils/formUtils';
 
 export interface CreateGroupFormInterface {
     isModal: boolean,
-    handleClose: Function
+    handleClose: React.SetStateAction<any>
 }
 
 const CreateGroupForm = ({
@@ -27,7 +27,7 @@ const CreateGroupForm = ({
         setStateKey(value as USStateType);
     };
 
-    const handleSubmit = (values: any) => {
+    const handleSubmit = (values: GroupInterface) => {
         console.log(values)
         handleClose()
     }
@@ -52,7 +52,7 @@ const CreateGroupForm = ({
                 isSubmitting: boolean;
             }) =>
                 !isSubmitting ? (
-                    <Form onSubmit={handleSubmit}>
+                    <Form className="standard-form" onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>Group Name*</Form.Label>
                             <Form.Control
@@ -91,7 +91,7 @@ const CreateGroupForm = ({
                                 <Form.Group className="mb-3">
                                     <Form.Label>Phone*</Form.Label>
                                     <Form.Control
-                                        className="form form-sm"
+                                        className="input-sm"
                                         type="text"
                                         name="phone"
                                         placeholder="+19999999999"
@@ -105,7 +105,7 @@ const CreateGroupForm = ({
                                 <Form.Group className="mb-3">
                                     <Form.Label>Email*</Form.Label>
                                     <Form.Control
-                                        className="form form-sm"
+                                        className="input-sm"
                                         type="text"
                                         name="email"
                                         placeholder="contact@communalists.com"
@@ -133,7 +133,7 @@ const CreateGroupForm = ({
                                 <Form.Group className="mb-3">
                                     <Form.Label>City*</Form.Label>
                                     <Form.Control
-                                        className="form form-sm"
+                                        className="input-sm"
                                         type="text"
                                         name="address.city"
                                         placeholder="City"
@@ -147,7 +147,7 @@ const CreateGroupForm = ({
                                 <Form.Group className="mb-3">
                                     <Form.Label>State*</Form.Label>
                                     <Form.Select
-                                        className="form form-sm"
+                                        className="select-sm"
                                         onChange={handleStateChange}
                                         name="address.state"
                                     >
@@ -166,7 +166,7 @@ const CreateGroupForm = ({
                                 <Form.Group className="mb-3">
                                     <Form.Label>Zipcode*</Form.Label>
                                     <Form.Control
-                                        className="form form-sm"
+                                        className="input-sm"
                                         type="text"
                                         name="address.zipcode"
                                         placeholder="Zipcode"
@@ -180,7 +180,7 @@ const CreateGroupForm = ({
                                 <Form.Group className="mb-3">
                                     <Form.Label>County*</Form.Label>
                                     <Form.Select
-                                        className="form form-sm"
+                                        className="select-sm"
                                         onChange={handleChange}
                                         name="address.county"
                                         value={county}
@@ -201,7 +201,7 @@ const CreateGroupForm = ({
                                 Create Group
                             </Button> :
                             <Modal.Footer>
-                                <Button variant="secondary" onClick={() => handleClose()}>
+                                <Button variant="secondary" onClick={handleClose}>
                                     Close
                                 </Button>
                                 <Button type="submit" disabled={isSubmitting}>
