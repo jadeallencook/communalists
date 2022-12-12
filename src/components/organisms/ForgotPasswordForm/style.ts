@@ -10,10 +10,6 @@ const style = () => ({
 		display: 'block',
 		marginTop: 'var(--spacing-medium)',
 	},
-	'p.help.is-danger': {
-		color: 'red',
-		marginTop: '0.6rem',
-	},
 });
 
 export default style;

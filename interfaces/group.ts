@@ -4,7 +4,7 @@ export interface GroupInterface {
 	name: string;
 	bio: string;
 	website: string;
-	phone: number;
+	phone: string;
 	email: string;
 	address: AddressInterface;
 }
