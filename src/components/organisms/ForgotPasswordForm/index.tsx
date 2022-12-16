@@ -4,47 +4,47 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { Formik, ErrorMessage } from 'formik';
 import validationSchema from './validate';
+import RenderError from '@components/atoms/RenderError';
+import initialValues from './initial-values';
 
 const ForgotPasswordForm: StyledComponent = styled(({ className }) => {
-	const renderError = (message: string) => (
-		<p className="help is-danger">{message}</p>
-	);
 
 	return (
 		<Formik
-			initialValues={{}}
+			initialValues={initialValues}
 			onSubmit={() => null}
 			validationSchema={validationSchema}
 			validateOnChange={false}
 			validateOnBlur={false}
 		>
 			{({
-				values,
+				values: { name },
 				handleChange,
 				handleSubmit,
 				isSubmitting,
 			}: {
 				values: any;
-				handleChange: any;
-				handleSubmit: any;
+				handleChange: React.ChangeEventHandler<any>;
+				handleSubmit: React.FormEventHandler<HTMLFormElement>;
 				isSubmitting: any;
 			}) =>
 				!isSubmitting ? (
-					<Form className={className} onSubmit={handleSubmit}>
+					<Form className={`${className} standard-form`} onSubmit={handleSubmit}>
 						<Form.Group className="mb-3">
 							<Form.Label>Email</Form.Label>
 							<Form.Control
 								type="text"
 								name="email"
 								placeholder="Email"
-								value={values.name}
+								value={name}
 								onChange={handleChange}
 							/>
-							<ErrorMessage name="email" render={renderError} />
+							<ErrorMessage name="email" render={RenderError} />
 						</Form.Group>
 						<Button type="submit" disabled={isSubmitting}>
 							Send Recovery Link
 						</Button>
+						<Link to="/forgot-password">Back To Sign In</Link>
 					</Form>
 				) : (
 					<p>Signing in...</p>

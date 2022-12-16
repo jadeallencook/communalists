@@ -22,12 +22,16 @@ p.is-danger{
 	color: var(--bs-danger)
 }
 
-form.standard-form input{
+form.standard-form input {
 	max-width: 500px;
 }
 
 form.standard-form input.input-sm {
 	max-width: 250px;
+}
+
+form.standard-form select {
+	max-width: 500px;
 }
 
 form.standard-form .form-select.select-sm{

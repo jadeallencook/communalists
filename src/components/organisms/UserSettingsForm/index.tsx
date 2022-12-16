@@ -1,30 +1,29 @@
 import { Button, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import { Formik } from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import initialValues from './initial-values';
-import validate from './validate';
 import Loading from '@molecules/Loading';
+import RenderError from '@components/atoms/RenderError';
+import validationSchema from './validate';
 
 const UserSettingsForm: StyledComponent = styled(({ className }) => (
 	<Formik
 		initialValues={initialValues}
 		onSubmit={() => null}
-		validate={validate}
+		validationSchema={validationSchema}
 		validateOnChange={false}
 		validateOnBlur={false}
 	>
 		{({
-			values,
-			errors,
+			values: { email },
 			handleChange,
 			handleSubmit,
 			isSubmitting,
 		}: {
 			values: any;
-			errors: any;
-			handleChange: any;
-			handleSubmit: any;
+			handleChange: React.ChangeEventHandler<any>;
+			handleSubmit: React.FormEventHandler<HTMLFormElement>;
 			isSubmitting: any;
 		}) =>
 			!isSubmitting ? (
@@ -33,16 +32,12 @@ const UserSettingsForm: StyledComponent = styled(({ className }) => (
 						<Form.Label>Email</Form.Label>
 						<Form.Control
 							type="email"
-							name="name"
+							name="email"
 							placeholder="Email"
-							value={values.name}
+							value={email}
 							onChange={handleChange}
 						/>
-						{errors.name && (
-							<Form.Text className="text-error">
-								{errors.name as string}
-							</Form.Text>
-						)}
+						<ErrorMessage name="email" render={RenderError} />
 					</Form.Group>
 					<Button type="submit" disabled={isSubmitting}>
 						Save Changes
