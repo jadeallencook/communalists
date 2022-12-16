@@ -13,8 +13,18 @@ const validationSchema = yup.object().shape({
 		}).required(),
 	subjectPronoun: yup.string().label('Subject Pronoun').required(),
 	objectPronoun: yup.string().label('Object Pronoun').required(),
-	county: yup.string().required(),
-	isRemote: yup.boolean().required()
+	address: yup.object().shape({
+        street: yup.string().label('Street').required(),
+        city: yup.string().label('City').required(),
+        state: yup.string().label('State').required(),
+        zipcode: yup.number().positive().integer().test(
+            'is-valid-zipcode', 
+            'Please enter a valid ZIP', 
+            (zip: number | null) => zip && zip.toString().length === 5
+        ).required(),
+        county: yup.string().label('County').required()
+    }),
+	isRemote: yup.boolean().required(),
 });
 
 export default validationSchema
