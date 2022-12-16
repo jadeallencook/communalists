@@ -6,7 +6,11 @@ import { database } from '@database/index';
 import initialValues from './initial-values';
 import { ListingInterface } from '@interfaces/listing';
 import validationSchema from './validate';
-import { ValidationError } from 'yup';
+import { 
+	getAttributeKeysAndValuesByItem, 
+	getAttributeOptionsByAttribute, 
+	convertYupValidationErrorToObj 
+} from '@utils/formUtils'
 
 // Incoming data and related parsing will need to be rewritten when the APIs become available.
 const locations: string[] = ['Location 1', 'Location 2', 'Location 3'];
@@ -47,6 +51,7 @@ const CreateListingForm: StyledComponent = styled(({
 	// On item change (select) reset the default attribute values in input state
 	useEffect(() => {
 		let newAttributes = []
+		console.log("testing function", getAttributeKeysAndValuesByItem(itemObj.attributes))
 		if (itemObj.attributes)
 			newAttributes = Object.entries(itemObj.attributes).map(([key, values]) =>
 				[key, Object.keys(values)[0]] as [string, string]
@@ -59,7 +64,6 @@ const CreateListingForm: StyledComponent = styled(({
 		setInputs({...inputs, location: locations[0]})
 	}, [locations])
 
-	// TODO: add types by fixing error -> Cannot find name FormControlElement
 	// this is an attempt to account for newAttributes having form [string, string][]
 	const handleChange: React.ChangeEventHandler<any> = ({ target: { value, name, type } }): void => {
 		if(type === 'number') value = Number(value)
@@ -93,17 +97,6 @@ const CreateListingForm: StyledComponent = styled(({
 			})
 		return null;
 	};
-
-	// put in utils folder after feat/create-group gets pushed to develop
-	const convertYupValidationErrorToObj = (errors: ValidationError) => {
-		const validationErrors = {}
-	
-		errors.inner.forEach((err: any) => {
-			if (err.path) validationErrors[err.path] = err.errors[0]
-		})
-	
-		return validationErrors
-	}
 
 	return (
 		<Form className={className} onSubmit={handleSubmit}>
@@ -145,25 +138,23 @@ const CreateListingForm: StyledComponent = styled(({
 				{formErrors.stock ? (<p className="is-danger">{formErrors.stock}</p>) : null}
 			</Form.Group>
 			{itemObj && itemObj.attributes &&
-				Object.entries(itemObj.attributes).map(
-					([attributeKey, attributeValues]) => (
-						<Form.Group className="mb-3" key={attributeKey}>
-							<Form.Label>{attributeKey}</Form.Label>
+				getAttributeKeysAndValuesByItem(itemObj.attributes).map(
+					(attribute) => (
+						<Form.Group className="mb-3" key={attribute.key}>
+							<Form.Label>{attribute.key}</Form.Label>
 							<Form.Select
 								className="form-control"
-								name={attributeKey}
-								value={inputs.attributes[attributeKey]}
+								name={attribute.key}
+								value={inputs.attributes[attribute.key]}
 								onChange={handleChange}
 							>
-								{Object.entries(attributeValues).map(
-									([key, title]) => {
-										return (
-											<option key={key} value={key}>
-												{title}
-											</option>
-										);
-									}
-								)}
+								{getAttributeOptionsByAttribute(attribute.value).map((option) => {
+									return (
+										<option key={option.key} value={option.key}>
+											{option.value}
+										</option>
+									);
+								})}
 							</Form.Select>
 						</Form.Group>
 					)
