@@ -31,7 +31,7 @@
 					"item": "bedframe",
 					"location": "group1location",
 					"stock": 1,
-					"description": "",
+					"description": "Twin sized bedframe in perfect condition.",
 					"image": "",
 					"attributes": [["size", "twin"]]
 				},
@@ -39,7 +39,7 @@
 					"item": "shampoo",
 					"location": "group1location",
 					"stock": 5,
-					"description": "",
+					"description": "Eight ounce bottle of generic shampoo.",
 					"image": "",
 					"attributes": [["size", "eight"]]
 				}
@@ -49,7 +49,7 @@
 					"item": "bedframe",
 					"location": "johndoelocation",
 					"stock": 1,
-					"description": "",
+					"description": "I'm moving and need to get rid of my bedframe.",
 					"image": "",
 					"attributes": [["size", "king"]]
 				},
@@ -57,7 +57,7 @@
 					"item": "bodysoap",
 					"location": "johndoelocation",
 					"stock": 5,
-					"description": "",
+					"description": "I've got a few extra eight ounce bottles of body soap if anyone needs them.",
 					"image": "",
 					"attributes": [["size", "eight"]]
 				}

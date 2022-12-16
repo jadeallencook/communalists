@@ -20,13 +20,10 @@ const Resources = () => {
 		: null;
 
 	const listings: { [key in string]: ListingInterface } = users
-		? users.reduce(
-				(listings, user) => {
-					// add logic here to filter items
-					return { ...listings, ...response[user] }
-				},
-				{}
-		  )
+		? users.reduce((listings, user) => {
+				// add logic here to filter items
+				return { ...listings, ...response[user] };
+		  }, {})
 		: null;
 
 	const handleFilterChange = (event) => {

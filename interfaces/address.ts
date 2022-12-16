@@ -4,6 +4,6 @@ export interface AddressInterface {
 	street: string;
 	city: string;
 	state: USStateType;
-	zipcode: number;
+	zipcode: string;
 	county: CountyType;
 }

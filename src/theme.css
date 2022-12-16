@@ -18,6 +18,22 @@ a {
 	color: var(--bs-gray-500) !important;
 }
 
+p.is-danger{
+	color: var(--bs-danger)
+}
+
+form.standard-form input{
+	max-width: 500px;
+}
+
+form.standard-form input.input-sm {
+	max-width: 250px;
+}
+
+form.standard-form .form-select.select-sm{
+	max-width:250px;
+}
+
 :root {
 	/* colors */
 	--white: #fff;
@@ -26,4 +42,13 @@ a {
 	--spacing-small: 5px;
 	--spacing-medium: 10px;
 	--spacing-large: 25px;
+}
+
+* {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
