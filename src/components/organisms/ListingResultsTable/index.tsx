@@ -2,6 +2,7 @@ import { Container, Table, Badge } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { database } from '@database/index';
+import ShoppingCartIncrementor from '../ShoppingCartIncrementor';
 
 const ListingResultsTable: StyledComponent = styled(
 	({ className, listings }) => {
@@ -42,17 +43,10 @@ const ListingResultsTable: StyledComponent = styled(
 										)}
 									</td>
 									<td>
-										<Badge
-											key={`${key}-order`}
-											bg="primary"
-											text="light"
-											style={{
-												marginRight: '5px',
-												cursor: 'pointer',
-											}}
-										>
-											Order
-										</Badge>
+										<ShoppingCartIncrementor
+											listingKey={key}
+											itemKey={item}
+										/>
 										<Badge
 											key={`${key}-details`}
 											bg="secondary"
