@@ -1,8 +1,10 @@
-import { useState } from 'react';
-import { Container, Table, Form, Badge } from 'react-bootstrap';
+import { useState, useContext } from 'react';
+import { Container, Table, Form, Badge, InputGroup } from 'react-bootstrap';
 import database from '@database/database.mock.json';
 import { ListingInterface } from '@interfaces/listing';
 import locationMap from '@objects/location-map';
+import GlobalContext from '../context';
+import ShoppingCartIncrementor from '@organisms/ShoppingCartIncrementor';
 
 const Resources = () => {
 	const { items } = database;
@@ -55,7 +57,7 @@ const Resources = () => {
 						<th>Title</th>
 						<th>Stock</th>
 						<th>Attributes</th>
-						<th>Options</th>
+						<th style={{ width: '200px'}}>Options</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -84,17 +86,9 @@ const Resources = () => {
 										)}
 									</td>
 									<td>
-										<Badge
-											key={`${key}-order`}
-											bg="primary"
-											text="light"
-											style={{
-												marginRight: '5px',
-												cursor: 'pointer',
-											}}
-										>
-											Order
-										</Badge>
+										<ShoppingCartIncrementor
+											listingKey={key} itemKey={item}
+										/>
 										<Badge
 											key={`${key}-details`}
 											bg="secondary"
