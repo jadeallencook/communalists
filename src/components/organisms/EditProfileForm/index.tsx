@@ -31,7 +31,7 @@ const EditProfileForm: StyledComponent = styled(({ className }) => (
 			isSubmitting: any;
 		}) =>
 			!isSubmitting ? (
-				<Form className={className} onSubmit={handleSubmit}>
+				<Form className={`${className} standard-form`} onSubmit={handleSubmit}>
 					<Form.Group className="mb-3">
 						<Form.Label>Display Name</Form.Label>
 						<Form.Control
@@ -47,6 +47,7 @@ const EditProfileForm: StyledComponent = styled(({ className }) => (
 						<Form.Label>Subject Pronoun</Form.Label>
 						<Form.Select
 							aria-label="Select pronouns"
+							className="select-sm"
 							name="subjectPronoun"
 							value={subjectPronoun}
 							onChange={handleChange}
@@ -63,6 +64,7 @@ const EditProfileForm: StyledComponent = styled(({ className }) => (
 						<Form.Label>Object Pronoun</Form.Label>
 						<Form.Select
 							aria-label="Select pronouns"
+							className="select-sm"
 							name="objectPronoun"
 							value={objectPronoun}
 							onChange={handleChange}
@@ -77,7 +79,7 @@ const EditProfileForm: StyledComponent = styled(({ className }) => (
 					</Form.Group>
 					<Form.Group className="mb-3">
 						<Form.Label>County</Form.Label>
-						<Form.Select>
+						<Form.Select className="select-sm">
 							<option value="santa-clara-ca">Santa Clara</option>
 						</Form.Select>
 					</Form.Group>
