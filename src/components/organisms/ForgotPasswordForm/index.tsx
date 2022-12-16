@@ -4,11 +4,9 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { Formik, ErrorMessage } from 'formik';
 import validationSchema from './validate';
+import RenderError from '@components/atoms/RenderError';
 
 const ForgotPasswordForm: StyledComponent = styled(({ className }) => {
-	const renderError = (message: string) => (
-		<p className="help is-danger">{message}</p>
-	);
 
 	return (
 		<Formik
@@ -40,7 +38,7 @@ const ForgotPasswordForm: StyledComponent = styled(({ className }) => {
 								value={values.name}
 								onChange={handleChange}
 							/>
-							<ErrorMessage name="email" render={renderError} />
+							<ErrorMessage name="email" render={RenderError} />
 						</Form.Group>
 						<Button type="submit" disabled={isSubmitting}>
 							Send Recovery Link
