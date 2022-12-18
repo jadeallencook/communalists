@@ -9,7 +9,8 @@ import validationSchema from './validate';
 import { 
 	getAttributeKeysAndValuesByItem, 
 	getAttributeOptionsByAttribute, 
-	convertYupValidationErrorToObj 
+	convertYupValidationErrorToObj,
+	getItemKeysAndTitlesInItemsArray
 } from '@utils/formUtils'
 
 // Incoming data and related parsing will need to be rewritten when the APIs become available.
@@ -108,9 +109,9 @@ const CreateListingForm: StyledComponent = styled(({
 					name="item"
 					value={item}
 				>
-					{Object.entries(items).map(([key, { title }]) => (
-						<option key={key} value={key}>
-							{title}
+					{getItemKeysAndTitlesInItemsArray(items).map((item) => (
+						<option key={item.key} value={item.key}>
+							{item.value}
 						</option>
 					))}
 				</Form.Select>

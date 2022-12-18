@@ -1,6 +1,6 @@
 import locationMap from '@objects/location-map';
 import { USStateType } from '@custom-types/us-state';
-import { ItemAttributeInterface } from '@interfaces/item';
+import { ItemAttributeInterface, ItemInterface } from '@interfaces/item';
 import { ValidationError } from 'yup';
 
 const getObjectKeysAndValues = (item: Object) =>
@@ -11,6 +11,8 @@ export const getLocationKeysAndValuesByState = (state: USStateType) => getObject
 export const getAttributeKeysAndValuesByItem = (item: ItemAttributeInterface) => getObjectKeysAndValues(item)
 
 export const getAttributeOptionsByAttribute = (item: { [key: string]: string }) => getObjectKeysAndValues(item)
+
+export const getItemKeysAndTitlesInItemsArray = (items: { [key:string]: ItemInterface }) => getObjectKeysAndValues(items)
 
 export const convertYupValidationErrorToObj = (errors: ValidationError) => {
     const validationErrors = {}
