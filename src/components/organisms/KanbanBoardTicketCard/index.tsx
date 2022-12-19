@@ -2,6 +2,7 @@ import { Button, Card, Container, Row } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { OrderInterface } from '@interfaces/order';
+import { AddressInterface } from '@interfaces/address';
 
 interface KanbanBoardTicketCardInterface {
     className: string
@@ -15,20 +16,24 @@ const KanbanBoardTicketCard: StyledComponent = styled(({ className, order }: Kan
         return `${str.slice(0, 15)}...`
     }
 
+    const addressToString = (address: AddressInterface) => {
+        return `${address.street}, ${address.city}, ${address.county}, ${address.state}, ${address.zipcode}`
+    }
+
     return (
-        <Card>
+        <Card className={className}>
             <Card.Body>
                 <Row>
-                    <p>{order.city}</p>
+                    <p>{order.location.city}</p>
                     {/* <Button onClick={() => props.onShowEditTicketCardModal(props.id)}>
                         <EditIcon />
                     </Button> */}
                 </Row>
-                <Row sx={{ display: 'grid', gridTemplateColumns: '45% 45%', textAlign: 'start', margin: '5% 0 5% 0' }}>
+                <Row>
                     <p>Address:</p>
-                    <p>{shortenString(order.address)}</p>
+                    <p>{shortenString(addressToString(order.location))}</p>
                     <p>Requester</p>
-                    <p>{shortenString(order.name)}</p>
+                    <p>{shortenString(order.requester)}</p>
                     <p>Description:</p>
                     <p>{shortenString(order.description)}</p>
                     <p>Assigned To:</p>
@@ -38,5 +43,5 @@ const KanbanBoardTicketCard: StyledComponent = styled(({ className, order }: Kan
         </Card>
     );
 })(style);
-
+ 
 export default KanbanBoardTicketCard;
