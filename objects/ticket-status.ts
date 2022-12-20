@@ -1,4 +1,4 @@
-import { aidCoordinatorStatusType, driverStatusType, reimbursementStatusType } from '../types/ticket-status'
+import { aidCoordinatorStatusType, driverStatusType, reimbursementStatusType } from '../types/ticket'
 
 export const AID_COORDINATOR_STATUS: aidCoordinatorStatusType[] = [
     'Unassigned',

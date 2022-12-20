@@ -1,5 +1,14 @@
+import { OrderStatusType, OrderType } from "@custom-types/order";
+import { AddressInterface } from "./address";
 import { TicketInterface } from "./ticket";
 
 export interface order {
-    [key: string]: { [key: string]: TicketInterface }
+    requester: string,
+    requestDate: Date,
+    event: string,
+    lastUpdated: string,
+    type: OrderType,
+    location: AddressInterface,
+    orderStatus: OrderStatusType,
+    tickets: { [key: string]: TicketInterface }
 }
