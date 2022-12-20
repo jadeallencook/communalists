@@ -1,5 +1,3 @@
-import { NONAME } from "dns";
-
 const style = () => ({
 	input: {
 		maxWidth: '500px',
