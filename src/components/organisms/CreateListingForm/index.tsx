@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, FormControl, Modal } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { database } from '@database/index';
@@ -12,6 +12,7 @@ import {
 	convertYupValidationErrorToObj,
 	getItemKeysAndTitlesInItemsArray
 } from '@utils/formUtils'
+import { FormControlElement } from '@custom-types/form';
 
 // Incoming data and related parsing will need to be rewritten when the APIs become available.
 const locations: string[] = ['Location 1', 'Location 2', 'Location 3'];
@@ -19,7 +20,7 @@ const locations: string[] = ['Location 1', 'Location 2', 'Location 3'];
 interface CreateListingFormInterface {
 	className: string,
 	isModal: boolean,
-	handleClose: Function
+	handleClose: React.SetStateAction<any>
 }
 
 interface FormErrorsInterface {
@@ -52,8 +53,7 @@ const CreateListingForm: StyledComponent = styled(({
 	// On item change (select) reset the default attribute values in input state
 	useEffect(() => {
 		let newAttributes = []
-		console.log("testing function", getAttributeKeysAndValuesByItem(itemObj.attributes))
-		if (itemObj.attributes)
+		if (itemObj.attributes )
 			newAttributes = Object.entries(itemObj.attributes).map(([key, values]) =>
 				[key, Object.keys(values)[0]] as [string, string]
 			)
@@ -66,7 +66,7 @@ const CreateListingForm: StyledComponent = styled(({
 	}, [locations])
 
 	// this is an attempt to account for newAttributes having form [string, string][]
-	const handleChange: React.ChangeEventHandler<any> = ({ target: { value, name, type } }): void => {
+	const handleChange: React.ChangeEventHandler<HTMLFormElement | HTMLSelectElement | FormControlElement> = ({ target: { value, name, type } }): void => {
 		if(type === 'number') value = Number(value)
 		if(type === 'number' && value < 1) value = 1
 		if (name in initialValues) {
@@ -76,8 +76,7 @@ const CreateListingForm: StyledComponent = styled(({
 			}));
 		} else {
 			const newAttributes: [string, string][] = inputs.attributes.map((attributeArray) => {
-				if (attributeArray[0] === name) return [name, value]
-				else return attributeArray
+				return attributeArray[0] === name ? [name,value] : attributeArray;
 			})
 			setInputs((prevInputs) => ({
 				...prevInputs,
@@ -111,7 +110,7 @@ const CreateListingForm: StyledComponent = styled(({
 				>
 					{getItemKeysAndTitlesInItemsArray(items).map((item) => (
 						<option key={item.key} value={item.key}>
-							{item.value}
+							{item.value.title}
 						</option>
 					))}
 				</Form.Select>
@@ -181,7 +180,7 @@ const CreateListingForm: StyledComponent = styled(({
 					Create Listing
 				</Button> :
 				<Modal.Footer>
-					<Button variant="secondary" onClick={() => handleClose()}>
+					<Button variant="secondary" onClick={handleClose}>
 						Close
 					</Button>
 					<Button type="submit">

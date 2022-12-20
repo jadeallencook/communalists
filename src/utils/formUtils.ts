@@ -8,6 +8,7 @@ const getObjectKeysAndValues = (item: Object) =>
 
 export const getLocationKeysAndValuesByState = (state: USStateType) => getObjectKeysAndValues(locationMap[state])
 
+// if obj doesn't have attributes, need a workaround
 export const getAttributeKeysAndValuesByItem = (item: ItemAttributeInterface) => getObjectKeysAndValues(item)
 
 export const getAttributeOptionsByAttribute = (item: { [key: string]: string }) => getObjectKeysAndValues(item)
@@ -17,9 +18,7 @@ export const getItemKeysAndTitlesInItemsArray = (items: { [key:string]: ItemInte
 export const convertYupValidationErrorToObj = (errors: ValidationError) => {
     const validationErrors = {}
 
-    errors.inner.forEach((err: any) => {
-        if (err.path) validationErrors[err.path] = err.errors[0]
-    })
+    errors.inner.forEach((err: ValidationError) => (err.path) ? validationErrors[err.path] = err.errors[0]: null)
 
     return validationErrors
 }
