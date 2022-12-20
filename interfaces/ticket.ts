@@ -1,15 +1,14 @@
 import { aidCoordinatorStatusType, driverStatusType } from "@custom-types/ticket";
-import { ItemInterface } from "./item";
+import { ListingInterface } from "./listing";
 
 export interface TicketInterface {
     orderId: string,
-    ticketId: string,
     group: string,
-    items: ItemInterface[],
+    items: { [key:string]: ListingInterface },
     assignedCoordinator: string,
     assignedDriver: string,
     coordinatorStatus: aidCoordinatorStatusType,
     driverStatus: driverStatusType,
-    reimbursementStatus: string,
+    reimbursementStatus?: string,
     lastUpdated: string,
 }
