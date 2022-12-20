@@ -6,9 +6,9 @@ import { database } from '@database/index';
 import initialValues from './initial-values';
 import { ListingInterface } from '@interfaces/listing';
 import validationSchema from './validate';
-import { 
-	getAttributeKeysAndValuesByItem, 
-	getAttributeOptionsByAttribute, 
+import {
+	getAttributeKeysAndValuesByItem,
+	getAttributeOptionsByAttribute,
 	convertYupValidationErrorToObj,
 	getItemKeysAndTitlesInItemsArray
 } from '@utils/formUtils'
@@ -46,15 +46,16 @@ const CreateListingForm: StyledComponent = styled(({
 }: CreateListingFormInterface) => {
 	const { items } = database;
 	const [inputs, setInputs] = useState<ListingInterface>(initialValues)
-	const { item, description, stock, attributes, location } = inputs
+	const { item, description, stock, location } = inputs
 	const itemObj = items[item];
+	const { attributes } = itemObj
 	const [formErrors, setFormErrors] = useState<FormErrorsInterface>(initialFormErrors)
 
 	// On item change (select) reset the default attribute values in input state
 	useEffect(() => {
 		let newAttributes = []
-		if (itemObj.attributes )
-			newAttributes = Object.entries(itemObj.attributes).map(([key, values]) =>
+		if (attributes)
+			newAttributes = Object.entries(attributes).map(([key, values]) =>
 				[key, Object.keys(values)[0]] as [string, string]
 			)
 		setInputs((prevInputs) => ({ ...prevInputs, attributes: [...newAttributes] }))
@@ -62,13 +63,13 @@ const CreateListingForm: StyledComponent = styled(({
 
 	// Set location on component load, this will eventually be tied to user data
 	useEffect(() => {
-		setInputs({...inputs, location: locations[0]})
+		setInputs({ ...inputs, location: locations[0] })
 	}, [locations])
 
 	// this is an attempt to account for newAttributes having form [string, string][]
 	const handleChange: React.ChangeEventHandler<HTMLFormElement | HTMLSelectElement | FormControlElement> = ({ target: { value, name, type } }): void => {
-		if(type === 'number') value = Number(value)
-		if(type === 'number' && value < 1) value = 1
+		if (type === 'number') value = Number(value)
+		if (type === 'number' && value < 1) value = 1
 		if (name in initialValues) {
 			setInputs((prevInputs) => ({
 				...prevInputs,
@@ -76,7 +77,7 @@ const CreateListingForm: StyledComponent = styled(({
 			}));
 		} else {
 			const newAttributes: [string, string][] = inputs.attributes.map((attributeArray) => {
-				return attributeArray[0] === name ? [name,value] : attributeArray;
+				return attributeArray[0] === name ? [name, value] : attributeArray;
 			})
 			setInputs((prevInputs) => ({
 				...prevInputs,
@@ -88,7 +89,7 @@ const CreateListingForm: StyledComponent = styled(({
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
 		setFormErrors(initialFormErrors)
-		validationSchema.validate(inputs, {abortEarly: false})
+		validationSchema.validate(inputs, { abortEarly: false })
 			.then(() => console.log("validated"))
 			.catch((err) => {
 				const validationErrors = convertYupValidationErrorToObj(err) as FormErrorsInterface
@@ -108,11 +109,14 @@ const CreateListingForm: StyledComponent = styled(({
 					name="item"
 					value={item}
 				>
-					{getItemKeysAndTitlesInItemsArray(items).map((item) => (
-						<option key={item.key} value={item.key}>
-							{item.value.title}
-						</option>
-					))}
+					{getItemKeysAndTitlesInItemsArray(items).map((item) => {
+						const { key, value } = item
+						return (
+							<option key={key} value={key}>
+								{value.title}
+							</option>
+						)
+					})}
 				</Form.Select>
 				{formErrors.item ? (<p className="is-danger">{formErrors.item}</p>) : null}
 			</Form.Group>
@@ -137,28 +141,33 @@ const CreateListingForm: StyledComponent = styled(({
 				/>
 				{formErrors.stock ? (<p className="is-danger">{formErrors.stock}</p>) : null}
 			</Form.Group>
-			{itemObj && itemObj.attributes &&
-				getAttributeKeysAndValuesByItem(itemObj.attributes).map(
-					(attribute) => (
-						<Form.Group className="mb-3" key={attribute.key}>
-							<Form.Label>{attribute.key}</Form.Label>
-							<Form.Select
-								className="form-control"
-								name={attribute.key}
-								value={inputs.attributes[attribute.key]}
-								onChange={handleChange}
-							>
-								{getAttributeOptionsByAttribute(attribute.value).map((option) => {
-									return (
-										<option key={option.key} value={option.key}>
-											{option.value}
-										</option>
-									);
-								})}
-							</Form.Select>
-						</Form.Group>
-					)
-				)}
+			{(itemObj && attributes)
+				? getAttributeKeysAndValuesByItem(attributes).map(
+					(attribute) => {
+						const { key, value } = attribute
+						return (
+							<Form.Group className="mb-3" key={key}>
+								<Form.Label>{key}</Form.Label>
+								<Form.Select
+									className="form-control"
+									name={key}
+									value={inputs.attributes[key]}
+									onChange={handleChange}
+								>
+									{getAttributeOptionsByAttribute(value).map((option) => {
+										const { key, value } = option
+										return (
+											<option key={key} value={key}>
+												{value}
+											</option>
+										);
+									})}
+								</Form.Select>
+							</Form.Group>
+						)
+					}
+				) : null
+			}
 			<Form.Group className="mb-3">
 				<Form.Label>Storage Location</Form.Label>
 				<Form.Select
