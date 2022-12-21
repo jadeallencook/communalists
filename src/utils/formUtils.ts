@@ -8,8 +8,7 @@ const getObjectKeysAndValues = (item: Object) =>
 
 export const getLocationKeysAndValuesByState = (state: USStateType) => getObjectKeysAndValues(locationMap[state])
 
-// if obj doesn't have attributes, need a workaround
-export const getAttributeKeysAndValuesByItem = (item: ItemAttributeInterface) => getObjectKeysAndValues(item)
+export const getAttributeKeysAndValuesFromAttributesObj = (item: ItemAttributeInterface) => getObjectKeysAndValues(item)
 
 export const getAttributeOptionsByAttribute = (item: { [key: string]: string }) => getObjectKeysAndValues(item)
 

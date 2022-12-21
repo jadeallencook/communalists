@@ -7,7 +7,7 @@ import initialValues from './initial-values';
 import { ListingInterface } from '@interfaces/listing';
 import validationSchema from './validate';
 import {
-	getAttributeKeysAndValuesByItem,
+	getAttributeKeysAndValuesFromAttributesObj,
 	getAttributeOptionsByAttribute,
 	convertYupValidationErrorToObj,
 	getItemKeysAndTitlesInItemsArray
@@ -66,7 +66,6 @@ const CreateListingForm: StyledComponent = styled(({
 		setInputs({ ...inputs, location: locations[0] })
 	}, [locations])
 
-	// this is an attempt to account for newAttributes having form [string, string][]
 	const handleChange: React.ChangeEventHandler<HTMLFormElement | HTMLSelectElement | FormControlElement> = ({ target: { value, name, type } }): void => {
 		if (type === 'number') value = Number(value)
 		if (type === 'number' && value < 1) value = 1
@@ -142,7 +141,7 @@ const CreateListingForm: StyledComponent = styled(({
 				{formErrors.stock ? (<p className="is-danger">{formErrors.stock}</p>) : null}
 			</Form.Group>
 			{(itemObj && attributes)
-				? getAttributeKeysAndValuesByItem(attributes).map(
+				? getAttributeKeysAndValuesFromAttributesObj(attributes).map(
 					(attribute) => {
 						const { key, value } = attribute
 						return (
