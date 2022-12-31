@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import database from '@database/database.mock.json';
 import { ListingInterface } from '@interfaces/listing';
@@ -26,7 +26,7 @@ const Resources = () => {
 		  }, {})
 		: null;
 
-	const handleFilterChange = (event) => {
+	const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 		if (name === 'state') {
 			setFilters((prev) => ({

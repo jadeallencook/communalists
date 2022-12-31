@@ -3,6 +3,7 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import locationMap from '@objects/location-map';
 import { database } from '@database/index';
+import { getItemKeysAndTitlesInItemsArray } from '@utils/formUtils';
 
 const BrowseListingsForm: StyledComponent = styled(
 	({ className, state, county, selectedItem, handleChange }) => {
@@ -44,14 +45,14 @@ const BrowseListingsForm: StyledComponent = styled(
 						value={selectedItem}
 						name="item"
 					>
-						<option value="">
-							View All
-						</option>
-						{Object.entries(items).map(([key, { title }]) => (
-							<option key={key} value={key}>
-								{title}
-							</option>
-						))}
+						<option value="">View All</option>
+						{getItemKeysAndTitlesInItemsArray(items).map(
+							({ key, value: { title } }) => (
+								<option key={key} value={key}>
+									{title}
+								</option>
+							)
+						)}
 					</Form.Select>
 				</Form.Group>
 			</Form>
