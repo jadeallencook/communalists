@@ -18,11 +18,11 @@ a {
 	color: var(--bs-gray-500) !important;
 }
 
-p.is-danger{
-	color: var(--bs-danger)
+p.is-danger {
+	color: var(--bs-danger);
 }
 
-form.standard-form input{
+form.standard-form input {
 	max-width: 500px;
 }
 
@@ -30,8 +30,8 @@ form.standard-form input.input-sm {
 	max-width: 250px;
 }
 
-form.standard-form .form-select.select-sm{
-	max-width:250px;
+form.standard-form .form-select.select-sm {
+	max-width: 250px;
 }
 
 :root {

@@ -33,10 +33,7 @@ const DashboardListings = () => {
 					<Modal.Title>Create Listing</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<CreateListingForm 
-						isModal
-						handleClose={handleClose}
-					/>
+					<CreateListingForm isModal handleClose={handleClose} />
 				</Modal.Body>
 			</Modal>
 			<Button onClick={handleShow}>Create Listing</Button>

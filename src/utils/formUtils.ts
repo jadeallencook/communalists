@@ -4,20 +4,31 @@ import { ItemAttributeInterface, ItemInterface } from '@interfaces/item';
 import { ValidationError } from 'yup';
 
 const getObjectKeysAndValues = (item: Object) =>
-    Object.entries(item).map(([key, value]) => { return { key, value } as { key: string, value: any } })
+	Object.entries(item).map(([key, value]) => {
+		return { key, value } as { key: string; value: any };
+	});
 
-export const getLocationKeysAndValuesByState = (state: USStateType) => getObjectKeysAndValues(locationMap[state])
+export const getLocationKeysAndValuesByState = (state: USStateType) =>
+	getObjectKeysAndValues(locationMap[state]);
 
-export const getAttributeKeysAndValuesFromAttributesObj = (item: ItemAttributeInterface) => getObjectKeysAndValues(item)
+export const getAttributeKeysAndValuesFromAttributesObj = (
+	item: ItemAttributeInterface
+) => getObjectKeysAndValues(item);
 
-export const getAttributeOptionsByAttribute = (item: { [key: string]: string }) => getObjectKeysAndValues(item)
+export const getAttributeOptionsByAttribute = (item: {
+	[key: string]: string;
+}) => getObjectKeysAndValues(item);
 
-export const getItemKeysAndTitlesInItemsArray = (items: { [key:string]: ItemInterface }) => getObjectKeysAndValues(items)
+export const getItemKeysAndTitlesInItemsArray = (items: {
+	[key: string]: ItemInterface;
+}) => getObjectKeysAndValues(items);
 
 export const convertYupValidationErrorToObj = (errors: ValidationError) => {
-    const validationErrors = {}
+	const validationErrors = {};
 
-    errors.inner.forEach((err: ValidationError) => (err.path) ? validationErrors[err.path] = err.errors[0]: null)
+	errors.inner.forEach((err: ValidationError) =>
+		err.path ? (validationErrors[err.path] = err.errors[0]) : null
+	);
 
-    return validationErrors
-}
+	return validationErrors;
+};

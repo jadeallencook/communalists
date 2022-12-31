@@ -6,7 +6,7 @@ const style = () => ({
 		maxWidth: '200px',
 	},
 	label: {
-		textTransform: 'capitalize'
+		textTransform: 'capitalize',
 	},
 });
 
