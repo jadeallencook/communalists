@@ -11,6 +11,7 @@ import DashboardGroups from '@pages/DashboardGroups';
 import DashboardOrders from '@pages/DashboardOrders';
 import DashboardSettings from '@pages/DashboardSettings';
 import DashboardAdmin from '@pages/DashboardAdmin';
+import ForgotPassword from '@pages/ForgotPassword';
 
 interface Route {
 	path: string;
@@ -66,6 +67,10 @@ const routes: Route[] = [
 		path: '/create-account',
 		element: <CreateAccount />,
 	},
+	{
+		path: '/forgot-password',
+		element: <ForgotPassword />
+	}
 ];
 
 export default routes;

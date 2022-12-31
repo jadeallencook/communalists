@@ -1,11 +1,10 @@
-const validate = (values) => {
-	const errors: any = {};
-	if (!values.email) {
-		errors.email = 'Required';
-	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-		errors.email = 'Invalid email address';
-	}
-	return errors;
-};
+import * as yup from 'yup';
 
-export default validate;
+const validationSchema = yup.object().shape({
+    name: yup.string().label('Name').required(),
+	subjectPronoun: yup.string().label('Subject Pronoun').required(),
+	objectPronoun: yup.string().label('Object Pronoun').required(),
+	isRemote: yup.boolean().required(),
+});
+
+export default validationSchema
