@@ -4,9 +4,9 @@ import { useState } from 'react';
 import CreateGroupForm from '@components/organisms/CreateGroupForm';
 
 const DashboardGroups = () => {
-	const [show, setShow] = useState(false)
-	const handleShow = () => setShow(true)
-	const handleClose = () => setShow(false)
+	const [show, setShow] = useState(false);
+	const handleShow = () => setShow(true);
+	const handleClose = () => setShow(false);
 
 	return (
 		<Dashboard>
@@ -27,16 +27,13 @@ const DashboardGroups = () => {
 					</tr>
 				</tbody>
 			</Table>
-			
+
 			<Modal show={show} onHide={handleClose} size="lg">
 				<Modal.Header closeButton>
 					<Modal.Title>Create Group</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<CreateGroupForm 
-						isModal
-						handleClose={handleClose}
-						/>
+					<CreateGroupForm isModal handleClose={handleClose} />
 				</Modal.Body>
 			</Modal>
 			<Button onClick={handleShow}>Create Group</Button>

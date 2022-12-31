@@ -5,8 +5,13 @@ const initialValues: any = {
 	passwordConfirmation: '',
 	SubjectPronoun: 'they',
 	ObjectPronoun: 'them',
-	country: 'US',
-	zipcode: '',
+	address: {
+		street: '',
+		city: '',
+		state: 'CA',
+		zipcode: '',
+		county: 'Santa Clara',
+	},
 	isRemote: true,
 };
 
