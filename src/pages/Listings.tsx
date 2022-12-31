@@ -57,7 +57,7 @@ const Resources = () => {
 						<th>Title</th>
 						<th>Stock</th>
 						<th>Attributes</th>
-						<th style={{ width: '200px'}}>Options</th>
+						<th style={{ width: '200px' }}>Options</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -87,7 +87,8 @@ const Resources = () => {
 									</td>
 									<td>
 										<ShoppingCartIncrementor
-											listingKey={key} itemKey={item}
+											listingKey={key}
+											itemKey={item}
 										/>
 										<Badge
 											key={`${key}-details`}

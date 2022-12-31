@@ -69,8 +69,8 @@ const routes: Route[] = [
 	},
 	{
 		path: '/forgot-password',
-		element: <ForgotPassword />
-	}
+		element: <ForgotPassword />,
+	},
 ];
 
 export default routes;
