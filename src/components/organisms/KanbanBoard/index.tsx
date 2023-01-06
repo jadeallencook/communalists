@@ -7,6 +7,7 @@ import { useDrag } from 'react-dnd'
 import DragAndDropZone from '@molecules/DragAndDropZone'
 import { colorArray } from '../../../const/colors'
 import { useEffect } from 'react';
+import DragAndDropItem from '@components/molecules/DragAndDropItem';
 
 type BoardType =
     | 'Aid Coordinator'
@@ -14,7 +15,8 @@ type BoardType =
     | 'Reimbursements'
 
 interface KanbanBoardInterface {
-    className: string
+    className: string,
+    groupColorMap: any,
     orders: { [key: string]: OrderInterface }[]
     type: BoardType,
     setOrderData: React.SetStateAction<any>
@@ -23,7 +25,14 @@ interface KanbanBoardInterface {
 // TODO: 
 // Changed status field depends on which board we are looking at -> already done via passing props from parent?
 
-const KanbanBoard: StyledComponent = styled(({ className, orders, type, setOrderData }: KanbanBoardInterface) => {
+const KanbanBoard: StyledComponent = styled(({ 
+    className, 
+    groupColorMap, 
+    orders, 
+    type, 
+    setOrderData 
+}: KanbanBoardInterface) => {
+    // TODO: pull from orders when that pr gets merged
     const statusOptions = ['Unassigned', 'In Progress', 'Completed']
 
     const handleDrop = (dropZone, item) => {
@@ -56,7 +65,18 @@ const KanbanBoard: StyledComponent = styled(({ className, orders, type, setOrder
                                 // @ts-ignore order.status is not read as a string even though it is
                                 .filter((order) => {return order.status === status})
                                 .map((order) => (
-                                        <DragItem order={order} type={type} key={JSON.stringify(order.id)}/>
+                                        // <DragAndDropItem 
+                                        //     groupColorMap={groupColorMap} 
+                                        //     order={order} type={type} 
+                                        //     key={JSON.stringify(order.id)}/>
+                                    <DragAndDropItem type={type} key={JSON.stringify(order.id)}>
+                                        <KanbanBoardTicketCard
+                                            groupColorMap={groupColorMap} 
+                                            order={order} 
+                                            type={type} 
+                                        
+                                        />
+                                    </DragAndDropItem>
                                 ))}
                         {/* Only have two KanbanBoardDropZones if orders are in column */}
                         {/* @ts-ignore order.status is not read as a string even though it is */}
@@ -70,29 +90,3 @@ const KanbanBoard: StyledComponent = styled(({ className, orders, type, setOrder
 })(style);
 
 export default KanbanBoard;
-
-// TODO: Make into generic molecule
-const DragItem = ({order, type}) => {
-    const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
-        type: type,
-        item: {
-            type: 'ROW',
-            id: order.id,
-        },
-        collect: (monitor) => ({
-        isDragging: monitor.isDragging()
-        })
-    }))
-
-    // useEffect(() => console.log("color in dragItem -> ", order.color),[order])
-
-    return (
-        <KanbanBoardTicketCard 
-            key={order.id} 
-            order={order} 
-            role="Handle" 
-            dragRef={drag}
-            color={order.color || '#fff'}
-            />
-    )
-}

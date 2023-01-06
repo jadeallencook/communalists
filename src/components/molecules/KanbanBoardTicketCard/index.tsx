@@ -3,22 +3,29 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { OrderInterface } from '@interfaces/order';
 import { AddressInterface } from '@interfaces/address';
+import { useEffect, useState } from 'react';
 
 interface KanbanBoardTicketCardInterface {
     className: string
+    groupColorMap: any,
     order: OrderInterface
     role: string,
-    dragRef: any,
-    color: string
+    // dragRef: any,
+    // color: string
 }
 
 const KanbanBoardTicketCard: StyledComponent = styled(({ 
     className, 
+    groupColorMap,
     order, 
     role, 
-    dragRef, 
-    color = '#fff' 
+    // dragRef, 
+    // color = '#fff' 
 }: KanbanBoardTicketCardInterface) => {
+
+    const [color, setColor] = useState('#fff')
+
+    useEffect(() => console.log(order),[])
 
     const shortenString = (str: string) => {
         if (str.length <= 15) return str
@@ -29,8 +36,12 @@ const KanbanBoardTicketCard: StyledComponent = styled(({
         return `${address.street}, ${address.city}, ${address.county}, ${address.state}, ${address.zipcode}`
     }
 
+    useEffect(() => {
+        setColor(groupColorMap.get(order.group))
+    }, [groupColorMap])
+
     return (
-        <Card className={className} role={role} ref={dragRef} style={{borderLeft: `${color} 5px solid`}}>
+        <Card className={className} role={role}  style={{borderLeft: `${color} 5px solid`}}>
             <Card.Body>
                 <Row>
                     <p>{order.requester}</p>

@@ -1,13 +1,12 @@
 import Dashboard from './Dashboard';
-import { ButtonGroup, Col, Dropdown, DropdownButton, Form, Row, Table, ToggleButton } from 'react-bootstrap';
+import { DropdownButton, Form, Table } from 'react-bootstrap';
 import KanbanBoard from '@components/organisms/KanbanBoard';
 import React, { useEffect, useState } from 'react';
-import { OrderInterface } from '@interfaces/order';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import ToggleButtonGroup from '@molecules/ToggleButtonGroup'
 import { colorArray } from '../const/colors';
-import { truncate } from 'fs/promises';
+import { getNextColor, addToColorArray } from '@utils/kanbanBoardUtils'
 
 const mockOrderData = [
 	{
@@ -104,7 +103,7 @@ const mockOrderData = [
 		status: 'Unassigned',
 		lastUpdated: 'string',
 		color:''
-		},
+	},
 	{
 		id: '101010106',
 		requester: 'alex',
@@ -129,9 +128,11 @@ const mockOrderData = [
 const DashboardOrders = () => {
 	const [orderData, setOrderData] = useState(mockOrderData)
 	const [filteredOrderData, setFilteredOrderData] = useState(mockOrderData)
-	const [groups, setGroups] = useState<any[]>([])
+	const [groups, setGroups] = useState<string[]>([])
 	const [filters, setFilters] = useState({})
 	const [viewType, setViewType] = useState('0')
+	// TODO: Should we create a groupColorMap {group: color} and pass into child?
+	const [groupColorMap, setGroupColorMap] = useState(new Map())
 
 	const viewTypes = [
 		{ name: 'List View', value: '0' },
@@ -142,48 +143,42 @@ const DashboardOrders = () => {
 	useEffect(() => {
 		let newGroups = []
 		orderData.map((order) => {
+			// push {group: group, color: #fff} ?
 			if(!newGroups.includes(order.group)) newGroups.push(order.group)
 		})
 		setGroups(newGroups)
 	}, [])
 
-	// Add colors for groups here? Then change check mark colors based on group color?
 	// runs on initial data load -> turns first 5 groups 'on'
+	// Note that groups/orderData should not change without a page reload
+	//TODO: consolidate
 	useEffect(() => {
 		let newFilters = {}
-		groups.map((group) => {
-			// arbitrary limit on number of groups -> need to limit this due to color constraints
-			if(Object.keys(newFilters).length < 5){
-				newFilters[group] = true
-			} else {
-				newFilters[group] = false
-			}
-			console.log('group', group)
-		})
+		// arbitrary limit on number of groups -> need to limit this due to color constraints
+		groups.map((group) =>
+			(Object.keys(newFilters).length < 5) ? newFilters[group] = true	: newFilters[group] = false)
 		setFilters({...filters, ...newFilters})
+
+		const initialGroupColorMap = new Map()
+		groups.forEach((group, index) => {
+			const newColor = (index < 5) ? getNextColor() : ''
+			initialGroupColorMap.set(group, newColor) 
+		})
+		setGroupColorMap(initialGroupColorMap)
 	},[groups])
 
 	const handleChangeFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+		let newColor = (e.target.checked) ? 
+			getNextColor() : 
+			addToColorArray(groupColorMap.get(e.target.name))
+		
+		setGroupColorMap((prev) => new Map(prev).set(e.target.name, newColor))
 		setFilters({...filters, [e.target.name]: e.target.checked})
 	}
 
 	// for now filters are only group based
 	useEffect(() => {
-		setFilteredOrderData(orderData.map((order) => {
-			let newOrder = order
-			Object.entries(filters).forEach(([filter, value]) => {
-				if(order.group === filter && value && !newOrder.color) {
-					const newColor = colorArray.values().next()
-					newOrder['color'] = newColor.value
-					colorArray.delete(newColor.value)
-				}else if(order.group === filter && !value && newOrder.color){
-					colorArray.add(newOrder.color)
-					newOrder['color'] = ''
-				}
-			})
-			return newOrder
-		})
-		.filter((order) => {
+		setFilteredOrderData(orderData.filter((order) => {
 			let shouldShow = false
 			Object.entries(filters).forEach(([filter, value]) => {
 				if(order.group === filter && value) {
@@ -194,13 +189,7 @@ const DashboardOrders = () => {
 		}))
 	}, [filters, orderData])
 
-	useEffect(() => {
-		console.log("test -> ", orderData, filteredOrderData)
-	}, [orderData, filteredOrderData])
-
 	return (
-		// TODO: Needs a toggle for list/kanban view
-		// Needs color grouping for kanban tickets based on group
 		<Dashboard>
 			<Form>
 				<ToggleButtonGroup 
@@ -209,9 +198,7 @@ const DashboardOrders = () => {
 					handleSetState={setViewType}
 				/>
 				<DropdownButton title="Groups">
-					{/* map by filtered order data to access color? */}
 					{groups && groups.map((group) => (
-						// TODO: On useEffect, the value is not set correctly
 						<Form.Check
 							key={group}
 							type="checkbox"
@@ -221,7 +208,8 @@ const DashboardOrders = () => {
 							checked ={filters[group]}
 							name={group}
 							onChange={handleChangeFilter}
-							// style={{backgroundColor: }}
+							// Temporarily doing this as I figure out how to style the checkbox with js
+							style={{backgroundColor: groupColorMap.get(group)}}
 						/>
 					))}
 				</DropdownButton>
@@ -268,6 +256,7 @@ const DashboardOrders = () => {
 			{viewType === '1' && 
 				<DndProvider backend={HTML5Backend}>
 					<KanbanBoard 
+						groupColorMap={groupColorMap}
 						orders={filteredOrderData}
 						type={'Aid Coordinator'}
 						setOrderData={setOrderData}/>
