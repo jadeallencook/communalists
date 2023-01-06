@@ -5,7 +5,7 @@ export const getNextColor = () => {
     return newColor
 }
 
-export const addToColorArray = (color) => {
+export const addToColorArray = (color: string) => {
     colorArray.add(color)
     // We return a string for now so we can simplify code down to a ternary in files
     return ''

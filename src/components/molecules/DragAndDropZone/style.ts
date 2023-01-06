@@ -1,9 +1,11 @@
 const style = () => ({
     minHeight: '10px',
     '.hovered': {
-        backgroundColor: 'var(--bs-secondary)',
-        height: '100px',
-        width: 'auto'
+        border: 'var(--bs-secondary) 1px dashed',
+        borderRadius: '5px',
+        height: '150px',
+        width: '90%',
+        margin: '1rem auto',
     }
 });
 

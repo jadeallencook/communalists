@@ -1,10 +1,14 @@
 const style = () => ({
+    width:'90%',
     h5: {
         textAlign: 'center',
         marginTop: '10px'
     },
     '.kanban-col': {
-        border: '1px #fff solid'
+        // display: 'flex',
+        // flexDirection: 'row',
+        // justifyContent: 'center'
+        // textAlign: 'center'
     }
 });
 

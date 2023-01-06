@@ -1,7 +1,8 @@
 const style = () => ({
     backgroundColor: 'var(--bs-secondary)',
-    maxHeight: '300px',
-    margin: '1rem 0',
+    maxHeight: '150px',
+    margin: '0 auto',
+    width:'90%',
     '.group-color': {
         minWidth: '10px',
         maxWidth: '10px'

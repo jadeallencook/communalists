@@ -1,3 +1,4 @@
+import { Row } from 'react-bootstrap';
 import { useDrag } from 'react-dnd';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style'
@@ -5,14 +6,15 @@ import style from './style'
 interface DragAndDropItem {
     className: string,
     type: string,
+    orderId: string
 }
 
-const DragAndDropItem: StyledComponent = styled(({className, children, type}) => {
-    // TODO: for some reason deleting this ',' causes the ref on the div to throw an error
+const DragAndDropItem: StyledComponent = styled(({className, children, type, orderId}) => {
     const [, drag ] = useDrag(() => ({
         type: type,
         item: {
             type: 'ROW',
+            id: orderId
         },
         collect: (monitor) => ({
             isDragging: monitor.isDragging()
@@ -20,9 +22,9 @@ const DragAndDropItem: StyledComponent = styled(({className, children, type}) =>
     }))
 
     return (
-        <div role="Handle" ref={drag} className={className}>
+        <Row role="Handle" ref={drag} className={className}>
             {children}
-        </div>
+        </Row>
     )
 })(style)
 
