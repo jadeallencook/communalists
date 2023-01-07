@@ -8,3 +8,4 @@ export { CountryType } from './country';
 export { ZipcodeType } from './zipcode';
 export { USStateType } from './us-state';
 export { CountyType, CountyKeyType } from './county';
+export { FormControlElement } from './form';

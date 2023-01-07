@@ -20,7 +20,7 @@ const EditProfileForm: StyledComponent = styled(({ className }) => (
 		validateOnBlur={false}
 	>
 		{({
-			values: {name, subjectPronoun, objectPronoun, isRemote},
+			values: { name, subjectPronoun, objectPronoun, isRemote },
 			handleChange,
 			handleSubmit,
 			isSubmitting,
@@ -31,7 +31,10 @@ const EditProfileForm: StyledComponent = styled(({ className }) => (
 			isSubmitting: any;
 		}) =>
 			!isSubmitting ? (
-				<Form className={`${className} standard-form`} onSubmit={handleSubmit}>
+				<Form
+					className={`${className} standard-form`}
+					onSubmit={handleSubmit}
+				>
 					<Form.Group className="mb-3">
 						<Form.Label>Display Name</Form.Label>
 						<Form.Control
@@ -58,7 +61,10 @@ const EditProfileForm: StyledComponent = styled(({ className }) => (
 								</option>
 							))}
 						</Form.Select>
-						<ErrorMessage name="subjectPronoun" render={RenderError} />
+						<ErrorMessage
+							name="subjectPronoun"
+							render={RenderError}
+						/>
 					</Form.Group>
 					<Form.Group className="mb-3">
 						<Form.Label>Object Pronoun</Form.Label>
@@ -75,7 +81,10 @@ const EditProfileForm: StyledComponent = styled(({ className }) => (
 								</option>
 							))}
 						</Form.Select>
-						<ErrorMessage name="objectPronoun" render={RenderError} />
+						<ErrorMessage
+							name="objectPronoun"
+							render={RenderError}
+						/>
 					</Form.Group>
 					<Form.Group className="mb-3">
 						<Form.Label>County</Form.Label>

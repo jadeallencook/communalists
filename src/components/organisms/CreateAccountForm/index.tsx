@@ -8,22 +8,24 @@ import validationSchema from './validate';
 import Loading from '@molecules/Loading';
 import { SUBJECT_PRONOUNS, OBJECT_PRONOUNS } from '@objects/pronouns';
 import RenderError from '@components/atoms/RenderError';
-import { UserInterface } from '@interfaces/user'
+import { UserInterface } from '@interfaces/user';
 import { getLocationKeysAndValuesByState } from '@utils/formUtils';
 import { USStateType } from '@custom-types/us-state';
 import locationMap from '@objects/location-map';
 
 // Temp interface for values obj, Both this and UserInterface need to be reviewed
 interface createAccountInterface extends UserInterface {
-	email: string,
-	password: string,
-	passwordConfirmation: string,
+	email: string;
+	password: string;
+	passwordConfirmation: string;
 }
 
 const CreateAccountForm: StyledComponent = styled(({ className }) => {
-	const [stateKey, setStateKey] = useState<USStateType>('CA')
+	const [stateKey, setStateKey] = useState<USStateType>('CA');
 
-	const handleStateChange: React.ChangeEventHandler<HTMLSelectElement> = ({ target: { value } }) => {
+	const handleStateChange: React.ChangeEventHandler<HTMLSelectElement> = ({
+		target: { value },
+	}) => {
 		setStateKey(value as USStateType);
 	};
 
@@ -36,7 +38,16 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 			validateOnBlur={false}
 		>
 			{({
-				values: { name, email, password, passwordConfirmation, subjectPronoun, objectPronoun, address: { street, city, zipcode, county }, isRemote },
+				values: {
+					name,
+					email,
+					password,
+					passwordConfirmation,
+					subjectPronoun,
+					objectPronoun,
+					address: { street, city, zipcode, county },
+					isRemote,
+				},
 				handleChange,
 				handleSubmit,
 				isSubmitting,
@@ -47,7 +58,10 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 				isSubmitting: boolean;
 			}) =>
 				!isSubmitting ? (
-					<Form className={`${className} standard-form`} onSubmit={handleSubmit}>
+					<Form
+						className={`${className} standard-form`}
+						onSubmit={handleSubmit}
+					>
 						<Form.Group className="mb-3">
 							<Form.Label>Display Name</Form.Label>
 							<Form.Control
@@ -79,7 +93,10 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 								value={password}
 								onChange={handleChange}
 							/>
-							<ErrorMessage name="password" render={RenderError} />
+							<ErrorMessage
+								name="password"
+								render={RenderError}
+							/>
 						</Form.Group>
 						<Form.Group className="mb-3">
 							<Form.Label>Confirm Password</Form.Label>
@@ -90,7 +107,10 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 								value={passwordConfirmation}
 								onChange={handleChange}
 							/>
-							<ErrorMessage name="passwordConfirmation" render={RenderError} />
+							<ErrorMessage
+								name="passwordConfirmation"
+								render={RenderError}
+							/>
 						</Form.Group>
 						<Row>
 							<Col>
@@ -109,7 +129,10 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 											</option>
 										))}
 									</Form.Select>
-									<ErrorMessage name="subjectPronoun" render={RenderError} />
+									<ErrorMessage
+										name="subjectPronoun"
+										render={RenderError}
+									/>
 								</Form.Group>
 							</Col>
 							<Col>
@@ -128,7 +151,10 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 											</option>
 										))}
 									</Form.Select>
-									<ErrorMessage name="objectPronoun" render={RenderError} />
+									<ErrorMessage
+										name="objectPronoun"
+										render={RenderError}
+									/>
 								</Form.Group>
 							</Col>
 						</Row>
@@ -142,7 +168,10 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 								value={street}
 								onChange={handleChange}
 							/>
-							<ErrorMessage name="address.street" render={RenderError} />
+							<ErrorMessage
+								name="address.street"
+								render={RenderError}
+							/>
 						</Form.Group>
 						<Row>
 							<Col>
@@ -156,7 +185,10 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 										value={city}
 										onChange={handleChange}
 									/>
-									<ErrorMessage name="address.city" render={RenderError} />
+									<ErrorMessage
+										name="address.city"
+										render={RenderError}
+									/>
 								</Form.Group>
 							</Col>
 							<Col>
@@ -167,13 +199,21 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 										onChange={handleStateChange}
 										name="address.state"
 									>
-										{Object.keys(locationMap).map(state => (
-											<option key={state} value={state}>
-												{state}
-											</option>
-										))}
+										{Object.keys(locationMap).map(
+											(state) => (
+												<option
+													key={state}
+													value={state}
+												>
+													{state}
+												</option>
+											)
+										)}
 									</Form.Select>
-									<ErrorMessage name="address.state" render={RenderError} />
+									<ErrorMessage
+										name="address.state"
+										render={RenderError}
+									/>
 								</Form.Group>
 							</Col>
 						</Row>
@@ -189,7 +229,10 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 										value={zipcode}
 										onChange={handleChange}
 									/>
-									<ErrorMessage name="address.zipcode" render={RenderError} />
+									<ErrorMessage
+										name="address.zipcode"
+										render={RenderError}
+									/>
 								</Form.Group>
 							</Col>
 							<Col>
@@ -201,17 +244,28 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 										name="address.county"
 										value={county}
 									>
-										{getLocationKeysAndValuesByState(stateKey).map((option) => (
-											<option key={option.key} value={option.value}>
+										{getLocationKeysAndValuesByState(
+											stateKey
+										).map((option) => (
+											<option
+												key={option.key}
+												value={option.value}
+											>
 												{option.value}
 											</option>
 										))}
 									</Form.Select>
-									<ErrorMessage name="address.county" render={RenderError} />
+									<ErrorMessage
+										name="address.county"
+										render={RenderError}
+									/>
 								</Form.Group>
 							</Col>
 						</Row>
-						<Form.Group className="mb-3" controlId="formBasicCheckbox">
+						<Form.Group
+							className="mb-3"
+							controlId="formBasicCheckbox"
+						>
 							<Form.Check
 								type="checkbox"
 								label="Check this box if you're able to work remotely"
@@ -219,7 +273,10 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 								checked={isRemote}
 								onChange={handleChange}
 							/>
-							<ErrorMessage name="isRemote" render={RenderError} />
+							<ErrorMessage
+								name="isRemote"
+								render={RenderError}
+							/>
 						</Form.Group>
 						<Button type="submit" disabled={isSubmitting}>
 							Create Account
@@ -230,7 +287,7 @@ const CreateAccountForm: StyledComponent = styled(({ className }) => {
 				)
 			}
 		</Formik>
-	)
+	);
 })(style);
 
 export default CreateAccountForm;

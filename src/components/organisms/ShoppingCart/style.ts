@@ -13,8 +13,8 @@ const style = () => ({
 		marginTop: '2px',
 	},
 	'td > span': {
-		marginLeft: '5px'
-	}
+		marginLeft: '5px',
+	},
 });
 
 export default style;
