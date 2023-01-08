@@ -3,7 +3,7 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { DndProvider } from 'react-dnd'
 import { useEffect, useState } from 'react';
-import { getNextColor, addToColorArray } from '@utils/kanbanBoardUtils';
+import { getNextColor, addToColorArray, resetColorArray } from '@utils/kanbanBoardUtils';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import KanbanBoard from '../KanbanBoard';
 import ToggleButtonGroup from '@molecules/ToggleButtonGroup'
@@ -22,8 +22,7 @@ const OrdersContainer: StyledComponent = styled(({
 	const [filteredOrderData, setFilteredOrderData] = useState(mockOrderData)
 	const [groups, setGroups] = useState<string[]>([])
 	const [filters, setFilters] = useState({})
-	const [viewType, setViewType] = useState('0')
-	// TODO: Should we create a groupColorMap {group: color} and pass into child?
+	const [viewType, setViewType] = useState('1')
 	const [groupColorMap, setGroupColorMap] = useState(new Map())
 
 	const viewTypes = [
@@ -52,6 +51,8 @@ const OrdersContainer: StyledComponent = styled(({
 		setFilters({...filters, ...newFilters})
 
 		const initialGroupColorMap = new Map()
+        // When tabs change, colorArray is empty and must be reset
+        resetColorArray()
 		groups.forEach((group, index) => {
 			const newColor = (index < 5) ? getNextColor() : ''
 			initialGroupColorMap.set(group, newColor) 
@@ -146,13 +147,23 @@ const OrdersContainer: StyledComponent = styled(({
                 </>
             }
 
+            {/* TODO: sortField should be renamed and tied to the type in a separate object */}
             {viewType === '1' && 
                 <DndProvider backend={HTML5Backend}>
                     <KanbanBoard 
                         groupColorMap={groupColorMap}
                         orders={filteredOrderData}
                         type={'Aid Coordinator'}
-                        setOrderData={setOrderData}/>
+                        setOrderData={setOrderData}
+                        statusOptions={['Unassigned', 'In Progress', 'Completed']}
+                        sortField='status'/>
+                    <KanbanBoard 
+                        groupColorMap={groupColorMap}
+                        orders={filteredOrderData}
+                        type={'Driver'}
+                        setOrderData={setOrderData}
+                        statusOptions={['Unassigned', 'In Progress', 'Completed']}
+                        sortField='driverStatus'/>
                 </DndProvider>
             }	
         </Row>

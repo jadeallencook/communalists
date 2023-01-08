@@ -6,15 +6,16 @@ import style from './style'
 interface DragAndDropItem {
     className: string,
     type: string,
-    orderId: string
+    id: string
 }
 
-const DragAndDropItem: StyledComponent = styled(({className, children, type, orderId}) => {
+const DragAndDropItem: StyledComponent = styled(({className, children, type, id}) => {
     const [, drag ] = useDrag(() => ({
         type: type,
         item: {
+            // TODO: do we need type?
             type: 'ROW',
-            id: orderId
+            id: id
         },
         collect: (monitor) => ({
             isDragging: monitor.isDragging()

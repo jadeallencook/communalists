@@ -21,6 +21,7 @@ const KanbanBoardTicketCard: StyledComponent = styled(({
 
     const [color, setColor] = useState('#fff')
 
+    // Move to utils and restyle the card
     const shortenString = (str: string) => {
         if (str.length <= 15) return str
         return `${str.slice(0, 15)}...`
@@ -32,6 +33,7 @@ const KanbanBoardTicketCard: StyledComponent = styled(({
 
     useEffect(() => {
         setColor(groupColorMap.get(order.group))
+        console.log("settings colors", order.group, groupColorMap.get(order.group), groupColorMap)
     }, [groupColorMap])
 
     return (

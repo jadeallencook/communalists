@@ -8,11 +8,11 @@ interface DragAndDropZone {
     data: any,
     onDrop: Function,
     itemType: string,
-    height?: string
+    minHeight?: string
 }
 
 // TODO: make molecule instead of organism, this is reusable
-const DragAndDropZone: StyledComponent = styled(({className, data, onDrop, itemType, height = '10px'}) => {
+const DragAndDropZone: StyledComponent = styled(({className, data, onDrop, itemType, minHeight = '10px'}) => {
     const [{ canDrop, isOver }, drop] = useDrop(() => ({
         accept: itemType, // replace with itemType
         collect: (monitor) => ({
@@ -29,7 +29,7 @@ const DragAndDropZone: StyledComponent = styled(({className, data, onDrop, itemT
     
     // TODO: Items should rearrange inside columns
     return (
-        <Row className={className} ref={drop} style={{minHeight: height}}>
+        <Row className={className} ref={drop} style={{minHeight: minHeight}}>
             <Row className={`'dropZone' ${ isHovered && 'hovered'}`} />
         </Row>
     )

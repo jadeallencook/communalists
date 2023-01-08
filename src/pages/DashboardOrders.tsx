@@ -18,6 +18,7 @@ const mockOrderData = [
     },
     assignedTo: 'string',
     status: 'Unassigned',
+	driverStatus: 'Unassigned',
     lastUpdated: 'string',
 	color:''
 	},
@@ -37,6 +38,7 @@ const mockOrderData = [
 		},
 		assignedTo: 'string',
 		status: 'Completed',
+		driverStatus: 'Unassigned',
 		lastUpdated: 'string',
 		color:''
 	},
@@ -56,6 +58,7 @@ const mockOrderData = [
 		},
 		assignedTo: 'string',
 		status: 'Unassigned',
+		driverStatus: 'Unassigned',
 		lastUpdated: 'string',
 		color:''
 	},
@@ -75,6 +78,7 @@ const mockOrderData = [
 		},
 		assignedTo: 'string',
 		status: 'Completed',
+		driverStatus: 'Unassigned',
 		lastUpdated: 'string',
 		color:''
 	},
@@ -94,6 +98,7 @@ const mockOrderData = [
 		},
 		assignedTo: 'string',
 		status: 'Unassigned',
+		driverStatus: 'Unassigned',
 		lastUpdated: 'string',
 		color:''
 	},
@@ -113,6 +118,7 @@ const mockOrderData = [
 		},
 		assignedTo: 'string',
 		status: 'Completed',
+		driverStatus: 'Unassigned',
 		lastUpdated: 'string',
 		color:''
 	},

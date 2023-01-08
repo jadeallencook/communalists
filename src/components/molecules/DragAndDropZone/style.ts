@@ -1,5 +1,6 @@
 const style = () => ({
     minHeight: '10px',
+    // maxHeight: '60vh',
     '.hovered': {
         border: 'var(--bs-secondary) 1px dashed',
         borderRadius: '5px',
