@@ -6,12 +6,12 @@ const initialValues: any = {
 	SubjectPronoun: 'they',
 	ObjectPronoun: 'them',
 	address: {
-        street: '',
-        city: '',
-        state: 'CA',
-        zipcode: '',
-        county: 'Santa Clara'
-    },
+		street: '',
+		city: '',
+		state: 'CA',
+		zipcode: '',
+		county: 'Santa Clara',
+	},
 	isRemote: true,
 };
 

@@ -28,7 +28,10 @@ const SignInForm: StyledComponent = styled(({ className }) => {
 				isSubmitting: any;
 			}) =>
 				!isSubmitting ? (
-					<Form className={`${className} standard-form`} onSubmit={handleSubmit}>
+					<Form
+						className={`${className} standard-form`}
+						onSubmit={handleSubmit}
+					>
 						<Form.Group className="mb-3">
 							<Form.Label>Email</Form.Label>
 							<Form.Control
@@ -49,7 +52,10 @@ const SignInForm: StyledComponent = styled(({ className }) => {
 								value={password}
 								onChange={handleChange}
 							/>
-							<ErrorMessage name="password" render={RenderError} />
+							<ErrorMessage
+								name="password"
+								render={RenderError}
+							/>
 						</Form.Group>
 						<Button type="submit" disabled={isSubmitting}>
 							Sign In

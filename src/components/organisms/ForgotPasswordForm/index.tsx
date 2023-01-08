@@ -8,7 +8,6 @@ import RenderError from '@components/atoms/RenderError';
 import initialValues from './initial-values';
 
 const ForgotPasswordForm: StyledComponent = styled(({ className }) => {
-
 	return (
 		<Formik
 			initialValues={initialValues}
@@ -29,7 +28,10 @@ const ForgotPasswordForm: StyledComponent = styled(({ className }) => {
 				isSubmitting: any;
 			}) =>
 				!isSubmitting ? (
-					<Form className={`${className} standard-form`} onSubmit={handleSubmit}>
+					<Form
+						className={`${className} standard-form`}
+						onSubmit={handleSubmit}
+					>
 						<Form.Group className="mb-3">
 							<Form.Label>Email</Form.Label>
 							<Form.Control

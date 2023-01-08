@@ -1,3 +1,5 @@
-const RenderError = (message: string) => <p className="help is-danger">{message}</p>;
+const RenderError = (message: string) => (
+	<p className="help is-danger">{message}</p>
+);
 
-export default RenderError
+export default RenderError;

@@ -1,11 +1,14 @@
 import Dashboard from './Dashboard';
+import CreateListingForm from '@components/organisms/CreateListingForm';
 import { Table, Button, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 
 const DashboardListings = () => {
 	const [show, setShow] = useState(false);
+	const [shouldSubmit, setShouldSubmit] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+
 	return (
 		<Dashboard>
 			<Table striped bordered hover variant="dark">
@@ -29,15 +32,9 @@ const DashboardListings = () => {
 				<Modal.Header closeButton>
 					<Modal.Title>Create Listing</Modal.Title>
 				</Modal.Header>
-				<Modal.Body>Form to create a listing goes here...</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleClose}>
-						Close
-					</Button>
-					<Button variant="primary" onClick={handleClose}>
-						Post Listing
-					</Button>
-				</Modal.Footer>
+				<Modal.Body>
+					<CreateListingForm isModal handleClose={handleClose} />
+				</Modal.Body>
 			</Modal>
 			<Button onClick={handleShow}>Create Listing</Button>
 		</Dashboard>
