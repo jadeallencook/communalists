@@ -27,6 +27,7 @@ module.exports = {
 			'@interfaces': path.resolve(__dirname, 'interfaces'),
 			'@objects': path.resolve(__dirname, 'objects'),
 			'@custom-types': path.resolve(__dirname, 'types'),
+			'@fb': path.resolve(__dirname, 'src/firebase'),
 		},
 	},
 	module: {

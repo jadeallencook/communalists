@@ -6,12 +6,13 @@ import { ErrorMessage, Formik } from 'formik';
 import RenderError from '@components/atoms/RenderError';
 import validationSchema from './validate';
 import initialValues from './initial-values';
+import authSignIn from '@fb/auth-sign-in';
 
 const SignInForm: StyledComponent = styled(({ className }) => {
 	return (
 		<Formik
 			initialValues={initialValues}
-			onSubmit={() => null}
+			onSubmit={({ email, password }) => authSignIn(email, password)}
 			validationSchema={validationSchema}
 			validateOnChange={false}
 			validateOnBlur={false}

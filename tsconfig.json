@@ -14,7 +14,8 @@
 			"@database/*": ["./database/*"],
 			"@interfaces/*": ["./interfaces/*"],
 			"@objects/*": ["./objects/*"],
-			"@custom-types/*": ["./types/*"]
+			"@custom-types/*": ["./types/*"],
+			"@fb/*": ["./src/firebase/*"]
 		}
 	}
 }
