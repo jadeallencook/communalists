@@ -1,4 +1,5 @@
-import { colorArray, initialColorArray } from "../const/colors"
+import { colorArray, initialColorArray } from "@consts/colors"
+
 export const getNextColor = () => {
     const newColor = colorArray.values().next().value
     colorArray.delete(newColor)

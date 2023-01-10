@@ -7,19 +7,16 @@ import { useEffect, useState } from 'react';
 
 interface KanbanBoardTicketCardInterface {
     className: string
-    groupColorMap: any,
     order: OrderInterface
     role: string,
 }
 
 const KanbanBoardTicketCard: StyledComponent = styled(({ 
     className, 
-    groupColorMap,
     order, 
     role, 
 }: KanbanBoardTicketCardInterface) => {
 
-    const [color, setColor] = useState('#fff')
 
     // Move to utils and restyle the card
     const shortenString = (str: string) => {
@@ -31,13 +28,8 @@ const KanbanBoardTicketCard: StyledComponent = styled(({
         return `${address.street}, ${address.city}, ${address.county}, ${address.state}, ${address.zipcode}`
     }
 
-    useEffect(() => {
-        setColor(groupColorMap.get(order.group))
-        console.log("settings colors", order.group, groupColorMap.get(order.group), groupColorMap)
-    }, [groupColorMap])
-
     return (
-        <Card className={className} role={role}  style={{borderLeft: `${color} 5px solid`}}>
+        <Card className={className} role={role}>
             <Card.Body>
                 <Row>
                     <p>Order: {order.id}</p>

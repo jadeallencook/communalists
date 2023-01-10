@@ -46,7 +46,7 @@ const mockOrderData = [
 		id: '101010103',
 		requester: 'abhinav',
 		requestDate: 'Jan 1, 1980',
-		group: 'fnb',
+		group: 'sbma',
 		type: 'PICKUP',
 		description: 'string',
 		location: {
@@ -66,7 +66,7 @@ const mockOrderData = [
 		id: '101010104',
 		requester: 'alex',
 		requestDate: 'Jan 1, 1980',
-		group: 'da',
+		group: 'sbma',
 		type: 'PICKUP',
 		description: 'string',
 		location: {
@@ -86,7 +86,7 @@ const mockOrderData = [
 		id: '101010105',
 		requester: 'abhinav',
 		requestDate: 'Jan 1, 1980',
-		group: 'asdf',
+		group: 'sbma',
 		type: 'PICKUP',
 		description: 'string',
 		location: {
@@ -106,7 +106,7 @@ const mockOrderData = [
 		id: '101010106',
 		requester: 'alex',
 		requestDate: 'Jan 1, 1980',
-		group: 'fdsa',
+		group: 'sbma',
 		type: 'PICKUP',
 		description: 'string',
 		location: {

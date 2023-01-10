@@ -2,7 +2,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { OrderInterface } from '@interfaces/order';
-import KanbanBoardTicketCard from '../../molecules/KanbanBoardTicketCard';
+import KanbanBoardTicketCard from '@molecules/KanbanBoardTicketCard';
 import DragAndDropZone from '@molecules/DragAndDropZone'
 import DragAndDropItem from '@components/molecules/DragAndDropItem';
 
@@ -13,8 +13,6 @@ type BoardType =
 
 interface KanbanBoardInterface {
     className: string,
-    groupColorMap: any,
-    // orders: { [key: string]: OrderInterface }[]
     orders: OrderInterface[]
     type: BoardType,
     setOrderData: React.SetStateAction<any>,
@@ -24,7 +22,6 @@ interface KanbanBoardInterface {
 
 const KanbanBoard: StyledComponent = styled(({ 
     className, 
-    groupColorMap, 
     orders, 
     type, 
     setOrderData,
@@ -50,7 +47,7 @@ const KanbanBoard: StyledComponent = styled(({
             <h4>Kanban View - {type}</h4>
             <Row>
                 {statusOptions.map((status) => (
-                    <Col>
+                    <Col key={status}>
                         <Row>
                         <h5>{status}</h5>
                             <Col 
@@ -65,7 +62,7 @@ const KanbanBoard: StyledComponent = styled(({
                                                 <DragAndDropZone data={{column: status}} onDrop={handleDrop} itemType={type}/> 
                                                 <DragAndDropItem type={type} key={JSON.stringify(order.id)} id={order.id}>
                                                     <KanbanBoardTicketCard
-                                                        groupColorMap={groupColorMap} 
+                                                        // groupColorMap={groupColorMap} 
                                                         order={order} 
                                                         type={type}
                                                     />
