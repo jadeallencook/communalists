@@ -9,7 +9,6 @@ import ToggleButtonGroup from '@molecules/ToggleButtonGroup'
 
 interface OrdersContainerInterface {
     className: string,
-    groupColorMap: any,
     mockOrderData: any
 } 
 

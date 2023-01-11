@@ -62,7 +62,6 @@ const KanbanBoard: StyledComponent = styled(({
                                                 <DragAndDropZone data={{column: status}} onDrop={handleDrop} itemType={type}/> 
                                                 <DragAndDropItem type={type} key={JSON.stringify(order.id)} id={order.id}>
                                                     <KanbanBoardTicketCard
-                                                        // groupColorMap={groupColorMap} 
                                                         order={order} 
                                                         type={type}
                                                     />
