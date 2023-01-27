@@ -1,12 +1,10 @@
 const style = () => ({
-    minHeight: '10px',
-    // maxHeight: '60vh',
     '.hovered': {
         border: 'var(--bs-secondary) 1px dashed',
         borderRadius: '5px',
-        height: '150px',
+        height: '90px',
         width: '90%',
-        margin: '1rem auto',
+        margin: '0.5rem auto',
     }
 });
 

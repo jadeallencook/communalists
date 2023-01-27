@@ -3,7 +3,7 @@ const style = () => ({
     // margin: '0 0 50px 5em !important',
     '.orders-controls': {
         display: 'flex',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         marginBottom: '1rem'
     },
     '.toggle-view': {

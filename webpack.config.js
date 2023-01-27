@@ -23,6 +23,7 @@ module.exports = {
 			'@organisms': path.resolve(__dirname, 'src/components/organisms'),
 			'@utils': path.resolve(__dirname, 'src/utils'),
 			'@assets': path.resolve(__dirname, 'src/assets'),
+			'@consts': path.resolve(__dirname, 'src/consts'),
 			'@database': path.resolve(__dirname, 'database'),
 			'@interfaces': path.resolve(__dirname, 'interfaces'),
 			'@objects': path.resolve(__dirname, 'objects'),

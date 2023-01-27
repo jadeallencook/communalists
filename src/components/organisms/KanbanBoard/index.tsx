@@ -5,6 +5,7 @@ import { OrderInterface } from '@interfaces/order';
 import KanbanBoardTicketCard from '@molecules/KanbanBoardTicketCard';
 import DragAndDropZone from '@molecules/DragAndDropZone'
 import DragAndDropItem from '@components/molecules/DragAndDropItem';
+import { Dispatch } from 'react';
 
 type BoardType =
     | 'Aid Coordinator'
@@ -15,7 +16,7 @@ interface KanbanBoardInterface {
     className: string,
     orders: OrderInterface[]
     type: BoardType,
-    setOrderData: React.SetStateAction<any>,
+    setOrderData: Dispatch<React.SetStateAction<OrderInterface[]>>,
     statusOptions: string[],
     sortField: string
 } 
@@ -29,11 +30,8 @@ const KanbanBoard: StyledComponent = styled(({
     sortField
 }: KanbanBoardInterface) => {
 
-    const handleDrop = (dropZone, item) => {
-        // dropZone is the data obj, for now column name
-        // item seems to be the dropZone obj?
-        const test = orders
-        const updatedOrders = test.map((order) => {
+    const handleDrop = (dropZone: any, item: OrderInterface) => {
+        const updatedOrders = orders.map((order) => {
             if(item.id === order.id){
                 order[sortField] = dropZone.column
             }
@@ -44,8 +42,7 @@ const KanbanBoard: StyledComponent = styled(({
 
 	return (
 		<Container className={className}>
-            <h4>Kanban View - {type}</h4>
-            <Row>
+            <Row className="test" style={{width: Math.max(250 * statusOptions.length, document.body.clientWidth * 0.8)}}>
                 {statusOptions.map((status) => (
                     <Col key={status}>
                         <Row>
@@ -55,12 +52,11 @@ const KanbanBoard: StyledComponent = styled(({
                                 className={'kanban-col'}
                                 >
                                     {orders && orders
-                                        // @ts-ignore order.status is not read as a string even though it is
                                         .filter((order: OrderInterface) => {return order[sortField] === status})
                                         .map((order: OrderInterface) => (
-                                            <Row key={JSON.stringify(order.id)} className='order-row'>
+                                            <Row key={order.id} className='order-row'>
                                                 <DragAndDropZone data={{column: status}} onDrop={handleDrop} itemType={type}/> 
-                                                <DragAndDropItem type={type} key={JSON.stringify(order.id)} id={order.id}>
+                                                <DragAndDropItem type={type} key={order.id} id={order.id}>
                                                     <KanbanBoardTicketCard
                                                         order={order} 
                                                         type={type}
@@ -69,7 +65,7 @@ const KanbanBoard: StyledComponent = styled(({
                                             </Row>
                                         ))}
                                 <DragAndDropZone data={{column: status}} onDrop={handleDrop} itemType={type} minHeight={
-                                    orders && orders.filter((order: OrderInterface) => {return order[sortField] === status}).length === 0 ? '100%': '30%'
+                                    orders && orders.filter((order: OrderInterface) => {return order[sortField] === status}).length === 0 ? '40vh': '10px'
                                 }/>
                             </Col>
                         </Row>

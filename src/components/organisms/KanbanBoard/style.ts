@@ -1,6 +1,7 @@
 const style = () => ({
-    width:'90%',
+    // width:'90%',
     marginBottom:'50px',
+    overflow: 'auto',
     h5: {
         textAlign: 'center',
         marginTop: '10px'
@@ -10,9 +11,13 @@ const style = () => ({
         justifyContent: 'center',
     },
     '.kanban-col': {
-        minHeight: '300px', 
+        height:'fit-content',
+        // minHeight: '600px', 
         maxHeight:'50vh',
         overflow:'auto',
+    },
+    '.test': {
+        margin: 'auto'
     }
 });
 

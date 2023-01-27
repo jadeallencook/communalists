@@ -17,36 +17,33 @@ const KanbanBoardTicketCard: StyledComponent = styled(({
     role, 
 }: KanbanBoardTicketCardInterface) => {
 
+    const {
+        id,
+        driverStatus,
+        location: { county },
+    } = order
 
     // Move to utils and restyle the card
-    const shortenString = (str: string) => {
-        if (str.length <= 15) return str
-        return `${str.slice(0, 15)}...`
-    }
+    // const shortenString = (str: string) => {
+    //     if (str.length <= 15) return str
+    //     return `${str.slice(0, 15)}...`
+    // }
 
-    const addressToString = (address: AddressInterface) => {
-        return `${address.street}, ${address.city}, ${address.county}, ${address.state}, ${address.zipcode}`
-    }
+    // const addressToString = (address: AddressInterface) => {
+    //     return `${address.street}, ${address.city}, ${address.county}, ${address.state}, ${address.zipcode}`
+    // }
 
     return (
         <Card className={className} role={role}>
             <Card.Body>
-                <Row>
-                    <p>Order: {order.id}</p>
-                    {/* <p>{order.location.city}</p> */}
+                <Row className="card-label">
+                    <p>#{id} - {county}</p>
                     {/* <Button onClick={() => props.onShowEditTicketCardModal(props.id)}>
                         <EditIcon />
                     </Button> */}
                 </Row>
                 <Row>
-                    <p>Address:</p>
-                    <p>{shortenString(addressToString(order.location))}</p>
-                    {/* <p>Requester</p>
-                    <p>{shortenString(order.requester)}</p>
-                    <p>Description:</p>
-                    <p>{shortenString(order.description)}</p>
-                    <p>Assigned To:</p>
-                    <p>{shortenString(order.assignedTo)}</p> */}
+                    <p>Driver assigned - {driverStatus}</p>
                 </Row>
             </Card.Body>
         </Card>

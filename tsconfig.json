@@ -11,10 +11,11 @@
 			"@organisms/*": ["./src/components/organisms/*"],
 			"@utils/*": ["./src/utils/*"],
 			"@assets/*": ["./src/assets/*"],
+			"@consts/*": ["./src/consts/*"],
 			"@database/*": ["./database/*"],
 			"@interfaces/*": ["./interfaces/*"],
 			"@objects/*": ["./objects/*"],
-			"@custom-types/*": ["./types/*"]
+			"@custom-types/*": ["./types/*"],
 		}
 	}
 }
