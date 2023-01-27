@@ -20,7 +20,7 @@ const formData: Array<FormDataInterface> = [
 		options: SUBJECT_PRONOUNS,
 		validationSchema: yup.string().label('Subject Pronoun').required(),
 		label: 'Subject Pronoun',
-		size: 'sm',
+		size: 'xsm',
 	},
 	{
 		name: 'objectPronoun',
@@ -29,7 +29,7 @@ const formData: Array<FormDataInterface> = [
 		options: OBJECT_PRONOUNS,
 		validationSchema: yup.string().label('Object Pronoun').required(),
 		label: 'Object Pronoun',
-		size: 'sm',
+		size: 'xsm',
 	},
 	{
 		name: 'language',
@@ -61,7 +61,7 @@ const formData: Array<FormDataInterface> = [
 		options: ['Email', 'Call', 'Text'],
 		validationSchema: yup.string().label('Email').required(),
 		label: 'Preferred Contact Method',
-		size: 'sm',
+		size: 'xsm',
 	},
 	{
 		name: 'location',

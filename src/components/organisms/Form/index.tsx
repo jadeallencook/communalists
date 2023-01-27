@@ -11,7 +11,7 @@ export interface InputInterface {
 	label: string;
 	options?: Array<string>;
 	placeholder?: string;
-	size?: 'sm' | 'md' | 'lg';
+	size?: 'xsm' | 'sm';
 }
 
 export interface FormDataInterface extends InputInterface {

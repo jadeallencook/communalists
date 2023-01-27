@@ -5,6 +5,9 @@ const style = () => ({
 	'.sm > input, .sm > select': {
 		maxWidth: '250px',
 	},
+	'.xsm > input, .xsm > select': {
+		maxWidth: '125px',
+	},
 });
 
 export default style;
