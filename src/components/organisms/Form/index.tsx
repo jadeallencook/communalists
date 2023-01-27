@@ -11,6 +11,7 @@ export interface InputInterface {
 	label: string;
 	options?: Array<string>;
 	placeholder?: string;
+	size?: 'sm' | 'md' | 'lg';
 }
 
 export interface FormDataInterface extends InputInterface {
@@ -65,8 +66,12 @@ const StyledForm = styled(
 									placeholder,
 									label,
 									options,
+									size,
 								}) => (
-									<BSForm.Group className="mb-3" key={name}>
+									<BSForm.Group
+										className={`mb-3 ${size}`}
+										key={name}
+									>
 										{type === 'text' && (
 											<>
 												<BSForm.Label>
@@ -137,6 +142,7 @@ const Form = ({ onSubmit, data, submitButtonText }: FormPropsInterface) => {
 			{
 				name,
 				type,
+				size,
 				placeholder,
 				initialValue,
 				label,
@@ -145,7 +151,10 @@ const Form = ({ onSubmit, data, submitButtonText }: FormPropsInterface) => {
 			}
 		) => ({
 			initialValues: { ...initialValues, [name]: initialValue },
-			inputs: [...inputs, { type, name, placeholder, label, options }],
+			inputs: [
+				...inputs,
+				{ type, name, placeholder, label, options, size },
+			],
 		}),
 		{ initialValues: {}, inputs: [] }
 	);
