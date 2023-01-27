@@ -2,35 +2,8 @@ import { Container } from 'react-bootstrap';
 import Form from '@organisms/Form';
 import * as yup from 'yup';
 import { FormDataInterface } from '@organisms/Form';
-import { ObjectPronounType, SubjectPronounType } from '@custom-types/pronouns';
 import { OBJECT_PRONOUNS, SUBJECT_PRONOUNS } from '@objects/pronouns';
-
-export interface RequestAidInterface {
-	name: string;
-	subjectPronoun: SubjectPronounType;
-	objectPronoun: ObjectPronounType;
-	language: string;
-	phone: string;
-	email: string;
-	preferredContactMethod: 'call' | 'text' | 'email';
-	location: string;
-	hasHearingDisability: boolean;
-	hasTransportation: boolean;
-	hasFluLikeSymptoms: boolean;
-	hasHealthCondition: boolean;
-	healthConditions: string;
-	is18: boolean;
-	needsPickup: boolean;
-	needsTransportation: boolean;
-	needsMedicalSupplies: boolean;
-	needsCleaningSupplies: boolean;
-	needsHomeCookedMeal: boolean;
-	needHomeCleaning: boolean;
-	needsCompanionship: boolean;
-	needsSocialServices: boolean;
-	needsPetCare: boolean;
-	needsOther: string;
-}
+import RequestAidInterface from '@interfaces/request-aid';
 
 const formData: Array<FormDataInterface> = [
 	{
