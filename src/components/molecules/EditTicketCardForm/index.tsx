@@ -3,7 +3,7 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { ErrorMessage, Formik } from 'formik';
 import RenderError from '@components/atoms/RenderError';
-import { AidCoordinatorStatusOptions } from '@consts/kanbanBoard';
+import { AidCoordinatorStatusOptions, DriverStatusOptions } from '@consts/kanbanBoard';
 import { OrderInterface } from '@interfaces/order';
 
 const EditTicketCardForm: StyledComponent = styled(({ className, order, setOrderData, onClose }) => {
@@ -13,7 +13,8 @@ const EditTicketCardForm: StyledComponent = styled(({ className, order, setOrder
         Object.entries(values).map(([key, val]) => {
             newOrder[key] = val
         })
-        setOrderData((prevOrders: OrderInterface[]) => [...prevOrders, newOrder])
+        setOrderData((prevOrders: OrderInterface[]) => 
+            prevOrders.map((prevOrder) => (prevOrder.id === values.id) ? newOrder: prevOrder))
         onClose()
 	}
 
@@ -69,6 +70,22 @@ const EditTicketCardForm: StyledComponent = styled(({ className, order, setOrder
                             value={status}
                         >
                             {AidCoordinatorStatusOptions.map((option) => (
+                                <option
+                                    key={option}
+                                    value={option}
+                                >
+                                    {option}
+                                </option>
+                            ))}
+                        </Form.Select>
+                        <Form.Label>Driver Status</Form.Label>
+                        <Form.Select
+                            className="select-sm"
+                            onChange={handleChange}
+                            name="driverStatus"
+                            value={driverStatus}
+                        >
+                            {DriverStatusOptions.map((option) => (
                                 <option
                                     key={option}
                                     value={option}
