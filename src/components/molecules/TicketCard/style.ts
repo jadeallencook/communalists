@@ -12,8 +12,16 @@ const style = () => ({
         fontSize: '0.8em'
     },
     '.card-label': {
-        // fontSize: '0.8em',
-        // margin: '0.8rem 0 0 0'
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    '.card-title': {
+        width: '80%'
+    },
+    '.card-edit-button': {
+        padding: '0 5px',
+        width: 'fit-content'
     }
 });
 

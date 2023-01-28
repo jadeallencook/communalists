@@ -2,7 +2,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { OrderInterface } from '@interfaces/order';
-import KanbanBoardTicketCard from '@molecules/KanbanBoardTicketCard';
+import TicketCard from '@components/molecules/TicketCard';
 import DragAndDropZone from '@molecules/DragAndDropZone'
 import DragAndDropItem from '@components/molecules/DragAndDropItem';
 import { Dispatch } from 'react';
@@ -57,9 +57,10 @@ const KanbanBoard: StyledComponent = styled(({
                                             <Row key={order.id} className='order-row'>
                                                 <DragAndDropZone data={{column: status}} onDrop={handleDrop} itemType={type}/> 
                                                 <DragAndDropItem type={type} key={order.id} id={order.id}>
-                                                    <KanbanBoardTicketCard
+                                                    <TicketCard
                                                         order={order} 
                                                         type={type}
+                                                        setOrderData={setOrderData}
                                                     />
                                                 </DragAndDropItem>
                                             </Row>
