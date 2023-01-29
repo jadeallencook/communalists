@@ -12,6 +12,7 @@ import DashboardOrders from '@pages/DashboardOrders';
 import DashboardSettings from '@pages/DashboardSettings';
 import DashboardAdmin from '@pages/DashboardAdmin';
 import ForgotPassword from '@pages/ForgotPassword';
+import Request from '@pages/Request';
 
 interface Route {
 	path: string;
@@ -70,6 +71,10 @@ const routes: Route[] = [
 	{
 		path: '/forgot-password',
 		element: <ForgotPassword />,
+	},
+	{
+		path: '/request',
+		element: <Request />,
 	},
 ];
 
