@@ -24,12 +24,3 @@ export interface FormPropsInterface {
 export interface InitialValueInterface {
 	[key: string]: string | number;
 }
-
-export interface StyledFormInterface {
-	className: string;
-	initialValues: InitialValueInterface;
-	validationSchema: yup.AnySchema;
-	onSubmit: any;
-	inputs: any;
-	submitButtonText?: string;
-}

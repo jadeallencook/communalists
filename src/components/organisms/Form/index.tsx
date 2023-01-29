@@ -3,7 +3,16 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import * as yup from 'yup';
 import { Button, Form as BSForm } from 'react-bootstrap';
-import { FormPropsInterface, InitialValueInterface, InputInterface, StyledFormInterface } from '@interfaces/form';
+import { FormPropsInterface, InitialValueInterface, InputInterface } from '@interfaces/form';
+
+interface StyledFormInterface {
+	className: string;
+	initialValues: InitialValueInterface;
+	validationSchema: yup.AnySchema;
+	onSubmit: any;
+	inputs: any;
+	submitButtonText?: string;
+}
 
 const StyledForm = styled(
 	({
