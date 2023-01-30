@@ -3,7 +3,7 @@ import Form from '@organisms/Form';
 import * as yup from 'yup';
 import { FormDataInterface } from '@organisms/Form';
 import { OBJECT_PRONOUNS, SUBJECT_PRONOUNS } from '@objects/pronouns';
-import RequestAidInterface from '@interfaces/request-aid';
+import addRequest from '@fb/add-request';
 
 const formData: Array<FormDataInterface> = [
 	{
@@ -207,7 +207,7 @@ const Request = () => (
 		<h1>Request Aid</h1>
 		<Form
 			data={formData}
-			onSubmit={(values: RequestAidInterface) => console.log({ values })}
+			onSubmit={addRequest}
 			submitButtonText="Submit Request"
 		/>
 	</Container>

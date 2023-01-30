@@ -69,7 +69,7 @@ const StyledForm = styled(
 									size,
 								}) => (
 									<BSForm.Group
-										className={`mb-3 ${size}`}
+										className={`mb-3 ${size || ''}`}
 										key={name}
 									>
 										{type === 'text' && (
@@ -83,6 +83,7 @@ const StyledForm = styled(
 													placeholder={placeholder}
 													onChange={handleChange}
 													value={values[name]}
+													disabled={isSubmitting}
 												/>
 											</>
 										)}
@@ -94,6 +95,7 @@ const StyledForm = styled(
 												onChange={handleChange}
 												value={values[name]}
 												label={label}
+												disabled={isSubmitting}
 											/>
 										)}
 										{type === 'select' && (
@@ -106,6 +108,7 @@ const StyledForm = styled(
 													placeholder={placeholder}
 													onChange={handleChange}
 													value={values[name]}
+													disabled={isSubmitting}
 												>
 													{options.map((option) => (
 														<option key={option}>
@@ -129,16 +132,13 @@ const StyledForm = styled(
 )(style);
 
 const Form = ({ onSubmit, data, submitButtonText }: FormPropsInterface) => {
-	let validationSchema = yup.object().shape({});
-	const {
-		initialValues,
-		inputs,
-	}: {
+	const props: {
 		initialValues: InitialValueInterface;
 		inputs: Array<InputInterface>;
+		validationSchema: any;
 	} = data.reduce(
 		(
-			{ initialValues, inputs },
+			{ initialValues, inputs, validationSchema },
 			{
 				name,
 				type,
@@ -155,15 +155,19 @@ const Form = ({ onSubmit, data, submitButtonText }: FormPropsInterface) => {
 				...inputs,
 				{ type, name, placeholder, label, options, size },
 			],
+			validationSchema: { ...validationSchema },
 		}),
-		{ initialValues: {}, inputs: [] }
+		{
+			initialValues: {},
+			inputs: [],
+			validationSchema: yup.object().shape({}),
+		}
 	);
 	return (
 		<StyledForm
 			onSubmit={onSubmit}
-			initialValues={initialValues}
-			inputs={inputs}
 			submitButtonText={submitButtonText}
+			{...props}
 		/>
 	);
 };
