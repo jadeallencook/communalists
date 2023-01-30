@@ -1,35 +1,11 @@
 import { Formik } from 'formik';
 import styled, { StyledComponent } from 'styled-components';
-import { HTMLInputTypeAttribute } from 'react';
 import style from './style';
 import * as yup from 'yup';
 import { Button, Form as BSForm } from 'react-bootstrap';
+import { FormPropsInterface, InitialValueInterface, InputInterface } from '@interfaces/form';
 
-export interface InputInterface {
-	type: HTMLInputTypeAttribute;
-	name: string;
-	label: string;
-	options?: Array<string>;
-	placeholder?: string;
-	size?: 'xsm' | 'sm';
-}
-
-export interface FormDataInterface extends InputInterface {
-	initialValue: string | boolean;
-	validationSchema: yup.AnySchema;
-}
-
-export interface FormPropsInterface {
-	data: Array<FormDataInterface>;
-	onSubmit: any;
-	submitButtonText?: string;
-}
-
-export interface InitialValueInterface {
-	[key: string]: string | number;
-}
-
-export interface StyledFormInterface {
+interface StyledFormInterface {
 	className: string;
 	initialValues: InitialValueInterface;
 	validationSchema: yup.AnySchema;

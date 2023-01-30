@@ -1,7 +1,7 @@
 import { Container } from 'react-bootstrap';
 import Form from '@organisms/Form';
 import * as yup from 'yup';
-import { FormDataInterface } from '@organisms/Form';
+import { FormDataInterface } from '@interfaces/form';
 import { OBJECT_PRONOUNS, SUBJECT_PRONOUNS } from '@objects/pronouns';
 import addRequest from '@fb/add-request';
 
