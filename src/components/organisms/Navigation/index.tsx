@@ -2,10 +2,8 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { Link, useLocation } from 'react-router-dom';
-import ShoppingCart from '@organisms/ShoppingCart';
 
 const routerLinks = [
-	{ title: 'Listings', route: '/listings' },
 	{ title: 'Dashboard', route: '/dashboard' },
 	{ title: 'Sign In', route: '/sign-in' },
 ];
@@ -30,7 +28,6 @@ const Navigation: StyledComponent = styled(({ className }) => {
 							{title}
 						</Link>
 					))}
-					<ShoppingCart />
 				</Nav>
 			</Container>
 		</Navbar>
