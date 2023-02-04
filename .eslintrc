@@ -22,5 +22,5 @@
 		"quotes": ["error", "single"],
 		"semi": ["error", "always"]
 	},
-	"ignorePatterns": ["archive"]
+	"ignorePatterns": ["archive/*"]
 }
