@@ -1,1 +1,2 @@
-archive/
+archive/**/*.tsx
+archive/**/*.ts
