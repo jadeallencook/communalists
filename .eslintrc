@@ -21,6 +21,5 @@
 		"indent": ["error", "tab"],
 		"quotes": ["error", "single"],
 		"semi": ["error", "always"]
-	},
-	"ignorePatterns": ["archive/**/*.*"]
+	}
 }
