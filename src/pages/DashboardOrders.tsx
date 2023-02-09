@@ -1,7 +1,9 @@
 import Dashboard from './Dashboard';
 import { Table } from 'react-bootstrap';
+import getRequests from '@fb/get-requests';
 
 const DashboardOrders = () => {
+	getRequests().then((data) => console.log({ ...data }));
 	return (
 		<Dashboard>
 			<Table striped bordered hover variant="dark">
