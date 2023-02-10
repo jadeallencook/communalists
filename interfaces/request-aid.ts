@@ -1,28 +1,20 @@
-import { ObjectPronounType, SubjectPronounType } from '@custom-types/pronouns';
+import { MethodKeyTypes } from '@custom-types/methods';
+import { LocationKeyType } from '@custom-types/locations';
+import { LanguageKeyTypes } from '@custom-types/languages';
+import { StageKeyType } from '@custom-types/stages';
+import { Timestamp } from 'firebase/firestore';
 
-export default interface RequestAidInterface {
+interface RequestAidInterface {
 	name: string;
-	subjectPronoun: SubjectPronounType;
-	objectPronoun: ObjectPronounType;
-	language: string;
-	phone: string;
 	email: string;
-	preferredContactMethod: 'call' | 'text' | 'email';
-	location: string;
-	hasHearingDisability: boolean;
-	hasTransportation: boolean;
-	hasFluLikeSymptoms: boolean;
-	hasHealthCondition: boolean;
-	healthConditions: string;
-	is18: boolean;
-	needsPickup: boolean;
-	needsTransportation: boolean;
-	needsMedicalSupplies: boolean;
-	needsCleaningSupplies: boolean;
-	needsHomeCookedMeal: boolean;
-	needHomeCleaning: boolean;
-	needsCompanionship: boolean;
-	needsSocialServices: boolean;
-	needsPetCare: boolean;
-	needsOther: string;
+	phone: string;
+	location: LocationKeyType;
+	language: LanguageKeyTypes;
+	method: MethodKeyTypes;
+	health: string;
+	needs: string;
+	stage: StageKeyType;
+	submitted: Timestamp;
 }
+
+export default RequestAidInterface;
