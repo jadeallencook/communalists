@@ -17,22 +17,22 @@ const Navigation: StyledComponent = styled(({ className }) => {
                     <Link to="/">Communalists</Link>
                 </Navbar.Brand>
                 <Nav className="justify-content-end">
-                    {routerLinks.map(({ title, route }) => (
-                        <Link
-                            className={
-                                pathname.indexOf(route) === 0 ? 'active' : ''
-                            }
-                            key={route}
-                            to={route}
-                        >
-                            {title}
-                        </Link>
-                    ))}
+                    <Link
+                        className={
+                            pathname.indexOf('/request-aid') === 0 ||
+                            pathname === '/'
+                                ? 'active'
+                                : ''
+                        }
+                        to={'/request-aid'}
+                    >
+                        Request Aid
+                    </Link>
                     {auth ? (
                         <>
                             <Link
                                 className={
-                                    pathname.indexOf('dashboard') === 0
+                                    pathname.indexOf('/dashboard') === 0
                                         ? 'active'
                                         : ''
                                 }
@@ -47,7 +47,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                     ) : (
                         <Link
                             className={
-                                pathname.indexOf('sign-in') === 0
+                                pathname.indexOf('/sign-in') === 0
                                     ? 'active'
                                     : ''
                             }
