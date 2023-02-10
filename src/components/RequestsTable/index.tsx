@@ -30,6 +30,7 @@ const RequestsTable: StyledComponent = styled(
                             <th>Name</th>
                             <th>Location</th>
                             <th>Language</th>
+                            <th>Driver</th>
                             <th>Stage</th>
                         </tr>
                     </thead>
@@ -37,13 +38,27 @@ const RequestsTable: StyledComponent = styled(
                         {Object.entries(requests).map(
                             ([
                                 id,
-                                { name, location, language, stage, submitted },
+                                {
+                                    name,
+                                    location,
+                                    language,
+                                    stage,
+                                    timestamp,
+                                    driver,
+                                },
                             ]) => (
                                 <tr key={id} onClick={() => handler(id)}>
-                                    <td>{timestampToDateString(submitted)}</td>
+                                    <td>{timestampToDateString(timestamp)}</td>
                                     <td>{name}</td>
                                     <td>{locations[location]}, CA</td>
                                     <td>{languages[language]}</td>
+                                    <td>
+                                        <Badge
+                                            bg={driver ? 'success' : 'danger'}
+                                        >
+                                            {driver ? 'Assigned' : 'None'}
+                                        </Badge>
+                                    </td>
                                     <td>
                                         <Badge bg={getBadgeBgForStage(stage)}>
                                             {stages[stage]}
