@@ -4,35 +4,35 @@ import style from './style';
 import { Link, useLocation } from 'react-router-dom';
 
 const routerLinks = [
-	{ title: 'Request Aid', route: '/request-aid' },
-	{ title: 'Dashboard', route: '/dashboard' },
-	{ title: 'Sign In', route: '/sign-in' },
+    { title: 'Request Aid', route: '/request-aid' },
+    { title: 'Dashboard', route: '/dashboard' },
+    { title: 'Sign In', route: '/sign-in' },
 ];
 
 const Navigation: StyledComponent = styled(({ className }) => {
-	const { pathname } = useLocation();
-	return (
-		<Navbar bg="dark" variant="dark" className={className}>
-			<Container>
-				<Navbar.Brand>
-					<Link to="/">Communalists</Link>
-				</Navbar.Brand>
-				<Nav className="justify-content-end">
-					{routerLinks.map(({ title, route }) => (
-						<Link
-							className={
-								pathname.indexOf(route) === 0 ? 'active' : ''
-							}
-							key={route}
-							to={route}
-						>
-							{title}
-						</Link>
-					))}
-				</Nav>
-			</Container>
-		</Navbar>
-	);
+    const { pathname } = useLocation();
+    return (
+        <Navbar bg="dark" variant="dark" className={className}>
+            <Container>
+                <Navbar.Brand>
+                    <Link to="/">Communalists</Link>
+                </Navbar.Brand>
+                <Nav className="justify-content-end">
+                    {routerLinks.map(({ title, route }) => (
+                        <Link
+                            className={
+                                pathname.indexOf(route) === 0 ? 'active' : ''
+                            }
+                            key={route}
+                            to={route}
+                        >
+                            {title}
+                        </Link>
+                    ))}
+                </Nav>
+            </Container>
+        </Navbar>
+    );
 })(style);
 
 export default Navigation;
