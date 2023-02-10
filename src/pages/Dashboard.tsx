@@ -11,11 +11,13 @@ const Dashboard = () => {
 	}>({});
 
 	const [loaded, setLoaded] = useState<boolean>(false);
+	const [refetch, setRefetch] = useState<boolean>(false);
 	const [show, setShow] = useState<boolean>(false);
 	const [selected, setSelected] = useState<string>();
 	const handler = (id?: string): void => {
 		setSelected(id);
 		setShow((prev) => !prev);
+		setRefetch(true);
 	};
 
 	useEffect(() => {
@@ -23,7 +25,8 @@ const Dashboard = () => {
 			setRequests(requests);
 			setLoaded(true);
 		});
-	}, []);
+		setRefetch(false);
+	}, [refetch]);
 
 	return (
 		<Container>
