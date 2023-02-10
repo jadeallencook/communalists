@@ -4,8 +4,9 @@ import style from './style';
 import { Link, useLocation } from 'react-router-dom';
 
 const routerLinks = [
-	{ title: 'Dashboard', route: '/dashboard' },
 	{ title: 'Request Aid', route: '/request-aid' },
+	{ title: 'Dashboard', route: '/dashboard' },
+	{ title: 'Sign In', route: '/sign-in' },
 ];
 
 const Navigation: StyledComponent = styled(({ className }) => {
