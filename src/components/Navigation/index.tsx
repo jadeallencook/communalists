@@ -2,15 +2,14 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { Link, useLocation } from 'react-router-dom';
+import useUserState from '@api/auth-state-listener';
+import authSignOut from '@api/auth-sign-out';
 
-const routerLinks = [
-    { title: 'Request Aid', route: '/request-aid' },
-    { title: 'Dashboard', route: '/dashboard' },
-    { title: 'Sign In', route: '/sign-in' },
-];
+const routerLinks = [{ title: 'Request Aid', route: '/request-aid' }];
 
 const Navigation: StyledComponent = styled(({ className }) => {
     const { pathname } = useLocation();
+    const auth = useUserState();
     return (
         <Navbar bg="dark" variant="dark" className={className}>
             <Container>
@@ -29,6 +28,34 @@ const Navigation: StyledComponent = styled(({ className }) => {
                             {title}
                         </Link>
                     ))}
+                    {auth ? (
+                        <>
+                            <Link
+                                className={
+                                    pathname.indexOf('dashboard') === 0
+                                        ? 'active'
+                                        : ''
+                                }
+                                to="/dashboard"
+                            >
+                                Dashboard
+                            </Link>
+                            <Link onClick={() => authSignOut()} to="/">
+                                Sign Out
+                            </Link>
+                        </>
+                    ) : (
+                        <Link
+                            className={
+                                pathname.indexOf('sign-in') === 0
+                                    ? 'active'
+                                    : ''
+                            }
+                            to="/sign-in"
+                        >
+                            Sign In
+                        </Link>
+                    )}
                 </Nav>
             </Container>
         </Navbar>
