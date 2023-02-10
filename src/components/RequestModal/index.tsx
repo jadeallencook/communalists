@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { StageKeyType } from '@custom-types/stages';
 import updateRequestStage from '@api/update-request-stage';
 import Comments from './Comments';
+import Driver from './Driver';
 
 const RequestModal = ({
     show,
@@ -31,6 +32,7 @@ const RequestModal = ({
         health,
         needs,
         timestamp,
+        driver
     } = request;
     const [stage, setStage] = useState<StageKeyType>(request.stage);
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -114,6 +116,7 @@ const RequestModal = ({
                         ))}
                     </Form.Select>
                 </Form.Group>
+                <Driver driver={driver} id={selected} />
             </Modal.Body>
             <Modal.Footer>
                 <Button
