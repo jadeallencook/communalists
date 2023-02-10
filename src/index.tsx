@@ -9,27 +9,21 @@ import routes from './routes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './theme.css';
 import './normalize.css';
+import Navigation from '@components/Navigation';
+import Footer from '@components/Footer';
 
 // components
-import Navigation from '@organisms/Navigation';
-import Footer from '@organisms/Footer';
-import { GlobalProvider } from './context';
-
 const elem = document.getElementById('root')!;
 const root = ReactDOM.createRoot(elem);
 
 root.render(
-	<React.StrictMode>
-		<GlobalProvider>
-			<Router>
-				<Navigation />
-				<Routes>
-					{routes.map(({ path, element }) => (
-						<Route key={path} path={path} element={element}></Route>
-					))}
-				</Routes>
-				<Footer center />
-			</Router>
-		</GlobalProvider>
-	</React.StrictMode>
+	<Router>
+		<Navigation />
+		<Routes>
+			{routes.map(({ path, element }) => (
+				<Route key={path} path={path} element={element}></Route>
+			))}
+		</Routes>
+		<Footer />
+	</Router>
 );

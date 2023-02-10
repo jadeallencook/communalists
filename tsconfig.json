@@ -6,16 +6,14 @@
 		"paths": {
 			"@pages/*": ["./src/pages/*"],
 			"@components/*": ["./src/components/*"],
-			"@atoms/*": ["./src/components/atoms/*"],
-			"@molecules/*": ["./src/components/molecules/*"],
-			"@organisms/*": ["./src/components/organisms/*"],
 			"@utils/*": ["./src/utils/*"],
 			"@assets/*": ["./src/assets/*"],
 			"@database/*": ["./database/*"],
 			"@interfaces/*": ["./interfaces/*"],
 			"@objects/*": ["./objects/*"],
 			"@custom-types/*": ["./types/*"],
-			"@fb/*": ["./src/firebase/*"]
+			"@api/*": ["./src/api/*"],
+			"@forms/*": ["./src/forms/*"]
 		}
 	}
 }

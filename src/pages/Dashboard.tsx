@@ -1,34 +1,46 @@
-import { ReactNode } from 'react';
-import { Container, Nav } from 'react-bootstrap';
-import { useNavigate, useLocation } from 'react-router-dom';
-import DashboardRouter from '@objects/dashboard-router';
+import getRequests from '@api/get-requests';
+import RequestAidInterface from '@interfaces/request-aid';
+import { useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
+import RequestsTable from '@components/RequestsTable';
+import RequestModal from '@components/RequestModal';
 
-const Dashboard = ({ children }: { children?: ReactNode }) => {
-	const navigate = useNavigate();
-	let { pathname } = useLocation();
-	if (pathname === '/dashboard') pathname = '/dashboard/orders';
-	const handleSelect = (route) => navigate(route);
+const Dashboard = () => {
+	const [requests, setRequests] = useState<{
+		[key: string]: RequestAidInterface;
+	}>({});
+
+	const [loaded, setLoaded] = useState<boolean>(false);
+	const [show, setShow] = useState<boolean>(false);
+	const [selected, setSelected] = useState<string>();
+	const handler = (id?: string): void => {
+		setSelected(id);
+		setShow((prev) => !prev);
+	};
+
+	useEffect(() => {
+		getRequests().then((requests) => {
+			setRequests(requests);
+			setLoaded(true);
+		});
+	}, []);
 
 	return (
 		<Container>
-			<br />
-			<Nav
-				variant="pills"
-				defaultActiveKey={pathname}
-				onSelect={handleSelect}
-			>
-				{DashboardRouter.map(({ title, link }) => (
-					<Nav.Item key={link}>
-						<Nav.Link eventKey={link}>{title}</Nav.Link>
-					</Nav.Item>
-				))}
-			</Nav>
-			<br />
-			{children && Array.isArray(children)
-				? [...children]
-				: children
-				? children
-				: null}
+			<h1>Requests</h1>
+			<RequestsTable
+				requests={requests}
+				handler={handler}
+				loaded={loaded}
+			/>
+			{selected && (
+				<RequestModal
+					show={show}
+					handler={handler}
+					selected={selected}
+					request={requests[selected]}
+				/>
+			)}
 		</Container>
 	);
 };
