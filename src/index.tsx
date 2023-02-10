@@ -17,13 +17,13 @@ const elem = document.getElementById('root')!;
 const root = ReactDOM.createRoot(elem);
 
 root.render(
-	<Router>
-		<Navigation />
-		<Routes>
-			{routes.map(({ path, element }) => (
-				<Route key={path} path={path} element={element}></Route>
-			))}
-		</Routes>
-		<Footer />
-	</Router>
+    <Router>
+        <Navigation />
+        <Routes>
+            {routes.map(({ path, element }) => (
+                <Route key={path} path={path} element={element}></Route>
+            ))}
+        </Routes>
+        <Footer />
+    </Router>
 );

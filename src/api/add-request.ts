@@ -5,8 +5,8 @@ import app from './init-app';
 const db = getFirestore(app);
 
 const addRequest = async (values: RequestAidInterface): Promise<any> =>
-	await addDoc(collection(db, 'requests'), values)
-		.then((response) => response)
-		.catch((error) => error);
+    await addDoc(collection(db, 'requests'), values)
+        .then((response) => response)
+        .catch((error) => error);
 
 export default addRequest;
