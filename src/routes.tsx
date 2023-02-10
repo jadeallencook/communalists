@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import RequestAid from '@pages/RequestAid';
 import Dashboard from '@pages/Dashboard';
+import SignIn from '@pages/SignIn';
 
 interface Route {
     path: string;
@@ -20,6 +21,10 @@ const routes: Route[] = [
     {
         path: '/dashboard',
         element: <Dashboard />,
+    },
+    {
+        path: '/sign-in',
+        element: <SignIn />,
     },
 ];
 
