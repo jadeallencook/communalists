@@ -18,7 +18,10 @@ const getRequests = async (
     let q =
         key && value
             ? query(collection(db, 'requests'), where(key, '==', value))
-            : query(collection(db, 'requests'), where('stage', '!=', 'complete'))
+            : query(
+                  collection(db, 'requests'),
+                  where('stage', '!=', 'complete')
+              );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         requests[doc.id] = doc.data();

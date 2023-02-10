@@ -3,12 +3,12 @@ import app from './init-app';
 
 const auth = getAuth(app);
 const authSignOut = () =>
-	signOut(auth)
-		.then(() => {
-			console.log('signed out');
-		})
-		.catch((error) => {
-			console.log({ error });
-		});
+    signOut(auth)
+        .then(() => {
+            console.log('signed out');
+        })
+        .catch((error) => {
+            console.log({ error });
+        });
 
 export default authSignOut;
