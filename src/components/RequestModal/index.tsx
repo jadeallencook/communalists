@@ -8,6 +8,7 @@ import stages from '@objects/stages';
 import { useState } from 'react';
 import { StageKeyType } from '@custom-types/stages';
 import updateRequestStage from '@api/update-request-stage';
+import Comments from './Comments';
 
 const RequestModal = ({
     show,
@@ -29,7 +30,7 @@ const RequestModal = ({
         method,
         health,
         needs,
-        submitted,
+        timestamp,
     } = request;
     const [stage, setStage] = useState<StageKeyType>(request.stage);
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -43,7 +44,7 @@ const RequestModal = ({
         <Modal show={show} onHide={handler} size="lg">
             <Modal.Header closeButton>
                 <Modal.Title>
-                    Request <b>({timestampToDateString(submitted)})</b>
+                    Request <b>({timestampToDateString(timestamp)})</b>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -97,6 +98,7 @@ const RequestModal = ({
                     <Form.Label>Information</Form.Label>
                     <Form.Control as="textarea" defaultValue={needs} disabled />
                 </Form.Group>
+                <Comments id={selected} />
                 <Form.Group className="mb-3">
                     <Form.Label>Stage</Form.Label>
                     <Form.Select

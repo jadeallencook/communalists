@@ -38,7 +38,8 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             health: '',
             needs: '',
             stage: 'submitted',
-            submitted: Timestamp.fromDate(new Date()),
+            timestamp: Timestamp.fromDate(new Date()),
+            driver: '',
         },
         onSubmit: (values) => addRequest(values).then(() => setSuccess(true)),
     });

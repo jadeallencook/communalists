@@ -14,7 +14,8 @@ interface RequestAidInterface {
     health: string;
     needs: string;
     stage: StageKeyType;
-    submitted: Timestamp;
+    timestamp: Timestamp;
+    driver: string;
 }
 
 export default RequestAidInterface;
