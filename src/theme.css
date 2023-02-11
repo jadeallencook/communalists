@@ -1,8 +1,12 @@
 html,
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Albert Sans', sans-serif;
     background-color: var(--bs-gray-900);
     color: var(--white);
+}
+
+* {
+    font-family: 'Albert Sans', sans-serif;
 }
 
 .modal {

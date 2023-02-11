@@ -12,7 +12,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
     const { pathname } = useLocation();
     const auth = useUserState();
     return (
-        <Navbar bg="dark" variant="dark" className={className}>
+        <Navbar bg="dark" variant="dark" className={`${className} animate__animated animate__slideInDown`}>
             <Container>
                 <Navbar.Brand>
                     <Link to="/">
