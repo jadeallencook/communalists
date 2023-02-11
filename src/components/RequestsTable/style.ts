@@ -28,6 +28,10 @@ const style = () => ({
         fontSize: '0.5em',
         cursor: 'pointer',
     },
+    'div.spinner-border': {
+        display: 'block',
+        margin: '25px auto',
+    },
 });
 
 export default style;

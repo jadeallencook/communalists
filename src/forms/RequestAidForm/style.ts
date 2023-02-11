@@ -19,8 +19,12 @@ const style = ({ name }) => ({
         cursor: 'pointer',
     },
     textarea: {
-        height: '150px'
-    }
+        height: '175px',
+    },
+    'div.spinner-border': {
+        display: 'block',
+        margin: '150px auto',
+    },
 });
 
 export default style;

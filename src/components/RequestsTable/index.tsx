@@ -1,4 +1,4 @@
-import { Badge, Table } from 'react-bootstrap';
+import { Badge, Spinner, Table } from 'react-bootstrap';
 import LoadingImage from '@assets/loading.gif';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
@@ -6,7 +6,6 @@ import stages from '@objects/stages';
 import RequestAidInterface from '@interfaces/request-aid';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import timestampToDateString from '@utils/timestamp-to-date-string';
 import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
 import organizeRequestsByDate from '@utils/organize-requests-by-date';
 
@@ -79,7 +78,7 @@ const RequestsTable: StyledComponent = styled(
                     </tbody>
                 </Table>
             ) : (
-                <img src={LoadingImage} />
+                <Spinner animation="border" />
             )}
         </div>
     )

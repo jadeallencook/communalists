@@ -17,7 +17,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                 <Navbar.Brand>
                     <Link to="/">
                         <img src={LogoPNG} />
-                        Communalists
+                        <span>Communalists</span>
                     </Link>
                 </Navbar.Brand>
                 <Nav className="justify-content-end">

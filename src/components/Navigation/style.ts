@@ -20,6 +20,11 @@ const style = () => ({
         marginRight: '10px',
         marginTop: '-5px',
     },
+    '@media only screen and (max-width: 500px)': {
+        'span.navbar-brand > a > span': {
+            display: 'none',
+        },
+    },
 });
 
 export default style;

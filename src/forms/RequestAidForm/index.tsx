@@ -4,6 +4,7 @@ import {
     Container,
     Form,
     OverlayTrigger,
+    Spinner,
     Tooltip,
 } from 'react-bootstrap';
 import RequestAidInterface from '@interfaces/request-aid';
@@ -52,7 +53,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
     });
     return isSubmitting && !success ? (
         <Container className={className}>
-            <img src={LoadingImage} />
+            <Spinner animation="border" />
         </Container>
     ) : !isSubmitting && success ? (
         <Container className={className}>
@@ -151,7 +152,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Phone Number</Form.Label>
+                <Form.Label>Phone Number (Optional)</Form.Label>
                 <Form.Control
                     id="phone"
                     name="phone"
