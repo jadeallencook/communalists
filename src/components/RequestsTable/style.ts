@@ -32,6 +32,21 @@ const style = () => ({
         display: 'block',
         margin: '25px auto',
     },
+    '@media only screen and (max-width: 992px)': {
+        '.name': {
+            display: 'none',
+        },
+    },
+    '@media only screen and (max-width: 768px)': {
+        '.location': {
+            display: 'none',
+        },
+    },
+    '@media only screen and (max-width: 576px)': {
+        '.language': {
+            display: 'none',
+        },
+    },
 });
 
 export default style;

@@ -21,30 +21,40 @@ const Driver = ({ driver, id }: { driver: string; id: string }) => {
         <Form.Group className="mb-3">
             <Form.Label>Assigned Driver (If Applicable)</Form.Label>
             <InputGroup>
-                <Button variant="secondary" disabled={!cachedDriver || loading}>
+                <Button
+                    variant="secondary"
+                    disabled={!cachedDriver || loading}
+                    className="tablet-remove"
+                >
                     View Driver
                 </Button>
                 <Form.Control
                     disabled
+                    className="tablet-remove"
                     value={
                         cachedDriver
                             ? '••••••••••••••••••'
                             : 'No Driver Assigned'
                     }
                 />
+                <Form.Control
+                    disabled
+                    className="tablet-show"
+                    value={cachedDriver ? '••••••••' : 'No Driver'}
+                />
                 <Button
                     variant="secondary"
                     disabled={!cachedDriver || loading}
                     onClick={() => handler(true)}
                 >
-                    Remove Driver
+                    Remove <span className="mobile-remove">Driver</span>
                 </Button>
                 <Button
                     variant="primary"
                     disabled={!!cachedDriver || loading}
                     onClick={() => handler(false)}
                 >
-                    Volunteer To Drive
+                    Volunteer <span className="mobile-remove">To Driver</span>
                 </Button>
             </InputGroup>
         </Form.Group>

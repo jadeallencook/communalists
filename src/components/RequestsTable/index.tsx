@@ -26,12 +26,12 @@ const RequestsTable: StyledComponent = styled(
                 <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>
-                            <th>Recieved</th>
-                            <th>Name</th>
-                            <th>Location</th>
-                            <th>Language</th>
-                            <th>Driver</th>
-                            <th>Stage</th>
+                            <th className="timestamp">Recieved</th>
+                            <th className="name">Name</th>
+                            <th className="location">Location</th>
+                            <th className="language">Language</th>
+                            <th className="driver">Driver</th>
+                            <th className="stage">Stage</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,13 +48,17 @@ const RequestsTable: StyledComponent = styled(
                                 },
                             ]) => (
                                 <tr key={id} onClick={() => handler(id)}>
-                                    <td>
+                                    <td className="timestamp">
                                         {getNumberOfDaysAfterDate(timestamp)}
                                     </td>
-                                    <td>{name}</td>
-                                    <td>{locations[location]}</td>
-                                    <td>{languages[language]}</td>
-                                    <td>
+                                    <td className="name">{name}</td>
+                                    <td className="location">
+                                        {locations[location]}
+                                    </td>
+                                    <td className="language">
+                                        {languages[language]}
+                                    </td>
+                                    <td className="driver">
                                         <Badge
                                             className={
                                                 driver
@@ -67,7 +71,7 @@ const RequestsTable: StyledComponent = styled(
                                                 : 'Not Assigned'}
                                         </Badge>
                                     </td>
-                                    <td>
+                                    <td className="stage">
                                         <Badge className={stage}>
                                             {stages[stage]}
                                         </Badge>

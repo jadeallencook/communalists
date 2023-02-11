@@ -61,7 +61,7 @@ const RequestModal = ({
                         textTransform: 'capitalize',
                     }}
                 >
-                    Request Recieved{' '}
+                    <span className="mobile-remove">Request</span> Recieved{' '}
                     <b>{getNumberOfDaysAfterDate(timestamp)}</b>{' '}
                     <OverlayTrigger
                         placement="right"

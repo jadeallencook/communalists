@@ -25,8 +25,8 @@ const Navigation: StyledComponent = styled(({ className }) => {
                         className={
                             pathname.indexOf('/request-aid') === 0 ||
                             pathname === '/'
-                                ? 'active'
-                                : ''
+                                ? 'active request-aid'
+                                : 'request-aid'
                         }
                         to={'/request-aid'}
                     >

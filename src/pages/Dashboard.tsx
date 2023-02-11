@@ -32,7 +32,7 @@ const Dashboard = () => {
     return (
         <Container>
             <h1>
-                Help Meet Community Needs{' '}
+                <span className="mobile-remove">Help Meet</span> Community Needs{' '}
                 <OverlayTrigger
                     placement="bottom"
                     overlay={
