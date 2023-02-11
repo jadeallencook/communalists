@@ -4,7 +4,10 @@ import style from './style';
 
 const Footer: StyledComponent = styled(({ className }) => {
     return (
-        <Container fluid className={className}>
+        <Container
+            fluid
+            className={`${className} animate__animated animate__fadeIn`}
+        >
             Developed by Volunteers
             <br />
             <b>San Francisco Bay Area</b>

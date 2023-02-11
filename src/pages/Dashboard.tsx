@@ -31,7 +31,7 @@ const Dashboard = () => {
 
     return (
         <Container>
-            <h1>
+            <h1 className="animate__animated animate__fadeIn">
                 <span className="mobile-remove">Help Meet</span> Community Needs{' '}
                 <OverlayTrigger
                     placement="bottom"
@@ -54,7 +54,9 @@ const Dashboard = () => {
                         src={InfoSVG}
                         style={{
                             cursor: 'pointer',
+                            animationDelay: '1s',
                         }}
+                        className="animate__animated animate__tada"
                     />
                 </OverlayTrigger>
             </h1>
@@ -71,7 +73,13 @@ const Dashboard = () => {
                     request={requests[selected]}
                 />
             )}
-            <p>
+            <p
+                style={{
+                    display: !loaded ? 'none' : 'inherit',
+                    animationDelay: '.5s',
+                }}
+                className="animate__animated animate__fadeIn"
+            >
                 <small>
                     Our mission is to connect those in need with volunteers who
                     are eager to help, and this tab is a crucial part of that

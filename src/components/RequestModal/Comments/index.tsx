@@ -35,13 +35,20 @@ const Comments: StyledComponent = styled(
                         <CommentsForm
                             id={id}
                             setIsSubmitting={setIsSubmitting}
+                            className="animate__animated animate__fadeIn"
                         />
                         <br />
                         <br />
                         {Object.entries(comments).length ? (
                             organizeCommentsByTime(comments).map(
                                 ([key, { uid, body, timestamp }], index) => (
-                                    <Toast className={className} key={key}>
+                                    <Toast
+                                        className={`${className} animate__animated animate__flipInX`}
+                                        key={key}
+                                        style={{
+                                            animationDelay: `${index * 0.1}s`,
+                                        }}
+                                    >
                                         <Toast.Header closeButton={false}>
                                             <strong className="me-auto">
                                                 {uid}
@@ -57,7 +64,13 @@ const Comments: StyledComponent = styled(
                                 )
                             )
                         ) : (
-                            <Alert variant="secondary">
+                            <Alert
+                                variant="secondary"
+                                className="animate__animated animate__flipInX"
+                                style={{
+                                    animationDelay: '0.1s',
+                                }}
+                            >
                                 <strong>No comments have been made yet.</strong>
                                 <br />
                                 Be the first volunteer to start the discussion
