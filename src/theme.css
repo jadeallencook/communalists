@@ -1,6 +1,6 @@
 html,
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Nunito', sans-serif;
     background-color: var(--bs-gray-900);
     color: var(--white);
 }
@@ -26,8 +26,26 @@ p.is-danger {
     /* colors */
     --white: #fff;
     --black: #000;
-    --primary: #931f1d;
+    --primary: #bc3737;
     --spacing-small: 5px;
     --spacing-medium: 10px;
     --spacing-large: 25px;
+}
+
+button {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+button.btn-secondary {
+    background-color: var(--bs-gray-600) !important;
+    border-color: var(--bs-gray-600) !important;
+}
+
+a {
+    color: var(--primary) !important;
+}
+
+h1 {
+    font-weight: 900;
 }

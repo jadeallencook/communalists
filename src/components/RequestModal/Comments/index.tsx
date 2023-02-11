@@ -27,7 +27,7 @@ const Comments: StyledComponent = styled(
             <>
                 {isLoading ? (
                     <div className={className}>
-                        <Form.Label>Comments</Form.Label>
+                        <Form.Label>Leave a Message</Form.Label>
                         <Spinner animation="border" />
                     </div>
                 ) : (
@@ -36,6 +36,8 @@ const Comments: StyledComponent = styled(
                             id={id}
                             setIsSubmitting={setIsSubmitting}
                         />
+                        <br />
+                        <br />
                         {Object.entries(comments).length ? (
                             organizeCommentsByTime(comments).map(
                                 ([key, { uid, body, timestamp }], index) => (
@@ -56,9 +58,14 @@ const Comments: StyledComponent = styled(
                             )
                         ) : (
                             <Alert variant="secondary">
-                                There are no comments.
+                                <strong>No comments have been made yet.</strong>
+                                <br />
+                                Be the first volunteer to start the discussion
+                                for this request!
                             </Alert>
                         )}
+                        <br />
+                        <br />
                     </>
                 )}
             </>

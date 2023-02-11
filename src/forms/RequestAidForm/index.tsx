@@ -1,5 +1,11 @@
 import { useFormik } from 'formik';
-import { Button, Container, Form } from 'react-bootstrap';
+import {
+    Button,
+    Container,
+    Form,
+    OverlayTrigger,
+    Tooltip,
+} from 'react-bootstrap';
 import RequestAidInterface from '@interfaces/request-aid';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
@@ -10,6 +16,7 @@ import LoadingImage from '@assets/loading.gif';
 import addRequest from '@api/add-request';
 import { useState } from 'react';
 import { Timestamp } from 'firebase/firestore';
+import InfoSVG from '@assets/info.svg';
 
 const RequestAidForm: StyledComponent = styled(({ className }) => {
     const [success, setSuccess] = useState(false);
@@ -32,7 +39,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             name: '',
             email: '',
             phone: '',
-            location: 'santa-clara-ca',
+            location: 'san-jose-downtown-ca',
             language: 'english',
             method: 'email',
             health: '',
@@ -49,25 +56,60 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
         </Container>
     ) : !isSubmitting && success ? (
         <Container className={className}>
-            <h2>Success!</h2>
-            <p>We will reach out to you shortly.</p>
+            <h1>Success!</h1>
+            <p>
+                Our team will review your request and work to match you with
+                volunteers who can offer the support you need. The information
+                you provide in this form will be kept confidential and used
+                solely for the purpose of connecting you with those who can
+                help.
+                <br />
+                <br />
+                We are committed to creating a safe and supportive environment
+                for everyone in our community. If you have any questions or
+                concerns, please don't hesitate to reach out to us. We are here
+                to help and make a positive impact in your life. Thank you for
+                using this form to request mutual aid.
+                <br />
+                <br />
+                Together, we can make a difference.
+                <br />
+                <br />
+                <a href="mailto: support@communalists.com?subject=Support Request From Communalists">
+                    support@communalists.com
+                </a>
+                <br />
+                <small>
+                    For web support inquiries, please reach out to our support
+                    team using the email above, we are here to assist you!
+                    <br />
+                    <br />
+                    Thank you for choosing to contact us!
+                </small>
+            </p>
         </Container>
     ) : (
         <Form onSubmit={handleSubmit} className={className}>
-            <h1>Request Aid</h1>
+            <h1>Welcome to Communalists</h1>
+            <p>
+                This an opportunity to reach out for support in any form that
+                you may need, whether it be emotional, practical, hands-on, or
+                help with necessities like furniture or groceries.
+            </p>
             <Form.Group className="mb-3">
-                <Form.Label>Name</Form.Label>
+                <Form.Label>Full Name</Form.Label>
                 <Form.Control
                     id="name"
                     name="name"
                     type="text"
+                    placeholder="Enter your full name"
                     onChange={handleChange}
                     value={name}
                     required
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Language</Form.Label>
+                <Form.Label>Spoken Language</Form.Label>
                 <Form.Select
                     onChange={handleChange}
                     value={language}
@@ -91,28 +133,30 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                 >
                     {Object.entries(locations).map(([key, value]) => (
                         <option key={key} value={key}>
-                            {value}, CA
+                            {value}
                         </option>
                     ))}
                 </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>Email Address</Form.Label>
                 <Form.Control
                     id="email"
                     name="email"
                     type="email"
+                    placeholder="Enter your email address"
                     onChange={handleChange}
                     value={email}
                     required
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Phone</Form.Label>
+                <Form.Label>Phone Number</Form.Label>
                 <Form.Control
                     id="phone"
                     name="phone"
-                    type="phone"
+                    type="tel"
+                    placeholder="Enter your phone number"
                     onChange={handleChange}
                     value={phone}
                 />
@@ -133,22 +177,57 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                 </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Health Conditions</Form.Label>
+                <Form.Label>
+                    Do you have any relevant health conditions?
+                </Form.Label>
                 <Form.Control
                     id="health"
                     name="health"
                     type="text"
+                    placeholder="Enter any relevant health conditions"
                     onChange={handleChange}
                     value={health}
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Information</Form.Label>
+                <Form.Label>
+                    What we can we assist you with?{' '}
+                    <OverlayTrigger
+                        placement="top"
+                        overlay={
+                            <Tooltip id="tooltip-top">
+                                <div
+                                    style={{
+                                        textAlign: 'left',
+                                        padding: '10px',
+                                    }}
+                                >
+                                    You can request items such as{' '}
+                                    <strong>
+                                        groceries, personal care items, or
+                                        household supplies
+                                    </strong>
+                                    . Please include an address to a drop off
+                                    location if delivery is required.
+                                    <br />
+                                    <br />
+                                    <strong>Example:</strong> I'm in need of
+                                    some fresh produce and a mattress, I can
+                                    meet at 456 Oak Ave sometime after 5:00PM on
+                                    Wednesday.
+                                </div>
+                            </Tooltip>
+                        }
+                    >
+                        <img src={InfoSVG} style={{ cursor: 'pointer' }} />
+                    </OverlayTrigger>
+                </Form.Label>
                 <Form.Control
                     as="textarea"
                     id="needs"
                     name="needs"
                     type="text"
+                    placeholder="It is important to provide as much detail as you can about your situation and what type of aid you are looking for. By taking a few minutes to fill out this section thoroughly, we can connect you with the proper resources and support."
                     onChange={handleChange}
                     value={needs}
                     required

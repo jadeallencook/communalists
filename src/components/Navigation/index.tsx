@@ -4,6 +4,7 @@ import style from './style';
 import { Link, useLocation } from 'react-router-dom';
 import useUserState from '@api/auth-state-listener';
 import authSignOut from '@api/auth-sign-out';
+import LogoPNG from '@assets/logo.png';
 
 const routerLinks = [{ title: 'Request Aid', route: '/request-aid' }];
 
@@ -14,7 +15,10 @@ const Navigation: StyledComponent = styled(({ className }) => {
         <Navbar bg="dark" variant="dark" className={className}>
             <Container>
                 <Navbar.Brand>
-                    <Link to="/">Communalists</Link>
+                    <Link to="/">
+                        <img src={LogoPNG} />
+                        Communalists
+                    </Link>
                 </Navbar.Brand>
                 <Nav className="justify-content-end">
                     <Link
@@ -26,7 +30,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                         }
                         to={'/request-aid'}
                     >
-                        Request Aid
+                        Submit Request
                     </Link>
                     {auth ? (
                         <>
@@ -41,7 +45,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                                 Dashboard
                             </Link>
                             <Link onClick={() => authSignOut()} to="/">
-                                Sign Out
+                                Log Out
                             </Link>
                         </>
                     ) : (
@@ -53,7 +57,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                             }
                             to="/sign-in"
                         >
-                            Sign In
+                            Log In
                         </Link>
                     )}
                 </Nav>

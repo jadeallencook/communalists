@@ -1,4 +1,11 @@
-import { Button, Form, Modal } from 'react-bootstrap';
+import {
+    Badge,
+    Button,
+    Form,
+    Modal,
+    OverlayTrigger,
+    Tooltip,
+} from 'react-bootstrap';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
 import methods from '@objects/methods';
@@ -10,6 +17,8 @@ import { StageKeyType } from '@custom-types/stages';
 import updateRequestStage from '@api/update-request-stage';
 import Comments from './Comments';
 import Driver from './Driver';
+import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
+import CalendarSVG from '@assets/calendar.svg';
 
 const RequestModal = ({
     show,
@@ -32,7 +41,7 @@ const RequestModal = ({
         health,
         needs,
         timestamp,
-        driver
+        driver,
     } = request;
     const [stage, setStage] = useState<StageKeyType>(request.stage);
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -45,17 +54,34 @@ const RequestModal = ({
     return (
         <Modal show={show} onHide={handler} size="lg">
             <Modal.Header closeButton>
-                <Modal.Title>
-                    Request <b>({timestampToDateString(timestamp)})</b>
+                <Modal.Title
+                    style={{
+                        color: 'var(--primary)',
+                        fontWeight: '900',
+                        textTransform: 'capitalize',
+                    }}
+                >
+                    Request Recieved{' '}
+                    <b>{getNumberOfDaysAfterDate(timestamp)}</b>{' '}
+                    <OverlayTrigger
+                        placement="right"
+                        overlay={
+                            <Tooltip id="tooltip-right">
+                                {timestampToDateString(timestamp)}
+                            </Tooltip>
+                        }
+                    >
+                        <img src={CalendarSVG} style={{ cursor: 'pointer' }} />
+                    </OverlayTrigger>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form.Group className="mb-3">
-                    <Form.Label>Name</Form.Label>
+                    <Form.Label>Full Name</Form.Label>
                     <Form.Control defaultValue={name} disabled />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Language</Form.Label>
+                    <Form.Label>Spoken Language</Form.Label>
                     <Form.Select defaultValue={language} disabled>
                         {Object.entries(languages).map(([key, value]) => (
                             <option key={key} value={key}>
@@ -69,18 +95,18 @@ const RequestModal = ({
                     <Form.Select defaultValue={location} disabled>
                         {Object.entries(locations).map(([key, value]) => (
                             <option key={key} value={key}>
-                                {value}, CA
+                                {value}
                             </option>
                         ))}
                     </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control defaultValue={email} disabled />
+                    <Form.Label>Email Address</Form.Label>
+                    <Form.Control defaultValue={email || 'N/A'} disabled />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Phone</Form.Label>
-                    <Form.Control defaultValue={phone} disabled />
+                    <Form.Label>Phone Number</Form.Label>
+                    <Form.Control defaultValue={phone || 'N/A'} disabled />
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Preferred Contact Method</Form.Label>
@@ -93,16 +119,27 @@ const RequestModal = ({
                     </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Health Conditions</Form.Label>
-                    <Form.Control defaultValue={health} disabled />
+                    <Form.Label>Relevant Health Conditions</Form.Label>
+                    <Form.Control defaultValue={health || 'N/A'} disabled />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Information</Form.Label>
+                    <Form.Label>Request Information</Form.Label>
                     <Form.Control as="textarea" defaultValue={needs} disabled />
                 </Form.Group>
+                <hr />
+                <Modal.Title
+                    style={{ color: 'var(--primary)', fontWeight: '900' }}
+                >
+                    Volunteer Collaboration Hub
+                </Modal.Title>
+                <p>
+                    Please remember to communicate in a respectful and
+                    professional manner.
+                </p>
+                <hr />
                 <Comments id={selected} />
                 <Form.Group className="mb-3">
-                    <Form.Label>Stage</Form.Label>
+                    <Form.Label>Current Stage</Form.Label>
                     <Form.Select
                         defaultValue={stage}
                         onChange={(event) =>

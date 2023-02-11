@@ -1,24 +1,26 @@
-const style = () => ({
+const style = ({ name }) => ({
     maxWidth: '500px',
     margin: '0 auto',
+    p: {
+        textAlign: 'left',
+        marginBottom: '25px',
+    },
     button: {
         marginTop: '15px',
         width: '100%',
     },
     img: {
-        width: '50px',
-        margin: '100px auto',
-        display: 'block',
+        height: '15px',
     },
     h2: {
         marginTop: '100px',
     },
-    p: {
-        marginBottom: '100px',
+    'span#information-tooltip': {
+        cursor: 'pointer',
     },
-    'h2, p': {
-        textAlign: 'center',
-    },
+    textarea: {
+        height: '150px'
+    }
 });
 
 export default style;

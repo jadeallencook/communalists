@@ -44,7 +44,7 @@ const CommentsForm: StyledComponent = styled(
         });
         return (
             <Form onSubmit={handleSubmit} className={className}>
-                <Form.Label>Comments</Form.Label>
+                <Form.Label>Leave Comment</Form.Label>
                 <InputGroup>
                     <Form.Control
                         id="body"
@@ -52,12 +52,12 @@ const CommentsForm: StyledComponent = styled(
                         type="text"
                         onChange={handleChange}
                         value={body}
-                        placeholder="Write your comment here..."
+                        placeholder="Coordinate with drivers and share updates on aid requests..."
                         required
                         disabled={isSubmitting}
                     />
                     <Button type="submit" disabled={isSubmitting}>
-                        Submit Comment
+                        Send Message
                     </Button>
                 </InputGroup>
             </Form>

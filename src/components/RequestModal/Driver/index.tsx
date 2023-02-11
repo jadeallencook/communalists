@@ -19,7 +19,7 @@ const Driver = ({ driver, id }: { driver: string; id: string }) => {
 
     return (
         <Form.Group className="mb-3">
-            <Form.Label>Driver</Form.Label>
+            <Form.Label>Assigned Driver (If Applicable)</Form.Label>
             <InputGroup>
                 <Button variant="secondary" disabled={!cachedDriver || loading}>
                     View Driver
@@ -33,7 +33,7 @@ const Driver = ({ driver, id }: { driver: string; id: string }) => {
                     }
                 />
                 <Button
-                    variant="danger"
+                    variant="secondary"
                     disabled={!cachedDriver || loading}
                     onClick={() => handler(true)}
                 >

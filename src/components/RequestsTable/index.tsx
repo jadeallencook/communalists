@@ -7,7 +7,8 @@ import RequestAidInterface from '@interfaces/request-aid';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import timestampToDateString from '@utils/timestamp-to-date-string';
-import getBadgeBgForStage from '@utils/get-badge-bg-for-stage';
+import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
+import organizeRequestsByDate from '@utils/organize-requests-by-date';
 
 const RequestsTable: StyledComponent = styled(
     ({
@@ -26,7 +27,7 @@ const RequestsTable: StyledComponent = styled(
                 <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>
-                            <th>Submitted</th>
+                            <th>Recieved</th>
                             <th>Name</th>
                             <th>Location</th>
                             <th>Language</th>
@@ -35,7 +36,7 @@ const RequestsTable: StyledComponent = styled(
                         </tr>
                     </thead>
                     <tbody>
-                        {Object.entries(requests).map(
+                        {organizeRequestsByDate(requests).map(
                             ([
                                 id,
                                 {
@@ -48,19 +49,27 @@ const RequestsTable: StyledComponent = styled(
                                 },
                             ]) => (
                                 <tr key={id} onClick={() => handler(id)}>
-                                    <td>{timestampToDateString(timestamp)}</td>
+                                    <td>
+                                        {getNumberOfDaysAfterDate(timestamp)}
+                                    </td>
                                     <td>{name}</td>
-                                    <td>{locations[location]}, CA</td>
+                                    <td>{locations[location]}</td>
                                     <td>{languages[language]}</td>
                                     <td>
                                         <Badge
-                                            bg={driver ? 'success' : 'danger'}
+                                            className={
+                                                driver
+                                                    ? 'has-driver'
+                                                    : 'has-no-driver'
+                                            }
                                         >
-                                            {driver ? 'Assigned' : 'None'}
+                                            {driver
+                                                ? 'Assigned'
+                                                : 'Not Assigned'}
                                         </Badge>
                                     </td>
                                     <td>
-                                        <Badge bg={getBadgeBgForStage(stage)}>
+                                        <Badge className={stage}>
                                             {stages[stage]}
                                         </Badge>
                                     </td>

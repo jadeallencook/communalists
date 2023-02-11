@@ -24,6 +24,7 @@
         "**/*.js": "prettier --write --ignore-unknown"
     },
     "dependencies": {
+        "@fortawesome/react-fontawesome": "^0.2.0",
         "@types/jest": "^29.0.3",
         "@types/node": "^18.7.18",
         "@types/react": "^18.0.20",
