@@ -4,7 +4,7 @@ import RequestCommentInterface from '@interfaces/request-comment';
 import organizeCommentsByTime from '@utils/organize-comments-by-time';
 import timestampToCommentString from '@utils/timestamp-to-comment-string';
 import { useEffect, useState } from 'react';
-import { Alert, Spinner, Toast } from 'react-bootstrap';
+import { Alert, Form, Spinner, Toast } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 
@@ -27,6 +27,7 @@ const Comments: StyledComponent = styled(
             <>
                 {isLoading ? (
                     <div className={className}>
+                        <Form.Label>Comments</Form.Label>
                         <Spinner animation="border" />
                     </div>
                 ) : (
