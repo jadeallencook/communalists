@@ -30,7 +30,13 @@ const CommentsForm: StyledComponent = styled(
             onSubmit: async (value, { resetForm }) => {
                 if (value) {
                     setIsSubmitting(true);
-                    await addComment(value, id);
+                    await addComment(
+                        {
+                            ...value,
+                            timestamp: Timestamp.fromDate(new Date()),
+                        },
+                        id
+                    );
                     resetForm();
                     setIsSubmitting(false);
                 }
