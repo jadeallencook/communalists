@@ -13,7 +13,6 @@ import style from './style';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
 import methods from '@objects/methods';
-import LoadingImage from '@assets/loading.gif';
 import addRequest from '@api/add-request';
 import { useState } from 'react';
 import { Timestamp } from 'firebase/firestore';
@@ -90,7 +89,10 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             </p>
         </Container>
     ) : (
-        <Form onSubmit={handleSubmit} className={`${className} animate__animated animate__fadeIn`}>
+        <Form
+            onSubmit={handleSubmit}
+            className={`${className} animate__animated animate__fadeIn`}
+        >
             <h1>Welcome to Communalists</h1>
             <p>
                 This an opportunity to reach out for support in any form that
