@@ -6,6 +6,10 @@ const style = () => ({
         display: 'block',
         margin: '15px auto',
     },
+    'div.toast': {
+        padding: '0px',
+        // margin: '0 12px 0 12px'
+    },
     'div.toast-header': {
         backgroundColor: 'var(--bs-gray-600)',
         color: 'var(--white)',

@@ -2,7 +2,6 @@ import {
     Button,
     Form,
     Modal,
-    Row,
 } from 'react-bootstrap';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
@@ -63,7 +62,7 @@ const ViewRequestForm: StyledComponent = styled(({
     };
 
     return (
-        <Row className={!isModal && className}>
+        <div className={className}>
             <Form.Group className="mb-3">
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control defaultValue={name} disabled />
@@ -143,28 +142,19 @@ const ViewRequestForm: StyledComponent = styled(({
             </Form.Group>
             <Driver driver={driver} id={selected} />
 
-            {isModal ? (
-                <Modal.Footer>
-                    <Button
-                        variant="secondary"
-                        onClick={() => handler()}
-                        disabled={submitting}
-                    >
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={save} disabled={submitting}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            ) : (
-                <>
-                    <hr />
-                    <Button variant="primary" className="form-submit" onClick={save} disabled={submitting}>
-                        Save Changes
-                    </Button>
-                </>
-            )}
-        </Row>
+            <Modal.Footer>
+                {isModal && <Button
+                    variant="secondary"
+                    onClick={() => handler()}
+                    disabled={submitting}
+                >
+                    Close
+                </Button>}
+                <Button variant="primary" onClick={save} disabled={submitting}>
+                    Save Changes
+                </Button>
+            </Modal.Footer>
+        </div>
     )
 }
 )(style)

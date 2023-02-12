@@ -3,7 +3,7 @@ import ViewRequestForm from "@forms/ViewRequestForm"
 import RequestAidInterface from "@interfaces/request-aid"
 import timestampToDateString from "@utils/timestamp-to-date-string"
 import { useEffect, useState } from "react"
-import { Spinner } from "react-bootstrap"
+import { Modal, Spinner } from "react-bootstrap"
 import { useParams } from "react-router-dom"
 
 const ViewRequest = () => {
@@ -29,13 +29,22 @@ const ViewRequest = () => {
             ) : (
                 <>
                     {request ? (
-                        <>
-                            <h2 style={{ margin: '20px auto', textAlign: 'center' }}>{`Request for ${request.name} made on ${timestampToDateString(request.timestamp)}`} </h2>
-                            <ViewRequestForm
-                                request={request}
-                                selected={uid}
-                            />
-                        </>
+                        <div
+                            className="modal show modal-lg"
+                            style={{ display: 'block', position: 'initial' }}
+                            >
+                            <Modal.Dialog>
+                                <Modal.Header>
+                                <Modal.Title>Request for {request.name} made on {timestampToDateString(request.timestamp)}</Modal.Title>
+                                </Modal.Header>
+
+                                <Modal.Body>
+                                    <ViewRequestForm
+                                        request={request}
+                                        selected={uid} />
+                                </Modal.Body>
+                            </Modal.Dialog>
+                        </div>
                     ) : (
                         <div style={{ width: '100vw', margin: '50px auto', textAlign: 'center' }}><h2>404: Request not found</h2></div>
                     )}

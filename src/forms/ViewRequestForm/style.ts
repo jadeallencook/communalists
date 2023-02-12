@@ -1,10 +1,12 @@
 const style = () => ({
-    width: '40%', 
-    margin: 'auto',
-    '.form-submit': {
-        width: 'fit-content',
-        margin: '0 0 0 auto'
-    },
+    '.modal-footer': {
+        paddingRight: '0px',
+        paddingLeft: '0px',
+        paddingBottom: '0px',
+        '> button': {
+            marginRight: '0px'
+        }
+    }
 });
 
 export default style;

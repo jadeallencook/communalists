@@ -11,7 +11,7 @@ import RequestAidInterface from '@interfaces/request-aid';
 import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
 import CalendarSVG from '@assets/calendar.svg';
 import ViewRequestForm from '@forms/ViewRequestForm';
-import { useEffect, useState } from 'react';
+import CopyLinkButton from './CopyLinkButton';
 
 const RequestModal = ({
     show,
@@ -28,23 +28,6 @@ const RequestModal = ({
         timestamp,
     } = request;
 
-    const [showPopover, setShowPopover] = useState<boolean>(false)
-
-    const handleCopyLinkToClipboard = async () => {
-        await navigator.clipboard.writeText(`${window.location.origin}/#/view-request/${selected}`)
-        setShowPopover(true)
-    }
-
-    useEffect(() => {
-        if (showPopover) {
-            const hidePopoverTimer = setTimeout(() => {
-                setShowPopover(false)
-            }, 1500)
-
-            return () => clearTimeout(hidePopoverTimer)
-        }
-    }, [showPopover])
-
     return (
         <Modal show={show} onHide={handler} size="lg">
             <Modal.Header closeButton>
@@ -56,7 +39,6 @@ const RequestModal = ({
                         display: 'flex',
                         justifyContent: 'space-between',
                         width: '100%',
-                        marginRight: '10px'
                     }}
                 >
                     <div>
@@ -73,15 +55,7 @@ const RequestModal = ({
                             <img src={CalendarSVG} style={{ cursor: 'pointer' }} />
                         </OverlayTrigger>
                     </div>
-                    <OverlayTrigger
-                        trigger="click"
-                        show={showPopover}
-                        onToggle={handleCopyLinkToClipboard}
-                        placement='bottom'
-                        overlay={<Popover><Popover.Body>Link copied!</Popover.Body></Popover>}
-                    >
-                        <Button >Copy Link</Button>
-                    </OverlayTrigger>
+                    <CopyLinkButton path={`view-request/${selected}`} />
 
                 </Modal.Title>
             </Modal.Header>
