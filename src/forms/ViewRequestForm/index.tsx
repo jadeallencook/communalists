@@ -15,6 +15,7 @@ import Driver from './Driver';
 import style from './style';
 import styled, { StyledComponent } from 'styled-components';
 import RequestAidInterface from '@interfaces/request-aid';
+import CopyLinkButton from './CopyLinkButton';
 
 const ViewRequestForm: StyledComponent = styled(({
     className,
@@ -143,13 +144,17 @@ const ViewRequestForm: StyledComponent = styled(({
             <Driver driver={driver} id={selected} />
 
             <Modal.Footer>
-                {isModal && <Button
+                {isModal && 
+                <>
+                <CopyLinkButton path={`view-request/${selected}`} />
+                <Button
                     variant="secondary"
                     onClick={() => handler()}
                     disabled={submitting}
                 >
                     Close
-                </Button>}
+                </Button>
+                </>}
                 <Button variant="primary" onClick={save} disabled={submitting}>
                     Save Changes
                 </Button>
