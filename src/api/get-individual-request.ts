@@ -1,13 +1,8 @@
 import RequestAidInterface from '@interfaces/request-aid';
 import {
     getFirestore,
-    collection,
-    getDocs,
-    query, 
-    where,
     doc,
     getDoc,
-    DocumentSnapshot,
 } from 'firebase/firestore';
 import app from './init-app';
 

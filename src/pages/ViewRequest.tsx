@@ -18,8 +18,6 @@ const ViewRequest = () => {
                 setRequest(res)
                 setIsLoading(false)
             })
-        console.log(uid)
-
     }, [])
 
     return (
