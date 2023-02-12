@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import RequestAid from '@pages/RequestAid';
 import Dashboard from '@pages/Dashboard';
 import SignIn from '@pages/SignIn';
+import ViewRequest from '@pages/ViewRequest';
 
 interface Route {
     path: string;
@@ -26,6 +27,10 @@ const routes: Route[] = [
         path: '/sign-in',
         element: <SignIn />,
     },
+    {
+        path: '/view-request/:uid',
+        element: <ViewRequest />
+    }
 ];
 
 export default routes;

@@ -13,7 +13,6 @@ import style from './style';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
 import methods from '@objects/methods';
-import LoadingImage from '@assets/loading.gif';
 import addRequest from '@api/add-request';
 import { useState } from 'react';
 import { Timestamp } from 'firebase/firestore';
