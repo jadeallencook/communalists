@@ -31,13 +31,12 @@ const RequestModal = ({
     const [showPopover, setShowPopover] = useState<boolean>(false)
 
     const handleCopyLinkToClipboard = async () => {
-        {/* Can create a /consts/baseUrl if needed, for now is done using the 'window' object since vercel deployments have nonstandard urls  */}
         await navigator.clipboard.writeText(`${window.location.origin}/#/view-request/${selected}`)
         setShowPopover(true)
     }
 
     useEffect(() => {
-        if(showPopover) {
+        if (showPopover) {
             const hidePopoverTimer = setTimeout(() => {
                 setShowPopover(false)
             }, 1500)
@@ -45,7 +44,7 @@ const RequestModal = ({
             return () => clearTimeout(hidePopoverTimer)
         }
     }, [showPopover])
-    
+
     return (
         <Modal show={show} onHide={handler} size="lg">
             <Modal.Header closeButton>
@@ -54,8 +53,8 @@ const RequestModal = ({
                         color: 'var(--primary)',
                         fontWeight: '900',
                         textTransform: 'capitalize',
-                        display:'flex',
-                        justifyContent:'space-between',
+                        display: 'flex',
+                        justifyContent: 'space-between',
                         width: '100%',
                         marginRight: '10px'
                     }}
@@ -74,24 +73,24 @@ const RequestModal = ({
                             <img src={CalendarSVG} style={{ cursor: 'pointer' }} />
                         </OverlayTrigger>
                     </div>
-                    <OverlayTrigger 
+                    <OverlayTrigger
                         trigger="click"
-                        show={showPopover} 
-                        onToggle={handleCopyLinkToClipboard} 
-                        placement='bottom' 
+                        show={showPopover}
+                        onToggle={handleCopyLinkToClipboard}
+                        placement='bottom'
                         overlay={<Popover><Popover.Body>Link copied!</Popover.Body></Popover>}
-                        >
+                    >
                         <Button >Copy Link</Button>
                     </OverlayTrigger>
-                    
+
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <ViewRequestForm 
-                    request={request} 
-                    handler={handler} 
-                    selected={selected} 
-                    isModal={true}/>
+                <ViewRequestForm
+                    request={request}
+                    handler={handler}
+                    selected={selected}
+                    isModal={true} />
             </Modal.Body>
         </Modal>
     );

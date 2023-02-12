@@ -25,22 +25,21 @@ const ViewRequest = () => {
     return (
         <>
             {isLoading ? (
-                <div style={{width: '100vw', margin: '50px auto', textAlign: 'center'}}>
+                <div style={{ width: '100vw', margin: '50px auto', textAlign: 'center' }}>
                     <Spinner animation="border" />
                 </div>
             ) : (
                 <>
                     {request ? (
                         <>
-                            <h2 style={{margin: '20px auto', textAlign: 'center'}}>{`Request for ${request.name} made on ${timestampToDateString(request.timestamp)}`} </h2>
-                            <ViewRequestForm 
+                            <h2 style={{ margin: '20px auto', textAlign: 'center' }}>{`Request for ${request.name} made on ${timestampToDateString(request.timestamp)}`} </h2>
+                            <ViewRequestForm
                                 request={request}
-                                handler={()=> {return}}
                                 selected={uid}
-                                /> 
+                            />
                         </>
                     ) : (
-                        <div style={{width: '100vw', margin: '50px auto', textAlign: 'center'}}><h2>404: Request not found</h2></div>
+                        <div style={{ width: '100vw', margin: '50px auto', textAlign: 'center' }}><h2>404: Request not found</h2></div>
                     )}
                 </>
             )}

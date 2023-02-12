@@ -15,22 +15,21 @@ import Comments from './Comments';
 import Driver from './Driver';
 import style from './style';
 import styled, { StyledComponent } from 'styled-components';
+import RequestAidInterface from '@interfaces/request-aid';
 
-interface ViewRequestFormInterface { 
-    className: string,
-    request: any,
-    handler: any,
-    selected: any,
-    isModal?: boolean
-}
-
-const ViewRequestForm: StyledComponent = styled(({ 
+const ViewRequestForm: StyledComponent = styled(({
     className,
-    request, 
-    handler, 
-    selected, 
-    isModal = false 
-}: ViewRequestFormInterface) => {
+    request,
+    handler,
+    selected,
+    isModal = false
+}: {
+    className: string,
+    request: RequestAidInterface,
+    handler?: (id?: string) => void,
+    selected: string,
+    isModal?: boolean
+}) => {
 
     const {
         name,
@@ -47,24 +46,24 @@ const ViewRequestForm: StyledComponent = styled(({
     const [stage, setStage] = useState<StageKeyType>(request.stage);
     const [submitting, setSubmitting] = useState<boolean>(false);
 
-    const handleSubmitModal = async() => {
+    const handleSubmitModal = async () => {
         setSubmitting(true);
         await updateRequestStage(selected, stage);
         setSubmitting(false);
         handler();
     }
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         setSubmitting(true);
         await updateRequestStage(selected, stage);
         setSubmitting(false);
     }
     const save = async () => {
-        isModal ? handleSubmitModal(): handleSubmit()
+        isModal ? handleSubmitModal() : handleSubmit()
     };
 
     return (
-        <Row className={ !isModal && className}>
+        <Row className={!isModal && className}>
             <Form.Group className="mb-3">
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control defaultValue={name} disabled />
