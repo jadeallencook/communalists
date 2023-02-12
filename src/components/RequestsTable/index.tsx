@@ -1,5 +1,4 @@
 import { Badge, Spinner, Table } from 'react-bootstrap';
-import LoadingImage from '@assets/loading.gif';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
 import stages from '@objects/stages';
@@ -24,7 +23,7 @@ const RequestsTable: StyledComponent = styled(
         <div className={className}>
             {loaded ? (
                 <Table striped bordered hover variant="dark">
-                    <thead>
+                    <thead className="animate__animated animate__flipInX">
                         <tr>
                             <th className="timestamp">Recieved</th>
                             <th className="name">Name</th>
@@ -36,18 +35,28 @@ const RequestsTable: StyledComponent = styled(
                     </thead>
                     <tbody>
                         {organizeRequestsByDate(requests).map(
-                            ([
-                                id,
-                                {
-                                    name,
-                                    location,
-                                    language,
-                                    stage,
-                                    timestamp,
-                                    driver,
-                                },
-                            ]) => (
-                                <tr key={id} onClick={() => handler(id)}>
+                            (
+                                [
+                                    id,
+                                    {
+                                        name,
+                                        location,
+                                        language,
+                                        stage,
+                                        timestamp,
+                                        driver,
+                                    },
+                                ],
+                                index
+                            ) => (
+                                <tr
+                                    key={id}
+                                    onClick={() => handler(id)}
+                                    className="animate__animated animate__flipInX"
+                                    style={{
+                                        animationDelay: `${index * 0.05}s`,
+                                    }}
+                                >
                                     <td className="timestamp">
                                         {getNumberOfDaysAfterDate(timestamp)}
                                     </td>

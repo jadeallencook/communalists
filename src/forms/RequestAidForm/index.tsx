@@ -89,7 +89,10 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             </p>
         </Container>
     ) : (
-        <Form onSubmit={handleSubmit} className={className}>
+        <Form
+            onSubmit={handleSubmit}
+            className={`${className} animate__animated animate__fadeIn`}
+        >
             <h1>Welcome to Communalists</h1>
             <p>
                 This an opportunity to reach out for support in any form that
