@@ -1,10 +1,10 @@
 import getRequests from '@api/get-requests';
 import RequestAidInterface from '@interfaces/request-aid';
 import { useEffect, useState } from 'react';
-import { Container, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import RequestsTable from '@components/RequestsTable';
 import RequestModal from '@components/RequestModal';
-import InfoSVG from '@assets/info.svg';
+import Tooltip from '@components/Tooltip';
 
 const Dashboard = () => {
     const [requests, setRequests] = useState<{
@@ -33,32 +33,15 @@ const Dashboard = () => {
         <Container>
             <h1 className="animate__animated animate__fadeIn">
                 <span className="mobile-remove">Help Meet</span> Community Needs{' '}
-                <OverlayTrigger
-                    placement="bottom"
-                    overlay={
-                        <Tooltip id="tooltip-bottom">
-                            <div
-                                style={{
-                                    textAlign: 'left',
-                                    padding: '10px',
-                                }}
-                            >
-                                Our mutual aid volunteer dashboard serves as a
-                                central hub for volunteers to view and respond
-                                to requests from community members.
-                            </div>
-                        </Tooltip>
-                    }
-                >
-                    <img
-                        src={InfoSVG}
-                        style={{
-                            cursor: 'pointer',
-                            animationDelay: '1s',
-                        }}
-                        className="animate__animated animate__tada"
-                    />
-                </OverlayTrigger>
+                <Tooltip 
+                    position="bottom" 
+                    textDiv={
+                        <div>Our mutual aid volunteer dashboard serves as a
+                        central hub for volunteers to view and respond
+                        to requests from community members.</div>
+                    } 
+                />
+                
             </h1>
             <RequestsTable
                 requests={requests}
