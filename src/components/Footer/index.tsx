@@ -7,7 +7,10 @@ import style from './style';
 const Footer: StyledComponent = styled(({ className }) => {
     const { snippet } = useContext(SnippetContext);
     return (
-        <Container fluid className={className}>
+        <Container
+            fluid
+            className={`${className} animate__animated animate__fadeIn`}
+        >
             {snippet('line1', 'footer')}
             <br />
             <b>{snippet('line2', 'footer')}</b>

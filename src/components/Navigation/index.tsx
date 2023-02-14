@@ -15,11 +15,19 @@ const Navigation: StyledComponent = styled(({ className }) => {
     const auth = useUserState();
     const { setLanguage, language } = useContext(SnippetContext);
     return (
-        <Navbar bg="dark" variant="dark" className={className}>
+        <Navbar
+            bg="dark"
+            variant="dark"
+            className={`${className} animate__animated animate__slideInDown`}
+        >
             <Container>
                 <Navbar.Brand>
                     <Link to="/">
-                        <img src={LogoPNG} />
+                        <img
+                            src={LogoPNG}
+                            style={{ animationDelay: '.5s' }}
+                            className="animate__animated animate__rotateIn"
+                        />
                         <span>Communalists</span>
                     </Link>
                 </Navbar.Brand>

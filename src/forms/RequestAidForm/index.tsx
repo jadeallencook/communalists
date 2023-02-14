@@ -91,7 +91,10 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             </p>
         </Container>
     ) : (
-        <Form onSubmit={handleSubmit} className={className}>
+        <Form
+            onSubmit={handleSubmit}
+            className={`${className} animate__animated animate__fadeIn`}
+        >
             <h1>{snippet('header', 'request-aid-form')}</h1>
             <p>{snippet('description', 'request-aid-form')}</p>
             <Form.Group className="mb-3">
@@ -182,7 +185,10 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                     id="health"
                     name="health"
                     type="text"
-                    placeholder={snippet('health.placeholder', 'request-aid-form')}
+                    placeholder={snippet(
+                        'health.placeholder',
+                        'request-aid-form'
+                    )}
                     onChange={handleChange}
                     value={health}
                 />
@@ -225,7 +231,10 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                     id="needs"
                     name="needs"
                     type="text"
-                    placeholder={snippet('needs.placeholder', 'request-aid-form')}
+                    placeholder={snippet(
+                        'needs.placeholder',
+                        'request-aid-form'
+                    )}
                     onChange={handleChange}
                     value={needs}
                     required
