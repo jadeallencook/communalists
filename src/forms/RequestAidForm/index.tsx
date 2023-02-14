@@ -13,14 +13,15 @@ import style from './style';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
 import methods from '@objects/methods';
-import LoadingImage from '@assets/loading.gif';
 import addRequest from '@api/add-request';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Timestamp } from 'firebase/firestore';
 import InfoSVG from '@assets/info.svg';
+import SnippetContext from '../../contexts/SnippetContext';
 
 const RequestAidForm: StyledComponent = styled(({ className }) => {
     const [success, setSuccess] = useState(false);
+    const { snippet } = useContext(SnippetContext);
     const {
         handleChange,
         handleSubmit,
@@ -91,26 +92,22 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
         </Container>
     ) : (
         <Form onSubmit={handleSubmit} className={className}>
-            <h1>Welcome to Communalists</h1>
-            <p>
-                This an opportunity to reach out for support in any form that
-                you may need, whether it be emotional, practical, hands-on, or
-                help with necessities like furniture or groceries.
-            </p>
+            <h1>{snippet('header', 'request-aid-form')}</h1>
+            <p>{snippet('description', 'request-aid-form')}</p>
             <Form.Group className="mb-3">
-                <Form.Label>Full Name</Form.Label>
+                <Form.Label>{snippet('name.label')}</Form.Label>
                 <Form.Control
                     id="name"
                     name="name"
                     type="text"
-                    placeholder="Enter your full name"
+                    placeholder={snippet('name.placeholder')}
                     onChange={handleChange}
                     value={name}
                     required
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Spoken Language</Form.Label>
+                <Form.Label>{snippet('language.label')}</Form.Label>
                 <Form.Select
                     onChange={handleChange}
                     value={language}
@@ -125,7 +122,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                 </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Location</Form.Label>
+                <Form.Label>{snippet('location.label')}</Form.Label>
                 <Form.Select
                     onChange={handleChange}
                     value={location}
@@ -140,30 +137,30 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                 </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Email Address</Form.Label>
+                <Form.Label>{snippet('email.label')}</Form.Label>
                 <Form.Control
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="Enter your email address"
+                    placeholder={snippet('email.placeholder')}
                     onChange={handleChange}
                     value={email}
                     required
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Phone Number (Optional)</Form.Label>
+                <Form.Label>{snippet('phone.label')}</Form.Label>
                 <Form.Control
                     id="phone"
                     name="phone"
                     type="tel"
-                    placeholder="Enter your phone number"
+                    placeholder={snippet('phone.placeholder')}
                     onChange={handleChange}
                     value={phone}
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Preferred Contact Method</Form.Label>
+                <Form.Label>{snippet('method.label')}</Form.Label>
                 <Form.Select
                     onChange={handleChange}
                     value={method}
@@ -179,20 +176,20 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             </Form.Group>
             <Form.Group className="mb-3">
                 <Form.Label>
-                    Do you have any relevant health conditions?
+                    {snippet('health.label', 'request-aid-form')}
                 </Form.Label>
                 <Form.Control
                     id="health"
                     name="health"
                     type="text"
-                    placeholder="Enter any relevant health conditions"
+                    placeholder={snippet('health.placeholder', 'request-aid-form')}
                     onChange={handleChange}
                     value={health}
                 />
             </Form.Group>
             <Form.Group className="mb-3">
                 <Form.Label>
-                    What we can we assist you with?{' '}
+                    {snippet('needs.label', 'request-aid-form')}{' '}
                     <OverlayTrigger
                         placement="top"
                         overlay={
@@ -228,14 +225,16 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                     id="needs"
                     name="needs"
                     type="text"
-                    placeholder="It is important to provide as much detail as you can about your situation and what type of aid you are looking for. By taking a few minutes to fill out this section thoroughly, we can connect you with the proper resources and support."
+                    placeholder={snippet('needs.placeholder', 'request-aid-form')}
                     onChange={handleChange}
                     value={needs}
                     required
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Button type="submit">Submit Request</Button>
+                <Button type="submit">
+                    {snippet('submit.button', 'request-aid-form')}
+                </Button>
             </Form.Group>
         </Form>
     );
