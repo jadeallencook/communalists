@@ -1,6 +1,6 @@
-import { LanguageKeyTypes, LanguageTypes } from '@custom-types/languages';
+import { LanguageKeyType, LanguageType } from '@custom-types/languages';
 
-const languages: { [key in LanguageKeyTypes]: LanguageTypes } = {
+const languages: { [key in LanguageKeyType]: LanguageType } = {
     english: 'English',
     espanol: 'Español',
     'tieng-viet': 'Tiếng Việt',

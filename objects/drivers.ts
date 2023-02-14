@@ -1,6 +1,6 @@
-import { DriverKeyTypes, DriverTypes } from "@custom-types/driver";
+import { DriverKeyType, DriverType } from "@custom-types/driver";
 
-const drivers: { [key in DriverKeyTypes]: DriverTypes } = {
+const drivers: { [key in DriverKeyType]: DriverType } = {
     'not-assigned': 'Not Assigned',
     'assigned': 'Assigned'
 };

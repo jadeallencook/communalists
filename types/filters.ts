@@ -1,11 +1,11 @@
-import { DriverTypes } from "./driver";
-import { LanguageTypes } from "./languages";
-import { LocationType } from "./locations";
-import { StageType } from "./stages";
+import { DriverKeyType } from "./driver";
+import { LanguageKeyType } from "./languages";
+import { LocationKeyType } from "./locations";
+import { StageKeyType } from "./stages";
 
 export type FiltersType = {
-    location: LocationType | '',
-    language: LanguageTypes | '',
-    driver: DriverTypes | '',
-    stage: StageType | ''
+    location: LocationKeyType | '',
+    language: LanguageKeyType | '',
+    driver: DriverKeyType | '',
+    stage: StageKeyType | ''
 };

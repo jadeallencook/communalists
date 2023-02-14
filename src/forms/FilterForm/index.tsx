@@ -4,11 +4,11 @@ import languages from '@objects/languages';
 import locations from '@objects/locations';
 import stages from '@objects/stages';
 import { FiltersType } from '@custom-types/filters';
-import { LanguageTypes } from '@custom-types/languages';
-import { LocationType } from '@custom-types/locations';
-import { StageType } from '@custom-types/stages';
+import { LanguageKeyType } from '@custom-types/languages';
+import { LocationKeyType } from '@custom-types/locations';
+import { StageKeyType } from '@custom-types/stages';
 import style from './style';
-import { DriverTypes } from '@custom-types/driver';
+import { DriverKeyType } from '@custom-types/driver';
 import drivers from '@objects/drivers';
 
 const FilterForm: StyledComponent = styled(({
@@ -35,7 +35,7 @@ const FilterForm: StyledComponent = styled(({
                                 size="sm"
                                 onChange={e => setFilters({
                                     ...filters,
-                                    location: e.target.value as LocationType
+                                    location: e.target.value as LocationKeyType
                                 })}
                             >
                                 <option value={''}>Location</option>
@@ -56,7 +56,7 @@ const FilterForm: StyledComponent = styled(({
                                 size="sm"
                                 onChange={e => setFilters({
                                     ...filters,
-                                    language: e.target.value as LanguageTypes
+                                    language: e.target.value as LanguageKeyType
                                 })}
                             >
                                 <option value={''}>Language</option>
@@ -77,13 +77,13 @@ const FilterForm: StyledComponent = styled(({
                                 size="sm"
                                 onChange={e => setFilters({
                                     ...filters,
-                                    driver: e.target.value as DriverTypes
+                                    driver: e.target.value as DriverKeyType
                                 })}
                             >
                                 <option value={''}>Driver</option>
                                 {
                                     Object.entries(drivers).map(([key, value]) => (
-                                        <option key={key} value={value}>{value}</option>
+                                        <option key={key} value={key}>{value}</option>
                                     ))
                                 }
                             </Form.Select>
@@ -98,7 +98,7 @@ const FilterForm: StyledComponent = styled(({
                                 size="sm"
                                 onChange={e => setFilters({
                                     ...filters,
-                                    stage: e.target.value as StageType
+                                    stage: e.target.value as StageKeyType
                                 })}
                             >
                                 <option value={''}>Stage</option>

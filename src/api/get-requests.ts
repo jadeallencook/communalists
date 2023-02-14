@@ -26,22 +26,17 @@ const getRequests = async (
             filters.language && where(
                 'language', '==', filters.language
             ),
-            (filters.driver == 'Assigned') && where(
-                'driver', '!=', ''
-            ),
-            (filters.driver == 'Not Assigned') && where(
-                'driver', '==', ''
-            ),
             filters.stage && where(
                 'stage', '==', filters.stage
+            ),
+            filters.driver && where(
+                'hasDriver', '==', filters.driver === 'assigned'
             )
         ];
 
-        console.log(...whereFilters.filter((filter) => Boolean(filter) != false));
-
         q = query(
             collection(db, 'requests'),
-            ...whereFilters.filter((filter) => Boolean(filter) != false)
+            ...whereFilters.filter((filter) => Boolean(filter) !== false)
         );
 
     } else {

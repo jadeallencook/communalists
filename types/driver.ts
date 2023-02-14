@@ -1,3 +1,3 @@
-export type DriverKeyTypes = 'assigned' | 'not-assigned';
+export type DriverKeyType = 'assigned' | 'not-assigned';
 
-export type DriverTypes = 'Assigned' | 'Not Assigned';
+export type DriverType = 'Assigned' | 'Not Assigned';
