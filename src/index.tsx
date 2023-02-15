@@ -10,19 +10,22 @@ import './theme.css';
 import './normalize.css';
 import Navigation from '@components/Navigation';
 import Footer from '@components/Footer';
+import { SnippetProvider } from './contexts/SnippetContext';
 
 // components
 const elem = document.getElementById('root')!;
 const root = ReactDOM.createRoot(elem);
 
 root.render(
-    <Router>
-        <Navigation />
-        <Routes>
-            {routes.map(({ path, element }) => (
-                <Route key={path} path={path} element={element}></Route>
-            ))}
-        </Routes>
-        <Footer />
-    </Router>
+    <SnippetProvider>
+        <Router>
+            <Navigation />
+            <Routes>
+                {routes.map(({ path, element }) => (
+                    <Route key={path} path={path} element={element}></Route>
+                ))}
+            </Routes>
+            <Footer />
+        </Router>
+    </SnippetProvider>
 );
