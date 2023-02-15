@@ -33,14 +33,6 @@ const style = () => ({
             backgroundColor: 'var(--white)',
         },
     },
-    '@media only screen and (max-width: 576px)': {
-        'span.navbar-brand > a > span': {
-            display: 'none',
-        },
-        'a.request-aid': {
-            display: 'none',
-        },
-    },
     'button.btn-secondary': {
         marginLeft: '15px',
         float: 'right',

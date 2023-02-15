@@ -28,56 +28,52 @@ const Navigation: StyledComponent = styled(({ className }) => {
                             style={{ animationDelay: '.5s' }}
                             className="animate__animated animate__rotateIn"
                         />
-                        <span>Communalists</span>
+                        <span className="mobile-remove">Communalists</span>
                     </Link>
                 </Navbar.Brand>
                 <Nav className="justify-content-end">
-                    <Nav.Link>
-                        <Link
-                            className={
-                                pathname.indexOf('/request-aid') === 0 ||
-                                pathname === '/'
-                                    ? 'active request-aid'
-                                    : 'request-aid'
-                            }
-                            to={'/request-aid'}
-                        >
-                            Submit Request
-                        </Link>
-                    </Nav.Link>
+                    <Link
+                        className={
+                            pathname.indexOf('/request-aid') === 0 ||
+                            pathname === '/'
+                                ? 'active tablet-remove nav-link'
+                                : 'tablet-remove nav-link'
+                        }
+                        to={'/request-aid'}
+                    >
+                        Submit Request
+                    </Link>
                     {auth ? (
                         <>
-                            <Nav.Link>
-                                <Link
-                                    className={
-                                        pathname.indexOf('/dashboard') === 0
-                                            ? 'active'
-                                            : ''
-                                    }
-                                    to="/dashboard"
-                                >
-                                    Dashboard
-                                </Link>
-                            </Nav.Link>
-                            <Nav.Link>
-                                <Link onClick={() => authSignOut()} to="/">
-                                    Log Out
-                                </Link>
-                            </Nav.Link>
-                        </>
-                    ) : (
-                        <Nav.Link>
                             <Link
                                 className={
-                                    pathname.indexOf('/sign-in') === 0
-                                        ? 'active'
-                                        : ''
+                                    pathname.indexOf('/dashboard') === 0
+                                        ? 'active nav-link'
+                                        : 'nav-link'
                                 }
-                                to="/sign-in"
+                                to="/dashboard"
                             >
-                                Log In
+                                Dashboard
                             </Link>
-                        </Nav.Link>
+                            <Link
+                                onClick={() => authSignOut()}
+                                to="/"
+                                className="nav-link"
+                            >
+                                Log Out
+                            </Link>
+                        </>
+                    ) : (
+                        <Link
+                            className={
+                                pathname.indexOf('/sign-in') === 0
+                                    ? 'active nav-link'
+                                    : 'nav-link'
+                            }
+                            to="/sign-in"
+                        >
+                            Log In
+                        </Link>
                     )}
                     <NavDropdown
                         title={languages[language]}
