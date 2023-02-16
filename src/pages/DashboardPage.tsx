@@ -76,9 +76,7 @@ const DashboardPage = () => {
             <p
                 style={{
                     display: !loaded ? 'none' : 'inherit',
-                    animationDelay: '.5s',
                 }}
-                className="animate__animated animate__fadeIn"
             >
                 <small>
                     Our mission is to connect those in need with volunteers who
