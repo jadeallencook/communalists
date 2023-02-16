@@ -6,9 +6,6 @@ const style = () => ({
     a: {
         color: 'var(--bs-nav-link-color)!important',
     },
-    'div.justify-content-end > a': {
-        marginLeft: '15px',
-    },
     'a:hover': {
         color: 'var(--white)!important',
     },
@@ -20,13 +17,32 @@ const style = () => ({
         marginRight: '10px',
         marginTop: '-5px',
     },
-    '@media only screen and (max-width: 576px)': {
-        'span.navbar-brand > a > span': {
-            display: 'none',
+    'div#language-selector': {
+        marginLeft: '5px',
+        a: {
+            padding: '5px',
+            fontWeight: 'bold',
+            borderRadius: '5px',
+            backgroundColor: 'var(--bs-nav-link-color)',
+            marginLeft: '5px',
+            fontSize: '.75em',
+            cursor: 'pointer',
+            color: 'var(--primary)!important',
         },
-        'a.request-aid': {
-            display: 'none',
-        }
+        'a:hover, a.active': {
+            backgroundColor: 'var(--white)',
+        },
+    },
+    'div.dropdown-menu': {
+        position: 'absolute',
+        left: '-74px',
+    },
+    'button.btn-secondary': {
+        marginLeft: '15px',
+        float: 'right',
+    },
+    'a.dropdown-item.active, a.dropdown-item:active': {
+        backgroundColor: 'var(--primary)',
     },
 });
 
