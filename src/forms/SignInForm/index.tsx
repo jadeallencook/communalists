@@ -4,12 +4,14 @@ import { Alert, Button, Container, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import LoadingImage from '@assets/loading.gif';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import SnippetContext from '../../contexts/SnippetContext';
 
 const SignInForm: StyledComponent = styled(({ className }) => {
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
+    const { snippet } = useContext(SnippetContext);
     const {
         handleChange,
         handleSubmit,
@@ -35,30 +37,27 @@ const SignInForm: StyledComponent = styled(({ className }) => {
         </Container>
     ) : (
         <Form onSubmit={handleSubmit} className={className}>
-            <h1>Welcome Volunteers </h1>
-            <p>
-                This sign in page is exclusively for those who have generously
-                offered their time and resources to support our community.
-            </p>
+            <h1>{snippet('header', 'log-in-form')}</h1>
+            <p>{snippet('description', 'log-in-form')}</p>
             <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>{snippet('email.label')}</Form.Label>
                 <Form.Control
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="comrade@communalists.com"
+                    placeholder={snippet('email.placeholder', 'log-in-form')}
                     onChange={handleChange}
                     value={email}
                     required
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Password</Form.Label>
+                <Form.Label>{snippet('password.label')}</Form.Label>
                 <Form.Control
                     id="password"
                     name="password"
                     type="password"
-                    placeholder="••••••••••••••••••"
+                    placeholder={snippet('password.placeholder')}
                     onChange={handleChange}
                     value={password}
                     required
@@ -66,18 +65,15 @@ const SignInForm: StyledComponent = styled(({ className }) => {
             </Form.Group>
             <Form.Group className="mb-3">
                 {error && <Alert variant="danger">{error}</Alert>}
-                <Button type="submit">Access Your Dashboard</Button>
+                <Button type="submit">
+                    {snippet('button', 'log-in-form')}
+                </Button>
+                <Link to="/sign-up">
+                    <Button variant="secondary">
+                        {snippet('sign-up.button', 'log-in-form')}
+                    </Button>
+                </Link>
             </Form.Group>
-
-            <p>
-                <br />
-                If you would like to become a volunteer simply send an email to{' '}
-                <a href="mailto: support@communalists.com?subject=Support Request From Communalists">
-                    support@communalists.com
-                </a>{' '}
-                and one of our team members will be in touch to discuss the next
-                steps.
-            </p>
         </Form>
     );
 })(style);

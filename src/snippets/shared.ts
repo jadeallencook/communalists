@@ -46,6 +46,16 @@ const shared: SnippetInterface = {
         espanol: 'Método de Contacto Preferido',
         'tieng-viet': 'Liên Hệ Ūa Thích',
     },
+    ['password.label']: {
+        english: 'Password',
+        espanol: 'Contraseña',
+        'tieng-viet': 'Mật Khẩu',
+    },
+    ['password.placeholder']: {
+        english: '••••••••••••••••••',
+        espanol: '••••••••••••••••••',
+        'tieng-viet': '••••••••••••••••••',
+    },
 };
 
 export default shared;
