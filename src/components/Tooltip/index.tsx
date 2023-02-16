@@ -1,5 +1,7 @@
 import { OverlayTrigger, Tooltip as RBTooltip } from "react-bootstrap"
 import InfoSVG from '@assets/info.svg';
+import styled, { StyledComponent } from 'styled-components';
+import style from './style';
 
 const InfoIcon = 
 	<img
@@ -11,35 +13,32 @@ const InfoIcon =
 		className="animate__animated animate__tada"
 	/>
 
-const Tooltip = ({
+const Tooltip: StyledComponent = styled(({
+	className,
 	position,
-	textDiv,
-	children = InfoIcon
+	element = InfoIcon,
+	children
 }: {
+	className: string,
 	position: "top" | "bottom" | "left" | "right",
-	textDiv: any,
-	children?: any
+	element?: JSX.Element,
+	children: JSX.Element | string
 }) => {
-
-
 	return (
 		<OverlayTrigger
 			placement={position}
 			overlay={
 				<RBTooltip id={`tooltip-${position}`}>
 					<div
-						style={{
-							textAlign: 'left',
-							padding: '10px',
-						}}
+						className={className}
 					>
-						{textDiv}
+						{children}
 					</div>
 				</RBTooltip>
 			}
 		>
-			{children}
+			{element}
 		</OverlayTrigger>
 	)
-}
+})(style)
 export default Tooltip

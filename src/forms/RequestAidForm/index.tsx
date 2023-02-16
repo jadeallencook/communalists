@@ -193,25 +193,23 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             <Form.Group className="mb-3">
                 <Form.Label>
                     What we can we assist you with?{' '}
-                    <Tooltip position="top"
-                        textDiv={
-                            <div>
-                                You can request items such as{' '}
-                                <strong>
-                                    groceries, personal care items, or
-                                    household supplies
-                                </strong>
-                                . Please include an address to a drop off
-                                location if delivery is required.
-                                <br />
-                                <br />
-                                <strong>Example:</strong> I'm in need of
-                                some fresh produce and a mattress, I can
-                                meet at 456 Oak Ave sometime after 5:00PM on
-                                Wednesday.
-                            </div>
-                        }
-                    />
+                    <Tooltip position="top">
+                        <div>
+                            You can request items such as{' '}
+                            <strong>
+                                groceries, personal care items, or
+                                household supplies
+                            </strong>
+                            . Please include an address to a drop off
+                            location if delivery is required.
+                            <br />
+                            <br />
+                            <strong>Example:</strong> I'm in need of
+                            some fresh produce and a mattress, I can
+                            meet at 456 Oak Ave sometime after 5:00PM on
+                            Wednesday.
+                        </div>
+                    </Tooltip>
                 </Form.Label>
                 <Form.Control
                     as="textarea"

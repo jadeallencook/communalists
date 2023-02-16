@@ -62,13 +62,11 @@ const RequestModal = ({
                 >
                     <span className="mobile-remove">Request</span> Recieved{' '}
                     <b>{getNumberOfDaysAfterDate(timestamp)}</b>{' '}
-                    <Tooltip 
+                    <Tooltip
                         position="right"
-                        textDiv={
-                            <div>{timestampToDateString(timestamp)}</div>
-                        }
-                        >
-                        <img src={CalendarSVG} style={{ cursor: 'pointer' }} />
+                        element={<img src={CalendarSVG} style={{ cursor: 'pointer' }} />}
+                    >
+                        <div>{timestampToDateString(timestamp)}</div>
                     </Tooltip>
                 </Modal.Title>
             </Modal.Header>

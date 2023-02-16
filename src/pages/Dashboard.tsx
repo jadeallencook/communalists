@@ -34,14 +34,12 @@ const Dashboard = () => {
             <h1 className="animate__animated animate__fadeIn">
                 <span className="mobile-remove">Help Meet</span> Community Needs{' '}
                 <Tooltip 
-                    position="bottom" 
-                    textDiv={
-                        <div>Our mutual aid volunteer dashboard serves as a
-                        central hub for volunteers to view and respond
-                        to requests from community members.</div>
-                    } 
-                />
-                
+                    position="bottom"
+                >
+                    <div>Our mutual aid volunteer dashboard serves as a
+                    central hub for volunteers to view and respond
+                    to requests from community members.</div>
+                </Tooltip> 
             </h1>
             <RequestsTable
                 requests={requests}
