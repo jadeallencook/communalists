@@ -23,7 +23,7 @@ const requestAidForm: SnippetInterface = {
         english:
             'It is important to provide as much detail as possible about your situation and what type of aid you are looking for. By taking a few minutes to fill out this section thoroughly, we can connect you with the proper resources and support.',
         spanish:
-            'Es importante proporcionar tantos detalles como sea posible sobre su situación y qué tipo de ayuda está buscando. Al tomar unos minutos para completar esta sección a fondo, podemos conectarlo con los recursos y el soporte adecuados.',
+            'Es importante proporcionar tantos detalles como sea posible sobre su situación y qué tipo de ayuda está buscando. Al tomar unos minutos para completar esta sección a fondo, te podemos conectar con los recursos y el soporte adecuados.',
         vietnamese:
             'Điều quan trọng là cung cấp càng nhiều chi tiết càng tốt về hoàn cảnh của bạn và loại hỗ trợ mà bạn đang tìm kiếm. Bằng cách dành vài phút để điền kỹ phần này, chúng tôi có thể kết nối bạn với các tài nguyên và hỗ trợ phù hợp.',
         chinese:
@@ -47,7 +47,7 @@ const requestAidForm: SnippetInterface = {
     },
     ['header']: {
         english: 'Welcome to Communalists',
-        spanish: 'Bienvenida a Communalists',
+        spanish: 'Bienvenidos a Communalists',
         vietnamese: 'Chào Mừng Bạn đến Communalists',
         chinese: '欢迎共产主义者',
     },
