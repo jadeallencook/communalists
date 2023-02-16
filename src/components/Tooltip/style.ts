@@ -1,6 +1,9 @@
 const style = () => ({
     textAlign: 'left',
-    padding: '10px',
+    img: {
+        cursor: 'pointer',
+        animationDelay: '1s',
+    }
 });
 
 export default style;

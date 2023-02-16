@@ -16,29 +16,34 @@ const InfoIcon =
 const Tooltip: StyledComponent = styled(({
 	className,
 	position,
-	element = InfoIcon,
+	iconSrc = InfoSVG,
 	children
 }: {
 	className: string,
 	position: "top" | "bottom" | "left" | "right",
-	element?: JSX.Element,
+	iconSrc?: string,
 	children: JSX.Element | string
 }) => {
 	return (
-		<OverlayTrigger
-			placement={position}
-			overlay={
-				<RBTooltip id={`tooltip-${position}`}>
-					<div
-						className={className}
-					>
-						{children}
-					</div>
-				</RBTooltip>
-			}
-		>
-			{element}
-		</OverlayTrigger>
+		<span className={className}>
+			<OverlayTrigger
+				placement={position}
+				overlay={
+					<RBTooltip id={`tooltip-${position}`}>
+						{/* <div
+							className={className}
+						> */}
+							{children}
+						{/* </div> */}
+					</RBTooltip>
+				}
+			>
+				<img
+					src={iconSrc}
+					className="animate__animated animate__tada"
+				/>
+			</OverlayTrigger>
+		</span>
 	)
 })(style)
 export default Tooltip

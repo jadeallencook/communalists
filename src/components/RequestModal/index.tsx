@@ -37,7 +37,8 @@ const RequestModal = ({
                     <b>{getNumberOfDaysAfterDate(timestamp)}</b>{' '}
                     <Tooltip
                         position="right"
-                        element={<img src={CalendarSVG} style={{ cursor: 'pointer' }} />}
+                        iconSrc={CalendarSVG}
+                        // element={<img src={CalendarSVG} style={{ cursor: 'pointer' }} />}
                     >
                         <div>{timestampToDateString(timestamp)}</div>
                     </Tooltip>
