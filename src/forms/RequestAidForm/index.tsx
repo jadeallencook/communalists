@@ -18,6 +18,7 @@ import { useContext, useState } from 'react';
 import { Timestamp } from 'firebase/firestore';
 import InfoSVG from '@assets/info.svg';
 import SnippetContext from '../../contexts/SnippetContext';
+import formatPhoneNumer from '@utils/format-phone-number';
 
 const RequestAidForm: StyledComponent = styled(({ className }) => {
     const [success, setSuccess] = useState(false);
@@ -26,6 +27,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
         handleChange,
         handleSubmit,
         isSubmitting,
+        setFieldValue,
         values: {
             name,
             email,
@@ -52,6 +54,12 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
         },
         onSubmit: (values) => addRequest(values).then(() => setSuccess(true)),
     });
+
+    const phoneHandler = (event) => {
+        const formatted = formatPhoneNumer(event);
+        setFieldValue('phone', formatted);
+    };
+
     return isSubmitting && !success ? (
         <Container className={className}>
             <Spinner animation="border" />
@@ -158,7 +166,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                     name="phone"
                     type="tel"
                     placeholder={snippet('phone.placeholder')}
-                    onChange={handleChange}
+                    onChange={handleChange && phoneHandler}
                     value={phone}
                 />
             </Form.Group>
