@@ -6,7 +6,7 @@ import RequestsTable from '@components/RequestsTable';
 import RequestModal from '@components/RequestModal';
 import Tooltip from '@components/Tooltip';
 
-const Dashboard = () => {
+const DashboardPage = () => {
     const [requests, setRequests] = useState<{
         [key: string]: RequestAidInterface;
     }>({});
@@ -86,4 +86,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default DashboardPage;
