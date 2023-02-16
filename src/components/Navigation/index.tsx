@@ -29,7 +29,9 @@ const Navigation: StyledComponent = styled(({ className }) => {
                             style={{ animationDelay: '.5s' }}
                             className="animate__animated animate__rotateIn"
                         />
-                        <span className="mobile-remove">Communalists</span>
+                        <span className="mobile-remove">
+                            {snippet('communalists')}
+                        </span>
                     </Link>
                 </Navbar.Brand>
                 <Nav className="justify-content-end">

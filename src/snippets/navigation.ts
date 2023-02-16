@@ -3,23 +3,27 @@ import { SnippetInterface } from '.';
 const navigation: SnippetInterface = {
     ['submit-request']: {
         english: 'Submit Request',
-        espanol: 'Enviar Peticion',
-        'tieng-viet': 'Gửi Lời đề Nghị',
+        spanish: 'Enviar Peticion',
+        vietnamese: 'Gửi Lời đề Nghị',
+        chinese: '提交请求',
     },
     ['log-in']: {
         english: 'Log In',
-        espanol: 'Acceso',
-        'tieng-viet': 'Đăng Nhập',
+        spanish: 'Acceso',
+        vietnamese: 'Đăng Nhập',
+        chinese: '登录',
     },
     ['log-out']: {
         english: 'Log Out',
-        espanol: 'Cerrar Sesión',
-        'tieng-viet': 'Đăng Xuất',
+        spanish: 'Cerrar Sesión',
+        vietnamese: 'Đăng Xuất',
+        chinese: '登出',
     },
     ['dashboard']: {
         english: 'Dashboard',
-        espanol: 'Panel',
-        'tieng-viet': 'Bảng điều Khiển',
+        spanish: 'Panel',
+        vietnamese: 'Bảng điều Khiển',
+        chinese: '仪表板',
     },
 };
 
