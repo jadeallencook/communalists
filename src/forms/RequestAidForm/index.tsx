@@ -22,7 +22,7 @@ import formatPhoneNumer from '@utils/format-phone-number';
 
 const RequestAidForm: StyledComponent = styled(({ className }) => {
     const [success, setSuccess] = useState(false);
-    const { snippet } = useContext(SnippetContext);
+    const { snippet, language: defaultLanguage } = useContext(SnippetContext);
     const {
         handleChange,
         handleSubmit,
@@ -44,7 +44,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             email: '',
             phone: '',
             location: 'san-jose-downtown-ca',
-            language: 'english',
+            language: defaultLanguage,
             method: 'email',
             health: '',
             needs: '',

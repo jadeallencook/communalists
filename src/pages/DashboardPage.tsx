@@ -6,7 +6,7 @@ import RequestsTable from '@components/RequestsTable';
 import RequestModal from '@components/RequestModal';
 import InfoSVG from '@assets/info.svg';
 
-const Dashboard = () => {
+const DashboardPage = () => {
     const [requests, setRequests] = useState<{
         [key: string]: RequestAidInterface;
     }>({});
@@ -76,9 +76,7 @@ const Dashboard = () => {
             <p
                 style={{
                     display: !loaded ? 'none' : 'inherit',
-                    animationDelay: '.5s',
                 }}
-                className="animate__animated animate__fadeIn"
             >
                 <small>
                     Our mission is to connect those in need with volunteers who
@@ -105,4 +103,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default DashboardPage;

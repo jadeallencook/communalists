@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
 
-import RequestAid from '@pages/RequestAid';
-import Dashboard from '@pages/Dashboard';
-import SignIn from '@pages/SignIn';
-import ViewRequest from '@pages/ViewRequest';
+import RequestAidPage from '@pages/RequestAidPage';
+import DashboardPage from '@pages/DashboardPage';
+import SignInPage from '@pages/SignInPage';
+import ViewRequestPage from '@pages/ViewRequestPage';
+import SignUpPage from '@pages/SignUpPage';
 
 interface Route {
     path: string;
@@ -13,24 +14,28 @@ interface Route {
 const routes: Route[] = [
     {
         path: '/',
-        element: <RequestAid />,
+        element: <RequestAidPage />,
     },
     {
         path: '/request-aid',
-        element: <RequestAid />,
+        element: <RequestAidPage />,
     },
     {
         path: '/dashboard',
-        element: <Dashboard />,
+        element: <DashboardPage />,
     },
     {
         path: '/sign-in',
-        element: <SignIn />,
+        element: <SignInPage />,
     },
     {
         path: '/view-request/:uid',
-        element: <ViewRequest />
-    }
+        element: <ViewRequestPage />,
+    },
+    {
+        path: '/sign-up',
+        element: <SignUpPage />,
+    },
 ];
 
 export default routes;
