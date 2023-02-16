@@ -18,6 +18,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
         <Navbar
             bg="dark"
             variant="dark"
+            sticky="top"
             className={`${className} animate__animated animate__slideInDown`}
         >
             <Container>

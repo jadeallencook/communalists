@@ -33,6 +33,10 @@ const style = () => ({
             backgroundColor: 'var(--white)',
         },
     },
+    'div.dropdown-menu': {
+        position: 'absolute',
+        left: '-74px',
+    },
     'button.btn-secondary': {
         marginLeft: '15px',
         float: 'right',
