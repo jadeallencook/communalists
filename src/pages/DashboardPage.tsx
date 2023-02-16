@@ -6,7 +6,7 @@ import RequestsTable from '@components/RequestsTable';
 import RequestModal from '@components/RequestModal';
 import InfoSVG from '@assets/info.svg';
 
-const Dashboard = () => {
+const DashboardPage = () => {
     const [requests, setRequests] = useState<{
         [key: string]: RequestAidInterface;
     }>({});
@@ -105,4 +105,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default DashboardPage;

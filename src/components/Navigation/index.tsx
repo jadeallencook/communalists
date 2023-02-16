@@ -13,7 +13,7 @@ import { LanguageKeyTypes } from '@custom-types/languages';
 const Navigation: StyledComponent = styled(({ className }) => {
     const { pathname } = useLocation();
     const auth = useUserState();
-    const { setLanguage, language } = useContext(SnippetContext);
+    const { setLanguage, language, snippet } = useContext(SnippetContext);
     return (
         <Navbar
             bg="dark"
@@ -42,7 +42,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                         }
                         to={'/request-aid'}
                     >
-                        Submit Request
+                        {snippet('submit-request', 'navigation')}
                     </Link>
                     {auth ? (
                         <>
@@ -54,14 +54,14 @@ const Navigation: StyledComponent = styled(({ className }) => {
                                 }
                                 to="/dashboard"
                             >
-                                Dashboard
+                                {snippet('dashboard', 'navigation')}
                             </Link>
                             <Link
                                 onClick={() => authSignOut()}
                                 to="/"
                                 className="nav-link"
                             >
-                                Log Out
+                                {snippet('log-out', 'navigation')}
                             </Link>
                         </>
                     ) : (
@@ -73,7 +73,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                             }
                             to="/sign-in"
                         >
-                            Log In
+                            {snippet('log-in', 'navigation')}
                         </Link>
                     )}
                     <NavDropdown
