@@ -12,11 +12,8 @@ const style = () => ({
         alignItems: 'center',
         padding: '0',
     },
-    '.col > div': {
+    '.col > div, button': {
         width: '100%',
-    },
-    button: {
-        width: 'clamp(100px, 100%, 128px)',
     },
     '@media only screen and (max-width: 576px)': {
         '.row': {

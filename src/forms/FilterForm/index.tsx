@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import languages from '@objects/languages';
 import locations from '@objects/locations';
 import stages from '@objects/stages';
-import { FiltersType } from '@custom-types/filters';
+import { FiltersInterface } from '@interfaces/filters';
 import { LanguageKeyType } from '@custom-types/languages';
 import { LocationKeyType } from '@custom-types/locations';
 import { StageKeyType } from '@custom-types/stages';
@@ -18,8 +18,8 @@ const FilterForm: StyledComponent = styled(({
     setRefetch
 }: {
     className: string,
-    filters: FiltersType,
-    setFilters: (value: FiltersType) => void,
+    filters: FiltersInterface,
+    setFilters: (value: FiltersInterface) => void,
     setRefetch: (value: boolean) => void
 }) => {
     return (
@@ -38,7 +38,7 @@ const FilterForm: StyledComponent = styled(({
                                     location: e.target.value as LocationKeyType
                                 })}
                             >
-                                <option value={''}>Location</option>
+                                <option value={''}>Any Location</option>
                                 {
                                     Object.entries(locations).map(([key, value]) => (
                                         <option key={key} value={key}>{value}</option>
@@ -59,7 +59,7 @@ const FilterForm: StyledComponent = styled(({
                                     language: e.target.value as LanguageKeyType
                                 })}
                             >
-                                <option value={''}>Language</option>
+                                <option value={''}>Any Language</option>
                                 {
                                     Object.entries(languages).map(([key, value]) => (
                                         <option key={key} value={key}>{value}</option>
@@ -80,7 +80,7 @@ const FilterForm: StyledComponent = styled(({
                                     driver: e.target.value as DriverKeyType
                                 })}
                             >
-                                <option value={''}>Driver</option>
+                                <option value={''}>Any Driver</option>
                                 {
                                     Object.entries(drivers).map(([key, value]) => (
                                         <option key={key} value={key}>{value}</option>
@@ -101,7 +101,7 @@ const FilterForm: StyledComponent = styled(({
                                     stage: e.target.value as StageKeyType
                                 })}
                             >
-                                <option value={''}>Stage</option>
+                                <option value={''}>Any Stage</option>
                                 {
                                     Object.entries(stages).map(([key, value]) => (
                                         <option key={key} value={key}>{value}</option>
@@ -111,7 +111,9 @@ const FilterForm: StyledComponent = styled(({
                         </Form.Group>
                     </Col>
                     <Col>
-                        <Button size="sm" onClick={() => setRefetch(true)}>Apply Filters</Button>
+                        <Button size="sm" onClick={() => setRefetch(true)}>
+                            Apply <span className="tablet-remove">Filters</span>
+                        </Button>
                     </Col>
                 </Row>
             </Container>

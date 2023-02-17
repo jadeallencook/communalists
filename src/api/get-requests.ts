@@ -1,4 +1,4 @@
-import { FiltersType } from '@custom-types/filters';
+import { FiltersInterface } from '@interfaces/filters';
 import RequestAidInterface from '@interfaces/request-aid';
 import {
     getFirestore,
@@ -12,25 +12,26 @@ import app from './init-app';
 const db = getFirestore(app);
 
 const getRequests = async (
-    filters?: FiltersType
+    filters?: FiltersInterface
 ): Promise<{ [key: string]: RequestAidInterface }> => {
     const requests = {};
 
     let q;
 
     if (filters) {
+        const { location, language, stage, driver } = filters;
         const whereFilters = [
-            filters.location && where(
-                'location', '==', filters.location
+            location && where(
+                'location', '==', location
             ),
-            filters.language && where(
-                'language', '==', filters.language
+            language && where(
+                'language', '==', language
             ),
-            filters.stage && where(
-                'stage', '==', filters.stage
+            stage && where(
+                'stage', '==', stage
             ),
-            filters.driver && where(
-                'hasDriver', '==', filters.driver === 'assigned'
+            driver && where(
+                'hasDriver', '==', driver === 'assigned'
             )
         ];
 

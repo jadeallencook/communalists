@@ -5,7 +5,7 @@ import { Container, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import RequestsTable from '@components/RequestsTable';
 import RequestModal from '@components/RequestModal';
 import InfoSVG from '@assets/info.svg';
-import { FiltersType } from '@custom-types/filters';
+import { FiltersInterface } from '@interfaces/filters';
 import FilterForm from '@forms/FilterForm';
 
 const Dashboard = () => {
@@ -17,7 +17,7 @@ const Dashboard = () => {
     const [refetch, setRefetch] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
     const [selected, setSelected] = useState<string>();
-    const [filters, setFilters] = useState<FiltersType>({
+    const [filters, setFilters] = useState<FiltersInterface>({
         location: '', language: '', driver: '', stage: ''
     });
     const handler = (id?: string): void => {
@@ -27,6 +27,7 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
+        setLoaded(false);
         getRequests(filters).then((requests) => {
             setRequests(requests);
             setLoaded(true);
