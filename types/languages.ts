@@ -1,3 +1,3 @@
-export type LanguageKeyType = 'english' | 'espanol' | 'tieng-viet';
+export type LanguageKeyTypes = 'english' | 'spanish' | 'vietnamese' | 'chinese';
 
-export type LanguageType = 'English' | 'Español' | 'Tiếng Việt';
+export type LanguageTypes = 'English' | 'Español' | 'Tiếng Việt' | '中文';

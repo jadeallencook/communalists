@@ -1,7 +1,7 @@
 import SignInForm from '@forms/SignInForm';
 import { Container } from 'react-bootstrap';
 
-const SignIn = () => {
+const SignInPage = () => {
 	return (
 		<Container>
 			<SignInForm />
@@ -9,4 +9,4 @@ const SignIn = () => {
 	);
 };
 
-export default SignIn;
+export default SignInPage;

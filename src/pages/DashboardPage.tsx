@@ -8,7 +8,7 @@ import InfoSVG from '@assets/info.svg';
 import { FiltersInterface } from '@interfaces/filters';
 import FilterForm from '@forms/FilterForm';
 
-const Dashboard = () => {
+const DashboardPage = () => {
     const [requests, setRequests] = useState<{
         [key: string]: RequestAidInterface;
     }>({});
@@ -87,9 +87,7 @@ const Dashboard = () => {
             <p
                 style={{
                     display: !loaded ? 'none' : 'inherit',
-                    animationDelay: '.5s',
                 }}
-                className="animate__animated animate__fadeIn"
             >
                 <small>
                     Our mission is to connect those in need with volunteers who
@@ -116,4 +114,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default DashboardPage;

@@ -23,7 +23,7 @@ const RequestsTable: StyledComponent = styled(
         <div className={className}>
             {loaded ? (
                 <Table striped bordered hover variant="dark">
-                    <thead className="animate__animated animate__flipInX">
+                    <thead>
                         <tr>
                             <th className="timestamp">Recieved</th>
                             <th className="name">Name</th>
@@ -52,7 +52,6 @@ const RequestsTable: StyledComponent = styled(
                                 <tr
                                     key={id}
                                     onClick={() => handler(id)}
-                                    className="animate__animated animate__flipInX"
                                     style={{
                                         animationDelay: `${index * 0.05}s`,
                                     }}

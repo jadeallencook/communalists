@@ -1,20 +1,24 @@
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Dropdown, NavDropdown } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { Link, useLocation } from 'react-router-dom';
 import useUserState from '@api/auth-state-listener';
 import authSignOut from '@api/auth-sign-out';
 import LogoPNG from '@assets/logo.png';
-
-const routerLinks = [{ title: 'Request Aid', route: '/request-aid' }];
+import { useContext } from 'react';
+import SnippetContext from '../../contexts/SnippetContext';
+import languages from '@objects/languages';
+import { LanguageKeyTypes } from '@custom-types/languages';
 
 const Navigation: StyledComponent = styled(({ className }) => {
     const { pathname } = useLocation();
     const auth = useUserState();
+    const { setLanguage, language, snippet } = useContext(SnippetContext);
     return (
         <Navbar
             bg="dark"
             variant="dark"
+            sticky="top"
             className={`${className} animate__animated animate__slideInDown`}
         >
             <Container>
@@ -25,7 +29,9 @@ const Navigation: StyledComponent = styled(({ className }) => {
                             style={{ animationDelay: '.5s' }}
                             className="animate__animated animate__rotateIn"
                         />
-                        <span>Communalists</span>
+                        <span className="mobile-remove">
+                            {snippet('communalists')}
+                        </span>
                     </Link>
                 </Navbar.Brand>
                 <Nav className="justify-content-end">
@@ -33,41 +39,60 @@ const Navigation: StyledComponent = styled(({ className }) => {
                         className={
                             pathname.indexOf('/request-aid') === 0 ||
                             pathname === '/'
-                                ? 'active request-aid'
-                                : 'request-aid'
+                                ? 'active tablet-remove nav-link'
+                                : 'tablet-remove nav-link'
                         }
                         to={'/request-aid'}
                     >
-                        Submit Request
+                        {snippet('submit-request', 'navigation')}
                     </Link>
                     {auth ? (
                         <>
                             <Link
                                 className={
                                     pathname.indexOf('/dashboard') === 0
-                                        ? 'active'
-                                        : ''
+                                        ? 'active nav-link'
+                                        : 'nav-link'
                                 }
                                 to="/dashboard"
                             >
-                                Dashboard
+                                {snippet('dashboard', 'navigation')}
                             </Link>
-                            <Link onClick={() => authSignOut()} to="/">
-                                Log Out
+                            <Link
+                                onClick={() => authSignOut()}
+                                to="/"
+                                className="nav-link"
+                            >
+                                {snippet('log-out', 'navigation')}
                             </Link>
                         </>
                     ) : (
                         <Link
                             className={
                                 pathname.indexOf('/sign-in') === 0
-                                    ? 'active'
-                                    : ''
+                                    ? 'active nav-link'
+                                    : 'nav-link'
                             }
                             to="/sign-in"
                         >
-                            Log In
+                            {snippet('log-in', 'navigation')}
                         </Link>
                     )}
+                    <NavDropdown
+                        title={languages[language]}
+                        menuVariant="dark"
+                        onSelect={(key: LanguageKeyTypes) => setLanguage(key)}
+                    >
+                        {Object.entries(languages).map(([key, text]) => (
+                            <NavDropdown.Item
+                                key={key}
+                                active={key === language}
+                                eventKey={key}
+                            >
+                                {text}
+                            </NavDropdown.Item>
+                        ))}
+                    </NavDropdown>
                 </Nav>
             </Container>
         </Navbar>
