@@ -54,7 +54,7 @@ const Driver = ({ driver, id }: { driver: string; id: string }) => {
                     disabled={!!cachedDriver || loading}
                     onClick={() => handler(false)}
                 >
-                    Volunteer <span className="mobile-remove">To Driver</span>
+                    Volunteer <span className="mobile-remove">To Drive</span>
                 </Button>
             </InputGroup>
         </Form.Group>
