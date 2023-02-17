@@ -21,30 +21,20 @@ const getRequests = async (
     if (filters) {
         const { location, language, stage, driver } = filters;
         const whereFilters = [
-            location && where(
-                'location', '==', location
-            ),
-            language && where(
-                'language', '==', language
-            ),
-            stage && where(
-                'stage', '==', stage
-            ),
-            driver && where(
-                'hasDriver', '==', driver === 'assigned'
-            )
+            location && where('location', '==', location),
+            language && where('language', '==', language),
+            stage
+                ? where('stage', '==', stage)
+                : where('stage', '!=', 'complete'),
+            driver && where('hasDriver', '==', driver === 'assigned'),
         ];
 
         q = query(
             collection(db, 'requests'),
             ...whereFilters.filter((filter) => Boolean(filter) !== false)
         );
-
     } else {
-        q = query(
-            collection(db, 'requests'),
-            where('stage', '!=', 'complete')
-        );
+        q = query(collection(db, 'requests'), where('stage', '!=', 'complete'));
     }
 
     const querySnapshot = await getDocs(q);
