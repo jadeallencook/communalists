@@ -23,7 +23,7 @@ const ViewRequestForm: StyledComponent = styled(
     }: {
         className: string;
         request: RequestAidInterface;
-        handler?: (id?: string) => void;
+        handler?: (id?: string, shouldRefetch?: boolean) => void;
         selected: string;
         isModal?: boolean;
     }) => {
@@ -46,7 +46,7 @@ const ViewRequestForm: StyledComponent = styled(
             setSubmitting(true);
             await updateRequestStage(selected, stage);
             setSubmitting(false);
-            handler();
+            handler(null, true);
         };
 
         const handleSubmit = async () => {

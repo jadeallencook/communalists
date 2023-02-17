@@ -1,94 +1,21 @@
-import getRequests from '@api/get-requests';
-import RequestAidInterface from '@interfaces/request-aid';
-import { useEffect, useState } from 'react';
-import { Container, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import RequestsTable from '@components/RequestsTable';
-import RequestModal from '@components/RequestModal';
-import InfoSVG from '@assets/info.svg';
-import { FiltersInterface } from '@interfaces/filters';
-import FilterForm from '@forms/FilterForm';
+import { Container } from 'react-bootstrap';
+import DashboardNavigation from '@components/DashboardNavigation';
+import AidRequestsPage from './Dashboard/AidRequestsPage';
+import AccountSettingsPage from './Dashboard/AccountSettingsPage';
+import VolunteerRequestsPage from './Dashboard/VolunteerRequestsPage';
 
 const DashboardPage = () => {
-    const [requests, setRequests] = useState<{
-        [key: string]: RequestAidInterface;
-    }>({});
-
-    const [loaded, setLoaded] = useState<boolean>(false);
-    const [refetch, setRefetch] = useState<boolean>(false);
-    const [show, setShow] = useState<boolean>(false);
-    const [selected, setSelected] = useState<string>();
-    const [filters, setFilters] = useState<FiltersInterface>({
-        location: '', language: '', driver: '', stage: ''
-    });
-    const handler = (id?: string): void => {
-        setSelected(id);
-        setShow((prev) => !prev);
-        setRefetch(true);
-    };
-
-    useEffect(() => {
-        setLoaded(false);
-        getRequests(filters).then((requests) => {
-            setRequests(requests);
-            setLoaded(true);
-        });
-        setRefetch(false);
-    }, [refetch]);
-
     return (
         <Container>
-            <h1 className="animate__animated animate__fadeIn">
-                <span className="mobile-remove">Help Meet</span> Community Needs{' '}
-                <OverlayTrigger
-                    placement="bottom"
-                    overlay={
-                        <Tooltip id="tooltip-bottom">
-                            <div
-                                style={{
-                                    textAlign: 'left',
-                                    padding: '10px',
-                                }}
-                            >
-                                Our mutual aid volunteer dashboard serves as a
-                                central hub for volunteers to view and respond
-                                to requests from community members.
-                            </div>
-                        </Tooltip>
-                    }
-                >
-                    <img
-                        src={InfoSVG}
-                        style={{
-                            cursor: 'pointer',
-                            animationDelay: '1s',
-                        }}
-                        className="animate__animated animate__tada"
-                    />
-                </OverlayTrigger>
-            </h1>
-            <FilterForm
-                filters={filters}
-                setFilters={setFilters}
-                setRefetch={setRefetch}
-            />
-            <RequestsTable
-                requests={requests}
-                handler={handler}
-                loaded={loaded}
-            />
-            {selected && (
-                <RequestModal
-                    show={show}
-                    handler={handler}
-                    selected={selected}
-                    request={requests[selected]}
-                />
-            )}
-            <p
-                style={{
-                    display: !loaded ? 'none' : 'inherit',
+            <DashboardNavigation
+                routes={{
+                    'aid-requests': <AidRequestsPage />,
+                    'volunteer-requests': <VolunteerRequestsPage />,
+                    'account-settings': <AccountSettingsPage />,
                 }}
-            >
+            />
+
+            <p>
                 <small>
                     Our mission is to connect those in need with volunteers who
                     are eager to help, and this tab is a crucial part of that
