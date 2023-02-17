@@ -8,7 +8,7 @@ import LogoPNG from '@assets/logo.png';
 import { useContext } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
 import languages from '@objects/languages';
-import { LanguageKeyTypes } from '@custom-types/languages';
+import { LanguageKeyType } from '@custom-types/languages';
 
 const Navigation: StyledComponent = styled(({ className }) => {
     const { pathname } = useLocation();
@@ -38,7 +38,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                     <Link
                         className={
                             pathname.indexOf('/request-aid') === 0 ||
-                            pathname === '/'
+                                pathname === '/'
                                 ? 'active tablet-remove nav-link'
                                 : 'tablet-remove nav-link'
                         }
@@ -81,7 +81,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                     <NavDropdown
                         title={languages[language]}
                         menuVariant="dark"
-                        onSelect={(key: LanguageKeyTypes) => setLanguage(key)}
+                        onSelect={(key: LanguageKeyType) => setLanguage(key)}
                     >
                         {Object.entries(languages).map(([key, text]) => (
                             <NavDropdown.Item

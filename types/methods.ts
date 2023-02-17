@@ -1,3 +1,3 @@
-export type MethodKeyTypes = 'phone' | 'email' | 'text';
+export type MethodKeyType = 'phone' | 'email' | 'text';
 
-export type MethodTypes = 'Phone' | 'Email' | 'Text';
+export type MethodType = 'Phone' | 'Email' | 'Text';

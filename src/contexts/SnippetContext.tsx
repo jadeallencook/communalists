@@ -1,17 +1,17 @@
-import { LanguageKeyTypes } from '@custom-types/languages';
+import { LanguageKeyType } from '@custom-types/languages';
 import { createContext, useState } from 'react';
 import snippets, { ComponentType } from '../snippets';
 
 interface SnippetContextInterface {
-    setLanguage: React.Dispatch<React.SetStateAction<LanguageKeyTypes>>;
-    language: LanguageKeyTypes;
+    setLanguage: React.Dispatch<React.SetStateAction<LanguageKeyType>>;
+    language: LanguageKeyType;
     snippet: (path: string, page?: ComponentType) => string;
 }
 
 const SnippetContext = createContext<SnippetContextInterface>(null);
 
 export const SnippetProvider = ({ children }) => {
-    const [language, setLanguage] = useState<LanguageKeyTypes>('english');
+    const [language, setLanguage] = useState<LanguageKeyType>('english');
 
     const snippet = (path: string, page?: ComponentType): string => {
         if (!page) {

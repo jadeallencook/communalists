@@ -1,6 +1,6 @@
-import { MethodKeyTypes } from '@custom-types/methods';
+import { MethodKeyType } from '@custom-types/methods';
 import { LocationKeyType } from '@custom-types/locations';
-import { LanguageKeyTypes } from '@custom-types/languages';
+import { LanguageKeyType } from '@custom-types/languages';
 import { StageKeyType } from '@custom-types/stages';
 import { Timestamp } from 'firebase/firestore';
 
@@ -9,13 +9,14 @@ interface RequestAidInterface {
     email: string;
     phone: string;
     location: LocationKeyType;
-    language: LanguageKeyTypes;
-    method: MethodKeyTypes;
+    language: LanguageKeyType;
+    method: MethodKeyType;
     health: string;
     needs: string;
     stage: StageKeyType;
     timestamp: Timestamp;
     driver: string;
+    hasDriver: boolean;
 }
 
 export default RequestAidInterface;
