@@ -20,7 +20,9 @@ const Tooltip: StyledComponent = styled(({
 				placement={position}
 				overlay={
 					<RBTooltip id={`tooltip-${position}`}>
-						{children}
+						<div className="tooltip-inner-container">
+							{children}
+						</div>
 					</RBTooltip>
 				}
 			>
