@@ -1,6 +1,6 @@
-import { MethodKeyTypes, MethodTypes } from '@custom-types/methods';
+import { MethodKeyType, MethodType } from '@custom-types/methods';
 
-const methods: { [key in MethodKeyTypes]: MethodTypes } = {
+const methods: { [key in MethodKeyType]: MethodType } = {
     email: 'Email',
     phone: 'Phone',
     text: 'Text',

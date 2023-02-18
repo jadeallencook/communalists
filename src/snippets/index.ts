@@ -1,4 +1,4 @@
-import { LanguageKeyTypes } from '@custom-types/languages';
+import { LanguageKeyType } from '@custom-types/languages';
 import shared from './shared';
 import requestAidForm from './request-aid-form';
 import footer from './footer';
@@ -16,7 +16,7 @@ export type ComponentType =
 
 export interface SnippetInterface {
     [key: string]: {
-        [key in LanguageKeyTypes]: string;
+        [key in LanguageKeyType]: string;
     };
 }
 

@@ -5,6 +5,8 @@ import { Container } from 'react-bootstrap';
 import RequestsTable from '@components/RequestsTable';
 import RequestModal from '@components/RequestModal';
 import Tooltip from '@components/Tooltip';
+import { FiltersInterface } from '@interfaces/filters';
+import FilterForm from '@forms/FilterForm';
 
 const DashboardPage = () => {
     const [requests, setRequests] = useState<{
@@ -15,6 +17,9 @@ const DashboardPage = () => {
     const [refetch, setRefetch] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
     const [selected, setSelected] = useState<string>();
+    const [filters, setFilters] = useState<FiltersInterface>({
+        location: '', language: '', driver: '', stage: ''
+    });
     const handler = (id?: string): void => {
         setSelected(id);
         setShow((prev) => !prev);
@@ -22,7 +27,8 @@ const DashboardPage = () => {
     };
 
     useEffect(() => {
-        getRequests().then((requests) => {
+        setLoaded(false);
+        getRequests(filters).then((requests) => {
             setRequests(requests);
             setLoaded(true);
         });
@@ -41,6 +47,11 @@ const DashboardPage = () => {
                     to requests from community members.</div>
                 </Tooltip> 
             </h1>
+            <FilterForm
+                filters={filters}
+                setFilters={setFilters}
+                setRefetch={setRefetch}
+            />
             <RequestsTable
                 requests={requests}
                 handler={handler}
@@ -57,9 +68,7 @@ const DashboardPage = () => {
             <p
                 style={{
                     display: !loaded ? 'none' : 'inherit',
-                    animationDelay: '.5s',
                 }}
-                className="animate__animated animate__fadeIn"
             >
                 <small>
                     Our mission is to connect those in need with volunteers who
