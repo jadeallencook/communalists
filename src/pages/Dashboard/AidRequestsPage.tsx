@@ -19,7 +19,7 @@ const AidRequestsPage = () => {
         location: '',
         language: '',
         driver: '',
-        stage: '',
+        stage: 'submitted',
     });
     const handler = (id?: string, shouldRefetch?: boolean): void => {
         setSelected(id);
