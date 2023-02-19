@@ -1,13 +1,12 @@
 import {
     Modal,
-    OverlayTrigger,
-    Tooltip,
 } from 'react-bootstrap';
 import timestampToDateString from '@utils/timestamp-to-date-string';
 import RequestAidInterface from '@interfaces/request-aid';
 import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
 import CalendarSVG from '@assets/calendar.svg';
 import ViewRequestForm from '@forms/ViewRequestForm';
+import Tooltip from '@components/Tooltip';
 
 const RequestModal = ({
     show,
@@ -36,16 +35,12 @@ const RequestModal = ({
                 >
                     <span className="mobile-remove">Request</span> Recieved{' '}
                     <b>{getNumberOfDaysAfterDate(timestamp)}</b>{' '}
-                    <OverlayTrigger
-                        placement="right"
-                        overlay={
-                            <Tooltip id="tooltip-right">
-                                {timestampToDateString(timestamp)}
-                            </Tooltip>
-                        }
+                    <Tooltip
+                        position="right"
+                        iconSrc={CalendarSVG}
                     >
-                        <img src={CalendarSVG} style={{ cursor: 'pointer' }} />
-                    </OverlayTrigger>
+                        <div>{timestampToDateString(timestamp)}</div>
+                    </Tooltip>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>

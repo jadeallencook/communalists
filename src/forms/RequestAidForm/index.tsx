@@ -3,9 +3,7 @@ import {
     Button,
     Container,
     Form,
-    OverlayTrigger,
     Spinner,
-    Tooltip,
 } from 'react-bootstrap';
 import RequestAidInterface from '@interfaces/request-aid';
 import styled, { StyledComponent } from 'styled-components';
@@ -16,7 +14,7 @@ import methods from '@objects/methods';
 import addRequest from '@api/add-request';
 import { useContext, useState } from 'react';
 import { Timestamp } from 'firebase/firestore';
-import InfoSVG from '@assets/info.svg';
+import Tooltip from '@components/Tooltip';
 import SnippetContext from '../../contexts/SnippetContext';
 import formatPhoneNumer from '@utils/format-phone-number';
 
@@ -205,35 +203,23 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             <Form.Group className="mb-3">
                 <Form.Label>
                     {snippet('needs.label', 'request-aid-form')}{' '}
-                    <OverlayTrigger
-                        placement="top"
-                        overlay={
-                            <Tooltip id="tooltip-top">
-                                <div
-                                    style={{
-                                        textAlign: 'left',
-                                        padding: '10px',
-                                    }}
-                                >
-                                    You can request items such as{' '}
-                                    <strong>
-                                        groceries, personal care items, or
-                                        household supplies
-                                    </strong>
-                                    . Please include an address to a drop off
-                                    location if delivery is required.
-                                    <br />
-                                    <br />
-                                    <strong>Example:</strong> I'm in need of
-                                    some fresh produce and a mattress, I can
-                                    meet at 456 Oak Ave sometime after 5:00PM on
-                                    Wednesday.
-                                </div>
-                            </Tooltip>
-                        }
-                    >
-                        <img src={InfoSVG} style={{ cursor: 'pointer' }} />
-                    </OverlayTrigger>
+                    <Tooltip position="top">
+                        <div>
+                            You can request items such as{' '}
+                            <strong>
+                                groceries, personal care items, or
+                                household supplies
+                            </strong>
+                            . Please include an address to a drop off
+                            location if delivery is required.
+                            <br />
+                            <br />
+                            <strong>Example:</strong> I'm in need of
+                            some fresh produce and a mattress, I can
+                            meet at 456 Oak Ave sometime after 5:00PM on
+                            Wednesday.
+                        </div>
+                    </Tooltip>
                 </Form.Label>
                 <Form.Control
                     as="textarea"
