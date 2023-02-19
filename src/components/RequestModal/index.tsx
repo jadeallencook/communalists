@@ -38,7 +38,6 @@ const RequestModal = ({
                     <Tooltip
                         position="right"
                         iconSrc={CalendarSVG}
-                        // element={<img src={CalendarSVG} style={{ cursor: 'pointer' }} />}
                     >
                         <div>{timestampToDateString(timestamp)}</div>
                     </Tooltip>

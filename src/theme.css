@@ -54,11 +54,6 @@ h1 {
     font-weight: 900;
 }
 
-.tooltip-inner-container {
-    padding: 10px;
-    text-align: start;
-}
-
 @media only screen and (max-width: 576px) {
     .mobile-remove {
         display: none;
