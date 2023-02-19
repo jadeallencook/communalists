@@ -1,5 +1,5 @@
-import updateCoordinator from '@api/update-coordinator';
-import updateDriver from '@api/update-driver';
+import updateRequestVolunteer from '@api/update-request-volunteer';
+import { RequestVolunteerKey } from '@custom-types/request-volunteer';
 import { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 
@@ -12,7 +12,7 @@ const VolunteerRequestForm = ({
     volunteer: string;
     requestId: string;
     label: string;
-    type: 'driver' | 'coordinator';
+    type: RequestVolunteerKey;
 }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [cachedVolunteer, setCachedVolunteer] = useState<boolean>(
@@ -21,10 +21,7 @@ const VolunteerRequestForm = ({
 
     const handler = async (remove: boolean) => {
         setLoading(true);
-        const response =
-            type === 'driver'
-                ? await updateDriver(requestId, remove)
-                : await updateCoordinator(requestId, remove);
+        const response = await updateRequestVolunteer(requestId, remove, type);
         if (!response && !remove) {
             setCachedVolunteer(true);
         } else if (!response && remove) {
