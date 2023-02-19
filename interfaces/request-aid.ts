@@ -17,6 +17,7 @@ interface RequestAidInterface {
     timestamp: Timestamp;
     driver: string;
     hasDriver: boolean;
+    coordinator: string;
 }
 
 export default RequestAidInterface;
