@@ -16,7 +16,7 @@ const Tooltip: StyledComponent = styled(({
 }) => {
 	return (
 		<span className={className}>
-			<OverlayTrigger delay={{show:0, hide: 50000}}
+			<OverlayTrigger
 				placement={position}
 				overlay={
 					<RBTooltip id={`tooltip-${position}`}>
