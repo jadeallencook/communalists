@@ -15,7 +15,7 @@ const RequestModal = ({
     selected,
 }: {
     show: boolean;
-    handler: (id?: string) => void;
+    handler: (id?: string, shouldRefetch?: boolean) => void;
     request: RequestAidInterface;
     selected: string;
 }) => {
