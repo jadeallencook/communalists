@@ -25,6 +25,10 @@ const routes: Route[] = [
         element: <DashboardPage />,
     },
     {
+        path: '/dashboard/:route',
+        element: <DashboardPage />,
+    },
+    {
         path: '/sign-in',
         element: <SignInPage />,
     },

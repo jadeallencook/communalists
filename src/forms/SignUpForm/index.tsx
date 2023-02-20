@@ -17,24 +17,21 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
         handleChange,
         handleSubmit,
         isSubmitting,
-        values: { name, email, location, details },
+        values: { name, email, location, details, coordinator, driver },
     } = useFormik<VolunteerApplicationInterface>({
         initialValues: {
             name: '',
             email: '',
             location: 'san-jose-downtown-ca',
             details: '',
-            approved: {},
+            approved: '',
             timestamp: Timestamp.fromDate(new Date()),
-            isApproved: false,
+            coordinator: false,
+            driver: false,
         },
         onSubmit: async (values: VolunteerApplicationInterface) => {
-            const response = await addApplication(values);
-            if (response?.id) {
-                setSuccess(true);
-            } else {
-                // add failure screen
-            }
+            await addApplication(values);
+            setSuccess(true);
         },
     });
     return isSubmitting ? (
@@ -84,7 +81,25 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
                     ))}
                 </Form.Select>
             </Form.Group>
-
+            <Form.Group className="mb-3">
+                <Form.Label>{snippet('role.label', 'sign-up-form')}</Form.Label>
+                <Form.Check
+                    type="checkbox"
+                    label="Coordinator"
+                    id="coordinator"
+                    name="coordinator"
+                    onChange={handleChange}
+                    value={+coordinator}
+                />
+                <Form.Check
+                    type="checkbox"
+                    label="Driver"
+                    id="driver"
+                    name="driver"
+                    onChange={handleChange}
+                    value={+driver}
+                />
+            </Form.Group>
             <Form.Group className="mb-3">
                 <Form.Label>
                     {snippet('details.label', 'sign-up-form')}

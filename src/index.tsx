@@ -11,21 +11,26 @@ import './normalize.css';
 import Navigation from '@components/Navigation';
 import Footer from '@components/Footer';
 import { SnippetProvider } from './contexts/SnippetContext';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 // components
 const elem = document.getElementById('root')!;
 const root = ReactDOM.createRoot(elem);
 
+const queryClient = new QueryClient();
+
 root.render(
-    <SnippetProvider>
-        <Router>
-            <Navigation />
-            <Routes>
-                {routes.map(({ path, element }) => (
-                    <Route key={path} path={path} element={element}></Route>
-                ))}
-            </Routes>
-            <Footer />
-        </Router>
-    </SnippetProvider>
+    <QueryClientProvider client={queryClient}>
+        <SnippetProvider>
+            <Router>
+                <Navigation />
+                <Routes>
+                    {routes.map(({ path, element }) => (
+                        <Route key={path} path={path} element={element}></Route>
+                    ))}
+                </Routes>
+                <Footer />
+            </Router>
+        </SnippetProvider>
+    </QueryClientProvider>
 );
