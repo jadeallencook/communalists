@@ -7,11 +7,11 @@ import { useState } from 'react';
 import { StageKeyType } from '@custom-types/stages';
 import updateRequestStage from '@api/update-request-stage';
 import Comments from './Comments';
-import Driver from './Driver';
 import style from './style';
 import styled, { StyledComponent } from 'styled-components';
 import RequestAidInterface from '@interfaces/request-aid';
 import CopyLinkButton from './CopyLinkButton';
+import VolunteerRequestForm from '@forms/RequestVolunteerForm';
 
 const ViewRequestForm: StyledComponent = styled(
     ({
@@ -37,6 +37,7 @@ const ViewRequestForm: StyledComponent = styled(
             health,
             needs,
             driver,
+            coordinator,
         } = request;
 
         const [stage, setStage] = useState<StageKeyType>(request.stage);
@@ -167,7 +168,18 @@ const ViewRequestForm: StyledComponent = styled(
                                     )}
                                 </Form.Select>
                             </Form.Group>
-                            <Driver driver={driver} id={selected} />
+                            <VolunteerRequestForm
+                                label="Assigned Driver (If Applicable)"
+                                volunteer={driver}
+                                requestId={selected}
+                                type="driver"
+                            />
+                            <VolunteerRequestForm
+                                label="Request Coordinator"
+                                volunteer={coordinator}
+                                requestId={selected}
+                                type="coordinator"
+                            />
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>

@@ -1,10 +1,5 @@
 import { useFormik } from 'formik';
-import {
-    Button,
-    Container,
-    Form,
-    Spinner,
-} from 'react-bootstrap';
+import { Button, Container, Form, Spinner } from 'react-bootstrap';
 import RequestAidInterface from '@interfaces/request-aid';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
@@ -49,7 +44,8 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             stage: 'submitted',
             timestamp: Timestamp.fromDate(new Date()),
             driver: '',
-            hasDriver: false
+            hasDriver: false,
+            coordinator: '',
         },
         onSubmit: (values) => addRequest(values).then(() => setSuccess(true)),
     });
@@ -207,17 +203,16 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                         <div>
                             You can request items such as{' '}
                             <strong>
-                                groceries, personal care items, or
-                                household supplies
+                                groceries, personal care items, or household
+                                supplies
                             </strong>
-                            . Please include an address to a drop off
-                            location if delivery is required.
+                            . Please include an address to a drop off location
+                            if delivery is required.
                             <br />
                             <br />
-                            <strong>Example:</strong> I'm in need of
-                            some fresh produce and a mattress, I can
-                            meet at 456 Oak Ave sometime after 5:00PM on
-                            Wednesday.
+                            <strong>Example:</strong> I'm in need of some fresh
+                            produce and a mattress, I can meet at 456 Oak Ave
+                            sometime after 5:00PM on Wednesday.
                         </div>
                     </Tooltip>
                 </Form.Label>
