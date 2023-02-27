@@ -59,6 +59,10 @@ h1 {
     text-align: start;
 }
 
+span.badge {
+    font-weight: 400;
+}
+
 @media only screen and (max-width: 576px) {
     .mobile-remove {
         display: none;
