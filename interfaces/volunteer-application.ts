@@ -1,22 +1,17 @@
 import { LocationKeyType } from '@custom-types/locations';
+import { OrganizationKeyType } from '@custom-types/organizations';
 import { Timestamp } from 'firebase/firestore';
+import RoleInterface from './roles';
 
 interface VolunteerApplicationInterface {
-    // applicant information
     name: string;
     email: string;
     location: LocationKeyType;
     details: string;
-
-    // uid of whoever approved
     approved: string;
-
-    // timestamp of submission
     timestamp: Timestamp;
-
-    // volunteer roles
-    coordinator: boolean;
-    driver: boolean;
+    role: RoleInterface;
+    organization: OrganizationKeyType;
 }
 
 export default VolunteerApplicationInterface;
