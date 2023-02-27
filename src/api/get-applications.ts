@@ -1,4 +1,5 @@
 import RequestAidInterface from '@interfaces/request-aid';
+import VolunteerApplicationInterface from '@interfaces/volunteer-application';
 import {
     getFirestore,
     getDocs,
@@ -11,7 +12,7 @@ import app from './init-app';
 const db = getFirestore(app);
 
 const getApplications = async (): Promise<{
-    [key: string]: RequestAidInterface;
+    [key: string]: VolunteerApplicationInterface;
 }> => {
     const ref = collection(db, 'applications');
     const requests = {};
