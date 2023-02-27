@@ -57,9 +57,17 @@ const signUpForm: SnippetInterface = {
     },
     ['role.label']: {
         english: 'Preferred volunteer roles (select all that apply):',
-        spanish: 'Funciones voluntarias preferidas (seleccione todas las que correspondan):',
-        vietnamese: 'Vai trò tình nguyện ưa thích (chọn tất cả những gì phù hợp):',
+        spanish:
+            'Funciones voluntarias preferidas (seleccione todas las que correspondan):',
+        vietnamese:
+            'Vai trò tình nguyện ưa thích (chọn tất cả những gì phù hợp):',
         chinese: '首选志愿者角色（选择所有适用项）：',
+    },
+    ['organization.label']: {
+        english: 'Do you associate with an organization?',
+        spanish: '¿Se asocia con una organización?',
+        vietnamese: 'Bạn có liên kết với một tổ chức?',
+        chinese: '你与组织有联系吗？',
     },
 };
 

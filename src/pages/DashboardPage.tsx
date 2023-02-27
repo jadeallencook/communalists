@@ -8,22 +8,22 @@ import { DashboardRoutesInterface } from '@interfaces/dashboard-router';
 import { useParams } from 'react-router-dom';
 
 const routes: DashboardRoutesInterface = {
-    'aid-requests': {
-        text: 'Aid Requests',
+    requests: {
+        text: 'Requests',
         component: <AidRequestsPage />,
     },
-    'volunteer-requests': {
-        text: 'Volunteer Applications',
+    applications: {
+        text: 'Applications',
         component: <ApplicationsPage />,
     },
-    'account-settings': {
-        text: 'Account Settings',
+    settings: {
+        text: 'Settings',
         component: <AccountSettingsPage />,
     },
 };
 
 const DashboardPage = () => {
-    let { route = 'aid-requests' } = useParams();
+    let { route = 'requests' } = useParams();
     return (
         <Container>
             <DashboardNavigation routes={routes} route={route} />

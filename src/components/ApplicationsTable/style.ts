@@ -8,6 +8,10 @@ const style = () => ({
     'tbody > tr': {
         cursor: 'pointer',
     },
+    '.spinner-border': {
+        margin: '25px auto',
+        display: 'block',
+    },
 });
 
 export default style;
