@@ -36,7 +36,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             name: '',
             email: '',
             phone: '',
-            location: 'san-jose-downtown-ca',
+            location: 'santa-clara-ca',
             language: defaultLanguage,
             method: 'email',
             health: '',
@@ -211,8 +211,8 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                             <br />
                             <br />
                             <strong>Example:</strong> I'm in need of some fresh
-                            produce and a mattress, I can meet at 456 Oak Ave
-                            sometime after 5:00PM on Wednesday.
+                            produce and cleaning supplies, I can meet at 456 Oak
+                            Ave sometime after 5:00PM on Wednesday.
                         </div>
                     </Tooltip>
                 </Form.Label>

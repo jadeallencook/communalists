@@ -1,4 +1,1 @@
-export type DashboardRouteLinkType =
-    | 'aid-requests'
-    | 'volunteer-requests'
-    | 'account-settings';
+export type DashboardRouteLinkType = 'requests' | 'applications' | 'settings';

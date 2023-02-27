@@ -16,8 +16,8 @@ const style = () => ({
         padding: '2px 12px',
     },
     'div.toast-body': {
-        color: 'var(--black)'
-    }
+        color: 'var(--black)',
+    },
 });
 
 export default style;
