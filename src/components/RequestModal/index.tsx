@@ -22,13 +22,7 @@ const RequestModal = ({
     return (
         <Modal show={show} onHide={handler} size="lg">
             <Modal.Header closeButton>
-                <Modal.Title
-                    style={{
-                        color: 'var(--primary)',
-                        fontWeight: '900',
-                        textTransform: 'capitalize',
-                    }}
-                >
+                <Modal.Title>
                     <span className="mobile-remove">Request</span> Recieved{' '}
                     <b>{getNumberOfDaysAfterDate(timestamp)}</b>{' '}
                     <Tooltip position="right" iconSrc={CalendarSVG}>
