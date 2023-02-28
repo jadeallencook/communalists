@@ -13,6 +13,12 @@ body {
     color: var(--black);
 }
 
+.modal-title {
+    color: var(--primary);
+    font-weight: 900;
+    text-transform: capitalize;
+}
+
 a {
     text-decoration: none;
     color: var(--bs-link-color);

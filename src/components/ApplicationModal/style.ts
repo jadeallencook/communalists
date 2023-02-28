@@ -1,9 +1,3 @@
-const style = () => ({
-    '.modal-title': {
-        color: 'var(--primary)',
-        fontWeight: '900',
-        textTransform: 'capitalize',
-    },
-});
+const style = () => ({});
 
 export default style;
