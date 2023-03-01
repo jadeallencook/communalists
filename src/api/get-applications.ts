@@ -1,4 +1,3 @@
-import RequestAidInterface from '@interfaces/request-aid';
 import VolunteerApplicationInterface from '@interfaces/volunteer-application';
 import {
     getFirestore,

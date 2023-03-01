@@ -18,7 +18,6 @@ const ApplicationsPage = () => {
 
     return (
         <>
-            <h1>Volunteer Applications</h1>
             <ApplicationsTable
                 handler={handler}
                 applications={applications}
