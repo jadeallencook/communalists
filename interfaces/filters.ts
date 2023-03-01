@@ -8,4 +8,5 @@ export interface FiltersInterface {
     language: LanguageKeyType | '';
     driver: DriverKeyType | '';
     stage: StageKeyType | '';
+    coordinator: boolean;
 }
