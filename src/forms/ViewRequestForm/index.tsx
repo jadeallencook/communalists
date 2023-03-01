@@ -11,7 +11,7 @@ import style from './style';
 import styled, { StyledComponent } from 'styled-components';
 import RequestAidInterface from '@interfaces/request-aid';
 import CopyLinkButton from './CopyLinkButton';
-import VolunteerRequestForm from '@forms/RequestVolunteerForm';
+import VolunteerRequestForm from '@forms/VolunteerRequestForm';
 
 const ViewRequestForm: StyledComponent = styled(
     ({

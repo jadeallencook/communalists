@@ -18,10 +18,12 @@
         "build": "webpack --config webpack.config.js --mode production",
         "mock": "ts-node ./jobs/mock-database.ts",
         "pretty": "prettier --write \"./**/*.{ts,tsx,css,json}\"",
-        "test": "jest"
+        "test": "jest --passWithNoTests",
+        "prepare": "husky install"
     },
     "lint-staged": {
-        "**/*.js": "prettier --write --ignore-unknown"
+        "**/*.ts": "prettier --write --ignore-unknown",
+        "**/*.tsx": "prettier --write --ignore-unknown"
     },
     "dependencies": {
         "@fortawesome/react-fontawesome": "^0.2.0",
@@ -35,6 +37,7 @@
         "react": "^18.2.0",
         "react-bootstrap": "^2.5.0",
         "react-dom": "^18.2.0",
+        "react-query": "^3.39.3",
         "react-router-dom": "^6.4.0",
         "styled-components": "^5.3.5",
         "typescript": "^4.8.3",
@@ -51,7 +54,7 @@
         "file-loader": "^6.2.0",
         "git-commit-msg-linter": "^4.4.0",
         "html-webpack-plugin": "^5.5.0",
-        "husky": "^8.0.2",
+        "husky": "^8.0.0",
         "jest": "^29.3.1",
         "lint-staged": "^13.0.4",
         "prettier": "^2.8.0",

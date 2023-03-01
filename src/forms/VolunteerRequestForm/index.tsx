@@ -1,5 +1,5 @@
 import updateRequestVolunteer from '@api/update-request-volunteer';
-import { RequestVolunteerKey } from '@custom-types/request-volunteer';
+import { RoleKeyType } from '@custom-types/role';
 import { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 
@@ -12,7 +12,7 @@ const VolunteerRequestForm = ({
     volunteer: string;
     requestId: string;
     label: string;
-    type: RequestVolunteerKey;
+    type: RoleKeyType;
 }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [cachedVolunteer, setCachedVolunteer] = useState<boolean>(

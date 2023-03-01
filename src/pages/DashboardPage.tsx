@@ -2,29 +2,32 @@ import { Container } from 'react-bootstrap';
 import DashboardNavigation from '@components/DashboardNavigation';
 import AidRequestsPage from './Dashboard/AidRequestsPage';
 import AccountSettingsPage from './Dashboard/AccountSettingsPage';
-import VolunteerRequestsPage from './Dashboard/VolunteerRequestsPage';
+import ApplicationsPage from './Dashboard/ApplicationsPage';
 import DashboardFooter from '@components/DashboardFooter';
 import { DashboardRoutesInterface } from '@interfaces/dashboard-router';
+import { useParams } from 'react-router-dom';
 
 const routes: DashboardRoutesInterface = {
-    'aid-requests': {
-        text: 'Aid Requests',
+    requests: {
+        text: 'Requests',
         component: <AidRequestsPage />,
     },
-    'volunteer-requests': {
-        text: 'Volunteer Requests',
-        component: <VolunteerRequestsPage />,
+    applications: {
+        text: 'Applications',
+        component: <ApplicationsPage />,
     },
-    'account-settings': {
-        text: 'Account Settings',
+    settings: {
+        text: 'Settings',
         component: <AccountSettingsPage />,
     },
 };
 
 const DashboardPage = () => {
+    let { route = 'requests' } = useParams();
     return (
         <Container>
-            <DashboardNavigation routes={routes} />
+            <DashboardNavigation routes={routes} route={route} />
+            {routes[route].component}
             <DashboardFooter />
         </Container>
     );

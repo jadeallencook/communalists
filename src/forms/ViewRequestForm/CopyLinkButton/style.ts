@@ -1,5 +1,5 @@
 const style = () => ({
-    width: '120px'
+    width: '120px',
 });
 
 export default style;

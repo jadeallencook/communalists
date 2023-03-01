@@ -55,6 +55,20 @@ const signUpForm: SnippetInterface = {
         chinese:
             '我们感谢您有兴趣成为我们互助志愿者社区的一员，我们很高兴您加入我们的使命。 我们的团队将审核您的申请，如果您获得批准，您将收到一封电子邮件，其中包含用于设置密码的链接。 感谢您迈出改变社区的第一步！',
     },
+    ['role.label']: {
+        english: 'Preferred volunteer roles (select all that apply):',
+        spanish:
+            'Funciones voluntarias preferidas (seleccione todas las que correspondan):',
+        vietnamese:
+            'Vai trò tình nguyện ưa thích (chọn tất cả những gì phù hợp):',
+        chinese: '首选志愿者角色（选择所有适用项）：',
+    },
+    ['organization.label']: {
+        english: 'Do you associate with an organization?',
+        spanish: '¿Se asocia con una organización?',
+        vietnamese: 'Bạn có liên kết với một tổ chức?',
+        chinese: '你与组织有联系吗？',
+    },
 };
 
 export default signUpForm;

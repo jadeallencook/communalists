@@ -12,6 +12,9 @@ const style = () => ({
         margin: '50px auto',
         display: 'block',
     },
+    'div.form-check > input, label': {
+        cursor: 'pointer',
+    },
 });
 
 export default style;

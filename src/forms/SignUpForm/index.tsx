@@ -8,6 +8,8 @@ import locations from '@objects/locations';
 import VolunteerApplicationInterface from '@interfaces/volunteer-application';
 import addApplication from '@api/add-application';
 import { Timestamp } from 'firebase/firestore';
+import roles from '@objects/roles';
+import organizations from '@objects/organizations';
 
 const SignUpForm: StyledComponent = styled(({ className }) => {
     const [error, setError] = useState<string>('');
@@ -17,24 +19,26 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
         handleChange,
         handleSubmit,
         isSubmitting,
-        values: { name, email, location, details },
+        values: { name, email, location, details, role, organization },
     } = useFormik<VolunteerApplicationInterface>({
         initialValues: {
             name: '',
             email: '',
-            location: 'san-jose-downtown-ca',
+            location: 'santa-clara-ca',
             details: '',
-            approved: {},
+            approved: '',
             timestamp: Timestamp.fromDate(new Date()),
-            isApproved: false,
+            role: {
+                driver: false,
+                coordinator: false,
+                'social-media': false,
+                'tech-support': false,
+            },
+            organization: 'NONE',
         },
         onSubmit: async (values: VolunteerApplicationInterface) => {
-            const response = await addApplication(values);
-            if (response?.id) {
-                setSuccess(true);
-            } else {
-                // add failure screen
-            }
+            await addApplication(values);
+            setSuccess(true);
         },
     });
     return isSubmitting ? (
@@ -84,7 +88,37 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
                     ))}
                 </Form.Select>
             </Form.Group>
-
+            <Form.Group className="mb-3">
+                <Form.Label>
+                    {snippet('organization.label', 'sign-up-form')}
+                </Form.Label>
+                <Form.Select
+                    onChange={handleChange}
+                    value={organization}
+                    name="organization"
+                    id="organization"
+                >
+                    {Object.entries(organizations).map(([key, value]) => (
+                        <option key={key} value={key}>
+                            {value}
+                        </option>
+                    ))}
+                </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>{snippet('role.label', 'sign-up-form')}</Form.Label>
+                {Object.entries(roles).map(([key, value]) => (
+                    <Form.Check
+                        type="checkbox"
+                        label={value}
+                        key={key}
+                        id={key}
+                        name={`role.${key}`}
+                        onChange={handleChange}
+                        value={+role[key]}
+                    />
+                ))}
+            </Form.Group>
             <Form.Group className="mb-3">
                 <Form.Label>
                     {snippet('details.label', 'sign-up-form')}

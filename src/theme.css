@@ -13,6 +13,12 @@ body {
     color: var(--black);
 }
 
+.modal-title {
+    color: var(--primary);
+    font-weight: 900;
+    text-transform: capitalize;
+}
+
 a {
     text-decoration: none;
     color: var(--bs-link-color);
@@ -57,6 +63,10 @@ h1 {
 .tooltip-inner-container {
     padding: 10px;
     text-align: start;
+}
+
+span.badge {
+    font-weight: 400;
 }
 
 @media only screen and (max-width: 576px) {

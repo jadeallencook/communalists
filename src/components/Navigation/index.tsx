@@ -38,7 +38,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                     <Link
                         className={
                             pathname.indexOf('/request-aid') === 0 ||
-                                pathname === '/'
+                            pathname === '/'
                                 ? 'active tablet-remove nav-link'
                                 : 'tablet-remove nav-link'
                         }

@@ -11,7 +11,6 @@ const style = () => ({
         display: 'block',
         marginTop: '2px',
         maxWidth: '115px',
-        fontWeight: '400',
     },
     'span.started': {
         backgroundColor: '#7a2f2f!important',
