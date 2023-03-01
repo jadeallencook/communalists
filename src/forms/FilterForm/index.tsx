@@ -23,13 +23,14 @@ const FilterForm: StyledComponent = styled(
         setFilters: (value: FiltersInterface) => void;
         setRefetch: (value: boolean) => void;
     }) => {
+        const { location, language, driver, stage, coordinator } = filters;
         return (
             <Form className={className}>
                 <InputGroup>
                     <Form.Select
                         as="select"
                         name="locations"
-                        value={filters.location}
+                        value={location}
                         size="sm"
                         onChange={(e) =>
                             setFilters({
@@ -48,7 +49,7 @@ const FilterForm: StyledComponent = styled(
                     <Form.Select
                         as="select"
                         name="languages"
-                        value={filters.language}
+                        value={language}
                         size="sm"
                         onChange={(e) =>
                             setFilters({
@@ -67,7 +68,7 @@ const FilterForm: StyledComponent = styled(
                     <Form.Select
                         as="select"
                         name="driver"
-                        value={filters.driver}
+                        value={driver}
                         size="sm"
                         onChange={(e) =>
                             setFilters({
@@ -86,7 +87,7 @@ const FilterForm: StyledComponent = styled(
                     <Form.Select
                         as="select"
                         name="stages"
-                        value={filters.stage}
+                        value={stage}
                         size="sm"
                         onChange={(e) =>
                             setFilters({
@@ -101,6 +102,30 @@ const FilterForm: StyledComponent = styled(
                             </option>
                         ))}
                     </Form.Select>
+                    <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => {
+                            setFilters({
+                                ...filters,
+                                coordinator: !coordinator,
+                            });
+                            setRefetch(true);
+                        }}
+                    >
+                        <span className="tablet-remove">Only</span> Yours
+                    </Button>
+                    <InputGroup.Checkbox
+                        checked={coordinator}
+                        aria-label="view only the requests you are coordinating or driving"
+                        onChange={() => {
+                            setFilters({
+                                ...filters,
+                                coordinator: !coordinator,
+                            });
+                            setRefetch(true);
+                        }}
+                    />
                     <Button size="sm" onClick={() => setRefetch(true)}>
                         Apply <span className="tablet-remove">Filters</span>
                     </Button>
