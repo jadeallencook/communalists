@@ -1,14 +1,28 @@
 import { StageKeyType } from '@custom-types/stages';
 
+const primaryStages = new Set(['unassigned', 'in-process']);
+const secondaryStages = new Set([
+    'contacted',
+    'needs-driver',
+    'driver-assigned',
+]);
+const successStages = new Set(['completed']);
+const dangerStages = new Set(['cancelled', 'questionable', 'cant-contact']);
+
 const getBadgeBgForStage = (stage: StageKeyType): string => {
-    if (stage === ('unassigned' || 'in-process')) {
-        return 'info';
-    } else if (stage === ('contacted' || 'needs-driver' || 'driver-assigned')) {
-        return 'warning';
-    } else if (stage === ('completed' || 'questionable' || 'cant-contact')) {
+    if (primaryStages.has(stage)) {
+        return 'primary';
+    }
+    if (secondaryStages.has(stage)) {
+        return 'secondary';
+    }
+    if (successStages.has(stage)) {
         return 'success';
     }
-    return 'primary';
+    if (dangerStages.has(stage)) {
+        return 'danger';
+    }
+    return 'info';
 };
 
 export default getBadgeBgForStage;

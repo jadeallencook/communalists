@@ -7,6 +7,7 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
 import organizeRequestsByDate from '@utils/organize-requests-by-date';
+import getBadgeBgForStage from '@utils/get-badge-bg-for-stage';
 
 const RequestsTable: StyledComponent = styled(
     ({
@@ -80,7 +81,10 @@ const RequestsTable: StyledComponent = styled(
                                         </Badge>
                                     </td>
                                     <td className="stage">
-                                        <Badge className={stage}>
+                                        <Badge
+                                            className={stage}
+                                            bg={getBadgeBgForStage(stage)}
+                                        >
                                             {stages[stage]}
                                         </Badge>
                                     </td>
