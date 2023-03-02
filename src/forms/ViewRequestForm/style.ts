@@ -11,7 +11,7 @@ const style = () => ({
         color: 'var(--white)',
     },
     'button.accordion-button::after': {
-        filter: 'invert(100%)',
+        filter: 'invert(100%) grayscale(100%)',
     },
 });
 

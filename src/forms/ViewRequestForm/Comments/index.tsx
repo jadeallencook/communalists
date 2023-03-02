@@ -1,6 +1,8 @@
 import getComments from '@api/get-commets';
+import getUsernames from '@api/get-usernames';
 import CommentsForm from '@forms/CommentsForm';
 import RequestCommentInterface from '@interfaces/request-comment';
+import getUIDsFromComments from '@utils/get-uids-from-comments';
 import organizeCommentsByTime from '@utils/organize-comments-by-time';
 import timestampToCommentString from '@utils/timestamp-to-comment-string';
 import { useEffect, useState } from 'react';
@@ -15,9 +17,17 @@ const Comments: StyledComponent = styled(
         }>({});
         const [isLoading, setIsLoading] = useState<boolean>(true);
         const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+        const [usernames, setUsernames] = useState<{ [key: string]: string }>(
+            {}
+        );
         useEffect(() => {
             if (!isSubmitting) {
-                getComments(id).then((response) => {
+                getComments(id).then(async (response) => {
+                    if (Object.keys(response).length) {
+                        const uids = getUIDsFromComments(response);
+                        const names = await getUsernames(uids);
+                        setUsernames(names);
+                    }
                     setComments(response);
                     setIsLoading(false);
                 });
@@ -45,7 +55,7 @@ const Comments: StyledComponent = styled(
                                     <Toast className={className} key={key}>
                                         <Toast.Header closeButton={false}>
                                             <strong className="me-auto">
-                                                {uid}
+                                                {usernames[uid] || '@comrade'}
                                             </strong>
                                             <small>
                                                 {timestampToCommentString(
@@ -58,13 +68,7 @@ const Comments: StyledComponent = styled(
                                 )
                             )
                         ) : (
-                            <Alert
-                                variant="secondary"
-                                className="animate__animated animate__flipInX"
-                                style={{
-                                    animationDelay: '0.1s',
-                                }}
-                            >
+                            <Alert variant="secondary">
                                 <strong>No comments have been made yet.</strong>
                                 <br />
                                 Be the first volunteer to start the discussion
