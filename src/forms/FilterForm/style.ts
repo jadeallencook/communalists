@@ -1,5 +1,5 @@
 const style = () => ({
-    margin: '15px 0px',
+    marginBottom: '15px',
     'select, button, .form-check-input': {
         cursor: 'pointer',
     },

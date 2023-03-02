@@ -41,14 +41,8 @@ const Comments: StyledComponent = styled(
                         <br />
                         {Object.entries(comments).length ? (
                             organizeCommentsByTime(comments).map(
-                                ([key, { uid, body, timestamp }], index) => (
-                                    <Toast
-                                        className={`${className} animate__animated animate__flipInX`}
-                                        key={key}
-                                        style={{
-                                            animationDelay: `${index * 0.1}s`,
-                                        }}
-                                    >
+                                ([key, { uid, body, timestamp }]) => (
+                                    <Toast className={className} key={key}>
                                         <Toast.Header closeButton={false}>
                                             <strong className="me-auto">
                                                 {uid}

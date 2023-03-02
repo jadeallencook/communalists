@@ -1,5 +1,5 @@
 const style = () => ({
-    marginTop: '15px',
+    margin: '15px 0px',
     borderColor: 'var(--primary)!important',
     '.nav-item > a': {
         color: 'var(--primary)!important',
