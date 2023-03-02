@@ -41,7 +41,9 @@ const EditAccountForm: StyledComponent = styled(
         const handler = () => setUnsaved(true);
 
         useEffect(() => {
-            setTimeout(() => setSaved(false), 3000);
+            if (saved) {
+                setTimeout(() => setSaved(false), 3000);
+            }
         }, [unsaved]);
         return (
             <Form
