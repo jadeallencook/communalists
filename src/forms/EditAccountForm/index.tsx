@@ -4,8 +4,8 @@ import locations from '@objects/locations';
 import organizations from '@objects/organizations';
 import roles from '@objects/roles';
 import { useFormik } from 'formik';
-import { useContext } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { useContext, useEffect, useState } from 'react';
+import { Alert, Button, Form } from 'react-bootstrap';
 import { useQueryClient } from 'react-query';
 import styled, { StyledComponent } from 'styled-components';
 import SnippetContext from '../../contexts/SnippetContext';
@@ -31,11 +31,24 @@ const EditAccountForm: StyledComponent = styled(
             onSubmit: async (value) => {
                 await updateMyAccount(value);
                 queryClient.setQueryData('@account', value);
+                setUnsaved(false);
+                setSaved(true);
             },
         });
+        const [unsaved, setUnsaved] = useState<boolean>(false);
+        const [saved, setSaved] = useState<boolean>(false);
         const { snippet } = useContext(SnippetContext);
+        const handler = () => setUnsaved(true);
+
+        useEffect(() => {
+            setTimeout(() => setSaved(false), 3000);
+        }, [unsaved]);
         return (
-            <Form onSubmit={handleSubmit} className={className}>
+            <Form
+                onSubmit={handleSubmit}
+                className={className}
+                onChange={handler}
+            >
                 <Form.Group className="mb-3">
                     <Form.Label>Full Name</Form.Label>
                     <Form.Control
@@ -97,8 +110,13 @@ const EditAccountForm: StyledComponent = styled(
                         />
                     ))}
                 </Form.Group>
+                {saved && (
+                    <Form.Group className="mb-3">
+                        <Alert>Your changes have been saved.</Alert>
+                    </Form.Group>
+                )}
                 <Form.Group className="mb-3">
-                    <Button type="submit" disabled={isSubmitting}>
+                    <Button type="submit" disabled={isSubmitting || !unsaved}>
                         Save Changes
                     </Button>
                 </Form.Group>
