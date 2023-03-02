@@ -27,7 +27,7 @@ const getRequests = async (
     const wheres = [
         location && where('location', '==', location),
         language && where('language', '==', language),
-        where('stage', '==', stage || 'submitted'),
+        stage && where('stage', '==', stage),
         driver && where('hasDriver', '==', driver === 'assigned'),
         coordinator && uid && where('coordinator', '==', uid),
     ].filter((filter) => Boolean(filter) !== false);

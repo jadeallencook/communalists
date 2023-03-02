@@ -96,6 +96,7 @@ const FilterForm: StyledComponent = styled(
                             })
                         }
                     >
+                        <option value={''}>Any Stage</option>
                         {Object.entries(stages).map(([key, value]) => (
                             <option key={key} value={key}>
                                 {value}
