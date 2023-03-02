@@ -19,7 +19,7 @@ const AidRequestsPage = () => {
         location: '',
         language: '',
         driver: '',
-        stage: 'submitted',
+        stage: 'unassigned',
         coordinator: false,
     });
     const handler = (id?: string, shouldRefetch?: boolean): void => {

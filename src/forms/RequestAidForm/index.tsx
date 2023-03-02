@@ -41,7 +41,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             method: 'email',
             health: '',
             needs: '',
-            stage: 'submitted',
+            stage: 'unassigned',
             timestamp: Timestamp.fromDate(new Date()),
             driver: '',
             hasDriver: false,

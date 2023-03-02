@@ -1,11 +1,11 @@
 import { StageKeyType } from '@custom-types/stages';
 
 const getBadgeBgForStage = (stage: StageKeyType): string => {
-    if (stage === 'started') {
+    if (stage === ('unassigned' || 'in-process')) {
         return 'info';
-    } else if (stage === 'ready') {
+    } else if (stage === ('contacted' || 'needs-driver' || 'driver-assigned')) {
         return 'warning';
-    } else if (stage === 'complete') {
+    } else if (stage === ('completed' || 'questionable' || 'cant-contact')) {
         return 'success';
     }
     return 'primary';
