@@ -19,10 +19,19 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
         handleChange,
         handleSubmit,
         isSubmitting,
-        values: { name, email, location, details, role, organization },
+        values: {
+            name,
+            username,
+            email,
+            location,
+            details,
+            role,
+            organization,
+        },
     } = useFormik<VolunteerApplicationInterface>({
         initialValues: {
             name: '',
+            username: '',
             email: '',
             location: 'santa-clara-ca',
             details: '',
@@ -58,6 +67,18 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
                     placeholder={snippet('name.placeholder')}
                     onChange={handleChange}
                     value={name}
+                    required
+                />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>{snippet('username.label')}</Form.Label>
+                <Form.Control
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder={snippet('username.placeholder')}
+                    onChange={handleChange}
+                    value={username}
                     required
                 />
             </Form.Group>

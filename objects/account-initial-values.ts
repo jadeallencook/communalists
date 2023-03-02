@@ -2,6 +2,7 @@ import AccountInterface from '@interfaces/account';
 
 const accountInitialValues: AccountInterface = {
     name: '',
+    username: '',
     location: 'santa-clara-ca',
     organization: 'NONE',
     role: {

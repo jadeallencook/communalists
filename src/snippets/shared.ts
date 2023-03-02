@@ -19,6 +19,18 @@ const shared: SnippetInterface = {
         vietnamese: 'Nhập tên đầy đủ của bạn',
         chinese: '输入您的全名',
     },
+    ['username.label']: {
+        english: 'Public Username',
+        spanish: 'Nombre de Usuario Público',
+        vietnamese: 'Tên Người Dùng Công Khai',
+        chinese: '公共用户名',
+    },
+    ['username.placeholder']: {
+        english: 'Enter your public username',
+        spanish: 'Ingrese su nombre de usuario público',
+        vietnamese: 'Nhập tên người dùng công khai của bạn',
+        chinese: '输入您的公开用户名',
+    },
     ['language.label']: {
         english: 'Spoken Language',
         spanish: 'Lengua Hablada',

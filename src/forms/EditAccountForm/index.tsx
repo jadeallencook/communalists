@@ -25,7 +25,7 @@ const EditAccountForm: StyledComponent = styled(
             handleChange,
             handleSubmit,
             isSubmitting,
-            values: { name, location, role, organization },
+            values: { name, username, location, role, organization },
         } = useFormik<AccountInterface>({
             initialValues,
             onSubmit: async (value) => {
@@ -59,6 +59,18 @@ const EditAccountForm: StyledComponent = styled(
                         type="text"
                         onChange={handleChange}
                         value={name}
+                        required
+                        disabled={isSubmitting}
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Public Username</Form.Label>
+                    <Form.Control
+                        id="username"
+                        name="username"
+                        type="text"
+                        onChange={handleChange}
+                        value={username}
                         required
                         disabled={isSubmitting}
                     />

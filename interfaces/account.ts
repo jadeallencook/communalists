@@ -4,6 +4,7 @@ import RoleInterface from './roles';
 
 interface AccountInterface {
     name: string;
+    username: string;
     location: LocationKeyType;
     role: RoleInterface;
     organization: OrganizationKeyType;
