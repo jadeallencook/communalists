@@ -18,8 +18,8 @@ const getUsernames = async (
     const q = query(ref, where(documentId(), 'in', uids));
     const snapshot = await getDocs(q);
     snapshot.forEach((doc) => {
-        const { name } = doc.data();
-        map[doc.id] = name;
+        const { username } = doc.data();
+        map[doc.id] = `@${username}`;
     });
     return map;
 };
