@@ -5,6 +5,7 @@ import DashboardPage from '@pages/DashboardPage';
 import SignInPage from '@pages/SignInPage';
 import ViewRequestPage from '@pages/ViewRequestPage';
 import SignUpPage from '@pages/SignUpPage';
+import DonatePage from '@pages/Donate';
 
 interface Route {
     path: string;
@@ -39,6 +40,10 @@ const routes: Route[] = [
     {
         path: '/sign-up',
         element: <SignUpPage />,
+    },
+    {
+        path: '/donate',
+        element: <DonatePage />,
     },
 ];
 

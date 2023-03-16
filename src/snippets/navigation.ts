@@ -2,10 +2,10 @@ import { SnippetInterface } from '.';
 
 const navigation: SnippetInterface = {
     ['submit-request']: {
-        english: 'Submit Request',
-        spanish: 'Enviar Peticion',
-        vietnamese: 'Gửi Lời đề Nghị',
-        chinese: '提交请求',
+        english: 'Request',
+        spanish: 'Pedido',
+        vietnamese: 'Lời Yêu Cầu',
+        chinese: '要求',
     },
     ['log-in']: {
         english: 'Log In',
@@ -24,6 +24,12 @@ const navigation: SnippetInterface = {
         spanish: 'Panel',
         vietnamese: 'Bảng điều Khiển',
         chinese: '仪表板',
+    },
+    ['donate']: {
+        english: 'Donate',
+        spanish: 'Donar',
+        vietnamese: 'Quyên Tặng',
+        chinese: '捐',
     },
 };
 
