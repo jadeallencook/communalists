@@ -1,3 +1,7 @@
-export type OrganizationKeyType = 'NONE' | 'SBMA';
+export type OrganizationKeyType = 'NONE' | 'SBMA' | 'SJFNB' | 'SVDSA';
 
-export type OrganizationType = 'None' | 'South Bay Mutual Aid';
+export type OrganizationType =
+    | 'No Association'
+    | 'South Bay Mutual Aid'
+    | 'San Jose Food Not Bombs'
+    | 'Silicon Valley Democratic Socialists of America';
