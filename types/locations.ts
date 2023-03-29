@@ -1,13 +1,23 @@
 export type LocationKeyType =
+    | 'campbell-ca'
+    | 'cupertino-ca'
+    | 'gilroy-ca'
+    | 'los-altos-ca'
+    | 'los-gatos-ca'
+    | 'milpitas-ca'
+    | 'mountain-view-ca'
+    | 'san-jose-ca'
     | 'santa-clara-ca'
-    | 'san-mateo-ca'
-    | 'alameda-ca'
-    | 'contra-costa-ca'
-    | 'san-francisco-ca';
+    | 'sunnyvale-ca';
 
 export type LocationType =
-    | 'Santa Clara County (South Bay)'
-    | 'San Mateo County (Peninsula)'
-    | 'Alameda County (Easy Bay)'
-    | 'Contra Costa County (Easy Bay)'
-    | 'San Francisco County (San Francisco)';
+    | 'Campbell'
+    | 'Cupertino'
+    | 'Gilroy'
+    | 'Los Altos'
+    | 'Los Gatos'
+    | 'Milpitas'
+    | 'Mountain View'
+    | 'San Jose'
+    | 'Santa Clara'
+    | 'Sunnyvale';

@@ -61,7 +61,8 @@ const RequestsTable: StyledComponent = styled(
                                     </td>
                                     <td className="name">{name}</td>
                                     <td className="location">
-                                        {locations[location]}
+                                        {locations[location] ||
+                                            'Location Unknown'}
                                     </td>
                                     <td className="language">
                                         {languages[language]}
