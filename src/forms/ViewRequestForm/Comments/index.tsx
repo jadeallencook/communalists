@@ -51,11 +51,11 @@ const Comments: StyledComponent = styled(
                         <br />
                         {Object.entries(comments).length ? (
                             organizeCommentsByTime(comments).map(
-                                ([key, { uid, body, timestamp }]) => (
+                                ([key, { user, body, timestamp }]) => (
                                     <Toast className={className} key={key}>
                                         <Toast.Header closeButton={false}>
                                             <strong className="me-auto">
-                                                {usernames[uid] || '@comrade'}
+                                                {usernames[user] || '@comrade'}
                                             </strong>
                                             <small>
                                                 {timestampToCommentString(

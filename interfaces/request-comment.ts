@@ -1,9 +1,10 @@
 import { Timestamp } from 'firebase/firestore';
 
 interface RequestCommentInterface {
-    uid: string;
     timestamp: Timestamp;
     body: string;
+    user: string;
+    request: string;
 }
 
 export default RequestCommentInterface;

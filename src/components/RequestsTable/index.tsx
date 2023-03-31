@@ -34,39 +34,34 @@ const RequestsTable: StyledComponent = styled(
             <div className={className}>
                 <Table striped bordered hover variant="dark">
                     {organized.length ? (
-                        organized.map(
-                            (
-                                [
-                                    id,
-                                    {
-                                        name,
-                                        location,
-                                        language,
-                                        stage,
-                                        timestamp,
-                                        driver,
-                                    },
-                                ],
-                                index
-                            ) => (
-                                <>
-                                    <thead>
-                                        <tr>
-                                            <th className="timestamp">
-                                                Recieved
-                                            </th>
-                                            <th className="name">Name</th>
-                                            <th className="location">
-                                                Location
-                                            </th>
-                                            <th className="language">
-                                                Language
-                                            </th>
-                                            <th className="driver">Driver</th>
-                                            <th className="stage">Stage</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                        <>
+                            <thead>
+                                <tr>
+                                    <th className="timestamp">Recieved</th>
+                                    <th className="name">Name</th>
+                                    <th className="location">Location</th>
+                                    <th className="language">Language</th>
+                                    <th className="driver">Driver</th>
+                                    <th className="stage">Stage</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {organized.map(
+                                    (
+                                        [
+                                            id,
+                                            {
+                                                name,
+                                                location,
+                                                language,
+                                                stage,
+                                                timestamp,
+                                                driver,
+                                            },
+                                        ],
+                                        index
+                                    ) => (
                                         <tr
                                             key={id}
                                             onClick={() => handler(id)}
@@ -108,10 +103,10 @@ const RequestsTable: StyledComponent = styled(
                                                 </Badge>
                                             </td>
                                         </tr>
-                                    </tbody>
-                                </>
-                            )
-                        )
+                                    )
+                                )}
+                            </tbody>
+                        </>
                     ) : (
                         <tbody>
                             <tr>

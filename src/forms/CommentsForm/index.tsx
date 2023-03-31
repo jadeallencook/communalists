@@ -23,7 +23,8 @@ const CommentsForm: StyledComponent = styled(
             values: { body },
         } = useFormik<RequestCommentInterface>({
             initialValues: {
-                uid: '@comrade',
+                request: id,
+                user: '',
                 body: '',
                 timestamp: Timestamp.fromDate(new Date()),
             },

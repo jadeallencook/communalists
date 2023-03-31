@@ -7,14 +7,15 @@ const db = getFirestore(app);
 
 const addComment = async (
     value: RequestCommentInterface,
-    id: string
+    request: string
 ): Promise<any> => {
     const {
-        currentUser: { uid },
+        currentUser: { uid: user },
     } = getAuth(app);
-    return await addDoc(collection(db, 'details', id, 'comments'), {
+    return await addDoc(collection(db, 'comments'), {
         ...value,
-        uid,
+        user,
+        request,
     })
         .then((response) => response)
         .catch((error) => error);
