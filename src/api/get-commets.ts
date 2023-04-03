@@ -1,4 +1,4 @@
-import RequestCommentInterface from '@interfaces/request-comment';
+import RequestCommentInterface from '@interfaces/comment';
 import {
     getFirestore,
     collection,
@@ -14,7 +14,7 @@ const getComments = async (
     id: string
 ): Promise<{ [key: string]: RequestCommentInterface }> => {
     const ref = collection(db, 'comments');
-    const q = query(ref, where('request', '==', id));
+    const q = query(ref, where('thread', '==', id));
     const snapshot = await getDocs(q);
     const comments = {};
     snapshot.forEach((doc) => (comments[doc.id] = doc.data()));

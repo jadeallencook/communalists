@@ -1,4 +1,3 @@
-import VolunteerApplicationInterface from '@interfaces/volunteer-application';
 import {
     getFirestore,
     getDocs,
@@ -7,13 +6,14 @@ import {
     collection,
 } from 'firebase/firestore';
 import app from './init-app';
+import AccountInterface from '@interfaces/account';
 
 const db = getFirestore(app);
 
-const getApplications = async (): Promise<{
-    [key: string]: VolunteerApplicationInterface;
+const getUnapprovedAccounts = async (): Promise<{
+    [key: string]: AccountInterface;
 }> => {
-    const ref = collection(db, 'applications');
+    const ref = collection(db, 'accounts');
     const requests = {};
 
     const q = query(ref, where('approved', '==', ''));
@@ -27,4 +27,4 @@ const getApplications = async (): Promise<{
     return requests;
 };
 
-export default getApplications;
+export default getUnapprovedAccounts;

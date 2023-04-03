@@ -1,4 +1,4 @@
-import RequestCommentInterface from '@interfaces/request-comment';
+import RequestCommentInterface from '@interfaces/comment';
 
 const getUIDsFromComments = (comments: {
     [key: string]: RequestCommentInterface;

@@ -1,6 +1,10 @@
 import { Timestamp } from 'firebase/firestore';
 
 const getNumberOfDaysAfterDate = (timestamp: Timestamp): string => {
+    if (!timestamp) {
+        return 'N/A';
+    }
+
     const date = new Date(timestamp.seconds * 1000).getTime();
     const now = new Date().getTime();
     const timediff: any = now - date;

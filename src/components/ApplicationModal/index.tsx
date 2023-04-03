@@ -1,36 +1,38 @@
 import { Modal } from 'react-bootstrap';
-import VolunteerApplicationInterface from '@interfaces/volunteer-application';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import ViewApplicationForm from '@forms/ViewApplicationForm';
 import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
+import AccountInterface from '@interfaces/account';
 
 const ApplicationModal = styled(
     ({
         application,
-        setApplication,
+        setUID,
         className,
+        uid,
     }: {
-        application: VolunteerApplicationInterface;
-        setApplication: any;
+        application: AccountInterface;
+        setUID: any;
         className: string;
+        uid: string;
     }) => {
         if (!application) {
             return null;
         }
-        const { timestamp } = application;
+        const { joined } = application;
         return (
-            <Modal show={true} size="lg" className={className}>
+            <Modal show={!!application} size="lg" className={className}>
                 <Modal.Header>
                     <Modal.Title>
-                        Application Submitted{' '}
-                        {getNumberOfDaysAfterDate(timestamp)}
+                        Application Submitted {getNumberOfDaysAfterDate(joined)}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <ViewApplicationForm
+                        uid={uid}
                         application={application}
-                        setApplication={setApplication}
+                        setUID={setUID}
                     />
                 </Modal.Body>
             </Modal>

@@ -1,10 +1,10 @@
 import { Timestamp } from 'firebase/firestore';
 
-interface RequestCommentInterface {
+interface CommentInterface {
     timestamp: Timestamp;
     body: string;
     user: string;
-    request: string;
+    thread: string;
 }
 
-export default RequestCommentInterface;
+export default CommentInterface;

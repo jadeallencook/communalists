@@ -1,24 +1,37 @@
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import locations from '@objects/locations';
 import style from './style';
 import styled, { StyledComponent } from 'styled-components';
-import VolunteerApplicationInterface from '@interfaces/volunteer-application';
-import { Dispatch } from 'react';
+import { Dispatch, useState } from 'react';
 import roles from '@objects/roles';
 import organizations from '@objects/organizations';
+import AccountInterface from '@interfaces/account';
+import approveAccount from '@api/approve-account';
+import { useFormik } from 'formik';
 
 const ViewApplicationForm: StyledComponent = styled(
     ({
         className,
         application,
-        setApplication,
+        setUID,
+        uid,
     }: {
         className: string;
-        application: VolunteerApplicationInterface;
-        setApplication: Dispatch<VolunteerApplicationInterface>;
+        application: AccountInterface;
+        setUID: Dispatch<string>;
+        uid: string;
     }) => {
-        const { name, location, email, details, role, organization } =
-            application;
+        const { name, location, bio, role, organization } = application;
+        const [success, setSuccess] = useState<boolean>(false);
+
+        const {
+            handleSubmit,
+            isSubmitting,
+            values: {},
+        } = useFormik<{}>({
+            initialValues: {},
+            onSubmit: () => approveAccount(uid).then(() => setSuccess(true)),
+        });
 
         return (
             <div className={className}>
@@ -47,10 +60,6 @@ const ViewApplicationForm: StyledComponent = styled(
                     </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control defaultValue={email || 'N/A'} disabled />
-                </Form.Group>
-                <Form.Group className="mb-3">
                     <Form.Label>Roles</Form.Label>
                     {Object.entries(roles).map(([key, value]) => (
                         <Form.Check
@@ -67,18 +76,37 @@ const ViewApplicationForm: StyledComponent = styled(
                     <Form.Label>
                         Why do you want to become a volunteer?
                     </Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        defaultValue={details}
-                        disabled
-                    />
+                    <Form.Control as="textarea" defaultValue={bio} disabled />
                 </Form.Group>
 
                 <Modal.Footer>
-                    <Button
-                        variant="secondary"
-                        onClick={() => setApplication(null)}
+                    <Form
+                        onSubmit={handleSubmit}
+                        className={`${className} animate__animated animate__fadeIn`}
                     >
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            disabled={isSubmitting || success}
+                        >
+                            {success
+                                ? 'Approved'
+                                : isSubmitting
+                                ? ''
+                                : 'Approve'}
+                            {isSubmitting && (
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    style={{ marginLeft: '5px' }}
+                                />
+                            )}
+                        </Button>
+                    </Form>
+                    <Button variant="secondary" onClick={() => setUID('')}>
                         Close
                     </Button>
                 </Modal.Footer>

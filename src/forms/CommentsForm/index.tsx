@@ -1,8 +1,8 @@
 import addComment from '@api/add-comment';
-import RequestCommentInterface from '@interfaces/request-comment';
+import RequestCommentInterface from '@interfaces/comment';
 import { Timestamp } from 'firebase/firestore';
 import { useFormik } from 'formik';
-import { Button, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
+import { Button, Form, InputGroup, Row } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 
@@ -23,7 +23,7 @@ const CommentsForm: StyledComponent = styled(
             values: { body },
         } = useFormik<RequestCommentInterface>({
             initialValues: {
-                request: id,
+                thread: id,
                 user: '',
                 body: '',
                 timestamp: Timestamp.fromDate(new Date()),
@@ -31,13 +31,10 @@ const CommentsForm: StyledComponent = styled(
             onSubmit: async (value, { resetForm }) => {
                 if (value) {
                     setIsSubmitting(true);
-                    await addComment(
-                        {
-                            ...value,
-                            timestamp: Timestamp.fromDate(new Date()),
-                        },
-                        id
-                    );
+                    await addComment({
+                        ...value,
+                        timestamp: Timestamp.fromDate(new Date()),
+                    });
                     resetForm();
                     setIsSubmitting(false);
                 }

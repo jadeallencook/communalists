@@ -23,13 +23,19 @@ const signUpForm: SnippetInterface = {
         vietnamese: 'Gửi đơn đăng Ký',
         chinese: '提交申请表',
     },
-    ['details.label']: {
+    ['confirmedPassword.label']: {
+        english: 'Confirm Password',
+        spanish: 'Confirmar Contraseña',
+        vietnamese: 'Xác Nhận Mật Khẩu',
+        chinese: '确认密码',
+    },
+    ['bio.label']: {
         english: 'Why do you want to become a volunteer?',
         spanish: '¿Por qué quieres ser voluntario?',
         vietnamese: 'Tại sao bạn muốn trở thành một tình nguyện viên?',
         chinese: '你为什么想成为一名志愿者？',
     },
-    ['details.placeholder']: {
+    ['bio.placeholder']: {
         english:
             'Tell us why you want to volunteer with us, so we can understand your motivations and make your volunteer experience as fulfilling and meaningful as possible.',
         spanish:

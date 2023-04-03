@@ -1,31 +1,41 @@
-import getApplications from '@api/get-applications';
+import getUnapprovedAccounts from '@api/get-unapproved-accounts';
 import ApplicationModal from '@components/ApplicationModal';
 import ApplicationsTable from '@components/ApplicationsTable';
-import VolunteerApplicationInterface from '@interfaces/volunteer-application';
-import { useState } from 'react';
+import AccountInterface from '@interfaces/account';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 const ApplicationsPage = () => {
-    const { isLoading, data: applications } = useQuery(
-        'applications',
-        getApplications
+    const {
+        isLoading,
+        data: applications,
+        refetch,
+    } = useQuery('@applications', getUnapprovedAccounts);
+
+    const [application, setApplication] = useState<AccountInterface | null>(
+        null
     );
 
-    const [applicaton, setApplication] =
-        useState<VolunteerApplicationInterface | null>(null);
+    const [uid, setUID] = useState<string>('');
 
-    const handler = (id: string) => setApplication(applications[id]);
+    useEffect(() => {
+        if (applications) {
+            refetch();
+            setApplication(applications[uid] || null);
+        }
+    }, [uid]);
 
     return (
         <>
             <ApplicationsTable
-                handler={handler}
+                setUID={setUID}
                 applications={applications}
                 isLoading={isLoading}
             />
             <ApplicationModal
-                application={applicaton}
-                setApplication={setApplication}
+                uid={uid}
+                application={application}
+                setUID={setUID}
             />
         </>
     );

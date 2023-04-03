@@ -5,11 +5,18 @@ import style from './style';
 import { useContext, useState } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
 import locations from '@objects/locations';
-import VolunteerApplicationInterface from '@interfaces/volunteer-application';
-import addApplication from '@api/add-application';
+import addAccount from '@api/add-account';
 import { Timestamp } from 'firebase/firestore';
 import roles from '@objects/roles';
 import organizations from '@objects/organizations';
+import AccountInterface from '@interfaces/account';
+import authSignUp from '@api/auth-sign-up';
+
+interface SignUpFormInterface extends AccountInterface {
+    password: string;
+    confirmedPassword: string;
+    email: string;
+}
 
 const SignUpForm: StyledComponent = styled(({ className }) => {
     const [error, setError] = useState<string>('');
@@ -19,15 +26,27 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
         handleChange,
         handleSubmit,
         isSubmitting,
-        values: { name, email, location, details, role, organization },
-    } = useFormik<VolunteerApplicationInterface>({
+        values: {
+            name,
+            email,
+            location,
+            bio,
+            role,
+            organization,
+            password,
+            confirmedPassword,
+        },
+    } = useFormik<SignUpFormInterface>({
         initialValues: {
             name: '',
             email: '',
             location: 'santa-clara-ca',
-            details: '',
+            bio: '',
             approved: '',
-            timestamp: Timestamp.fromDate(new Date()),
+            password: '',
+            confirmedPassword: '',
+            joined: Timestamp.fromDate(new Date()),
+            updated: Timestamp.fromDate(new Date()),
             role: {
                 driver: false,
                 coordinator: false,
@@ -36,9 +55,27 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
             },
             organization: 'NONE',
         },
-        onSubmit: async (values: VolunteerApplicationInterface) => {
-            await addApplication(values);
-            setSuccess(true);
+        onSubmit: async (values: SignUpFormInterface) => {
+            const { password, confirmedPassword, email, ...rest } = values;
+            if (password === confirmedPassword) {
+                try {
+                    const response = await authSignUp(email, password);
+                    if (response?.message) {
+                        throw response.message;
+                    } else {
+                        await addAccount(rest);
+                        setSuccess(true);
+                    }
+                } catch (error) {
+                    setSuccess(false);
+                    setError(error);
+                }
+            } else {
+                setSuccess(false);
+                setError(
+                    'The passwords you entered do not match. Please try again.'
+                );
+            }
         },
     });
     return isSubmitting ? (
@@ -70,6 +107,32 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
                     placeholder={snippet('email.placeholder')}
                     onChange={handleChange}
                     value={email}
+                    required
+                />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>{snippet('password.label')}</Form.Label>
+                <Form.Control
+                    id="email"
+                    name="password"
+                    type="password"
+                    placeholder={snippet('password.placeholder')}
+                    onChange={handleChange}
+                    value={password}
+                    required
+                />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>
+                    {snippet('confirmedPassword.label', 'sign-up-form')}
+                </Form.Label>
+                <Form.Control
+                    id="confirmedPassword"
+                    name="confirmedPassword"
+                    type="password"
+                    placeholder={snippet('password.placeholder')}
+                    onChange={handleChange}
+                    value={confirmedPassword}
                     required
                 />
             </Form.Group>
@@ -120,17 +183,15 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
                 ))}
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>
-                    {snippet('details.label', 'sign-up-form')}
-                </Form.Label>
+                <Form.Label>{snippet('bio.label', 'sign-up-form')}</Form.Label>
                 <Form.Control
                     as="textarea"
-                    id="details"
-                    name="details"
+                    id="bio"
+                    name="bio"
                     type="text"
-                    placeholder={snippet('details.placeholder', 'sign-up-form')}
+                    placeholder={snippet('bio.placeholder', 'sign-up-form')}
                     onChange={handleChange}
-                    value={details}
+                    value={bio}
                     required
                 />
             </Form.Group>

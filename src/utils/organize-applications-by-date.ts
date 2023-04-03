@@ -1,11 +1,11 @@
-import VolunteerApplicationInterface from '@interfaces/volunteer-application';
+import AccountInterface from '@interfaces/account';
 
 const organizeApplicationsByDate = (requests: {
-    [key: string]: VolunteerApplicationInterface;
-}): [string, VolunteerApplicationInterface][] =>
+    [key: string]: AccountInterface;
+}): [string, AccountInterface][] =>
     Object.entries(requests).sort(
-        ([, { timestamp: timestamp1 }], [, { timestamp: timestamp2 }]) => {
-            return timestamp1.seconds - timestamp2.seconds;
+        ([, { joined: timestamp1 }], [, { joined: timestamp2 }]) => {
+            return timestamp1?.seconds - timestamp2?.seconds;
         }
     );
 

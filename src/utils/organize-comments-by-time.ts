@@ -1,4 +1,4 @@
-import RequestCommentInterface from '@interfaces/request-comment';
+import RequestCommentInterface from '@interfaces/comment';
 
 const organizeCommentsByTime = (comments: {
     [key: string]: RequestCommentInterface;
