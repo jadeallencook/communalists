@@ -2,25 +2,26 @@ import { Badge, Spinner, Table } from 'react-bootstrap';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
 import stages from '@objects/stages';
-import RequestAidInterface from '@interfaces/request-aid';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
 import organizeRequestsByDate from '@utils/organize-requests-by-date';
+import DonationInterface from '@interfaces/donation';
+import drivers from '@objects/drivers';
 
-const RequestsTable: StyledComponent = styled(
+const DonationsTable: StyledComponent = styled(
     ({
-        requests,
+        donations,
         handler,
         loaded,
         className,
     }: {
-        requests: { [key: string]: RequestAidInterface };
+        donations: { [key: string]: DonationInterface };
         handler: (id?: string) => void;
         loaded: boolean;
         className: string;
     }) => {
-        const organized = organizeRequestsByDate(requests);
+        const organized = organizeRequestsByDate(donations);
 
         if (!loaded) {
             return (
@@ -38,7 +39,7 @@ const RequestsTable: StyledComponent = styled(
                             <thead>
                                 <tr>
                                     <th className="timestamp">Recieved</th>
-                                    <th className="name">Requester</th>
+                                    <th className="name">Donor</th>
                                     <th className="location">Location</th>
                                     <th className="language">Language</th>
                                     <th className="driver">Delivery</th>
@@ -93,8 +94,10 @@ const RequestsTable: StyledComponent = styled(
                                                     }
                                                 >
                                                     {driver
-                                                        ? 'Coordinated'
-                                                        : 'Pending'}
+                                                        ? drivers.assigned
+                                                        : drivers[
+                                                              'not-assigned'
+                                                          ]}
                                                 </Badge>
                                             </td>
                                             <td className="stage">
@@ -112,13 +115,13 @@ const RequestsTable: StyledComponent = styled(
                             <tr>
                                 <td colSpan={6} style={{ textAlign: 'center' }}>
                                     <b>
-                                        There are currently no requests that
+                                        There are currently no donations that
                                         match that search criteria.
                                     </b>
                                     <br />
                                     <small>
                                         Please adjust the filters above to find
-                                        matching requests.
+                                        matching donations.
                                     </small>
                                 </td>
                             </tr>
@@ -130,4 +133,4 @@ const RequestsTable: StyledComponent = styled(
     }
 )(style);
 
-export default RequestsTable;
+export default DonationsTable;

@@ -1,18 +1,20 @@
-import updateRequestVolunteer from '@api/update-request-volunteer';
+import updateVolunteer from '@api/update-volunteer';
 import { RoleKeyType } from '@custom-types/role';
 import { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 
-const VolunteerRequestForm = ({
+const VolunteerForm = ({
     volunteer,
     requestId,
     label,
     type,
+    collection,
 }: {
     volunteer: string;
     requestId: string;
     label: string;
     type: RoleKeyType;
+    collection: 'requests' | 'donations';
 }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [cachedVolunteer, setCachedVolunteer] = useState<boolean>(
@@ -21,7 +23,12 @@ const VolunteerRequestForm = ({
 
     const handler = async (remove: boolean) => {
         setLoading(true);
-        const response = await updateRequestVolunteer(requestId, remove, type);
+        const response = await updateVolunteer(
+            requestId,
+            remove,
+            type,
+            collection
+        );
         if (!response && !remove) {
             setCachedVolunteer(true);
         } else if (!response && remove) {
@@ -64,4 +71,4 @@ const VolunteerRequestForm = ({
     );
 };
 
-export default VolunteerRequestForm;
+export default VolunteerForm;

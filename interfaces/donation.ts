@@ -11,7 +11,7 @@ interface DonationInterface {
     location: LocationKeyType;
     language: LanguageKeyType;
     method: MethodKeyType;
-    donation: string;
+    body: string;
     stage: StageKeyType;
     timestamp: Timestamp;
     driver: string;

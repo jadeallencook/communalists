@@ -6,18 +6,28 @@ import app from './init-app';
 const db = getFirestore(app);
 const auth = getAuth();
 
-const updateRequestVolunteer = async (
+const updateVolunteer = async (
     id: string,
     remove: boolean,
-    key: RoleKeyType
+    key: RoleKeyType,
+    collection: 'requests' | 'donations'
 ) => {
     const { uid } = auth.currentUser;
-    const docRef = doc(db, 'requests', id);
-    return await updateDoc(docRef, {
+    const docRef = doc(db, collection, id);
+    let object = {};
+    if (key === 'driver') {
+        object = {
+            ...object,
+            hasDriver: !remove,
+        };
+    }
+    object = {
+        ...object,
         [key]: remove ? '' : uid,
-    })
+    };
+    return await updateDoc(docRef, object)
         .then((response) => response)
         .catch((response) => response);
 };
 
-export default updateRequestVolunteer;
+export default updateVolunteer;

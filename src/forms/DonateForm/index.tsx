@@ -20,7 +20,7 @@ const DonateForm: StyledComponent = styled(({ className }) => {
         handleSubmit,
         isSubmitting,
         setFieldValue,
-        values: { name, email, location, phone, language, method, donation },
+        values: { name, email, location, phone, language, method, body },
     } = useFormik<DonationInterface>({
         initialValues: {
             name: '',
@@ -29,11 +29,11 @@ const DonateForm: StyledComponent = styled(({ className }) => {
             location: 'santa-clara-ca',
             language: defaultLanguage,
             method: 'email',
-            donation: '',
+            body: '',
+            hasDriver: false,
             stage: 'submitted',
             timestamp: Timestamp.fromDate(new Date()),
             driver: '',
-            hasDriver: false,
             coordinator: '',
         },
         onSubmit: (values) => addDonation(values).then(() => setSuccess(true)),
@@ -151,7 +151,7 @@ const DonateForm: StyledComponent = styled(({ className }) => {
                     type="text"
                     placeholder={snippet('donation.placeholder', 'donate-form')}
                     onChange={handleChange}
-                    value={donation}
+                    value={body}
                     required
                 />
             </Form.Group>

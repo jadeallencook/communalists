@@ -9,11 +9,16 @@ import { useParams } from 'react-router-dom';
 import NotApprovedPage from './Dashboard/NotApprovedPage';
 import { useQuery } from 'react-query';
 import getMyAccount from '@api/get-my-account';
+import DonationsPage from './Dashboard/DonationsPage';
 
 const routes: DashboardRoutesInterface = {
     requests: {
         text: 'Requests',
         component: <AidRequestsPage />,
+    },
+    donations: {
+        text: 'Donations',
+        component: <DonationsPage />,
     },
     applications: {
         text: 'Applications',

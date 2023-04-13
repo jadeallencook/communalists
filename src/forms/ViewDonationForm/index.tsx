@@ -9,20 +9,19 @@ import updateRequestStage from '@api/update-request-stage';
 import Comments from './Comments';
 import style from './style';
 import styled, { StyledComponent } from 'styled-components';
-import RequestAidInterface from '@interfaces/request-aid';
-import CopyLinkButton from './CopyLinkButton';
 import VolunteerForm from '@forms/VolunteerForm';
+import DonationInterface from '@interfaces/donation';
 
-const ViewRequestForm: StyledComponent = styled(
+const ViewDonationForm: StyledComponent = styled(
     ({
         className,
-        request,
+        donation,
         handler,
         selected,
         isModal = false,
     }: {
         className: string;
-        request: RequestAidInterface;
+        donation: DonationInterface;
         handler?: (id?: string, shouldRefetch?: boolean) => void;
         selected: string;
         isModal?: boolean;
@@ -34,13 +33,12 @@ const ViewRequestForm: StyledComponent = styled(
             email,
             phone,
             method,
-            health,
-            needs,
+            body,
             driver,
             coordinator,
-        } = request;
+        } = donation;
 
-        const [stage, setStage] = useState<StageKeyType>(request.stage);
+        const [stage, setStage] = useState<StageKeyType>(donation.stage);
         const [submitting, setSubmitting] = useState<boolean>(false);
 
         const handleSubmitModal = async () => {
@@ -122,19 +120,10 @@ const ViewRequestForm: StyledComponent = styled(
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>
-                                    Relevant Health Conditions
-                                </Form.Label>
-                                <Form.Control
-                                    defaultValue={health || 'N/A'}
-                                    disabled
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Request Information</Form.Label>
+                                <Form.Label>Donation Information</Form.Label>
                                 <Form.Control
                                     as="textarea"
-                                    defaultValue={needs}
+                                    defaultValue={body}
                                     disabled
                                 />
                             </Form.Group>
@@ -173,32 +162,27 @@ const ViewRequestForm: StyledComponent = styled(
                                 volunteer={driver}
                                 requestId={selected}
                                 type="driver"
-                                collection="requests"
+                                collection="donations"
                             />
                             <VolunteerForm
-                                label="Request Coordinator"
+                                label="Donation Coordinator"
                                 volunteer={coordinator}
                                 requestId={selected}
                                 type="coordinator"
-                                collection="requests"
+                                collection="donations"
                             />
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
 
                 <Modal.Footer>
-                    {isModal && (
-                        <>
-                            <CopyLinkButton path={`view-request/${selected}`} />
-                            <Button
-                                variant="secondary"
-                                onClick={() => handler()}
-                                disabled={submitting}
-                            >
-                                Close
-                            </Button>
-                        </>
-                    )}
+                    <Button
+                        variant="secondary"
+                        onClick={() => handler()}
+                        disabled={submitting}
+                    >
+                        Close
+                    </Button>
                     <Button
                         variant="primary"
                         onClick={save}
@@ -211,4 +195,4 @@ const ViewRequestForm: StyledComponent = styled(
         );
     }
 )(style);
-export default ViewRequestForm;
+export default ViewDonationForm;
