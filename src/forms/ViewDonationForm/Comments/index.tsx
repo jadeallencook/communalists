@@ -6,9 +6,10 @@ import getUIDsFromComments from '@utils/get-uids-from-comments';
 import organizeCommentsByTime from '@utils/organize-comments-by-time';
 import timestampToCommentString from '@utils/timestamp-to-comment-string';
 import { useEffect, useState } from 'react';
-import { Alert, Form, Spinner, Toast } from 'react-bootstrap';
+import { Alert, Form, Toast } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
+import Loading from '@components/Loading';
 
 const Comments: StyledComponent = styled(
     ({ className, id }: { className: string; id: string }) => {
@@ -38,7 +39,7 @@ const Comments: StyledComponent = styled(
                 {isLoading ? (
                     <div className={className}>
                         <Form.Label>Leave a Message</Form.Label>
-                        <Spinner animation="border" />
+                        <Loading />
                     </div>
                 ) : (
                     <>

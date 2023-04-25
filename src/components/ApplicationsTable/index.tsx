@@ -1,4 +1,4 @@
-import { Badge, Spinner, Table } from 'react-bootstrap';
+import { Badge, Table } from 'react-bootstrap';
 import locations from '@objects/locations';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
@@ -8,6 +8,7 @@ import roles from '@objects/roles';
 import organizations from '@objects/organizations';
 import AccountInterface from '@interfaces/account';
 import { Dispatch } from 'react';
+import Loading from '@components/Loading';
 
 const ApplicationsTable: StyledComponent = styled(
     ({
@@ -114,7 +115,7 @@ const ApplicationsTable: StyledComponent = styled(
                         )}
                     </Table>
                 ) : (
-                    <Spinner animation="border" />
+                    <Loading />
                 )}
             </div>
         );

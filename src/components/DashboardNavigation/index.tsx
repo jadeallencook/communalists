@@ -20,7 +20,7 @@ const DashboardNavigation: StyledComponent = styled(
     }) => {
         return (
             <Nav
-                variant="tabs"
+                variant="pills"
                 defaultActiveKey="/dashboard"
                 className={className}
             >

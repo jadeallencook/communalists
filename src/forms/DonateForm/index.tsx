@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { Button, Container, Form, Spinner } from 'react-bootstrap';
+import { Button, Container, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import locations from '@objects/locations';
@@ -11,6 +11,7 @@ import SnippetContext from '../../contexts/SnippetContext';
 import formatPhoneNumer from '@utils/format-phone-number';
 import DonationInterface from '@interfaces/donation';
 import addDonation from '@api/add-donation';
+import Loading from '@components/Loading';
 
 const DonateForm: StyledComponent = styled(({ className }) => {
     const [success, setSuccess] = useState(false);
@@ -45,9 +46,7 @@ const DonateForm: StyledComponent = styled(({ className }) => {
     };
 
     return isSubmitting && !success ? (
-        <Container className={className}>
-            <Spinner animation="border" />
-        </Container>
+        <Loading />
     ) : !isSubmitting && success ? (
         <Container className={className}>
             <h1>{snippet('success.header', 'donate-form')}</h1>

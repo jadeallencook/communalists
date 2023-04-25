@@ -3,10 +3,10 @@ import { useFormik } from 'formik';
 import { Alert, Button, Container, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import LoadingImage from '@assets/loading.gif';
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SnippetContext from '../../contexts/SnippetContext';
+import Loading from '@components/Loading';
 
 const SignInForm: StyledComponent = styled(({ className }) => {
     const [error, setError] = useState<string>('');
@@ -32,9 +32,7 @@ const SignInForm: StyledComponent = styled(({ className }) => {
         },
     });
     return isSubmitting ? (
-        <Container className={className}>
-            <img src={LoadingImage} />
-        </Container>
+        <Loading />
     ) : (
         <Form onSubmit={handleSubmit} className={className}>
             <h1>{snippet('header', 'log-in-form')}</h1>

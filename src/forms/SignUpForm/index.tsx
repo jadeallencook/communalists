@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { Alert, Button, Container, Form, Spinner } from 'react-bootstrap';
+import { Alert, Button, Container, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { useContext, useState } from 'react';
@@ -11,6 +11,7 @@ import roles from '@objects/roles';
 import organizations from '@objects/organizations';
 import AccountInterface from '@interfaces/account';
 import authSignUp from '@api/auth-sign-up';
+import Loading from '@components/Loading';
 
 interface SignUpFormInterface extends AccountInterface {
     password: string;
@@ -79,9 +80,7 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
         },
     });
     return isSubmitting ? (
-        <Container className={className}>
-            <Spinner animation="border" />
-        </Container>
+        <Loading />
     ) : !success ? (
         <Form onSubmit={handleSubmit} className={className}>
             <h1>{snippet('header', 'sign-up-form')}</h1>

@@ -1,4 +1,4 @@
-import { Container, Spinner } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import DashboardNavigation from '@components/DashboardNavigation';
 import AidRequestsPage from './Dashboard/AidRequestsPage';
 import AccountSettingsPage from './Dashboard/AccountSettingsPage';
@@ -10,8 +10,14 @@ import NotApprovedPage from './Dashboard/NotApprovedPage';
 import { useQuery } from 'react-query';
 import getMyAccount from '@api/get-my-account';
 import DonationsPage from './Dashboard/DonationsPage';
+import OverviewPage from './Dashboard/OverviewPage';
+import Loading from '@components/Loading';
 
 const routes: DashboardRoutesInterface = {
+    overview: {
+        text: 'Overview',
+        component: <OverviewPage />,
+    },
     requests: {
         text: 'Requests',
         component: <AidRequestsPage />,
@@ -31,16 +37,10 @@ const routes: DashboardRoutesInterface = {
 };
 
 const DashboardPage = () => {
-    let { route = 'requests' } = useParams();
+    let { route = 'overview' } = useParams();
     const { isLoading, data: account } = useQuery('@account', getMyAccount);
 
-    if (isLoading) {
-        return (
-            <Container style={{ textAlign: 'center', padding: '50px 0' }}>
-                <Spinner animation="border" />
-            </Container>
-        );
-    }
+    if (isLoading) return <Loading />;
 
     return (
         <Container>

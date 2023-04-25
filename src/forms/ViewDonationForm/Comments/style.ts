@@ -2,10 +2,6 @@ const style = () => ({
     marginBottom: '15px',
     width: '100%',
     boxShadow: 'none',
-    '.spinner-border': {
-        display: 'block',
-        margin: '15px auto',
-    },
     'div.toast': {
         padding: '0px',
         // margin: '0 12px 0 12px'

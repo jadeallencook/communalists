@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { Button, Container, Form, Spinner } from 'react-bootstrap';
+import { Button, Container, Form } from 'react-bootstrap';
 import RequestAidInterface from '@interfaces/request-aid';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
@@ -12,6 +12,7 @@ import { Timestamp } from 'firebase/firestore';
 import Tooltip from '@components/Tooltip';
 import SnippetContext from '../../contexts/SnippetContext';
 import formatPhoneNumer from '@utils/format-phone-number';
+import Loading from '@components/Loading';
 
 const RequestAidForm: StyledComponent = styled(({ className }) => {
     const [success, setSuccess] = useState(false);
@@ -56,9 +57,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
     };
 
     return isSubmitting && !success ? (
-        <Container className={className}>
-            <Spinner animation="border" />
-        </Container>
+        <Loading />
     ) : !isSubmitting && success ? (
         <Container className={className}>
             <h1>Success!</h1>

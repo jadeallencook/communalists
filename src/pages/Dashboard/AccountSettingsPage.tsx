@@ -1,7 +1,7 @@
 import getMyAccount from '@api/get-my-account';
+import Loading from '@components/Loading';
 import EditAccountForm from '@forms/EditAccountForm';
 import accountInitialValues from '@objects/account-initial-values';
-import { Container, Spinner } from 'react-bootstrap';
 import { useQuery } from 'react-query';
 
 const AccountSettingsPage = () => {
@@ -13,12 +13,7 @@ const AccountSettingsPage = () => {
                     initialValues={account || accountInitialValues}
                 />
             ) : (
-                <Container
-                    id="loader"
-                    style={{ textAlign: 'center', margin: '25px 0' }}
-                >
-                    <Spinner animation="border" />
-                </Container>
+                <Loading />
             )}
         </>
     );

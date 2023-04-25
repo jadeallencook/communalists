@@ -1,4 +1,4 @@
-import { Badge, Spinner, Table } from 'react-bootstrap';
+import { Badge, Table } from 'react-bootstrap';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
 import stages from '@objects/stages';
@@ -8,6 +8,7 @@ import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
 import organizeRequestsByDate from '@utils/organize-requests-by-date';
 import DonationInterface from '@interfaces/donation';
 import drivers from '@objects/drivers';
+import Loading from '@components/Loading';
 
 const DonationsTable: StyledComponent = styled(
     ({
@@ -23,13 +24,7 @@ const DonationsTable: StyledComponent = styled(
     }) => {
         const organized = organizeRequestsByDate(donations);
 
-        if (!loaded) {
-            return (
-                <div className={className}>
-                    <Spinner animation="border" />
-                </div>
-            );
-        }
+        if (!loaded) return <Loading />;
 
         return (
             <div className={className}>

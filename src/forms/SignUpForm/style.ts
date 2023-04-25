@@ -8,10 +8,6 @@ const style = () => ({
     textArea: {
         minHeight: '150px',
     },
-    'div.spinner-border': {
-        margin: '50px auto',
-        display: 'block',
-    },
     'div.form-check > input, label': {
         cursor: 'pointer',
     },

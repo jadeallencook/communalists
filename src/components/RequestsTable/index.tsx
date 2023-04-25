@@ -1,4 +1,4 @@
-import { Badge, Spinner, Table } from 'react-bootstrap';
+import { Badge, Table } from 'react-bootstrap';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
 import stages from '@objects/stages';
@@ -7,6 +7,7 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
 import organizeRequestsByDate from '@utils/organize-requests-by-date';
+import Loading from '@components/Loading';
 
 const RequestsTable: StyledComponent = styled(
     ({
@@ -22,13 +23,7 @@ const RequestsTable: StyledComponent = styled(
     }) => {
         const organized = organizeRequestsByDate(requests);
 
-        if (!loaded) {
-            return (
-                <div className={className}>
-                    <Spinner animation="border" />
-                </div>
-            );
-        }
+        if (!loaded) return <Loading />;
 
         return (
             <div className={className}>

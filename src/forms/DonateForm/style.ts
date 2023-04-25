@@ -21,10 +21,6 @@ const style = ({ name }) => ({
     textarea: {
         height: '175px',
     },
-    'div.spinner-border': {
-        display: 'block',
-        margin: '150px auto',
-    },
 });
 
 export default style;

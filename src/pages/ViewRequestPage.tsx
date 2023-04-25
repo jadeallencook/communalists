@@ -1,9 +1,10 @@
 import getIndividualRequest from '@api/get-individual-request';
+import Loading from '@components/Loading';
 import ViewRequestForm from '@forms/ViewRequestForm';
 import RequestAidInterface from '@interfaces/request-aid';
 import timestampToDateString from '@utils/timestamp-to-date-string';
 import { useEffect, useState } from 'react';
-import { Modal, Spinner } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 const ViewRequestPage = () => {
@@ -23,15 +24,7 @@ const ViewRequestPage = () => {
     return (
         <>
             {isLoading ? (
-                <div
-                    style={{
-                        width: '100vw',
-                        margin: '50px auto',
-                        textAlign: 'center',
-                    }}
-                >
-                    <Spinner animation="border" />
-                </div>
+                <Loading />
             ) : (
                 <>
                     {request ? (
