@@ -10,6 +10,7 @@ import { useQueryClient } from 'react-query';
 import styled, { StyledComponent } from 'styled-components';
 import SnippetContext from '../../contexts/SnippetContext';
 import style from './style';
+import accountInitialValues from '@objects/account-initial-values';
 
 const EditAccountForm: StyledComponent = styled(
     ({
@@ -29,7 +30,19 @@ const EditAccountForm: StyledComponent = styled(
         } = useFormik<AccountInterface>({
             initialValues,
             onSubmit: async (value) => {
-                await updateMyAccount(value);
+                const role = Object.keys(value.role).reduce(
+                    (object, key) => {
+                        const isBoolean = typeof value.role[key] === 'boolean';
+                        return {
+                            ...object,
+                            [key]: isBoolean
+                                ? value.role[key]
+                                : !!value.role[key].length,
+                        };
+                    },
+                    { ...accountInitialValues.role }
+                );
+                await updateMyAccount({ ...value, role });
                 queryClient.setQueryData('@account', value);
                 setUnsaved(false);
                 setSaved(true);
@@ -99,22 +112,27 @@ const EditAccountForm: StyledComponent = styled(
                     <Form.Label>
                         {snippet('role.label', 'sign-up-form')}
                     </Form.Label>
-                    {Object.entries(roles).map(([key, value]) => (
-                        <Form.Check
-                            type="checkbox"
-                            label={value}
-                            key={key}
-                            id={key}
-                            name={`role.${key}`}
-                            onChange={handleChange}
-                            defaultChecked={role[key]}
-                            disabled={isSubmitting}
-                        />
-                    ))}
+                    <br />
+                    {Object.entries(roles).map(([key, value]) => {
+                        return (
+                            <Form.Check
+                                type="checkbox"
+                                label={value}
+                                key={key}
+                                id={key}
+                                name={`role.${key}`}
+                                onChange={handleChange}
+                                defaultChecked={role?.[key]}
+                                disabled={isSubmitting}
+                            />
+                        );
+                    })}
                 </Form.Group>
                 {saved && (
                     <Form.Group className="mb-3">
-                        <Alert>Your changes have been saved.</Alert>
+                        <Alert variant="success">
+                            Your changes have been saved.
+                        </Alert>
                     </Form.Group>
                 )}
                 <Form.Group className="mb-3">

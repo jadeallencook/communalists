@@ -10,10 +10,19 @@ const accountInitialValues: AccountInterface = {
     joined: Timestamp.fromDate(new Date()),
     updated: Timestamp.fromDate(new Date()),
     role: {
-        coordinator: false,
         driver: false,
-        'social-media': false,
-        'tech-support': false,
+        coordinator: false,
+        tech: false,
+        social: false,
+        laborer: false,
+        photographer: false,
+        cook: false,
+        planner: false,
+        designer: false,
+        emotional: false,
+        security: false,
+        legal: false,
+        medical: false,
     },
 };
 

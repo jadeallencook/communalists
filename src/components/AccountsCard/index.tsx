@@ -39,18 +39,19 @@ const AccountsCard: StyledComponent = styled(
                             <Badge bg="dark">{locations[location]}</Badge>
                             <Badge bg="secondary">Joined {days}</Badge>
                             <br />
-                            {Object.entries(role).map(
-                                ([roleKey, hasRole]) =>
-                                    hasRole && (
-                                        <Badge
-                                            key={`${uniqueKey}-${roleKey}`}
-                                            bg="danger"
-                                            className="role-badge"
-                                        >
-                                            {roles[roleKey]}
-                                        </Badge>
-                                    )
-                            )}
+                            {role &&
+                                Object.entries(role).map(
+                                    ([roleKey, hasRole]) =>
+                                        hasRole && (
+                                            <Badge
+                                                key={`${uniqueKey}-${roleKey}`}
+                                                bg="danger"
+                                                className="role-badge"
+                                            >
+                                                {roles[roleKey]}
+                                            </Badge>
+                                        )
+                                )}
                         </ListGroup.Item>
                     );
                 })}

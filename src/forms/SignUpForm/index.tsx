@@ -12,6 +12,7 @@ import organizations from '@objects/organizations';
 import AccountInterface from '@interfaces/account';
 import authSignUp from '@api/auth-sign-up';
 import Loading from '@components/Loading';
+import accountInitialValues from '@objects/account-initial-values';
 
 interface SignUpFormInterface extends AccountInterface {
     password: string;
@@ -39,22 +40,10 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
         },
     } = useFormik<SignUpFormInterface>({
         initialValues: {
-            name: '',
+            ...accountInitialValues,
             email: '',
-            location: 'santa-clara-ca',
-            bio: '',
-            approved: '',
             password: '',
             confirmedPassword: '',
-            joined: Timestamp.fromDate(new Date()),
-            updated: Timestamp.fromDate(new Date()),
-            role: {
-                driver: false,
-                coordinator: false,
-                'social-media': false,
-                'tech-support': false,
-            },
-            organization: 'NONE',
         },
         onSubmit: async (values: SignUpFormInterface) => {
             const { password, confirmedPassword, email, ...rest } = values;

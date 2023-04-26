@@ -8,6 +8,10 @@ const style = () => ({
     textArea: {
         minHeight: '150px',
     },
+    'div.form-check': {
+        display: 'inline-block',
+        width: '50%',
+    },
     'div.form-check > input, label': {
         cursor: 'pointer',
     },

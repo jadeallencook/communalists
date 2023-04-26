@@ -24,7 +24,7 @@ const organizeAccounts = (accounts: {
         acc[account.organization].accounts.push(accountKey);
 
         Object.entries(roles).forEach(([roleKey]) => {
-            if (account.role[roleKey]) {
+            if (account?.role?.[roleKey]) {
                 if (!acc[account.organization][roleKey]) {
                     acc[account.organization][roleKey] = 1;
                 } else {
