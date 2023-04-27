@@ -1,5 +1,4 @@
 import { FiltersInterface } from '@interfaces/filters';
-import RequestAidInterface from '@interfaces/request-aid';
 import { getAuth } from 'firebase/auth';
 import {
     getFirestore,

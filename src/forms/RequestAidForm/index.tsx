@@ -47,6 +47,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             driver: '',
             hasDriver: false,
             coordinator: '',
+            organizations: ['communalists'],
         },
         onSubmit: (values) => addRequest(values).then(() => setSuccess(true)),
     });

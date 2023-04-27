@@ -18,6 +18,9 @@ interface RequestAidInterface {
     driver: string;
     hasDriver: boolean;
     coordinator: string;
+
+    // organization uids
+    organizations: string[];
 }
 
 export default RequestAidInterface;
