@@ -16,7 +16,7 @@ interface OrganizationInterface {
     admins: string[];
 
     // member uids
-    members?: string[];
+    members: string[];
 
     // member request uids
     requests?: string[];
