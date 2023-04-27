@@ -4,7 +4,6 @@ import style from './style';
 import styled, { StyledComponent } from 'styled-components';
 import { Dispatch, useState } from 'react';
 import roles from '@objects/roles';
-import organizations from '@objects/organizations';
 import AccountInterface from '@interfaces/account';
 import approveAccount from '@api/approve-account';
 import { useFormik } from 'formik';
@@ -21,7 +20,7 @@ const ViewApplicationForm: StyledComponent = styled(
         setUID: Dispatch<string>;
         uid: string;
     }) => {
-        const { name, location, bio, role, organization } = application;
+        const { name, location, bio, role } = application;
         const [success, setSuccess] = useState<boolean>(false);
 
         const {
@@ -43,16 +42,6 @@ const ViewApplicationForm: StyledComponent = styled(
                     <Form.Label>Location</Form.Label>
                     <Form.Select defaultValue={location} disabled>
                         {Object.entries(locations).map(([key, value]) => (
-                            <option key={key} value={key}>
-                                {value}
-                            </option>
-                        ))}
-                    </Form.Select>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Organization</Form.Label>
-                    <Form.Select defaultValue={organization} disabled>
-                        {Object.entries(organizations).map(([key, value]) => (
                             <option key={key} value={key}>
                                 {value}
                             </option>

@@ -9,30 +9,21 @@ import locations from '@objects/locations';
 const AccountsCard: StyledComponent = styled(
     ({
         className,
-        title,
-        members,
-        total,
-        key,
         accounts,
     }: {
         className: string;
-        title: string;
-        members: string[];
-        total: number;
-        key: string;
         accounts: { [key: string]: AccountInterface };
     }) => (
         <Card className={className} text="light" bg="danger">
             <Card.Header>
-                <b>{title}</b>
+                <b>Volunteers</b>
             </Card.Header>
             <ListGroup className="list-group-flush">
-                {members.map((accountKey, membersIndex) => {
-                    const account = accounts[accountKey];
+                {Object.entries(accounts).map(([key, account], index) => {
                     if (!account) return null;
                     const { name, joined, role, location } = account;
                     const days = getNumberOfDaysAfterDate(joined);
-                    const uniqueKey = `${key}-${membersIndex}`;
+                    const uniqueKey = `${key}-${index}`;
                     return (
                         <ListGroup.Item key={uniqueKey}>
                             {name} <br />
@@ -56,7 +47,7 @@ const AccountsCard: StyledComponent = styled(
                     );
                 })}
             </ListGroup>
-            <Card.Footer>{total || 'No'} Members</Card.Footer>
+            <Card.Footer>{Object.keys(accounts).length} Members</Card.Footer>
         </Card>
     )
 )(style);

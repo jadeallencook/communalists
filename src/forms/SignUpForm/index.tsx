@@ -6,9 +6,7 @@ import { useContext, useState } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
 import locations from '@objects/locations';
 import addAccount from '@api/add-account';
-import { Timestamp } from 'firebase/firestore';
 import roles from '@objects/roles';
-import organizations from '@objects/organizations';
 import AccountInterface from '@interfaces/account';
 import authSignUp from '@api/auth-sign-up';
 import Loading from '@components/Loading';
@@ -34,7 +32,6 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
             location,
             bio,
             role,
-            organization,
             password,
             confirmedPassword,
         },
@@ -133,23 +130,6 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
                     id="location"
                 >
                     {Object.entries(locations).map(([key, value]) => (
-                        <option key={key} value={key}>
-                            {value}
-                        </option>
-                    ))}
-                </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>
-                    {snippet('organization.label', 'sign-up-form')}
-                </Form.Label>
-                <Form.Select
-                    onChange={handleChange}
-                    value={organization}
-                    name="organization"
-                    id="organization"
-                >
-                    {Object.entries(organizations).map(([key, value]) => (
                         <option key={key} value={key}>
                             {value}
                         </option>

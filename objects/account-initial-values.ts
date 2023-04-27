@@ -4,7 +4,6 @@ import { Timestamp } from 'firebase/firestore';
 const accountInitialValues: AccountInterface = {
     name: '',
     location: 'santa-clara-ca',
-    organization: 'NONE',
     approved: '',
     bio: '',
     joined: Timestamp.fromDate(new Date()),

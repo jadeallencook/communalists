@@ -5,7 +5,6 @@ import style from './style';
 import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
 import organizeApplicationsByDate from '@utils/organize-applications-by-date';
 import roles from '@objects/roles';
-import organizations from '@objects/organizations';
 import AccountInterface from '@interfaces/account';
 import { Dispatch } from 'react';
 import Loading from '@components/Loading';
@@ -53,9 +52,6 @@ const ApplicationsTable: StyledComponent = styled(
                                     <tr>
                                         <th className="timestamp">Recieved</th>
                                         <th className="name">Name</th>
-                                        <th className="name tablet-remove">
-                                            Organization
-                                        </th>
                                         <th className="location tablet-remove">
                                             Location
                                         </th>
@@ -66,13 +62,7 @@ const ApplicationsTable: StyledComponent = styled(
                                     {organizedApplications.map(
                                         ([
                                             id,
-                                            {
-                                                name,
-                                                location,
-                                                joined,
-                                                organization,
-                                                role,
-                                            },
+                                            { name, location, joined, role },
                                         ]) => (
                                             <tr
                                                 key={id}
@@ -85,13 +75,6 @@ const ApplicationsTable: StyledComponent = styled(
                                                     )}
                                                 </td>
                                                 <td className="name">{name}</td>
-                                                <td className="name tablet-remove">
-                                                    {
-                                                        organizations[
-                                                            organization
-                                                        ]
-                                                    }
-                                                </td>
                                                 <td className="location tablet-remove">
                                                     {locations[location]}
                                                 </td>

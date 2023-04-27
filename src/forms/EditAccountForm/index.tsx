@@ -1,7 +1,6 @@
 import updateMyAccount from '@api/update-my-account';
 import AccountInterface from '@interfaces/account';
 import locations from '@objects/locations';
-import organizations from '@objects/organizations';
 import roles from '@objects/roles';
 import { useFormik } from 'formik';
 import { useContext, useEffect, useState } from 'react';
@@ -26,7 +25,7 @@ const EditAccountForm: StyledComponent = styled(
             handleChange,
             handleSubmit,
             isSubmitting,
-            values: { name, location, role, organization },
+            values: { name, location, role },
         } = useFormik<AccountInterface>({
             initialValues,
             onSubmit: async (value) => {
@@ -86,22 +85,6 @@ const EditAccountForm: StyledComponent = styled(
                         disabled={isSubmitting}
                     >
                         {Object.entries(locations).map(([key, value]) => (
-                            <option key={key} value={key}>
-                                {value}
-                            </option>
-                        ))}
-                    </Form.Select>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Organization</Form.Label>
-                    <Form.Select
-                        onChange={handleChange}
-                        value={organization}
-                        name="organization"
-                        id="organization"
-                        disabled={isSubmitting}
-                    >
-                        {Object.entries(organizations).map(([key, value]) => (
                             <option key={key} value={key}>
                                 {value}
                             </option>
