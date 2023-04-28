@@ -12,16 +12,11 @@ import getMyAccount from '@api/get-my-account';
 import DonationsPage from './Dashboard/DonationsPage';
 import OverviewPage from './Dashboard/OverviewPage';
 import Loading from '@components/Loading';
-import ChatPage from './Dashboard/ChatPage';
 
 const routes: DashboardRoutesInterface = {
     overview: {
         text: 'Overview',
         component: <OverviewPage />,
-    },
-    chat: {
-        text: 'Chat',
-        component: <ChatPage />,
     },
     requests: {
         text: 'Requests',

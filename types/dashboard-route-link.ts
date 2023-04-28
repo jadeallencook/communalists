@@ -3,5 +3,4 @@ export type DashboardRouteLinkType =
     | 'requests'
     | 'applications'
     | 'settings'
-    | 'chat'
     | 'donations';
