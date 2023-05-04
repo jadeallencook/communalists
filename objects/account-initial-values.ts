@@ -7,7 +7,7 @@ const accountInitialValues: AccountInterface = {
     approved: '',
     bio: '',
     joined: Timestamp.fromDate(new Date()),
-    updated: Timestamp.fromDate(new Date()),
+    lastUpdated: Timestamp.fromDate(new Date()),
     role: {
         driver: false,
         coordinator: false,

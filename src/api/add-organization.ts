@@ -19,7 +19,7 @@ const addOrganization = async (name: string): Promise<any> => {
         admins: [uid],
         members: [uid],
         joined: Timestamp.fromDate(new Date()),
-        updated: Timestamp.fromDate(new Date()),
+        lastUpdated: Timestamp.fromDate(new Date()),
     };
     const response = await addDoc(collection(db, 'organizations'), organization)
         .then((response) => response)

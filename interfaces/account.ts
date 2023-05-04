@@ -9,7 +9,7 @@ interface AccountInterface {
     approved: string;
     bio: string;
     joined: Timestamp;
-    updated: Timestamp;
+    lastUpdated: Timestamp;
 }
 
 export default AccountInterface;
