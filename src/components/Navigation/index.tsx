@@ -2,7 +2,6 @@ import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { Link, useLocation } from 'react-router-dom';
-import authSignOut from '@api/auth-sign-out';
 import LogoPNG from '@assets/logo.png';
 import { useContext } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
@@ -14,6 +13,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
     const { pathname } = useLocation();
     const { uid } = useContext(DashboardContext);
     const { setLanguage, language, snippet } = useContext(SnippetContext);
+    const { signOut } = useContext(DashboardContext);
     return (
         <Navbar
             bg="dark"
@@ -68,11 +68,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                             >
                                 {snippet('dashboard', 'navigation')}
                             </Link>
-                            <Link
-                                onClick={() => authSignOut()}
-                                to="/"
-                                className="nav-link"
-                            >
+                            <Link onClick={signOut} to="/" className="nav-link">
                                 {snippet('log-out', 'navigation')}
                             </Link>
                         </>

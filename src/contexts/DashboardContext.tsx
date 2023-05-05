@@ -9,6 +9,17 @@ import getMyOrganizations from '@api/get-my-organizations';
 import getMyAccount from '@api/get-my-account';
 import { FiltersInterface } from '@interfaces/filters';
 import getRequests from '@api/get-requests';
+import filterRequests from '@utils/filter-requests';
+import authSignIn from '@api/auth-sign-in';
+import authSignOut from '@api/auth-sign-out';
+import { useNavigate } from 'react-router-dom';
+import getIndividualRequest from '@api/get-individual-request';
+import { StageKeyType } from '@custom-types/stages';
+import updateRequestStage from '@api/update-request-stage';
+import getOrganizations from '@api/get-organizations';
+import getAccount from '@api/get-account';
+import accountInitialValues from '@objects/account-initial-values';
+import updateUserAccount from '@api/update-user-account';
 
 interface DashboardContextInterface {
     isLoading: boolean;
@@ -21,6 +32,7 @@ interface DashboardContextInterface {
     signOut: () => void;
     myOrganizations: string[];
     fetchAccount: (uid: string) => void;
+    updateAccount: (uid: string, account: AccountInterface) => void;
     accounts: {
         [key: string]: AccountInterface;
     };
@@ -29,6 +41,7 @@ interface DashboardContextInterface {
         [key: string]: OrganizationInterface;
     };
     fetchRequest: (uid: string) => void;
+    updateStage: (uid: string, request: StageKeyType) => void;
     fetchRequests: () => void;
     requests: {
         [key: string]: RequestAidInterface;
@@ -56,38 +69,10 @@ const log: (message: string) => void = (message) =>
     );
 
 export const DashboardProvider = ({ children }) => {
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [uid, setUid] = useState<string>('');
     const [myOrganizations, setMyOrganizations] = useState<string[]>([]);
-
-    /*
-    these caches store filters used in previous fetchs
-
-    string: *|*|*|submitted|*
-    description: wild cards for all filters except stage
-
-    string: san-jose-ca|english|assigned|submitted|uid-123
-    description: all filters have been set
-
-    this allows us to check if requests have been fetched
-    we don't need to fetch second example if the first one exists
-
-*/
-    const [requestsCache, setRequestsCache] = useState<Set<string>>(new Set());
-    const [donationsCache, setDonationsCache] = useState<Set<string>>(
-        new Set()
-    );
-    const getCacheStringFromFilters = (filters: FiltersInterface) => {
-        const { location, language, driver, stage, coordinator } = filters;
-        return `${location || '*'}|${language || '*'}|${
-            driver || '*'
-        }|${stage}|${coordinator || '*'}`;
-    };
-    const isRequestCached = (filters: FiltersInterface, cache: Set<string>) => {
-        const [location, language, driver, stage, coordinator] =
-            getCacheStringFromFilters(filters).split('|');
-        return [location, language, driver, stage, coordinator];
-    };
 
     const [requestFilters, setRequestFilters] =
         useState<FiltersInterface>(defaultFilters);
@@ -122,8 +107,11 @@ export const DashboardProvider = ({ children }) => {
         myUID
     ) => {
         log('fetching user organizations');
-        const myOrganizationsresponse = await getMyOrganizations();
-        setMyOrganizations(myOrganizationsresponse);
+        const myOrganizationsResponse = await getMyOrganizations();
+        setMyOrganizations(myOrganizationsResponse);
+        log('fetching all organizations');
+        const organizationsResponse = await getOrganizations();
+        setOrganizations(organizationsResponse);
         log('fetching user account');
         const myAccountResponse = await getMyAccount();
         setAccounts((previousState) => ({
@@ -150,27 +138,54 @@ export const DashboardProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        fetchRequests();
+        if (
+            !Object.entries(filterRequests(requests, requestFilters)).length &&
+            myOrganizations.length
+        ) {
+            fetchRequests();
+        }
     }, [requestFilters]);
 
     const signIn = async (email: string, password: string) => {
         log('signing user in');
-    };
-    const signOut = async () => {
-        log('signing user out');
+        const success = await authSignIn(email, password);
+        if (success) {
+            navigate('/dashboard');
+        }
     };
 
-    const fetchAccount = async (uid: string) => {
-        log(`fetching account: ${uid}`);
+    const signOut = async () => {
+        log('signing user out');
+        const success = await authSignOut();
+        if (success) {
+            navigate('/');
+        }
+    };
+
+    const fetchAccount = async (id: string) => {
+        log(`fetching account: ${id}`);
         setIsLoading(true);
+        const account: AccountInterface = await getAccount(id);
         setAccounts((prevState) => ({
             ...prevState,
+            [id]: account || accountInitialValues,
         }));
         setIsLoading(false);
     };
 
-    const fetchOrganization = async (uid: string) => {
-        log(`fetching organization: ${uid}`);
+    const updateAccount = async (id: string, account: AccountInterface) => {
+        log(`updating account: ${id}`);
+        setIsLoading(true);
+        await updateUserAccount(id, account);
+        setAccounts((previousState) => ({
+            ...previousState,
+            [id]: account,
+        }));
+        setIsLoading(false);
+    };
+
+    const fetchOrganization = async (id: string) => {
+        log(`fetching organization: ${id}`);
         setIsLoading(true);
         setOrganizations((prevState) => ({
             ...prevState,
@@ -178,12 +193,38 @@ export const DashboardProvider = ({ children }) => {
         setIsLoading(false);
     };
 
-    const fetchRequest = async (uid: string) => {
-        log(`fetching request: ${uid}`);
+    const fetchRequest = async (id: string) => {
+        log(`fetching request: ${id}`);
         setIsLoading(true);
-        setRequests((prevState) => ({
-            ...prevState,
-        }));
+        const request = await getIndividualRequest(id);
+        if (request) {
+            setRequests((prevState) => ({
+                ...prevState,
+                [id]: request,
+            }));
+        }
+        setIsLoading(false);
+    };
+
+    const updateStage = async (
+        id: string,
+        stage: StageKeyType,
+        isDonation?: boolean
+    ) => {
+        log(`updating ${isDonation ? 'donation' : 'request'} stage: ${id}`);
+        setIsLoading(true);
+        if (isDonation) {
+            // TODO: add logic for donation stage
+        } else {
+            await updateRequestStage(id, stage);
+            setRequests((previousState) => ({
+                ...previousState,
+                [id]: {
+                    ...previousState[id],
+                    stage,
+                },
+            }));
+        }
         setIsLoading(false);
     };
 
@@ -198,8 +239,8 @@ export const DashboardProvider = ({ children }) => {
         setIsLoading(false);
     };
 
-    const fetchDonation = async (uid: string) => {
-        log(`fetching donation: ${uid}`);
+    const fetchDonation = async (id: string) => {
+        log(`fetching donation: ${id}`);
         setIsLoading(true);
         setDonations((prevState) => ({
             ...prevState,
@@ -213,10 +254,12 @@ export const DashboardProvider = ({ children }) => {
                 isLoading,
                 uid,
                 fetchAccount,
+                updateAccount,
                 accounts,
                 fetchOrganization,
                 organizations,
                 fetchRequest,
+                updateStage,
                 fetchRequests,
                 requests,
                 fetchDonation,

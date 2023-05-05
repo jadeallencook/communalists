@@ -4,9 +4,7 @@ import app from './init-app';
 const auth = getAuth(app);
 const authSignOut = () =>
     signOut(auth)
-        .then(() => {
-            console.log('signed out');
-        })
+        .then(() => true)
         .catch((error) => {
             console.log({ error });
         });

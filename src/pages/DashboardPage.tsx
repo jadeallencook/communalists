@@ -10,6 +10,7 @@ import OverviewPage from './Dashboard/OverviewPage';
 import Loading from '@components/Loading';
 import { useContext, useEffect } from 'react';
 import DashboardContext from '../contexts/DashboardContext';
+import filterRequests from '@utils/filter-requests';
 
 const routes: DashboardRoutesInterface = {
     overview: {
@@ -22,11 +23,11 @@ const routes: DashboardRoutesInterface = {
         component: <AidRequestsPage />,
         isRestricted: true,
     },
-    donations: {
-        text: 'Donations',
-        component: <DonationsPage />,
-        isRestricted: true,
-    },
+    // donations: {
+    //     text: 'Donations',
+    //     component: <DonationsPage />,
+    //     isRestricted: true,
+    // },
     settings: {
         text: 'Settings',
         component: <AccountSettingsPage />,
@@ -36,19 +37,25 @@ const routes: DashboardRoutesInterface = {
 
 const DashboardPage = () => {
     let { route = 'overview' } = useParams();
-    const { isLoading, myOrganizations, fetchRequests } =
-        useContext(DashboardContext);
+    const {
+        isLoading,
+        myOrganizations,
+        fetchRequests,
+        requests,
+        requestFilters,
+    } = useContext(DashboardContext);
     const isOrganizationMember: boolean = !!myOrganizations?.length;
 
     useEffect(() => {
-        if (route === 'requests') {
+        if (
+            route === 'requests' &&
+            !Object.entries(filterRequests(requests, requestFilters)).length
+        ) {
             fetchRequests();
         }
     }, [route]);
 
-    return isLoading ? (
-        <Loading />
-    ) : (
+    return (
         <Container>
             <DashboardNavigation
                 routes={routes}

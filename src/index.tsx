@@ -22,9 +22,9 @@ const queryClient = new QueryClient();
 
 root.render(
     <QueryClientProvider client={queryClient}>
-        <DashboardProvider>
-            <SnippetProvider>
-                <Router>
+        <Router>
+            <DashboardProvider>
+                <SnippetProvider>
                     <Navigation />
                     <Routes>
                         {routes.map(({ path, element }) => (
@@ -36,8 +36,8 @@ root.render(
                         ))}
                     </Routes>
                     <Footer />
-                </Router>
-            </SnippetProvider>
-        </DashboardProvider>
+                </SnippetProvider>
+            </DashboardProvider>
+        </Router>
     </QueryClientProvider>
 );

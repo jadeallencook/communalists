@@ -1,19 +1,40 @@
-import getOrganizations from '@api/get-organizations';
 import OrganizationsCard from '@components/OrganizationsCard';
 import Loading from '@components/Loading';
-import { useQuery } from 'react-query';
+import { useContext, useEffect, useState } from 'react';
+import DashboardContext from '../../contexts/DashboardContext';
+import OrganizationModal from '@components/OrganizationModal';
 
 const OverviewPage = () => {
-    const { isLoading, data: organizations } = useQuery(
-        '@organizations',
-        getOrganizations
-    );
-    return isLoading ? (
-        <Loading />
-    ) : (
-        !!Object.keys(organizations).length && (
-            <OrganizationsCard organizations={organizations} />
-        )
+    const { organizations, isLoading, fetchOrganization } =
+        useContext(DashboardContext);
+    const [selectedOrganizationId, setSelectedOrganizationId] =
+        useState<string>('');
+    const selectedOrganization = organizations[selectedOrganizationId];
+
+    useEffect(() => {
+        if (selectedOrganizationId) {
+            fetchOrganization(selectedOrganizationId);
+        }
+    }, [selectedOrganizationId]);
+
+    return (
+        <>
+            {isLoading && !selectedOrganizationId ? (
+                <Loading />
+            ) : (
+                !!Object.keys(organizations).length && (
+                    <OrganizationsCard
+                        organizations={organizations}
+                        setSelected={setSelectedOrganizationId}
+                    />
+                )
+            )}
+            <OrganizationModal
+                selectedOrganizationId={selectedOrganizationId}
+                setSelectedOrganizationId={setSelectedOrganizationId}
+                selectedOrganization={selectedOrganization}
+            />
+        </>
     );
 };
 

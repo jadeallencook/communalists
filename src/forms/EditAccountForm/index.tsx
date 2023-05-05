@@ -1,34 +1,27 @@
-import updateMyAccount from '@api/update-my-account';
 import AccountInterface from '@interfaces/account';
 import locations from '@objects/locations';
 import roles from '@objects/roles';
 import { useFormik } from 'formik';
 import { useContext, useEffect, useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
-import { useQueryClient } from 'react-query';
 import styled, { StyledComponent } from 'styled-components';
 import SnippetContext from '../../contexts/SnippetContext';
 import style from './style';
 import accountInitialValues from '@objects/account-initial-values';
+import DashboardContext from '../../contexts/DashboardContext';
 
 const EditAccountForm: StyledComponent = styled(
-    ({
-        className,
-        initialValues,
-    }: {
-        className: string;
-        setIsSubmitting: any;
-        initialValues: AccountInterface;
-    }) => {
-        const queryClient = useQueryClient();
+    ({ className }: { className: string }) => {
+        const { updateAccount, uid, accounts } = useContext(DashboardContext);
+        const account = accounts[uid];
         const {
             handleChange,
             handleSubmit,
             isSubmitting,
             values: { name, location, role },
         } = useFormik<AccountInterface>({
-            initialValues,
-            onSubmit: async (value) => {
+            initialValues: { ...accountInitialValues, ...account },
+            onSubmit: async (value: AccountInterface) => {
                 const role = Object.keys(value.role).reduce(
                     (object, key) => {
                         const isBoolean = typeof value.role[key] === 'boolean';
@@ -41,8 +34,7 @@ const EditAccountForm: StyledComponent = styled(
                     },
                     { ...accountInitialValues.role }
                 );
-                await updateMyAccount({ ...value, role });
-                queryClient.setQueryData('@account', value);
+                await updateAccount(uid, { ...value, role });
                 setUnsaved(false);
                 setSaved(true);
             },

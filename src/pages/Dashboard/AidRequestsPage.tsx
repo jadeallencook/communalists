@@ -4,6 +4,7 @@ import FilterForm from '@forms/FilterForm';
 import { useContext, useState } from 'react';
 import DashboardContext from '../../contexts/DashboardContext';
 import Loading from '@components/Loading';
+import filterRequests from '@utils/filter-requests';
 
 const AidRequestsPage = () => {
     const { requests, isLoading, requestFilters, setRequestFilters, uid } =
@@ -15,33 +16,19 @@ const AidRequestsPage = () => {
         setShow((prev) => !prev);
     };
 
-    const filteredRequests = Object.entries(requests).reduce(
-        (object, [id, request]) => {
-            const { stage, location, language, driver, coordinator } =
-                requestFilters;
-            return stage !== request.stage ||
-                (location && location !== request.location) ||
-                (language && language !== request.language) ||
-                (driver && driver !== request.driver) ||
-                (coordinator && coordinator !== request.coordinator)
-                ? object
-                : {
-                      ...object,
-                      [id]: request,
-                  };
-        },
-        {}
-    );
+    const filteredRequests = filterRequests(requests, requestFilters);
 
-    return isLoading ? (
-        <Loading />
-    ) : (
+    return (
         <>
             <FilterForm
                 filters={requestFilters}
                 setFilters={setRequestFilters}
             />
-            <RequestsTable requests={filteredRequests} handler={handler} />
+            {isLoading ? (
+                <Loading />
+            ) : (
+                <RequestsTable requests={filteredRequests} handler={handler} />
+            )}
             {selected && (
                 <RequestModal
                     show={show}

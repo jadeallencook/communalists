@@ -30,7 +30,7 @@ const FilterForm: StyledComponent = styled(
         return (
             <Form className={className}>
                 <InputGroup>
-                    <Form.Select
+                    {/* <Form.Select
                         as="select"
                         name="locations"
                         value={location}
@@ -48,8 +48,8 @@ const FilterForm: StyledComponent = styled(
                                 {value}
                             </option>
                         ))}
-                    </Form.Select>
-                    <Form.Select
+                    </Form.Select> */}
+                    {/* <Form.Select
                         as="select"
                         name="languages"
                         value={language}
@@ -67,7 +67,7 @@ const FilterForm: StyledComponent = styled(
                                 {value}
                             </option>
                         ))}
-                    </Form.Select>
+                    </Form.Select> */}
                     <Form.Select
                         as="select"
                         name="driver"

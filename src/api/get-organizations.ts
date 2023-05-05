@@ -1,11 +1,11 @@
 import { getFirestore, getDocs, query, collection } from 'firebase/firestore';
 import app from './init-app';
-import AccountInterface from '@interfaces/account';
+import OrganizationInterface from '@interfaces/organization';
 
 const db = getFirestore(app);
 
 const getOrganizations = async (): Promise<{
-    [key: string]: AccountInterface;
+    [key: string]: OrganizationInterface;
 }> => {
     const ref = collection(db, 'organizations');
     const requests = {};

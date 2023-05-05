@@ -5,6 +5,9 @@ import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
 import CalendarSVG from '@assets/calendar.svg';
 import ViewRequestForm from '@forms/ViewRequestForm';
 import Tooltip from '@components/Tooltip';
+import { useContext, useEffect } from 'react';
+import DashboardContext from '../../contexts/DashboardContext';
+import Loading from '@components/Loading';
 
 const RequestModal = ({
     show,
@@ -18,6 +21,11 @@ const RequestModal = ({
     selected: string;
 }) => {
     const { timestamp } = request;
+    const { fetchRequest, isLoading } = useContext(DashboardContext);
+
+    useEffect(() => {
+        fetchRequest(selected);
+    }, []);
 
     return (
         <Modal show={show} onHide={handler} size="lg">
@@ -31,12 +39,16 @@ const RequestModal = ({
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <ViewRequestForm
-                    request={request}
-                    handler={handler}
-                    selected={selected}
-                    isModal={true}
-                />
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <ViewRequestForm
+                        request={request}
+                        handler={handler}
+                        selected={selected}
+                        isModal={true}
+                    />
+                )}
             </Modal.Body>
         </Modal>
     );
