@@ -1,58 +1,47 @@
 import RequestModal from '@components/RequestModal';
 import RequestsTable from '@components/RequestsTable';
 import FilterForm from '@forms/FilterForm';
-import getRequests from '@api/get-requests';
-import RequestAidInterface from '@interfaces/request-aid';
-import { useEffect, useState } from 'react';
-import { FiltersInterface } from '@interfaces/filters';
+import { useContext, useState } from 'react';
+import DashboardContext from '../../contexts/DashboardContext';
+import Loading from '@components/Loading';
 
 const AidRequestsPage = () => {
-    const [requests, setRequests] = useState<{
-        [key: string]: RequestAidInterface;
-    }>({});
-
-    const [loaded, setLoaded] = useState<boolean>(false);
-    const [refetch, setRefetch] = useState<boolean>(true);
+    const { requests, isLoading, requestFilters, setRequestFilters, uid } =
+        useContext(DashboardContext);
     const [show, setShow] = useState<boolean>(false);
     const [selected, setSelected] = useState<string>();
-    const [filters, setFilters] = useState<FiltersInterface>({
-        location: '',
-        language: '',
-        driver: '',
-        stage: 'submitted',
-        coordinator: false,
-    });
-    const handler = (id?: string, shouldRefetch?: boolean): void => {
+    const handler = (id?: string): void => {
         setSelected(id);
         setShow((prev) => !prev);
-        if (shouldRefetch) {
-            setRefetch(true);
-        }
     };
 
-    useEffect(() => {
-        setLoaded(false);
-        if (refetch) {
-            getRequests(filters).then((requests) => {
-                setRequests(requests);
-                setLoaded(true);
-            });
-        }
-        setRefetch(false);
-    }, [refetch]);
+    const filteredRequests = Object.entries(requests).reduce(
+        (object, [id, request]) => {
+            const { stage, location, language, driver, coordinator } =
+                requestFilters;
+            return stage !== request.stage ||
+                (location && location !== request.location) ||
+                (language && language !== request.language) ||
+                (driver && driver !== request.driver) ||
+                (coordinator && coordinator !== request.coordinator)
+                ? object
+                : {
+                      ...object,
+                      [id]: request,
+                  };
+        },
+        {}
+    );
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             <FilterForm
-                filters={filters}
-                setFilters={setFilters}
-                setRefetch={setRefetch}
+                filters={requestFilters}
+                setFilters={setRequestFilters}
             />
-            <RequestsTable
-                requests={requests}
-                handler={handler}
-                loaded={loaded}
-            />
+            <RequestsTable requests={filteredRequests} handler={handler} />
             {selected && (
                 <RequestModal
                     show={show}

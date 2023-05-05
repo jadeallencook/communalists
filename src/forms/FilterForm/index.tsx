@@ -1,5 +1,5 @@
 import styled, { StyledComponent } from 'styled-components';
-import { Container, Row, Col, Button, Form, InputGroup } from 'react-bootstrap';
+import { Button, Form, InputGroup } from 'react-bootstrap';
 import languages from '@objects/languages';
 import locations from '@objects/locations';
 import stages from '@objects/stages';
@@ -10,6 +10,8 @@ import { StageKeyType } from '@custom-types/stages';
 import style from './style';
 import { DriverKeyType } from '@custom-types/driver';
 import drivers from '@objects/drivers';
+import { useContext } from 'react';
+import DashboardContext from '../../contexts/DashboardContext';
 
 const FilterForm: StyledComponent = styled(
     ({
@@ -24,6 +26,7 @@ const FilterForm: StyledComponent = styled(
         setRefetch: (value: boolean) => void;
     }) => {
         const { location, language, driver, stage, coordinator } = filters;
+        const { fetchRequests, uid } = useContext(DashboardContext);
         return (
             <Form className={className}>
                 <InputGroup>
@@ -108,9 +111,8 @@ const FilterForm: StyledComponent = styled(
                         onClick={() => {
                             setFilters({
                                 ...filters,
-                                coordinator: !coordinator,
+                                coordinator: filters.coordinator ? '' : uid,
                             });
-                            setRefetch(true);
                         }}
                     >
                         <span className="tablet-remove">Only</span> Yours
@@ -121,13 +123,12 @@ const FilterForm: StyledComponent = styled(
                         onChange={() => {
                             setFilters({
                                 ...filters,
-                                coordinator: !coordinator,
+                                coordinator: filters.coordinator ? '' : uid,
                             });
-                            setRefetch(true);
                         }}
                     />
-                    <Button size="sm" onClick={() => setRefetch(true)}>
-                        Apply <span className="tablet-remove">Filters</span>
+                    <Button size="sm" onClick={() => fetchRequests()}>
+                        Refresh
                     </Button>
                 </InputGroup>
             </Form>

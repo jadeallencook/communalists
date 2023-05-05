@@ -2,57 +2,61 @@ import { Container } from 'react-bootstrap';
 import DashboardNavigation from '@components/DashboardNavigation';
 import AidRequestsPage from './Dashboard/AidRequestsPage';
 import AccountSettingsPage from './Dashboard/AccountSettingsPage';
-import ApplicationsPage from './Dashboard/ApplicationsPage';
 import DashboardFooter from '@components/DashboardFooter';
 import { DashboardRoutesInterface } from '@interfaces/dashboard-router';
 import { useParams } from 'react-router-dom';
-import NotApprovedPage from './Dashboard/NotApprovedPage';
-import { useQuery } from 'react-query';
-import getMyAccount from '@api/get-my-account';
 import DonationsPage from './Dashboard/DonationsPage';
 import OverviewPage from './Dashboard/OverviewPage';
 import Loading from '@components/Loading';
+import { useContext, useEffect } from 'react';
+import DashboardContext from '../contexts/DashboardContext';
 
 const routes: DashboardRoutesInterface = {
     overview: {
         text: 'Overview',
         component: <OverviewPage />,
+        isRestricted: false,
     },
     requests: {
         text: 'Requests',
         component: <AidRequestsPage />,
+        isRestricted: true,
     },
     donations: {
         text: 'Donations',
         component: <DonationsPage />,
-    },
-    applications: {
-        text: 'Applications',
-        component: <ApplicationsPage />,
+        isRestricted: true,
     },
     settings: {
         text: 'Settings',
         component: <AccountSettingsPage />,
+        isRestricted: false,
     },
 };
 
 const DashboardPage = () => {
     let { route = 'overview' } = useParams();
-    const { isLoading, data: account } = useQuery('@account', getMyAccount);
+    const { isLoading, myOrganizations, fetchRequests } =
+        useContext(DashboardContext);
+    const isOrganizationMember: boolean = !!myOrganizations?.length;
 
-    if (isLoading) return <Loading />;
+    useEffect(() => {
+        if (route === 'requests') {
+            fetchRequests();
+        }
+    }, [route]);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
-            {account?.approved ? (
-                <>
-                    <DashboardNavigation routes={routes} route={route} />
-                    {routes[route].component}
-                    <DashboardFooter />
-                </>
-            ) : (
-                <NotApprovedPage />
-            )}
+            <DashboardNavigation
+                routes={routes}
+                route={route}
+                isOrganizationMember={isOrganizationMember}
+            />
+            {routes[route].component}
+            <DashboardFooter />
         </Container>
     );
 };

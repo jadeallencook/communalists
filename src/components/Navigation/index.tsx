@@ -1,18 +1,18 @@
-import { Navbar, Nav, Container, Dropdown, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { Link, useLocation } from 'react-router-dom';
-import useUserState from '@api/auth-state-listener';
 import authSignOut from '@api/auth-sign-out';
 import LogoPNG from '@assets/logo.png';
 import { useContext } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
 import languages from '@objects/languages';
 import { LanguageKeyType } from '@custom-types/languages';
+import DashboardContext from '../../contexts/DashboardContext';
 
 const Navigation: StyledComponent = styled(({ className }) => {
     const { pathname } = useLocation();
-    const auth = useUserState();
+    const { uid } = useContext(DashboardContext);
     const { setLanguage, language, snippet } = useContext(SnippetContext);
     return (
         <Navbar
@@ -56,7 +56,7 @@ const Navigation: StyledComponent = styled(({ className }) => {
                     >
                         {snippet('donate', 'navigation')}
                     </Link>
-                    {auth ? (
+                    {uid ? (
                         <>
                             <Link
                                 className={
