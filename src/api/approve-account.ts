@@ -12,7 +12,7 @@ const approveAccount = async (user: string) => {
         currentUser: { uid },
     } = getAuth(app);
     const account: UpdatedAccountInterface = {
-        updated: Timestamp.fromDate(new Date()),
+        lastUpdated: Timestamp.fromDate(new Date()),
         approved: uid,
     };
     const docRef = doc(db, 'accounts', user);

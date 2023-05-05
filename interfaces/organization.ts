@@ -4,7 +4,7 @@ interface OrganizationInterface {
     // basic info
     name: string;
     joined: Timestamp;
-    updated: Timestamp;
+    lastUpdated: Timestamp;
 
     // optional info
     website?: string;
