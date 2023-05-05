@@ -62,10 +62,9 @@ const SignInForm: StyledComponent = styled(({ className }) => {
                 <Button type="submit">
                     {snippet('button', 'log-in-form')}
                 </Button>
+                <Link to="/forgot-password">Forget Password</Link>
                 <Link to="/sign-up">
-                    <Button variant="secondary">
-                        {snippet('sign-up.button', 'log-in-form')}
-                    </Button>
+                    {snippet('sign-up.button', 'log-in-form')}
                 </Link>
             </Form.Group>
         </Form>

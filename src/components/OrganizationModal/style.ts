@@ -1,7 +1,7 @@
 const style = () => ({
     '.badge': {
         width: '80px',
-        marginRight: '5px',
+        marginRight: '10px',
     },
     '.badge.bg-primary': {
         backgroundColor: 'var(--primary)!important',
