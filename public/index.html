@@ -25,13 +25,16 @@
         src="https://www.googletagmanager.com/gtag/js?id=G-41Q7T9V1ZW"
     ></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
+        const host = window.location.hostname;
+        if (host === 'www.communalists.org') {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
 
-        gtag('config', 'G-41Q7T9V1ZW');
+            gtag('config', 'G-41Q7T9V1ZW');
+        }
     </script>
     <body>
         <div id="root"></div>
