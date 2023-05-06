@@ -44,6 +44,17 @@ const style = () => ({
     'a.dropdown-item.active, a.dropdown-item:active': {
         backgroundColor: 'var(--primary)',
     },
+    '> .container': {
+        display: 'grid',
+        gridTemplateColumns: '1fr auto',
+        '.desktop-links': {
+            display: 'block',
+            '> *': {
+                display: 'inline-block',
+                marginLeft: '15px',
+            },
+        },
+    },
 });
 
 export default style;
