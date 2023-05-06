@@ -10,7 +10,7 @@ const style = () => ({
     'span.badge': {
         display: 'block',
         marginTop: '2px',
-        maxWidth: '115px',
+        maxWidth: '125px',
     },
     'span.started': {
         backgroundColor: '#7a2f2f!important',

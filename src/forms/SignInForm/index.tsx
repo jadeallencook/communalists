@@ -7,11 +7,12 @@ import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SnippetContext from '../../contexts/SnippetContext';
 import Loading from '@components/Loading';
+import DashboardContext from '../../contexts/DashboardContext';
 
 const SignInForm: StyledComponent = styled(({ className }) => {
     const [error, setError] = useState<string>('');
-    const navigate = useNavigate();
     const { snippet } = useContext(SnippetContext);
+    const { signIn } = useContext(DashboardContext);
     const {
         handleChange,
         handleSubmit,
@@ -23,12 +24,7 @@ const SignInForm: StyledComponent = styled(({ className }) => {
             password: '',
         },
         onSubmit: async ({ email, password }) => {
-            const response = await authSignIn(email, password);
-            if (response.name === 'FirebaseError') {
-                setError(response.code);
-            } else {
-                navigate('/dashboard');
-            }
+            signIn(email, password);
         },
     });
     return isSubmitting ? (
@@ -66,10 +62,9 @@ const SignInForm: StyledComponent = styled(({ className }) => {
                 <Button type="submit">
                     {snippet('button', 'log-in-form')}
                 </Button>
+                <Link to="/forgot-password">Forget Password</Link>
                 <Link to="/sign-up">
-                    <Button variant="secondary">
-                        {snippet('sign-up.button', 'log-in-form')}
-                    </Button>
+                    {snippet('sign-up.button', 'log-in-form')}
                 </Link>
             </Form.Group>
         </Form>

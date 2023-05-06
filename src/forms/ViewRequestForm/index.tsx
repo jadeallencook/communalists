@@ -3,7 +3,7 @@ import locations from '@objects/locations';
 import languages from '@objects/languages';
 import methods from '@objects/methods';
 import stages from '@objects/stages';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { StageKeyType } from '@custom-types/stages';
 import updateRequestStage from '@api/update-request-stage';
 import Comments from './Comments';
@@ -12,6 +12,7 @@ import styled, { StyledComponent } from 'styled-components';
 import RequestAidInterface from '@interfaces/request-aid';
 import CopyLinkButton from './CopyLinkButton';
 import VolunteerForm from '@forms/VolunteerForm';
+import DashboardContext from '../../contexts/DashboardContext';
 
 const ViewRequestForm: StyledComponent = styled(
     ({
@@ -41,19 +42,15 @@ const ViewRequestForm: StyledComponent = styled(
         } = request;
 
         const [stage, setStage] = useState<StageKeyType>(request.stage);
-        const [submitting, setSubmitting] = useState<boolean>(false);
+        const { updateStage, isLoading } = useContext(DashboardContext);
 
         const handleSubmitModal = async () => {
-            setSubmitting(true);
-            await updateRequestStage(selected, stage);
-            setSubmitting(false);
+            await updateStage(selected, stage);
             handler(null, true);
         };
 
         const handleSubmit = async () => {
-            setSubmitting(true);
-            await updateRequestStage(selected, stage);
-            setSubmitting(false);
+            await updateStage(selected, stage);
         };
         const save = async () => {
             isModal ? handleSubmitModal() : handleSubmit();
@@ -193,7 +190,7 @@ const ViewRequestForm: StyledComponent = styled(
                             <Button
                                 variant="secondary"
                                 onClick={() => handler()}
-                                disabled={submitting}
+                                disabled={isLoading}
                             >
                                 Close
                             </Button>
@@ -202,7 +199,7 @@ const ViewRequestForm: StyledComponent = styled(
                     <Button
                         variant="primary"
                         onClick={save}
-                        disabled={submitting}
+                        disabled={isLoading}
                     >
                         Save Changes
                     </Button>

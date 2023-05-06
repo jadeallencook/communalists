@@ -13,7 +13,7 @@ const RequestsTable: StyledComponent = styled(
     ({
         requests,
         handler,
-        loaded,
+        loaded = true,
         className,
     }: {
         requests: { [key: string]: RequestAidInterface };

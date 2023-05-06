@@ -18,18 +18,13 @@ const getRequests = async (
     const { location, language, stage, driver, coordinator } = filters;
     const ref = collection(db, 'requests');
     const requests = {};
-    let uid: string = '';
-    if (coordinator) {
-        const { currentUser } = getAuth(app);
-        uid = currentUser?.uid;
-    }
 
     const wheres = [
         location && where('location', '==', location),
         language && where('language', '==', language),
         where('stage', '==', stage || 'submitted'),
         driver && where('hasDriver', '==', driver === 'assigned'),
-        coordinator && uid && where('coordinator', '==', uid),
+        coordinator && where('coordinator', '==', coordinator),
     ].filter((filter) => Boolean(filter) !== false);
 
     const q = query(ref, ...wheres);

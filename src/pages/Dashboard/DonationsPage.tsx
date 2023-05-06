@@ -20,7 +20,7 @@ const DonationsPage = () => {
         language: '',
         driver: '',
         stage: 'submitted',
-        coordinator: false,
+        coordinator: '',
     });
     const handler = (id?: string, shouldRefetch?: boolean): void => {
         setSelected(id);

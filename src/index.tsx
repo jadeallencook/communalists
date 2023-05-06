@@ -12,6 +12,7 @@ import Navigation from '@components/Navigation';
 import Footer from '@components/Footer';
 import { SnippetProvider } from './contexts/SnippetContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { DashboardProvider } from './contexts/DashboardContext';
 
 // components
 const elem = document.getElementById('root')!;
@@ -21,16 +22,22 @@ const queryClient = new QueryClient();
 
 root.render(
     <QueryClientProvider client={queryClient}>
-        <SnippetProvider>
-            <Router>
-                <Navigation />
-                <Routes>
-                    {routes.map(({ path, element }) => (
-                        <Route key={path} path={path} element={element}></Route>
-                    ))}
-                </Routes>
-                <Footer />
-            </Router>
-        </SnippetProvider>
+        <Router>
+            <DashboardProvider>
+                <SnippetProvider>
+                    <Navigation />
+                    <Routes>
+                        {routes.map(({ path, element }) => (
+                            <Route
+                                key={path}
+                                path={path}
+                                element={element}
+                            ></Route>
+                        ))}
+                    </Routes>
+                    <Footer />
+                </SnippetProvider>
+            </DashboardProvider>
+        </Router>
     </QueryClientProvider>
 );

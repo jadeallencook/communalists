@@ -4,6 +4,7 @@ import { ReactElement } from 'react';
 export interface DashboardRouteInterface {
     text: string;
     component: ReactElement;
+    isRestricted: boolean;
 }
 
 export type DashboardRoutesInterface = {
