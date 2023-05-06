@@ -9,13 +9,19 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { Link, useLocation } from 'react-router-dom';
 import LogoPNG from '@assets/logo.png';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
 import languages from '@objects/languages';
 import { LanguageKeyType } from '@custom-types/languages';
 import DashboardContext from '../../contexts/DashboardContext';
 
-const Links = ({ className }: { className?: string }) => {
+const Links = ({
+    className,
+    toggleMobileNavigation,
+}: {
+    className?: string;
+    toggleMobileNavigation?: () => void;
+}) => {
     const { uid } = useContext(DashboardContext);
     const { pathname } = useLocation();
     const { setLanguage, language, snippet } = useContext(SnippetContext);
@@ -29,6 +35,7 @@ const Links = ({ className }: { className?: string }) => {
                         : 'nav-link'
                 }
                 to={'/request-aid'}
+                onClick={toggleMobileNavigation}
             >
                 {snippet('submit-request', 'navigation')}
             </Link>
@@ -39,6 +46,7 @@ const Links = ({ className }: { className?: string }) => {
                         : 'nav-link'
                 }
                 to="/donate"
+                onClick={toggleMobileNavigation}
             >
                 {snippet('donate', 'navigation')}
             </Link>
@@ -49,6 +57,7 @@ const Links = ({ className }: { className?: string }) => {
                         : 'nav-link'
                 }
                 to="/events"
+                onClick={toggleMobileNavigation}
             >
                 {snippet('events', 'navigation')}
             </Link>
@@ -61,6 +70,7 @@ const Links = ({ className }: { className?: string }) => {
                                 : 'nav-link'
                         }
                         to="/dashboard"
+                        onClick={toggleMobileNavigation}
                     >
                         {snippet('dashboard', 'navigation')}
                     </Link>
@@ -76,6 +86,7 @@ const Links = ({ className }: { className?: string }) => {
                             : 'nav-link'
                     }
                     to="/sign-in"
+                    onClick={toggleMobileNavigation}
                 >
                     {snippet('log-in', 'navigation')}
                 </Link>
@@ -90,6 +101,7 @@ const Links = ({ className }: { className?: string }) => {
                         key={key}
                         active={key === language}
                         eventKey={key}
+                        onClick={toggleMobileNavigation}
                     >
                         {text}
                     </NavDropdown.Item>
@@ -101,6 +113,10 @@ const Links = ({ className }: { className?: string }) => {
 
 const Navigation: StyledComponent = styled(({ className }) => {
     const { snippet } = useContext(SnippetContext);
+    const [isMobileNavigationOpen, setIsMobileNavigationOpen] =
+        useState<boolean>(false);
+    const toggleMobileNavigation = () =>
+        setIsMobileNavigationOpen(!isMobileNavigationOpen);
     return (
         <Navbar
             bg="dark"
@@ -126,11 +142,14 @@ const Navigation: StyledComponent = styled(({ className }) => {
                 <Navbar.Toggle
                     className="tablet-show"
                     aria-controls={`offcanvasNavbar-expand`}
+                    onClick={toggleMobileNavigation}
                 />
                 <Navbar.Offcanvas
                     id={`offcanvasNavbar-expand`}
                     aria-labelledby={`offcanvasNavbarLabel-expand`}
                     placement="end"
+                    show={isMobileNavigationOpen}
+                    onHide={toggleMobileNavigation}
                 >
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>
@@ -138,7 +157,9 @@ const Navigation: StyledComponent = styled(({ className }) => {
                         </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
-                        <Links />
+                        <Links
+                            toggleMobileNavigation={toggleMobileNavigation}
+                        />
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
             </Container>

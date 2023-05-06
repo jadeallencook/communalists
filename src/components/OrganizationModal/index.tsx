@@ -1,16 +1,11 @@
-import {
-    Badge,
-    Button,
-    ListGroup,
-    ListGroupItem,
-    Modal,
-} from 'react-bootstrap';
+import { Badge, ListGroup, ListGroupItem, Modal } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { Dispatch, useContext } from 'react';
 import OrganizationInterface from '@interfaces/organization';
 import DashboardContext from '../../contexts/DashboardContext';
 import EyeSVG from '@assets/eye.svg';
+import uidToUniqueNumber from '@utils/uid-to-unique-number';
 
 const OrganizationModal: StyledComponent = styled(
     ({
@@ -42,7 +37,7 @@ const OrganizationModal: StyledComponent = styled(
                     <ListGroup className="list-group-flush">
                         {selectedOrganization?.members.map((uid) => {
                             const hasAccount = !!accounts[uid];
-                            const account = accounts[uid];
+                            const uniqueNumber = uidToUniqueNumber(uid);
                             return (
                                 <ListGroupItem key={uid}>
                                     {organizationAdminSet.has(uid) ? (
@@ -51,8 +46,9 @@ const OrganizationModal: StyledComponent = styled(
                                         <Badge bg="secondary">Standard</Badge>
                                     )}
                                     {!hasAccount
-                                        ? '••••••••••••••'
-                                        : accounts[uid]?.name || 'Anonymous'}
+                                        ? uniqueNumber
+                                        : accounts[uid]?.name ||
+                                          `Anonymous ${uniqueNumber}`}
                                     {!hasAccount && (
                                         <img
                                             src={EyeSVG}
