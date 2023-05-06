@@ -7,6 +7,7 @@ import ViewRequestPage from '@pages/ViewRequestPage';
 import SignUpPage from '@pages/SignUpPage';
 import DonatePage from '@pages/Donate';
 import ForgotPasswordPage from '@pages/ForgotPassword';
+import EventsPage from '@pages/EventsPage';
 
 interface Route {
     path: string;
@@ -49,6 +50,10 @@ const routes: Route[] = [
     {
         path: '/forgot-password',
         element: <ForgotPasswordPage />,
+    },
+    {
+        path: '/events',
+        element: <EventsPage />,
     },
 ];
 

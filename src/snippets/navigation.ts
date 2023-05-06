@@ -31,6 +31,12 @@ const navigation: SnippetInterface = {
         vietnamese: 'Quyên Tặng',
         chinese: '捐',
     },
+    ['events']: {
+        english: 'Events',
+        spanish: 'Eventos',
+        vietnamese: 'Sự Kiện',
+        chinese: '事件',
+    },
 };
 
 export default navigation;

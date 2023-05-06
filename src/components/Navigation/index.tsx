@@ -56,6 +56,16 @@ const Navigation: StyledComponent = styled(({ className }) => {
                     >
                         {snippet('donate', 'navigation')}
                     </Link>
+                    <Link
+                        className={
+                            pathname.indexOf('/events') === 0
+                                ? 'active nav-link'
+                                : 'nav-link'
+                        }
+                        to="/events"
+                    >
+                        {snippet('events', 'navigation')}
+                    </Link>
                     {uid ? (
                         <>
                             <Link
