@@ -25,14 +25,14 @@ const DayPagination: StyledComponent = styled(
         return (
             <Pagination className={className}>
                 <Pagination.Item onClick={() => setDay(previous)}>
-                    {isToday ? 'Yesterday' : yesterday}
+                    {yesterday}
                 </Pagination.Item>
                 <Pagination.Item disabled>
                     {isToday ? 'Today' : today}{' '}
                     <Badge bg="dark">{numberOfEvents}</Badge>
                 </Pagination.Item>
                 <Pagination.Item onClick={() => setDay(next)}>
-                    {isToday ? 'Tomorrow' : tomorrow}
+                    {tomorrow}
                 </Pagination.Item>
             </Pagination>
         );

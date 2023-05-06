@@ -101,7 +101,7 @@ const events: { [key: string]: EventInterface } = {
         start: {
             hour: 1,
             minute: 0,
-            period: 'am',
+            period: 'pm',
         },
         end: {
             hour: 5,

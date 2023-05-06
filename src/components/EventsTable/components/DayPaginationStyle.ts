@@ -4,7 +4,7 @@ const style = () => ({
     marginBottom: '15px',
     '> li': {
         display: 'inline-block',
-        width: '120px',
+        width: '80px',
         textTransform: 'capitalize',
         '> a': {
             backgroundColor: 'var(--primary)!important',
@@ -14,6 +14,9 @@ const style = () => ({
             outline: 0,
             boxShadow: 'none!important',
         },
+    },
+    '> li:nth-child(2)': {
+        width: '120px',
     },
 });
 
