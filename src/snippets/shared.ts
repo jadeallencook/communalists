@@ -7,6 +7,12 @@ const shared: SnippetInterface = {
         vietnamese: 'Communalists',
         chinese: '公社主义者',
     },
+    ['pronouns.label']: {
+        english: 'Pronouns',
+        spanish: 'Pronombres',
+        vietnamese: 'đại từ',
+        chinese: '代词',
+    },
     ['name.label']: {
         english: 'Full Name',
         spanish: 'Nombre Completo',

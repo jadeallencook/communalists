@@ -21,6 +21,15 @@ const style = ({ name }) => ({
     textarea: {
         height: '175px',
     },
+    '.pronouns-field-container': {
+        width: '100%',
+        margin: '0 0 16px 0',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    '.pronoun-field': {
+        width: '45%',
+    },
 });
 
 export default style;

@@ -1,11 +1,12 @@
 import { useFormik } from 'formik';
-import { Button, Container, Form } from 'react-bootstrap';
+import { Button, Container, Form, Row } from 'react-bootstrap';
 import RequestAidInterface from '@interfaces/request-aid';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
 import methods from '@objects/methods';
+import { subjectPronouns, objectPronouns } from '@objects/pronouns';
 import addRequest from '@api/add-request';
 import { useContext, useState } from 'react';
 import { Timestamp } from 'firebase/firestore';
@@ -23,6 +24,8 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
         isSubmitting,
         setFieldValue,
         values: {
+            subjectPronoun,
+            objectPronoun,
             name,
             email,
             location,
@@ -34,6 +37,8 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
         },
     } = useFormik<RequestAidInterface>({
         initialValues: {
+            subjectPronoun: 'any',
+            objectPronoun: 'all',
             name: '',
             email: '',
             phone: '',
@@ -100,6 +105,38 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
         >
             <h1>{snippet('header', 'request-aid-form')}</h1>
             <p>{snippet('description', 'request-aid-form')}</p>
+            <Form.Group className="mb-1">
+                <Form.Label>{snippet('pronouns.label')}</Form.Label>
+                <Row className="pronouns-field-container">
+                    <Form.Select
+                        onChange={handleChange}
+                        value={subjectPronoun}
+                        name="subjectPronoun"
+                        id="subjectPronoun"
+                        className="pronoun-field"
+                    >
+                        {Object.entries(subjectPronouns).map(([key, value]) => (
+                            <option key={key} value={key}>
+                                {value}
+                            </option>
+                        ))}
+                    </Form.Select>
+                    /
+                    <Form.Select
+                        onChange={handleChange}
+                        value={objectPronoun}
+                        name="objectPronoun"
+                        id="objectPronoun"
+                        className="pronoun-field"
+                    >
+                        {Object.entries(objectPronouns).map(([key, value]) => (
+                            <option key={key} value={key}>
+                                {value}
+                            </option>
+                        ))}
+                    </Form.Select>
+                </Row>
+            </Form.Group>
             <Form.Group className="mb-3">
                 <Form.Label>{snippet('name.label')}</Form.Label>
                 <Form.Control
