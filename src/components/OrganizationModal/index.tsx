@@ -6,7 +6,6 @@ import OrganizationInterface from '@interfaces/organization';
 import DashboardContext from '../../contexts/DashboardContext';
 import EyeSVG from '@assets/eye.svg';
 import uidToUniqueNumber from '@utils/uid-to-unique-number';
-import Loading from '@components/Loading';
 
 const OrganizationModal: StyledComponent = styled(
     ({
@@ -22,14 +21,14 @@ const OrganizationModal: StyledComponent = styled(
     }) => {
         const {
             accounts,
-            fetchAccount,
+            fetchAccounts,
             approveRequestToJoinOrganization,
             isLoading,
+            uid,
         } = useContext(DashboardContext);
         const organizationModeratorsSet = new Set([
             ...(selectedOrganization ? selectedOrganization.moderators : []),
         ]);
-        const { uid } = useContext(DashboardContext);
         const isOrganizationModerator = organizationModeratorsSet.has(uid);
         return (
             <Modal
@@ -88,7 +87,7 @@ const OrganizationModal: StyledComponent = styled(
                                                             src={EyeSVG}
                                                             className="reveal-name"
                                                             onClick={() =>
-                                                                fetchAccount(
+                                                                fetchAccounts(
                                                                     userUID
                                                                 )
                                                             }
@@ -125,7 +124,7 @@ const OrganizationModal: StyledComponent = styled(
                                             src={EyeSVG}
                                             className="reveal-name"
                                             onClick={() =>
-                                                fetchAccount(userUID)
+                                                fetchAccounts(userUID)
                                             }
                                         />
                                     )}

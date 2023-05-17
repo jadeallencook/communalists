@@ -17,7 +17,7 @@ import getIndividualRequest from '@api/get-individual-request';
 import { StageKeyType } from '@custom-types/stages';
 import updateRequestStage from '@api/update-request-stage';
 import getOrganizations from '@api/get-organizations';
-import getAccount from '@api/get-account';
+import getAccount, { getAccounts } from '@api/get-account';
 import accountInitialValues from '@objects/account-initial-values';
 import updateUserAccount from '@api/update-user-account';
 import updateOrganizationRequests from '@api/update-organization-requests';
@@ -32,7 +32,7 @@ interface DashboardContextInterface {
     signIn: (email: string, password: string) => void;
     signOut: () => void;
     myOrganizations: string[];
-    fetchAccount: (uid: string) => void;
+    fetchAccounts: (uids: string | string[]) => void;
     updateAccount: (uid: string, account: AccountInterface) => void;
     accounts: {
         [key: string]: AccountInterface;
@@ -177,14 +177,28 @@ export const DashboardProvider = ({ children }) => {
         }
     };
 
-    const fetchAccount = async (id: string) => {
-        log(`fetching account: ${id}`);
+    const fetchAccounts = async (accountUIDs: string | string[]) => {
+        const isUIDArray = Array.isArray(accountUIDs);
+        log(
+            isUIDArray
+                ? `fetching array of ${accountUIDs.length} accounts`
+                : `fetching account: ${accountUIDs}`
+        );
         setIsLoading(true);
-        const account: AccountInterface = await getAccount(id);
-        setAccounts((prevState) => ({
-            ...prevState,
-            [id]: account || accountInitialValues,
-        }));
+        if (Array.isArray(accountUIDs)) {
+            const accounts = await getAccounts(accountUIDs);
+            setAccounts((prevState) => ({
+                ...prevState,
+                ...accounts,
+            }));
+        } else {
+            const accountUID = accountUIDs;
+            const account: AccountInterface = await getAccount(accountUID);
+            setAccounts((prevState) => ({
+                ...prevState,
+                [accountUID]: account || accountInitialValues,
+            }));
+        }
         setIsLoading(false);
     };
 
@@ -325,7 +339,7 @@ export const DashboardProvider = ({ children }) => {
             value={{
                 isLoading,
                 uid,
-                fetchAccount,
+                fetchAccounts,
                 updateAccount,
                 accounts,
                 fetchOrganization,
