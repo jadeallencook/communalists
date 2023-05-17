@@ -58,7 +58,7 @@ const ViewRequestForm: StyledComponent = styled(
 
         return (
             <div className={className}>
-                <Accordion>
+                <Accordion alwaysOpen>
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>Information</Accordion.Header>
                         <Accordion.Body>
