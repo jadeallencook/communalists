@@ -44,6 +44,7 @@ const ViewRequestPage = () => {
 
                                 <Modal.Body>
                                     <ViewRequestForm
+                                        uid={uid}
                                         request={request}
                                         selected={uid}
                                     />
