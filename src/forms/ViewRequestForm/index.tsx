@@ -65,7 +65,7 @@ const ViewRequestForm: StyledComponent = styled(
                         <Accordion.Header>Information</Accordion.Header>
                         <Accordion.Body>
                             <Form.Group className="mb-3">
-                                <Form.Label>Request Uid</Form.Label>
+                                <Form.Label>Request UID</Form.Label>
                                 <Form.Control defaultValue={uid} disabled />
                             </Form.Group>
                             <Form.Group className="mb-3">
