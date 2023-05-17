@@ -12,8 +12,8 @@ interface OrganizationInterface {
     phone?: number;
     email?: number;
 
-    // admin uids
-    admins: string[];
+    // moderators uids
+    moderators: string[];
 
     // member uids
     members: string[];
