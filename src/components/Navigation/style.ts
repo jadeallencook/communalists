@@ -1,5 +1,6 @@
 const style = () => ({
     backgroundColor: 'var(--primary)!important',
+    overflow: 'hidden',
     '.navbar-brand': {
         fontWeight: 'bold',
     },
