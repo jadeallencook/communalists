@@ -118,52 +118,60 @@ const Navigation: StyledComponent = styled(({ className }) => {
     const toggleMobileNavigation = () =>
         setIsMobileNavigationOpen(!isMobileNavigationOpen);
     return (
-        <Navbar
-            bg="dark"
-            variant="dark"
-            sticky="top"
-            className={`${className} animate__animated animate__slideInDown`}
-            expand={false}
-        >
-            <Container>
-                <Navbar.Brand>
-                    <Link to="/">
-                        <img
-                            src={LogoPNG}
-                            style={{ animationDelay: '.5s' }}
-                            className="animate__animated animate__rotateIn"
-                        />
-                        <span className="tablet-remove">
-                            {snippet('communalists')}
-                        </span>
-                    </Link>
-                </Navbar.Brand>
-                <Links className="justify-content-end tablet-remove desktop-links" />
-                <Navbar.Toggle
-                    className="tablet-show"
-                    aria-controls={`offcanvasNavbar-expand`}
-                    onClick={toggleMobileNavigation}
-                />
-                <Navbar.Offcanvas
-                    id={`offcanvasNavbar-expand`}
-                    aria-labelledby={`offcanvasNavbarLabel-expand`}
-                    placement="end"
-                    show={isMobileNavigationOpen}
-                    onHide={toggleMobileNavigation}
-                >
-                    <Offcanvas.Header closeButton>
-                        <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>
-                            <b>{snippet('communalists')}</b>
-                        </Offcanvas.Title>
-                    </Offcanvas.Header>
-                    <Offcanvas.Body>
-                        <Links
-                            toggleMobileNavigation={toggleMobileNavigation}
-                        />
-                    </Offcanvas.Body>
-                </Navbar.Offcanvas>
-            </Container>
-        </Navbar>
+        <>
+            <Navbar
+                bg="dark"
+                variant="dark"
+                sticky="top"
+                className={`${className} animate__animated animate__slideInDown`}
+                expand={false}
+            >
+                <Container>
+                    <Navbar.Brand>
+                        <Link to="/">
+                            <img
+                                src={LogoPNG}
+                                style={{ animationDelay: '.5s' }}
+                                className="animate__animated animate__rotateIn"
+                            />
+                            <span className="tablet-remove">
+                                {snippet('communalists')}
+                            </span>
+                        </Link>
+                    </Navbar.Brand>
+                    <Links className="justify-content-end tablet-remove desktop-links" />
+                    <Navbar.Toggle
+                        className="tablet-show"
+                        aria-controls={`offcanvasNavbar-expand`}
+                        onClick={toggleMobileNavigation}
+                    />
+                </Container>
+            </Navbar>
+
+            {/* This needs to be separated from the `NavBar` above;
+                when it's a child, the page grows horizontally and
+                we get a scrollbar past the end of the page, to the right.
+             */}
+            <Navbar.Offcanvas
+                id={`offcanvasNavbar-expand`}
+                aria-labelledby={`offcanvasNavbarLabel-expand`}
+                placement="end"
+                show={isMobileNavigationOpen}
+                onHide={toggleMobileNavigation}
+            >
+                <Offcanvas.Header closeButton>
+                    <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>
+                        <b>{snippet('communalists')}</b>
+                    </Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                    <Links
+                        className={'flex-column'}
+                        toggleMobileNavigation={toggleMobileNavigation}
+                    />
+                </Offcanvas.Body>
+            </Navbar.Offcanvas>
+        </>
     );
 })(style);
 
