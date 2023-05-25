@@ -13,25 +13,9 @@ const SnippetContext = createContext<SnippetContextInterface>(null);
 export const SnippetProvider = ({ children }) => {
     const [language, setLanguage] = useState<LanguageKeyType>('english');
 
-    const snippet = (path: string, page?: ComponentType): string => {
-        if (!page) {
-            page = 'shared';
-        }
-        let snip = [page, path, language].reduce(
-            (value: any, key: string) =>
-                value[key] && value !== '' ? value[key] : '',
-            snippets
-        );
-
-        if (!snip && language !== 'english') {
-            snip = [page, path, 'english'].reduce(
-                (value: any, key: string) =>
-                    value[key] && value !== '' ? value[key] : '',
-                snippets
-            );
-        }
-
-        return typeof snip !== 'string' ? '' : snip;
+    const snippet = (path: string, page: ComponentType = 'shared'): string => {
+        const snip = snippets[page][path];
+        return snip?.[language] ?? snip?.['english'] ?? '';
     };
 
     return (
