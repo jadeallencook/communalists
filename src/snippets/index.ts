@@ -30,7 +30,7 @@ const snippets: {
     shared,
     'request-aid-form': requestAidForm,
     footer,
-    ['events-page']: eventsPage,
+    'events-page': eventsPage,
     'sign-up-form': signUpForm,
     navigation,
     'log-in-form': logInForm,
