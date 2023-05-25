@@ -8,7 +8,7 @@ import languages from '@objects/languages';
 import methods from '@objects/methods';
 import { subjectPronouns, objectPronouns } from '@objects/pronouns';
 import addRequest from '@api/add-request';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Timestamp } from 'firebase/firestore';
 import Tooltip from '@components/Tooltip';
 import SnippetContext from '../../contexts/SnippetContext';
@@ -56,10 +56,6 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
         },
         onSubmit: (values) => addRequest(values).then(() => setSuccess(true)),
     });
-
-    useEffect(() => {
-        console.log(subjectPronoun, objectPronoun);
-    }, [subjectPronoun, objectPronoun]);
 
     const phoneHandler = (event) => {
         const formatted = formatPhoneNumer(event);
