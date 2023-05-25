@@ -6,6 +6,7 @@ import signUpForm from './sign-up-form';
 import navigation from './navigation';
 import logInForm from './login-form';
 import donateForm from './donate';
+import eventsPage from './events-page';
 
 export type ComponentType =
     | 'shared'
@@ -14,6 +15,7 @@ export type ComponentType =
     | 'sign-up-form'
     | 'navigation'
     | 'log-in-form'
+    | 'events-page'
     | 'donate-form';
 
 export interface SnippetInterface {
@@ -28,6 +30,7 @@ const snippets: {
     shared,
     'request-aid-form': requestAidForm,
     footer,
+    'events-page': eventsPage,
     'sign-up-form': signUpForm,
     navigation,
     'log-in-form': logInForm,
