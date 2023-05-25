@@ -1,4 +1,4 @@
-import { Accordion, Button, Form, Modal } from 'react-bootstrap';
+import { Accordion, Button, Form, Modal, Row } from 'react-bootstrap';
 import locations from '@objects/locations';
 import languages from '@objects/languages';
 import methods from '@objects/methods';
@@ -29,6 +29,8 @@ const ViewRequestForm: StyledComponent = styled(
         isModal?: boolean;
     }) => {
         const {
+            subjectPronoun = 'they',
+            objectPronoun = 'them',
             name,
             language,
             location,
@@ -62,6 +64,22 @@ const ViewRequestForm: StyledComponent = styled(
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>Information</Accordion.Header>
                         <Accordion.Body>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Pronouns</Form.Label>
+                                <Row className="pronouns-field-container">
+                                    <Form.Control
+                                        className="pronouns-field-control"
+                                        defaultValue={subjectPronoun}
+                                        disabled
+                                    />
+                                    /
+                                    <Form.Control
+                                        className="pronouns-field-control"
+                                        defaultValue={objectPronoun}
+                                        disabled
+                                    />
+                                </Row>
+                            </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>Full Name</Form.Label>
                                 <Form.Control defaultValue={name} disabled />

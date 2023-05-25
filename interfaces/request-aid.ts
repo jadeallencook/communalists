@@ -3,14 +3,11 @@ import { LocationKeyType } from '@custom-types/locations';
 import { LanguageKeyType } from '@custom-types/languages';
 import { StageKeyType } from '@custom-types/stages';
 import { Timestamp } from 'firebase/firestore';
-import {
-    ObjectPronounKeyType,
-    SubjectPronounKeyType,
-} from '@custom-types/pronouns';
+import { ObjectPronounType, SubjectPronounType } from '@custom-types/pronouns';
 
 interface RequestAidInterface {
-    subjectPronoun: SubjectPronounKeyType;
-    objectPronoun: ObjectPronounKeyType;
+    subjectPronoun: SubjectPronounType;
+    objectPronoun: ObjectPronounType;
     name: string;
     email: string;
     phone: string;

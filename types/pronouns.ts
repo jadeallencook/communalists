@@ -1,5 +1,5 @@
-export type SubjectPronounKeyType = 'they' | 'she' | 'he' | 'xe' | 'ze' | 'any';
-export type ObjectPronounKeyType =
+export type SubjectPronounType = 'they' | 'she' | 'he' | 'xe' | 'ze' | 'any';
+export type ObjectPronounType =
     | 'them'
     | 'her'
     | 'him'
@@ -7,16 +7,3 @@ export type ObjectPronounKeyType =
     | 'xem'
     | 'hir'
     | 'all';
-
-export type SubjectPronounType = 'They' | 'She' | 'He' | 'Xe' | 'Ze' | 'Any';
-export type ObjectPronounType =
-    | 'Them'
-    | 'Her'
-    | 'Him'
-    | 'Them'
-    | 'Xem'
-    | 'Hir'
-    | 'All';
-
-export type PronounsKeyType = [SubjectPronounKeyType, SubjectPronounType];
-export type PronounsType = [SubjectPronounType, ObjectPronounType];

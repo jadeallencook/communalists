@@ -1,11 +1,12 @@
 import { Badge, ListGroup, ListGroupItem, Modal } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import { Dispatch, useContext } from 'react';
+import { Dispatch, useContext, useEffect } from 'react';
 import OrganizationInterface from '@interfaces/organization';
 import DashboardContext from '../../contexts/DashboardContext';
 import EyeSVG from '@assets/eye.svg';
 import uidToUniqueNumber from '@utils/uid-to-unique-number';
+import getAccounts from '@api/get-accounts';
 
 const OrganizationModal: StyledComponent = styled(
     ({
@@ -21,8 +22,16 @@ const OrganizationModal: StyledComponent = styled(
     }) => {
         const { accounts, fetchAccount } = useContext(DashboardContext);
         const organizationAdminSet = new Set([
-            ...(selectedOrganization ? selectedOrganization.admins : []),
+            ...(selectedOrganization && selectedOrganization.admins
+                ? selectedOrganization.admins
+                : []),
         ]);
+
+        useEffect(() => {
+            console.log('SELECTED ORGANIZATIONS: ', selectedOrganization);
+            selectedOrganization && getAccounts(selectedOrganization?.members);
+        }),
+            [selectedOrganization];
         return (
             <Modal
                 show={!!selectedOrganizationId}

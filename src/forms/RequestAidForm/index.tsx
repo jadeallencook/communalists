@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { Button, Container, Form, Row } from 'react-bootstrap';
+import { Button, Container, Form, InputGroup, Row } from 'react-bootstrap';
 import RequestAidInterface from '@interfaces/request-aid';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
@@ -8,7 +8,7 @@ import languages from '@objects/languages';
 import methods from '@objects/methods';
 import { subjectPronouns, objectPronouns } from '@objects/pronouns';
 import addRequest from '@api/add-request';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Timestamp } from 'firebase/firestore';
 import Tooltip from '@components/Tooltip';
 import SnippetContext from '../../contexts/SnippetContext';
@@ -56,6 +56,10 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
         },
         onSubmit: (values) => addRequest(values).then(() => setSuccess(true)),
     });
+
+    useEffect(() => {
+        console.log(subjectPronoun, objectPronoun);
+    }, [subjectPronoun, objectPronoun]);
 
     const phoneHandler = (event) => {
         const formatted = formatPhoneNumer(event);
@@ -107,7 +111,8 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             <p>{snippet('description', 'request-aid-form')}</p>
             <Form.Group className="mb-1">
                 <Form.Label>{snippet('pronouns.label')}</Form.Label>
-                <Row className="pronouns-field-container">
+                {/* <Row className="pronouns-field-container"> */}
+                <InputGroup className="mb-3">
                     <Form.Select
                         onChange={handleChange}
                         value={subjectPronoun}
@@ -115,13 +120,13 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                         id="subjectPronoun"
                         className="pronoun-field"
                     >
-                        {Object.entries(subjectPronouns).map(([key, value]) => (
-                            <option key={key} value={key}>
-                                {value}
+                        {subjectPronouns.map((value) => (
+                            <option key={value} value={value}>
+                                {value.charAt(0).toUpperCase() + value.slice(1)}
                             </option>
                         ))}
                     </Form.Select>
-                    /
+                    {/* / */}
                     <Form.Select
                         onChange={handleChange}
                         value={objectPronoun}
@@ -129,13 +134,14 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                         id="objectPronoun"
                         className="pronoun-field"
                     >
-                        {Object.entries(objectPronouns).map(([key, value]) => (
-                            <option key={key} value={key}>
-                                {value}
+                        {objectPronouns.map((value) => (
+                            <option key={value} value={value}>
+                                {value.charAt(0).toUpperCase() + value.slice(1)}
                             </option>
                         ))}
                     </Form.Select>
-                </Row>
+                </InputGroup>
+                {/* </Row> */}
             </Form.Group>
             <Form.Group className="mb-3">
                 <Form.Label>{snippet('name.label')}</Form.Label>
