@@ -43,6 +43,7 @@ const RequestModal = ({
                     <Loading />
                 ) : (
                     <ViewRequestForm
+                        uid={selected}
                         request={request}
                         handler={handler}
                         selected={selected}

@@ -16,7 +16,7 @@ const addOrganization = async (name: string): Promise<any> => {
     } = getAuth(app);
     const organization: OrganizationInterface = {
         name,
-        admins: [uid],
+        moderators: [uid],
         members: [uid],
         joined: Timestamp.fromDate(new Date()),
         lastUpdated: Timestamp.fromDate(new Date()),

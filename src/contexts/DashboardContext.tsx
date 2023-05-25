@@ -20,6 +20,7 @@ import getOrganizations from '@api/get-organizations';
 import getAccount from '@api/get-account';
 import accountInitialValues from '@objects/account-initial-values';
 import updateUserAccount from '@api/update-user-account';
+import updateOrganizationRequests from '@api/update-organization-requests';
 
 interface DashboardContextInterface {
     isLoading: boolean;
@@ -37,6 +38,14 @@ interface DashboardContextInterface {
         [key: string]: AccountInterface;
     };
     fetchOrganization: (uid: string) => void;
+    requestToJoinOrganization: (
+        userUID: string,
+        organizationUID: string
+    ) => void;
+    approveRequestToJoinOrganization: (
+        userUID: string,
+        organizationUID: string
+    ) => void;
     organizations: {
         [key: string]: OrganizationInterface;
     };
@@ -199,6 +208,63 @@ export const DashboardProvider = ({ children }) => {
         setIsLoading(false);
     };
 
+    const requestToJoinOrganization = async (
+        userUID: string,
+        organizationUID: string
+    ) => {
+        log(
+            `user ${userUID} requesting to join organization ${organizationUID}`
+        );
+        setIsLoading(true);
+        const previousOrganizationState = organizations[organizationUID];
+        const request = await updateOrganizationRequests(
+            userUID,
+            organizationUID,
+            'requests'
+        );
+        if (request) {
+            setOrganizations((previousState) => ({
+                ...previousState,
+                [organizationUID]: {
+                    ...previousOrganizationState,
+                    requests: previousOrganizationState?.requests
+                        ? [...previousOrganizationState.requests, userUID]
+                        : [userUID],
+                },
+            }));
+        }
+        setIsLoading(false);
+    };
+
+    const approveRequestToJoinOrganization = async (
+        userUID: string,
+        organizationUID: string
+    ) => {
+        log(
+            `approving user ${userUID} to join organization ${organizationUID}`
+        );
+        setIsLoading(true);
+        const previousOrganizationState = organizations[organizationUID];
+        const request = await updateOrganizationRequests(
+            userUID,
+            organizationUID,
+            'members'
+        );
+        if (request) {
+            setOrganizations((previousState) => ({
+                ...previousState,
+                [organizationUID]: {
+                    ...previousOrganizationState,
+                    requests: previousOrganizationState?.requests.filter(
+                        (item) => item !== userUID
+                    ),
+                    members: [...previousOrganizationState.members, userUID],
+                },
+            }));
+        }
+        setIsLoading(false);
+    };
+
     const fetchRequest = async (id: string) => {
         log(`fetching request: ${id}`);
         setIsLoading(true);
@@ -273,6 +339,8 @@ export const DashboardProvider = ({ children }) => {
                 signIn,
                 signOut,
                 myOrganizations,
+                requestToJoinOrganization,
+                approveRequestToJoinOrganization,
                 requestFilters,
                 setRequestFilters,
                 donationFilters,

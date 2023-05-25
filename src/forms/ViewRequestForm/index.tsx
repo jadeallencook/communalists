@@ -17,12 +17,14 @@ import DashboardContext from '../../contexts/DashboardContext';
 const ViewRequestForm: StyledComponent = styled(
     ({
         className,
+        uid,
         request,
         handler,
         selected,
         isModal = false,
     }: {
         className: string;
+        uid: string;
         request: RequestAidInterface;
         handler?: (id?: string, shouldRefetch?: boolean) => void;
         selected: string;
@@ -60,10 +62,14 @@ const ViewRequestForm: StyledComponent = styled(
 
         return (
             <div className={className}>
-                <Accordion>
+                <Accordion alwaysOpen>
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>Information</Accordion.Header>
                         <Accordion.Body>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Request UID</Form.Label>
+                                <Form.Control defaultValue={uid} disabled />
+                            </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>Pronouns</Form.Label>
                                 <Row className="pronouns-field-container">

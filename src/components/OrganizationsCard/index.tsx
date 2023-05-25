@@ -17,7 +17,7 @@ const OrganizationsCard: StyledComponent = styled(
         setSelected: Dispatch<string>;
     }) => {
         const total = Object.keys(organizations).length;
-        const { uid } = useContext(DashboardContext);
+        const { uid, requestToJoinOrganization } = useContext(DashboardContext);
         return (
             <Card className={className} text="light" bg="danger">
                 <Card.Header>
@@ -25,19 +25,43 @@ const OrganizationsCard: StyledComponent = styled(
                 </Card.Header>
                 <ListGroup className="list-group-flush">
                     {Object.entries(organizations).map(
-                        ([key, organization], index) => {
+                        ([organizationUID, organization], index) => {
                             if (!organization) return null;
-                            const { name, joined, members } = organization;
+                            const { name, joined, members, requests } =
+                                organization;
                             const days = getNumberOfDaysAfterDate(joined);
-                            const uniqueKey = `${key}-${index}`;
+                            const uniqueKey = `${organizationUID}-${index}`;
+                            const isRequestingToJoin: boolean =
+                                requests?.indexOf(uid) > -1;
+
                             return (
                                 <ListGroup.Item key={uniqueKey}>
-                                    {organization.members.indexOf(uid) > -1 && (
+                                    {members.indexOf(uid) > -1 ? (
                                         <Button
                                             variant="secondary"
-                                            onClick={() => setSelected(key)}
+                                            onClick={() =>
+                                                setSelected(organizationUID)
+                                            }
                                         >
                                             View Members
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="secondary"
+                                            onClick={
+                                                isRequestingToJoin
+                                                    ? null
+                                                    : () =>
+                                                          requestToJoinOrganization(
+                                                              uid,
+                                                              organizationUID
+                                                          )
+                                            }
+                                            disabled={isRequestingToJoin}
+                                        >
+                                            {isRequestingToJoin
+                                                ? 'Request Pending'
+                                                : 'Join Organization'}
                                         </Button>
                                     )}
                                     {name} <br />
