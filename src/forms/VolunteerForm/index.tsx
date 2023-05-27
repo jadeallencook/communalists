@@ -1,10 +1,15 @@
+import getAccount from '@api/get-account';
 import updateVolunteer from '@api/update-volunteer';
 import { RoleKeyType } from '@custom-types/role';
+import { getAuth } from 'firebase/auth';
 import { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
+import { useMutation, useQuery } from 'react-query';
+
+const auth = getAuth();
 
 const VolunteerForm = ({
-    volunteer,
+    volunteer: initialVolunteer,
     requestId,
     label,
     type,
@@ -16,26 +21,46 @@ const VolunteerForm = ({
     type: RoleKeyType;
     collection: 'requests' | 'donations';
 }) => {
-    const [loading, setLoading] = useState<boolean>(false);
-    const [cachedVolunteer, setCachedVolunteer] = useState<boolean>(
-        !!volunteer
-    );
+    const [view, setView] = useState(false);
 
-    const handler = async (remove: boolean) => {
-        setLoading(true);
-        const response = await updateVolunteer(
-            requestId,
-            remove,
-            type,
-            collection
-        );
-        if (!response && !remove) {
-            setCachedVolunteer(true);
-        } else if (!response && remove) {
-            setCachedVolunteer(false);
-        }
-        setLoading(false);
-    };
+    const {
+        mutate: handler,
+        isLoading: loading,
+        data: volunteer = initialVolunteer,
+    } = useMutation({
+        mutationFn: async (remove: boolean): Promise<string> => {
+            await updateVolunteer(requestId, remove, type, collection);
+
+            // If the user just volunteered (remove=false) we should confirm to the 
+            // user that they've volunteered for the task successfully by showing
+            // them their account name on the page.
+            // If they removed the current volunteer (remove=true), we should show
+            // them the default value of the `View` button,
+            // since the view button is now disabled, and having it say "Hide" kinda
+            // doesn't make sense.
+            setView(!remove);
+
+            if (remove) {
+                return '';
+            } else {
+                return auth.currentUser.uid;
+            }
+        },
+        onError: (e, remove) =>
+            console.error(
+                `"update-volunteer(remove=${remove})" had error: ${String(e)}`
+            ),
+    });
+
+    const { data: volunteerAccount } = useQuery({
+        queryKey: ['get-account', volunteer] as const,
+        queryFn: (ctx) => {
+            const [_, volunteer] = ctx.queryKey;
+            if (!volunteer) return undefined;
+
+            return getAccount(volunteer);
+        },
+    });
 
     return (
         <Form.Group className="mb-3">
@@ -43,25 +68,29 @@ const VolunteerForm = ({
             <InputGroup>
                 <Button
                     variant="secondary"
-                    disabled={!cachedVolunteer || loading}
+                    disabled={!volunteer || loading}
                     className="tablet-remove"
+                    onClick={() => setView((prev) => !prev)}
                 >
-                    View
+                    {view ? 'Hide' : 'View'}
                 </Button>
                 <Form.Control
                     disabled
-                    value={cachedVolunteer ? '••••••••••••' : 'None Assigned'}
+                    type={view || !volunteer ? 'text' : 'password'}
+                    value={
+                        volunteerAccount?.name || volunteer || 'None Assigned'
+                    }
                 />
                 <Button
                     variant="secondary"
-                    disabled={!cachedVolunteer || loading}
+                    disabled={!volunteer || loading}
                     onClick={() => handler(true)}
                 >
                     Remove
                 </Button>
                 <Button
                     variant="primary"
-                    disabled={!!cachedVolunteer || loading}
+                    disabled={!!volunteer || loading}
                     onClick={() => handler(false)}
                 >
                     Volunteer

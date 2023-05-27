@@ -25,9 +25,8 @@ const updateVolunteer = async (
         ...object,
         [key]: remove ? '' : uid,
     };
-    return await updateDoc(docRef, object)
-        .then((response) => response)
-        .catch((response) => response);
+
+    return updateDoc(docRef, object);
 };
 
 export default updateVolunteer;
