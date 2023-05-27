@@ -8,14 +8,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup Node.js for use with actions
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version-file: .nvmrc
           cache-dependency-path: package-lock.json
           cache: npm
 
-      - name: Install Node.js dependencies
+      - name: Install dependencies
         run: |
           npm install
 
@@ -31,14 +31,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup Node.js for use with actions
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version-file: .nvmrc
           cache-dependency-path: package-lock.json
           cache: npm
 
-      - name: Install Node.js dependencies
+      - name: Install dependencies
         run: |
           npm install
 
@@ -51,3 +51,23 @@ jobs:
             git diff --name-only | cat
             exit 1
           fi
+
+  check-ts-types:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+          cache-dependency-path: package-lock.json
+          cache: npm
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Check Types
+        run: npx tsc --noEmit
