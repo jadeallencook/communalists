@@ -12,6 +12,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: .nvmrc
+          cache: npm
 
       - name: Install Node.js dependencies
         run: |
@@ -33,6 +34,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: .nvmrc
+          cache: npm
 
       - name: Install Node.js dependencies
         run: |
