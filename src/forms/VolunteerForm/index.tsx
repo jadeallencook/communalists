@@ -1,10 +1,10 @@
-import getAccount from '@api/get-account';
 import updateVolunteer from '@api/update-volunteer';
 import { RoleKeyType } from '@custom-types/role';
 import { getAuth } from 'firebase/auth';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { useMutation, useQuery } from 'react-query';
+import DashboardContext from '../../contexts/DashboardContext';
 
 const auth = getAuth();
 
@@ -22,6 +22,7 @@ const VolunteerForm = ({
     collection: 'requests' | 'donations';
 }) => {
     const [view, setView] = useState(false);
+    const { fetchAccount, accounts } = useContext(DashboardContext);
 
     const {
         mutate: handler,
@@ -31,7 +32,7 @@ const VolunteerForm = ({
         mutationFn: async (remove: boolean): Promise<string> => {
             await updateVolunteer(requestId, remove, type, collection);
 
-            // If the user just volunteered (remove=false) we should confirm to the 
+            // If the user just volunteered (remove=false) we should confirm to the
             // user that they've volunteered for the task successfully by showing
             // them their account name on the page.
             // If they removed the current volunteer (remove=true), we should show
@@ -58,7 +59,12 @@ const VolunteerForm = ({
             const [_, volunteer] = ctx.queryKey;
             if (!volunteer) return undefined;
 
-            return getAccount(volunteer);
+            const cachedAccount = accounts[volunteer];
+            if (cachedAccount) {
+                return cachedAccount;
+            }
+
+            return fetchAccount(volunteer);
         },
     });
 

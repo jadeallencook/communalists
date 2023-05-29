@@ -32,7 +32,7 @@ interface DashboardContextInterface {
     signIn: (email: string, password: string) => void;
     signOut: () => void;
     myOrganizations: string[];
-    fetchAccount: (uid: string) => void;
+    fetchAccount: (uid: string) => Promise<AccountInterface>;
     updateAccount: (uid: string, account: AccountInterface) => void;
     accounts: {
         [key: string]: AccountInterface;
@@ -177,7 +177,7 @@ export const DashboardProvider = ({ children }) => {
         }
     };
 
-    const fetchAccount = async (id: string) => {
+    const fetchAccount = async (id: string): Promise<AccountInterface> => {
         log(`fetching account: ${id}`);
         setIsLoading(true);
         const account: AccountInterface = await getAccount(id);
@@ -186,6 +186,7 @@ export const DashboardProvider = ({ children }) => {
             [id]: account || accountInitialValues,
         }));
         setIsLoading(false);
+        return account;
     };
 
     const updateAccount = async (id: string, account: AccountInterface) => {
