@@ -18,7 +18,7 @@ const style = () => ({
     'span.ready, span.has-driver': {
         backgroundColor: 'var(--primary)!important',
     },
-    'span.complete': {
+    'span.complete, span.cancelled': {
         backgroundColor: 'grey!important',
     },
     'span.has-no-driver, span.submitted': {
