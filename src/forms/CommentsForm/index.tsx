@@ -23,18 +23,21 @@ const CommentsForm: StyledComponent = styled(
             values: { body },
         } = useFormik<RequestCommentInterface>({
             initialValues: {
-                thread: id,
                 user: '',
                 body: '',
                 timestamp: Timestamp.fromDate(new Date()),
+                isArchived: false,
             },
             onSubmit: async (value, { resetForm }) => {
                 if (value) {
                     setIsSubmitting(true);
-                    await addComment({
-                        ...value,
-                        timestamp: Timestamp.fromDate(new Date()),
-                    });
+                    await addComment(
+                        {
+                            ...value,
+                            timestamp: Timestamp.fromDate(new Date()),
+                        },
+                        id
+                    );
                     resetForm();
                     setIsSubmitting(false);
                 }

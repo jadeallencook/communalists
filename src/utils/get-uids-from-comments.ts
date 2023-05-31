@@ -1,8 +1,6 @@
-import RequestCommentInterface from '@interfaces/comment';
+import CommentInterface from '@interfaces/comment';
 
-const getUIDsFromComments = (comments: {
-    [key: string]: RequestCommentInterface;
-}): string[] => {
+const getUIDsFromComments = (comments: CommentInterface[]): string[] => {
     const uids: string[] = Object.entries(comments).map(([, { user }]) => user);
     return Array.from(new Set(uids));
 };

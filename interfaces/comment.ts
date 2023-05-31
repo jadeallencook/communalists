@@ -4,7 +4,7 @@ interface CommentInterface {
     timestamp: Timestamp;
     body: string;
     user: string;
-    thread: string;
+    isArchived: boolean;
 }
 
 export default CommentInterface;

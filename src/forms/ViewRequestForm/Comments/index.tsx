@@ -1,9 +1,8 @@
-import getComments from '@api/get-commets';
+import getComments from '@api/get-thread';
 import getUsernames from '@api/get-usernames';
 import CommentsForm from '@forms/CommentsForm';
-import RequestCommentInterface from '@interfaces/comment';
+import ThreadInterface from '@interfaces/thread';
 import getUIDsFromComments from '@utils/get-uids-from-comments';
-import organizeCommentsByTime from '@utils/organize-comments-by-time';
 import timestampToCommentString from '@utils/timestamp-to-comment-string';
 import { useEffect, useState } from 'react';
 import { Alert, Form, Toast } from 'react-bootstrap';
@@ -13,9 +12,10 @@ import Loading from '@components/Loading';
 
 const Comments: StyledComponent = styled(
     ({ className, id }: { className: string; id: string }) => {
-        const [comments, setComments] = useState<{
-            [key: string]: RequestCommentInterface;
-        }>({});
+        const [thread, setThread] = useState<ThreadInterface>({
+            comments: [],
+            lastModified: null,
+        });
         const [isLoading, setIsLoading] = useState<boolean>(true);
         const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
         const [usernames, setUsernames] = useState<{ [key: string]: string }>(
@@ -24,12 +24,12 @@ const Comments: StyledComponent = styled(
         useEffect(() => {
             if (!isSubmitting) {
                 getComments(id).then(async (response) => {
-                    if (Object.keys(response).length) {
-                        const uids = getUIDsFromComments(response);
+                    if (response?.comments?.length) {
+                        const uids = getUIDsFromComments(response?.comments);
                         const names = await getUsernames(uids);
                         setUsernames(names);
                     }
-                    setComments(response);
+                    setThread(response);
                     setIsLoading(false);
                 });
             }
@@ -50,10 +50,13 @@ const Comments: StyledComponent = styled(
                         />
                         <br />
                         <br />
-                        {Object.entries(comments).length ? (
-                            organizeCommentsByTime(comments).map(
-                                ([key, { user, body, timestamp }]) => (
-                                    <Toast className={className} key={key}>
+                        {thread?.comments.length ? (
+                            thread?.comments.map(
+                                ({ user, body, timestamp }, index) => (
+                                    <Toast
+                                        className={className}
+                                        key={`comment-${index}`}
+                                    >
                                         <Toast.Header closeButton={false}>
                                             <strong className="me-auto">
                                                 {usernames[user] || '@comrade'}

@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
@@ -11,6 +12,13 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: './public/index.html',
 		}),
+
+        new webpack.EnvironmentPlugin({
+			// null here indicates an optional environment variable;
+			// this one is used by init-app.ts, and defaults to
+			// the `communalists-test` backend when not provided.
+			 FIREBASE_CONFIG: null,
+        }),
 	],
 	resolve: {
 		modules: [__dirname, 'src', 'node_modules'],
