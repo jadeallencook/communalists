@@ -5,6 +5,7 @@ const stages: { [key in StageKeyType]: StageType } = {
     started: 'Coordinating (2/4)',
     ready: 'Ready (3/4)',
     complete: 'Fulfilled (4/4)',
+    cancelled: 'Cancelled',
 };
 
 export default stages;
