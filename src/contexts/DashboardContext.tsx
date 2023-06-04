@@ -1,4 +1,10 @@
-import { Dispatch, createContext, useEffect, useState } from 'react';
+import {
+    Dispatch,
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import RequestAidInterface from '@interfaces/request-aid';
 import DonationInterface from '@interfaces/donation';
 import OrganizationInterface from '@interfaces/organization';
@@ -21,6 +27,8 @@ import getAccount from '@api/get-account';
 import accountInitialValues from '@objects/account-initial-values';
 import updateUserAccount from '@api/update-user-account';
 import updateOrganizationRequests from '@api/update-organization-requests';
+import toast from 'react-hot-toast';
+import SnippetContext from './SnippetContext';
 
 interface DashboardContextInterface {
     isLoading: boolean;
@@ -71,7 +79,7 @@ const defaultFilters: FiltersInterface = {
     coordinator: '',
 };
 
-const log: (message: string) => void = (message) =>
+export const log: (message: string) => void = (message) =>
     console.log(
         `%c[communalists] ${message}`,
         `
@@ -85,6 +93,7 @@ const log: (message: string) => void = (message) =>
 
 export const DashboardProvider = ({ children }) => {
     const navigate = useNavigate();
+    const { snippet } = useContext(SnippetContext);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [uid, setUid] = useState<string>('');
     const [myOrganizations, setMyOrganizations] = useState<string[]>([]);
@@ -165,7 +174,10 @@ export const DashboardProvider = ({ children }) => {
         log('signing user in');
         const success = await authSignIn(email, password);
         if (success) {
+            toast.success(snippet('signin.success', 'log-in-form'));
             navigate('/dashboard');
+        } else {
+            toast.error(snippet('signin.error', 'log-in-form'));
         }
     };
 
