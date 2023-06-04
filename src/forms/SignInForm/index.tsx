@@ -1,18 +1,16 @@
-import authSignIn from '@api/auth-sign-in';
 import { useFormik } from 'formik';
-import { Alert, Button, Container, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import SnippetContext from '../../contexts/SnippetContext';
 import Loading from '@components/Loading';
-import DashboardContext from '../../contexts/DashboardContext';
+import { useSignIn } from '@api/useAuth';
 
 const SignInForm: StyledComponent = styled(({ className }) => {
-    const [error, setError] = useState<string>('');
     const { snippet } = useContext(SnippetContext);
-    const { signIn } = useContext(DashboardContext);
+    const { signIn } = useSignIn();
     const {
         handleChange,
         handleSubmit,
@@ -23,9 +21,7 @@ const SignInForm: StyledComponent = styled(({ className }) => {
             email: '',
             password: '',
         },
-        onSubmit: async ({ email, password }) => {
-            signIn(email, password);
-        },
+        onSubmit: (values) => signIn(values),
     });
     return isSubmitting ? (
         <Loading />
@@ -58,7 +54,6 @@ const SignInForm: StyledComponent = styled(({ className }) => {
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                {error && <Alert variant="danger">{error}</Alert>}
                 <Button type="submit">
                     {snippet('button', 'log-in-form')}
                 </Button>

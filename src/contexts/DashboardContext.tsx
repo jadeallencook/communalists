@@ -16,8 +16,6 @@ import getMyAccount from '@api/get-my-account';
 import { FiltersInterface } from '@interfaces/filters';
 import getRequests from '@api/get-requests';
 import filterRequests from '@utils/filter-requests';
-import authSignIn from '@api/auth-sign-in';
-import authSignOut from '@api/auth-sign-out';
 import { useNavigate } from 'react-router-dom';
 import getIndividualRequest from '@api/get-individual-request';
 import { StageKeyType } from '@custom-types/stages';
@@ -39,8 +37,6 @@ interface DashboardContextInterface {
     setRequestFilters: Dispatch<FiltersInterface>;
     donationFilters: FiltersInterface;
     setDonationFilters: Dispatch<FiltersInterface>;
-    signIn: (email: string, password: string) => void;
-    signOut: () => void;
     myOrganizations: string[];
     fetchAccount: (uid: string) => void;
     updateAccount: (uid: string, account: AccountInterface) => void;
@@ -380,8 +376,6 @@ export const DashboardProvider = ({ children }) => {
                 requests,
                 fetchDonation,
                 donations,
-                signIn,
-                signOut,
                 myOrganizations,
                 requestToJoinOrganization,
                 approveRequestToJoinOrganization,

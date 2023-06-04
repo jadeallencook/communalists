@@ -14,6 +14,7 @@ import SnippetContext from '../../contexts/SnippetContext';
 import languages from '@objects/languages';
 import { LanguageKeyType } from '@custom-types/languages';
 import DashboardContext from '../../contexts/DashboardContext';
+import { useSignOut } from '@api/useAuth';
 
 const Links = ({
     className,
@@ -25,7 +26,7 @@ const Links = ({
     const { uid } = useContext(DashboardContext);
     const { pathname } = useLocation();
     const { setLanguage, language, snippet } = useContext(SnippetContext);
-    const { signOut } = useContext(DashboardContext);
+    const { signOut } = useSignOut();
     return (
         <Nav className={className}>
             <Link
@@ -74,7 +75,7 @@ const Links = ({
                     >
                         {snippet('dashboard', 'navigation')}
                     </Link>
-                    <Link onClick={signOut} to="/" className="nav-link">
+                    <Link onClick={() => signOut()} to="/" className="nav-link">
                         {snippet('log-out', 'navigation')}
                     </Link>
                 </>
