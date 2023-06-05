@@ -18,10 +18,10 @@ const signUpForm: SnippetInterface = {
         chinese: '成为志愿者',
     },
     ['button']: {
-        english: 'Submit Application',
-        spanish: 'Presentar La Solicitud',
-        vietnamese: 'Gửi đơn đăng Ký',
-        chinese: '提交申请表',
+        english: 'Create Account',
+        spanish: 'Crear Una Cuenta',
+        vietnamese: 'Tạo Tài Khoản',
+        chinese: '创建账户',
     },
     ['confirmedPassword.label']: {
         english: 'Confirm Password',

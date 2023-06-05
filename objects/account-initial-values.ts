@@ -2,27 +2,9 @@ import AccountInterface from '@interfaces/account';
 import { Timestamp } from 'firebase/firestore';
 
 const accountInitialValues: AccountInterface = {
-    name: '',
-    location: 'santa-clara-ca',
-    approved: '',
-    bio: '',
+    location: 'san-jose-ca',
     joined: Timestamp.fromDate(new Date()),
     lastUpdated: Timestamp.fromDate(new Date()),
-    role: {
-        driver: false,
-        coordinator: false,
-        tech: false,
-        social: false,
-        laborer: false,
-        photographer: false,
-        cook: false,
-        planner: false,
-        designer: false,
-        emotional: false,
-        security: false,
-        legal: false,
-        medical: false,
-    },
 };
 
 export default accountInitialValues;
