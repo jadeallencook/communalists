@@ -4,9 +4,6 @@ import style from './style';
 import { Dispatch, useContext } from 'react';
 import OrganizationInterface from '@interfaces/organization';
 import DashboardContext from '../../contexts/DashboardContext';
-import EyeSVG from '@assets/eye.svg';
-import uidToUniqueNumber from '@utils/uid-to-unique-number';
-import Loading from '@components/Loading';
 
 const OrganizationModal: StyledComponent = styled(
     ({
@@ -20,12 +17,8 @@ const OrganizationModal: StyledComponent = styled(
         setSelectedOrganizationId: Dispatch<string>;
         selectedOrganization: OrganizationInterface;
     }) => {
-        const {
-            accounts,
-            fetchAccount,
-            approveRequestToJoinOrganization,
-            isLoading,
-        } = useContext(DashboardContext);
+        const { approveRequestToJoinOrganization, isLoading, displayNames } =
+            useContext(DashboardContext);
         const organizationModeratorsSet = new Set([
             ...(selectedOrganization ? selectedOrganization.moderators : []),
         ]);
@@ -50,53 +43,33 @@ const OrganizationModal: StyledComponent = styled(
                                 </p>
                                 <ListGroup className="list-group-flush">
                                     {selectedOrganization?.requests.map(
-                                        (userUID) => {
-                                            const hasAccount =
-                                                !!accounts[userUID];
-                                            const uniqueNumber =
-                                                uidToUniqueNumber(userUID);
-                                            return (
-                                                <ListGroupItem key={userUID}>
-                                                    <Badge
-                                                        bg={
-                                                            isLoading
-                                                                ? 'secondary'
-                                                                : 'primary'
-                                                        }
-                                                        className="approve-request"
-                                                        onClick={
-                                                            !isLoading
-                                                                ? () =>
-                                                                      approveRequestToJoinOrganization(
-                                                                          userUID,
-                                                                          selectedOrganizationId
-                                                                      )
-                                                                : null
-                                                        }
-                                                    >
-                                                        {isLoading
-                                                            ? 'Loading'
-                                                            : 'Approve'}
-                                                    </Badge>
-                                                    {!hasAccount
-                                                        ? uniqueNumber
-                                                        : accounts[userUID]
-                                                              ?.name ||
-                                                          `Anonymous ${uniqueNumber}`}
-                                                    {!hasAccount && (
-                                                        <img
-                                                            src={EyeSVG}
-                                                            className="reveal-name"
-                                                            onClick={() =>
-                                                                fetchAccount(
-                                                                    userUID
-                                                                )
-                                                            }
-                                                        />
-                                                    )}
-                                                </ListGroupItem>
-                                            );
-                                        }
+                                        (userUID) => (
+                                            <ListGroupItem key={userUID}>
+                                                <Badge
+                                                    bg={
+                                                        isLoading
+                                                            ? 'secondary'
+                                                            : 'primary'
+                                                    }
+                                                    className="approve-request"
+                                                    onClick={
+                                                        !isLoading
+                                                            ? () =>
+                                                                  approveRequestToJoinOrganization(
+                                                                      userUID,
+                                                                      selectedOrganizationId
+                                                                  )
+                                                            : null
+                                                    }
+                                                >
+                                                    {isLoading
+                                                        ? 'Loading'
+                                                        : 'Approve'}
+                                                </Badge>
+                                                {displayNames[userUID] ||
+                                                    'Anonymous'}
+                                            </ListGroupItem>
+                                        )
                                     )}
                                 </ListGroup>
                                 <br />
@@ -106,32 +79,16 @@ const OrganizationModal: StyledComponent = styled(
                         <b>{selectedOrganization?.members.length} Members</b>
                     </p>
                     <ListGroup className="list-group-flush">
-                        {selectedOrganization?.members.map((userUID) => {
-                            const hasAccount = !!accounts[userUID];
-                            const uniqueNumber = uidToUniqueNumber(userUID);
-                            return (
-                                <ListGroupItem key={userUID}>
-                                    {organizationModeratorsSet.has(userUID) ? (
-                                        <Badge bg="primary">Moderator</Badge>
-                                    ) : (
-                                        <Badge bg="secondary">Standard</Badge>
-                                    )}
-                                    {!hasAccount
-                                        ? uniqueNumber
-                                        : accounts[userUID]?.name ||
-                                          `Anonymous ${uniqueNumber}`}
-                                    {!hasAccount && (
-                                        <img
-                                            src={EyeSVG}
-                                            className="reveal-name"
-                                            onClick={() =>
-                                                fetchAccount(userUID)
-                                            }
-                                        />
-                                    )}
-                                </ListGroupItem>
-                            );
-                        })}
+                        {selectedOrganization?.members.map((userUID) => (
+                            <ListGroupItem key={userUID}>
+                                {organizationModeratorsSet.has(userUID) ? (
+                                    <Badge bg="primary">Moderator</Badge>
+                                ) : (
+                                    <Badge bg="secondary">Standard</Badge>
+                                )}
+                                {displayNames[userUID] || 'Anonymous'}
+                            </ListGroupItem>
+                        ))}
                     </ListGroup>
                 </Modal.Body>
             </Modal>
