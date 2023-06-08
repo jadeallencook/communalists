@@ -29,6 +29,8 @@ import updateUserAccount from '@api/update-user-account';
 import updateOrganizationRequests from '@api/update-organization-requests';
 import toast from 'react-hot-toast';
 import SnippetContext from './SnippetContext';
+import getDisplayNames from '@api/get-display-names';
+import updateUserDisplayName from '@api/update-user-display-name';
 
 interface DashboardContextInterface {
     isLoading: boolean;
@@ -57,6 +59,11 @@ interface DashboardContextInterface {
     organizations: {
         [key: string]: OrganizationInterface;
     };
+    displayNames: {
+        [key: string]: string;
+    };
+    fetchDisplayNames: () => void;
+    updateDisplayName: (name: string) => void;
     fetchRequest: (uid: string) => void;
     updateStage: (uid: string, request: StageKeyType) => void;
     fetchRequests: () => void;
@@ -120,6 +127,10 @@ export const DashboardProvider = ({ children }) => {
         [key: string]: DonationInterface;
     }>({});
 
+    const [displayNames, setDisplayNames] = useState<{
+        [key: string]: string;
+    }>({});
+
     const clearCache = () => {
         setAccounts({});
         setOrganizations({});
@@ -142,6 +153,9 @@ export const DashboardProvider = ({ children }) => {
             ...previousState,
             [myUID]: myAccountResponse,
         }));
+        log('fetching display names');
+        const displayNamesResponse = await getDisplayNames();
+        setDisplayNames(displayNamesResponse);
     };
 
     useEffect(() => {
@@ -332,6 +346,24 @@ export const DashboardProvider = ({ children }) => {
         setIsLoading(false);
     };
 
+    const fetchDisplayNames = async () => {
+        log('fetching display names');
+        setIsLoading(true);
+        //
+        setIsLoading(false);
+    };
+
+    const updateDisplayName = async (name: string) => {
+        log(`updating user's display name`);
+        setIsLoading(true);
+        await updateUserDisplayName(name);
+        setDisplayNames((previousState) => ({
+            ...previousState,
+            [uid]: name,
+        }));
+        setIsLoading(false);
+    };
+
     return (
         <DashboardContext.Provider
             value={{
@@ -357,6 +389,9 @@ export const DashboardProvider = ({ children }) => {
                 setRequestFilters,
                 donationFilters,
                 setDonationFilters,
+                displayNames,
+                fetchDisplayNames,
+                updateDisplayName,
             }}
         >
             {children}

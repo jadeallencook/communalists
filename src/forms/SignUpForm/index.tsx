@@ -6,43 +6,30 @@ import { useContext, useState } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
 import locations from '@objects/locations';
 import addAccount from '@api/add-account';
-import roles from '@objects/roles';
-import AccountInterface from '@interfaces/account';
 import authSignUp from '@api/auth-sign-up';
 import Loading from '@components/Loading';
 import accountInitialValues from '@objects/account-initial-values';
-
-interface SignUpFormInterface extends AccountInterface {
-    password: string;
-    confirmedPassword: string;
-    email: string;
-}
+import SignUpInterface from '@interfaces/sign-up';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm: StyledComponent = styled(({ className }) => {
+    const navigate = useNavigate();
     const [error, setError] = useState<string>('');
-    const [success, setSuccess] = useState<boolean>(false);
     const { snippet } = useContext(SnippetContext);
     const {
         handleChange,
         handleSubmit,
         isSubmitting,
-        values: {
-            name,
-            email,
-            location,
-            bio,
-            role,
-            password,
-            confirmedPassword,
-        },
-    } = useFormik<SignUpFormInterface>({
+        values: { name, email, location, password, confirmedPassword },
+    } = useFormik<SignUpInterface>({
         initialValues: {
             ...accountInitialValues,
             email: '',
             password: '',
             confirmedPassword: '',
+            name: '',
         },
-        onSubmit: async (values: SignUpFormInterface) => {
+        onSubmit: async (values: SignUpInterface) => {
             const { password, confirmedPassword, email, ...rest } = values;
             if (password === confirmedPassword) {
                 try {
@@ -51,14 +38,12 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
                         throw response.message;
                     } else {
                         await addAccount(rest);
-                        setSuccess(true);
+                        navigate('/dashboard');
                     }
                 } catch (error) {
-                    setSuccess(false);
                     setError(error);
                 }
             } else {
-                setSuccess(false);
                 setError(
                     'The passwords you entered do not match. Please try again.'
                 );
@@ -67,7 +52,7 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
     });
     return isSubmitting ? (
         <Loading />
-    ) : !success ? (
+    ) : (
         <Form onSubmit={handleSubmit} className={className}>
             <h1>{snippet('header', 'sign-up-form')}</h1>
             <p>{snippet('description', 'sign-up-form')}</p>
@@ -137,44 +122,12 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
                 </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>{snippet('role.label', 'sign-up-form')}</Form.Label>
-                {Object.entries(roles).map(([key, value]) => (
-                    <Form.Check
-                        type="checkbox"
-                        label={value}
-                        key={key}
-                        id={key}
-                        name={`role.${key}`}
-                        onChange={handleChange}
-                        value={+role[key]}
-                    />
-                ))}
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>{snippet('bio.label', 'sign-up-form')}</Form.Label>
-                <Form.Control
-                    as="textarea"
-                    id="bio"
-                    name="bio"
-                    type="text"
-                    placeholder={snippet('bio.placeholder', 'sign-up-form')}
-                    onChange={handleChange}
-                    value={bio}
-                    required
-                />
-            </Form.Group>
-            <Form.Group className="mb-3">
                 {error && <Alert variant="danger">{error}</Alert>}
                 <Button type="submit">
                     {snippet('button', 'sign-up-form')}
                 </Button>
             </Form.Group>
         </Form>
-    ) : (
-        <Container className={className}>
-            <h1>{snippet('success.header', 'sign-up-form')}</h1>
-            <p>{snippet('success.description', 'sign-up-form')}</p>
-        </Container>
     );
 })(style);
 

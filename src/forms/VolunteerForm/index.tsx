@@ -1,7 +1,8 @@
 import updateVolunteer from '@api/update-volunteer';
 import { RoleKeyType } from '@custom-types/role';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
+import DashboardContext from '../../contexts/DashboardContext';
 
 const VolunteerForm = ({
     volunteer,
@@ -17,9 +18,15 @@ const VolunteerForm = ({
     collection: 'requests' | 'donations';
 }) => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [cachedVolunteer, setCachedVolunteer] = useState<boolean>(
-        !!volunteer
+    const [cachedVolunteer, setCachedVolunteer] = useState<string | null>(
+        !!volunteer ? volunteer : null
     );
+    const { displayNames, uid } = useContext(DashboardContext);
+    const displayName = cachedVolunteer
+        ? displayNames[cachedVolunteer]
+            ? displayNames[cachedVolunteer]
+            : 'Anonymous'
+        : 'None Assigned';
 
     const handler = async (remove: boolean) => {
         setLoading(true);
@@ -29,11 +36,7 @@ const VolunteerForm = ({
             type,
             collection
         );
-        if (!response && !remove) {
-            setCachedVolunteer(true);
-        } else if (!response && remove) {
-            setCachedVolunteer(false);
-        }
+        setCachedVolunteer(!response && !remove ? uid : null);
         setLoading(false);
     };
 
@@ -41,17 +44,7 @@ const VolunteerForm = ({
         <Form.Group className="mb-3">
             <Form.Label>{label}</Form.Label>
             <InputGroup>
-                <Button
-                    variant="secondary"
-                    disabled={!cachedVolunteer || loading}
-                    className="tablet-remove"
-                >
-                    View
-                </Button>
-                <Form.Control
-                    disabled
-                    value={cachedVolunteer ? '••••••••••••' : 'None Assigned'}
-                />
+                <Form.Control disabled value={displayName} />
                 <Button
                     variant="secondary"
                     disabled={!cachedVolunteer || loading}
