@@ -71,8 +71,8 @@ root.render(
             <Toaster
                 position="bottom-center"
                 toastOptions={{
-                    duration: 5000,
-                    style: { maxWidth: 500 },
+                    duration: 1000000,
+                    style: { maxWidth: 'unset' },
                 }}
             >
                 {(t) => (
@@ -82,7 +82,8 @@ root.render(
                                 className={'d-flex flex-row align-items-center'}
                             >
                                 {icon}
-                                {message}
+                                <div style={{ width: '12rem' }}>{message}</div>
+
                                 {t.type !== 'loading' && (
                                     <Button onClick={() => toast.dismiss(t.id)}>
                                         Dismiss
