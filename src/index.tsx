@@ -11,20 +11,49 @@ import './normalize.css';
 import Navigation from '@components/Navigation';
 import Footer from '@components/Footer';
 import { SnippetProvider } from './contexts/SnippetContext';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { DashboardProvider } from './contexts/DashboardContext';
+import {
+    MutationCache,
+    QueryCache,
+    QueryClient,
+    QueryClientProvider,
+} from 'react-query';
+import { DashboardProvider, log } from './contexts/DashboardContext';
+import toast, { ToastBar, Toaster } from 'react-hot-toast';
+import { Button } from 'react-bootstrap';
 
 // components
 const elem = document.getElementById('root')!;
 const root = ReactDOM.createRoot(elem);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    // These defaults can help with development, but should
+    // be replaced before merging.
+    defaultOptions: {
+        queries: {
+            onError: (error: any) =>
+                void toast.error(error.message || String(error)),
+        },
+        mutations: {
+            onError: (error: any) =>
+                void toast.error(error.message || String(error)),
+        },
+    },
+
+    // onError on the cache will ALWAYS be called, regardless of the query.
+    // This means that we always get logging for query or mutation errors.
+    queryCache: new QueryCache({
+        onError: (error: any) => log(error.message || String(error)),
+    }),
+    mutationCache: new MutationCache({
+        onError: (error: any) => log(error.message || String(error)),
+    }),
+});
 
 root.render(
-    <QueryClientProvider client={queryClient}>
-        <Router>
-            <DashboardProvider>
-                <SnippetProvider>
+    <SnippetProvider>
+        <QueryClientProvider client={queryClient}>
+            <Router>
+                <DashboardProvider>
                     <Navigation />
                     <Routes>
                         {routes.map(({ path, element }) => (
@@ -36,8 +65,35 @@ root.render(
                         ))}
                     </Routes>
                     <Footer />
-                </SnippetProvider>
-            </DashboardProvider>
-        </Router>
-    </QueryClientProvider>
+                </DashboardProvider>
+            </Router>
+
+            <Toaster
+                position="bottom-center"
+                toastOptions={{
+                    duration: 1000000,
+                    style: { maxWidth: 'unset' },
+                }}
+            >
+                {(t) => (
+                    <ToastBar toast={t}>
+                        {({ icon, message }) => (
+                            <div
+                                className={'d-flex flex-row align-items-center'}
+                            >
+                                {icon}
+                                <div style={{ width: '12rem' }}>{message}</div>
+
+                                {t.type !== 'loading' && (
+                                    <Button onClick={() => toast.dismiss(t.id)}>
+                                        Dismiss
+                                    </Button>
+                                )}
+                            </div>
+                        )}
+                    </ToastBar>
+                )}
+            </Toaster>
+        </QueryClientProvider>
+    </SnippetProvider>
 );

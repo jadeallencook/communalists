@@ -35,6 +35,18 @@ const logInForm: SnippetInterface = {
         vietnamese: 'đồng_chí@communalists.org',
         chinese: '同志@communalists.org',
     },
+    ['signin.success']: {
+        english: 'Logged in!',
+        spanish: '¡Conectado!',
+        vietnamese: 'Dăng nhập!',
+        chinese: '登录！',
+    },
+    ['signin.error']: {
+        english: 'Invalid username or password',
+        spanish: 'Usuario o contraseña invalido',
+        vietnamese: 'Sai username hoặc password',
+        chinese: '无效的用户名或密码',
+    },
 };
 
 export default logInForm;
