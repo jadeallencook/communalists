@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SnippetContext from '../../contexts/SnippetContext';
 import Loading from '@components/Loading';
-import { useSignIn } from '@api/useAuth';
+import { useSignIn } from '@api/auth';
 
 const SignInForm: StyledComponent = styled(({ className }) => {
     const { snippet } = useContext(SnippetContext);

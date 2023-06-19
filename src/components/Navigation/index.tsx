@@ -14,7 +14,7 @@ import SnippetContext from '../../contexts/SnippetContext';
 import languages from '@objects/languages';
 import { LanguageKeyType } from '@custom-types/languages';
 import DashboardContext from '../../contexts/DashboardContext';
-import { useSignOut } from '@api/useAuth';
+import { useSignOut } from '@api/auth';
 
 const Links = ({
     className,
