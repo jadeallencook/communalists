@@ -5,7 +5,7 @@ import RequestAidInterface from '@interfaces/request-aid';
 import timestampToDateString from '@utils/timestamp-to-date-string';
 import { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const ViewRequestPage = () => {
     const { uid } = useParams();
@@ -13,6 +13,7 @@ const ViewRequestPage = () => {
         undefined
     );
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getIndividualRequest(uid).then((res) => {
@@ -20,6 +21,10 @@ const ViewRequestPage = () => {
             setIsLoading(false);
         });
     }, []);
+
+    if (!isLoading && !request) {
+        navigate('/sign-up');
+    }
 
     return (
         <>
