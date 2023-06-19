@@ -71,7 +71,8 @@ root.render(
             <Toaster
                 position="bottom-center"
                 toastOptions={{
-                    duration: 1000000,
+                    duration:
+                        process.env.NODE_ENV === 'development' ? 1000000 : 5000,
                     style: { maxWidth: 'unset' },
                 }}
             >
