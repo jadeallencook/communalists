@@ -1,6 +1,7 @@
 import {
     createUserWithEmailAndPassword,
     getAuth,
+    sendPasswordResetEmail,
     signInWithEmailAndPassword,
 } from 'firebase/auth';
 import app from './init-app';
@@ -10,6 +11,10 @@ import updateUserDisplayName from './update-user-display-name';
 
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+export async function authResetPassword(email: string) {
+    await sendPasswordResetEmail(auth, email);
+}
 
 export async function signUp(userInfo: SignUpInterface) {
     const { email, password, confirmedPassword, name, ...rest } = userInfo;
