@@ -180,25 +180,6 @@ export const DashboardProvider = ({ children }) => {
         }
     }, [requestFilters]);
 
-    const signIn = async (email: string, password: string) => {
-        log('signing user in');
-        const success = await authSignIn(email, password);
-        if (success) {
-            toast.success(snippet('signin.success', 'log-in-form'));
-            navigate('/dashboard');
-        } else {
-            toast.error(snippet('signin.error', 'log-in-form'));
-        }
-    };
-
-    const signOut = async () => {
-        log('signing user out');
-        const success = await authSignOut();
-        if (success) {
-            navigate('/');
-        }
-    };
-
     const fetchAccount = async (id: string) => {
         log(`fetching account: ${id}`);
         setIsLoading(true);

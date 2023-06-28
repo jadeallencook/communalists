@@ -35,10 +35,7 @@ export function useSignUp() {
             void toast.error(e instanceof Error ? e.message : String(e)),
     });
 
-    return {
-        ...res,
-        signUp: res.mutateAsync,
-    };
+    return { ...res, signUp: res.mutateAsync };
 }
 
 export function useSignOut() {
@@ -49,10 +46,7 @@ export function useSignOut() {
         onSuccess: () => navigate('/'),
     });
 
-    return {
-        ...res,
-        signOut: res.mutateAsync,
-    };
+    return { ...res, signOut: res.mutateAsync };
 }
 
 export function useSignIn() {
@@ -66,13 +60,8 @@ export function useSignIn() {
             toast.success(snippet('signin.success', 'log-in-form'));
             navigate('/dashboard');
         },
-        onError: () => {
-            toast.error(snippet('signin.error', 'log-in-form'));
-        },
+        onError: () => void toast.error(snippet('signin.error', 'log-in-form')),
     });
 
-    return {
-        ...res,
-        signIn: res.mutateAsync,
-    };
+    return { ...res, signIn: res.mutateAsync };
 }
