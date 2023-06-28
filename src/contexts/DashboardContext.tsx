@@ -1,10 +1,4 @@
-import {
-    Dispatch,
-    createContext,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import { Dispatch, createContext, useEffect, useState } from 'react';
 import RequestAidInterface from '@interfaces/request-aid';
 import DonationInterface from '@interfaces/donation';
 import OrganizationInterface from '@interfaces/organization';
@@ -16,7 +10,6 @@ import getMyAccount from '@api/get-my-account';
 import { FiltersInterface } from '@interfaces/filters';
 import getRequests from '@api/get-requests';
 import filterRequests from '@utils/filter-requests';
-import { useNavigate } from 'react-router-dom';
 import getIndividualRequest from '@api/get-individual-request';
 import { StageKeyType } from '@custom-types/stages';
 import updateRequestStage from '@api/update-request-stage';
@@ -25,8 +18,6 @@ import getAccount from '@api/get-account';
 import accountInitialValues from '@objects/account-initial-values';
 import updateUserAccount from '@api/update-user-account';
 import updateOrganizationRequests from '@api/update-organization-requests';
-import toast from 'react-hot-toast';
-import SnippetContext from './SnippetContext';
 import getDisplayNames from '@api/get-display-names';
 import updateUserDisplayName from '@api/update-user-display-name';
 
@@ -95,8 +86,6 @@ export const log: (message: string) => void = (message) =>
     );
 
 export const DashboardProvider = ({ children }) => {
-    const navigate = useNavigate();
-    const { snippet } = useContext(SnippetContext);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [uid, setUid] = useState<string>('');
     const [myOrganizations, setMyOrganizations] = useState<string[]>([]);

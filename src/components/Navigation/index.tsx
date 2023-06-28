@@ -7,14 +7,16 @@ import {
 } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import LogoPNG from '@assets/logo.png';
 import { useContext, useState } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
 import languages from '@objects/languages';
 import { LanguageKeyType } from '@custom-types/languages';
 import DashboardContext from '../../contexts/DashboardContext';
-import { useSignOut } from '@api/auth';
+import app from '@api/init-app';
+import { getAuth, signOut } from 'firebase/auth';
+import { useMutation } from 'react-query';
 
 const Links = ({
     className,
@@ -26,7 +28,13 @@ const Links = ({
     const { uid } = useContext(DashboardContext);
     const { pathname } = useLocation();
     const { setLanguage, language, snippet } = useContext(SnippetContext);
-    const { signOut } = useSignOut();
+    const navigate = useNavigate();
+
+    const { mutate } = useMutation({
+        mutationFn: () => signOut(getAuth(app)),
+        onSuccess: () => navigate('/'),
+    });
+
     return (
         <Nav className={className}>
             <Link
@@ -75,7 +83,7 @@ const Links = ({
                     >
                         {snippet('dashboard', 'navigation')}
                     </Link>
-                    <Link onClick={() => signOut()} to="/" className="nav-link">
+                    <Link onClick={() => mutate()} to="/" className="nav-link">
                         {snippet('log-out', 'navigation')}
                     </Link>
                 </>

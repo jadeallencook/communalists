@@ -2,11 +2,8 @@ import {
     createUserWithEmailAndPassword,
     getAuth,
     signInWithEmailAndPassword,
-    signOut,
 } from 'firebase/auth';
 import toast from 'react-hot-toast';
-import { useContext } from 'react';
-import SnippetContext from '../contexts/SnippetContext';
 import app from './init-app';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -36,17 +33,6 @@ export function useSignUp() {
     });
 
     return { ...res, signUp: res.mutateAsync };
-}
-
-export function useSignOut() {
-    const navigate = useNavigate();
-    const res = useMutation({
-        mutationKey: ['sign-out'],
-        mutationFn: () => signOut(auth),
-        onSuccess: () => navigate('/'),
-    });
-
-    return { ...res, signOut: res.mutateAsync };
 }
 
 export function signIn(props: { email: string; password: string }) {

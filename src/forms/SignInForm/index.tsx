@@ -14,7 +14,7 @@ const SignInForm: StyledComponent = styled(({ className }) => {
     const { snippet } = useContext(SnippetContext);
 
     const navigate = useNavigate();
-    const res = useMutation({
+    const { mutateAsync } = useMutation({
         mutationFn: signIn,
         onSuccess: () => {
             toast.success(snippet('signin.success', 'log-in-form'));
@@ -33,7 +33,7 @@ const SignInForm: StyledComponent = styled(({ className }) => {
             email: '',
             password: '',
         },
-        onSubmit: (values) => signIn(values),
+        onSubmit: (values) => mutateAsync(values),
     });
     return isSubmitting ? (
         <Loading />
