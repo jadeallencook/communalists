@@ -8,11 +8,21 @@ import locations from '@objects/locations';
 import Loading from '@components/Loading';
 import accountInitialValues from '@objects/account-initial-values';
 import SignUpInterface from '@interfaces/sign-up';
-import { useSignUp } from '@api/auth';
+import { signUp } from '@api/auth';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const SignUpForm: StyledComponent = styled(({ className }) => {
     const { snippet } = useContext(SnippetContext);
-    const { signUp } = useSignUp();
+    const navigate = useNavigate();
+
+    const { mutateAsync } = useMutation({
+        mutationFn: signUp,
+        onSuccess: () => navigate('/dashboard'),
+        onError: (e) =>
+            void toast.error(e instanceof Error ? e.message : String(e)),
+    });
 
     const {
         handleChange,
@@ -27,7 +37,7 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
             confirmedPassword: '',
             name: '',
         },
-        onSubmit: (values) => signUp(values),
+        onSubmit: (values) => mutateAsync(values),
     });
     return isSubmitting ? (
         <Loading />

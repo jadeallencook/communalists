@@ -3,36 +3,26 @@ import {
     getAuth,
     signInWithEmailAndPassword,
 } from 'firebase/auth';
-import toast from 'react-hot-toast';
 import app from './init-app';
-import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
-import addAccount from './add-account';
 import SignUpInterface from '@interfaces/sign-up';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
+import updateUserDisplayName from './update-user-display-name';
 
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-export function useSignUp() {
-    const navigate = useNavigate();
-    const res = useMutation({
-        mutationKey: ['sign-up'],
-        mutationFn: async (userInfo: SignUpInterface) => {
-            const { email, password } = userInfo;
-            if (password !== userInfo.confirmedPassword) {
-                throw new Error(
-                    'The passwords you entered do not match. Please try again.'
-                );
-            }
+export async function signUp(userInfo: SignUpInterface) {
+    const { email, password, confirmedPassword, name, ...rest } = userInfo;
+    if (password !== confirmedPassword) {
+        throw new Error(
+            'The passwords you entered do not match. Please try again.'
+        );
+    }
 
-            await createUserWithEmailAndPassword(auth, email, password);
-            await addAccount(userInfo);
-        },
-        onSuccess: () => navigate('/dashboard'),
-        onError: (e) =>
-            void toast.error(e instanceof Error ? e.message : String(e)),
-    });
-
-    return { ...res, signUp: res.mutateAsync };
+    await createUserWithEmailAndPassword(auth, email, password);
+    const accountsRef = doc(db, 'accounts', auth.currentUser.uid);
+    await setDoc(accountsRef, rest);
+    await updateUserDisplayName(name);
 }
 
 export function signIn(props: { email: string; password: string }) {
