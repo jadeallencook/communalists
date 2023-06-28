@@ -3,14 +3,26 @@ import { Button, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SnippetContext from '../../contexts/SnippetContext';
 import Loading from '@components/Loading';
-import { useSignIn } from '@api/auth';
+import { signIn } from '@api/auth';
+import { useMutation } from 'react-query';
+import toast from 'react-hot-toast';
 
 const SignInForm: StyledComponent = styled(({ className }) => {
     const { snippet } = useContext(SnippetContext);
-    const { signIn } = useSignIn();
+
+    const navigate = useNavigate();
+    const res = useMutation({
+        mutationFn: signIn,
+        onSuccess: () => {
+            toast.success(snippet('signin.success', 'log-in-form'));
+            navigate('/dashboard');
+        },
+        onError: () => void toast.error(snippet('signin.error', 'log-in-form')),
+    });
+
     const {
         handleChange,
         handleSubmit,

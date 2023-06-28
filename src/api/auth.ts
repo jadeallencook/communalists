@@ -49,19 +49,6 @@ export function useSignOut() {
     return { ...res, signOut: res.mutateAsync };
 }
 
-export function useSignIn() {
-    const navigate = useNavigate();
-    const { snippet } = useContext(SnippetContext);
-    const res = useMutation({
-        mutationKey: ['sign-in'],
-        mutationFn: (props: { email: string; password: string }) =>
-            signInWithEmailAndPassword(auth, props.email, props.password),
-        onSuccess: () => {
-            toast.success(snippet('signin.success', 'log-in-form'));
-            navigate('/dashboard');
-        },
-        onError: () => void toast.error(snippet('signin.error', 'log-in-form')),
-    });
-
-    return { ...res, signIn: res.mutateAsync };
+export function signIn(props: { email: string; password: string }) {
+    return signInWithEmailAndPassword(auth, props.email, props.password);
 }
