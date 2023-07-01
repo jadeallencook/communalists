@@ -33,8 +33,13 @@ const isAfterHours = (
     return nowTimestamp >= eventTimestamp;
 };
 
+interface Props {
+    className?: string;
+    hasFilters?: boolean;
+}
+
 const EventsTable: StyledComponent = styled(
-    ({ className }: { className: string }) => {
+    ({ className, hasFilters }: Props) => {
         const today = new Date().getDay();
         const [day, setDay] = useState(today);
         const todaysDayKey = daysArray[day];
@@ -56,56 +61,63 @@ const EventsTable: StyledComponent = styled(
         const numberOfEvents: number = filteredEvents.length;
         return (
             <>
-                <DayPagination
-                    day={day}
-                    setDay={setDay}
-                    numberOfEvents={numberOfEvents}
-                />
-                <Form className={className}>
-                    <InputGroup>
-                        <Form.Select
-                            onChange={(event) =>
-                                setAfterHourFilter(
-                                    Number(event.target.value) as number
-                                )
-                            }
-                            value={afterHourFilter}
-                        >
-                            <option value={0}>Select Time</option>
-                            <option value={6}>After 6:00AM</option>
-                            <option value={7}>After 7:00AM</option>
-                            <option value={8}>After 8:00AM</option>
-                            <option value={9}>After 9:00AM</option>
-                            <option value={10}>After 10:00AM</option>
-                            <option value={11}>After 11:00AM</option>
-                            <option value={12}>After 12:00PM</option>
-                            <option value={13}>After 1:00PM</option>
-                            <option value={14}>After 2:00PM</option>
-                            <option value={15}>After 3:00PM</option>
-                            <option value={16}>After 4:00PM</option>
-                            <option value={17}>After 5:00PM</option>
-                            <option value={18}>After 6:00PM</option>
-                            <option value={19}>After 7:00PM</option>
-                            <option value={20}>After 8:00PM</option>
-                            <option value={21}>After 9:00PM</option>
-                            <option value={22}>After 10:00PM</option>
-                            <option value={23}>After 11:00PM</option>
-                        </Form.Select>
-                        <Form.Select
-                            onChange={(event) =>
-                                setTag(event.target.value as TagType)
-                            }
-                            value={tag}
-                        >
-                            <option value={''}>Select Tag</option>
-                            {tagsArray.map((tag) => (
-                                <option value={tag} key={`filters-${tag}`}>
-                                    {tag}
-                                </option>
-                            ))}
-                        </Form.Select>
-                    </InputGroup>
-                </Form>
+                {hasFilters && (
+                    <>
+                        <DayPagination
+                            day={day}
+                            setDay={setDay}
+                            numberOfEvents={numberOfEvents}
+                        />
+                        <Form className={className}>
+                            <InputGroup>
+                                <Form.Select
+                                    onChange={(event) =>
+                                        setAfterHourFilter(
+                                            Number(event.target.value) as number
+                                        )
+                                    }
+                                    value={afterHourFilter}
+                                >
+                                    <option value={0}>Select Time</option>
+                                    <option value={6}>After 6:00AM</option>
+                                    <option value={7}>After 7:00AM</option>
+                                    <option value={8}>After 8:00AM</option>
+                                    <option value={9}>After 9:00AM</option>
+                                    <option value={10}>After 10:00AM</option>
+                                    <option value={11}>After 11:00AM</option>
+                                    <option value={12}>After 12:00PM</option>
+                                    <option value={13}>After 1:00PM</option>
+                                    <option value={14}>After 2:00PM</option>
+                                    <option value={15}>After 3:00PM</option>
+                                    <option value={16}>After 4:00PM</option>
+                                    <option value={17}>After 5:00PM</option>
+                                    <option value={18}>After 6:00PM</option>
+                                    <option value={19}>After 7:00PM</option>
+                                    <option value={20}>After 8:00PM</option>
+                                    <option value={21}>After 9:00PM</option>
+                                    <option value={22}>After 10:00PM</option>
+                                    <option value={23}>After 11:00PM</option>
+                                </Form.Select>
+                                <Form.Select
+                                    onChange={(event) =>
+                                        setTag(event.target.value as TagType)
+                                    }
+                                    value={tag}
+                                >
+                                    <option value={''}>Select Tag</option>
+                                    {tagsArray.map((tag) => (
+                                        <option
+                                            value={tag}
+                                            key={`filters-${tag}`}
+                                        >
+                                            {tag}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            </InputGroup>
+                        </Form>
+                    </>
+                )}
                 <ListGroup className={className}>
                     {numberOfEvents ? (
                         filteredEvents?.map(
@@ -177,5 +189,9 @@ const EventsTable: StyledComponent = styled(
         );
     }
 )(style);
+
+EventsTable.defaultProps = {
+    hasFilters: true,
+};
 
 export default EventsTable;
