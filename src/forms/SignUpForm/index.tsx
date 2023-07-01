@@ -1,21 +1,29 @@
 import { useFormik } from 'formik';
-import { Alert, Button, Container, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
 import locations from '@objects/locations';
-import addAccount from '@api/add-account';
-import authSignUp from '@api/auth-sign-up';
 import Loading from '@components/Loading';
 import accountInitialValues from '@objects/account-initial-values';
 import SignUpInterface from '@interfaces/sign-up';
+import { signUp } from '@api/auth';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const SignUpForm: StyledComponent = styled(({ className }) => {
-    const navigate = useNavigate();
-    const [error, setError] = useState<string>('');
     const { snippet } = useContext(SnippetContext);
+    const navigate = useNavigate();
+
+    const { mutateAsync } = useMutation({
+        mutationFn: signUp,
+        onSuccess: () => navigate('/dashboard'),
+        onError: (e) =>
+            void toast.error(e instanceof Error ? e.message : String(e)),
+    });
+
     const {
         handleChange,
         handleSubmit,
@@ -29,26 +37,7 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
             confirmedPassword: '',
             name: '',
         },
-        onSubmit: async (values: SignUpInterface) => {
-            const { password, confirmedPassword, email, ...rest } = values;
-            if (password === confirmedPassword) {
-                try {
-                    const response = await authSignUp(email, password);
-                    if (response?.message) {
-                        throw response.message;
-                    } else {
-                        await addAccount(rest);
-                        navigate('/dashboard');
-                    }
-                } catch (error) {
-                    setError(error);
-                }
-            } else {
-                setError(
-                    'The passwords you entered do not match. Please try again.'
-                );
-            }
-        },
+        onSubmit: (values) => mutateAsync(values),
     });
     return isSubmitting ? (
         <Loading />
@@ -122,7 +111,6 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
                 </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-                {error && <Alert variant="danger">{error}</Alert>}
                 <Button type="submit">
                     {snippet('button', 'sign-up-form')}
                 </Button>

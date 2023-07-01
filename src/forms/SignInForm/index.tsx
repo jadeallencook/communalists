@@ -1,18 +1,28 @@
-import authSignIn from '@api/auth-sign-in';
 import { useFormik } from 'formik';
-import { Alert, Button, Container, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SnippetContext from '../../contexts/SnippetContext';
 import Loading from '@components/Loading';
-import DashboardContext from '../../contexts/DashboardContext';
+import { signIn } from '@api/auth';
+import { useMutation } from 'react-query';
+import toast from 'react-hot-toast';
 
 const SignInForm: StyledComponent = styled(({ className }) => {
-    const [error, setError] = useState<string>('');
     const { snippet } = useContext(SnippetContext);
-    const { signIn } = useContext(DashboardContext);
+
+    const navigate = useNavigate();
+    const { mutateAsync } = useMutation({
+        mutationFn: signIn,
+        onSuccess: () => {
+            toast.success(snippet('signin.success', 'log-in-form'));
+            navigate('/dashboard');
+        },
+        onError: () => void toast.error(snippet('signin.error', 'log-in-form')),
+    });
+
     const {
         handleChange,
         handleSubmit,
@@ -23,9 +33,7 @@ const SignInForm: StyledComponent = styled(({ className }) => {
             email: '',
             password: '',
         },
-        onSubmit: async ({ email, password }) => {
-            signIn(email, password);
-        },
+        onSubmit: (values) => mutateAsync(values),
     });
     return isSubmitting ? (
         <Loading />
@@ -58,7 +66,6 @@ const SignInForm: StyledComponent = styled(({ className }) => {
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                {error && <Alert variant="danger">{error}</Alert>}
                 <Button type="submit">
                     {snippet('button', 'log-in-form')}
                 </Button>

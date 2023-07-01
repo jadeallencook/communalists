@@ -2,15 +2,19 @@ import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SnippetContext from '../../contexts/SnippetContext';
 import Loading from '@components/Loading';
-import authResetPassword from '@api/auth-reset-password';
+import { authResetPassword } from '@api/auth';
+import { useMutation } from 'react-query';
 
 const ForgotPasswordForm: StyledComponent = styled(({ className }) => {
     const { snippet } = useContext(SnippetContext);
-    const [success, setSuccess] = useState<boolean>(false);
+    const { mutateAsync, isSuccess } = useMutation({
+        mutationFn: authResetPassword,
+        onError: (e) => console.error(e),
+    });
     const {
         handleChange,
         handleSubmit,
@@ -20,16 +24,13 @@ const ForgotPasswordForm: StyledComponent = styled(({ className }) => {
         initialValues: {
             email: '',
         },
-        onSubmit: async ({ email }) => {
-            await authResetPassword(email);
-            setSuccess(true);
-        },
+        onSubmit: ({ email }) => mutateAsync(email),
     });
     return isSubmitting ? (
         <Loading />
     ) : (
         <Form onSubmit={handleSubmit} className={className}>
-            {success ? (
+            {isSuccess ? (
                 <>
                     <h1>Reset Link Sent</h1>
                     <p>
