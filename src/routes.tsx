@@ -8,6 +8,7 @@ import SignUpPage from '@pages/SignUpPage';
 import DonatePage from '@pages/Donate';
 import ForgotPasswordPage from '@pages/ForgotPassword';
 import EventsPage from '@pages/EventsPage';
+import HomePage from '@pages/HomePage';
 
 interface Route {
     path: string;
@@ -17,7 +18,7 @@ interface Route {
 const routes: Route[] = [
     {
         path: '/',
-        element: <RequestAidPage />,
+        element: <HomePage />,
     },
     {
         path: '/request-aid',

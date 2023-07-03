@@ -39,7 +39,7 @@ const Links = ({
         <Nav className={className}>
             <Link
                 className={
-                    pathname.indexOf('/request-aid') === 0 || pathname === '/'
+                    pathname.indexOf('/request-aid') === 0
                         ? 'active nav-link'
                         : 'nav-link'
                 }
