@@ -9,6 +9,12 @@ import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
 import organizeRequestsByDate from '@utils/organize-requests-by-date';
 import Loading from '@components/Loading';
 
+const ResultCount = ({ count }: { count: number }) => (
+    <h3>
+        {count} Result{count > 1 || !count ? 's' : ''}
+    </h3>
+);
+
 const RequestsTable: StyledComponent = styled(
     ({
         requests,
@@ -27,6 +33,7 @@ const RequestsTable: StyledComponent = styled(
 
         return (
             <div className={className}>
+                <ResultCount count={organized.length} />
                 <Table striped bordered hover variant="dark">
                     {organized.length ? (
                         <>

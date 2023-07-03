@@ -5,7 +5,6 @@ import methods from '@objects/methods';
 import stages from '@objects/stages';
 import { useContext, useState } from 'react';
 import { StageKeyType } from '@custom-types/stages';
-import updateRequestStage from '@api/update-request-stage';
 import Comments from './Comments';
 import style from './style';
 import styled, { StyledComponent } from 'styled-components';
@@ -58,16 +57,28 @@ const ViewRequestForm: StyledComponent = styled(
             isModal ? handleSubmitModal() : handleSubmit();
         };
 
+        const requestLink = `${window.location.origin}/#/view-request/${uid}`;
+
         return (
             <div className={className}>
                 <Accordion alwaysOpen>
                     <Accordion.Item eventKey="0">
                         <Accordion.Header>Information</Accordion.Header>
                         <Accordion.Body>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Request UID</Form.Label>
-                                <Form.Control defaultValue={uid} disabled />
-                            </Form.Group>
+                            {isModal && (
+                                <Form.Group className="mb-3">
+                                    <Form.Label>
+                                        Request Link{' '}
+                                        <a href={requestLink} target="_blank">
+                                            (Open)
+                                        </a>
+                                    </Form.Label>
+                                    <Form.Control
+                                        defaultValue={requestLink}
+                                        disabled
+                                    />
+                                </Form.Group>
+                            )}
                             <Form.Group className="mb-3">
                                 <Form.Label>Full Name</Form.Label>
                                 <Form.Control defaultValue={name} disabled />
