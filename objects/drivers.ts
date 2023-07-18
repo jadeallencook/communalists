@@ -1,8 +1,8 @@
 import { DriverKeyType, DriverType } from '@custom-types/driver';
 
 const drivers: { [key in DriverKeyType]: DriverType } = {
-    'not-assigned': 'Pending',
-    assigned: 'Coordinated',
+    'not-assigned': 'No Driver Assigned',
+    assigned: 'Has Assigned Driver',
 };
 
 export default drivers;

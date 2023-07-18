@@ -1,13 +1,21 @@
-import { Badge, Table } from 'react-bootstrap';
-import locations from '@objects/locations';
-import languages from '@objects/languages';
-import stages from '@objects/stages';
-import RequestAidInterface from '@interfaces/request-aid';
+import { Table } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import getNumberOfDaysAfterDate from '@utils/get-number-of-days-after-date';
-import organizeRequestsByDate from '@utils/organize-requests-by-date';
 import Loading from '@components/Loading';
+import formatRequests from '@utils/format-requests';
+import { ReactNode } from 'react';
+
+export type Column = { key: string; title: string };
+export type Columns = [Column, Column, Column, Column];
+
+interface RequestsTableInterface {
+    requests: { [key: string]: any; id: string }[];
+    handler: (id?: string) => void;
+    loaded: boolean;
+    className: string;
+    columns: Columns;
+    formatters?: { [key: string]: (value: any) => string | ReactNode };
+}
 
 const ResultCount = ({ count }: { count: number }) => (
     <h3>
@@ -21,92 +29,42 @@ const RequestsTable: StyledComponent = styled(
         handler,
         loaded = true,
         className,
-    }: {
-        requests: { [key: string]: RequestAidInterface };
-        handler: (id?: string) => void;
-        loaded: boolean;
-        className: string;
-    }) => {
-        const organized = organizeRequestsByDate(requests);
-
-        if (!loaded) return <Loading />;
-
-        return (
+        columns,
+        formatters = {},
+    }: RequestsTableInterface) => {
+        requests = formatRequests(requests);
+        return !loaded ? (
+            <Loading />
+        ) : (
             <div className={className}>
-                <ResultCount count={organized.length} />
+                <ResultCount count={requests.length} />
                 <Table striped bordered hover variant="dark">
-                    {organized.length ? (
+                    {requests.length ? (
                         <>
                             <thead>
                                 <tr>
-                                    <th className="timestamp">Recieved</th>
-                                    <th className="name">Requester</th>
-                                    <th className="location">Location</th>
-                                    <th className="language">Language</th>
-                                    <th className="driver">Delivery</th>
-                                    <th className="stage">Stage</th>
+                                    {columns.map(({ key, title }) => (
+                                        <th className={key} key={key}>
+                                            {title}
+                                        </th>
+                                    ))}
                                 </tr>
                             </thead>
-
                             <tbody>
-                                {organized.map(
-                                    (
-                                        [
-                                            id,
-                                            {
-                                                name,
-                                                location,
-                                                language,
-                                                stage,
-                                                timestamp,
-                                                driver,
-                                            },
-                                        ],
-                                        index
-                                    ) => (
-                                        <tr
-                                            key={id}
-                                            onClick={() => handler(id)}
-                                            style={{
-                                                animationDelay: `${
-                                                    index * 0.05
-                                                }s`,
-                                            }}
-                                        >
-                                            <td className="timestamp">
-                                                {getNumberOfDaysAfterDate(
-                                                    timestamp
-                                                )}
+                                {requests.map(({ id, ...rest }, index) => (
+                                    <tr key={id} onClick={() => handler(id)}>
+                                        {columns.map(({ key }) => (
+                                            <td
+                                                className={key}
+                                                key={`${key}-${index}`}
+                                            >
+                                                {formatters[key]
+                                                    ? formatters[key](rest[key])
+                                                    : `${rest[key]}`}
                                             </td>
-                                            <td className="name">{name}</td>
-                                            <td className="location">
-                                                {locations[location] ||
-                                                    'Location Unknown'}
-                                            </td>
-                                            <td className="language">
-                                                {languages[language]}
-                                            </td>
-                                            <td className="driver">
-                                                <Badge
-                                                    className={
-                                                        driver
-                                                            ? 'has-driver'
-                                                            : 'has-no-driver'
-                                                    }
-                                                >
-                                                    {driver
-                                                        ? 'Coordinated'
-                                                        : 'Pending'}
-                                                </Badge>
-                                            </td>
-                                            <td className="stage">
-                                                <Badge className={stage}>
-                                                    {stages[stage]}
-                                                </Badge>
-                                            </td>
-                                        </tr>
-                                    )
-                                )}
+                                        ))}
+                                    </tr>
+                                ))}
                             </tbody>
                         </>
                     ) : (

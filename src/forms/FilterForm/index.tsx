@@ -30,44 +30,6 @@ const FilterForm: StyledComponent = styled(
         return (
             <Form className={className}>
                 <InputGroup>
-                    {/* <Form.Select
-                        as="select"
-                        name="locations"
-                        value={location}
-                        size="sm"
-                        onChange={(e) =>
-                            setFilters({
-                                ...filters,
-                                location: e.target.value as LocationKeyType,
-                            })
-                        }
-                    >
-                        <option value={''}>Any Location</option>
-                        {Object.entries(locations).map(([key, value]) => (
-                            <option key={key} value={key}>
-                                {value}
-                            </option>
-                        ))}
-                    </Form.Select> */}
-                    {/* <Form.Select
-                        as="select"
-                        name="languages"
-                        value={language}
-                        size="sm"
-                        onChange={(e) =>
-                            setFilters({
-                                ...filters,
-                                language: e.target.value as LanguageKeyType,
-                            })
-                        }
-                    >
-                        <option value={''}>Any Language</option>
-                        {Object.entries(languages).map(([key, value]) => (
-                            <option key={key} value={key}>
-                                {value}
-                            </option>
-                        ))}
-                    </Form.Select> */}
                     <Form.Select
                         as="select"
                         name="driver"
@@ -80,7 +42,7 @@ const FilterForm: StyledComponent = styled(
                             })
                         }
                     >
-                        <option value={''}>Any Delivery</option>
+                        <option value={''}>Any Driver Status</option>
                         {Object.entries(drivers).map(([key, value]) => (
                             <option key={key} value={key}>
                                 {value}
