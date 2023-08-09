@@ -31,7 +31,7 @@ const ActionsPage = () => {
         setShow((prev) => !prev);
     };
 
-    actions = filterDocuments(actions, actionFilters);
+    const filteredActions = filterDocuments(actions, actionFilters);
 
     const columns: Columns = [
         { key: 'timestamp', title: 'Created' },
@@ -79,7 +79,7 @@ const ActionsPage = () => {
                 <Loading />
             ) : (
                 <RequestsTable
-                    requests={actions}
+                    requests={filteredActions}
                     handler={handler}
                     columns={columns}
                     formatters={formatters}

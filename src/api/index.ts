@@ -13,7 +13,7 @@ import getUnapprovedAccounts from './get-unapproved-accounts';
 import getUsernames from './get-usernames';
 import getVolunteers from './get-volunteers';
 import updateOrganizationRequests from './update-organization-requests';
-import updateRequestStage from './update-request-stage';
+import updateStage from './update-stage';
 import updateUserAccount from './update-user-account';
 import updateUserDisplayName from './update-user-display-name';
 import updateVolunteer from './update-volunteer';
@@ -37,7 +37,7 @@ const API = {
     getUsernames,
     getVolunteers,
     updateOrganizationRequests,
-    updateRequestStage,
+    updateStage,
     updateUserAccount,
     updateUserDisplayName,
     updateVolunteer,

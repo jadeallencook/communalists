@@ -3,19 +3,22 @@ import { RoleKeyType } from '@custom-types/role';
 import { useContext, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import DashboardContext from '../../contexts/DashboardContext';
+import { FeatureType } from '@custom-types/feature';
 
 const VolunteerForm = ({
     volunteer,
-    requestId,
+    id,
     label,
     type,
-    collection,
+    role,
+    organization,
 }: {
     volunteer: string;
-    requestId: string;
+    id: string;
     label: string;
-    type: RoleKeyType;
-    collection: 'requests' | 'donations';
+    type: FeatureType;
+    role: RoleKeyType;
+    organization: string;
 }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [cachedVolunteer, setCachedVolunteer] = useState<string | null>(
@@ -31,10 +34,11 @@ const VolunteerForm = ({
     const handler = async (remove: boolean) => {
         setLoading(true);
         const response = await updateVolunteer(
-            requestId,
+            id,
             remove,
+            role,
             type,
-            collection
+            organization
         );
         setCachedVolunteer(!response && !remove ? uid : null);
         setLoading(false);

@@ -1,4 +1,4 @@
-import { RequestStageKeyType } from '@custom-types/stages';
+import { AnyStageKeyType, RequestStageKeyType } from '@custom-types/stages';
 import AccountInterface from '@interfaces/account';
 import {
     RequestFiltersInterface,
@@ -8,6 +8,7 @@ import OrganizationInterface from '@interfaces/organization';
 import { FrontendRequestInterface } from '@interfaces/request';
 import { FrontendActionInterface } from '@interfaces/action';
 import { Dispatch } from 'react';
+import { FeatureType } from '@custom-types/feature';
 
 export default interface DashboardContextInterface {
     // system
@@ -47,7 +48,6 @@ export default interface DashboardContextInterface {
     requestFilters: RequestFiltersInterface;
     setRequestFilters: Dispatch<RequestFiltersInterface>;
     fetchRequest: (uid: string, organization: string) => void;
-    updateRequestStage: (uid: string, request: RequestStageKeyType) => void;
     fetchRequests: () => void;
     requests: {
         [key: string]: FrontendRequestInterface;
@@ -62,4 +62,12 @@ export default interface DashboardContextInterface {
     fetchActions: () => void;
     fetchAction: (id: string, organization: string) => void;
     addAction: (action: FrontendActionInterface) => void;
+
+    // etc
+    updateStage: (
+        id: string,
+        stage: AnyStageKeyType,
+        organization: string,
+        type: FeatureType
+    ) => void;
 }

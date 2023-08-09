@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import AccountInterface from '@interfaces/account';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import filterDocuments from '@utils/filter-documents';
-import { RequestStageKeyType } from '@custom-types/stages';
+import { AnyStageKeyType, RequestStageKeyType } from '@custom-types/stages';
 import API from '@api/index';
 import { INITIAL_ACCOUNT_VALUES } from '@objects/initial-account-values';
 import app from '@api/init-app';
@@ -11,6 +11,8 @@ import { log } from '@helpers/log';
 import useDashboard from './dashboard/useDashboard';
 import OrganizationInterface from '@interfaces/organization';
 import { FrontendActionInterface } from '@interfaces/action';
+import { FeatureType } from '@custom-types/feature';
+import { set } from 'firebase/database';
 
 const auth = getAuth(app);
 const DashboardContext = createContext<DashboardContextInterface>(null);
@@ -42,6 +44,7 @@ export const DashboardProvider = ({ children }) => {
 
     const [reads, setReads] = useState(0);
     const [writes, setWrites] = useState(0);
+    const [initalLoad, setInitalLoad] = useState(false);
 
     const initalDashboardFetch: (myUID: string) => Promise<void> = async (
         myUID
@@ -60,9 +63,22 @@ export const DashboardProvider = ({ children }) => {
             (previousState) =>
                 previousState + 2 + Object.keys(myOrganizationsResponse).length
         );
+        setInitalLoad(true);
     };
 
     useEffect(() => log(`${reads} reads / ${writes} writes`), [reads, writes]);
+
+    // refetch actions when actionFilters change
+    useEffect(() => {
+        if (initalLoad) {
+            const { length } = Object.keys(
+                filterDocuments(actions, actionFilters)
+            );
+            if (!length) {
+                fetchActions();
+            }
+        }
+    }, [actionFilters]);
 
     useEffect(() => {
         onAuthStateChanged(auth, () => {
@@ -157,19 +173,31 @@ export const DashboardProvider = ({ children }) => {
         setIsLoading(false);
     };
 
-    const updateRequestStage = async (
+    const updateStage = async (
         id: string,
-        stage: RequestStageKeyType
+        stage: AnyStageKeyType,
+        organization: string,
+        type: FeatureType
     ) => {
         setIsLoading(true);
-        await API.updateRequestStage(id, stage);
-        setRequests((previousState) => ({
-            ...previousState,
-            [id]: {
-                ...previousState[id],
-                stage,
-            },
-        }));
+        await API.updateStage(id, stage, organization, type);
+        if (type === 'action') {
+            setActions((previousState) => ({
+                ...previousState,
+                [id]: {
+                    ...previousState[id],
+                    stage,
+                },
+            }));
+        } else if (type === 'request') {
+            setRequests((previousState) => ({
+                ...previousState,
+                [id]: {
+                    ...previousState[id],
+                    stage,
+                },
+            }));
+        }
         setIsLoading(false);
     };
 
@@ -231,6 +259,7 @@ export const DashboardProvider = ({ children }) => {
             ...prevState,
             [id]: value,
         }));
+        setWrites((previousState) => previousState + 1);
         setIsLoading(false);
     };
 
@@ -245,7 +274,7 @@ export const DashboardProvider = ({ children }) => {
                 fetchOrganization,
                 organizations,
                 fetchRequest,
-                updateRequestStage,
+                updateStage,
                 fetchRequests,
                 requests,
                 myOrganizations,

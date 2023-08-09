@@ -2,9 +2,7 @@ import { Accordion, Button, Form, Modal } from 'react-bootstrap';
 import { LOCATIONS } from '@objects/locations';
 import { LANGUAGES } from '@objects/languages';
 import { CONTACT_METHODS } from '@objects/contact-methods';
-import { REQUEST_STAGES } from '@objects/stages';
-import { useContext, useState } from 'react';
-import { RequestStageKeyType } from '@custom-types/stages';
+import { useContext } from 'react';
 import Comments from './Comments';
 import style from './style';
 import styled, { StyledComponent } from 'styled-components';
@@ -12,6 +10,7 @@ import { FrontendRequestInterface } from '@interfaces/request';
 import CopyLinkButton from './CopyLinkButton';
 import VolunteerForm from '@forms/VolunteerForm';
 import DashboardContext from '../../contexts/DashboardContext';
+import StageManager from '@components/StageManager';
 
 const ViewRequestForm: StyledComponent = styled(
     ({
@@ -40,22 +39,10 @@ const ViewRequestForm: StyledComponent = styled(
             needs,
             driver,
             coordinator,
+            organization,
         } = request;
 
-        const [stage, setStage] = useState<RequestStageKeyType>(request.stage);
-        const { updateRequestStage, isLoading } = useContext(DashboardContext);
-
-        const handleSubmitModal = async () => {
-            await updateRequestStage(selected, stage);
-            handler(null, true);
-        };
-
-        const handleSubmit = async () => {
-            await updateRequestStage(selected, stage);
-        };
-        const save = async () => {
-            isModal ? handleSubmitModal() : handleSubmit();
-        };
+        const { isLoading } = useContext(DashboardContext);
 
         const requestLink = `${window.location.origin}/#/view-request/${uid}`;
 
@@ -163,39 +150,22 @@ const ViewRequestForm: StyledComponent = styled(
                     <Accordion.Item eventKey="2">
                         <Accordion.Header>Coordination</Accordion.Header>
                         <Accordion.Body>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Current Stage</Form.Label>
-                                <Form.Select
-                                    defaultValue={stage}
-                                    onChange={(event) =>
-                                        setStage(
-                                            event.target
-                                                .value as RequestStageKeyType
-                                        )
-                                    }
-                                >
-                                    {Object.entries(REQUEST_STAGES).map(
-                                        ([key, value]) => (
-                                            <option key={key} value={key}>
-                                                {value}
-                                            </option>
-                                        )
-                                    )}
-                                </Form.Select>
-                            </Form.Group>
+                            <StageManager />
                             <VolunteerForm
                                 label="Assigned Driver"
                                 volunteer={driver}
-                                requestId={selected}
-                                type="driver"
-                                collection="requests"
+                                id={selected}
+                                role="driver"
+                                type="request"
+                                organization={organization}
                             />
                             <VolunteerForm
                                 label="Request Coordinator"
                                 volunteer={coordinator}
-                                requestId={selected}
-                                type="coordinator"
-                                collection="requests"
+                                id={selected}
+                                role="coordinator"
+                                type="request"
+                                organization={organization}
                             />
                         </Accordion.Body>
                     </Accordion.Item>
@@ -214,13 +184,6 @@ const ViewRequestForm: StyledComponent = styled(
                             </Button>
                         </>
                     )}
-                    <Button
-                        variant="primary"
-                        onClick={save}
-                        disabled={isLoading}
-                    >
-                        Save Changes
-                    </Button>
                 </Modal.Footer>
             </div>
         );
