@@ -7,19 +7,24 @@ import {
     getDocs,
 } from 'firebase/firestore';
 import app from './init-app';
+import OrganizationInterface from '@interfaces/organization';
 
 const db = getFirestore(app);
 
-const getMyOrganizations = async (): Promise<string[]> => {
+const getMyOrganizations = async (): Promise<{
+    [id: string]: OrganizationInterface;
+}> => {
     const {
         currentUser: { uid },
     } = getAuth(app);
     try {
-        const organizations = [];
+        const organizations = {};
         const ref = collection(db, 'organizations');
-        const q = query(ref, where('members', 'array-contains', uid));
+        const q = query(ref, where(`members.${uid}`, '!=', null));
         const snapshot = await getDocs(q);
-        snapshot.forEach(({ id }) => organizations.push(id));
+        snapshot.forEach((doc) => {
+            organizations[doc.id] = doc.data();
+        });
         return organizations;
     } catch (err) {
         console.log(err);

@@ -1,11 +1,11 @@
 import { useFormik } from 'formik';
 import { Button, Container, Form } from 'react-bootstrap';
-import RequestAidInterface from '@interfaces/request-aid';
+import { BackendRequestInterface } from '@interfaces/request';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
-import locations from '@objects/locations';
-import languages from '@objects/languages';
-import methods from '@objects/methods';
+import { LOCATIONS } from '@objects/locations';
+import { LANGUAGES } from '@objects/languages';
+import { CONTACT_METHODS } from '@objects/contact-methods';
 import addRequest from '@api/add-request';
 import { useContext, useState } from 'react';
 import { Timestamp } from 'firebase/firestore';
@@ -32,7 +32,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             health,
             needs,
         },
-    } = useFormik<RequestAidInterface>({
+    } = useFormik<BackendRequestInterface>({
         initialValues: {
             name: '',
             email: '',
@@ -47,9 +47,11 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
             driver: '',
             hasDriver: false,
             coordinator: '',
-            organizations: ['communalists'],
         },
-        onSubmit: (values) => addRequest(values).then(() => setSuccess(true)),
+        onSubmit: (values) =>
+            addRequest(values, 'GTz1zYcGS9aPrgj6AsEW').then(() =>
+                setSuccess(true)
+            ),
     });
 
     const phoneHandler = (event) => {
@@ -120,7 +122,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                     name="language"
                     id="language"
                 >
-                    {Object.entries(languages).map(([key, value]) => (
+                    {Object.entries(LANGUAGES).map(([key, value]) => (
                         <option key={key} value={key}>
                             {value}
                         </option>
@@ -135,7 +137,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                     name="location"
                     id="location"
                 >
-                    {Object.entries(locations).map(([key, value]) => (
+                    {Object.entries(LOCATIONS).map(([key, value]) => (
                         <option key={key} value={key}>
                             {value}
                         </option>
@@ -173,7 +175,7 @@ const RequestAidForm: StyledComponent = styled(({ className }) => {
                     name="method"
                     id="method"
                 >
-                    {Object.entries(methods).map(([key, value]) => (
+                    {Object.entries(CONTACT_METHODS).map(([key, value]) => (
                         <option key={key} value={key}>
                             {value}
                         </option>

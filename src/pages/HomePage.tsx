@@ -14,11 +14,8 @@ const HomePage = () => {
                     We give communties the tools they need to empower themselves
                     through mutual aid.
                 </p>
-                <Link to="/request-aid">
-                    <Button variant="primary">Make A Request</Button>
-                </Link>
                 <Link to="/sign-up">
-                    <Button variant="secondary">Become A Volunteer</Button>
+                    <Button>Join The Revolution</Button>
                 </Link>
             </Header>
             <Container>

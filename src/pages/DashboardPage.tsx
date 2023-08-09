@@ -1,16 +1,14 @@
 import { Container } from 'react-bootstrap';
 import DashboardNavigation from '@components/DashboardNavigation';
-import AidRequestsPage from './Dashboard/AidRequestsPage';
+import RequestsPage from './Dashboard/RequestsPage';
 import AccountSettingsPage from './Dashboard/AccountSettingsPage';
-import DashboardFooter from '@components/DashboardFooter';
 import { DashboardRoutesInterface } from '@interfaces/dashboard-router';
-import { useParams } from 'react-router-dom';
-import DonationsPage from './Dashboard/DonationsPage';
+import { useNavigate, useParams } from 'react-router-dom';
 import OverviewPage from './Dashboard/OverviewPage';
-import Loading from '@components/Loading';
 import { useContext, useEffect } from 'react';
 import DashboardContext from '../contexts/DashboardContext';
-import filterRequests from '@utils/filter-requests';
+import filterDocuments from '@utils/filter-documents';
+import ActionsPage from './Dashboard/ActionsPage';
 
 const routes: DashboardRoutesInterface = {
     overview: {
@@ -20,14 +18,14 @@ const routes: DashboardRoutesInterface = {
     },
     requests: {
         text: 'Requests',
-        component: <AidRequestsPage />,
+        component: <RequestsPage />,
         isRestricted: true,
     },
-    // donations: {
-    //     text: 'Donations',
-    //     component: <DonationsPage />,
-    //     isRestricted: true,
-    // },
+    actions: {
+        text: 'Actions',
+        component: <ActionsPage />,
+        isRestricted: true,
+    },
     settings: {
         text: 'Settings',
         component: <AccountSettingsPage />,
@@ -36,24 +34,43 @@ const routes: DashboardRoutesInterface = {
 };
 
 const DashboardPage = () => {
+    // get route from url
     let { route = 'overview' } = useParams();
-    const {
-        isLoading,
+
+    // get dashboard data from context
+    let {
         myOrganizations,
         fetchRequests,
+        fetchActions,
         requests,
         requestFilters,
+        actions,
+        actionFilters,
     } = useContext(DashboardContext);
+
+    // check if user is a member of any organizations
     const isOrganizationMember: boolean = !!myOrganizations?.length;
 
+    // check if there are any requests or actions
+    const hasRequests: boolean = !!Object.entries(
+        filterDocuments(requests, requestFilters)
+    ).length;
+    const hasActions: boolean = !!Object.entries(
+        filterDocuments(actions, actionFilters)
+    ).length;
+
+    // fetch documents if on route and no documents are present
     useEffect(() => {
-        if (
-            route === 'requests' &&
-            !Object.entries(filterRequests(requests, requestFilters)).length
-        ) {
+        if (route === 'requests' && !hasRequests) {
             fetchRequests();
+        } else if (route === 'actions' && !hasActions) {
+            fetchActions();
         }
     }, [route]);
+
+    // always redirect the user to overview page on first load
+    const navigate = useNavigate();
+    useEffect(() => navigate('/dashboard'), []);
 
     return (
         <Container>
@@ -63,7 +80,6 @@ const DashboardPage = () => {
                 isOrganizationMember={isOrganizationMember}
             />
             {routes[route].component}
-            <DashboardFooter />
         </Container>
     );
 };

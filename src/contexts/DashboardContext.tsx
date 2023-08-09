@@ -1,155 +1,73 @@
-import { Dispatch, createContext, useEffect, useState } from 'react';
-import RequestAidInterface from '@interfaces/request-aid';
-import DonationInterface from '@interfaces/donation';
-import OrganizationInterface from '@interfaces/organization';
+import { createContext, useEffect, useState } from 'react';
 import AccountInterface from '@interfaces/account';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import filterDocuments from '@utils/filter-documents';
+import { RequestStageKeyType } from '@custom-types/stages';
+import API from '@api/index';
+import { INITIAL_ACCOUNT_VALUES } from '@objects/initial-account-values';
 import app from '@api/init-app';
-import getMyOrganizations from '@api/get-my-organizations';
-import getMyAccount from '@api/get-my-account';
-import { FiltersInterface } from '@interfaces/filters';
-import getRequests from '@api/get-requests';
-import filterRequests from '@utils/filter-requests';
-import getIndividualRequest from '@api/get-individual-request';
-import { StageKeyType } from '@custom-types/stages';
-import updateRequestStage from '@api/update-request-stage';
-import getOrganizations from '@api/get-organizations';
-import getAccount from '@api/get-account';
-import accountInitialValues from '@objects/account-initial-values';
-import updateUserAccount from '@api/update-user-account';
-import updateOrganizationRequests from '@api/update-organization-requests';
-import getDisplayNames from '@api/get-display-names';
-import updateUserDisplayName from '@api/update-user-display-name';
-
-interface DashboardContextInterface {
-    isLoading: boolean;
-    uid: string;
-    requestFilters: FiltersInterface;
-    setRequestFilters: Dispatch<FiltersInterface>;
-    donationFilters: FiltersInterface;
-    setDonationFilters: Dispatch<FiltersInterface>;
-    myOrganizations: string[];
-    fetchAccount: (uid: string) => void;
-    updateAccount: (uid: string, account: AccountInterface) => void;
-    accounts: {
-        [key: string]: AccountInterface;
-    };
-    fetchOrganization: (uid: string) => void;
-    requestToJoinOrganization: (
-        userUID: string,
-        organizationUID: string
-    ) => void;
-    approveRequestToJoinOrganization: (
-        userUID: string,
-        organizationUID: string
-    ) => void;
-    organizations: {
-        [key: string]: OrganizationInterface;
-    };
-    displayNames: {
-        [key: string]: string;
-    };
-    fetchDisplayNames: () => void;
-    updateDisplayName: (name: string) => void;
-    fetchRequest: (uid: string) => void;
-    updateStage: (uid: string, request: StageKeyType) => void;
-    fetchRequests: () => void;
-    requests: {
-        [key: string]: RequestAidInterface;
-    };
-    fetchDonation: (uid: string) => void;
-    donations: {
-        [key: string]: DonationInterface;
-    };
-}
+import DashboardContextInterface from './dashboard/DashboardContextInterface';
+import { log } from '@helpers/log';
+import useDashboard from './dashboard/useDashboard';
+import OrganizationInterface from '@interfaces/organization';
+import { FrontendActionInterface } from '@interfaces/action';
 
 const auth = getAuth(app);
 const DashboardContext = createContext<DashboardContextInterface>(null);
-const defaultFilters: FiltersInterface = {
-    location: '',
-    language: '',
-    driver: '',
-    stage: 'submitted',
-    coordinator: '',
-};
-
-export const log: (message: string) => void = (message) =>
-    console.log(
-        `%c[communalists] ${message}`,
-        `
-            background-color: #bc3737;
-            color: #fff;
-            padding: 2px 5px;
-            border-radius: 3px;
-            margin: 5px 0;
-        `
-    );
 
 export const DashboardProvider = ({ children }) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [uid, setUid] = useState<string>('');
-    const [myOrganizations, setMyOrganizations] = useState<string[]>([]);
+    const {
+        isLoading,
+        setIsLoading,
+        uid,
+        setUid,
+        requestFilters,
+        setRequestFilters,
+        myOrganizations,
+        setMyOrganizations,
+        accounts,
+        setAccounts,
+        organizations,
+        setOrganizations,
+        requests,
+        setRequests,
+        displayNames,
+        setDisplayNames,
+        clearCache,
+        actionFilters,
+        setActionFilters,
+        actions,
+        setActions,
+    } = useDashboard();
 
-    const [requestFilters, setRequestFilters] =
-        useState<FiltersInterface>(defaultFilters);
-
-    const [donationFilters, setDonationFilters] =
-        useState<FiltersInterface>(defaultFilters);
-
-    const [accounts, setAccounts] = useState<{
-        [key: string]: AccountInterface;
-    }>({});
-
-    const [organizations, setOrganizations] = useState<{
-        [key: string]: OrganizationInterface;
-    }>({});
-
-    const [requests, setRequests] = useState<{
-        [key: string]: RequestAidInterface;
-    }>({});
-
-    const [donations, setDonations] = useState<{
-        [key: string]: DonationInterface;
-    }>({});
-
-    const [displayNames, setDisplayNames] = useState<{
-        [key: string]: string;
-    }>({});
-
-    const clearCache = () => {
-        setAccounts({});
-        setOrganizations({});
-        setRequests({});
-        setDonations({});
-    };
+    const [reads, setReads] = useState(0);
+    const [writes, setWrites] = useState(0);
 
     const initalDashboardFetch: (myUID: string) => Promise<void> = async (
         myUID
     ) => {
-        log('fetching user organizations');
-        const myOrganizationsResponse = await getMyOrganizations();
-        setMyOrganizations(myOrganizationsResponse);
-        log('fetching all organizations');
-        const organizationsResponse = await getOrganizations();
-        setOrganizations(organizationsResponse);
-        log('fetching user account');
-        const myAccountResponse = await getMyAccount();
+        const myOrganizationsResponse = await API.getMyOrganizations();
+        setMyOrganizations(Object.keys(myOrganizationsResponse));
+        setOrganizations(myOrganizationsResponse);
+        const myAccountResponse = await API.getMyAccount();
         setAccounts((previousState) => ({
             ...previousState,
             [myUID]: myAccountResponse,
         }));
-        log('fetching display names');
-        const displayNamesResponse = await getDisplayNames();
+        const displayNamesResponse = await API.getDisplayNames();
         setDisplayNames(displayNamesResponse);
+        setReads(
+            (previousState) =>
+                previousState + 2 + Object.keys(myOrganizationsResponse).length
+        );
     };
 
+    useEffect(() => log(`${reads} reads / ${writes} writes`), [reads, writes]);
+
     useEffect(() => {
-        log('initial dashboard fetch');
         onAuthStateChanged(auth, () => {
-            log('user auth state changed');
             setUid(auth?.currentUser?.uid ?? '');
             if (!auth?.currentUser?.uid) {
-                log('cleared cached data');
                 clearCache();
                 setIsLoading(false);
             } else {
@@ -162,7 +80,7 @@ export const DashboardProvider = ({ children }) => {
 
     useEffect(() => {
         if (
-            !Object.entries(filterRequests(requests, requestFilters)).length &&
+            !Object.entries(filterDocuments(requests, requestFilters)).length &&
             myOrganizations.length
         ) {
             fetchRequests();
@@ -170,20 +88,19 @@ export const DashboardProvider = ({ children }) => {
     }, [requestFilters]);
 
     const fetchAccount = async (id: string) => {
-        log(`fetching account: ${id}`);
         setIsLoading(true);
-        const account: AccountInterface = await getAccount(id);
+        const account: AccountInterface = await API.getAccount(id);
         setAccounts((prevState) => ({
             ...prevState,
-            [id]: account || accountInitialValues,
+            [id]: account || INITIAL_ACCOUNT_VALUES,
         }));
+        setReads((previousState) => previousState + 1);
         setIsLoading(false);
     };
 
     const updateAccount = async (id: string, account: AccountInterface) => {
-        log(`updating account: ${id}`);
         setIsLoading(true);
-        await updateUserAccount(id, account);
+        await API.updateUserAccount(id, account);
         setAccounts((previousState) => ({
             ...previousState,
             [id]: account,
@@ -192,11 +109,22 @@ export const DashboardProvider = ({ children }) => {
     };
 
     const fetchOrganization = async (id: string) => {
-        log(`fetching organization: ${id}`);
         setIsLoading(true);
         setOrganizations((prevState) => ({
             ...prevState,
         }));
+        setReads((previousState) => previousState + 1);
+        setIsLoading(false);
+    };
+
+    const addOrganization = async (value: OrganizationInterface) => {
+        setIsLoading(true);
+        const id = await API.addOrganization(value);
+        setOrganizations((prevState) => ({
+            ...prevState,
+            [id]: value,
+        }));
+        setMyOrganizations((prevState) => [...prevState, id]);
         setIsLoading(false);
     };
 
@@ -204,27 +132,7 @@ export const DashboardProvider = ({ children }) => {
         userUID: string,
         organizationUID: string
     ) => {
-        log(
-            `user ${userUID} requesting to join organization ${organizationUID}`
-        );
         setIsLoading(true);
-        const previousOrganizationState = organizations[organizationUID];
-        const request = await updateOrganizationRequests(
-            userUID,
-            organizationUID,
-            'requests'
-        );
-        if (request) {
-            setOrganizations((previousState) => ({
-                ...previousState,
-                [organizationUID]: {
-                    ...previousOrganizationState,
-                    requests: previousOrganizationState?.requests
-                        ? [...previousOrganizationState.requests, userUID]
-                        : [userUID],
-                },
-            }));
-        }
         setIsLoading(false);
     };
 
@@ -232,100 +140,96 @@ export const DashboardProvider = ({ children }) => {
         userUID: string,
         organizationUID: string
     ) => {
-        log(
-            `approving user ${userUID} to join organization ${organizationUID}`
-        );
         setIsLoading(true);
-        const previousOrganizationState = organizations[organizationUID];
-        const request = await updateOrganizationRequests(
-            userUID,
-            organizationUID,
-            'members'
-        );
-        if (request) {
-            setOrganizations((previousState) => ({
-                ...previousState,
-                [organizationUID]: {
-                    ...previousOrganizationState,
-                    requests: previousOrganizationState?.requests.filter(
-                        (item) => item !== userUID
-                    ),
-                    members: [...previousOrganizationState.members, userUID],
-                },
-            }));
-        }
         setIsLoading(false);
     };
 
-    const fetchRequest = async (id: string) => {
-        log(`fetching request: ${id}`);
+    const fetchRequest = async (id: string, organization: string) => {
         setIsLoading(true);
-        const request = await getIndividualRequest(id);
+        const request = await API.getIndividualRequest(id, organization);
         if (request) {
             setRequests((prevState) => ({
                 ...prevState,
                 [id]: request,
             }));
         }
+        setReads((previousState) => previousState + 1);
         setIsLoading(false);
     };
 
-    const updateStage = async (
+    const updateRequestStage = async (
         id: string,
-        stage: StageKeyType,
-        isDonation?: boolean
+        stage: RequestStageKeyType
     ) => {
-        log(`updating ${isDonation ? 'donation' : 'request'} stage: ${id}`);
         setIsLoading(true);
-        if (isDonation) {
-            // TODO: add logic for donation stage
-        } else {
-            await updateRequestStage(id, stage);
-            setRequests((previousState) => ({
-                ...previousState,
-                [id]: {
-                    ...previousState[id],
-                    stage,
-                },
-            }));
-        }
+        await API.updateRequestStage(id, stage);
+        setRequests((previousState) => ({
+            ...previousState,
+            [id]: {
+                ...previousState[id],
+                stage,
+            },
+        }));
         setIsLoading(false);
     };
 
     const fetchRequests = async () => {
-        log(`fetching requests using filters`);
         setIsLoading(true);
-        const response = await getRequests(requestFilters);
+        const response = await API.getRequests(requestFilters, myOrganizations);
         setRequests((prevState) => ({
             ...prevState,
             ...response,
         }));
-        setIsLoading(false);
-    };
-
-    const fetchDonation = async (id: string) => {
-        log(`fetching donation: ${id}`);
-        setIsLoading(true);
-        setDonations((prevState) => ({
-            ...prevState,
-        }));
-        setIsLoading(false);
-    };
-
-    const fetchDisplayNames = async () => {
-        log('fetching display names');
-        setIsLoading(true);
-        //
+        setReads(
+            (previousState) =>
+                previousState + (Object.keys(response).length || 1)
+        );
         setIsLoading(false);
     };
 
     const updateDisplayName = async (name: string) => {
-        log(`updating user's display name`);
         setIsLoading(true);
-        await updateUserDisplayName(name);
+        await API.updateUserDisplayName(name);
         setDisplayNames((previousState) => ({
             ...previousState,
             [uid]: name,
+        }));
+        setIsLoading(false);
+    };
+
+    const fetchAction = async (id: string, organization: string) => {
+        setIsLoading(true);
+        const action = await API.getIndividualAction(id, organization);
+        if (action) {
+            setActions((prevState) => ({
+                ...prevState,
+                [id]: action,
+            }));
+        }
+        setReads((previousState) => previousState + 1);
+        setIsLoading(false);
+    };
+
+    const fetchActions = async () => {
+        setIsLoading(true);
+        const response = await API.getActions(actionFilters, myOrganizations);
+        setActions((prevState) => ({
+            ...prevState,
+            ...response,
+        }));
+        setReads(
+            (previousState) =>
+                previousState + (Object.keys(response).length || 1)
+        );
+        setIsLoading(false);
+    };
+
+    const addAction = async (value: FrontendActionInterface) => {
+        setIsLoading(true);
+        const id = await API.addAction(value);
+        setActions((prevState) => ({
+            ...prevState,
+            [id]: value,
         }));
         setIsLoading(false);
     };
@@ -341,21 +245,23 @@ export const DashboardProvider = ({ children }) => {
                 fetchOrganization,
                 organizations,
                 fetchRequest,
-                updateStage,
+                updateRequestStage,
                 fetchRequests,
                 requests,
-                fetchDonation,
-                donations,
                 myOrganizations,
                 requestToJoinOrganization,
                 approveRequestToJoinOrganization,
                 requestFilters,
                 setRequestFilters,
-                donationFilters,
-                setDonationFilters,
                 displayNames,
-                fetchDisplayNames,
                 updateDisplayName,
+                actionFilters,
+                setActionFilters,
+                actions,
+                fetchAction,
+                fetchActions,
+                addAction,
+                addOrganization,
             }}
         >
             {children}

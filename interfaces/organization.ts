@@ -1,6 +1,17 @@
 import { Timestamp } from 'firebase/firestore';
 
-interface OrganizationInterface {
+export interface OrganizationMemberInterface {
+    isModerator: boolean;
+    isBlocked: boolean;
+    isOwner: boolean;
+    isMember: boolean;
+    addedBy: string;
+    blockedBy: string;
+    joined: Timestamp;
+    lastUpdated: Timestamp;
+}
+
+export interface OrganizationInterface {
     // basic info
     name: string;
     joined: Timestamp;
@@ -10,16 +21,12 @@ interface OrganizationInterface {
     website?: string;
     about?: string;
     phone?: number;
-    email?: number;
+    email?: string;
 
-    // moderators uids
-    moderators: string[];
-
-    // member uids
-    members: string[];
-
-    // member request uids
-    requests?: string[];
+    // members
+    members: {
+        [uid: string]: OrganizationMemberInterface;
+    };
 }
 
 export default OrganizationInterface;

@@ -14,7 +14,8 @@
             "@objects/*": ["./objects/*"],
             "@custom-types/*": ["./types/*"],
             "@api/*": ["./src/api/*"],
-            "@forms/*": ["./src/forms/*"]
+            "@forms/*": ["./src/forms/*"],
+            "@helpers/*": ["./src/helpers/*"]
         }
     }
 }

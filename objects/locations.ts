@@ -1,6 +1,6 @@
 import { LocationKeyType, LocationType } from '@custom-types/locations';
 
-const locations: { [key in LocationKeyType]: LocationType } = {
+export const LOCATIONS: { [key in LocationKeyType]: LocationType } = {
     'campbell-ca': 'Campbell',
     'cupertino-ca': 'Cupertino',
     'gilroy-ca': 'Gilroy',
@@ -12,5 +12,3 @@ const locations: { [key in LocationKeyType]: LocationType } = {
     'santa-clara-ca': 'Santa Clara',
     'sunnyvale-ca': 'Sunnyvale',
 };
-
-export default locations;

@@ -5,17 +5,18 @@ import { useFormik } from 'formik';
 import { Button, Form, InputGroup, Row } from 'react-bootstrap';
 import styled, { StyledComponent } from 'styled-components';
 import style from './style';
+import { FeatureType } from '@custom-types/feature';
+
+interface Props {
+    className: string;
+    id: string;
+    setIsSubmitting: any;
+    organization: string;
+    type: FeatureType;
+}
 
 const CommentsForm: StyledComponent = styled(
-    ({
-        className,
-        id,
-        setIsSubmitting,
-    }: {
-        className: string;
-        id: string;
-        setIsSubmitting: any;
-    }) => {
+    ({ className, id, setIsSubmitting, organization, type }: Props) => {
         const {
             handleChange,
             handleSubmit,
@@ -36,7 +37,9 @@ const CommentsForm: StyledComponent = styled(
                             ...value,
                             timestamp: Timestamp.fromDate(new Date()),
                         },
-                        id
+                        id,
+                        organization,
+                        type
                     );
                     resetForm();
                     setIsSubmitting(false);
@@ -53,12 +56,12 @@ const CommentsForm: StyledComponent = styled(
                         type="text"
                         onChange={handleChange}
                         value={body}
-                        placeholder="Coordinate with drivers and share updates on aid requests..."
+                        placeholder="Enter your comment"
                         required
                         disabled={isSubmitting}
                     />
                     <Button type="submit" disabled={isSubmitting}>
-                        Send Message
+                        Post
                     </Button>
                 </InputGroup>
             </Form>

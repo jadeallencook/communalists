@@ -9,7 +9,7 @@ import DayPagination from './components/DayPagination';
 import { useState } from 'react';
 import { daysArray, tagsArray } from '@objects/events';
 import { PeriodType, TagType } from '@interfaces/events';
-import locations from '@objects/locations';
+import { LOCATIONS } from '@objects/locations';
 
 const isAfterHours = (
     hour: number,
@@ -160,7 +160,7 @@ const EventsTable: StyledComponent = styled(
                                     <div className="address-container">
                                         <div className="fw-bold">{venue}</div>
                                         <a
-                                            href={`https://www.google.com/maps/place/${`${street} ${locations[location]}, CA ${zipcode}`}`}
+                                            href={`https://www.google.com/maps/place/${`${street} ${LOCATIONS[location]}, CA ${zipcode}`}`}
                                             target="_blank"
                                         >
                                             <Address

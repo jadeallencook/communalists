@@ -9,17 +9,21 @@ import {
 } from 'firebase/firestore';
 import app from './init-app';
 import CommentInterface from '@interfaces/comment';
+import { FeatureType } from '@custom-types/feature';
 
 const db = getFirestore(app);
 
 const addComment = async (
     value: CommentInterface,
-    id: string
+    id: string,
+    organization: string,
+    type: FeatureType
 ): Promise<any> => {
     const {
         currentUser: { uid: user },
     } = getAuth(app);
-    const docRef = doc(db, `threads/${id}`);
+    const path = `organizations/${organization}/${type}_threads/${id}`;
+    const docRef = doc(db, path);
     const docSnap = await getDoc(docRef);
     const comment = { ...value, user };
     const data = {

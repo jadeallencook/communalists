@@ -1,6 +1,13 @@
-import { StageType, StageKeyType } from '@custom-types/stages';
+import {
+    RequestStageType,
+    RequestStageKeyType,
+    ActionStageKeyType,
+    ActionStageType,
+} from '@custom-types/stages';
 
-const stages: { [key in StageKeyType]: StageType } = {
+export const REQUEST_STAGES: {
+    [key in RequestStageKeyType]: RequestStageType;
+} = {
     submitted: 'Received (1/4)',
     started: 'Coordinating (2/4)',
     ready: 'Ready (3/4)',
@@ -8,4 +15,11 @@ const stages: { [key in StageKeyType]: StageType } = {
     cancelled: 'Cancelled',
 };
 
-export default stages;
+export const ACTION_STAGES: {
+    [key in ActionStageKeyType]: ActionStageType;
+} = {
+    submitted: 'Unassigned',
+    started: 'Started',
+    complete: 'Complete',
+    cancelled: 'Cancelled',
+};

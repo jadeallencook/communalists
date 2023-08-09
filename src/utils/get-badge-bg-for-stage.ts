@@ -1,6 +1,6 @@
-import { StageKeyType } from '@custom-types/stages';
+import { RequestStageKeyType } from '@custom-types/stages';
 
-const getBadgeBgForStage = (stage: StageKeyType): string => {
+const getBadgeBgForStage = (stage: RequestStageKeyType): string => {
     if (stage === 'started') {
         return 'info';
     } else if (stage === 'ready') {

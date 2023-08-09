@@ -1,97 +1,60 @@
 import styled, { StyledComponent } from 'styled-components';
 import { Button, Form, InputGroup } from 'react-bootstrap';
-import languages from '@objects/languages';
-import locations from '@objects/locations';
-import stages from '@objects/stages';
-import { FiltersInterface } from '@interfaces/filters';
-import { LanguageKeyType } from '@custom-types/languages';
-import { LocationKeyType } from '@custom-types/locations';
-import { StageKeyType } from '@custom-types/stages';
 import style from './style';
-import { DriverKeyType } from '@custom-types/driver';
-import drivers from '@objects/drivers';
-import { useContext } from 'react';
-import DashboardContext from '../../contexts/DashboardContext';
+import { FormFilterInterface } from '@interfaces/filters';
+
+interface Props {
+    className: string;
+    filters: FormFilterInterface[];
+    setFilters: (value: any) => void;
+    refetch: () => void;
+    toggleCreate?: () => void;
+}
 
 const FilterForm: StyledComponent = styled(
-    ({
-        className,
-        filters,
-        setFilters,
-        setRefetch,
-    }: {
-        className: string;
-        filters: FiltersInterface;
-        setFilters: (value: FiltersInterface) => void;
-        setRefetch: (value: boolean) => void;
-    }) => {
-        const { location, language, driver, stage, coordinator } = filters;
-        const { fetchRequests, uid } = useContext(DashboardContext);
+    ({ className, filters, setFilters, refetch, toggleCreate }: Props) => {
         return (
             <Form className={className}>
                 <InputGroup>
-                    <Form.Select
-                        as="select"
-                        name="driver"
-                        value={driver}
-                        size="sm"
-                        onChange={(e) =>
-                            setFilters({
-                                ...filters,
-                                driver: e.target.value as DriverKeyType,
-                            })
-                        }
-                    >
-                        <option value={''}>Any Driver Status</option>
-                        {Object.entries(drivers).map(([key, value]) => (
-                            <option key={key} value={key}>
-                                {value}
-                            </option>
-                        ))}
-                    </Form.Select>
-                    <Form.Select
-                        as="select"
-                        name="stages"
-                        value={stage}
-                        size="sm"
-                        onChange={(e) =>
-                            setFilters({
-                                ...filters,
-                                stage: e.target.value as StageKeyType,
-                            })
-                        }
-                    >
-                        {Object.entries(stages).map(([key, value]) => (
-                            <option key={key} value={key}>
-                                {value}
-                            </option>
-                        ))}
-                    </Form.Select>
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => {
-                            setFilters({
-                                ...filters,
-                                coordinator: filters.coordinator ? '' : uid,
-                            });
-                        }}
-                    >
-                        <span className="tablet-remove">Only</span> Yours
-                    </Button>
-                    <InputGroup.Checkbox
-                        checked={coordinator}
-                        aria-label="view only the requests you are coordinating or driving"
-                        onChange={() => {
-                            setFilters({
-                                ...filters,
-                                coordinator: filters.coordinator ? '' : uid,
-                            });
-                        }}
-                    />
-                    <Button size="sm" onClick={() => fetchRequests()}>
+                    {filters.map(
+                        ({
+                            name,
+                            value,
+                            defaultValue,
+                            options,
+                        }: FormFilterInterface) => (
+                            <Form.Select
+                                key={name}
+                                as="select"
+                                name={name}
+                                value={value}
+                                size="sm"
+                                onChange={(e) =>
+                                    setFilters((prev) => ({
+                                        ...prev,
+                                        [name]: e.target.value,
+                                    }))
+                                }
+                            >
+                                {defaultValue && (
+                                    <option value={''}>{defaultValue}</option>
+                                )}
+                                {Object.entries(options).map(([key, value]) => (
+                                    <option key={key} value={key}>
+                                        {value}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        )
+                    )}
+                    <Button size="sm" variant="secondary" onClick={refetch}>
                         Refresh
                     </Button>
+                    {toggleCreate && (
+                        <Button size="sm" onClick={toggleCreate}>
+                            Create
+                        </Button>
+                    )}
                 </InputGroup>
             </Form>
         );

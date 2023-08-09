@@ -1,12 +1,31 @@
 import { DriverKeyType } from '../types/driver';
 import { LanguageKeyType } from '../types/languages';
 import { LocationKeyType } from '../types/locations';
-import { StageKeyType } from '../types/stages';
+import { RequestStageKeyType, ActionStageKeyType } from '../types/stages';
 
-export interface FiltersInterface {
+export interface FormFilterInterface {
+    name: string;
+    value: string;
+    options?: { [key: string]: string };
+    defaultValue?: string;
+}
+
+export interface SharedFiltersInterface {
+    coordinator: string;
+    organization: string;
+}
+
+export interface RequestFiltersInterface extends SharedFiltersInterface {
     location: LocationKeyType | '';
     language: LanguageKeyType | '';
     driver: DriverKeyType | '';
-    stage: StageKeyType | '';
-    coordinator: string;
+    stage: RequestStageKeyType | '';
 }
+
+export interface ActionFiltersInterface extends SharedFiltersInterface {
+    stage: ActionStageKeyType | '';
+}
+
+export type AnyFiltersInterface =
+    | RequestFiltersInterface
+    | ActionFiltersInterface;

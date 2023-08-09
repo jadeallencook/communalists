@@ -1,22 +1,22 @@
 import getIndividualRequest from '@api/get-individual-request';
 import Loading from '@components/Loading';
 import ViewRequestForm from '@forms/ViewRequestForm';
-import RequestAidInterface from '@interfaces/request-aid';
+import { FrontendRequestInterface } from '@interfaces/request';
 import timestampToDateString from '@utils/timestamp-to-date-string';
 import { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const ViewRequestPage = () => {
-    const { uid } = useParams();
-    const [request, setRequest] = useState<RequestAidInterface | undefined>(
-        undefined
-    );
+    const { uid, organization } = useParams();
+    const [request, setRequest] = useState<
+        FrontendRequestInterface | undefined
+    >(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const navigate = useNavigate();
 
     useEffect(() => {
-        getIndividualRequest(uid).then((res) => {
+        getIndividualRequest(uid, organization).then((res) => {
             setRequest(res);
             setIsLoading(false);
         });

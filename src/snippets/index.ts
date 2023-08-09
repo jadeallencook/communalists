@@ -5,7 +5,6 @@ import footer from './footer';
 import signUpForm from './sign-up-form';
 import navigation from './navigation';
 import logInForm from './login-form';
-import donateForm from './donate';
 import eventsPage from './events-page';
 
 export type ComponentType =
@@ -15,8 +14,7 @@ export type ComponentType =
     | 'sign-up-form'
     | 'navigation'
     | 'log-in-form'
-    | 'events-page'
-    | 'donate-form';
+    | 'events-page';
 
 export interface SnippetInterface {
     [key: string]: {
@@ -34,7 +32,6 @@ const snippets: {
     'sign-up-form': signUpForm,
     navigation,
     'log-in-form': logInForm,
-    'donate-form': donateForm,
 };
 
 export default snippets;

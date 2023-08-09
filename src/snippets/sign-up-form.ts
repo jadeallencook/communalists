@@ -1,18 +1,30 @@
 import { SnippetInterface } from '.';
 
 const signUpForm: SnippetInterface = {
+    ['display-name.label']: {
+        english: 'Display Name',
+        spanish: 'Nombre Para Mostrar',
+        vietnamese: 'Tên Hiển Thị',
+        chinese: '显示名称',
+    },
+    ['display-name.placeholder']: {
+        english: 'Enter your display name',
+        spanish: 'Ingrese su nombre para mostrar',
+        vietnamese: 'Nhập tên hiển thị của bạn',
+        chinese: '输入您的显示名称',
+    },
     ['description']: {
         english:
-            "By joining our network of volunteers, you'll have the opportunity to connect with others in your area who are passionate about supporting those in need. Together, we can help ensure that everyone in our community has access to the resources and support they need to thrive.",
+            'Setup an account to connect with local organizations or create your own to address community needs through direct action.',
         spanish:
-            'Al unirse a nuestra red de voluntarios, tendrá la oportunidad de conectarse con otras personas en su área que sienten pasión por apoyar a los necesitados. Juntos, podemos ayudar a garantizar que todos en nuestra comunidad tengan acceso a los recursos y el apoyo que necesitan para prosperar.',
+            'Configure una cuenta para conectarse con organizaciones locales o cree la suya propia para abordar las necesidades de la comunidad a través de la acción directa.',
         vietnamese:
-            'Khi tham gia mạng lưới tình nguyện viên của chúng tôi, bạn sẽ có cơ hội kết nối với những người khác trong khu vực của mình, những người nhiệt tình hỗ trợ những người gặp khó khăn. Cùng nhau, chúng ta có thể giúp đảm bảo rằng mọi người trong cộng đồng của chúng ta đều có quyền truy cập vào các nguồn lực và sự hỗ trợ mà họ cần để phát triển.',
+            'Thiết lập tài khoản để kết nối với các tổ chức địa phương hoặc tạo tài khoản của riêng bạn để đáp ứng nhu cầu của cộng đồng thông qua hành động trực tiếp.',
         chinese:
-            '通过加入我们的志愿者网络，您将有机会与您所在地区热衷于支持有需要的人的其他人建立联系。 我们可以一起帮助确保我们社区中的每个人都能获得他们茁壮成长所需的资源和支持。',
+            '设置帐户以与当地组织联系，或创建自己的帐户以通过直接行动满足社区需求。',
     },
     ['header']: {
-        english: 'Become A Volunteer',
+        english: 'Join The Revolution',
         spanish: 'Conviértete En Voluntaria',
         vietnamese: 'Trở Thành Tình Nguyện Viên',
         chinese: '成为志愿者',

@@ -17,9 +17,10 @@ import {
     QueryClient,
     QueryClientProvider,
 } from 'react-query';
-import { DashboardProvider, log } from './contexts/DashboardContext';
+import { DashboardProvider } from './contexts/DashboardContext';
 import toast, { ToastBar, Toaster } from 'react-hot-toast';
 import { Button } from 'react-bootstrap';
+import { log } from './helpers/log';
 
 // components
 const elem = document.getElementById('root')!;

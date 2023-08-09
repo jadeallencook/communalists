@@ -1,14 +1,14 @@
 import { Accordion, Button, Form, Modal } from 'react-bootstrap';
-import locations from '@objects/locations';
-import languages from '@objects/languages';
-import methods from '@objects/methods';
-import stages from '@objects/stages';
+import { LOCATIONS } from '@objects/locations';
+import { LANGUAGES } from '@objects/languages';
+import { CONTACT_METHODS } from '@objects/contact-methods';
+import { REQUEST_STAGES } from '@objects/stages';
 import { useContext, useState } from 'react';
-import { StageKeyType } from '@custom-types/stages';
+import { RequestStageKeyType } from '@custom-types/stages';
 import Comments from './Comments';
 import style from './style';
 import styled, { StyledComponent } from 'styled-components';
-import RequestAidInterface from '@interfaces/request-aid';
+import { FrontendRequestInterface } from '@interfaces/request';
 import CopyLinkButton from './CopyLinkButton';
 import VolunteerForm from '@forms/VolunteerForm';
 import DashboardContext from '../../contexts/DashboardContext';
@@ -24,7 +24,7 @@ const ViewRequestForm: StyledComponent = styled(
     }: {
         className: string;
         uid: string;
-        request: RequestAidInterface;
+        request: FrontendRequestInterface;
         handler?: (id?: string, shouldRefetch?: boolean) => void;
         selected: string;
         isModal?: boolean;
@@ -42,16 +42,16 @@ const ViewRequestForm: StyledComponent = styled(
             coordinator,
         } = request;
 
-        const [stage, setStage] = useState<StageKeyType>(request.stage);
-        const { updateStage, isLoading } = useContext(DashboardContext);
+        const [stage, setStage] = useState<RequestStageKeyType>(request.stage);
+        const { updateRequestStage, isLoading } = useContext(DashboardContext);
 
         const handleSubmitModal = async () => {
-            await updateStage(selected, stage);
+            await updateRequestStage(selected, stage);
             handler(null, true);
         };
 
         const handleSubmit = async () => {
-            await updateStage(selected, stage);
+            await updateRequestStage(selected, stage);
         };
         const save = async () => {
             isModal ? handleSubmitModal() : handleSubmit();
@@ -86,7 +86,7 @@ const ViewRequestForm: StyledComponent = styled(
                             <Form.Group className="mb-3">
                                 <Form.Label>Spoken Language</Form.Label>
                                 <Form.Select defaultValue={language} disabled>
-                                    {Object.entries(languages).map(
+                                    {Object.entries(LANGUAGES).map(
                                         ([key, value]) => (
                                             <option key={key} value={key}>
                                                 {value}
@@ -98,7 +98,7 @@ const ViewRequestForm: StyledComponent = styled(
                             <Form.Group className="mb-3">
                                 <Form.Label>Location</Form.Label>
                                 <Form.Select defaultValue={location} disabled>
-                                    {Object.entries(locations).map(
+                                    {Object.entries(LOCATIONS).map(
                                         ([key, value]) => (
                                             <option key={key} value={key}>
                                                 {value}
@@ -126,7 +126,7 @@ const ViewRequestForm: StyledComponent = styled(
                                     Preferred Contact Method
                                 </Form.Label>
                                 <Form.Select defaultValue={method} disabled>
-                                    {Object.entries(methods).map(
+                                    {Object.entries(CONTACT_METHODS).map(
                                         ([key, value]) => (
                                             <option key={key} value={key}>
                                                 {value}
@@ -157,7 +157,7 @@ const ViewRequestForm: StyledComponent = styled(
                     <Accordion.Item eventKey="1">
                         <Accordion.Header>Communication</Accordion.Header>
                         <Accordion.Body>
-                            <Comments id={selected} />
+                            <Comments id={selected} type="request" />
                         </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="2">
@@ -169,11 +169,12 @@ const ViewRequestForm: StyledComponent = styled(
                                     defaultValue={stage}
                                     onChange={(event) =>
                                         setStage(
-                                            event.target.value as StageKeyType
+                                            event.target
+                                                .value as RequestStageKeyType
                                         )
                                     }
                                 >
-                                    {Object.entries(stages).map(
+                                    {Object.entries(REQUEST_STAGES).map(
                                         ([key, value]) => (
                                             <option key={key} value={key}>
                                                 {value}

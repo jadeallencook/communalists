@@ -5,7 +5,6 @@ import DashboardPage from '@pages/DashboardPage';
 import SignInPage from '@pages/SignInPage';
 import ViewRequestPage from '@pages/ViewRequestPage';
 import SignUpPage from '@pages/SignUpPage';
-import DonatePage from '@pages/Donate';
 import ForgotPasswordPage from '@pages/ForgotPassword';
 import EventsPage from '@pages/EventsPage';
 import HomePage from '@pages/HomePage';
@@ -43,10 +42,6 @@ const routes: Route[] = [
     {
         path: '/sign-up',
         element: <SignUpPage />,
-    },
-    {
-        path: '/donate',
-        element: <DonatePage />,
     },
     {
         path: '/forgot-password',

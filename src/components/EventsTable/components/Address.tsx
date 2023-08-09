@@ -1,8 +1,8 @@
-import locations from '@objects/locations';
+import { LOCATIONS } from '@objects/locations';
 
 export const Address = ({ street, location, zipcode }) => (
     <>
         <div>{street}</div>
-        <div>{`${locations[location]}, CA ${zipcode}`}</div>
+        <div>{`${LOCATIONS[location]}, CA ${zipcode}`}</div>
     </>
 );

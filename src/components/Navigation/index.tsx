@@ -11,7 +11,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import LogoPNG from '@assets/logo.png';
 import { useContext, useState } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
-import languages from '@objects/languages';
+import { LANGUAGES } from '@objects/languages';
 import { LanguageKeyType } from '@custom-types/languages';
 import DashboardContext from '../../contexts/DashboardContext';
 import app from '@api/init-app';
@@ -47,17 +47,6 @@ const Links = ({
                 onClick={toggleMobileNavigation}
             >
                 {snippet('submit-request', 'navigation')}
-            </Link>
-            <Link
-                className={
-                    pathname.indexOf('/donate') === 0
-                        ? 'active nav-link'
-                        : 'nav-link'
-                }
-                to="/donate"
-                onClick={toggleMobileNavigation}
-            >
-                {snippet('donate', 'navigation')}
             </Link>
             <Link
                 className={
@@ -101,11 +90,11 @@ const Links = ({
                 </Link>
             )}
             <NavDropdown
-                title={languages[language]}
+                title={LANGUAGES[language]}
                 menuVariant="dark"
                 onSelect={(key: LanguageKeyType) => setLanguage(key)}
             >
-                {Object.entries(languages).map(([key, text]) => (
+                {Object.entries(LANGUAGES).map(([key, text]) => (
                     <NavDropdown.Item
                         key={key}
                         active={key === language}

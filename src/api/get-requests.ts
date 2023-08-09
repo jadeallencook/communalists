@@ -1,6 +1,8 @@
-import { FiltersInterface } from '@interfaces/filters';
-import RequestAidInterface from '@interfaces/request-aid';
-import { getAuth } from 'firebase/auth';
+import { RequestFiltersInterface } from '@interfaces/filters';
+import {
+    BackendRequestInterface,
+    FrontendRequestInterface,
+} from '@interfaces/request';
 import {
     getFirestore,
     getDocs,
@@ -13,27 +15,35 @@ import app from './init-app';
 const db = getFirestore(app);
 
 const getRequests = async (
-    filters?: FiltersInterface
-): Promise<{ [key: string]: RequestAidInterface }> => {
+    filters: RequestFiltersInterface,
+    organizations: string[]
+): Promise<{ [key: string]: FrontendRequestInterface }> => {
     const { location, language, stage, driver, coordinator } = filters;
-    const ref = collection(db, 'requests');
     const requests = {};
+    for (let organization of organizations) {
+        if (organization) {
+            const path = `organizations/${organization}/requests`;
+            const ref = collection(db, path);
+            const wheres = [
+                location && where('location', '==', location),
+                language && where('language', '==', language),
+                where('stage', '==', stage || 'submitted'),
+                driver && where('hasDriver', '==', driver === 'assigned'),
+                coordinator && where('coordinator', '==', coordinator),
+            ].filter((filter) => Boolean(filter) !== false);
 
-    const wheres = [
-        location && where('location', '==', location),
-        language && where('language', '==', language),
-        where('stage', '==', stage || 'submitted'),
-        driver && where('hasDriver', '==', driver === 'assigned'),
-        coordinator && where('coordinator', '==', coordinator),
-    ].filter((filter) => Boolean(filter) !== false);
+            const q = query(ref, ...wheres);
 
-    const q = query(ref, ...wheres);
+            const snapshot = await getDocs(q);
 
-    const snapshot = await getDocs(q);
-
-    snapshot.forEach((doc) => {
-        requests[doc.id] = doc.data();
-    });
+            snapshot.forEach((doc) => {
+                requests[doc.id] = {
+                    ...(doc.data() as BackendRequestInterface),
+                    organization,
+                };
+            });
+        }
+    }
 
     return requests;
 };

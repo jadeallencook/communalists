@@ -15,11 +15,13 @@ interface RequestsTableInterface {
     className: string;
     columns: Columns;
     formatters?: { [key: string]: (value: any) => string | ReactNode };
+    type: 'Request' | 'Action';
 }
 
-const ResultCount = ({ count }: { count: number }) => (
+const ResultCount = ({ count, type }: { count: number; type: string }) => (
     <h3>
-        {count} Result{count > 1 || !count ? 's' : ''}
+        {count} <span style={{ textTransform: 'capitalize' }}>{type}</span>
+        {count > 1 || !count ? 's' : ''}
     </h3>
 );
 
@@ -31,13 +33,14 @@ const RequestsTable: StyledComponent = styled(
         className,
         columns,
         formatters = {},
+        type,
     }: RequestsTableInterface) => {
         requests = formatRequests(requests);
         return !loaded ? (
             <Loading />
         ) : (
             <div className={className}>
-                <ResultCount count={requests.length} />
+                <ResultCount count={requests.length} type={type} />
                 <Table striped bordered hover variant="dark">
                     {requests.length ? (
                         <>
@@ -72,13 +75,13 @@ const RequestsTable: StyledComponent = styled(
                             <tr>
                                 <td colSpan={6} style={{ textAlign: 'center' }}>
                                     <b>
-                                        There are currently no requests that
+                                        There are currently no {type}s that
                                         match that search criteria.
                                     </b>
                                     <br />
                                     <small>
                                         Please adjust the filters above to find
-                                        matching requests.
+                                        matching {type}s.
                                     </small>
                                 </td>
                             </tr>

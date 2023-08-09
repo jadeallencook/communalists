@@ -1,38 +1,34 @@
-import OrganizationsCard from '@components/OrganizationsCard';
 import Loading from '@components/Loading';
 import { useContext, useEffect, useState } from 'react';
 import DashboardContext from '../../contexts/DashboardContext';
-import OrganizationModal from '@components/OrganizationModal';
+import NewAccount from '@components/NewAccount';
+import { Button } from 'react-bootstrap';
+import CreateOrganizationModal from '@components/CreateOrganizationModal';
+import OrganizationsList from '@components/OrganizationsList';
 
 const OverviewPage = () => {
-    const { organizations, isLoading, fetchOrganization } =
-        useContext(DashboardContext);
-    const [selectedOrganizationId, setSelectedOrganizationId] =
-        useState<string>('');
-    const selectedOrganization = organizations[selectedOrganizationId];
+    const { isLoading, myOrganizations } = useContext(DashboardContext);
+    const [isCreateOrganizationModalOpen, setIsCreateOrganizationModalOpen] =
+        useState<boolean>(false);
+    const isMemberOfOrganization = myOrganizations.length > 0;
 
-    useEffect(() => {
-        if (selectedOrganizationId) {
-            fetchOrganization(selectedOrganizationId);
-        }
-    }, [selectedOrganizationId]);
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <>
-            {isLoading && !selectedOrganizationId ? (
-                <Loading />
-            ) : (
-                !!Object.keys(organizations).length && (
-                    <OrganizationsCard
-                        organizations={organizations}
-                        setSelected={setSelectedOrganizationId}
-                    />
-                )
-            )}
-            <OrganizationModal
-                selectedOrganizationId={selectedOrganizationId}
-                setSelectedOrganizationId={setSelectedOrganizationId}
-                selectedOrganization={selectedOrganization}
+            {isMemberOfOrganization ? <OrganizationsList /> : <NewAccount />}
+            <Button
+                onClick={() =>
+                    setIsCreateOrganizationModalOpen((prev) => !prev)
+                }
+            >
+                Start An Organization
+            </Button>
+            <CreateOrganizationModal
+                show={isCreateOrganizationModalOpen}
+                toggle={() => setIsCreateOrganizationModalOpen((prev) => !prev)}
             />
         </>
     );

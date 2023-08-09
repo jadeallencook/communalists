@@ -1,28 +1,15 @@
-import {
-    getFirestore,
-    collection,
-    addDoc,
-    Timestamp,
-} from 'firebase/firestore';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import app from './init-app';
-import { getAuth } from 'firebase/auth';
 import OrganizationInterface from '@interfaces/organization';
 
 const db = getFirestore(app);
 
-const addOrganization = async (name: string): Promise<any> => {
-    const {
-        currentUser: { uid },
-    } = getAuth(app);
-    const organization: OrganizationInterface = {
-        name,
-        moderators: [uid],
-        members: [uid],
-        joined: Timestamp.fromDate(new Date()),
-        lastUpdated: Timestamp.fromDate(new Date()),
-    };
-    const response = await addDoc(collection(db, 'organizations'), organization)
-        .then((response) => response)
+const addOrganization = async (
+    organization: OrganizationInterface
+): Promise<any> => {
+    const path = 'organizations';
+    const response = await addDoc(collection(db, path), organization)
+        .then((response) => response?.id)
         .catch((error) => error);
     return response;
 };

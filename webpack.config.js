@@ -34,6 +34,7 @@ module.exports = {
 			'@custom-types': path.resolve(__dirname, 'types'),
 			'@api': path.resolve(__dirname, 'src/api'),
 			'@forms': path.resolve(__dirname, 'src/forms'),
+			'@helpers': path.resolve(__dirname, 'src/helpers'),
 		},
 	},
 	module: {

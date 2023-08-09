@@ -4,14 +4,14 @@ import styled, { StyledComponent } from 'styled-components';
 import style from './style';
 import { useContext } from 'react';
 import SnippetContext from '../../contexts/SnippetContext';
-import locations from '@objects/locations';
 import Loading from '@components/Loading';
-import accountInitialValues from '@objects/account-initial-values';
+import { INITIAL_ACCOUNT_VALUES } from '@objects/initial-account-values';
 import SignUpInterface from '@interfaces/sign-up';
 import { signUp } from '@api/auth';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import DashboardContext from '../../contexts/DashboardContext';
 
 const SignUpForm: StyledComponent = styled(({ className }) => {
     const { snippet } = useContext(SnippetContext);
@@ -28,10 +28,10 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
         handleChange,
         handleSubmit,
         isSubmitting,
-        values: { name, email, location, password, confirmedPassword },
+        values: { name, email, password, confirmedPassword },
     } = useFormik<SignUpInterface>({
         initialValues: {
-            ...accountInitialValues,
+            ...INITIAL_ACCOUNT_VALUES,
             email: '',
             password: '',
             confirmedPassword: '',
@@ -39,6 +39,7 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
         },
         onSubmit: (values) => mutateAsync(values),
     });
+
     return isSubmitting ? (
         <Loading />
     ) : (
@@ -46,12 +47,17 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
             <h1>{snippet('header', 'sign-up-form')}</h1>
             <p>{snippet('description', 'sign-up-form')}</p>
             <Form.Group className="mb-3">
-                <Form.Label>{snippet('name.label')}</Form.Label>
+                <Form.Label>
+                    {snippet('display-name.label', 'sign-up-form')}
+                </Form.Label>
                 <Form.Control
                     id="name"
                     name="name"
                     type="text"
-                    placeholder={snippet('name.placeholder')}
+                    placeholder={snippet(
+                        'display-name.placeholder',
+                        'sign-up-form'
+                    )}
                     onChange={handleChange}
                     value={name}
                     required
@@ -94,21 +100,6 @@ const SignUpForm: StyledComponent = styled(({ className }) => {
                     value={confirmedPassword}
                     required
                 />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>{snippet('location.label')}</Form.Label>
-                <Form.Select
-                    onChange={handleChange}
-                    value={location}
-                    name="location"
-                    id="location"
-                >
-                    {Object.entries(locations).map(([key, value]) => (
-                        <option key={key} value={key}>
-                            {value}
-                        </option>
-                    ))}
-                </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
                 <Button type="submit">
