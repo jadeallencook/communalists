@@ -2,7 +2,9 @@ import StageManager from '@components/StageManager';
 import Comments from '@forms/ViewRequestForm/Comments';
 import VolunteerForm from '@forms/VolunteerForm';
 import { FrontendActionInterface } from '@interfaces/action';
+import { useContext, useEffect } from 'react';
 import { Card, Modal } from 'react-bootstrap';
+import DashboardContext from '../../contexts/DashboardContext';
 
 interface Props {
     action: FrontendActionInterface;
@@ -13,6 +15,10 @@ interface Props {
 
 const ViewActionModal = ({ action, actionId, show, toggle }: Props) => {
     const { coordinator, organization, stage } = action;
+    const { fetchAction } = useContext(DashboardContext);
+    useEffect(() => {
+        fetchAction(actionId, organization);
+    }, []);
     return (
         <Modal show={show} onHide={toggle} size="lg">
             <Modal.Header closeButton>

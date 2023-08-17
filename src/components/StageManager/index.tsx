@@ -4,8 +4,7 @@ import style from './style';
 import { FeatureType } from '@custom-types/feature';
 import { ACTION_STAGES, REQUEST_STAGES } from '@objects/stages';
 import { AnyStageKeyType } from '@custom-types/stages';
-import { useContext, useEffect, useState } from 'react';
-import API from '@api/index';
+import { useContext, useEffect, useRef, useState } from 'react';
 import DashboardContext from '../../contexts/DashboardContext';
 
 interface Props {
@@ -21,8 +20,12 @@ const StageManager: StyledComponent = styled(
         const { updateStage, isLoading } = useContext(DashboardContext);
         const STAGES = type === 'request' ? REQUEST_STAGES : ACTION_STAGES;
         const [stage, setStage] = useState<AnyStageKeyType>(currentStage);
+        const didMountRef = useRef(false);
         useEffect(() => {
-            updateStage(id, stage, organization, type);
+            if (didMountRef.current) {
+                updateStage(id, stage, organization, type);
+            }
+            didMountRef.current = true;
         }, [stage]);
         return (
             <Form.Group className={`${className} mb-3`}>

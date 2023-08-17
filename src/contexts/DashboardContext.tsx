@@ -12,7 +12,7 @@ import useDashboard from './dashboard/useDashboard';
 import OrganizationInterface from '@interfaces/organization';
 import { FrontendActionInterface } from '@interfaces/action';
 import { FeatureType } from '@custom-types/feature';
-import { set } from 'firebase/database';
+import { ActionFiltersInterface } from '@interfaces/filters';
 
 const auth = getAuth(app);
 const DashboardContext = createContext<DashboardContextInterface>(null);
@@ -182,6 +182,9 @@ export const DashboardProvider = ({ children }) => {
         setIsLoading(true);
         await API.updateStage(id, stage, organization, type);
         if (type === 'action') {
+            const filters = { ...actionFilters, stage };
+            const filteredDocuments = filterDocuments(actions, filters);
+            const numberDocuments = Object.keys(filteredDocuments).length;
             setActions((previousState) => ({
                 ...previousState,
                 [id]: {
@@ -189,6 +192,12 @@ export const DashboardProvider = ({ children }) => {
                     stage,
                 },
             }));
+            /*
+             * we need to fetch actions in the stage we move this one to
+             * this is because we only fetch actions for empty stages
+             * to avoid fetching actions multiple times
+             */
+            if (!numberDocuments) await fetchActions(filters);
         } else if (type === 'request') {
             setRequests((previousState) => ({
                 ...previousState,
@@ -231,16 +240,22 @@ export const DashboardProvider = ({ children }) => {
         if (action) {
             setActions((prevState) => ({
                 ...prevState,
-                [id]: action,
+                [id]: {
+                    ...action,
+                    organization,
+                },
             }));
         }
         setReads((previousState) => previousState + 1);
         setIsLoading(false);
     };
 
-    const fetchActions = async () => {
+    const fetchActions = async (filters?: ActionFiltersInterface) => {
         setIsLoading(true);
-        const response = await API.getActions(actionFilters, myOrganizations);
+        const response = await API.getActions(
+            filters || actionFilters,
+            myOrganizations
+        );
         setActions((prevState) => ({
             ...prevState,
             ...response,
