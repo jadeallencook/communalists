@@ -24,7 +24,7 @@ export default interface DashboardContextInterface {
     };
 
     // organizations
-    fetchOrganization: (uid: string) => void;
+    fetchOrganization: (id: string) => void;
     requestToJoinOrganization: (
         userUID: string,
         organizationUID: string

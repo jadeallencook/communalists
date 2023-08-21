@@ -13,232 +13,244 @@ import Tooltip from '@components/Tooltip';
 import SnippetContext from '../../contexts/SnippetContext';
 import formatPhoneNumer from '@utils/format-phone-number';
 import Loading from '@components/Loading';
+import OrganizationInterface from '@interfaces/organization';
+import { useParams } from 'react-router-dom';
 
-const RequestAidForm: StyledComponent = styled(({ className }) => {
-    const [success, setSuccess] = useState(false);
-    const { snippet, language: defaultLanguage } = useContext(SnippetContext);
-    const {
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-        setFieldValue,
-        values: {
-            name,
-            email,
-            location,
-            phone,
-            language,
-            method,
-            health,
-            needs,
-        },
-    } = useFormik<BackendRequestInterface>({
-        initialValues: {
-            name: '',
-            email: '',
-            phone: '',
-            location: 'santa-clara-ca',
-            language: defaultLanguage,
-            method: 'email',
-            health: '',
-            needs: '',
-            stage: 'submitted',
-            timestamp: Timestamp.fromDate(new Date()),
-            driver: '',
-            hasDriver: false,
-            coordinator: '',
-        },
-        onSubmit: (values) =>
-            addRequest(values, 'GTz1zYcGS9aPrgj6AsEW').then(() =>
-                setSuccess(true)
-            ),
-    });
+const RequestAidForm: StyledComponent = styled(
+    ({
+        className,
+        organization,
+    }: {
+        className: string;
+        organization: OrganizationInterface;
+    }) => {
+        const { id } = useParams();
+        const [success, setSuccess] = useState(false);
+        const { snippet, language: defaultLanguage } =
+            useContext(SnippetContext);
+        const {
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            setFieldValue,
+            values: {
+                name,
+                email,
+                location,
+                phone,
+                language,
+                method,
+                health,
+                needs,
+            },
+        } = useFormik<BackendRequestInterface>({
+            initialValues: {
+                name: '',
+                email: '',
+                phone: '',
+                location: 'santa-clara-ca',
+                language: defaultLanguage,
+                method: 'email',
+                health: '',
+                needs: '',
+                stage: 'submitted',
+                timestamp: Timestamp.fromDate(new Date()),
+                driver: '',
+                hasDriver: false,
+                coordinator: '',
+            },
+            onSubmit: (values) =>
+                addRequest(values, id).then(() => setSuccess(true)),
+        });
 
-    const phoneHandler = (event) => {
-        const formatted = formatPhoneNumer(event);
-        setFieldValue('phone', formatted);
-    };
+        const phoneHandler = (event) => {
+            const formatted = formatPhoneNumer(event);
+            setFieldValue('phone', formatted);
+        };
 
-    return isSubmitting && !success ? (
-        <Loading />
-    ) : !isSubmitting && success ? (
-        <Container className={className}>
-            <h1>Success!</h1>
-            <p>
-                Our team will review your request and work to match you with
-                volunteers who can offer the support you need. The information
-                you provide in this form will be kept confidential and used
-                solely for the purpose of connecting you with those who can
-                help.
-                <br />
-                <br />
-                We are committed to creating a safe and supportive environment
-                for everyone in our community. If you have any questions or
-                concerns, please don't hesitate to reach out to us. We are here
-                to help and make a positive impact in your life. Thank you for
-                using this form to request mutual aid.
-                <br />
-                <br />
-                Together, we can make a difference.
-                <br />
-                <br />
-                <a href="mailto: support@communalists.com?subject=Support Request From Communalists">
-                    support@communalists.com
-                </a>
-                <br />
-                <small>
-                    For web support inquiries, please reach out to our support
-                    team using the email above, we are here to assist you!
+        return isSubmitting && !success ? (
+            <Loading />
+        ) : !isSubmitting && success ? (
+            <Container className={className}>
+                <h1>Success!</h1>
+                <p>
+                    Our team will review your request and work to match you with
+                    volunteers who can offer the support you need. The
+                    information you provide in this form will be kept
+                    confidential and used solely for the purpose of connecting
+                    you with those who can help.
                     <br />
                     <br />
-                    Thank you for choosing to contact us!
-                </small>
-            </p>
-        </Container>
-    ) : (
-        <Form
-            onSubmit={handleSubmit}
-            className={`${className} animate__animated animate__fadeIn`}
-        >
-            <h1>{snippet('header', 'request-aid-form')}</h1>
-            <p>{snippet('description', 'request-aid-form')}</p>
-            <Form.Group className="mb-3">
-                <Form.Label>{snippet('name.label')}</Form.Label>
-                <Form.Control
-                    id="name"
-                    name="name"
-                    type="text"
-                    placeholder={snippet('name.placeholder')}
-                    onChange={handleChange}
-                    value={name}
-                    required
-                />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>{snippet('language.label')}</Form.Label>
-                <Form.Select
-                    onChange={handleChange}
-                    value={language}
-                    name="language"
-                    id="language"
-                >
-                    {Object.entries(LANGUAGES).map(([key, value]) => (
-                        <option key={key} value={key}>
-                            {value}
-                        </option>
-                    ))}
-                </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>{snippet('location.label')}</Form.Label>
-                <Form.Select
-                    onChange={handleChange}
-                    value={location}
-                    name="location"
-                    id="location"
-                >
-                    {Object.entries(LOCATIONS).map(([key, value]) => (
-                        <option key={key} value={key}>
-                            {value}
-                        </option>
-                    ))}
-                </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>{snippet('email.label')}</Form.Label>
-                <Form.Control
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder={snippet('email.placeholder')}
-                    onChange={handleChange}
-                    value={email}
-                    required
-                />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>{snippet('phone.label')}</Form.Label>
-                <Form.Control
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    placeholder={snippet('phone.placeholder')}
-                    onChange={handleChange && phoneHandler}
-                    value={phone}
-                />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>{snippet('method.label')}</Form.Label>
-                <Form.Select
-                    onChange={handleChange}
-                    value={method}
-                    name="method"
-                    id="method"
-                >
-                    {Object.entries(CONTACT_METHODS).map(([key, value]) => (
-                        <option key={key} value={key}>
-                            {value}
-                        </option>
-                    ))}
-                </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>
-                    {snippet('health.label', 'request-aid-form')}
-                </Form.Label>
-                <Form.Control
-                    id="health"
-                    name="health"
-                    type="text"
-                    placeholder={snippet(
-                        'health.placeholder',
-                        'request-aid-form'
-                    )}
-                    onChange={handleChange}
-                    value={health}
-                />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>
-                    {snippet('needs.label', 'request-aid-form')}{' '}
-                    <Tooltip position="top">
-                        <div>
-                            You can request items such as{' '}
-                            <strong>
-                                groceries, personal care items, or household
-                                supplies
-                            </strong>
-                            . Please include an address to a drop off location
-                            if delivery is required.
-                            <br />
-                            <br />
-                            <strong>Example:</strong> I'm in need of some fresh
-                            produce and cleaning supplies, I can meet at 456 Oak
-                            Ave sometime after 5:00PM on Wednesday.
-                        </div>
-                    </Tooltip>
-                </Form.Label>
-                <Form.Control
-                    as="textarea"
-                    id="needs"
-                    name="needs"
-                    type="text"
-                    placeholder={snippet(
-                        'needs.placeholder',
-                        'request-aid-form'
-                    )}
-                    onChange={handleChange}
-                    value={needs}
-                    required
-                />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Button type="submit">
-                    {snippet('submit.button', 'request-aid-form')}
-                </Button>
-            </Form.Group>
-        </Form>
-    );
-})(style);
+                    We are committed to creating a safe and supportive
+                    environment for everyone in our community. If you have any
+                    questions or concerns, please don't hesitate to reach out to
+                    us. We are here to help and make a positive impact in your
+                    life. Thank you for using this form to request mutual aid.
+                    <br />
+                    <br />
+                    Together, we can make a difference.
+                    <br />
+                    <br />
+                    <a href="mailto: support@communalists.com?subject=Support Request From Communalists">
+                        support@communalists.com
+                    </a>
+                    <br />
+                    <small>
+                        For web support inquiries, please reach out to our
+                        support team using the email above, we are here to
+                        assist you!
+                        <br />
+                        <br />
+                        Thank you for choosing to contact us!
+                    </small>
+                </p>
+            </Container>
+        ) : (
+            <Form
+                onSubmit={handleSubmit}
+                className={`${className} animate__animated animate__fadeIn`}
+            >
+                <h1>{organization?.name}</h1>
+                <p>{organization?.about}</p>
+                <Form.Group className="mb-3">
+                    <Form.Label>{snippet('name.label')}</Form.Label>
+                    <Form.Control
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder={snippet('name.placeholder')}
+                        onChange={handleChange}
+                        value={name}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>{snippet('language.label')}</Form.Label>
+                    <Form.Select
+                        onChange={handleChange}
+                        value={language}
+                        name="language"
+                        id="language"
+                    >
+                        {Object.entries(LANGUAGES).map(([key, value]) => (
+                            <option key={key} value={key}>
+                                {value}
+                            </option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>{snippet('location.label')}</Form.Label>
+                    <Form.Select
+                        onChange={handleChange}
+                        value={location}
+                        name="location"
+                        id="location"
+                    >
+                        {Object.entries(LOCATIONS).map(([key, value]) => (
+                            <option key={key} value={key}>
+                                {value}
+                            </option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>{snippet('email.label')}</Form.Label>
+                    <Form.Control
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder={snippet('email.placeholder')}
+                        onChange={handleChange}
+                        value={email}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>{snippet('phone.label')}</Form.Label>
+                    <Form.Control
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        placeholder={snippet('phone.placeholder')}
+                        onChange={handleChange && phoneHandler}
+                        value={phone}
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>{snippet('method.label')}</Form.Label>
+                    <Form.Select
+                        onChange={handleChange}
+                        value={method}
+                        name="method"
+                        id="method"
+                    >
+                        {Object.entries(CONTACT_METHODS).map(([key, value]) => (
+                            <option key={key} value={key}>
+                                {value}
+                            </option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>
+                        {snippet('health.label', 'request-aid-form')}
+                    </Form.Label>
+                    <Form.Control
+                        id="health"
+                        name="health"
+                        type="text"
+                        placeholder={snippet(
+                            'health.placeholder',
+                            'request-aid-form'
+                        )}
+                        onChange={handleChange}
+                        value={health}
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>
+                        {snippet('needs.label', 'request-aid-form')}{' '}
+                        <Tooltip position="top">
+                            <div>
+                                You can request items such as{' '}
+                                <strong>
+                                    groceries, personal care items, or household
+                                    supplies
+                                </strong>
+                                . Please include an address to a drop off
+                                location if delivery is required.
+                                <br />
+                                <br />
+                                <strong>Example:</strong> I'm in need of some
+                                fresh produce and cleaning supplies, I can meet
+                                at 456 Oak Ave sometime after 5:00PM on
+                                Wednesday.
+                            </div>
+                        </Tooltip>
+                    </Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        id="needs"
+                        name="needs"
+                        type="text"
+                        placeholder={snippet(
+                            'needs.placeholder',
+                            'request-aid-form'
+                        )}
+                        onChange={handleChange}
+                        value={needs}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Button type="submit">
+                        {snippet('submit.button', 'request-aid-form')}
+                    </Button>
+                </Form.Group>
+            </Form>
+        );
+    }
+)(style);
 
 export default RequestAidForm;

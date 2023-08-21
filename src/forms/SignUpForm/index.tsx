@@ -11,7 +11,6 @@ import { signUp } from '@api/auth';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import DashboardContext from '../../contexts/DashboardContext';
 
 const SignUpForm: StyledComponent = styled(({ className }) => {
     const { snippet } = useContext(SnippetContext);

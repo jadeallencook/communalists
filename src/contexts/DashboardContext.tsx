@@ -13,6 +13,7 @@ import OrganizationInterface from '@interfaces/organization';
 import { FrontendActionInterface } from '@interfaces/action';
 import { FeatureType } from '@custom-types/feature';
 import { ActionFiltersInterface } from '@interfaces/filters';
+import getOrganization from '@api/get-organization';
 
 const auth = getAuth(app);
 const DashboardContext = createContext<DashboardContextInterface>(null);
@@ -126,8 +127,10 @@ export const DashboardProvider = ({ children }) => {
 
     const fetchOrganization = async (id: string) => {
         setIsLoading(true);
+        const organization = await getOrganization(id);
         setOrganizations((prevState) => ({
             ...prevState,
+            [id]: organization,
         }));
         setReads((previousState) => previousState + 1);
         setIsLoading(false);

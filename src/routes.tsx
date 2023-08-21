@@ -20,7 +20,7 @@ const routes: Route[] = [
         element: <HomePage />,
     },
     {
-        path: '/request-aid',
+        path: '/request/:id',
         element: <RequestAidPage />,
     },
     {
