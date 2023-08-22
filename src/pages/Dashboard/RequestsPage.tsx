@@ -65,7 +65,6 @@ const RequestsPage = () => {
                 }),
                 {}
             ),
-            defaultValue: 'All Organizations',
         },
     ];
 

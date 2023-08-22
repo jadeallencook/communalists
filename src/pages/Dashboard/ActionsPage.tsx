@@ -63,7 +63,6 @@ const ActionsPage = () => {
                 }),
                 {}
             ),
-            defaultValue: 'All Organizations',
         },
     ];
 

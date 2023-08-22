@@ -144,7 +144,11 @@ const ViewRequestForm: StyledComponent = styled(
                     <Accordion.Item eventKey="1">
                         <Accordion.Header>Communication</Accordion.Header>
                         <Accordion.Body>
-                            <Comments id={selected} type="request" />
+                            <Comments
+                                id={selected}
+                                type="request"
+                                organization={organization}
+                            />
                         </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="2">
