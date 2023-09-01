@@ -8,6 +8,7 @@ import SignUpPage from '@pages/SignUpPage';
 import ForgotPasswordPage from '@pages/ForgotPassword';
 import EventsPage from '@pages/EventsPage';
 import HomePage from '@pages/HomePage';
+import OrganizationInvitePage from '@pages/OrganizationInvitePage';
 
 interface Route {
     path: string;
@@ -38,6 +39,10 @@ const routes: Route[] = [
     {
         path: '/view-request/:uid',
         element: <ViewRequestPage />,
+    },
+    {
+        path: '/invite/:id',
+        element: <OrganizationInvitePage />,
     },
     {
         path: '/sign-up',
