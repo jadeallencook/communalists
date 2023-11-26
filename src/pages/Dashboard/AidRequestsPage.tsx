@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import DashboardContext from '../../contexts/DashboardContext';
 import Loading from '@components/Loading';
 import filterRequests from '@utils/filter-requests';
+import { Form, InputGroup } from 'react-bootstrap';
 
 const AidRequestsPage = () => {
     const { requests, isLoading, requestFilters, setRequestFilters, uid } =
@@ -24,6 +25,17 @@ const AidRequestsPage = () => {
                 filters={requestFilters}
                 setFilters={setRequestFilters}
             />
+            <Form>
+                <InputGroup>
+                    <InputGroup.Checkbox
+                        checked={true}
+                        aria-label=""
+                        onChange={() => {}}
+                    />
+                    <InputGroup.Text>Request Form Is Live</InputGroup.Text>
+                </InputGroup>
+            </Form>
+            <br />
             {isLoading ? (
                 <Loading />
             ) : (
