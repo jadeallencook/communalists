@@ -43,19 +43,25 @@ const FormStatusForm = () => {
                             />
                             Getting Request Form Status
                         </>
-                    ) : status ? (
-                        <>
-                            Request Form Is
-                            <Badge bg="danger" style={{ marginLeft: '5px' }}>
-                                Live
-                            </Badge>
-                        </>
                     ) : (
                         <>
-                            Request Form Is
-                            <Badge bg="dark" style={{ marginLeft: '5px' }}>
-                                Offline
-                            </Badge>
+                            {' '}
+                            Request Form Status{' '}
+                            {status ? (
+                                <Badge
+                                    bg="danger"
+                                    style={{ marginLeft: '5px', width: '50px' }}
+                                >
+                                    Live
+                                </Badge>
+                            ) : (
+                                <Badge
+                                    bg="dark"
+                                    style={{ marginLeft: '5px', width: '50px' }}
+                                >
+                                    Offline
+                                </Badge>
+                            )}
                         </>
                     )}
                 </InputGroup.Text>
