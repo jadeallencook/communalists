@@ -127,6 +127,9 @@ const FilterForm: StyledComponent = styled(
                             });
                         }}
                     />
+                    <Button className="search-btn" size="sm" onClick={null}>
+                        More Filters
+                    </Button>
                     <Button size="sm" onClick={() => fetchRequests()}>
                         Refresh
                     </Button>
