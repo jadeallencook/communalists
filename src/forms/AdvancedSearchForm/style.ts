@@ -14,6 +14,10 @@ const style = () => ({
         backgroundColor: 'var(--bs-gray-600)',
         border: 'none',
     },
+    'button.search-btn': {
+        backgroundColor: 'var(--black) !important',
+        border: 'none',
+    },
 });
 
 export default style;

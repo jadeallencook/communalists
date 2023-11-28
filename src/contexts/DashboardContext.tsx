@@ -71,6 +71,7 @@ const defaultFilters: FiltersInterface = {
     driver: '',
     stage: 'submitted',
     coordinator: '',
+    string: '',
 };
 
 export const log: (message: string) => void = (message) =>

@@ -3,8 +3,8 @@ import { Container } from 'react-bootstrap';
 
 const RequestAidPage = () => (
     <Container>
-        {/* <RequestAidForm /> */}
-        <h1>Request Aid Form</h1>
+        <RequestAidForm />
+        {/* <h1>Request Aid Form</h1>
         <p>
             Due to an overwhelming response and limited volunteer capacity, we
             have temporarily taken down the request aid form. We want to ensure
@@ -21,7 +21,7 @@ const RequestAidPage = () => (
             <a href="mailto:support@communalists.org?subject=Mutual Aid Volunteer Request">
                 support@communalists.org
             </a>
-        </p>
+        </p> */}
     </Container>
 );
 
