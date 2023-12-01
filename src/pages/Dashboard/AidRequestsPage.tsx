@@ -7,6 +7,7 @@ import Loading from '@components/Loading';
 import filterRequests from '@utils/filter-requests';
 import FormStatusForm from '@forms/FormStatusForm';
 import isUserModerator from '@utils/is-user-moderator';
+import AdvancedSearchForm from '@forms/AdvancedSearchForm';
 
 const AidRequestsPage = () => {
     const {
@@ -36,8 +37,12 @@ const AidRequestsPage = () => {
                 filters={requestFilters}
                 setFilters={setRequestFilters}
             />
-            {isMod && <FormStatusForm />}
-            <br />
+            <AdvancedSearchForm
+                filters={requestFilters}
+                setFilters={setRequestFilters}
+            >
+                {isMod && <FormStatusForm />}
+            </AdvancedSearchForm>
             {isLoading ? (
                 <Loading />
             ) : (

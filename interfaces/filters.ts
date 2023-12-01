@@ -9,4 +9,5 @@ export interface FiltersInterface {
     driver: DriverKeyType | '';
     stage: StageKeyType | '';
     coordinator: string;
+    searchQuery: string;
 }
