@@ -7,6 +7,7 @@
  * - helpText: Help text displayed in a tooltip
  * - required: Indicates whether the field is required to be filled out
  * - value: Initial value of the field
+ * - test: Function that tests the value of the field
  */
 interface CustomFormField {
     type: 'text' | 'email' | 'number' | 'select' | 'radio' | 'checkbox';
@@ -16,6 +17,7 @@ interface CustomFormField {
     helpText?: string;
     required?: boolean;
     value?: string;
+    test?: (value: string) => boolean;
 }
 
 /**
