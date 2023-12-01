@@ -18,6 +18,7 @@ import {
     QueryClientProvider,
 } from 'react-query';
 import { DashboardProvider, log } from './contexts/DashboardContext';
+import { RequestFormStatusProvider } from './contexts/RequestFormStatusContext';
 import toast, { ToastBar, Toaster } from 'react-hot-toast';
 import { Button } from 'react-bootstrap';
 
@@ -50,51 +51,61 @@ const queryClient = new QueryClient({
 });
 
 root.render(
-    <SnippetProvider>
-        <QueryClientProvider client={queryClient}>
-            <Router>
-                <DashboardProvider>
-                    <Navigation />
-                    <Routes>
-                        {routes.map(({ path, element }) => (
-                            <Route
-                                key={path}
-                                path={path}
-                                element={element}
-                            ></Route>
-                        ))}
-                    </Routes>
-                    <Footer />
-                </DashboardProvider>
-            </Router>
+    <RequestFormStatusProvider>
+        <SnippetProvider>
+            <QueryClientProvider client={queryClient}>
+                <Router>
+                    <DashboardProvider>
+                        <Navigation />
+                        <Routes>
+                            {routes.map(({ path, element }) => (
+                                <Route
+                                    key={path}
+                                    path={path}
+                                    element={element}
+                                ></Route>
+                            ))}
+                        </Routes>
+                        <Footer />
+                    </DashboardProvider>
+                </Router>
 
-            <Toaster
-                position="bottom-center"
-                toastOptions={{
-                    duration:
-                        process.env.NODE_ENV === 'development' ? 1000000 : 5000,
-                    style: { maxWidth: 'unset' },
-                }}
-            >
-                {(t) => (
-                    <ToastBar toast={t}>
-                        {({ icon, message }) => (
-                            <div
-                                className={'d-flex flex-row align-items-center'}
-                            >
-                                {icon}
-                                <div style={{ width: '12rem' }}>{message}</div>
+                <Toaster
+                    position="bottom-center"
+                    toastOptions={{
+                        duration:
+                            process.env.NODE_ENV === 'development'
+                                ? 1000000
+                                : 5000,
+                        style: { maxWidth: 'unset' },
+                    }}
+                >
+                    {(t) => (
+                        <ToastBar toast={t}>
+                            {({ icon, message }) => (
+                                <div
+                                    className={
+                                        'd-flex flex-row align-items-center'
+                                    }
+                                >
+                                    {icon}
+                                    <div style={{ width: '12rem' }}>
+                                        {message}
+                                    </div>
 
-                                {t.type !== 'loading' && (
-                                    <Button onClick={() => toast.dismiss(t.id)}>
-                                        Dismiss
-                                    </Button>
-                                )}
-                            </div>
-                        )}
-                    </ToastBar>
-                )}
-            </Toaster>
-        </QueryClientProvider>
-    </SnippetProvider>
+                                    {t.type !== 'loading' && (
+                                        <Button
+                                            onClick={() => toast.dismiss(t.id)}
+                                        >
+                                            Dismiss
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
+                        </ToastBar>
+                    )}
+                </Toaster>
+            </QueryClientProvider>
+        </SnippetProvider>
+    </RequestFormStatusProvider>
 );

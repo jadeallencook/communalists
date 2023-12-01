@@ -5,17 +5,29 @@ import { useContext, useState } from 'react';
 import DashboardContext from '../../contexts/DashboardContext';
 import Loading from '@components/Loading';
 import filterRequests from '@utils/filter-requests';
+import FormStatusForm from '@forms/FormStatusForm';
+import isUserModerator from '@utils/is-user-moderator';
 import AdvancedSearchForm from '@forms/AdvancedSearchForm';
 
 const AidRequestsPage = () => {
-    const { requests, isLoading, requestFilters, setRequestFilters, uid } =
-        useContext(DashboardContext);
+    const {
+        requests,
+        isLoading,
+        requestFilters,
+        setRequestFilters,
+        uid,
+        myOrganizations,
+        organizations,
+    } = useContext(DashboardContext);
     const [show, setShow] = useState<boolean>(false);
     const [selected, setSelected] = useState<string>();
     const handler = (id?: string): void => {
         setSelected(id);
         setShow((prev) => !prev);
     };
+
+    const isMod =
+        !isLoading && isUserModerator(uid, myOrganizations, organizations);
 
     const filteredRequests = filterRequests(requests, requestFilters);
 
@@ -28,7 +40,9 @@ const AidRequestsPage = () => {
             <AdvancedSearchForm
                 filters={requestFilters}
                 setFilters={setRequestFilters}
-            />
+            >
+                {isMod && <FormStatusForm />}
+            </AdvancedSearchForm>
             {isLoading ? (
                 <Loading />
             ) : (
