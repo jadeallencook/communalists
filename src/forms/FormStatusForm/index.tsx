@@ -20,53 +20,51 @@ const FormStatusForm = () => {
     };
 
     return (
-        <Form>
-            <InputGroup size="sm">
-                {hasFetchedRequestFormStatus && (
-                    <InputGroup.Checkbox
-                        checked={status}
-                        aria-label=""
-                        onChange={handleToggle}
-                        style={{ cursor: 'pointer' }}
-                    />
+        <>
+            {hasFetchedRequestFormStatus && (
+                <InputGroup.Checkbox
+                    checked={status}
+                    aria-label=""
+                    onChange={handleToggle}
+                    style={{ cursor: 'pointer' }}
+                />
+            )}
+            <InputGroup.Text>
+                {!hasFetchedRequestFormStatus ? (
+                    <>
+                        <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                            style={{ marginRight: '15px' }}
+                        />
+                        Getting Request Form Status
+                    </>
+                ) : (
+                    <>
+                        {' '}
+                        Request Form Status{' '}
+                        {status ? (
+                            <Badge
+                                bg="danger"
+                                style={{ marginLeft: '5px', width: '50px' }}
+                            >
+                                Live
+                            </Badge>
+                        ) : (
+                            <Badge
+                                bg="dark"
+                                style={{ marginLeft: '5px', width: '50px' }}
+                            >
+                                Offline
+                            </Badge>
+                        )}
+                    </>
                 )}
-                <InputGroup.Text>
-                    {!hasFetchedRequestFormStatus ? (
-                        <>
-                            <Spinner
-                                as="span"
-                                animation="border"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                                style={{ marginRight: '15px' }}
-                            />
-                            Getting Request Form Status
-                        </>
-                    ) : (
-                        <>
-                            {' '}
-                            Request Form Status{' '}
-                            {status ? (
-                                <Badge
-                                    bg="danger"
-                                    style={{ marginLeft: '5px', width: '50px' }}
-                                >
-                                    Live
-                                </Badge>
-                            ) : (
-                                <Badge
-                                    bg="dark"
-                                    style={{ marginLeft: '5px', width: '50px' }}
-                                >
-                                    Offline
-                                </Badge>
-                            )}
-                        </>
-                    )}
-                </InputGroup.Text>
-            </InputGroup>
-        </Form>
+            </InputGroup.Text>
+        </>
     );
 };
 

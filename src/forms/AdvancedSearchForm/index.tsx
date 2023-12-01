@@ -10,10 +10,12 @@ const AdvancedSearchForm: StyledComponent = styled(
         className,
         filters,
         setFilters,
+        children,
     }: {
         className: string;
         filters: FiltersInterface;
         setFilters: (value: FiltersInterface) => void;
+        children?: React.ReactNode;
     }) => {
         const [term, setTerm] = useState<string>('');
         const handleSearch = (e) => {
@@ -23,7 +25,7 @@ const AdvancedSearchForm: StyledComponent = styled(
 
         return (
             <Form className={className}>
-                <InputGroup>
+                <InputGroup size="sm">
                     <Form.Control
                         type="text"
                         name="driver"
@@ -32,6 +34,7 @@ const AdvancedSearchForm: StyledComponent = styled(
                         placeholder="Search by name or email"
                         onChange={handleSearch}
                     />
+                    {children}
                 </InputGroup>
             </Form>
         );

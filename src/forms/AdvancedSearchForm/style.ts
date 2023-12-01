@@ -12,11 +12,15 @@ const style = () => ({
     },
     '.input-group-text': {
         backgroundColor: 'var(--bs-gray-600)',
+        color: 'var(--white)',
         border: 'none',
     },
     'button.search-btn': {
         backgroundColor: 'var(--black) !important',
         border: 'none',
+    },
+    '.bg-danger': {
+        backgroundColor: 'var(--primary) !important',
     },
 });
 
