@@ -7,14 +7,15 @@ const filterRequests = (
 ) => {
     return Object.entries(requests).reduce((object, [id, request]) => {
         const { stage, location, language, driver, coordinator } = filters;
-        const string = filters.string?.toLowerCase().trim();
+        const searchQuery = filters.searchQuery?.toLowerCase().trim();
         return stage !== request.stage ||
             (location && location !== request.location) ||
             (language && language !== request.language) ||
             (driver && driver !== request.driver) ||
-            (string &&
-                request.name.toLowerCase().trim().indexOf(string) &&
-                request.email.toLowerCase().trim().indexOf(string)) ||
+            (searchQuery &&
+                request.name.toLowerCase().trim().indexOf(searchQuery) === -1 &&
+                request.email.toLowerCase().trim().indexOf(searchQuery) ===
+                    -1) ||
             (coordinator && coordinator !== request.coordinator)
             ? object
             : {

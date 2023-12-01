@@ -71,7 +71,7 @@ const defaultFilters: FiltersInterface = {
     driver: '',
     stage: 'submitted',
     coordinator: '',
-    string: '',
+    searchQuery: '',
 };
 
 export const log: (message: string) => void = (message) =>

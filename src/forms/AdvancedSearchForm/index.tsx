@@ -18,7 +18,7 @@ const AdvancedSearchForm: StyledComponent = styled(
         const [term, setTerm] = useState<string>('');
         const handleSearch = (e) => {
             setTerm(e.target.value);
-            setFilters({ ...filters, string: e.target.value });
+            setFilters({ ...filters, searchQuery: e.target.value });
         };
 
         return (
