@@ -1,27 +1,22 @@
-import { useContext, useEffect, useState } from 'react';
-import { Badge, Form, InputGroup, Spinner } from 'react-bootstrap';
+import { Badge, InputGroup, Spinner } from 'react-bootstrap';
 import updateFormStatus from '@api/update-form-status';
-import RequestFormStatusContext from '../../contexts/RequestFormStatusContext';
+import getFormStatus from '@api/get-form-status';
+import { useQuery } from 'react-query';
 
 const FormStatusForm = () => {
-    const [status, setStatus] = useState<boolean>(false);
+    const { data: status, refetch } = useQuery({
+        queryKey: ['getFormStatus'],
+        queryFn: () => getFormStatus(),
+    });
 
-    const { requestFormStatus, hasFetchedRequestFormStatus } = useContext(
-        RequestFormStatusContext
-    );
-
-    useEffect(() => {
-        setStatus(requestFormStatus);
-    }, [requestFormStatus]);
-
-    const handleToggle = () => {
-        updateFormStatus(!status);
-        setStatus((prev) => !prev);
+    const handleToggle = async () => {
+        await updateFormStatus(!status);
+        await refetch();
     };
 
     return (
         <>
-            {hasFetchedRequestFormStatus && (
+            {status !== undefined && (
                 <InputGroup.Checkbox
                     checked={status}
                     aria-label=""
@@ -30,7 +25,7 @@ const FormStatusForm = () => {
                 />
             )}
             <InputGroup.Text>
-                {!hasFetchedRequestFormStatus ? (
+                {status === undefined ? (
                     <>
                         <Spinner
                             as="span"
