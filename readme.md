@@ -23,16 +23,21 @@ Then [expected outcome/result].
 ## Tips for Writing Acceptance Criteria
 
 1. **Be Specific and Clear**
-    - Avoid ambiguity. The criteria should be clear enough so that two different people would interpret it in the same way.
+    - The criteria should be clear enough so that two different people would interpret it in the same way.
 1. **Focus on User Experience**
-    - Write criteria from the user's perspective. What should the user be able to do? How should the feature work for them?
+    - Write criteria from the user's perspective.
+    - What should the user be able to do? How should the feature work for them?
 1. **Keep It Testable**
-    - Each criterion should be testable. Avoid subjective terms like "fast" or "easy," which can't be measured precisely.
+    - Each criterion should be testable.
+    - Avoid subjective terms like "fast" or "easy," which can't be measured precisely.
 1. **Independent Criteria**
     - Each criterion should stand on its own and be understandable without requiring additional context.
 1. **Include Functional and Non-functional Requirements**
-    - Remember to include criteria for both how the feature functions and how it performs (e.g., loading time, response time).
+    - Remember to include criteria for both how the feature functions and how it performs.
+    - example: loading time, response time.
 1. **Limit the Number of Criteria**
-    - Too many criteria can be overwhelming. Stick to the most critical points that define the feature's completion.
+    - Too many criteria can be overwhelming.
+    - Stick to the most critical points that define the feature's completion.
 1. **Use Simple Language**
-    - Avoid technical jargon unless absolutely necessary. The criteria should be understandable for everyone involved in the project, not just developers.
+    - Avoid technical jargon unless absolutely necessary.
+    - The criteria should be understandable for everyone involved in the project, not just developers.
