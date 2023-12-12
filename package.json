@@ -14,7 +14,5 @@
     },
     "homepage": "https://www.communalists.org",
     "scripts": {},
-    "dependencies": {
-        "typescript": "^5.3.2"
-    }
+    "dependencies": {}
 }
