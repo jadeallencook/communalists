@@ -7,6 +7,9 @@ const htmlPlugin = new HtmlWebPackPlugin({
 
 module.exports = {
     mode: 'development',
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.json'],
+    },
     module: {
         rules: [
             {
@@ -15,6 +18,11 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                 },
+            },
+            {
+                test: /\.(ts|tsx)$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
             },
             {
                 test: /\.css$/,
