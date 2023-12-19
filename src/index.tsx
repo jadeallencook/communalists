@@ -1,10 +1,14 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import '@mantine/core/styles.css';
+import { MantineProvider, createTheme } from '@mantine/core';
+
+const theme = createTheme({});
 
 const App = () => (
-    <div>
+    <MantineProvider theme={theme}>
         <h1>Hello World</h1>
-    </div>
+    </MantineProvider>
 );
 
 const root = document.getElementById('root');
