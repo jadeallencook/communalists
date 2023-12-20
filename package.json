@@ -31,6 +31,7 @@
         "@mantine/spotlight": "^7.3.2",
         "@mantine/tiptap": "^7.3.2",
         "@tabler/icons-react": "^2.44.0",
+        "@tanstack/react-router": "^0.0.1-beta.284",
         "@tiptap/extension-link": "^2.1.13",
         "@tiptap/react": "^2.1.13",
         "@tiptap/starter-kit": "^2.1.13",
