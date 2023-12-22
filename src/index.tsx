@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client';
 import Router from './router';
 import Layout from './layout';
 import Mantine from './mantine';
+import './global.css';
 
 const App = () => (
     <Mantine>
