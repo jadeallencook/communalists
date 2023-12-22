@@ -1,14 +1,20 @@
+/*
+    This is the entry point of the application.
+    It is used to render the application.
+*/
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import '@mantine/core/styles.css';
-import { MantineProvider, createTheme } from '@mantine/core';
-
-const theme = createTheme({});
+import Router from './router';
+import Layout from './layout';
+import Mantine from './mantine';
 
 const App = () => (
-    <MantineProvider theme={theme}>
-        <h1>Hello World</h1>
-    </MantineProvider>
+    <Mantine>
+        <Layout>
+            <Router />
+        </Layout>
+    </Mantine>
 );
 
 const root = document.getElementById('root');
