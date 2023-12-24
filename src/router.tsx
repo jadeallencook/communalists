@@ -12,6 +12,7 @@ import {
     Route,
     RootRoute,
 } from '@tanstack/react-router';
+import { Button } from '@mantine/core';
 
 const rootRoute = new RootRoute({
     component: () => <Outlet />,
@@ -20,7 +21,11 @@ const rootRoute = new RootRoute({
 const indexRoute = new Route({
     getParentRoute: () => rootRoute,
     path: '/',
-    component: () => <h1>Hello World</h1>,
+    component: () => (
+        <>
+            <Button>Test Button</Button>
+        </>
+    ),
 });
 
 const routeTree = rootRoute.addChildren([indexRoute]);
