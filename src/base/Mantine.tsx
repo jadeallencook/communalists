@@ -41,7 +41,9 @@ const theme = createTheme({
 });
 
 const Mantine = ({ children }: { children: React.ReactNode }) => (
-    <MantineProvider theme={theme}>{children}</MantineProvider>
+    <MantineProvider defaultColorScheme="dark" theme={theme}>
+        {children}
+    </MantineProvider>
 );
 
 export default Mantine;
