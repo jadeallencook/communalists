@@ -5,9 +5,9 @@
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import Router from './router';
-import Layout from './layout';
-import Mantine from './mantine';
+import Router from './base/Router';
+import Layout from './base/Layout';
+import Mantine from './base/Mantine';
 
 const App = () => (
     <Mantine>
