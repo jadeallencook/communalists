@@ -12,23 +12,52 @@ import {
     Route,
     RootRoute,
 } from '@tanstack/react-router';
-import { Button } from '@mantine/core';
+import Home from '../pages/home';
+import Login from '../pages/Login';
+import Form from '../pages/Form';
+import Dashboard from '../pages/Dashboard';
 
 const rootRoute = new RootRoute({
     component: () => <Outlet />,
 });
 
+const homeRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/home',
+    component: () => <Home />,
+});
+
+const loginRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/login',
+    component: () => <Login />,
+});
+
+const formRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/form',
+    component: () => <Form />,
+});
+
+const dashboardRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: '/dashboard',
+    component: () => <Dashboard />,
+});
+
 const indexRoute = new Route({
     getParentRoute: () => rootRoute,
     path: '/',
-    component: () => (
-        <>
-            <Button>Test Button</Button>
-        </>
-    ),
+    component: () => <Home />,
 });
 
-const routeTree = rootRoute.addChildren([indexRoute]);
+const routeTree = rootRoute.addChildren([
+    indexRoute,
+    homeRoute,
+    loginRoute,
+    formRoute,
+    dashboardRoute,
+]);
 
 const router = new TanstackRouter({ routeTree });
 
