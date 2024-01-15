@@ -37,13 +37,13 @@ const requestAidForm: SnippetInterface = {
     },
     ['description']: {
         english:
-            'This an opportunity to reach out for support in any form that you may need, whether it be emotional, practical, hands-on, or help with necessities like furniture or groceries.',
+            'This is an opportunity to reach out for support in various forms, including emotional support, practical aid, hands-on help, or essentials such as furniture or groceries. To ensure we can assist as many community members as possible, we can only address a request from an individual once every three months.',
         spanish:
-            'Esta es una oportunidad para buscar apoyo en cualquier forma que pueda necesitar, ya sea emocional, práctico, práctico o ayuda con necesidades como muebles o comestibles.',
+            'Esta es una oportunidad para buscar apoyo de diversas formas, incluido apoyo emocional, ayuda práctica, ayuda práctica o artículos esenciales como muebles o comestibles. Para garantizar que podamos ayudar a tantos miembros de la comunidad como sea posible, solo podemos atender una solicitud de un individuo una vez cada tres meses.',
         vietnamese:
-            'Đây là cơ hội để tiếp cận sự hỗ trợ dưới bất kỳ hình thức nào mà bạn có thể cần, cho dù đó là tình cảm, thực tế, thực hành hoặc giúp đỡ những thứ cần thiết như đồ nội thất hoặc hàng tạp hóa.',
+            'Đây là cơ hội để tiếp cận sự hỗ trợ dưới nhiều hình thức khác nhau, bao gồm hỗ trợ về mặt tinh thần, hỗ trợ thiết thực, trợ giúp thực tế hoặc những thứ cần thiết như đồ nội thất hoặc cửa hàng tạp hóa. Để đảm bảo chúng tôi có thể hỗ trợ nhiều thành viên cộng đồng nhất có thể, chúng tôi chỉ có thể giải quyết yêu cầu từ một cá nhân ba tháng một lần.',
         chinese:
-            '这是一个以您可能需要的任何形式寻求支持的机会，无论是情感上的、实际的、动手的，还是帮助处理家具或杂货等必需品。',
+            '这是一个以各种形式寻求支持的机会，包括情感支持、实际援助、实际帮助或家具或杂货等必需品。 为了确保我们能够帮助尽可能多的社区成员，我们只能每三个月处理一次个人请求。',
     },
     ['header']: {
         english: 'Welcome to Communalists',
