@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const path = require('node:path');
 
 const htmlPlugin = new HtmlWebPackPlugin({
     template: './public/index.html',
