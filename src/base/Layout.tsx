@@ -5,8 +5,9 @@
 */
 
 import React from 'react';
-import { AppShell, Burger, Group, Skeleton } from '@mantine/core';
+import { AppShell, Burger, Group, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import Navbar from './Navbar';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure(false);
@@ -38,13 +39,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     <b>Communalists</b>
                 </Group>
             </AppShell.Header>
-            <AppShell.Navbar p="md">
-                {Array(15)
-                    .fill(0)
-                    .map((_, index) => (
-                        <Skeleton key={index} h={28} mt="sm" animate={false} />
-                    ))}
-            </AppShell.Navbar>
+            <Navbar />
             <AppShell.Main>{children}</AppShell.Main>
         </AppShell>
     );
