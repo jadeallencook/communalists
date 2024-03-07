@@ -8,13 +8,17 @@ import { createRoot } from 'react-dom/client';
 import Router from './base/Router';
 import Layout from './base/Layout';
 import Mantine from './base/Mantine';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const App = () => (
-    <Mantine>
-        <Layout>
-            <Router />
-        </Layout>
-    </Mantine>
+    <Provider store={store}>
+        <Mantine>
+            <Layout>
+                <Router />
+            </Layout>
+        </Mantine>
+    </Provider>
 );
 
 const root = document.getElementById('root');

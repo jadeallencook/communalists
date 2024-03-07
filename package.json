@@ -14,7 +14,7 @@
     },
     "homepage": "https://www.communalists.org",
     "scripts": {
-        "start": "webpack serve --config webpack.config.js"
+        "start": "webpack serve --config webpack.config.js && firebase serve"
     },
     "dependencies": {
         "@babel/preset-env": "^7.23.6",
@@ -30,6 +30,7 @@
         "@mantine/nprogress": "^7.3.2",
         "@mantine/spotlight": "^7.3.2",
         "@mantine/tiptap": "^7.3.2",
+        "@reduxjs/toolkit": "^2.2.1",
         "@tabler/icons-react": "^2.44.0",
         "@tanstack/react-router": "^0.0.1-beta.284",
         "@tiptap/extension-link": "^2.1.13",
@@ -43,6 +44,8 @@
         "embla-carousel-react": "^7.1.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-redux": "^9.1.0",
+        "redux": "^5.0.1",
         "typescript": "^5.3.3"
     },
     "devDependencies": {
