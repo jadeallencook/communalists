@@ -1,7 +1,7 @@
 {
   "name": "communalists",
   "version": "3.0.0",
-  "description": "",
+  "description": "Tools and resources for communities to build and sustain mutual aid networks.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jadeallencook/communalists.git"
