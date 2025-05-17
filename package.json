@@ -14,12 +14,13 @@
   "homepage": "https://www.communalists.com",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build && storybook build && mkdir .next/server/app/storybook && mv storybook-static/* .next/server/app/storybook",
     "start": "next start",
     "lint": "next lint",
     "slicemachine": "start-slicemachine",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build:storybook": "storybook build",
+    "build:next": "next build"
   },
   "dependencies": {
     "@prismicio/client": "^7.17.2",
