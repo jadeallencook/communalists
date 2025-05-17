@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { SidebarProvider, SidebarTrigger } from "@/components/atoms/sidebar";
-import { Navigation } from "@/components/organisms/navigation";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/theme";
 
@@ -11,7 +9,7 @@ export const metadata: Metadata = {
     "Tools and resources for communities to build and sustain mutual aid networks.",
 };
 
-export default function ThemeToggler({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -25,13 +23,7 @@ export default function ThemeToggler({
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <Navigation />
-            <main>
-              <SidebarTrigger />
-              {children}
-            </main>
-          </SidebarProvider>
+          <main>{children}</main>
         </ThemeProvider>
         <Analytics />
       </body>
