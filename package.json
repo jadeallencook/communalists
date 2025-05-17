@@ -19,7 +19,7 @@
     "lint": "next lint",
     "slicemachine": "start-slicemachine",
     "storybook": "storybook dev -p 6006",
-    "build:storybook": "storybook build"
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@prismicio/client": "^7.17.2",
