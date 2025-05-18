@@ -11,6 +11,12 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // disables eslint namespace error used in component props
+  tseslint.config({
+    rules: {
+      "@typescript-eslint/no-namespace": "error",
+    },
+  }),
 ];
 
 export default eslintConfig;
