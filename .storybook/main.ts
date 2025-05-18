@@ -1,7 +1,13 @@
 import type { StorybookConfig } from "@storybook/nextjs";
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/components/**/**/*.stories.tsx"],
+  stories: [
+    // default story
+    "../src/stories/WelcomeToCommunalists.mdx",
+    // rest of the stories
+    "../src/**/*.mdx",
+    "../src/components/**/**/*.stories.tsx",
+  ],
   addons: [
     "@storybook/addon-essentials",
     "@storybook/addon-onboarding",
