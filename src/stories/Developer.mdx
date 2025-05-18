@@ -1,0 +1,45 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Developer Quick Start" />
+
+# Developer Quick Start
+
+## Code Guidlines
+
+### Component Design
+
+```tsx
+import { FC } from "react";
+
+namespace ComponentName {
+  export interface Props {}
+}
+
+const ComponentName: FC<ComponentName.Props> = ({}) => {
+    return <div>Hello World</div>;
+};
+```
+
+### Component Export
+
+```tsx
+export { ComponentName } from "./ComponentName";
+```
+
+### Component Stories
+
+```tsx
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { ComponentName } from "./ComponentName";
+
+const meta: Meta<typeof ComponentName> = {
+  title: "Components/Level/ComponentName",
+  component: Navbar,
+};
+
+export default meta;
+type Story = StoryObj<typeof ComponentName>;
+
+export const Default: Story = {};
+```
