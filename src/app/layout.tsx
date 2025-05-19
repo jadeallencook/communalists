@@ -1,9 +1,12 @@
 import type { ResolvedMetadata } from 'next';
 import { ThemeProvider } from '@/contexts/theme';
+import { createClient } from '@/prismicio';
+
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { createClient } from '@/prismicio';
-import { Navbar } from '@/components/organisms/Navbar/Navbar.prismic';
+
+import Navbar from '@/components/organisms/Navbar';
+import Footer from '@/components/organisms/Footer';
 
 import './globals.css';
 
@@ -31,6 +34,7 @@ export default function Layout({
         >
           <Navbar />
           <main>{children}</main>
+          <Footer />
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
