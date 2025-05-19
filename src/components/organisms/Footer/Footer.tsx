@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Content } from '@prismicio/client';
 import { PrismicNextLink } from '@prismicio/next';
 import Button from '@/components/atoms/Button';
@@ -15,7 +15,7 @@ const Footer: FC<Footer.Props> = ({
   copyright,
   privacy_policy,
 }) => {
-  const currentYear = new Date().getFullYear();
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
   const foundingYear = 2022;
   return (
     <footer>
