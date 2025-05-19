@@ -1,14 +1,23 @@
+'use client';
+
 import { FC } from 'react';
 import Button from '@/components/atoms/Button';
 import { Content } from '@prismicio/client';
 import { PrismicNextLink } from '@prismicio/next';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
+import { Moon, Sun } from 'lucide-react';
 
 namespace Navbar {
   export interface Props extends Content.NavbarDocumentData {}
 }
 
 const Navbar: FC<Navbar.Props> = ({ title, links }) => {
+  const { setTheme, theme } = useTheme();
+  const isDark = theme === 'dark';
+  const isSystem = theme === 'system';
+  const toggleTheme = () => setTheme(isDark ? 'light' : 'dark');
+
   return (
     <nav className="justify-between flex p-4">
       <div className="flex items-center gap-6">
@@ -29,6 +38,15 @@ const Navbar: FC<Navbar.Props> = ({ title, links }) => {
             </Button>
           );
         })}
+        <Button
+          onClick={toggleTheme}
+          size="sm"
+          variant="secondary"
+          aria-hidden="true"
+        >
+          {(isDark || isSystem) && <Sun />}
+          {!isDark && !isSystem && <Moon />}
+        </Button>
       </div>
     </nav>
   );
