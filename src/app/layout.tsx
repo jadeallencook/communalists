@@ -1,9 +1,11 @@
 import type { ResolvedMetadata } from 'next';
-import './globals.css';
 import { ThemeProvider } from '@/contexts/theme';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { createClient } from '@/prismicio';
+import { Navbar } from '@/components/organisms/Navbar/Navbar.prismic';
+
+import './globals.css';
 
 export const generateMetadata = async (): Promise<ResolvedMetadata> => {
   const client = createClient();
@@ -27,6 +29,7 @@ export default function Layout({
           enableSystem
           disableTransitionOnChange
         >
+          <Navbar />
           <main>{children}</main>
         </ThemeProvider>
         <Analytics />
