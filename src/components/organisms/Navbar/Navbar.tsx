@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button } from '@/components/atoms/Button';
+import Button from '@/components/atoms/Button';
 import { Content } from '@prismicio/client';
 import { PrismicNextLink } from '@prismicio/next';
 import Link from 'next/link';

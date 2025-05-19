@@ -10,27 +10,58 @@ Prismic is a headless CMS that allows us to manage our content and integrate it 
 
 ## Code Guidlines
 
-### Component Design
+### Component Structure
+
+`ComponentName.tsx`
 
 ```tsx
 import { FC } from 'react';
+import { Content } from '@prismicio/client';
 
 namespace ComponentName {
   export interface Props {}
+
+  // extend props with prismic data for content driven components
+  export interface Props extends Content.ComponentNameDocumentData {}
 }
 
 const ComponentName: FC<ComponentName.Props> = ({}) => {
   return <div>Hello World</div>;
 };
+
+export { ComponentName };
 ```
 
-### Component Export
+`ComponentName.prismic.tsx`
+
+**NEED FOR CONTENT DRIVEN COMPONENTS**
+
+```tsx
+import { FC } from 'react';
+import { ComponentName as Component } from './Navbar';
+import { createClient } from '@/prismicio';
+
+const ComponentName: FC = async () => {
+  const client = createClient();
+  const { data } = await client.getSingle('component_name');
+  return <Component {...data} />;
+};
+
+export { ComponentName };
+```
+
+`index.ts`
 
 ```tsx
 export { ComponentName } from './ComponentName';
+export { ComponentName as default } from './ComponentName';
+
+// export the prismic component for content driven components
+export { ComponentName } from './ComponentName.prismic';
+export { ComponentName as default } from './ComponentName.prismic';
 ```
 
-### Component Stories
+`ComponentName.stories.tsx`
 
 ```tsx
 import type { Meta, StoryObj } from '@storybook/react';
@@ -38,7 +69,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ComponentName } from './ComponentName';
 
 const meta: Meta<typeof ComponentName> = {
-  title: 'Components/Level/ComponentName',
+  title: 'Components/Level/Component Name',
   component: Navbar,
 };
 
