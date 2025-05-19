@@ -1,13 +1,13 @@
-import type { ResolvedMetadata } from "next";
-import "./globals.css";
-import { ThemeProvider } from "@/contexts/theme";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { createClient } from "@/prismicio";
+import type { ResolvedMetadata } from 'next';
+import './globals.css';
+import { ThemeProvider } from '@/contexts/theme';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { createClient } from '@/prismicio';
 
 export const generateMetadata = async (): Promise<ResolvedMetadata> => {
   const client = createClient();
-  const { data } = await client.getSingle("meta");
+  const { data } = await client.getSingle('meta');
   const { title, description } = data;
   const meta = { title, description };
   return meta as ResolvedMetadata;

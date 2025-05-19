@@ -1,5 +1,5 @@
-import { Button } from "@/components/atoms/Button";
-import { FC } from "react";
+import { Button } from '@/components/atoms/Button';
+import { FC } from 'react';
 
 namespace Navbar {
   export interface Props {}

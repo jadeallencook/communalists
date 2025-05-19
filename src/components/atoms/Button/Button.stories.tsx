@@ -1,26 +1,26 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from "./Button";
+import { Button } from './Button';
 
 const meta: Meta<typeof Button> = {
-  title: "Components/Atoms/Button",
+  title: 'Components/Atoms/Button',
   component: Button,
   argTypes: {
     variant: {
       control: {
-        type: "select",
+        type: 'select',
       },
-      options: ["default", "secondary", "destructive", "outline", "link"],
+      options: ['default', 'secondary', 'destructive', 'outline', 'link'],
     },
     size: {
       control: {
-        type: "select",
+        type: 'select',
       },
-      options: ["default", "sm", "lg"],
+      options: ['default', 'sm', 'lg'],
     },
     disabled: {
       control: {
-        type: "boolean",
+        type: 'boolean',
       },
     },
     asChild: {
@@ -40,12 +40,12 @@ const meta: Meta<typeof Button> = {
     },
   },
   args: {
-    variant: "default",
-    size: "default",
+    variant: 'default',
+    size: 'default',
     asChild: false,
     disabled: false,
-    className: "",
-    children: "Button",
+    className: '',
+    children: 'Button',
   },
 };
 
@@ -54,40 +54,40 @@ type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
   args: {
-    children: "Join Community",
-    variant: "default",
-    size: "default",
+    children: 'Join Community',
+    variant: 'default',
+    size: 'default',
   },
 };
 
 export const Secondary: Story = {
   args: {
-    children: "Learn About Community",
-    variant: "secondary",
-    size: "default",
+    children: 'Learn About Community',
+    variant: 'secondary',
+    size: 'default',
   },
 };
 
 export const Destructive: Story = {
   args: {
-    children: "Leave Community",
-    variant: "destructive",
-    size: "default",
+    children: 'Leave Community',
+    variant: 'destructive',
+    size: 'default',
   },
 };
 
 export const Outline: Story = {
   args: {
-    children: "Join Community",
-    variant: "outline",
-    size: "default",
+    children: 'Join Community',
+    variant: 'outline',
+    size: 'default',
   },
 };
 
 export const Link: Story = {
   args: {
-    children: "Read Community Guidelines",
-    variant: "link",
-    size: "default",
+    children: 'Read Community Guidelines',
+    variant: 'link',
+    size: 'default',
   },
 };
