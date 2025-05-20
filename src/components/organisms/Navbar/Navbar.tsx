@@ -6,7 +6,7 @@ import { Content } from '@prismicio/client';
 import { PrismicNextLink } from '@prismicio/next';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
-import { Moon, Sun } from 'lucide-react';
+import { Sun } from 'lucide-react';
 
 namespace Navbar {
   export interface Props extends Content.NavbarDocumentData {}
@@ -15,7 +15,6 @@ namespace Navbar {
 const Navbar: FC<Navbar.Props> = ({ title, links }) => {
   const { setTheme, theme } = useTheme();
   const isDark = theme === 'dark';
-  const isSystem = theme === 'system';
   const toggleTheme = () => setTheme(isDark ? 'light' : 'dark');
 
   return (
@@ -41,11 +40,10 @@ const Navbar: FC<Navbar.Props> = ({ title, links }) => {
         <Button
           onClick={toggleTheme}
           size="sm"
-          variant="secondary"
+          variant="outline"
           aria-hidden="true"
         >
-          {(isDark || isSystem) && <Sun />}
-          {!isDark && !isSystem && <Moon />}
+          <Sun />
         </Button>
       </div>
     </nav>
