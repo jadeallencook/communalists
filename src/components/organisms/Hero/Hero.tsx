@@ -11,7 +11,7 @@ namespace Hero {
 const Hero: FC<Hero.Props> = ({ slice }) => {
   const { primary } = slice;
   const { title, eyebrow, description, links, image } = primary;
-  console.log(JSON.stringify(primary));
+
   return (
     <section>
       <div className="grid items-center gap-8 bg-muted-2 lg:grid-cols-2">
