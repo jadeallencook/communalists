@@ -18,23 +18,20 @@ const Footer: FC<Footer.Props> = ({
   const foundingYear = 2022;
   return (
     <footer>
-      <div className="grid grid-cols-2 gap-8 lg:grid-cols-6 py-4 pl-4">
-        <div className="col-span-2">
-          <div className="flex items-center gap-2 lg:justify-start">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-lg font-semibold tracking-tighter"
-            >
+      <div>
+        <div>
+          <div>
+            <Link href="/">
               <span aria-hidden="true">★</span>
-              <span className="underline">{title}</span>
+              <span>{title}</span>
             </Link>
           </div>
-          <p className="mt-4 font-bold">{tagline}</p>
+          <p>{tagline}</p>
         </div>
         {sections.map((section, sectionIndex) => (
           <div key={sectionIndex}>
-            <h3 className="mb-4 font-bold">{section.title}</h3>
-            <ul className="space-y-4 text-muted-foreground">
+            <h3>{section.title}</h3>
+            <ul>
               {section.links.map((link, linkIndex) => (
                 <li key={linkIndex}>
                   <PrismicNextLink field={link}>{link.text}</PrismicNextLink>
@@ -44,12 +41,12 @@ const Footer: FC<Footer.Props> = ({
           </div>
         ))}
       </div>
-      <div className="pt-4 mb-4 flex flex-col justify-between gap-4 border-t text-sm font-medium text-muted-foreground md:flex-row md:items-center">
-        <p className="pl-4">
+      <div>
+        <p>
           ★ {foundingYear}-{currentYear} {copyright}
         </p>
-        <ul className="flex gap-4 px-4">
-          <li className="hover:text-primary">
+        <ul>
+          <li>
             <PrismicNextLink field={privacy_policy}>
               {privacy_policy.text}
             </PrismicNextLink>
