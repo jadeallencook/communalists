@@ -1,7 +1,6 @@
 import { FC, useMemo } from 'react';
 import { Content } from '@prismicio/client';
 import { PrismicNextLink } from '@prismicio/next';
-import Button from '@/components/atoms/Button';
 import Link from 'next/link';
 
 namespace Footer {
@@ -38,9 +37,7 @@ const Footer: FC<Footer.Props> = ({
             <ul className="space-y-4 text-muted-foreground">
               {section.links.map((link, linkIndex) => (
                 <li key={linkIndex}>
-                  <Button asChild size="sm" variant="link" className="px-0">
-                    <PrismicNextLink field={link}>{link.text}</PrismicNextLink>
-                  </Button>
+                  <PrismicNextLink field={link}>{link.text}</PrismicNextLink>
                 </li>
               ))}
             </ul>
@@ -53,11 +50,9 @@ const Footer: FC<Footer.Props> = ({
         </p>
         <ul className="flex gap-4 px-4">
           <li className="hover:text-primary">
-            <Button asChild size="sm" variant="link" className="px-0">
-              <PrismicNextLink field={privacy_policy}>
-                {privacy_policy.text}
-              </PrismicNextLink>
-            </Button>
+            <PrismicNextLink field={privacy_policy}>
+              {privacy_policy.text}
+            </PrismicNextLink>
           </li>
         </ul>
       </div>

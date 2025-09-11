@@ -1,0 +1,58 @@
+.root {
+  /* set default styles */
+  border: none;
+  background-color: var(--primary-background);
+  color: var(--primary-foreground);
+  border-radius: var(--radius-md);
+
+  /* set default font styles */
+  font-size: 1rem;
+  font-weight: var(--font-weight-medium);
+
+  /* setup user interaction styles */
+  cursor: pointer;
+  text-decoration-thickness: var(--underline-thickness);
+  &:focus {
+    text-decoration-line: underline;
+  }
+  &:hover {
+    text-decoration-line: underline;
+  }
+}
+
+/* variants */
+
+.destructive {
+  background-color: var(--destructive-background);
+  color: var(--destructive-foreground);
+}
+
+.secondary {
+  background-color: var(--secondary-background);
+  color: var(--secondary-foreground);
+}
+
+.outline {
+  background-color: transparent;
+  border: 2px solid var(--primary-background);
+  color: var(--primary-background);
+}
+
+.link {
+  background-color: transparent;
+  color: var(--primary-background);
+  text-decoration-line: underline;
+}
+
+/* sizes */
+.small {
+  padding: var(--space-xs) var(--space-md);
+}
+
+.medium {
+  padding: var(--space-sm) var(--space-lg);
+}
+
+.large {
+  padding: var(--space-md) var(--space-xl);
+}

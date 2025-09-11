@@ -1,6 +1,7 @@
-import React from 'react';
 import type { Preview } from '@storybook/react';
 import { ThemeProvider } from '../src/contexts/theme';
+
+import '../src/app/normalize.css';
 import '../src/app/globals.css';
 
 const preview: Preview = {

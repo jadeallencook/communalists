@@ -1,0 +1,33 @@
+.root {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: var(--space-md) var(--screen-gutters);
+}
+
+.logo {
+  font-size: var(--text-size-lg);
+  & > a {
+    margin-left: var(--space-sm);
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+.links {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  & > a,
+  & > button {
+    margin-left: var(--space-md);
+  }
+}
+
+.themeToggleButton {
+  background-color: transparent;
+  border: solid var(--border-thickness) var(--secondary);
+  color: var(--secondary-foreground);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  padding-top: var(--space-xs);
+}

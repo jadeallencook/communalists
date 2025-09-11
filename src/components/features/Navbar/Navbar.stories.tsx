@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Navbar } from './Navbar';
 
 const meta: Meta<typeof Navbar> = {
-  title: 'Components/Organisms/Navbar',
+  title: 'Components/Layout/Navbar',
   component: Navbar,
   // removes default padding from the story
   parameters: {

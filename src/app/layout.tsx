@@ -5,9 +5,10 @@ import { createClient } from '@/prismicio';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
-import Navbar from '@/components/organisms/Navbar';
-import Footer from '@/components/organisms/Footer';
+import Navbar from '@/components/features/Navbar';
+import Footer from '@/components/features/Footer';
 
+import './normalize.css';
 import './globals.css';
 
 export const generateMetadata = async (): Promise<ResolvedMetadata> => {
@@ -25,7 +26,7 @@ export default function Layout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body style={{ margin: 0, padding: 0 }}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
