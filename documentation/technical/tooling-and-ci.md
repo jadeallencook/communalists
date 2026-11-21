@@ -55,4 +55,5 @@ One job on every push to `main` and every PR: `pnpm install --frozen-lockfile` (
 - shadcn's `init` failed halfway under pnpm 12 because of the unapproved build scripts above. Re-running after setting `allowBuilds` worked.
 - `CI=1` makes pnpm use `--frozen-lockfile`, so CLI generators (Storybook `init`) can't add dependencies under it. Run `pnpm install` afterwards.
 - jsdom 31 needs Node ≥ 24.15, so `engines` sets that minimum. `.nvmrc` pins an exact LTS (24.22.3) so everyone and CI run the same version.
+- **Git doesn't track empty folders.** Storybook's `staticDirs` points at `public/`, which was empty, so it existed locally but not in CI, and `build-storybook` failed there only (first CI run, 2026-11-21). `public/.gitkeep` keeps the folder. To reproduce CI exactly, build from `git archive HEAD` rather than the working tree.
 - An old global Firebase CLI (12.x) works, but it swaps in an older cached Firestore emulator JAR. Keep it current.
