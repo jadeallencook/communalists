@@ -8,10 +8,12 @@ The original source: branch `interview-demo` at commit `7ebc168`, read file by f
 
 ## What the product is
 
-It has two halves:
+**Now:** a platform for mutual aid networks. Anyone can create or join organizations and run them with purpose-built tools. See [product-vision.md](product-vision.md).
 
-- **Public site.** Anyone can request aid, browse free local services (meals, showers, essentials), offer a donation, and read the FAQ. All of it is in English, Spanish, Vietnamese and Chinese.
-- **Volunteer dashboard.** Volunteers sign up, join an organization, then triage aid requests through a 4-stage pipeline. They claim the coordinator and driver roles and comment on each request. Moderators approve new members and can pause the public request form.
+**The prototype** (what the feature docs below describe) was one organization with two halves:
+
+- **Public site.** Anyone could request aid, browse free local services (meals, showers, essentials), offer a donation, and read the FAQ, in English, Spanish, Vietnamese and Chinese.
+- **Volunteer dashboard.** Volunteers signed up, joined an organization, then triaged aid requests through a 4-stage pipeline. They claimed the coordinator and driver roles and commented on each request. Moderators approved new members and could pause the public request form.
 
 ## Features
 

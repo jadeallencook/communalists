@@ -51,3 +51,26 @@ Values come from Vercel (`vercel api /v6/domains/<domain>/config`) and are proje
 - **Resolved 2026-11-21: Git integration silent since Sep 2025.** The repo had moved from `jadeallencook/communalists` to the **`techletariats` GitHub org**, but both Vercel projects were still linked as `jadeallencook/communalists`. Vercel hears about pushes through the Vercel GitHub App installed on whichever account owns the repo, so it needs to be installed on the `techletariats` org with access to `communalists`, and each project re-linked with `vercel git connect https://github.com/techletariats/communalists`. Fixed by installing the app on `techletariats` and running `vercel git connect https://github.com/techletariats/communalists --project <name>` for both projects. The first production deploys from Git (`0c552ba`) were triggered through the API (`POST /v13/deployments` with `gitSource`) and went live 2026-11-21. Vercel Hobby limits organization-owned repos (as far as we know, private ones only; this repo is public).
 - **Stale 2023 certificate after the DNS switch.** Once DNS pointed at Vercel, it kept serving an old Let's Encrypt certificate (issued 2023-02-11) from when the domain was last on Vercel, and HTTPS failed. Automatic renewal didn't replace it within ~5 minutes. `vercel certs issue communalists.com www.communalists.com` and `vercel certs issue storybook.communalists.com` fixed it immediately (2026-11-21). For a minute afterwards, some edge servers still served the old certificate.
 - **DNS cutover done 2026-11-21.** The Squarespace forwarding preset was replaced with the records above. Email (MX/SPF) was kept and verified afterwards.
+
+## Planned: move DNS to Vercel (wildcard subdomains)
+
+Organization pages at `{slug}.communalists.com` need `*.communalists.com`, which needs Vercel nameservers ([decision #11](../decisions.md), [product-vision.md](../product-vision.md)). Steps:
+
+1. **Blocked (2026-11-21):** `vercel domains add communalists.com` says the domain "already exists under a different context": it's owned by **another Vercel account or team**, not `jadeallencook`. Remove it there (or verify ownership through the Vercel dashboard's add-domain flow) so this account owns it.
+2. Recreate these records in Vercel DNS **before** switching nameservers (copied from Squarespace's authoritative servers on 2026-11-21):
+
+   | Type  | Name             | Value                                                                                                                                                                 |
+   | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | MX    | `@`              | `mxa.mailgun.org` (priority 10)                                                                                                                                       |
+   | MX    | `@`              | `mxb.mailgun.org` (priority 10)                                                                                                                                       |
+   | TXT   | `@`              | `v=spf1 include:mailgun.org ~all`                                                                                                                                     |
+   | TXT   | `pic._domainkey` | The full DKIM key (`k=rsa; p=MIGfMA0…AQAB`). Squarespace serves it as two strings that must be joined. Copy it with `dig +short pic._domainkey.communalists.com TXT`. |
+   | CNAME | `bfo33sdpzsqo`   | `gv-7cegi55jw5n2ji.dv.googlehosted.com` (Google verification)                                                                                                         |
+
+   `_domainconnect` (Google Domains' connect record) isn't needed on Vercel. Apex, `www` and `storybook` are handled automatically once the domains are on Vercel nameservers.
+
+3. Add `*.communalists.com` to the `communalists` project.
+4. At Squarespace Domains, switch the nameservers to the ones Vercel shows for the domain.
+5. Verify mail (MX/SPF/DKIM) and HTTPS for apex, `www`, `storybook` and a test org subdomain.
+
+**Email forwarding caveat:** Squarespace's email forwarding sends `support@communalists.com` through Squarespace's own Mailgun setup. With the MX records copied over, mail should still reach Mailgun, but the forwarding _rules_ are configured in Squarespace. Check that forwarding still works after the switch, and plan a replacement (e.g. Cloudflare Email Routing, ImprovMX, Google Workspace) if it doesn't.

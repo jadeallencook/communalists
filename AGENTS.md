@@ -4,10 +4,7 @@ Guidance for AI coding agents (and humans) working in this repository.
 
 ## Project
 
-Communalists is a mutual-aid platform for South Bay (Santa Clara County, CA) organizers:
-
-- **Public site:** request aid, offer donations, browse free local services, in English, Spanish, Vietnamese and Chinese.
-- **Volunteer dashboard:** join an organization, triage aid requests through a pipeline, claim the coordinator or driver role, comment, and (as a moderator) approve members and pause intake.
+Communalists is a **platform for mutual aid networks**: anyone can sign up, create or join **organizations** (e.g. "South Bay Mutual Aid", "Oakland Auto Club"), and run them with **tools** built for mutual aid (requests + kanban, a lending library, calendars, documents…). Each tool can have a public side and a members-only side, and each organization gets a public page at `{slug}.communalists.com`. It's like Facebook Groups, with purpose-built tools instead of a feed. The UI is in English, Spanish, Vietnamese and Chinese. Read `documentation/product-vision.md` first.
 
 Two earlier codebases came first: a React + Webpack + Firebase prototype (2022–2024, commit `7ebc168`) and a Next.js + Prismic marketing shell (2025, commit `81eed51`). Both were removed, and the repo now starts from these docs. The rebuild uses **Next.js (App Router) + Firebase + Tailwind/shadcn/ui, hosted on Vercel, with locale routing (`en`, `es`, `vi`, `zh`) from day one**. See `documentation/decisions.md` #3–#8. What both attempts taught is kept in `documentation/`.
 
@@ -67,12 +64,14 @@ Commands: `pnpm dev`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm format`,
 
 These are the rules we're building to today. They can change. When one does, update it here, update the feature doc, and log it in `documentation/decisions.md`.
 
-- **Request pipeline:** `submitted` (Received 1/4) → `started` (Coordinating 2/4) → `ready` (Ready 3/4) → `complete` (Fulfilled 4/4), plus `cancelled`. New requests start at `submitted`. Triage lists show the oldest first.
-- **Languages:** `en`, `es`, `vi`, `zh`. Every user-facing public string is translated. The request form's language field defaults to the current UI language.
-- **Access:** only active organization members can see requests. Only moderators can approve members and toggle the request-form switch. Only the assignee or a moderator can unassign a volunteer. **Enforce these on the server or in security rules, never only in the UI.**
-- **Kill switch:** the public request form can be paused without a deploy. Fail closed: if the setting is missing, the form stays hidden.
-- **Privacy:** requests contain names, phone numbers, addresses and health conditions. Never expose them publicly, never log them, and collect no new personal fields without a clear use. The prototype removed unused fields on purpose (`documentation/features/14-removed-experiments.md`).
-- **Shared devices:** clear any cached request data on sign-out.
+- **Multi-tenant:** every piece of tool data belongs to exactly one organization. Scope every query, rule and server check by organization and by the user's membership role.
+- **Open sign-up, gated data:** anyone can create an account and an organization. Being signed in grants nothing inside an organization; membership and role do.
+- **Public vs internal:** each tool declares what is public (anyone, signed out included) and what is members-only. Default to members-only.
+- **Languages:** `en`, `es`, `vi`, `zh` for the UI. Organization content (names, pages, items) is written by users and isn't translated. A form's language field should default to the visitor's UI language.
+- **Access checks run on the server or in security rules, never only in the UI.**
+- **Privacy:** tools like Requests collect names, phone numbers, addresses and health conditions. Never expose them publicly, never log them, and collect no personal fields without a clear use. The prototype removed unused fields on purpose (`documentation/features/14-removed-experiments.md`).
+- **Shared devices:** clear any cached organization data on sign-out.
+- **Requests tool** (from the prototype): pipeline `submitted` → `started` → `ready` → `complete`, plus `cancelled`; oldest first; intake can be paused without a deploy, and it fails closed.
 
 ## Engineering conventions
 
