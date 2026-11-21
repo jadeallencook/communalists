@@ -47,3 +47,11 @@ Everything found while reading the code. **Bugs** are things users would hit. **
 - Mixed domains: `communalists.com` vs `communalists.org`. Two GA measurement IDs.
 - `api/*` returns errors as values (`.catch((e) => e)`) in some files and throws in others. Callers can't tell success from failure.
 - No tests.
+
+## Rebuild: temporary workarounds
+
+Things in the new codebase that exist only to get around a problem. Remove each one when its condition is met.
+
+| Workaround                                       | Why                                                                                                                                                                     | Remove when                                                                                                                                                |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm-workspace.yaml` override `jwks-rsa: 3.2.2` | `firebase-admin` 14 → `jwks-rsa` 4 → ESM-only `jose` 6 can't load in Vercel functions (`ERR_REQUIRE_ESM`). Production sign-in was down until this override (2026-11-21) | `firebase-admin` or `jwks-rsa` loads without `require(esm)`. Check with `NODE_OPTIONS=--no-experimental-require-module pnpm start` and an emulator sign-in |

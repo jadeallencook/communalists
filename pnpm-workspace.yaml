@@ -15,3 +15,11 @@ allowBuilds:
 
 # Keep pnpm's minimum release age (supply-chain protection) intact. If a tool
 # adds `minimumReleaseAgeExclude` entries, pin to an older version instead.
+
+overrides:
+  # firebase-admin 14 wants jwks-rsa 4, which require()s the ESM-only jose 6.
+  # Vercel's function runtime can't require() ES modules, so Admin Auth failed
+  # to load in production (ERR_REQUIRE_ESM, 2026-11-21). jwks-rsa 3 uses
+  # jose 4 (CommonJS) and has the API firebase-admin calls (jwks({...}),
+  # getSigningKeys). Remove once that chain loads without require(esm).
+  'jwks-rsa': 3.2.2
