@@ -26,6 +26,7 @@ src/
     [locale]/sign-up/     Container: wires the signUp action into SignUpPage
     [locale]/sign-in/     Container: wires the signIn action into SignInPage
     [locale]/forgot-password/  Container: wires requestPasswordReset into ForgotPasswordPage
+    [locale]/account/setup/ Container: required profile questions (name, language, city); returns to ?next=
     [locale]/auth/action/ Firebase email links (Action URL): verifies the code, renders ResetPasswordPage
     [locale]/welcome/     Container: reads session + profile, renders WelcomePage (streamed)
     api/places/           GET city search for the picker (cached)
@@ -34,17 +35,18 @@ src/
   components/
     atoms/                shadcn primitives (button, input, card, field…)
     molecules/            Small composites (FeatureCard, LocaleSwitcher, ThemeToggle, LocationField, LinkProblem)
-    organisms/            Page sections (SiteHeader, HeroBanner, AuthCard, SignUpForm, SignInForm, ForgotPasswordForm, ResetPasswordForm…)
-    pages/                Presentational page views (HomePage, SignUpPage, SignInPage, ForgotPasswordPage, ResetPasswordPage, WelcomePage)
+    organisms/            Page sections (SiteHeader, HeroBanner, AuthCard, SignUpForm, SignInForm, ForgotPasswordForm, ResetPasswordForm, AccountSetupForm…)
+    pages/                Presentational page views (HomePage, SignUpPage, SignInPage, ForgotPasswordPage, ResetPasswordPage, AccountSetupPage, WelcomePage)
     providers/            Client providers (theme)
-  hooks/                  Shared UI logic (useSignUpForm, useSignInForm, useForgotPasswordForm, useResetPasswordForm, usePlaceSearch)
+  hooks/                  Shared UI logic (useSignUpForm, useSignInForm, useForgotPasswordForm, useResetPasswordForm, useAccountSetupForm, useLocationPicker, usePlaceSearch)
   i18n/
     routing.ts            Locales, default locale, display names
     navigation.ts         Locale-aware Link / useRouter / redirect
     request.ts            Per-request locale + messages for next-intl
     locale-from-tag.ts    "zh-CN" → zh (for the Action URL's lang)
   assets/               Images imported by components (see AGENTS.md)
-  lib/auth/             Session cookies; Firebase Auth REST (password sign-in, reset email, reset)
+  lib/auth/             Session cookies; requireAccount() gate; Firebase Auth REST (password sign-in, reset email, reset)
+  lib/account-setup.ts  Required profile questions, what's missing, safe ?next= (pure)
   lib/places/           Place data, search, API client (city picker)
   lib/validation/       Zod schemas shared by forms and actions
   lib/users.ts          users/{uid} profiles

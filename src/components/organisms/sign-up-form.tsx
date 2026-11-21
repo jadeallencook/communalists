@@ -9,10 +9,6 @@ import {
     FieldLabel,
 } from '@/components/atoms/field';
 import { Input } from '@/components/atoms/input';
-import {
-    LocationField,
-    type LocationFieldProps,
-} from '@/components/molecules/location-field';
 import type { SignUpField, SignUpState } from '@/lib/validation/sign-up';
 
 export interface SignUpFormProps {
@@ -23,17 +19,14 @@ export interface SignUpFormProps {
     pending?: boolean;
     /** Sent with the form so the server can answer in the right language. */
     locale: string;
-    /** The country + city picker: options, selection and callbacks from the caller. */
-    location: Omit<LocationFieldProps, 'error'>;
 }
 
-/** Name, email, password (twice) and location fields with inline errors. No logic: it renders `state`. */
+/** Email and password (twice) with inline errors. Profile questions come after, on account setup. No logic: it renders `state`. */
 export function SignUpForm({
     state,
     formAction,
     pending = false,
     locale,
-    location,
 }: SignUpFormProps) {
     const t = useTranslations('SignUp');
 
@@ -55,17 +48,6 @@ export function SignUpForm({
         <form action={formAction} noValidate>
             <input type="hidden" name="locale" value={locale} />
             <FieldGroup>
-                <Field data-invalid={!!errorFor('name')}>
-                    <FieldLabel htmlFor="name">{t('name')}</FieldLabel>
-                    <Input
-                        {...fieldProps('name')}
-                        autoComplete="name"
-                        defaultValue={state.values?.name}
-                        required
-                    />
-                    <FieldError id="name-error">{errorFor('name')}</FieldError>
-                </Field>
-
                 <Field data-invalid={!!errorFor('email')}>
                     <FieldLabel htmlFor="email">{t('email')}</FieldLabel>
                     <Input
@@ -112,11 +94,6 @@ export function SignUpForm({
                         {errorFor('confirmPassword')}
                     </FieldError>
                 </Field>
-
-                <LocationField
-                    {...location}
-                    error={errorFor('placeId') ?? errorFor('country')}
-                />
 
                 {state.formError && (
                     <p role="alert" className="text-sm text-destructive">

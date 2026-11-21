@@ -2,11 +2,10 @@
 
 import { hasLocale } from 'next-intl';
 
+import { DEFAULT_NEXT_PATH } from '@/lib/account-setup';
 import { signInWithPassword } from '@/lib/auth/password-sign-in';
 import { startSession } from '@/lib/auth/session';
 import { getAdminAuth } from '@/lib/firebase/admin';
-import { getPlace, toGeneralArea } from '@/lib/places';
-import { createUserProfile } from '@/lib/users';
 import {
     signUpSchema,
     type SignUpErrorKey,
@@ -30,14 +29,11 @@ export async function signUp(
         : routing.defaultLocale;
 
     const raw = {
-        name: text(formData.get('name')),
         email: text(formData.get('email')),
         password: text(formData.get('password')),
         confirmPassword: text(formData.get('confirmPassword')),
-        country: text(formData.get('country')),
-        placeId: text(formData.get('placeId')),
     };
-    const values = { name: raw.name, email: raw.email };
+    const values = { email: raw.email };
 
     const parsed = signUpSchema.safeParse(raw);
     if (!parsed.success) {
@@ -50,18 +46,11 @@ export async function signUp(
     }
     const input = parsed.data;
 
-    // Look the place up on the server (never trust coordinates from the
-    // browser), before the account exists so a bad id leaves nothing behind.
-    const place = getPlace(input.country, input.placeId);
-    if (!place) return { fieldErrors: { placeId: 'placeNotFound' }, values };
-    const area = toGeneralArea(place);
-
     let uid: string;
     try {
         ({ uid } = await getAdminAuth().createUser({
             email: input.email,
             password: input.password,
-            displayName: input.name,
         }));
     } catch (error) {
         const code = (error as { code?: string }).code;
@@ -76,17 +65,12 @@ export async function signUp(
     }
 
     try {
-        await createUserProfile(uid, {
-            displayName: input.name,
-            location: area,
-            locale,
-        });
         await startSession(
             await signInWithPassword(input.email, input.password)
         );
     } catch (error) {
         console.error(
-            '[sign-up] finishing sign-up failed',
+            '[sign-up] starting the session failed',
             (error as Error).message
         );
         // Roll back so the person can retry with the same email.
@@ -96,6 +80,14 @@ export async function signUp(
         return { formError: 'generic', values };
     }
 
-    redirect({ href: '/welcome', locale });
+    // Name, language and city are asked next, on the same page every
+    // incomplete account goes to.
+    redirect({
+        href: {
+            pathname: '/account/setup',
+            query: { next: DEFAULT_NEXT_PATH, from: 'sign-up' },
+        },
+        locale,
+    });
     return {};
 }

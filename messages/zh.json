@@ -62,7 +62,6 @@
         "metaTitle": "创建账户",
         "title": "创建你的账户",
         "description": "加入 Communalists，寻找并创建你附近的互助网络。",
-        "name": "姓名",
         "email": "电子邮件",
         "password": "密码",
         "passwordHint": "至少 8 个字符。",
@@ -71,14 +70,11 @@
         "submitting": "正在创建账户…",
         "errors": {
             "required": "此项为必填项。",
-            "tooLong": "内容过长。",
             "invalidEmail": "请输入有效的电子邮件地址。",
             "passwordTooShort": "请至少使用 8 个字符。",
             "passwordTooLong": "请不要超过 128 个字符。",
             "emailInUse": "该电子邮件已注册账户。",
             "generic": "出了点问题，请重试。",
-            "placeRequired": "请从列表中选择你的城市。",
-            "placeNotFound": "找不到该城市，请从列表中重新选择。",
             "passwordMismatch": "两次输入的密码不一致。"
         },
         "haveAccount": "已有账户？",
@@ -153,6 +149,32 @@
         "invalid": {
             "title": "此链接无法使用",
             "body": "链接可能不完整。请复制邮件中的完整链接，或重新获取。"
+        }
+    },
+    "AccountSetup": {
+        "metaTitle": "设置账户",
+        "loading": "正在加载账户…",
+        "new": {
+            "title": "介绍一下你自己",
+            "description": "填写几项信息，让组织知道你是谁，并为你显示附近的内容。"
+        },
+        "returning": {
+            "title": "完成账户设置",
+            "description": "继续使用 Communalists 之前，我们需要几项信息。只需一分钟。"
+        },
+        "name": "姓名",
+        "nameHint": "你加入的组织可以看到。",
+        "language": "首选语言",
+        "languageHint": "用于邮件和通知。你随时可以切换网站语言。",
+        "submit": "保存并继续",
+        "submitting": "正在保存…",
+        "errors": {
+            "required": "此项为必填项。",
+            "tooLong": "内容太长。",
+            "languageRequired": "请选择一种语言。",
+            "placeRequired": "请从列表中选择你的城市。",
+            "placeNotFound": "找不到该城市，请从列表中重新选择。",
+            "generic": "出了点问题，请重试。"
         }
     },
     "Welcome": {

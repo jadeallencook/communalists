@@ -3,18 +3,6 @@ import { fn } from 'storybook/test';
 
 import { SignUpForm } from './sign-up-form';
 
-const location = {
-    countries: [{ code: 'US' as const, name: 'United States' }],
-    country: 'US' as const,
-    onCountryChange: fn(),
-    query: '',
-    onQueryChange: fn(),
-    options: [],
-    selected: null,
-    onSelect: fn(),
-};
-const sanJose = { id: '5392171', label: 'San Jose, California' };
-
 const meta = {
     title: 'Components/Organisms/Sign Up Form',
     component: SignUpForm,
@@ -23,7 +11,6 @@ const meta = {
         formAction: fn(),
         pending: false,
         locale: 'en',
-        location,
     },
     decorators: [
         (Story) => (
@@ -43,65 +30,39 @@ export const FieldErrors: Story = {
     args: {
         state: {
             fieldErrors: {
-                name: 'required',
                 email: 'invalidEmail',
                 password: 'passwordTooShort',
                 confirmPassword: 'required',
-                placeId: 'placeRequired',
             },
-            values: { name: '', email: 'not-an-email' },
+            values: { email: 'not-an-email' },
         },
     },
 };
 
 export const PasswordMismatch: Story = {
     args: {
-        location: { ...location, selected: sanJose },
         state: {
             fieldErrors: { confirmPassword: 'passwordMismatch' },
-            values: {
-                name: 'Ada Lovelace',
-                email: 'ada@example.com',
-            },
+            values: { email: 'ada@example.com' },
         },
     },
 };
 
 export const EmailInUse: Story = {
     args: {
-        location: { ...location, selected: sanJose },
         state: {
             fieldErrors: { email: 'emailInUse' },
-            values: {
-                name: 'Ada Lovelace',
-                email: 'ada@example.com',
-            },
+            values: { email: 'ada@example.com' },
         },
     },
 };
 
 export const ServerError: Story = {
     args: {
-        location: { ...location, selected: sanJose },
-        state: {
-            formError: 'generic',
-            values: {
-                name: 'Ada Lovelace',
-                email: 'ada@example.com',
-            },
-        },
+        state: { formError: 'generic', values: { email: 'ada@example.com' } },
     },
 };
 
 export const Submitting: Story = {
-    args: {
-        location: { ...location, selected: sanJose },
-        pending: true,
-        state: {
-            values: {
-                name: 'Ada Lovelace',
-                email: 'ada@example.com',
-            },
-        },
-    },
+    args: { pending: true, state: { values: { email: 'ada@example.com' } } },
 };

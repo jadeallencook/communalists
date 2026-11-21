@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import {
     WelcomePage,
     WelcomePageLoading,
 } from '@/components/pages/welcome-page';
-import { redirect } from '@/i18n/navigation';
-import { getSessionUser } from '@/lib/auth/session';
-import { getUserProfile } from '@/lib/users';
+import { requireAccount } from '@/lib/auth/require-account';
 
 import { signOut } from './actions';
 
@@ -17,7 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
     return { title: t('metaTitle') };
 }
 
-// Reading the session uses cookies, so it must stream behind <Suspense>
+// requireAccount sends signed-out visitors to sign-in and incomplete
+// accounts to setup. Reading the session uses cookies, so it must stream behind <Suspense>
 // (a build error otherwise with Cache Components).
 export default function Page() {
     return (
@@ -28,14 +27,11 @@ export default function Page() {
 }
 
 async function WelcomeContainer() {
-    const [locale, user] = await Promise.all([getLocale(), getSessionUser()]);
-    if (!user) return redirect({ href: '/sign-in', locale });
-
-    const profile = await getUserProfile(user.uid);
+    const { profile, locale } = await requireAccount('/welcome');
     return (
         <WelcomePage
-            name={profile?.displayName ?? user.name ?? ''}
-            areaLabel={profile?.location.label}
+            name={profile.displayName}
+            areaLabel={profile.location.label}
             locale={locale}
             signOutAction={signOut}
         />

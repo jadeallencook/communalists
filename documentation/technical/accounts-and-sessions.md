@@ -1,6 +1,6 @@
 # Accounts and Sessions
 
-Anyone can create an account at `/{locale}/sign-up` with a name, email, password (typed twice) and their city (picked from a list). Returning users sign in at `/{locale}/sign-in`. Anyone who forgot their password requests a link at `/{locale}/forgot-password` and chooses a new one at `/{locale}/auth/action`. Both land on `/{locale}/welcome`, and a signed-out visit to `/welcome` goes to sign-in. Built 2026-11-21 ([decisions #12, #15, #16 and #17](../decisions.md)).
+Anyone can create an account at `/{locale}/sign-up` with an email and a password (typed twice). Every account then answers the same required questions (name, preferred language, city) at `/{locale}/account/setup`. That includes new sign-ups, prototype accounts with no profile, and anyone missing a question we add later. Returning users sign in at `/{locale}/sign-in`. Anyone who forgot their password requests a link at `/{locale}/forgot-password` and chooses a new one at `/{locale}/auth/action`. Signed-in pages go through `requireAccount()`: signed out → sign-in; incomplete → setup. Built 2026-11-21 ([decisions #12, #15–#18](../decisions.md)).
 
 ## Sign-up flow
 
@@ -9,19 +9,39 @@ SignUpForm (organism, presentational; works without JS)
   ← useSignUpForm(signUp)          src/hooks/use-sign-up-form.ts
   ← SignUpFormContainer            src/app/[locale]/sign-up/sign-up-form-container.tsx
   → server action signUp()            src/app/[locale]/sign-up/actions.ts
-      1. validate with signUpSchema    src/lib/validation/sign-up.ts
-      2. look up the chosen place      src/lib/places (getPlace)
-      3. create the Firebase Auth user (Admin SDK)
-      4. create users/{uid} profile    src/lib/users.ts
-      5. sign in over Firebase's REST API → ID token
-      6. exchange it for a session cookie (httpOnly)   src/lib/auth/session.ts
-  → redirect to /{locale}/welcome
+      1. validate with signUpSchema    src/lib/validation/sign-up.ts (email, password, confirmPassword)
+      2. create the Firebase Auth user (Admin SDK)
+      3. sign in over Firebase's REST API → ID token
+      4. exchange it for a session cookie (httpOnly)   src/lib/auth/session.ts
+  → redirect to /{locale}/account/setup?next=/welcome&from=sign-up
 ```
 
-- **Password twice:** `confirmPassword` is checked by the schema, never sent to Firebase or stored. Zod skips object-level checks once any field fails, so the mismatch check uses `when` to run alongside other field errors; it stays quiet if the password itself is already invalid.
-- **Order matters:** the place lookup runs before the account exists, so a bad place ID never leaves a half-made user. If steps 4–6 fail, the Auth user is deleted, so the person can retry with the same email.
-- **Errors are translation keys** (`SignUp.errors.*`), so the schema works in every locale. Field values are sent back on error so the form keeps them; the password never is.
+- **No profile yet.** `users/{uid}` is written by account setup, not sign-up, so new and old accounts take the same path.
+- **Password twice:** `confirmPassword` is checked by the schema, never sent to Firebase or stored. Zod skips object-level checks once any field fails, so the mismatch check (`passwordsMatch` in `src/lib/validation/password.ts`, shared with reset) uses `when` to run alongside other field errors. It stays quiet if the password itself is already invalid.
+- **Rollback:** if step 3 or 4 fails, the Auth user is deleted, so the person can retry with the same email.
+- **Errors are translation keys** (`SignUp.errors.*`), so the schema works in every locale. The email is sent back on error so the form keeps it; the password never is.
 - **Logs** record only error codes and messages, never names, emails or locations.
+
+## Account setup
+
+```
+Signed-in page container → requireAccount(next)       src/lib/auth/require-account.ts
+   no session         → /sign-in
+   missingSetupSteps(profile) not empty → /account/setup?next=…   src/lib/account-setup.ts (pure, tested)
+/{locale}/account/setup   AccountSetupForm ← useAccountSetupForm + useLocationPicker ← container
+   complete already → redirect to next
+   else: name (pre-filled from the profile, or the Auth user's displayName for prototype accounts),
+         preferred language (pre-filled, else the UI language), city (pre-filled if saved)
+  → saveAccountSetup(): validate (accountSetupSchema) → getPlace → saveUserProfile (merge) → redirect to next
+```
+
+- **Required today:** name, preferred language and city (`SETUP_STEPS`). Each step is "answered" when its field is present. **To add a required question,** add a step, define when it counts as answered, and add the field to the form. Accounts missing it are asked on their next visit, with no migration.
+- **Not built yet:** optional questions ("Not now", remembered) and editing a profile. A complete account visiting `/account/setup` is sent on to `next`, so editing needs its own page.
+- **Every signed-in page must call `requireAccount()`** in its container (inside `<Suspense>`), not just the welcome page. The check isn't in the proxy, because a Firestore read on every request would cost money and slow down every page.
+- **`next` is sanitized** (`safeNextPath`, tested): it must be a path on this site, not `//host` or `/\host`, have no control characters, and not point back at setup. A locale prefix is stripped, because the redirect adds the current one. Both the page and the action sanitize it, since the action can be posted directly.
+- **Preferred language ≠ UI language.** `profile.locale` is for emails and notifications. Saving setup doesn't switch the site's language.
+- **Wording:** `from=sign-up` shows "Tell us about yourself"; anything else shows "Finish setting up your account". The parameter only changes the wording, so a hand-edited URL does no harm.
+- **Prototype accounts:** about 103 Firebase Auth users from the prototype may still exist (Auth wasn't exported or wiped; [data-model](data-model.md#production-data-snapshot-2026-11-20)). Their profile data was deleted, and the user chose not to import it from the backup, so they're simply asked again after signing in.
 
 ## Sign-in flow
 
@@ -36,7 +56,7 @@ SignInForm (organism) ← useSignInForm(signIn) ← SignInFormContainer   src/ap
 
 - **No account enumeration:** wrong password, unknown email and disabled account all show the same "That email and password don't match an account." (`signInErrorFor` maps Firebase's REST codes, tested.) Firebase's own throttling (`TOO_MANY_ATTEMPTS_TRY_LATER`) shows "Too many attempts".
 - **No length rules on sign-in.** Length rules belong to sign-up only, so a future rule change can't lock out existing accounts.
-- `signInWithPassword` throws `PasswordSignInError` with the REST error code. Only unexpected codes are logged, never the email.
+- `signInWithPassword` throws `IdentityToolkitError` with the REST error code. Only unexpected codes are logged, never the email.
 
 ## Forgot and reset password
 
@@ -75,23 +95,23 @@ Email link → Action URL https://communalists.com/auth/action?mode=resetPasswor
 
 ## Data
 
-| Where                   | What                                                                                            |
-| ----------------------- | ----------------------------------------------------------------------------------------------- |
-| Firebase Auth           | Email, password, display name                                                                   |
-| Firestore `users/{uid}` | `displayName`, `location { placeId, country, label, lat, lng, geohash }`, `locale`, `createdAt` |
+| Where                   | What                                                                                                                                                                                 |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Firebase Auth           | Email, password (display name only on prototype accounts)                                                                                                                            |
+| Firestore `users/{uid}` | `displayName`, `location { placeId, country, label, lat, lng, geohash }`, `locale` (preferred language), `createdAt`, `updatedAt`. All optional: a profile may be missing or partial |
 
-Firestore rules still deny all client access. The profile is read and written only through the Admin SDK.
+Firestore rules still deny all client access. The profile is read and written only through the Admin SDK. `saveUserProfile` merges, and sets `createdAt` only when it creates the document.
 
 ## Location
 
 See [decision #14](../decisions.md). The geocoder from #12 is gone.
 
-- **Picker:** a country select (US only for now) plus a type-ahead city picker (`LocationField` molecule). `usePlaceSearch` waits ~200 ms after typing stops, calls `GET /api/places?country=US&q=…`, cancels stale requests, and keeps the last results visible while loading. The form submits `country` and `placeId` as hidden inputs.
+- **Picker:** on the account-setup form, a country select (US only for now) plus a type-ahead city picker (`LocationField` molecule; state in `useLocationPicker`). `usePlaceSearch` waits ~200 ms after typing stops, calls `GET /api/places?country=US&q=…`, cancels stale requests, and keeps the last results visible while loading. The form submits `country` and `placeId` as hidden inputs.
 - **Data:** GeoNames `cities500` (places with 500+ people), US only: 20,748 places in 50 states + DC, ~0.9 MB at `src/lib/places/data/us.json`. Neighborhoods, abandoned and historical places are excluded, and duplicate names within a state keep the most populous. Refresh or add a country with `scripts/build-places.mjs`. **License: CC BY 4.0, credited under the city field.**
 - **Search** (`src/lib/places/search.ts`, pure, tested): accent-insensitive; exact name > name prefix > word prefix, ties by population; understands "springfield il" and "san jose, ca". 3–8 ms per query on the full dataset.
 - **Trust:** the browser only sends an ID. The server looks it up and stores the label plus coordinates rounded to ~1 km and a `geohash` (`geofire-common`) for "near you" radius queries. Never a street address.
 - **API:** `/api/places` is public and cacheable (`s-maxage` 1 day), returns at most 8 `{ id, label }`, needs 2+ characters, and returns 400 for unsupported countries.
-- **Limits:** needs JavaScript (no-JS visitors can't pick a city). Places under 500 people aren't listed. City names aren't translated.
+- **Limits:** needs JavaScript (no-JS visitors can't pick a city, so they can't finish account setup). Places under 500 people aren't listed. City names aren't translated.
 
 ## Sessions
 
@@ -114,16 +134,29 @@ FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:909
 
 To stop a `next start` server, kill it by PID or port. The process renames itself to `next-server`, so `pkill -f "next start"` misses it.
 
-When checking a page for signed-in text, match the real value (`Welcome, Ada!`), not the template: the page's translation payload contains `Welcome, {name}!` even when signed out.
+When checking a page's HTML, match real values or element IDs (`Welcome, Ada!`, `id="placeId-trigger"`), not translated strings. The page's translation payload contains every message in its namespaces (`Welcome, {name}!`, `Choose your city`) even when they aren't rendered. Redirects from inside `<Suspense>` arrive in the stream (`NEXT_REDIRECT;replace;/en/…`), not as a `Location` header.
 
 The Admin SDK logs a `MetadataLookupWarning` locally (it looks for Google Cloud credentials). It's harmless with the emulators.
 
 Verified on 2026-11-21 against the emulators (after sign-in): place API (results, cache headers, 400 for unsupported countries, nothing under 2 characters); mismatched passwords → "Passwords don't match" and no account created; no city → "Choose your city"; tampered place ID → "couldn't find that city"; success → welcome showing the chosen city; duplicate email (case-insensitive) rejected; no session → sign-in; sign-out revokes the cookie; sign-in with a wrong password and with an unknown email show the same message and keep the email; sign-in field errors; sign-in (email in a different case) → welcome with a working session; `/es/sign-in` translated and linked to sign-up. Forgot password: sign-in links to it; invalid email error; a known email (any case) records exactly one reset email with `continueUrl` back to sign-in; an unknown email shows the same confirmation and sends nothing; using the code sets the new password, which then signs in, and the old one is rejected. Reset page (2026-11-21): `/auth/action?lang=es` → `/es/auth/action` (and `zh-CN` → `zh`; unsupported `lang` falls back to `Accept-Language`); no code or another mode → "doesn't work"; bogus code → "expired"; valid code → the form for that email, `noindex` and `no-referrer`, and loading the page doesn't use the code; mismatch and too-short errors; saving → welcome with a new session, another device's session is signed out, old password rejected, new one works; reusing the link → "expired" on load and on submit.
 
+Verified again on 2026-11-21 after account setup:
+
+- **Sign-up:** has no name or city fields; mismatch and duplicate-email (any case) errors work; success goes to `/account/setup?next=/welcome&from=sign-up` with a session.
+- **Setup:** "Tell us about yourself" wording, with English preselected. The welcome page redirects here until setup is done. Required-field, city and tampered-city errors work. Saving goes to `/welcome`, which shows the name and city. The profile has `locale=es` (preferred, while browsing in English), `createdAt` and `updatedAt`. A complete account visiting setup goes on to `/welcome`.
+- **Prototype account** (Auth user with a display name, no profile): sign-in → welcome → setup with "Finish setting up" wording and the name pre-filled.
+- **Partial profile** (name + language, no city): redirected to setup with the saved answers pre-filled. Saving merges and doesn't add `createdAt` to a document it didn't create.
+- **`next`:** `https://evil.example` posted to the action and `//evil.example` in the URL both go to `/welcome`.
+- **Signed out:** setup and welcome go to sign-in.
+- **Re-run:** the forgot-password and reset-password suites still pass.
+
+Earlier record: place API (results, cache headers, 400 for unsupported countries, nothing under 2 characters); mismatched passwords → "Passwords don't match" and no account created; no city → "Choose your city"; tampered place ID → "couldn't find that city"; success → welcome showing the chosen city; duplicate email (case-insensitive) rejected; no session → sign-in; sign-out revokes the cookie; sign-in with a wrong password and with an unknown email show the same message and keep the email; sign-in field errors; sign-in (email in a different case) → welcome with a working session; `/es/sign-in` translated and linked to sign-up. Forgot password: sign-in links to it; invalid email error; a known email (any case) records exactly one reset email with `continueUrl` back to sign-in; an unknown email shows the same confirmation and sends nothing; using the code sets the new password, which then signs in, and the old one is rejected. Reset page (2026-11-21): `/auth/action?lang=es` → `/es/auth/action` (and `zh-CN` → `zh`; unsupported `lang` falls back to `Accept-Language`); no code or another mode → "doesn't work"; bogus code → "expired"; valid code → the form for that email, `noindex` and `no-referrer`, and loading the page doesn't use the code; mismatch and too-short errors; saving → welcome with a new session, another device's session is signed out, old password rejected, new one works; reusing the link → "expired" on load and on submit.
+
 ## Not built yet
 
 - Session-aware header (a "Sign in" / account link); today the homepage hero and the two auth pages link to each other
-- Redirecting already-signed-in visitors away from `/sign-in` and `/sign-up`; a page for returning users (they land on the sign-up welcome page, which says "Your account is ready")
+- Redirecting already-signed-in visitors away from `/sign-in` and `/sign-up`; a home page for signed-in users (they land on the welcome page, which says "Your account is ready")
 - Email verification
-- Editing name/location, deleting an account
+- Editing name/language/location (a profile page), deleting an account
+- Optional setup questions with "Not now"
 - Rate limiting / bot protection on sign-up (e.g. Turnstile)

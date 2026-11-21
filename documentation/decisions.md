@@ -18,6 +18,14 @@ Add an entry when you choose a framework or library, change the data model, add 
 
 ## Decisions
 
+### 18. Sign-up asks only credentials; every account finishes on one setup page — 2026-11-21
+
+**Status:** Accepted. Supersedes the profile-at-sign-up part of #12 and moves #14's city picker to setup.
+**Context:** Prototype accounts can still sign in (about 103 Firebase Auth users) but have no profile, and we'll want more answers from users later. The user asked for a popover or a separate page.
+**Decision:** A **dedicated page**, `/{locale}/account/setup`. Sign-up collects only email and password, then sends people there. Required questions (name, preferred language, city) are listed in code (`src/lib/account-setup.ts`). `requireAccount()` in each signed-in page's container redirects any account missing an answer, then returns it to `?next=` (sanitized). Prototype data from the backup is **not imported**; those users answer again.
+**Alternatives:** A popover or dialog (can be dismissed or bypassed, needs JavaScript, harder on phones); a banner that blocks only some features; keeping name and city on sign-up (two places asking the same questions); pre-filling names or locations from the backup (moves old personal data into the new system, and old locations were a fixed list that doesn't map to cities).
+**Consequences:** One code path for new, old and future-incomplete accounts. Adding a required question needs no migration. Every signed-in page must call `requireAccount()`. Setup needs JavaScript (city picker). `profile.locale` now means preferred language for emails, not the UI language. Optional questions and profile editing are still to build.
+
 ### 17. Our own reset-password page at /auth/action — 2026-11-21
 
 **Status:** Accepted. Supersedes the hosted-page part of #16.
@@ -60,7 +68,7 @@ Add an entry when you choose a framework or library, change the data model, add 
 
 ### 12. Accounts: server-side sign-up, Firebase session cookies, general-area location — 2026-11-21
 
-**Status:** Accepted. Location part superseded by #14
+**Status:** Accepted. Location part superseded by #14; profile-at-sign-up superseded by #18
 **Context:** Open sign-up (decision #11). The user chose email + password; name, email and location on the form; a welcome page afterwards.
 **Decision:** One server action validates (Zod), geocodes, creates the Firebase Auth user and a `users/{uid}` profile with the Admin SDK, then sets an httpOnly **Firebase session cookie**. Location is stored as a **general area**: a label plus coordinates rounded to ~1 km and a geohash. Geocoding uses **OpenStreetMap Nominatim**, biased to the visitor's country via `x-vercel-ip-country`.
 **Alternatives:** Client-side Firebase sign-up with ID tokens in the browser (more JavaScript, harder to use the session in Server Components); a paid geocoder (Google, Mapbox) needing an API key; storing exact coordinates.

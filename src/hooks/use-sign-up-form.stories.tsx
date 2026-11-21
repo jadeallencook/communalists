@@ -1,11 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useLocale } from 'next-intl';
-import { useState } from 'react';
 
 import { SignUpForm } from '@/components/organisms/sign-up-form';
-import { samplePlaces } from '@/lib/places/sample';
-import { searchPlaces } from '@/lib/places/search';
-import type { PlaceOption } from '@/lib/places/types';
 import {
     signUpSchema,
     type SignUpErrorKey,
@@ -19,16 +15,12 @@ import { useSignUpForm, type SignUpAction } from './use-sign-up-form';
 const mockSignUp: SignUpAction = async (_previous, formData) => {
     await new Promise((resolve) => setTimeout(resolve, 800));
     const raw = Object.fromEntries(
-        [
-            'name',
-            'email',
-            'password',
-            'confirmPassword',
-            'country',
-            'placeId',
-        ].map((k) => [k, String(formData.get(k) ?? '')])
+        ['email', 'password', 'confirmPassword'].map((k) => [
+            k,
+            String(formData.get(k) ?? ''),
+        ])
     );
-    const values = { name: raw.name, email: raw.email };
+    const values = { email: raw.email };
     const parsed = signUpSchema.safeParse(raw);
     if (!parsed.success) {
         const fieldErrors: SignUpState['fieldErrors'] = {};
@@ -47,8 +39,6 @@ const mockSignUp: SignUpAction = async (_previous, formData) => {
 function UseSignUpFormDemo() {
     const locale = useLocale();
     const { state, formAction, pending } = useSignUpForm(mockSignUp);
-    const [query, setQuery] = useState('');
-    const [selected, setSelected] = useState<PlaceOption | null>(null);
     return (
         <div className="grid gap-8 md:grid-cols-2">
             <SignUpForm
@@ -56,16 +46,6 @@ function UseSignUpFormDemo() {
                 formAction={formAction}
                 pending={pending}
                 locale={locale}
-                location={{
-                    countries: [{ code: 'US', name: 'United States' }],
-                    country: 'US',
-                    onCountryChange: () => undefined,
-                    query,
-                    onQueryChange: setQuery,
-                    options: searchPlaces(samplePlaces, query),
-                    selected,
-                    onSelect: setSelected,
-                }}
             />
             <div className="flex flex-col gap-2 text-sm">
                 <p className="font-semibold">Hook output</p>
@@ -75,7 +55,8 @@ function UseSignUpFormDemo() {
                 <p className="text-muted-foreground">
                     Submit to see validation. Use an email ending in{' '}
                     <code>@taken.test</code> to see the &quot;already
-                    exists&quot; error.
+                    exists&quot; error. In the app, success goes to account
+                    setup.
                 </p>
             </div>
         </div>

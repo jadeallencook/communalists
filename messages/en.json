@@ -62,7 +62,6 @@
         "metaTitle": "Create account",
         "title": "Create your account",
         "description": "Join Communalists to find and start mutual aid networks near you.",
-        "name": "Name",
         "email": "Email",
         "password": "Password",
         "passwordHint": "At least 8 characters.",
@@ -71,14 +70,11 @@
         "submitting": "Creating account…",
         "errors": {
             "required": "This field is required.",
-            "tooLong": "This is too long.",
             "invalidEmail": "Enter a valid email address.",
             "passwordTooShort": "Use at least 8 characters.",
             "passwordTooLong": "Use 128 characters or fewer.",
             "emailInUse": "An account with this email already exists.",
             "generic": "Something went wrong. Please try again.",
-            "placeRequired": "Choose your city from the list.",
-            "placeNotFound": "We couldn't find that city. Choose it from the list again.",
             "passwordMismatch": "Passwords don't match."
         },
         "haveAccount": "Already have an account?",
@@ -153,6 +149,32 @@
         "invalid": {
             "title": "This link doesn't work",
             "body": "It may be incomplete. Copy the whole link from the email, or request a new one."
+        }
+    },
+    "AccountSetup": {
+        "metaTitle": "Set up your account",
+        "loading": "Loading your account…",
+        "new": {
+            "title": "Tell us about yourself",
+            "description": "A few details so organizations know who you are and can show you what’s near you."
+        },
+        "returning": {
+            "title": "Finish setting up your account",
+            "description": "We need a few details before you can keep using Communalists. It only takes a minute."
+        },
+        "name": "Name",
+        "nameHint": "Shown to organizations you join.",
+        "language": "Preferred language",
+        "languageHint": "For emails and notifications. You can still switch the site's language anytime.",
+        "submit": "Save and continue",
+        "submitting": "Saving…",
+        "errors": {
+            "required": "This field is required.",
+            "tooLong": "This is too long.",
+            "languageRequired": "Choose a language.",
+            "placeRequired": "Choose your city from the list.",
+            "placeNotFound": "We couldn't find that city. Choose it from the list again.",
+            "generic": "Something went wrong. Please try again."
         }
     },
     "Welcome": {

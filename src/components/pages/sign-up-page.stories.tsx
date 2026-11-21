@@ -7,17 +7,6 @@ import { SignUpForm } from '@/components/organisms/sign-up-form';
 
 import { SignUpPage } from './sign-up-page';
 
-const location = {
-    countries: [{ code: 'US' as const, name: 'United States' }],
-    country: 'US' as const,
-    onCountryChange: fn(),
-    query: '',
-    onQueryChange: fn(),
-    options: [],
-    selected: null,
-    onSelect: fn(),
-};
-
 const meta = {
     title: 'Pages/Sign Up',
     component: SignUpPage,
@@ -40,14 +29,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        form: (
-            <SignUpForm
-                state={{}}
-                formAction={fn()}
-                locale="en"
-                location={location}
-            />
-        ),
+        form: <SignUpForm state={{}} formAction={fn()} locale="en" />,
     },
 };
 
@@ -56,18 +38,11 @@ export const WithErrors: Story = {
         form: (
             <SignUpForm
                 state={{
-                    fieldErrors: {
-                        email: 'emailInUse',
-                        placeId: 'placeRequired',
-                    },
-                    values: {
-                        name: 'Ada Lovelace',
-                        email: 'ada@example.com',
-                    },
+                    fieldErrors: { email: 'emailInUse' },
+                    values: { email: 'ada@example.com' },
                 }}
                 formAction={fn()}
                 locale="en"
-                location={location}
             />
         ),
     },

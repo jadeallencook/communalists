@@ -62,7 +62,6 @@
         "metaTitle": "Crear cuenta",
         "title": "Crea tu cuenta",
         "description": "Únete a Communalists para encontrar y crear redes de ayuda mutua cerca de ti.",
-        "name": "Nombre",
         "email": "Correo electrónico",
         "password": "Contraseña",
         "passwordHint": "Al menos 8 caracteres.",
@@ -71,14 +70,11 @@
         "submitting": "Creando cuenta…",
         "errors": {
             "required": "Este campo es obligatorio.",
-            "tooLong": "Es demasiado largo.",
             "invalidEmail": "Introduce un correo electrónico válido.",
             "passwordTooShort": "Usa al menos 8 caracteres.",
             "passwordTooLong": "Usa 128 caracteres o menos.",
             "emailInUse": "Ya existe una cuenta con este correo electrónico.",
             "generic": "Algo salió mal. Inténtalo de nuevo.",
-            "placeRequired": "Elige tu ciudad de la lista.",
-            "placeNotFound": "No encontramos esa ciudad. Elígela de nuevo en la lista.",
             "passwordMismatch": "Las contraseñas no coinciden."
         },
         "haveAccount": "¿Ya tienes una cuenta?",
@@ -153,6 +149,32 @@
         "invalid": {
             "title": "Este enlace no funciona",
             "body": "Puede estar incompleto. Copia el enlace completo del correo o solicita uno nuevo."
+        }
+    },
+    "AccountSetup": {
+        "metaTitle": "Configura tu cuenta",
+        "loading": "Cargando tu cuenta…",
+        "new": {
+            "title": "Cuéntanos sobre ti",
+            "description": "Algunos datos para que las organizaciones sepan quién eres y puedan mostrarte lo que hay cerca de ti."
+        },
+        "returning": {
+            "title": "Termina de configurar tu cuenta",
+            "description": "Necesitamos algunos datos antes de que puedas seguir usando Communalists. Solo toma un minuto."
+        },
+        "name": "Nombre",
+        "nameHint": "Lo verán las organizaciones a las que te unas.",
+        "language": "Idioma preferido",
+        "languageHint": "Para correos y notificaciones. Puedes cambiar el idioma del sitio cuando quieras.",
+        "submit": "Guardar y continuar",
+        "submitting": "Guardando…",
+        "errors": {
+            "required": "Este campo es obligatorio.",
+            "tooLong": "Es demasiado largo.",
+            "languageRequired": "Elige un idioma.",
+            "placeRequired": "Elige tu ciudad de la lista.",
+            "placeNotFound": "No encontramos esa ciudad. Vuelve a elegirla de la lista.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
         }
     },
     "Welcome": {

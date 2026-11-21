@@ -62,7 +62,6 @@
         "metaTitle": "Tạo tài khoản",
         "title": "Tạo tài khoản của bạn",
         "description": "Tham gia Communalists để tìm và lập các mạng lưới tương trợ gần bạn.",
-        "name": "Tên",
         "email": "Email",
         "password": "Mật khẩu",
         "passwordHint": "Ít nhất 8 ký tự.",
@@ -71,14 +70,11 @@
         "submitting": "Đang tạo tài khoản…",
         "errors": {
             "required": "Trường này là bắt buộc.",
-            "tooLong": "Nội dung quá dài.",
             "invalidEmail": "Hãy nhập địa chỉ email hợp lệ.",
             "passwordTooShort": "Hãy dùng ít nhất 8 ký tự.",
             "passwordTooLong": "Hãy dùng tối đa 128 ký tự.",
             "emailInUse": "Đã có tài khoản dùng email này.",
             "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
-            "placeRequired": "Hãy chọn thành phố của bạn trong danh sách.",
-            "placeNotFound": "Không tìm thấy thành phố đó. Hãy chọn lại trong danh sách.",
             "passwordMismatch": "Mật khẩu không khớp."
         },
         "haveAccount": "Đã có tài khoản?",
@@ -153,6 +149,32 @@
         "invalid": {
             "title": "Liên kết này không hoạt động",
             "body": "Liên kết có thể bị thiếu. Hãy sao chép toàn bộ liên kết trong email, hoặc yêu cầu liên kết mới."
+        }
+    },
+    "AccountSetup": {
+        "metaTitle": "Thiết lập tài khoản",
+        "loading": "Đang tải tài khoản…",
+        "new": {
+            "title": "Giới thiệu về bạn",
+            "description": "Một vài thông tin để các tổ chức biết bạn là ai và cho bạn thấy những gì ở gần bạn."
+        },
+        "returning": {
+            "title": "Hoàn tất thiết lập tài khoản",
+            "description": "Chúng tôi cần một vài thông tin trước khi bạn tiếp tục dùng Communalists. Chỉ mất một phút."
+        },
+        "name": "Tên",
+        "nameHint": "Hiển thị cho các tổ chức bạn tham gia.",
+        "language": "Ngôn ngữ ưa thích",
+        "languageHint": "Dùng cho email và thông báo. Bạn vẫn có thể đổi ngôn ngữ của trang bất cứ lúc nào.",
+        "submit": "Lưu và tiếp tục",
+        "submitting": "Đang lưu…",
+        "errors": {
+            "required": "Trường này là bắt buộc.",
+            "tooLong": "Quá dài.",
+            "languageRequired": "Hãy chọn một ngôn ngữ.",
+            "placeRequired": "Hãy chọn thành phố của bạn trong danh sách.",
+            "placeNotFound": "Không tìm thấy thành phố đó. Hãy chọn lại trong danh sách.",
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
         }
     },
     "Welcome": {
