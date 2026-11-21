@@ -4,7 +4,7 @@
     "private": true,
     "description": "Tools and resources for communities to build and sustain mutual aid networks.",
     "engines": {
-        "node": ">=24.15"
+        "node": ">=24.15 <25"
     },
     "packageManager": "pnpm@12.21.0",
     "scripts": {

@@ -39,6 +39,8 @@ Status 2026-11-21: the six `NEXT_PUBLIC_FIREBASE_*` values are set on Production
 | `NEXT_PUBLIC_FIREBASE_APP_ID`              | `1:895012652302:web:1472a663bf95e88ad1c35f`      | No      |
 | `FIREBASE_SERVICE_ACCOUNT_KEY`             | Service-account JSON (the downloaded file as-is) | **Yes** |
 
+**Node version:** production runs the major allowed by `package.json` `engines` (now Node 24), not the project's dashboard setting; see `tooling-and-ci.md` for the Node 26 incident.
+
 `NEXT_PUBLIC_*` values are inlined at build time, so redeploy after changing them. Vercel's CLI pauses on a `NEXT_PUBLIC_` name containing `KEY`, because it looks like a secret; the Firebase web API key is public by design, so add it with `--type config`. Add the service-account key straight from its file, so it's never pasted anywhere: `vercel env add FIREBASE_SERVICE_ACCOUNT_KEY production --sensitive < key.json`, then delete the file. Also enable **Authentication → Sign-in method → Email/Password** in the Firebase console, add `communalists.com` under **Authentication → Settings → Authorized domains** (password-reset links return there), set the sender name under **Authentication → Templates**, and set the templates' **action URL** to `https://communalists.com/auth/action` (our reset-password page; see `accounts-and-sessions.md`).
 
 ## Squarespace DNS for communalists.com
