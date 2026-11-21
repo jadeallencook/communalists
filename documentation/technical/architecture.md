@@ -46,6 +46,7 @@ src/
     locale-from-tag.ts    "zh-CN" → zh (for the Action URL's lang)
   assets/               Images imported by components (see AGENTS.md)
   lib/auth/             Session cookies; requireAccount() gate; Firebase Auth REST (password sign-in, reset email, reset)
+  lib/build-info.ts     Version + commit for the footer (pure)
   lib/account-setup.ts  Required profile questions, what's missing, safe ?next= (pure)
   lib/places/           Place data, search, API client (city picker)
   lib/validation/       Zod schemas shared by forms and actions

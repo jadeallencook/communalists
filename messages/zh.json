@@ -56,7 +56,8 @@
         "developedBy": "由志愿者开发",
         "region": "旧金山湾区",
         "established": "成立于 2022 年",
-        "openSource": "开源"
+        "openSource": "开源",
+        "build": "版本 {version}，基于提交 {commit} 构建"
     },
     "SignUp": {
         "metaTitle": "创建账户",

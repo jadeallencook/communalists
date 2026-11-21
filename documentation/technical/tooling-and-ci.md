@@ -55,6 +55,7 @@ One job on every push to `main` and every PR: `pnpm install --frozen-lockfile` (
 
 - shadcn's `init` failed halfway under pnpm 12 because of the unapproved build scripts above. Re-running after setting `allowBuilds` worked.
 - `CI=1` makes pnpm use `--frozen-lockfile`, so CLI generators (Storybook `init`) can't add dependencies under it. Run `pnpm install` afterwards.
+- **Version:** `package.json` `version` is bumped by hand at milestones (decision #19), not per commit. `next.config.ts` inlines it with `VERCEL_GIT_COMMIT_SHA` as `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_COMMIT_SHA`, for the footer (`src/lib/build-info.ts`).
 - jsdom 31 needs Node ≥ 24.15, so `engines` is `>=24.15 <25`. `.nvmrc` pins an exact LTS (24.22.3) so everyone and CI run the same version.
 - **Keep an upper bound on `engines`.** Vercel's `engines` overrides the project's Node.js setting and picks the newest major that matches. With `>=24.15`, production ran on **Node 26**, where `firebase-admin/auth` failed to load (`ERR_REQUIRE_ESM`: `jwks-rsa` 4 `require()`s the ESM-only `jose` 6). Every sign-in crashed on 2026-11-21. The same code works on Node 24 and 25 locally. Raise the bound deliberately, after testing on the new major.
 - **Git doesn't track empty folders.** Storybook's `staticDirs` points at `public/`, which was empty, so it existed locally but not in CI, and `build-storybook` failed there only (first CI run, 2026-11-21). `public/.gitkeep` keeps the folder. To reproduce CI exactly, build from `git archive HEAD` rather than the working tree.

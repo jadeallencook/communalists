@@ -1,9 +1,17 @@
 import { useTranslations } from 'next-intl';
 
-const REPOSITORY_URL = 'https://github.com/techletariats/communalists';
+import type { BuildInfo } from '@/lib/build-info';
+import { REPOSITORY_URL } from '@/lib/build-info';
 
-/** Bottom of every page: who built it, and the open-source link. */
-export function SiteFooter() {
+export interface SiteFooterProps {
+    /** Which build is running. The layout passes currentBuild(); omit to hide it. */
+    build?: BuildInfo;
+}
+
+const linkClass = 'underline-offset-4 hover:text-foreground hover:underline';
+
+/** Bottom of every page: who built it, the open-source link, and the running version. */
+export function SiteFooter({ build }: SiteFooterProps) {
     const t = useTranslations('Footer');
 
     return (
@@ -12,15 +20,46 @@ export function SiteFooter() {
                 <p>
                     {t('developedBy')} · {t('region')} · {t('established')}
                 </p>
-                <a
-                    href={REPOSITORY_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline-offset-4 hover:text-foreground hover:underline"
-                >
-                    {t('openSource')}
-                </a>
+                <p>
+                    <a
+                        href={REPOSITORY_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={linkClass}
+                    >
+                        {t('openSource')}
+                    </a>
+                    {build && (
+                        <>
+                            {' · '}
+                            <BuildLabel build={build} />
+                        </>
+                    )}
+                </p>
             </div>
         </footer>
+    );
+}
+
+function BuildLabel({ build }: { build: BuildInfo }) {
+    const t = useTranslations('Footer');
+    const label = `v${build.version} (${build.commit ?? 'dev'})`;
+    if (!build.commitUrl || !build.commit) {
+        return <span className="font-mono text-xs">{label}</span>;
+    }
+    return (
+        <a
+            href={build.commitUrl}
+            target="_blank"
+            rel="noreferrer"
+            title={t('build', { version: build.version, commit: build.commit })}
+            aria-label={t('build', {
+                version: build.version,
+                commit: build.commit,
+            })}
+            className={`font-mono text-xs ${linkClass}`}
+        >
+            {label}
+        </a>
     );
 }

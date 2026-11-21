@@ -56,7 +56,8 @@
         "developedBy": "Developed by volunteers",
         "region": "San Francisco Bay Area",
         "established": "Established 2022",
-        "openSource": "Open source"
+        "openSource": "Open source",
+        "build": "Version {version}, built from commit {commit}"
     },
     "SignUp": {
         "metaTitle": "Create account",

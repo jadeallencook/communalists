@@ -56,7 +56,8 @@
         "developedBy": "Desarrollado por voluntarios",
         "region": "Área de la Bahía de San Francisco",
         "established": "Fundado en 2022",
-        "openSource": "Código abierto"
+        "openSource": "Código abierto",
+        "build": "Versión {version}, compilada desde el commit {commit}"
     },
     "SignUp": {
         "metaTitle": "Crear cuenta",

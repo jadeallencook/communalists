@@ -56,7 +56,8 @@
         "developedBy": "Được phát triển bởi tình nguyện viên",
         "region": "Khu vực Vịnh San Francisco",
         "established": "Thành lập năm 2022",
-        "openSource": "Mã nguồn mở"
+        "openSource": "Mã nguồn mở",
+        "build": "Phiên bản {version}, dựng từ commit {commit}"
     },
     "SignUp": {
         "metaTitle": "Tạo tài khoản",

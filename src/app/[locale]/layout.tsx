@@ -9,6 +9,7 @@ import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { routing } from '@/i18n/routing';
+import { currentBuild } from '@/lib/build-info';
 import { getSiteUrl } from '@/lib/site';
 
 import '../globals.css';
@@ -69,7 +70,7 @@ export default async function LocaleLayout({
                         <main id="main" className="flex-1">
                             {children}
                         </main>
-                        <SiteFooter />
+                        <SiteFooter build={currentBuild()} />
                     </ThemeProvider>
                 </NextIntlClientProvider>
             </body>

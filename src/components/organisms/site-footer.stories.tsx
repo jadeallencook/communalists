@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
+import { buildInfo } from '@/lib/build-info';
+
 import { SiteFooter } from './site-footer';
 
 const meta = {
@@ -11,4 +13,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+/** On Vercel: version plus the commit it was built from, linked to GitHub. */
+export const Deployed: Story = {
+    args: {
+        build: buildInfo('4.0.0', 'be4248fd0123456789abcdef0123456789abcdef'),
+    },
+};
+
+/** Local dev and local builds have no commit. */
+export const Local: Story = { args: { build: buildInfo('4.0.0', undefined) } };
+
+export const WithoutVersion: Story = {};
