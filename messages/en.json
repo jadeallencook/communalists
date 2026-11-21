@@ -1,0 +1,28 @@
+{
+    "Metadata": {
+        "description": "Tools and resources for communities to build and sustain mutual aid networks."
+    },
+    "Header": {
+        "skipToContent": "Skip to content",
+        "home": "Communalists home"
+    },
+    "LocaleSwitcher": {
+        "label": "Language"
+    },
+    "ThemeToggle": {
+        "label": "Toggle theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+    },
+    "Home": {
+        "title": "Welcome to Communalists",
+        "tagline": "We give communities the tools they need to empower themselves through mutual aid."
+    },
+    "Footer": {
+        "developedBy": "Developed by volunteers",
+        "region": "San Francisco Bay Area",
+        "established": "Established 2022",
+        "openSource": "Open source"
+    }
+}

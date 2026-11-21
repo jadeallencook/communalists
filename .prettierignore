@@ -1,0 +1,6 @@
+pnpm-lock.yaml
+.next
+storybook-static
+coverage
+next-env.d.ts
+documentation/data

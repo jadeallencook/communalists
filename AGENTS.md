@@ -9,7 +9,7 @@ Communalists is a mutual-aid platform for South Bay (Santa Clara County, CA) org
 - **Public site:** request aid, offer donations, browse free local services, in English, Spanish, Vietnamese and Chinese.
 - **Volunteer dashboard:** join an organization, triage aid requests through a pipeline, claim the coordinator or driver role, comment, and (as a moderator) approve members and pause intake.
 
-Two earlier codebases came first: a React + Webpack + Firebase prototype (2022–2024, commit `7ebc168`) and a Next.js + Prismic marketing shell (2025, commit `81eed51`). Both were removed, and the repo now starts from these docs. The **rebuild framework (Astro or Next.js) is not yet chosen**; see `documentation/decisions.md`. What both attempts taught is kept in `documentation/`.
+Two earlier codebases came first: a React + Webpack + Firebase prototype (2022–2024, commit `7ebc168`) and a Next.js + Prismic marketing shell (2025, commit `81eed51`). Both were removed, and the repo now starts from these docs. The rebuild uses **Next.js (App Router) + Firebase + Tailwind/shadcn/ui, hosted on Vercel, with locale routing (`en`, `es`, `vi`, `zh`) from day one**. See `documentation/decisions.md` #3–#8. What both attempts taught is kept in `documentation/`.
 
 ## Working methodology
 
@@ -26,21 +26,41 @@ The prototype was for discovery, and so is the rebuild. We expect to change dire
 7. **Fix stale docs on sight.** If you notice a doc that's wrong, outdated, or missing a link, fix it now, even if it isn't part of your task. Mention it in your summary.
 8. **Say what you changed.** At the end of a task, list the docs you created or updated, or say plainly that none needed changes.
 
-Docs describe *what* and *why*. Leave the line-by-line *how* to the code, and don't duplicate it there.
+Docs describe _what_ and _why_. Leave the line-by-line _how_ to the code, and don't duplicate it there.
 
 ## Read before you build
 
 `documentation/` is the source of truth for product behavior and lessons learned. Start with `documentation/README.md`.
 
-| Need | Read |
-|---|---|
-| What a feature must do | `documentation/features/NN-*.md` |
-| Data shapes and enums | `documentation/technical/data-model.md`, `documentation/data/enums.json` |
-| Known bugs to avoid repeating | `documentation/technical/tech-debt.md` |
-| Firebase cost and security lessons | `documentation/technical/firebase.md` |
-| Framework choice and build order | `documentation/technical/rebuild-plan.md` |
-| Seed data | `documentation/data/events.json`, `documentation/data/translations.json` |
-| Choices already made, and why | `documentation/decisions.md` |
+| Need                               | Read                                                                               |
+| ---------------------------------- | ---------------------------------------------------------------------------------- |
+| What a feature must do             | `documentation/features/NN-*.md`                                                   |
+| Data shapes and enums              | `documentation/technical/data-model.md`, `documentation/data/enums.json`           |
+| Known bugs to avoid repeating      | `documentation/technical/tech-debt.md`                                             |
+| Firebase cost and security lessons | `documentation/technical/firebase.md`                                              |
+| How the rebuild is put together    | `documentation/technical/architecture.md`, `tooling-and-ci.md`, `design-system.md` |
+| Framework choice and build order   | `documentation/technical/rebuild-plan.md`                                          |
+| Seed data                          | `documentation/data/events.json`, `documentation/data/translations.json`           |
+| Choices already made, and why      | `documentation/decisions.md`                                                       |
+
+## Codebase
+
+| Path                                                      | What                                                                                                                                                               |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `src/app/[locale]/`                                       | All pages. The root layout lives here, so every route is locale-prefixed                                                                                           |
+| `src/i18n/`                                               | `routing.ts` (locales), `navigation.ts` (use its `Link`/`useRouter`), `request.ts`                                                                                 |
+| `messages/{en,es,vi,zh}.json`                             | Translations. Add every key to all four; a test enforces it                                                                                                        |
+| `src/components/ui/`                                      | shadcn components (`pnpm dlx shadcn@latest add <name>`)                                                                                                            |
+| `src/components/layout/`                                  | Header, footer, locale switcher, theme toggle                                                                                                                      |
+| `src/lib/firebase/`                                       | `client.ts` (browser) and `admin.ts` (server-only; bypasses rules)                                                                                                 |
+| `src/proxy.ts`                                            | Locale redirects (Next 16's name for middleware)                                                                                                                   |
+| `firestore.rules`, `database.rules.json`, `firebase.json` | Deny-all rules (deployed to production 2026-11-20) and emulator config. Deploy rules with `firebase deploy --only firestore:rules,database --project communalists` |
+
+Commands: `pnpm dev`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm format`, `pnpm build`, `pnpm storybook`, `pnpm emulators`. Run `lint`, `typecheck`, `test` and `format:check` before saying a change is done. Details are in `documentation/technical/tooling-and-ci.md`.
+
+**Next.js 16 is newer than most training data.** Before using a Next.js API you're unsure of, read the bundled docs in `node_modules/next/dist/docs/`. Known differences: `proxy.ts` replaces `middleware.ts`; Cache Components needs `generateStaticParams` for root params; read the locale with `next/root-params`, not `setRequestLocale`. See `documentation/technical/architecture.md`.
+
+**pnpm 12:** don't add `minimumReleaseAgeExclude` entries; pin an older version instead. New build scripts must be explicitly allowed or denied in `pnpm-workspace.yaml`, with a comment saying why.
 
 ## Current product rules
 
@@ -74,3 +94,13 @@ These are the rules we're building to today. They can change. When one does, upd
 - Don't hard-code content organizers need to edit (services or events, FAQ). Keep it in a DB or CMS.
 - Don't duplicate the request and donation stacks. Model them as one case entity with a `type`.
 - Don't commit secrets. Firebase web config is public, but service-account keys and env files are not.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

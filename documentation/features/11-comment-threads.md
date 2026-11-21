@@ -18,7 +18,7 @@ Volunteers coordinate on each request through a comment feed: "I can drive Thurs
   lastModified: Timestamp }
 ```
 
-- **History:** comments were first stored as one document per comment. Opening a request cost one billed read *per comment*. Commit `a377129` (May 2023) moved them into one document per request: **N reads became 1**.
+- **History:** comments were first stored as one document per comment. Opening a request cost one billed read _per comment_. Commit `a377129` (May 2023) moved them into one document per request: **N reads became 1**.
 - New comments use `arrayUnion`, which is atomic, so two people posting at once don't overwrite each other.
 - `addComment` reads the doc first to choose `updateDoc` or `setDoc`. That extra read could be avoided with `setDoc(..., { merge: true })`.
 - The thread ID equals the request ID. Donations reuse the same collection, so IDs share one namespace.

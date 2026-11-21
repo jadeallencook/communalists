@@ -1,0 +1,28 @@
+{
+    "Metadata": {
+        "description": "帮助社区建立和维持互助网络的工具和资源。"
+    },
+    "Header": {
+        "skipToContent": "跳到主要内容",
+        "home": "Communalists 首页"
+    },
+    "LocaleSwitcher": {
+        "label": "语言"
+    },
+    "ThemeToggle": {
+        "label": "切换主题",
+        "light": "浅色",
+        "dark": "深色",
+        "system": "跟随系统"
+    },
+    "Home": {
+        "title": "欢迎来到 Communalists",
+        "tagline": "我们为社区提供所需的工具，让他们通过互助增强自身力量。"
+    },
+    "Footer": {
+        "developedBy": "由志愿者开发",
+        "region": "旧金山湾区",
+        "established": "成立于 2022 年",
+        "openSource": "开源"
+    }
+}

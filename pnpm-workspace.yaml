@@ -1,0 +1,17 @@
+# pnpm 12 refuses to install when a dependency's build script is neither
+# allowed nor denied. Deny by default; allow only with a documented reason.
+allowBuilds:
+  # Postinstall only verifies the platform binary; used by Storybook/Vite.
+  esbuild: true
+  sharp: false
+  unrs-resolver: false
+  # Postinstall inlines Firebase App Hosting auto-init defaults; we pass config explicitly.
+  '@firebase/util': false
+  # Prebuilt binaries are used; no compile step needed.
+  '@parcel/watcher': false
+  '@swc/core': false
+  # Postinstall not needed for firebase-admin / gRPC usage.
+  protobufjs: false
+
+# Keep pnpm's minimum release age (supply-chain protection) intact. If a tool
+# adds `minimumReleaseAgeExclude` entries, pin to an older version instead.

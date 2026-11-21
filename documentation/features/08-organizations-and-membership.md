@@ -4,11 +4,11 @@ Volunteers belong to organizations. **Being a member of any organization is what
 
 ## Roles
 
-| Role | How you get it | What it unlocks |
-|---|---|---|
-| Signed-in user | Sign up | Overview and Settings tabs; can request to join organizations |
-| Member | A moderator approves your join request | Requests tab: triage, assignment, comments |
-| Moderator | Your UID is in the org's `moderators` array (set by hand in Firestore, or by `addOrganization`) | Approve join requests; toggle the [kill switch](02-request-form-kill-switch.md) |
+| Role           | How you get it                                                                                  | What it unlocks                                                                 |
+| -------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Signed-in user | Sign up                                                                                         | Overview and Settings tabs; can request to join organizations                   |
+| Member         | A moderator approves your join request                                                          | Requests tab: triage, assignment, comments                                      |
+| Moderator      | Your UID is in the org's `moderators` array (set by hand in Firestore, or by `addOrganization`) | Approve join requests; toggle the [kill switch](02-request-form-kill-switch.md) |
 
 There's no UI to promote someone to moderator, remove a member, leave an organization, or create an organization (`src/api/add-organization.ts` exists, but nothing calls it).
 
@@ -43,7 +43,7 @@ Membership is stored as **UID arrays on the organization**, not as a separate me
 ## Gaps
 
 - **No reject or deny.** A pending request stays until it's approved.
-- **Organizations don't scope data.** A member of *any* organization sees *every* request. `requests.organizations` exists (always `['communalists']`) but no query filters on it. If the rebuild supports several organizations, scope requests by org in both the queries and the security rules.
+- **Organizations don't scope data.** A member of _any_ organization sees _every_ request. `requests.organizations` exists (always `['communalists']`) but no query filters on it. If the rebuild supports several organizations, scope requests by org in both the queries and the security rules.
 - The `moderators` value of the third `state` option in `updateOrganizationRequests` does nothing.
 - `fetchOrganization` in the context is a no-op.
 - All organizations, including their full member UID lists, are loaded for every signed-in user.

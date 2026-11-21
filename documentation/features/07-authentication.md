@@ -4,12 +4,12 @@ Volunteers sign up and sign in with email and password through **Firebase Auth**
 
 ## Sign up (`/sign-up`)
 
-| Field | Stored where |
-|---|---|
-| `name` | Realtime Database `displayNames/{uid}` (not in Firestore) |
-| `email`, `password` | Firebase Auth only |
-| `confirmedPassword` | Compared on the client, never stored |
-| `location` | Firestore `accounts/{uid}` |
+| Field               | Stored where                                              |
+| ------------------- | --------------------------------------------------------- |
+| `name`              | Realtime Database `displayNames/{uid}` (not in Firestore) |
+| `email`, `password` | Firebase Auth only                                        |
+| `confirmedPassword` | Compared on the client, never stored                      |
+| `location`          | Firestore `accounts/{uid}`                                |
 
 Flow in `src/api/auth.ts` → `signUp()`:
 

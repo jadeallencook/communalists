@@ -12,6 +12,7 @@
 Showing names for coordinators, drivers, members and comment authors originally meant one Firestore read per person. Commit `d153141` (Jun 2023) moved them into a flat `displayNames: { [uid]: name }` map in RTDB, fetched **once** when the dashboard loads. RTDB bills by bandwidth rather than per document, which suits a small map read all at once.
 
 Downsides:
+
 - Every signed-in user downloads every volunteer's name. That's fine for a few hundred volunteers but doesn't scale, and it exposes the full roster to any account.
 - Names now live in two places (RTDB, plus the old `accounts.name` that comments still read). See [11](11-comment-threads.md).
 

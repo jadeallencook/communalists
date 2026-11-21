@@ -6,17 +6,17 @@ A public listing of recurring free services in the South Bay: meals, showers, es
 
 ## Organizations in the data
 
-| Organization | Listings |
-|---|---|
-| Catholic Charities of Santa Clara County | 12 |
-| Martha's Kitchen | 4 |
-| CityTeam | 3 |
-| Front Door Communities | 2 |
-| Grace Baptist Church | 1 |
-| Food Not Bombs | 1 |
-| Santa Maria Urban Ministry | 1 |
-| Recovery Café | 1 |
-| Dignity On Wheels | 1 |
+| Organization                             | Listings |
+| ---------------------------------------- | -------- |
+| Catholic Charities of Santa Clara County | 12       |
+| Martha's Kitchen                         | 4        |
+| CityTeam                                 | 3        |
+| Front Door Communities                   | 2        |
+| Grace Baptist Church                     | 1        |
+| Food Not Bombs                           | 1        |
+| Santa Maria Urban Ministry               | 1        |
+| Recovery Café                            | 1        |
+| Dignity On Wheels                        | 1        |
 
 18 of the 26 are flagged `isReligious: true`.
 

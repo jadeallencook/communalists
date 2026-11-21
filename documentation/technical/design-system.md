@@ -1,44 +1,46 @@
 # Design System
 
-A thin brand layer over Bootstrap 5: a dark page, a red accent, the Albert Sans font, and heavy headings.
+shadcn/ui on Tailwind CSS 4, with the **monochrome** look from the 2025 attempt: black and white primaries, neutral greys, a crimson for destructive actions, light and dark modes, and the star logo. The prototype's red, Bootstrap-based system is in [prototype/design-system.md](prototype/design-system.md).
 
-## Tokens (`src/theme.css`)
+## Setup
 
-| Token | Value | Use |
-|---|---|---|
-| `--primary` | `#bc3737` | Buttons, links, modal titles, console log badge |
-| `--white` / `--black` | `#fff` / `#000` | Page text / modal text |
-| Page background | `var(--bs-gray-900)` | Dark theme everywhere |
-| Secondary button | `var(--bs-gray-600)` | |
-| `--spacing-small` / `-medium` / `-large` | 5 / 10 / 25 px | |
-| Font | **Albert Sans** (Google Fonts, weights 100, 200, 400, 800) | Everything |
-| Headings | `font-weight: 900` | h1–h4 (note: weight 900 isn't loaded, so the browser fakes it from 800) |
+| Setting       | Value                                                         |
+| ------------- | ------------------------------------------------------------- |
+| shadcn style  | `radix-nova` (Nova preset: Lucide icons, Geist font)          |
+| Primitives    | Radix UI (`radix-ui` package)                                 |
+| Base color    | `neutral`                                                     |
+| Tokens        | CSS variables in `src/app/globals.css`, in OKLCH              |
+| Dark mode     | `.dark` class via `next-themes` (light / dark / system)       |
+| Icons         | `lucide-react`                                                |
+| Class merging | `cn` package (shadcn's replacement for clsx + tailwind-merge) |
+| Config        | `components.json`                                             |
 
-Bootstrap is overridden with `!important` (all `button`s and `a` take the primary color). Tables use `variant="dark"`. The Organizations card uses `bg="danger"`.
+Add components with `pnpm dlx shadcn@latest add <name>`. They're copied into `src/components/ui/` and are ours to edit.
 
-## Responsive helpers
+## Tokens that differ from shadcn's defaults
 
-`.mobile-remove` / `.mobile-show` (≤ 576 px) and `.tablet-remove` / `.tablet-show` hide and show labels. Example: "Only Yours" shortens to "Yours"; "Request Received" shortens to "Received".
+| Token           | Value                              | Why                                                                                                       |
+| --------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `--destructive` | `oklch(0.475 0.171 19.96)` (light) | The 2025 brand crimson `#a71d31`                                                                          |
+| `--font-sans`   | Geist, then CJK system fonts       | Geist covers Latin and **Vietnamese**; Chinese falls back to PingFang SC / Noto Sans SC / Microsoft YaHei |
 
-## Component conventions
+Everything else is shadcn's neutral palette, which already matches the 2025 monochrome direction.
 
-- Every component and form is a folder: `index.tsx` + `style.ts`. The component is wrapped as `styled(Component)(style)` so it gets a `className`.
-- `components/Template` is the scaffold to copy.
-- Shared primitives: `Loading`, `Tooltip` (info icon + Bootstrap overlay), `Shared/Header` (hero with a background image), `CopyLinkButton`, and the `EventsTable` parts (`DayPagination`, `Time`, `Address`, `Tags`).
+## Typography and languages
 
-## Assets to keep
+- **Geist** is loaded with the `latin`, `latin-ext` and `vietnamese` subsets. The prototype's Albert Sans has **no Vietnamese subset**, so Vietnamese diacritics fell back to another font mid-word. Check any new font for Vietnamese support.
+- Chinese uses system fonts. A webfont for CJK is several MB, so don't add one without measuring.
+- `<html lang>` follows the locale, so browsers pick the right CJK glyph variants.
 
-| File | What |
-|---|---|
-| `src/assets/star.svg` | New brand mark (uncommitted) |
-| `src/assets/logo.png` | Old brand mark |
-| `src/assets/network.png` | Hero background |
-| `src/assets/calendar.svg`, `info.svg` | Tooltip icons |
-| `src/assets/eye.svg` | Unused |
-| Favicon | A base64 PNG inline in `public/index.html` |
+## Storybook
 
-**Copy `src/assets/` somewhere safe before deleting the repo.** These docs don't contain the image files.
+`pnpm storybook` shows every `*.stories.tsx`. The toolbar switches **Locale** (all four) and **Theme** (light/dark). The a11y addon reports accessibility violations in its panel. Async Server Components (header, footer) aren't rendered in Storybook; their client-side controls are.
 
-## In the rebuild
+## Known issues
 
-Tailwind or CSS variables + CSS modules instead of Bootstrap + styled-components (styled-components needs extra setup with React Server Components). Keep the palette and the font. Load the heading weight you actually use. Fix contrast: `#bc3737` text on `gray-900` (`#212529`) is about 1.9:1, which fails WCAG even for large text (3:1). Use it as a button fill with white text, and use a lighter red for links on the dark background.
+- **Dev-only console error: "Encountered a script tag while rendering React component."** `next-themes` 0.4.6 (latest, last published 2025-03) renders an inline `<script>` that React 19 warns about on client render. It's harmless: the script runs from the server HTML, so the theme still applies with no flash. Revisit if next-themes ships a fix, or replace it with a small in-house theme script.
+
+## Open questions
+
+- A refreshed logo / wordmark (currently the 2025 star favicon and a text wordmark).
+- Whether to keep Geist for headings, or bring back a display font (it must support Vietnamese).

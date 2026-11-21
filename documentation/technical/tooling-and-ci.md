@@ -1,52 +1,58 @@
 # Tooling and CI
 
-Volunteer engineers came and went, so the tooling was set up to make the right way the easy way. This setup is worth bringing back almost exactly.
+Every change runs through the same checks locally (git hooks) and in CI. The prototype's version is in [prototype/tooling-and-ci.md](prototype/tooling-and-ci.md). Its conventions (Conventional Commits, 4-space Prettier, the lockfile check) carried over.
 
-## Git hooks (husky 8)
+## Setup
 
-| Hook | Runs |
-|---|---|
-| `pre-commit` | `npx lint-staged` (Prettier on staged `.ts`/`.tsx`) → `npm run pretty` (whole repo) → `npm test` |
-| `commit-msg` | `.git/hooks/commit-msg $1`, from `git-commit-msg-linter` |
+```sh
+nvm install                   # Node 24.22.3 from .nvmrc (minimum 24.15)
+corepack enable               # once; provides pnpm at the version in package.json
+pnpm install
+cp .env.example .env.local    # then fill in, or use the emulator values
+pnpm dev                      # http://localhost:3000 → redirects to /en
+```
 
-- Commit messages follow **Conventional Commits** (`feat:`, `fix:`, `chore(scope):`). Both `commitlint.config.js` and `.commitlintrc.json` extend `@commitlint/config-conventional` (one is redundant).
-- `validate-branch-name` is installed. Its config isn't in the repo, so it uses the default pattern (`feature/…`, `fix/…`, etc.).
+The Firebase CLI is not a project dependency. Install it globally (`npm i -g firebase-tools`, latest). The emulators also need **Java 21+**.
 
-## CI (`.github/workflows/check-ts.yml`, on every push)
+## Scripts
 
-Three parallel jobs on Ubuntu 22.04 with Node from `.nvmrc`:
+| Script                               | What it does                                                                               |
+| ------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `pnpm dev` / `build` / `start`       | Next.js                                                                                    |
+| `pnpm lint`                          | ESLint (Next core-web-vitals + TypeScript rules, Prettier conflicts off)                   |
+| `pnpm typecheck`                     | `next typegen` (route + root-param types), then `tsc --noEmit`                             |
+| `pnpm format` / `format:check`       | Prettier                                                                                   |
+| `pnpm test` / `test:watch`           | Vitest (jsdom + Testing Library)                                                           |
+| `pnpm storybook` / `build-storybook` | Storybook 10 on port 6006                                                                  |
+| `pnpm emulators`                     | Firebase Auth (9099) + Firestore (8080) emulators, UI on 4000, project `demo-communalists` |
 
-1. **Lockfile drift:** runs `npm install` and fails if `git diff` shows changes. You can't merge a `package.json` change without the matching lockfile.
-2. **Formatting:** runs Prettier and fails if anything changed.
-3. **Types:** `npx tsc --noEmit`.
+## Git hooks (husky 9)
 
-There is no lint job, test job, or build job, and no deploy workflow is in the repo.
+| Hook         | Runs                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------- |
+| `pre-commit` | `lint-staged`: `eslint --fix` + Prettier on staged code; Prettier on JSON/MD/CSS/YAML |
+| `commit-msg` | `commitlint` with `@commitlint/config-conventional`                                   |
 
-## Formatting and linting
+Tests and the build run in CI, not in the hook, to keep commits fast.
 
-- Prettier: 4 spaces, single quotes, semicolons, ES5 trailing commas.
-- `.eslintrc` exists but **conflicts** with Prettier (it asks for tabs) and isn't run anywhere. `@typescript-eslint/parser` isn't even installed.
+## CI (`.github/workflows/ci.yml`)
 
-## Tests
+One job on every push to `main` and every PR: `pnpm install --frozen-lockfile` (fails on lockfile drift) → `format:check` → `lint` → `typecheck` → `test` → `build` → `build-storybook`.
 
-- Jest + ts-jest is configured with `--passWithNoTests`. **There are no tests.** The helpers in `src/utils/` (`filter-requests`, `format-phone-number`, `isAfterHours`) are where the real bugs are, and they'd be easy to test.
+## Conventions
 
-## Path aliases
+- **Prettier:** 4 spaces, single quotes, semicolons, ES5 trailing commas. Markdown and YAML use 2 spaces (with 4, Prettier writes lists as `-   item`). `prettier-plugin-tailwindcss` sorts classes, including inside `cn()` and `cva()`.
+- **Path alias:** `@/*` → `src/*`, defined once in `tsconfig.json`. Vite/Vitest read it through `resolve.tsconfigPaths`.
+- **Tests:** next to the code as `*.test.ts(x)`. `messages/messages.test.ts` fails if any locale is missing a key or has an empty string (the prototype silently rendered blanks).
 
-Defined twice, in `tsconfig.json` `paths` and in Webpack `resolve.alias`. They must be kept in sync by hand:
+## pnpm 12 supply-chain settings (`pnpm-workspace.yaml`)
 
-`@pages @components @utils @assets @database @interfaces @objects @custom-types @api @forms`
+- **Build scripts are denied unless approved.** pnpm 12 _fails the install_ when a dependency's install script is neither allowed nor denied. Each entry in `allowBuilds` has a comment saying why. Only `esbuild` is allowed (its script just verifies its binary).
+- **Minimum release age.** pnpm won't install versions published in the last day or so. Storybook's `init` tried to add `minimumReleaseAgeExclude` entries to get around this for a same-day release. We pinned the previous version (10.6.7) instead. **Don't add exclusions; pin an older version.**
 
-(`@database` points to a folder that doesn't exist. The `npm run mock` script points at `jobs/mock-database.ts`, which also doesn't exist.)
+## Gotchas found while setting up
 
-## Lessons from getting it running again (2026)
-
-The dev server failed with TypeScript parse errors in `@types/node`. The cause: `@types/node` had drifted to a version TypeScript 4.8 can't parse, and the active Node wasn't the pinned 16.17.0. The fix was restoring the lockfile's versions and running `nvm use`. Pin exact versions and commit the lockfile — that's exactly what the drift check exists for.
-
-## Carry forward to the rebuild
-
-- Husky (or lefthook) + lint-staged + commitlint
-- The three CI checks, plus `lint`, `test`, and `build`
-- Path aliases defined **once** (Next.js and Astro both read `tsconfig` paths)
-- An `.nvmrc` / `engines` pin on a current LTS
-- One ESLint config that matches Prettier (`eslint-config-prettier`)
+- shadcn's `init` failed halfway under pnpm 12 because of the unapproved build scripts above. Re-running after setting `allowBuilds` worked.
+- `CI=1` makes pnpm use `--frozen-lockfile`, so CLI generators (Storybook `init`) can't add dependencies under it. Run `pnpm install` afterwards.
+- jsdom 31 needs Node ≥ 24.15, so `engines` sets that minimum. `.nvmrc` pins an exact LTS (24.22.3) so everyone and CI run the same version.
+- An old global Firebase CLI (12.x) works, but it swaps in an older cached Firestore emulator JAR. Keep it current.

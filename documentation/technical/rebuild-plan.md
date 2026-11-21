@@ -1,5 +1,7 @@
 # Rebuild Plan
 
+> **Decided 2026-11-20:** Next.js App Router, Firebase (same project, emptied), Vercel, Tailwind + shadcn/ui, Firestore-backed services with an admin UI (no CMS), and `next-intl` locale routing from day one. See [decisions.md](../decisions.md) #3–#8. Where the options below differ from those decisions, the decisions win.
+
 **Recommendation: Next.js (App Router).** About half of Communalists is an authenticated, data-heavy dashboard with mutations, modals and live-ish data. That is Next.js's home turf. Astro shines for content sites, and the public half is mostly content, but in Astro the dashboard would become one big React island with its own routing and data layer, which is roughly what this prototype already was.
 
 Pick Astro instead if you shrink the scope to a public, multilingual directory (events, info and a request form), with volunteer coordination handled elsewhere.
@@ -8,22 +10,22 @@ A 2025 attempt already built the public shell in Next.js 15 + Prismic and moved 
 
 ## Astro vs Next.js for this app
 
-| Need | Next.js (App Router) | Astro |
-|---|---|---|
-| Static, translated public pages (home, FAQ, events) | SSG / ISR, `[locale]` segment | Best in class: zero-JS by default, built-in i18n routing |
-| Events data editable without a deploy | ISR or on-demand revalidation from DB/CMS | Needs SSR mode or a rebuild hook |
-| Auth-guarded dashboard | Middleware + server components + server actions | Middleware works; interactivity lives in islands |
-| Modal that is also a shareable page (request detail) | Parallel + intercepting routes, built in | Hand-rolled |
-| Forms with server validation | Server actions + Zod | Astro Actions + Zod (good) |
-| Realtime comments | Client component + a subscription | Island + a subscription |
-| Ecosystem for auth, i18n and tables | Largest | Smaller, growing |
+| Need                                                 | Next.js (App Router)                            | Astro                                                    |
+| ---------------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------- |
+| Static, translated public pages (home, FAQ, events)  | SSG / ISR, `[locale]` segment                   | Best in class: zero-JS by default, built-in i18n routing |
+| Events data editable without a deploy                | ISR or on-demand revalidation from DB/CMS       | Needs SSR mode or a rebuild hook                         |
+| Auth-guarded dashboard                               | Middleware + server components + server actions | Middleware works; interactivity lives in islands         |
+| Modal that is also a shareable page (request detail) | Parallel + intercepting routes, built in        | Hand-rolled                                              |
+| Forms with server validation                         | Server actions + Zod                            | Astro Actions + Zod (good)                               |
+| Realtime comments                                    | Client component + a subscription               | Island + a subscription                                  |
+| Ecosystem for auth, i18n and tables                  | Largest                                         | Smaller, growing                                         |
 
 ## Target architecture
 
 - **Next.js** App Router, TypeScript strict, deployed on Vercel or Firebase App Hosting.
 - **Data:** either
-  - *Stay on Firebase* (no data migration; keep Auth). Then put the rules and indexes in the repo with emulator tests, and move writes into server actions using the Admin SDK so authorization lives in code.
-  - *Or move to Postgres* (Supabase or Neon + Drizzle). This uses the relational shape in [data-model.md](data-model.md). Row-level security covers org scoping, and SQL fixes the filter and search limits that shaped this prototype.
+  - _Stay on Firebase_ (no data migration; keep Auth). Then put the rules and indexes in the repo with emulator tests, and move writes into server actions using the Admin SDK so authorization lives in code.
+  - _Or move to Postgres_ (Supabase or Neon + Drizzle). This uses the relational shape in [data-model.md](data-model.md). Row-level security covers org scoping, and SQL fixes the filter and search limits that shaped this prototype.
 - **i18n:** `next-intl` with `/[locale]/…` routes (`en`, `es`, `vi`, `zh`). Import [`../data/translations.json`](../data/translations.json).
 - **Forms:** React Hook Form (or plain server actions) + Zod, with the schema shared by client and server.
 - **UI:** Tailwind + a headless kit (shadcn/ui). Keep the `#bc3737` + Albert Sans identity.

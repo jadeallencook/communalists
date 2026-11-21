@@ -4,16 +4,16 @@ Between the prototype and the current rebuild there was a second attempt on `mai
 
 ## Stack
 
-| Concern | Choice |
-|---|---|
-| Framework | Next.js 15.3 App Router, React 19, TypeScript 5, Turbopack dev server |
-| Content | **Prismic** headless CMS with Slice Machine (repository `communalists`) |
-| Styling | Started with Tailwind + shadcn/ui, then **moved to CSS modules** (`582c835`, `de813be`) |
-| UI primitives | Radix UI (accordion, dialog, dropdown, navigation menu, tooltip), lucide-react icons |
-| Theming | `next-themes`: light and dark, follows the system setting, class-based |
+| Concern       | Choice                                                                                              |
+| ------------- | --------------------------------------------------------------------------------------------------- |
+| Framework     | Next.js 15.3 App Router, React 19, TypeScript 5, Turbopack dev server                               |
+| Content       | **Prismic** headless CMS with Slice Machine (repository `communalists`)                             |
+| Styling       | Started with Tailwind + shadcn/ui, then **moved to CSS modules** (`582c835`, `de813be`)             |
+| UI primitives | Radix UI (accordion, dialog, dropdown, navigation menu, tooltip), lucide-react icons                |
+| Theming       | `next-themes`: light and dark, follows the system setting, class-based                              |
 | Component dev | Storybook 8 (deployed at `communalists-storybook.vercel.app`) + Vitest browser tests via Playwright |
-| Hosting | Vercel, with `@vercel/analytics` and `@vercel/speed-insights` |
-| Node | 22.19.0 |
+| Hosting       | Vercel, with `@vercel/analytics` and `@vercel/speed-insights`                                       |
+| Node          | 22.19.0                                                                                             |
 
 ## How content worked
 

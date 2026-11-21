@@ -1,0 +1,13 @@
+rules_version = '2';
+
+// Default deny. Open specific paths only as features land, each with
+// emulator tests. Prefer server-side reads/writes through the Admin SDK (which
+// bypasses these rules and checks authorization in code). See
+// documentation/technical/firebase.md for the access model each collection needs.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

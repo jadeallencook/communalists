@@ -11,26 +11,26 @@ A public form at `/request-aid` where a community member asks for help. Each sub
 
 ## Fields
 
-| Field | Input | Required | Notes |
-|---|---|---|---|
-| `name` | text | yes | |
-| `language` | select | yes | Defaults to the **current UI language**, so a visitor browsing in Vietnamese is tagged `vietnamese` without doing anything. |
-| `location` | select | yes | One of 10 South Bay cities. Default `santa-clara-ca`. |
-| `email` | email | yes | |
-| `phone` | tel | no | Auto-formatted as `(408) 555-1234` while typing (`src/utils/format-phone-number.ts`). |
-| `method` | select | yes | Preferred contact: `email`, `phone` (call), `text`. Default `email`. |
-| `health` | text | no | "Do you have any relevant health conditions?" |
-| `needs` | textarea | yes | Free text. A tooltip gives guidance and an example: "I'm in need of some fresh produce and cleaning supplies, I can meet at 456 Oak Ave sometime after 5:00PM on Wednesday." |
+| Field      | Input    | Required | Notes                                                                                                                                                                        |
+| ---------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`     | text     | yes      |                                                                                                                                                                              |
+| `language` | select   | yes      | Defaults to the **current UI language**, so a visitor browsing in Vietnamese is tagged `vietnamese` without doing anything.                                                  |
+| `location` | select   | yes      | One of 10 South Bay cities. Default `santa-clara-ca`.                                                                                                                        |
+| `email`    | email    | yes      |                                                                                                                                                                              |
+| `phone`    | tel      | no       | Auto-formatted as `(408) 555-1234` while typing (`src/utils/format-phone-number.ts`).                                                                                        |
+| `method`   | select   | yes      | Preferred contact: `email`, `phone` (call), `text`. Default `email`.                                                                                                         |
+| `health`   | text     | no       | "Do you have any relevant health conditions?"                                                                                                                                |
+| `needs`    | textarea | yes      | Free text. A tooltip gives guidance and an example: "I'm in need of some fresh produce and cleaning supplies, I can meet at 456 Oak Ave sometime after 5:00PM on Wednesday." |
 
 The form also sets these fields itself:
 
-| Field | Value |
-|---|---|
-| `stage` | `'submitted'` |
-| `timestamp` | Firestore `Timestamp`, taken when the form **mounts** (not on submit; see bugs) |
-| `driver`, `coordinator` | `''` |
-| `hasDriver` | `false` |
-| `organizations` | `['communalists']` (hard-coded) |
+| Field                   | Value                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------- |
+| `stage`                 | `'submitted'`                                                                   |
+| `timestamp`             | Firestore `Timestamp`, taken when the form **mounts** (not on submit; see bugs) |
+| `driver`, `coordinator` | `''`                                                                            |
+| `hasDriver`             | `false`                                                                         |
+| `organizations`         | `['communalists']` (hard-coded)                                                 |
 
 ## Policy copy
 

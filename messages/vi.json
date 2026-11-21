@@ -1,0 +1,28 @@
+{
+    "Metadata": {
+        "description": "Công cụ và tài nguyên giúp cộng đồng xây dựng và duy trì mạng lưới tương trợ."
+    },
+    "Header": {
+        "skipToContent": "Chuyển đến nội dung",
+        "home": "Trang chủ Communalists"
+    },
+    "LocaleSwitcher": {
+        "label": "Ngôn ngữ"
+    },
+    "ThemeToggle": {
+        "label": "Đổi giao diện",
+        "light": "Sáng",
+        "dark": "Tối",
+        "system": "Hệ thống"
+    },
+    "Home": {
+        "title": "Chào mừng bạn đến với Communalists",
+        "tagline": "Chúng tôi trao cho cộng đồng những công cụ cần thiết để tự lực thông qua tương trợ."
+    },
+    "Footer": {
+        "developedBy": "Được phát triển bởi tình nguyện viên",
+        "region": "Khu vực Vịnh San Francisco",
+        "established": "Thành lập năm 2022",
+        "openSource": "Mã nguồn mở"
+    }
+}

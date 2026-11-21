@@ -1,0 +1,16 @@
+{
+    "tabWidth": 4,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "plugins": ["prettier-plugin-tailwindcss"],
+    "tailwindStylesheet": "./src/app/globals.css",
+    "tailwindFunctions": ["cn", "cva"],
+    "overrides": [
+        {
+            "files": ["*.yml", "*.yaml", "*.md", "*.mdx"],
+            "options": { "tabWidth": 2 }
+        }
+    ]
+}

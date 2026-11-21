@@ -6,13 +6,13 @@ The flip side of aid requests: someone offers goods (for example surplus restaur
 
 It reuses the request form's layout and shared snippets:
 
-| Field | Notes |
-|---|---|
-| `name`, `email` (required), `phone` (auto-formatted) | |
-| `language` | Defaults to the UI language |
-| `location` | Default `santa-clara-ca` |
-| `method` | email / phone / text |
-| `body` | Textarea describing the donation |
+| Field                                                | Notes                            |
+| ---------------------------------------------------- | -------------------------------- |
+| `name`, `email` (required), `phone` (auto-formatted) |                                  |
+| `language`                                           | Defaults to the UI language      |
+| `location`                                           | Default `santa-clara-ca`         |
+| `method`                                             | email / phone / text             |
+| `body`                                               | Textarea describing the donation |
 
 It also sets `stage: 'submitted'`, `timestamp`, `driver: ''`, `coordinator: ''` and `hasDriver: false`, then writes to the Firestore `donations` collection.
 

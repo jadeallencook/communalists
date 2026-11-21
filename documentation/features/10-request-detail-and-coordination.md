@@ -21,12 +21,12 @@ The modal title reads "Request Received **3 days ago**", with a calendar-icon to
 
 `src/api/update-volunteer.ts` writes right away (no Save needed):
 
-| Action | Write |
-|---|---|
-| Claim driver | `{ driver: myUid, hasDriver: true }` |
-| Remove driver | `{ driver: '', hasDriver: false }` |
-| Claim coordinator | `{ coordinator: myUid }` |
-| Remove coordinator | `{ coordinator: '' }` |
+| Action             | Write                                |
+| ------------------ | ------------------------------------ |
+| Claim driver       | `{ driver: myUid, hasDriver: true }` |
+| Remove driver      | `{ driver: '', hasDriver: false }`   |
+| Claim coordinator  | `{ coordinator: myUid }`             |
+| Remove coordinator | `{ coordinator: '' }`                |
 
 - `hasDriver` is a **derived boolean** kept next to `driver`. It exists because Firestore handles `!=` and "is empty" queries poorly, so "has a driver" becomes a simple equality filter. Keep this idea if you stay on Firestore. In SQL it's just `driver_id IS NOT NULL`.
 - The role keys come from a larger list in `objects/roles.ts` (driver, coordinator, security, tech, social, photographer, laborer, cook, planner, designer, emotional, legal, medical). Only `driver` and `coordinator` are used. The rest came from the removed volunteer application ([14](14-removed-experiments.md)). It's a ready-made list if you ever want role-based matching.

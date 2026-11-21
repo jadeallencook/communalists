@@ -32,10 +32,21 @@ The UI language **pre-fills the `language` field** on the request and donate for
 - The `sign-up-form` namespace still has unused keys (`bio.*`, `role.label`, `success.*`) left over from the removed application flow ([14](14-removed-experiments.md)).
 - Some translations look machine-made. Example: the `request-aid-form` header in Chinese, "欢迎共产主义者", reads roughly as "Welcome, communists". Have native speakers review the copy before reuse.
 
-## In the rebuild
+## Rebuild (current)
 
-- Use locale codes (`en`, `es`, `vi`, `zh-Hans`) and put the locale **in the URL** (`/es/request-aid`), with `hreflang` alternates. Both Astro (built-in i18n routing) and Next.js (App Router `[locale]` segment) support this.
-- Remember the choice (a cookie) and use `Accept-Language` on first visit.
-- Use ICU messages (for example `next-intl`, `paraglide-js` or `astro-i18n`) for plurals and variables.
-- Make a missing key fail the build or a test instead of silently showing blank.
-- Keep the "form language defaults to UI language" behavior.
+Built in the foundation scaffold (decision #8):
+
+- **Locale in the URL**: `/en`, `/es`, `/vi`, `/zh`, using `next-intl` 4.15. `/` redirects using the `NEXT_LOCALE` cookie, then `Accept-Language`, then `en`. The switcher keeps you on the same page and sets the cookie, so the choice survives a reload.
+- **`<html lang>` follows the locale**, and every locale is prerendered.
+- **Messages** live in `messages/{locale}.json`, namespaced by component (`Header`, `Footer`, `Home`…). Keys are typed against `en.json`, so a typo in `t('…')` fails `tsc`.
+- **No silent blanks.** `messages/messages.test.ts` fails CI if a locale is missing a key or has an empty string.
+- Locale codes are plain `zh` (Simplified Chinese assumed). Switch to `zh-Hans` / `zh-Hant` if Traditional Chinese speakers need support.
+- The brand name "Communalists" is never translated.
+
+Still to do:
+
+- `hreflang` alternates and per-locale metadata.
+- ICU plurals and variables as features need them (next-intl supports them).
+- Native-speaker review of every es / vi / zh string, including the shell copy written during scaffolding.
+- Keep the "form language defaults to UI language" behavior when the request form is rebuilt.
+- Import the still-useful prototype strings from [`../data/translations.json`](../data/translations.json) as each feature is rebuilt.

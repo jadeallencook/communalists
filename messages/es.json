@@ -1,0 +1,28 @@
+{
+    "Metadata": {
+        "description": "Herramientas y recursos para que las comunidades construyan y sostengan redes de ayuda mutua."
+    },
+    "Header": {
+        "skipToContent": "Saltar al contenido",
+        "home": "Inicio de Communalists"
+    },
+    "LocaleSwitcher": {
+        "label": "Idioma"
+    },
+    "ThemeToggle": {
+        "label": "Cambiar tema",
+        "light": "Claro",
+        "dark": "Oscuro",
+        "system": "Sistema"
+    },
+    "Home": {
+        "title": "Bienvenidos a Communalists",
+        "tagline": "Damos a las comunidades las herramientas que necesitan para empoderarse a través de la ayuda mutua."
+    },
+    "Footer": {
+        "developedBy": "Desarrollado por voluntarios",
+        "region": "Área de la Bahía de San Francisco",
+        "established": "Fundado en 2022",
+        "openSource": "Código abierto"
+    }
+}

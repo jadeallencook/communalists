@@ -9,6 +9,6 @@ A public page at `/little-free-library` that points people to free book-exchange
 
 ## Notes for the rebuild
 
-- This is the first sign of the product widening from *aid requests* toward a **directory of community resources**. It fits naturally next to the [events/services directory](03-events-directory.md): consider one "resources" section with services, libraries and similar.
+- This is the first sign of the product widening from _aid requests_ toward a **directory of community resources**. It fits naturally next to the [events/services directory](03-events-directory.md): consider one "resources" section with services, libraries and similar.
 - Relying on a third-party iframe means no control over its language, accessibility, or what it shows. Check whether Little Free Library offers data or an API before building a native map.
 - Like the rest of that attempt, the page was English only.

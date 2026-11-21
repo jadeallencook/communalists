@@ -4,13 +4,13 @@ The core volunteer tool at `/dashboard/requests`. Organization members see aid r
 
 ## The pipeline
 
-| Key | Label | Badge |
-|---|---|---|
-| `submitted` | Received (1/4) | default |
-| `started` | Coordinating (2/4) | |
-| `ready` | Ready (3/4) | |
-| `complete` | Fulfilled (4/4) | |
-| `cancelled` | Cancelled | |
+| Key         | Label              | Badge   |
+| ----------- | ------------------ | ------- |
+| `submitted` | Received (1/4)     | default |
+| `started`   | Coordinating (2/4) |         |
+| `ready`     | Ready (3/4)        |         |
+| `complete`  | Fulfilled (4/4)    |         |
+| `cancelled` | Cancelled          |         |
 
 Every request starts at `submitted`. Any member can move a request to any stage, and there are no transition rules.
 
@@ -18,14 +18,14 @@ Every request starts at `submitted`. Any member can move a request to any stage,
 
 Sorted **oldest first** (by `timestamp`), so the longest-waiting request is on top. A result count ("3 Results") sits above the table.
 
-| Column | Content |
-|---|---|
-| Received | Relative time: "3 days ago", "2 hours ago", "Just now" |
-| Requester | Name |
-| Location | City name, or "Location Unknown" |
-| Language | Language name in its own script |
-| Delivery | "Coordinated" if a driver is assigned, otherwise "Pending" |
-| Stage | Stage badge |
+| Column    | Content                                                    |
+| --------- | ---------------------------------------------------------- |
+| Received  | Relative time: "3 days ago", "2 hours ago", "Just now"     |
+| Requester | Name                                                       |
+| Location  | City name, or "Location Unknown"                           |
+| Language  | Language name in its own script                            |
+| Delivery  | "Coordinated" if a driver is assigned, otherwise "Pending" |
+| Stage     | Stage badge                                                |
 
 Clicking a row opens the [request modal](10-request-detail-and-coordination.md). Rows fade in one after another (`animationDelay: index * 0.05s`).
 
@@ -33,15 +33,15 @@ Empty state: "There are currently no requests that match that search criteria. P
 
 ## Filters
 
-| Control | Behavior | Where it filters |
-|---|---|---|
-| Delivery | Any / Pending / Coordinated | Firestore `hasDriver == bool` |
-| Stage | One stage at a time (default Received) | Firestore `stage ==` |
-| **Only Yours** button and checkbox | Requests where you are the coordinator | Firestore `coordinator == uid` |
-| Refresh | Refetch with current filters | — |
-| Search box | Name or email substring, case-insensitive | **Client only** (Firestore can't do substring search) |
-| Location, Language | Built, then **commented out** in `FilterForm` | Firestore `==` |
-| Kill switch (moderators) | See [02](02-request-form-kill-switch.md) | — |
+| Control                            | Behavior                                      | Where it filters                                      |
+| ---------------------------------- | --------------------------------------------- | ----------------------------------------------------- |
+| Delivery                           | Any / Pending / Coordinated                   | Firestore `hasDriver == bool`                         |
+| Stage                              | One stage at a time (default Received)        | Firestore `stage ==`                                  |
+| **Only Yours** button and checkbox | Requests where you are the coordinator        | Firestore `coordinator == uid`                        |
+| Refresh                            | Refetch with current filters                  | —                                                     |
+| Search box                         | Name or email substring, case-insensitive     | **Client only** (Firestore can't do substring search) |
+| Location, Language                 | Built, then **commented out** in `FilterForm` | Firestore `==`                                        |
+| Kill switch (moderators)           | See [02](02-request-form-kill-switch.md)      | —                                                     |
 
 ## Caching strategy (important)
 

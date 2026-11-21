@@ -1,90 +1,71 @@
 # Architecture
 
-A client-only React single-page app, bundled with Webpack, that talks to Firebase directly from the browser. There is no server, API layer or Cloud Functions: every read and write runs in the browser, and only Firebase security rules stand between users and the data.
+A single Next.js App Router app serves both the public site and (later) the volunteer dashboard. Locale-prefixed routes are rendered on the server, and Firebase is the backend. As of 2026-11-20, only the foundation exists: layout shell, i18n, Firebase wiring and tooling. No features yet. The prototype's architecture is in [prototype/architecture.md](prototype/architecture.md).
 
-## Stack (as built)
+## Stack
 
-| Concern | Choice | Version |
-|---|---|---|
-| UI | React | 18.2 |
-| Language | TypeScript | 4.8 (pinned; newer `@types/node` breaks it) |
-| Bundler | Webpack 5 + ts-loader + babel-loader | |
-| Routing | React Router `HashRouter` | 6.4 |
-| Server state | React Query (`react-query` v3) | 3.39 (only partly used) |
-| App state | React Context (`DashboardContext`, `SnippetContext`, `RequestFormStatusContext`) | |
-| Forms | Formik (Yup installed, unused) | 2.2 |
-| UI kit | React-Bootstrap + Bootstrap 5 CSS | 2.5 / 5.2 |
-| Styling | styled-components (one `style.ts` per component) + global `theme.css` | 5.3 |
-| Toasts | react-hot-toast | 2.4 |
-| Backend | Firebase Auth, Firestore, Realtime Database | `firebase` 9.15 (modular SDK) |
-| Analytics | GA4 via gtag in `public/index.html` | |
-| Node | 16.17.0 (`.nvmrc`) | |
+| Concern         | Choice                                                                   | Notes                                                              |
+| --------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| Framework       | Next.js 16.4 (App Router), React 19.3, TypeScript 5.9 (strict)           | `cacheComponents` and `partialPrefetching` on (template defaults)  |
+| i18n            | `next-intl` 4.15, locales `en` `es` `vi` `zh`                            | Locale read with `next/root-params`; messages in `messages/*.json` |
+| UI              | Tailwind CSS 4.3 + shadcn/ui 4.23 (style `radix-nova`, Radix primitives) | Components copied into `src/components/ui`; class merging via `cn` |
+| Theme           | `next-themes`: light, dark, system                                       | See [design-system.md](design-system.md)                           |
+| Backend         | Firebase: Auth + Firestore (client SDK 13, Admin SDK 14)                 | Realtime Database is unused; its rules deny everything             |
+| Validation      | Zod 4                                                                    | Installed for server actions and forms; not used yet               |
+| Hosting         | Vercel                                                                   | Not yet connected                                                  |
+| Package manager | pnpm 12 (via Corepack), Node ≥ 24.15                                     | See [tooling-and-ci.md](tooling-and-ci.md)                         |
 
-## Folder layout
+## Layout
 
 ```
-interfaces/   TypeScript interfaces for documents (outside src/)
-objects/      Enum maps: key → display label (locations, stages, roles…)
-types/        Union types for the keys
+messages/                 en.json, es.json, vi.json, zh.json + parity test
 src/
-  api/        One file per Firebase call (get-*, add-*, update-*); init-app.ts makes the app
-  contexts/   DashboardContext (cache + actions), SnippetContext (i18n), RequestFormStatusContext
-  pages/      Route components; pages/Dashboard/* are dashboard tabs
-  forms/      Formik forms, each with index.tsx + style.ts
-  components/ Presentational components, each with index.tsx + style.ts
-  snippets/   Translations per namespace
-  utils/      Pure helpers (formatting, filtering, sorting)
-  assets/     Images + events.ts (hard-coded events data)
+  app/
+    [locale]/layout.tsx   Root layout: <html lang>, fonts, providers, header/footer
+    [locale]/page.tsx     Home
+    globals.css           Tailwind + shadcn tokens
+    favicon.ico           Star logo (from the 2025 attempt)
+  components/
+    ui/                   shadcn components (generated, then owned by us)
+    layout/               Site header, footer, locale switcher, theme toggle
+    providers/            Client providers (theme)
+  i18n/
+    routing.ts            Locales, default locale, display names
+    navigation.ts         Locale-aware Link / useRouter / redirect
+    request.ts            Per-request locale + messages for next-intl
+  lib/firebase/
+    client.ts             Browser SDK (lazy; emulator-aware)
+    admin.ts              Admin SDK (server-only; bypasses rules)
+  proxy.ts                Locale detection + redirect (Next 16's renamed middleware)
+  global.d.ts             Types `t('…')` keys against en.json
+firebase.json, firestore.rules, database.rules.json, firestore.indexes.json
 ```
 
-## Provider tree (`src/index.tsx`)
+## Request flow
 
-```
-RequestFormStatusProvider      reads the kill switch once
-└ SnippetProvider              language + snippet()
-  └ QueryClientProvider        global onError → toast + console log
-    └ HashRouter
-      └ DashboardProvider      onAuthStateChanged, caches, all dashboard actions
-        ├ Navigation
-        ├ Routes
-        └ Footer
-    └ Toaster
-```
+1. **`src/proxy.ts`** runs on every page request (not `/api`, `/_next`, `/_vercel` or files with an extension). A path without a locale (`/`) is redirected to `/{locale}` using the `NEXT_LOCALE` cookie, then `Accept-Language`, then `en`.
+2. The **`[locale]` root layout** reads the locale with `next/root-params`, 404s if it isn't supported, and sets `<html lang>`. That fixes the prototype's hard-coded `lang="en"`.
+3. Server Components get translations with `getTranslations()`. Client Components use `useTranslations()` through `NextIntlClientProvider`, which passes the messages down automatically.
+4. All four locales are **prerendered at build time** (`generateStaticParams` in the layout).
 
-`DashboardProvider` wraps the **public** pages too. It sets up the auth listener on every page load and, for signed-in users, runs the initial dashboard fetch even on the home page.
+## Next.js 16 specifics
 
-## Routes
+These are newer than most training data and docs online. The bundled docs in `node_modules/next/dist/docs/` are the source of truth, and `AGENTS.md` tells agents to read them first.
 
-| Path | Page | Auth |
-|---|---|---|
-| `/` | Home | public |
-| `/request-aid` | Request form or paused message | public |
-| `/donate` | Donation form | public |
-| `/events` | Events directory | public |
-| `/sign-in`, `/sign-up`, `/forgot-password` | Auth forms | public |
-| `/view-request/:uid` | Standalone request detail | public route, relies on rules |
-| `/dashboard`, `/dashboard/:route` | Dashboard shell: `overview`, `requests`, `settings` | not guarded |
+- **`middleware.ts` is now `proxy.ts`.** It runs on the Node.js runtime, and the `runtime` option isn't allowed.
+- **Cache Components** (`cacheComponents: true`): every root param needs at least one value from `generateStaticParams`, or the build fails. Dynamic data must be inside `<Suspense>` or marked `'use cache'`.
+- **`next/root-params`**: server code can read `[locale]` without prop drilling. It doesn't work in Client Components, Server Actions or Route Handlers. next-intl 4.15 builds on this and has deprecated `setRequestLocale`.
+- `LayoutProps<'/[locale]'>` / `PageProps` are global type helpers generated by `next typegen`, which runs as part of `pnpm typecheck`.
 
-Because of `HashRouter`, real URLs look like `https://www.communalists.org/#/events`. Copy-link code hard-codes `/#/`.
+## Firebase usage rules
 
-## Data flow in the dashboard
+- **Server first.** Reads and writes go through the Admin SDK in Server Components, Server Actions and Route Handlers, with authorization checked in code. The client SDK is for auth state and (later) realtime listeners.
+- **Rules deny everything** until a feature opens a path, and each opening ships with emulator tests. Both `firestore.rules` and `database.rules.json` (Realtime Database, unused) are deny-all and were **deployed to production `communalists` on 2026-11-20**, after the data was backed up and deleted. Deploy rule changes with `firebase deploy --only firestore:rules,database --project communalists`. Use `firestore:rules`, not `firestore`, so the empty `firestore.indexes.json` doesn't wipe indexes.
+- Both SDKs initialize lazily (`getClientAuth()`, `getAdminDb()` and so on), so importing them never touches Firebase during the build.
+- Local development uses the emulators with the `demo-communalists` project, which can't reach real Firebase. See [tooling-and-ci.md](tooling-and-ci.md).
 
-1. `onAuthStateChanged` fires → if signed in, `initalDashboardFetch` runs **one after another**: my organizations → all organizations → my account → display names. These four requests are independent and could run in parallel.
-2. Pages read from context maps (`requests`, `organizations`, `accounts`, `displayNames`).
-3. Actions (`updateStage`, `requestToJoinOrganization`, `approveRequestToJoinOrganization`, `updateDisplayName`) write to Firebase, then patch the local map right away.
-4. One global `isLoading` boolean is shared by every action. Any fetch makes every page that reads it show a spinner.
-5. Some components skip the context and call `src/api` directly: `VolunteerForm`, `Comments`, `ViewRequestPage`, `FormStatusForm` (React Query), `DonationsPage`.
+## Not decided yet
 
-So there are **three state patterns side by side**: context cache, React Query, and local `useEffect` + `useState`. The rebuild should pick one.
-
-## Environments
-
-- `src/api/init-app.ts` (committed) used `process.env.FIREBASE_CONFIG` (JSON, injected by `webpack.EnvironmentPlugin`) and fell back to the **`communalists-test`** project. So local dev never touched production by default.
-- The **uncommitted** working copy replaces that with a hard-coded test config that adds `databaseURL`. Realtime Database calls (`getDatabase()`) need `databaseURL`. Without it, the kill switch and display names fail. Keep that in mind for any Firebase config.
-- `getDatabase()` and `getAuth()` are sometimes called **without** passing `app`. That works only because there's one default app.
-- Production domain: `www.communalists.org` (gtag checks for it). The `package.json` homepage says `communalists.com`, and support emails mix `.com` and `.org`.
-
-## Analytics
-
-- `public/index.html` loads gtag for `G-41Q7T9V1ZW`, but configures `G-6CVL13DXLL`, and only on `www.communalists.org`. **Two different measurement IDs** — one of them is probably stale.
-- The script still loads on every host, and there's no consent banner.
+- The Firestore schema for the rebuild. The prototype's schema and a relational sketch are in [data-model.md](data-model.md).
+- The auth session strategy (Firebase ID token → session cookie verified in the proxy and server code is the likely path).
+- Which Firebase project ID production uses, and how environments map to Vercel (preview vs production).
