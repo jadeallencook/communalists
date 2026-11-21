@@ -51,3 +51,6 @@ ui-debug.log*
 storybook-static/
 
 *storybook.log
+
+# storybook docs pages generated from documentation/
+.storybook/docs/generated/

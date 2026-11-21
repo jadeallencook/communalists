@@ -30,7 +30,7 @@ Docs describe _what_ and _why_. Leave the line-by-line _how_ to the code, and do
 
 ## Read before you build
 
-`documentation/` is the source of truth for product behavior and lessons learned. Start with `documentation/README.md`.
+`documentation/` is the source of truth for product behavior and lessons learned. Start with `documentation/README.md`. The same docs are browsable in Storybook (`pnpm storybook`, or storybook.communalists.com) under **Documentation**. Storybook generates those pages from the `.md` files, so only ever edit the `.md` files.
 
 | Need                               | Read                                                                               |
 | ---------------------------------- | ---------------------------------------------------------------------------------- |

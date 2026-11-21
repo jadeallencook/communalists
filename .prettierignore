@@ -4,3 +4,4 @@ storybook-static
 coverage
 next-env.d.ts
 documentation/data
+.storybook/docs/generated

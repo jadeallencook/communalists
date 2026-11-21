@@ -100,6 +100,24 @@ const preview: Preview = {
     },
     initialGlobals: { locale: 'en', theme: 'light' },
     parameters: {
+        options: {
+            // Docs first (Overview is the landing page), then components.
+            storySort: {
+                order: [
+                    'Documentation',
+                    [
+                        'Overview',
+                        'Agents Guide',
+                        'Decision Log',
+                        'Features',
+                        'Technical',
+                        ['*', 'Prototype'],
+                    ],
+                    'Layout',
+                    'UI',
+                ],
+            },
+        },
         nextjs: { appDirectory: true },
         controls: {
             matchers: {

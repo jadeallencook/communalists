@@ -1,8 +1,17 @@
 import type { StorybookConfig } from '@storybook/nextjs-vite';
 import tailwindcss from '@tailwindcss/vite';
 
+import { generateDocPages } from './docs/generate';
+
+// Mirror documentation/*.md and AGENTS.md as Storybook docs pages.
+generateDocPages();
+
 const config: StorybookConfig = {
-    stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+    stories: [
+        './docs/generated/*.mdx',
+        '../src/**/*.mdx',
+        '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    ],
     addons: ['@storybook/addon-a11y', '@storybook/addon-docs'],
     framework: '@storybook/nextjs-vite',
     staticDirs: ['../public'],

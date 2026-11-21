@@ -36,7 +36,14 @@ Everything else is shadcn's neutral palette, which already matches the 2025 mono
 
 `pnpm storybook` shows every `*.stories.tsx`. The toolbar switches **Locale** (all four) and **Theme** (light/dark). The a11y addon reports accessibility violations in its panel. Tailwind reaches Storybook through `@tailwindcss/vite` (see `tooling-and-ci.md`). Geist is loaded in `.storybook/preview.tsx` because the app loads it in its layout, which Storybook doesn't render. Its CSS variables go on `<html>`, not on a story wrapper, because Radix portals dropdowns, dialogs and tooltips to `<body>`; on a wrapper they render in serif. Storybook's `next/font` shim injects it at runtime from Google Fonts. Async Server Components (header, footer) aren't rendered in Storybook; their client-side controls are.
 
-## Known issues
+## Documentation in Storybook
+
+Everything in `documentation/` plus `AGENTS.md` also appears in Storybook under **Documentation** (Overview is the landing page), so it's browsable at storybook.communalists.com. The `.md` files stay the only source:
+
+- `.storybook/docs/generate.ts` runs when Storybook starts or builds (called from `.storybook/main.ts`). It writes one MDX page per doc into `.storybook/docs/generated/` (gitignored) and a `doc-map.json` of file → Storybook id.
+- Each page imports its Markdown with `?raw`, so **editing a doc updates Storybook live**. Adding, renaming or deleting a doc needs a Storybook restart.
+- `.storybook/docs/DocPage.tsx` renders it with the docs addon's `Markdown` block and rewrites links: links to other docs open their Storybook page, and links to anything else in the repo (e.g. `data/*.json`) open on GitHub.
+- Page titles come from each file's `# heading`. Storybook treats `/` in a title as nesting, so the generator turns it into `&`.
 
 - **Dev-only console error: "Encountered a script tag while rendering React component."** `next-themes` 0.4.6 (latest, last published 2025-03) renders an inline `<script>` that React 19 warns about on client render. It's harmless: the script runs from the server HTML, so the theme still applies with no flash. Revisit if next-themes ships a fix, or replace it with a small in-house theme script.
 
