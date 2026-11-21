@@ -23,9 +23,27 @@ Each fix has a cost: staleness (cache), the whole roster sent to every client (d
 - **`in` queries are capped** (10 IDs then, 30 now). `getUsernames` would break on big threads.
 - `!=` queries exclude documents that lack the field, and need ordering on that field.
 
-## Security: the big unknown
+## Security in the rebuild: server-only access
 
-**Neither `firestore.rules` nor `database.rules.json` is in the repo.** Firebase web config keys are public by design, so the rules _are_ the security model. The client code assumes all of the following; each must be enforced by rules or it's open:
+`firestore.rules` and `database.rules.json` (in the repo, deployed 2026-11-20) **deny every client request**. Everything works anyway because:
+
+- **Security rules only apply to client requests**: the web or mobile SDK, or the REST API called with an end user's token.
+- **All our reads and writes go through the Firebase Admin SDK** on the server (`src/lib/firebase/admin.ts`, used by server actions and route containers). Admin requests authenticate as a **service account** and **skip the rules entirely**. Their permissions come from Google Cloud IAM.
+
+```
+Browser ──form post──▶ server action (Vercel) ── checks the session, validates ──▶ Admin SDK ──▶ Firestore
+Browser ──direct Firestore request──▶ ✗ denied by rules
+```
+
+What follows from that:
+
+- **The server is the only gate.** Every server action and container must check authorization itself, for example taking the uid from the verified session cookie, never from the request.
+- **`FIREBASE_SERVICE_ACCOUNT_KEY` is the master key.** Whoever holds it can read and write all data. Keep it only in Vercel's environment variables (marked sensitive). If it leaks, delete it under Project settings → Service accounts and generate a new one.
+- **Opening client access later** (e.g. live updates on a kanban board) means writing real rules for just those collections, scoped by organization membership and role, with emulator tests. Everything else stays denied.
+
+## Security in the prototype: the big unknown
+
+**Neither `firestore.rules` nor `database.rules.json` was in the prototype's repo.** Firebase web config keys are public by design, so the rules _are_ the security model. The client code assumes all of the following; each must be enforced by rules or it's open:
 
 | Data                                                     | Who should be able to…                                                                 |
 | -------------------------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -44,5 +62,6 @@ Each fix has a cost: staleness (cache), the whole roster sent to every client (d
 
 - RTDB needs `databaseURL` in the app config. The committed config lacked it, and the working-tree change adds it.
 - Mixing `getDatabase()` / `getAuth()` without `app` and with `app` only works with a single default app.
-- The `communalists-test` project was the default for development. The production config came from the `FIREBASE_CONFIG` env var at build time. Keep the separate dev and prod projects.
+- **Prototype:** the `communalists-test` project was the default for development. The production config came from the `FIREBASE_CONFIG` env var at build time. That variable is still on the `communalists` Vercel project but **unused by the rebuild**; it can be removed.
+- **Rebuild (2026-11-21):** only `communalists` (production) is used. Local development and tests use the emulators under the fake project ID `demo-communalists`. The `demo-` prefix keeps the emulators from reaching any real Google service. `communalists-test` and `communalists-demo` still exist in the Firebase account but nothing uses them. There's no `.firebaserc`, so CLI commands pass `--project` explicitly. `communalists-test` is a candidate for a separate preview-deployment project (see `deployment.md`).
 - `storageBucket` changed from `*.appspot.com` to `*.firebasestorage.app` (Firebase's newer default). Storage isn't used.

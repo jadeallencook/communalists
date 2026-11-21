@@ -25,19 +25,21 @@ The `.org` redirects were switched on only after the DNS cutover. Before that, `
 
 ## Environment variables (production)
 
-Sign-up (decision #12) needs these on the `communalists` Vercel project, **Production** and **Preview**:
+Accounts need these on the `communalists` Vercel project (team `jadeallencook`; CLI: `--project communalists --scope jadeallencook`). **Production only for now:** our only Firebase project holds real data, so previews shouldn't get the service-account key. Working previews need a separate Firebase project with its own values on the Preview environment. Until then, auth pages on previews will fail.
 
-| Variable                                   | Value                                           | Secret? |
-| ------------------------------------------ | ----------------------------------------------- | ------- |
-| `NEXT_PUBLIC_FIREBASE_API_KEY`             | From the `communalists` Firebase web app config | No      |
-| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`         | `communalists.firebaseapp.com`                  | No      |
-| `NEXT_PUBLIC_FIREBASE_PROJECT_ID`          | `communalists`                                  | No      |
-| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`      | `communalists.appspot.com`                      | No      |
-| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | `895012652302`                                  | No      |
-| `NEXT_PUBLIC_FIREBASE_APP_ID`              | `1:895012652302:web:1472a663bf95e88ad1c35f`     | No      |
-| `FIREBASE_SERVICE_ACCOUNT_KEY`             | Service-account JSON, one line                  | **Yes** |
+Status 2026-11-21: the six `NEXT_PUBLIC_FIREBASE_*` values are set on Production (values from `firebase apps:sdkconfig WEB --project communalists`); `FIREBASE_SERVICE_ACCOUNT_KEY` is **not set yet**.
 
-`NEXT_PUBLIC_*` values are inlined at build time, so redeploy after changing them. Also enable **Authentication → Sign-in method → Email/Password** in the Firebase console, add `communalists.com` under **Authentication → Settings → Authorized domains** (password-reset links return there), set the sender name under **Authentication → Templates**, and set the templates' **action URL** to `https://communalists.com/auth/action` (our reset-password page; see `accounts-and-sessions.md`).
+| Variable                                   | Value                                            | Secret? |
+| ------------------------------------------ | ------------------------------------------------ | ------- |
+| `NEXT_PUBLIC_FIREBASE_API_KEY`             | From the `communalists` Firebase web app config  | No      |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`         | `communalists.firebaseapp.com`                   | No      |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID`          | `communalists`                                   | No      |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`      | `communalists.appspot.com`                       | No      |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | `895012652302`                                   | No      |
+| `NEXT_PUBLIC_FIREBASE_APP_ID`              | `1:895012652302:web:1472a663bf95e88ad1c35f`      | No      |
+| `FIREBASE_SERVICE_ACCOUNT_KEY`             | Service-account JSON (the downloaded file as-is) | **Yes** |
+
+`NEXT_PUBLIC_*` values are inlined at build time, so redeploy after changing them. Vercel's CLI pauses on a `NEXT_PUBLIC_` name containing `KEY`, because it looks like a secret; the Firebase web API key is public by design, so add it with `--type config`. Add the service-account key straight from its file, so it's never pasted anywhere: `vercel env add FIREBASE_SERVICE_ACCOUNT_KEY production --sensitive < key.json`, then delete the file. Also enable **Authentication → Sign-in method → Email/Password** in the Firebase console, add `communalists.com` under **Authentication → Settings → Authorized domains** (password-reset links return there), set the sender name under **Authentication → Templates**, and set the templates' **action URL** to `https://communalists.com/auth/action` (our reset-password page; see `accounts-and-sessions.md`).
 
 ## Squarespace DNS for communalists.com
 
