@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { isSupportedCountry } from '@/lib/places/types';
+
 // Messages are translation keys under SignUp.errors in messages/*.json, so
 // the same schema works on the server and in every locale.
 export type SignUpErrorKey =
@@ -9,7 +11,8 @@ export type SignUpErrorKey =
     | 'passwordTooShort'
     | 'passwordTooLong'
     | 'emailInUse'
-    | 'locationNotFound'
+    | 'placeRequired'
+    | 'placeNotFound'
     | 'generic';
 
 const requiredText = (max: number) =>
@@ -32,7 +35,14 @@ export const signUpSchema = z.object({
         .string({ error: 'required' })
         .min(8, { error: 'passwordTooShort' })
         .max(128, { error: 'passwordTooLong' }),
-    location: requiredText(120),
+    country: z
+        .string({ error: 'placeRequired' })
+        .refine(isSupportedCountry, { error: 'placeRequired' }),
+    // A GeoNames id chosen from the city picker. The server looks it up, so
+    // the browser never supplies coordinates.
+    placeId: z
+        .string({ error: 'placeRequired' })
+        .regex(/^\d{1,12}$/, { error: 'placeRequired' }),
 });
 
 export type SignUpInput = z.infer<typeof signUpSchema>;
@@ -42,5 +52,5 @@ export interface SignUpState {
     fieldErrors?: Partial<Record<SignUpField, SignUpErrorKey>>;
     formError?: SignUpErrorKey;
     // Echoed back so the form keeps what was typed. Never includes the password.
-    values?: Partial<Omit<SignUpInput, 'password'>>;
+    values?: Partial<Pick<SignUpInput, 'name' | 'email'>>;
 }

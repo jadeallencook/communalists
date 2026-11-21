@@ -65,9 +65,6 @@
         "email": "Correo electrónico",
         "password": "Contraseña",
         "passwordHint": "Al menos 8 caracteres.",
-        "location": "Ciudad o código postal",
-        "locationPlaceholder": "p. ej. San José, CA",
-        "locationHint": "Se usa para mostrarte organizaciones cercanas. Guardamos tu zona general, nunca tu dirección.",
         "submit": "Crear cuenta",
         "submitting": "Creando cuenta…",
         "errors": {
@@ -77,8 +74,9 @@
             "passwordTooShort": "Usa al menos 8 caracteres.",
             "passwordTooLong": "Usa 128 caracteres o menos.",
             "emailInUse": "Ya existe una cuenta con este correo electrónico.",
-            "locationNotFound": "No encontramos ese lugar. Prueba con el nombre de una ciudad o un código postal.",
-            "generic": "Algo salió mal. Inténtalo de nuevo."
+            "generic": "Algo salió mal. Inténtalo de nuevo.",
+            "placeRequired": "Elige tu ciudad de la lista.",
+            "placeNotFound": "No encontramos esa ciudad. Elígela de nuevo en la lista."
         }
     },
     "Welcome": {
@@ -92,5 +90,17 @@
         "nextCreate": "Crear una organización para tu grupo",
         "comingSoon": "Próximamente",
         "signOut": "Cerrar sesión"
+    },
+    "LocationField": {
+        "country": "País",
+        "city": "Ciudad",
+        "choose": "Elige tu ciudad",
+        "search": "Busca tu ciudad…",
+        "typeMore": "Escribe al menos 2 letras.",
+        "searching": "Buscando…",
+        "empty": "No hay ciudades que coincidan.",
+        "failed": "No se pudo buscar ahora. Inténtalo de nuevo.",
+        "hint": "Se usa para mostrarte organizaciones cercanas. Guardamos tu ciudad, nunca tu dirección.",
+        "attribution": "Lugares de GeoNames."
     }
 }

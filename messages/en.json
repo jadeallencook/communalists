@@ -65,9 +65,6 @@
         "email": "Email",
         "password": "Password",
         "passwordHint": "At least 8 characters.",
-        "location": "City or ZIP code",
-        "locationPlaceholder": "e.g. San Jose, CA",
-        "locationHint": "Used to show organizations near you. We save your general area, never your address.",
         "submit": "Create account",
         "submitting": "Creating account…",
         "errors": {
@@ -77,8 +74,9 @@
             "passwordTooShort": "Use at least 8 characters.",
             "passwordTooLong": "Use 128 characters or fewer.",
             "emailInUse": "An account with this email already exists.",
-            "locationNotFound": "We couldn't find that place. Try a city name or ZIP code.",
-            "generic": "Something went wrong. Please try again."
+            "generic": "Something went wrong. Please try again.",
+            "placeRequired": "Choose your city from the list.",
+            "placeNotFound": "We couldn't find that city. Choose it from the list again."
         }
     },
     "Welcome": {
@@ -92,5 +90,17 @@
         "nextCreate": "Start an organization for your group",
         "comingSoon": "Coming soon",
         "signOut": "Sign out"
+    },
+    "LocationField": {
+        "country": "Country",
+        "city": "City",
+        "choose": "Choose your city",
+        "search": "Search for your city…",
+        "typeMore": "Type at least 2 letters.",
+        "searching": "Searching…",
+        "empty": "No matching cities.",
+        "failed": "Couldn't search right now. Try again.",
+        "hint": "Used to show organizations near you. We save your city, never your address.",
+        "attribution": "Places from GeoNames."
     }
 }

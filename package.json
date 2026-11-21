@@ -31,6 +31,7 @@
     },
     "dependencies": {
         "class-variance-authority": "^0.7.1",
+        "cmdk": "^1.1.1",
         "cn": "^0.5.2",
         "firebase": "^13.4.0",
         "firebase-admin": "^14.5.1",

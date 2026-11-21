@@ -65,9 +65,6 @@
         "email": "电子邮件",
         "password": "密码",
         "passwordHint": "至少 8 个字符。",
-        "location": "城市或邮政编码",
-        "locationPlaceholder": "例如：San Jose, CA",
-        "locationHint": "用于显示你附近的组织。我们只保存大致区域，绝不保存你的地址。",
         "submit": "创建账户",
         "submitting": "正在创建账户…",
         "errors": {
@@ -77,8 +74,9 @@
             "passwordTooShort": "请至少使用 8 个字符。",
             "passwordTooLong": "请不要超过 128 个字符。",
             "emailInUse": "该电子邮件已注册账户。",
-            "locationNotFound": "找不到该地点。请尝试城市名称或邮政编码。",
-            "generic": "出了点问题，请重试。"
+            "generic": "出了点问题，请重试。",
+            "placeRequired": "请从列表中选择你的城市。",
+            "placeNotFound": "找不到该城市，请从列表中重新选择。"
         }
     },
     "Welcome": {
@@ -92,5 +90,17 @@
         "nextCreate": "为你的团体创建组织",
         "comingSoon": "即将推出",
         "signOut": "退出登录"
+    },
+    "LocationField": {
+        "country": "国家",
+        "city": "城市",
+        "choose": "选择你的城市",
+        "search": "搜索你的城市…",
+        "typeMore": "请至少输入 2 个字。",
+        "searching": "正在搜索…",
+        "empty": "没有匹配的城市。",
+        "failed": "暂时无法搜索，请重试。",
+        "hint": "用于显示你附近的组织。我们只保存你的城市，绝不保存你的地址。",
+        "attribution": "地点数据来自 GeoNames。"
     }
 }

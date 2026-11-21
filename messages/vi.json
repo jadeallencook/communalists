@@ -65,9 +65,6 @@
         "email": "Email",
         "password": "Mật khẩu",
         "passwordHint": "Ít nhất 8 ký tự.",
-        "location": "Thành phố hoặc mã bưu chính",
-        "locationPlaceholder": "ví dụ: San Jose, CA",
-        "locationHint": "Dùng để hiển thị các tổ chức gần bạn. Chúng tôi chỉ lưu khu vực chung, không bao giờ lưu địa chỉ của bạn.",
         "submit": "Tạo tài khoản",
         "submitting": "Đang tạo tài khoản…",
         "errors": {
@@ -77,8 +74,9 @@
             "passwordTooShort": "Hãy dùng ít nhất 8 ký tự.",
             "passwordTooLong": "Hãy dùng tối đa 128 ký tự.",
             "emailInUse": "Đã có tài khoản dùng email này.",
-            "locationNotFound": "Không tìm thấy địa điểm đó. Hãy thử tên thành phố hoặc mã bưu chính.",
-            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+            "placeRequired": "Hãy chọn thành phố của bạn trong danh sách.",
+            "placeNotFound": "Không tìm thấy thành phố đó. Hãy chọn lại trong danh sách."
         }
     },
     "Welcome": {
@@ -92,5 +90,17 @@
         "nextCreate": "Lập một tổ chức cho nhóm của bạn",
         "comingSoon": "Sắp ra mắt",
         "signOut": "Đăng xuất"
+    },
+    "LocationField": {
+        "country": "Quốc gia",
+        "city": "Thành phố",
+        "choose": "Chọn thành phố của bạn",
+        "search": "Tìm thành phố của bạn…",
+        "typeMore": "Hãy nhập ít nhất 2 chữ cái.",
+        "searching": "Đang tìm…",
+        "empty": "Không có thành phố phù hợp.",
+        "failed": "Không thể tìm kiếm lúc này. Hãy thử lại.",
+        "hint": "Dùng để hiển thị các tổ chức gần bạn. Chúng tôi chỉ lưu thành phố, không bao giờ lưu địa chỉ của bạn.",
+        "attribution": "Địa điểm từ GeoNames."
     }
 }

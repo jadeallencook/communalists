@@ -6,7 +6,8 @@ const valid = {
     name: 'Ada Lovelace',
     email: 'Ada@Example.com ',
     password: 'correct horse',
-    location: 'San Jose, CA',
+    country: 'US',
+    placeId: '5392171',
 };
 
 const errorsFor = (input: Record<string, string>) => {
@@ -36,13 +37,14 @@ describe('signUpSchema', () => {
                 name: '  ',
                 email: 'nope',
                 password: 'short',
-                location: '',
+                country: 'US',
+                placeId: '',
             })
         ).toEqual({
             name: 'required',
             email: 'invalidEmail',
             password: 'passwordTooShort',
-            location: 'required',
+            placeId: 'placeRequired',
         });
     });
 
@@ -57,5 +59,20 @@ describe('signUpSchema', () => {
         expect(
             errorsFor({ ...valid, password: 'x'.repeat(129) }).password
         ).toBe('passwordTooLong');
+    });
+
+    it('requires a city picked from the list (a numeric place id)', () => {
+        expect(errorsFor({ ...valid, placeId: '' }).placeId).toBe(
+            'placeRequired'
+        );
+        expect(errorsFor({ ...valid, placeId: 'San Jose' }).placeId).toBe(
+            'placeRequired'
+        );
+    });
+
+    it('rejects countries without a place list', () => {
+        expect(errorsFor({ ...valid, country: 'FR' }).country).toBe(
+            'placeRequired'
+        );
     });
 });

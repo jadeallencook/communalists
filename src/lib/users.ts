@@ -3,7 +3,7 @@ import 'server-only';
 import { FieldValue, type Timestamp } from 'firebase-admin/firestore';
 
 import { getAdminDb } from '@/lib/firebase/admin';
-import type { GeneralArea } from '@/lib/geo/geocode';
+import type { GeneralArea } from '@/lib/places';
 
 // users/{uid}: the public-safe profile for an account. Email and password
 // live in Firebase Auth only. Rules deny client access; read and write here
