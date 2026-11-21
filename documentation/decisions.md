@@ -20,7 +20,7 @@ Add an entry when you choose a framework or library, change the data model, add 
 
 ### 10. Domains: communalists.com and storybook.communalists.com — 2026-11-21
 
-**Status:** Accepted (setup in progress)
+**Status:** Accepted. Live 2026-11-21: `.com` serves the rebuild, `.org` and `www` redirect, Storybook is public.
 **Context:** Before this, `communalists.com` (registered at Squarespace Domains, ex-Google Domains) 301-forwarded to `communalists.org`, which served the 2025 Next.js + Prismic site from Vercel at `www.communalists.org`. Email for `support@communalists.com` is forwarded through Squarespace's Mailgun preset.
 **Decision:**
 

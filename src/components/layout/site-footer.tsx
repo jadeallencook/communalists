@@ -10,7 +10,7 @@ export async function SiteFooter() {
                     {t('developedBy')} · {t('region')} · {t('established')}
                 </p>
                 <a
-                    href="https://github.com/jadeallencook/communalists"
+                    href="https://github.com/techletariats/communalists"
                     target="_blank"
                     rel="noreferrer"
                     className="underline-offset-4 hover:text-foreground hover:underline"

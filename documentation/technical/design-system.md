@@ -34,7 +34,7 @@ Everything else is shadcn's neutral palette, which already matches the 2025 mono
 
 ## Storybook
 
-`pnpm storybook` shows every `*.stories.tsx`. The toolbar switches **Locale** (all four) and **Theme** (light/dark). The a11y addon reports accessibility violations in its panel. Async Server Components (header, footer) aren't rendered in Storybook; their client-side controls are.
+`pnpm storybook` shows every `*.stories.tsx`. The toolbar switches **Locale** (all four) and **Theme** (light/dark). The a11y addon reports accessibility violations in its panel. Tailwind reaches Storybook through `@tailwindcss/vite` (see `tooling-and-ci.md`). Geist is loaded in `.storybook/preview.tsx` because the app loads it in its layout, which Storybook doesn't render. Its CSS variables go on `<html>`, not on a story wrapper, because Radix portals dropdowns, dialogs and tooltips to `<body>`; on a wrapper they render in serif. Storybook's `next/font` shim injects it at runtime from Google Fonts. Async Server Components (header, footer) aren't rendered in Storybook; their client-side controls are.
 
 ## Known issues
 

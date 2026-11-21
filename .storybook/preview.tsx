@@ -1,4 +1,5 @@
 import type { Decorator, Preview } from '@storybook/nextjs-vite';
+import { Geist, Geist_Mono } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { useEffect, type ReactNode } from 'react';
 
@@ -8,6 +9,16 @@ import vi from '../messages/vi.json';
 import zh from '../messages/zh.json';
 
 import '../src/app/globals.css';
+
+// Same fonts as src/app/[locale]/layout.tsx, which Storybook doesn't render.
+const geistSans = Geist({
+    variable: '--font-geist-sans',
+    subsets: ['latin', 'latin-ext', 'vietnamese'],
+});
+const geistMono = Geist_Mono({
+    variable: '--font-geist-mono',
+    subsets: ['latin', 'latin-ext', 'vietnamese'],
+});
 
 const messages = { en, es, vi, zh };
 type StoryLocale = keyof typeof messages;
@@ -22,8 +33,17 @@ function StoryProviders({
     children: ReactNode;
 }) {
     useEffect(() => {
-        document.documentElement.classList.toggle('dark', theme === 'dark');
-        document.documentElement.lang = locale;
+        const html = document.documentElement;
+        // Font variables go on <html>, like the app's root layout, so content
+        // that Radix portals to <body> (dropdowns, dialogs, tooltips) gets
+        // Geist too. On a wrapper div, portaled content falls back to serif.
+        html.classList.add(
+            geistSans.variable,
+            geistMono.variable,
+            'antialiased'
+        );
+        html.classList.toggle('dark', theme === 'dark');
+        html.lang = locale;
     }, [theme, locale]);
 
     return (

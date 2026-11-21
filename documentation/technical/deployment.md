@@ -1,6 +1,6 @@
 # Deployment
 
-Two Vercel projects (Hobby plan, account `jadeallencook`) build from the same repo, `jadeallencook/communalists`, on branch `main`. The domain is registered at Squarespace Domains, and DNS is managed there. See [decisions.md](../decisions.md) #10 for why it's set up this way.
+Two Vercel projects (Hobby plan, account `jadeallencook`) build from the same repo, `techletariats/communalists` (moved from `jadeallencook/communalists`; same repo ID 543376659), on branch `main`. The domain is registered at Squarespace Domains, and DNS is managed there. See [decisions.md](../decisions.md) #10 for why it's set up this way.
 
 ## Projects
 
@@ -13,15 +13,15 @@ Both projects date from earlier attempts (2022 and 2025). Their settings were up
 
 ## Domains
 
-| Domain                       | Project                  | Behaviour                                                                                         |
-| ---------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------- |
-| `communalists.com`           | `communalists`           | Serves the app                                                                                    |
-| `www.communalists.com`       | `communalists`           | 308 → `communalists.com`                                                                          |
-| `storybook.communalists.com` | `communalists-storybook` | Serves Storybook                                                                                  |
-| `communalists.org`           | `communalists`           | Today 308 → `www.communalists.org`. **To change:** 308 → `communalists.com` after the DNS cutover |
-| `www.communalists.org`       | `communalists`           | Today serves the app. **To change:** 308 → `communalists.com` after the DNS cutover               |
+| Domain                       | Project                  | Behaviour                            |
+| ---------------------------- | ------------------------ | ------------------------------------ |
+| `communalists.com`           | `communalists`           | Serves the app                       |
+| `www.communalists.com`       | `communalists`           | 308 → `communalists.com`             |
+| `storybook.communalists.com` | `communalists-storybook` | Serves Storybook                     |
+| `communalists.org`           | `communalists`           | 308 → `communalists.com` (path kept) |
+| `www.communalists.org`       | `communalists`           | 308 → `communalists.com` (path kept) |
 
-Don't redirect `.org` to `.com` while `.com` still forwards to `.org` at Squarespace, or the two will loop.
+The `.org` redirects were switched on only after the DNS cutover. Before that, `.com` forwarded to `.org` at Squarespace, and the two would have looped. Vercel also refuses to redirect a domain that another domain redirects to, so change the redirect source first (`communalists.org`) and its old target (`www.communalists.org`) second.
 
 ## Squarespace DNS for communalists.com
 
@@ -42,12 +42,12 @@ Values come from Vercel (`vercel api /v6/domains/<domain>/config`) and are proje
 
 ## Deploying
 
-- **Normal path:** push to `main` and Vercel builds both projects. As of 2026-11-21, **Git-triggered builds weren't firing**: the last Git deploy was 2025-09-11. See "Known issues".
+- **Normal path:** push to `main` and Vercel builds production for both projects; PRs and other branches get previews. Working again since 2026-11-21 (see "Known issues").
 - **Manual path (CLI):** `vercel deploy --project <name>` (preview), plus `--prod` for production. It uploads the **working tree**, uncommitted changes included, so deploy to production only from a clean checkout of `main`.
 - **Previews** are behind Vercel Authentication. Use `vercel curl <full-deployment-url>/path` to test them.
 
 ## Known issues
 
-- **Git integration silent since Sep 2025.** The projects still list the repo, but pushes don't deploy. The likely cause is that the Vercel GitHub App lost access to the repo. Check GitHub → Settings → Applications → Vercel → Repository access, then Vercel → project → Settings → Git.
+- **Resolved 2026-11-21: Git integration silent since Sep 2025.** The repo had moved from `jadeallencook/communalists` to the **`techletariats` GitHub org**, but both Vercel projects were still linked as `jadeallencook/communalists`. Vercel hears about pushes through the Vercel GitHub App installed on whichever account owns the repo, so it needs to be installed on the `techletariats` org with access to `communalists`, and each project re-linked with `vercel git connect https://github.com/techletariats/communalists`. Fixed by installing the app on `techletariats` and running `vercel git connect https://github.com/techletariats/communalists --project <name>` for both projects. The first production deploys from Git (`0c552ba`) were triggered through the API (`POST /v13/deployments` with `gitSource`) and went live 2026-11-21. Vercel Hobby limits organization-owned repos (as far as we know, private ones only; this repo is public).
 - **Stale 2023 certificate after the DNS switch.** Once DNS pointed at Vercel, it kept serving an old Let's Encrypt certificate (issued 2023-02-11) from when the domain was last on Vercel, and HTTPS failed. Automatic renewal didn't replace it within ~5 minutes. `vercel certs issue communalists.com www.communalists.com` and `vercel certs issue storybook.communalists.com` fixed it immediately (2026-11-21). For a minute afterwards, some edge servers still served the old certificate.
 - **DNS cutover done 2026-11-21.** The Squarespace forwarding preset was replaced with the records above. Email (MX/SPF) was kept and verified afterwards.
