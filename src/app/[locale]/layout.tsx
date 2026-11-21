@@ -9,6 +9,7 @@ import { SiteFooter } from '@/components/layout/site-footer';
 import { SiteHeader } from '@/components/layout/site-header';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { routing } from '@/i18n/routing';
+import { getSiteUrl } from '@/lib/site';
 
 import '../globals.css';
 
@@ -30,6 +31,7 @@ export function generateStaticParams() {
 export async function generateMetadata(): Promise<Metadata> {
     const t = await getTranslations('Metadata');
     return {
+        metadataBase: new URL(getSiteUrl()),
         title: { default: 'Communalists', template: '%s | Communalists' },
         description: t('description'),
     };

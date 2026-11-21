@@ -42,6 +42,7 @@ The feature docs describe the prototype unless they have a "Rebuild" section. Re
 | [Architecture](technical/architecture.md)                             | Current stack, folder layout, request flow, Next.js 16 specifics  |
 | [Tooling and CI](technical/tooling-and-ci.md)                         | Setup, scripts, hooks, CI, pnpm 12 settings, setup gotchas        |
 | [Design system](technical/design-system.md)                           | shadcn/ui setup, tokens, fonts per language, Storybook            |
+| [Deployment](technical/deployment.md)                                 | Vercel projects, domains, Squarespace DNS records, deploy paths   |
 | [Data model](technical/data-model.md)                                 | Prototype collections, fields and enums; relational sketch        |
 | [Firebase: cost, security and gotchas](technical/firebase.md)         | Read-cost optimizations, query limits, config, and security rules |
 | [Prototype: architecture](technical/prototype/architecture.md)        | How the 2022–2024 React SPA was built                             |
