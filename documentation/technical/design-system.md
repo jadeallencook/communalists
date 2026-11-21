@@ -15,7 +15,7 @@ shadcn/ui on Tailwind CSS 4, with the **monochrome** look from the 2025 attempt:
 | Class merging | `cn` package (shadcn's replacement for clsx + tailwind-merge) |
 | Config        | `components.json`                                             |
 
-Add components with `pnpm dlx shadcn@latest add <name>`. They're copied into `src/components/ui/` and are ours to edit.
+Add components with `pnpm dlx shadcn@latest add <name>`. They're copied into `src/components/atoms/` (`components.json` → `aliases.ui`) and are ours to edit. Every one needs a story under `Components/Atoms`.
 
 ## Tokens that differ from shadcn's defaults
 
@@ -34,7 +34,7 @@ Everything else is shadcn's neutral palette, which already matches the 2025 mono
 
 ## Storybook
 
-`pnpm storybook` shows every `*.stories.tsx`. The toolbar switches **Locale** (all four) and **Theme** (light/dark). The a11y addon reports accessibility violations in its panel. Tailwind reaches Storybook through `@tailwindcss/vite` (see `tooling-and-ci.md`). Geist is loaded in `.storybook/preview.tsx` because the app loads it in its layout, which Storybook doesn't render. Its CSS variables go on `<html>`, not on a story wrapper, because Radix portals dropdowns, dialogs and tooltips to `<body>`; on a wrapper they render in serif. Storybook's `next/font` shim injects it at runtime from Google Fonts. Async Server Components (header, footer) aren't rendered in Storybook; their client-side controls are.
+`pnpm storybook` shows every `*.stories.tsx`, grouped as Documentation · Components (Atoms, Molecules, Organisms) · Pages · Hooks (see `AGENTS.md` → "Components and Storybook"). Full-width stories set `layout: 'fullscreen'`, and the preview then drops its padding. The toolbar switches **Locale** (all four) and **Theme** (light/dark). The a11y addon reports accessibility violations in its panel. Tailwind reaches Storybook through `@tailwindcss/vite` (see `tooling-and-ci.md`). Geist is loaded in `.storybook/preview.tsx` because the app loads it in its layout, which Storybook doesn't render. Its CSS variables go on `<html>`, not on a story wrapper, because Radix portals dropdowns, dialogs and tooltips to `<body>`; on a wrapper they render in serif. Storybook's `next/font` shim injects it at runtime from Google Fonts. Async Server Components (header, footer) aren't rendered in Storybook; their client-side controls are.
 
 ## Documentation in Storybook
 

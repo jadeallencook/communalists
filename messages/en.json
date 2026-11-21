@@ -16,13 +16,81 @@
         "system": "System"
     },
     "Home": {
-        "title": "Welcome to Communalists",
-        "tagline": "We give communities the tools they need to empower themselves through mutual aid."
+        "banner": {
+            "title": "This is what community looks like",
+            "subtitle": "Communalists gives mutual aid networks the tools to organize, share and take care of each other.",
+            "imageAlt": "A volunteer hands a plate of hot food to a neighbor at a community meal"
+        },
+        "cta": "Create account",
+        "about": {
+            "title": "Built for mutual aid",
+            "body": "Communalists is a free platform where neighbors organize. Start an organization for your mutual aid group, tool library or community club, find groups near you, and run them with tools made for how mutual aid actually works.",
+            "languages": "Available in English, Español, Tiếng Việt and 中文."
+        },
+        "features": {
+            "organizations": {
+                "title": "Organizations",
+                "body": "Start a group or join one near you. Every organization gets its own public page."
+            },
+            "requests": {
+                "title": "Requests",
+                "body": "Take requests through a public form and track each one on a shared board until it's fulfilled."
+            },
+            "library": {
+                "title": "Library",
+                "body": "Lend tools and supplies within your group, and always know who has what."
+            },
+            "planning": {
+                "title": "Calendars and documents",
+                "body": "Plan events and shifts, and keep your group's knowledge in one place."
+            }
+        },
+        "earlyDays": "Communalists is in early development. Create an account now, and new tools will appear as they're ready.",
+        "join": {
+            "title": "Ready to organize?",
+            "body": "It's free, and it only takes a minute."
+        }
     },
     "Footer": {
         "developedBy": "Developed by volunteers",
         "region": "San Francisco Bay Area",
         "established": "Established 2022",
         "openSource": "Open source"
+    },
+    "SignUp": {
+        "metaTitle": "Create account",
+        "title": "Create your account",
+        "description": "Join Communalists to find and start mutual aid organizations near you.",
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "passwordHint": "At least 8 characters.",
+        "location": "City or ZIP code",
+        "locationPlaceholder": "e.g. San Jose, CA",
+        "locationHint": "Used to show organizations near you. We save your general area, never your address.",
+        "submit": "Create account",
+        "submitting": "Creating account…",
+        "errors": {
+            "required": "This field is required.",
+            "tooLong": "This is too long.",
+            "invalidEmail": "Enter a valid email address.",
+            "passwordTooShort": "Use at least 8 characters.",
+            "passwordTooLong": "Use 128 characters or fewer.",
+            "emailInUse": "An account with this email already exists.",
+            "locationNotFound": "We couldn't find that place. Try a city name or ZIP code.",
+            "generic": "Something went wrong. Please try again."
+        }
+    },
+    "Welcome": {
+        "metaTitle": "Welcome",
+        "loading": "Loading your account…",
+        "greeting": "Welcome, {name}!",
+        "intro": "Your account is ready.",
+        "area": "Your area: {location}",
+        "nextTitle": "What's next",
+        "nextBrowse": "Browse mutual aid organizations near you",
+        "nextCreate": "Start an organization for your group",
+        "comingSoon": "Coming soon",
+        "signOut": "Sign out"
     }
 }

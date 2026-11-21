@@ -1,7 +1,10 @@
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
-export async function SiteFooter() {
-    const t = await getTranslations('Footer');
+const REPOSITORY_URL = 'https://github.com/techletariats/communalists';
+
+/** Bottom of every page: who built it, and the open-source link. */
+export function SiteFooter() {
+    const t = useTranslations('Footer');
 
     return (
         <footer className="border-t">
@@ -10,7 +13,7 @@ export async function SiteFooter() {
                     {t('developedBy')} · {t('region')} · {t('established')}
                 </p>
                 <a
-                    href="https://github.com/techletariats/communalists"
+                    href={REPOSITORY_URL}
                     target="_blank"
                     rel="noreferrer"
                     className="underline-offset-4 hover:text-foreground hover:underline"

@@ -23,6 +23,22 @@ Both projects date from earlier attempts (2022 and 2025). Their settings were up
 
 The `.org` redirects were switched on only after the DNS cutover. Before that, `.com` forwarded to `.org` at Squarespace, and the two would have looped. Vercel also refuses to redirect a domain that another domain redirects to, so change the redirect source first (`communalists.org`) and its old target (`www.communalists.org`) second.
 
+## Environment variables (production)
+
+Sign-up (decision #12) needs these on the `communalists` Vercel project, **Production** and **Preview**:
+
+| Variable                                   | Value                                           | Secret? |
+| ------------------------------------------ | ----------------------------------------------- | ------- |
+| `NEXT_PUBLIC_FIREBASE_API_KEY`             | From the `communalists` Firebase web app config | No      |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`         | `communalists.firebaseapp.com`                  | No      |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID`          | `communalists`                                  | No      |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`      | `communalists.appspot.com`                      | No      |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | `895012652302`                                  | No      |
+| `NEXT_PUBLIC_FIREBASE_APP_ID`              | `1:895012652302:web:1472a663bf95e88ad1c35f`     | No      |
+| `FIREBASE_SERVICE_ACCOUNT_KEY`             | Service-account JSON, one line                  | **Yes** |
+
+`NEXT_PUBLIC_*` values are inlined at build time, so redeploy after changing them. Also enable **Authentication → Sign-in method → Email/Password** in the Firebase console.
+
 ## Squarespace DNS for communalists.com
 
 Values come from Vercel (`vercel api /v6/domains/<domain>/config`) and are project-specific. Re-check them there if Vercel reports a domain as misconfigured.

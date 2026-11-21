@@ -4,16 +4,16 @@ A single Next.js App Router app serves both the public site and (later) the volu
 
 ## Stack
 
-| Concern         | Choice                                                                   | Notes                                                              |
-| --------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| Framework       | Next.js 16.4 (App Router), React 19.3, TypeScript 5.9 (strict)           | `cacheComponents` and `partialPrefetching` on (template defaults)  |
-| i18n            | `next-intl` 4.15, locales `en` `es` `vi` `zh`                            | Locale read with `next/root-params`; messages in `messages/*.json` |
-| UI              | Tailwind CSS 4.3 + shadcn/ui 4.23 (style `radix-nova`, Radix primitives) | Components copied into `src/components/ui`; class merging via `cn` |
-| Theme           | `next-themes`: light, dark, system                                       | See [design-system.md](design-system.md)                           |
-| Backend         | Firebase: Auth + Firestore (client SDK 13, Admin SDK 14)                 | Realtime Database is unused; its rules deny everything             |
-| Validation      | Zod 4                                                                    | Installed for server actions and forms; not used yet               |
-| Hosting         | Vercel                                                                   | Not yet connected                                                  |
-| Package manager | pnpm 12 (via Corepack), Node ≥ 24.15                                     | See [tooling-and-ci.md](tooling-and-ci.md)                         |
+| Concern         | Choice                                                                   | Notes                                                                 |
+| --------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| Framework       | Next.js 16.4 (App Router), React 19.3, TypeScript 5.9 (strict)           | `cacheComponents` and `partialPrefetching` on (template defaults)     |
+| i18n            | `next-intl` 4.15, locales `en` `es` `vi` `zh`                            | Locale read with `next/root-params`; messages in `messages/*.json`    |
+| UI              | Tailwind CSS 4.3 + shadcn/ui 4.23 (style `radix-nova`, Radix primitives) | Components copied into `src/components/atoms`; class merging via `cn` |
+| Theme           | `next-themes`: light, dark, system                                       | See [design-system.md](design-system.md)                              |
+| Backend         | Firebase: Auth + Firestore (client SDK 13, Admin SDK 14)                 | Realtime Database is unused; its rules deny everything                |
+| Validation      | Zod 4                                                                    | Installed for server actions and forms; not used yet                  |
+| Hosting         | Vercel                                                                   | Not yet connected                                                     |
+| Package manager | pnpm 12 (via Corepack), Node ≥ 24.15                                     | See [tooling-and-ci.md](tooling-and-ci.md)                            |
 
 ## Layout
 
@@ -22,17 +22,27 @@ messages/                 en.json, es.json, vi.json, zh.json + parity test
 src/
   app/
     [locale]/layout.tsx   Root layout: <html lang>, fonts, providers, header/footer
-    [locale]/page.tsx     Home
+    [locale]/page.tsx     Home: banner, platform intro, create-account CTA
+    [locale]/sign-up/     Container: wires the signUp action into SignUpPage
+    [locale]/welcome/     Container: reads session + profile, renders WelcomePage (streamed)
     globals.css           Tailwind + shadcn tokens
     favicon.ico           Star logo (from the 2025 attempt)
   components/
-    ui/                   shadcn components (generated, then owned by us)
-    layout/               Site header, footer, locale switcher, theme toggle
+    atoms/                shadcn primitives (button, input, card, field…)
+    molecules/            Small composites (FeatureCard, LocaleSwitcher, ThemeToggle)
+    organisms/            Page sections (SiteHeader, HeroBanner, SignUpForm…)
+    pages/                Presentational page views (HomePage, SignUpPage, WelcomePage)
     providers/            Client providers (theme)
+  hooks/                  Shared UI logic (useSignUpForm)
   i18n/
     routing.ts            Locales, default locale, display names
     navigation.ts         Locale-aware Link / useRouter / redirect
     request.ts            Per-request locale + messages for next-intl
+  assets/               Images imported by components (see AGENTS.md)
+  lib/auth/             Session cookies, server-side password sign-in
+  lib/geo/              Geocoding to a general area
+  lib/validation/       Zod schemas shared by forms and actions
+  lib/users.ts          users/{uid} profiles
   lib/firebase/
     client.ts             Browser SDK (lazy; emulator-aware)
     admin.ts              Admin SDK (server-only; bypasses rules)
@@ -64,8 +74,15 @@ These are newer than most training data and docs online. The bundled docs in `no
 - Both SDKs initialize lazily (`getClientAuth()`, `getAdminDb()` and so on), so importing them never touches Firebase during the build.
 - Local development uses the emulators with the `demo-communalists` project, which can't reach real Firebase. See [tooling-and-ci.md](tooling-and-ci.md).
 
+## Presentational vs logic
+
+Routes in `src/app/` are thin containers: read the session, fetch data, pick the server action, and render a page view from `src/components/pages/` with props. Presentational components never import from `src/lib/auth`, `src/lib/firebase`, `src/lib/users`, or route `actions.ts` files. See `AGENTS.md` → "Components and Storybook" and decision #13.
+
+## Accounts
+
+Sign-up, sessions and location are covered in [accounts-and-sessions.md](accounts-and-sessions.md).
+
 ## Not decided yet
 
 - The Firestore schema for the rebuild. The prototype's schema and a relational sketch are in [data-model.md](data-model.md).
-- The auth session strategy (Firebase ID token → session cookie verified in the proxy and server code is the likely path).
 - Which Firebase project ID production uses, and how environments map to Vercel (preview vs production).

@@ -4,7 +4,7 @@ import { HeartHandshakeIcon } from 'lucide-react';
 import { Button } from './button';
 
 const meta = {
-    title: 'UI/Button',
+    title: 'Components/Atoms/Button',
     component: Button,
     args: { children: 'Request aid' },
     argTypes: {

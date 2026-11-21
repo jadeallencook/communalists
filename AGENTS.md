@@ -43,22 +43,42 @@ Docs describe _what_ and _why_. Leave the line-by-line _how_ to the code, and do
 
 ## Codebase
 
-| Path                                                      | What                                                                                                                                                               |
-| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `src/app/[locale]/`                                       | All pages. The root layout lives here, so every route is locale-prefixed                                                                                           |
-| `src/i18n/`                                               | `routing.ts` (locales), `navigation.ts` (use its `Link`/`useRouter`), `request.ts`                                                                                 |
-| `messages/{en,es,vi,zh}.json`                             | Translations. Add every key to all four; a test enforces it                                                                                                        |
-| `src/components/ui/`                                      | shadcn components (`pnpm dlx shadcn@latest add <name>`)                                                                                                            |
-| `src/components/layout/`                                  | Header, footer, locale switcher, theme toggle                                                                                                                      |
-| `src/lib/firebase/`                                       | `client.ts` (browser) and `admin.ts` (server-only; bypasses rules)                                                                                                 |
-| `src/proxy.ts`                                            | Locale redirects (Next 16's name for middleware)                                                                                                                   |
-| `firestore.rules`, `database.rules.json`, `firebase.json` | Deny-all rules (deployed to production 2026-11-20) and emulator config. Deploy rules with `firebase deploy --only firestore:rules,database --project communalists` |
+| Path                                                      | What                                                                                                                                                                                                              |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/app/[locale]/`                                       | All pages. The root layout lives here, so every route is locale-prefixed                                                                                                                                          |
+| `src/i18n/`                                               | `routing.ts` (locales), `navigation.ts` (use its `Link`/`useRouter`), `request.ts`                                                                                                                                |
+| `messages/{en,es,vi,zh}.json`                             | Translations. Add every key to all four; a test enforces it                                                                                                                                                       |
+| `src/components/{atoms,molecules,organisms,pages}/`       | Presentational components by size (see "Components and Storybook"). shadcn installs into `atoms/`                                                                                                                 |
+| `src/hooks/`                                              | Shared UI logic (`useSignUpForm`)                                                                                                                                                                                 |
+| `src/assets/`                                             | Images imported by components (`import x from '@/assets/x.jpg'`). Use `public/` only for files that need a fixed URL; `src/app/icon.png` / `opengraph-image.png` for app icons; Firebase Storage for user uploads |
+| `src/lib/auth/`, `src/lib/users.ts`                       | Session cookies and user profiles (server-only); see `documentation/technical/accounts-and-sessions.md`                                                                                                           |
+| `src/lib/firebase/`                                       | `client.ts` (browser) and `admin.ts` (server-only; bypasses rules)                                                                                                                                                |
+| `src/proxy.ts`                                            | Locale redirects (Next 16's name for middleware)                                                                                                                                                                  |
+| `firestore.rules`, `database.rules.json`, `firebase.json` | Deny-all rules (deployed to production 2026-11-20) and emulator config. Deploy rules with `firebase deploy --only firestore:rules,database --project communalists`                                                |
 
 Commands: `pnpm dev`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm format`, `pnpm build`, `pnpm storybook`, `pnpm emulators`. Run `lint`, `typecheck`, `test` and `format:check` before saying a change is done. Details are in `documentation/technical/tooling-and-ci.md`.
 
 **Next.js 16 is newer than most training data.** Before using a Next.js API you're unsure of, read the bundled docs in `node_modules/next/dist/docs/`. Known differences: `proxy.ts` replaces `middleware.ts`; Cache Components needs `generateStaticParams` for root params; read the locale with `next/root-params`, not `setRequestLocale`. See `documentation/technical/architecture.md`.
 
 **pnpm 12:** don't add `minimumReleaseAgeExclude` entries; pin an older version instead. New build scripts must be explicitly allowed or denied in `pnpm-workspace.yaml`, with a comment saying why.
+
+## Components and Storybook
+
+Two rules for all UI work (set by the user 2026-11-21, decision #13):
+
+1. **No business logic in presentational components.** They take props and render, nothing else: no data fetching, server actions, sessions, Firebase, or validation rules. Logic lives in `src/lib/` (domain code with no React or Next imports, so a future React Native app can reuse it), `src/hooks/` (shared UI logic), and thin **containers** in `src/app/` that fetch data, wire actions, and render a page. Pass server actions in as props (`formAction`, `signOutAction`); never import them into `src/components/`.
+2. **Every new page or component gets a story**, in one of these Storybook categories (the sidebar enforces the order):
+
+| Storybook title          | Folder                        | What goes there                                                            |
+| ------------------------ | ----------------------------- | -------------------------------------------------------------------------- |
+| `Documentation/…`        | `documentation/`, `AGENTS.md` | Generated from the `.md` files; never write these stories by hand          |
+| `Components/Atoms/…`     | `src/components/atoms/`       | Smallest building blocks: the shadcn primitives (`shadcn add` writes here) |
+| `Components/Molecules/…` | `src/components/molecules/`   | A few atoms with one job: `FeatureCard`, `LocaleSwitcher`                  |
+| `Components/Organisms/…` | `src/components/organisms/`   | Page sections: `SiteHeader`, `HeroBanner`, `SignUpForm`                    |
+| `Pages/…`                | `src/components/pages/`       | Whole-page views. Routes render them with real data; stories use mocks     |
+| `Hooks/…`                | `src/hooks/`                  | A demo component showing the hook's states, with mocked dependencies       |
+
+Story conventions: put `Name.stories.tsx` next to the component, cover the important states (empty, error, loading, long text), use `parameters: { layout: 'fullscreen' }` for full-width pieces, and use `fn()` from `storybook/test` for actions. Components must be synchronous (use `useTranslations`, not `await getTranslations`), because Storybook can't render async Server Components.
 
 ## Current product rules
 

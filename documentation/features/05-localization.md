@@ -47,6 +47,6 @@ Still to do:
 
 - `hreflang` alternates and per-locale metadata.
 - ICU plurals and variables as features need them (next-intl supports them).
-- Native-speaker review of every es / vi / zh string, including the shell copy written during scaffolding.
+- Native-speaker review of every es / vi / zh string: the shell copy written during scaffolding, and the `Home`, `SignUp` and `Welcome` namespaces added 2026-11-21.
 - Keep the "form language defaults to UI language" behavior when the request form is rebuilt.
 - Import the still-useful prototype strings from [`../data/translations.json`](../data/translations.json) as each feature is rebuilt.

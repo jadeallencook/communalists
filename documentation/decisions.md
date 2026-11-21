@@ -18,6 +18,22 @@ Add an entry when you choose a framework or library, change the data model, add 
 
 ## Decisions
 
+### 13. Presentational components, atomic folders, and a story for everything — 2026-11-21
+
+**Status:** Accepted
+**Context:** The user may build a React Native app later and wants every page and component viewable in Storybook.
+**Decision:** Business logic stays out of presentational components (it lives in `src/lib`, `src/hooks` and thin route containers). Components are grouped as atoms, molecules, organisms and pages. Every page, component and hook gets a story under Documentation, Components/Atoms, Molecules, Organisms, Pages, or Hooks. shadcn installs into `atoms/`.
+**Alternatives:** Feature folders (`components/sign-up/…`); stories only for shared components.
+**Consequences:** Pages are presentational views (`src/components/pages/`) that routes fill with data; server actions are passed in as props. Header and footer became synchronous so Storybook can render them. Rules are in `AGENTS.md` → "Components and Storybook".
+
+### 12. Accounts: server-side sign-up, Firebase session cookies, general-area location — 2026-11-21
+
+**Status:** Accepted
+**Context:** Open sign-up (decision #11). The user chose email + password; name, email and location on the form; a welcome page afterwards.
+**Decision:** One server action validates (Zod), geocodes, creates the Firebase Auth user and a `users/{uid}` profile with the Admin SDK, then sets an httpOnly **Firebase session cookie**. Location is stored as a **general area**: a label plus coordinates rounded to ~1 km and a geohash. Geocoding uses **OpenStreetMap Nominatim**, biased to the visitor's country via `x-vercel-ip-country`.
+**Alternatives:** Client-side Firebase sign-up with ID tokens in the browser (more JavaScript, harder to use the session in Server Components); a paid geocoder (Google, Mapbox) needing an API key; storing exact coordinates.
+**Consequences:** Works without client JavaScript. Production needs `FIREBASE_SERVICE_ACCOUNT_KEY` and the `NEXT_PUBLIC_FIREBASE_*` variables, and the Email/Password provider enabled. Nominatim's usage policy rules out autocomplete. Details: `technical/accounts-and-sessions.md`.
+
 ### 11. Generalize into a multi-organization platform — 2026-11-21
 
 **Status:** Accepted. Follow-ups decided the same day: wildcard subdomains via Vercel DNS, location as distance from a point, per-organization join policy, Requests as the first tool (see `product-vision.md`).

@@ -1,11 +1,12 @@
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
-import { LocaleSwitcher } from '@/components/layout/locale-switcher';
-import { ThemeToggle } from '@/components/layout/theme-toggle';
+import { LocaleSwitcher } from '@/components/molecules/locale-switcher';
+import { ThemeToggle } from '@/components/molecules/theme-toggle';
 import { Link } from '@/i18n/navigation';
 
-export async function SiteHeader() {
-    const t = await getTranslations('Header');
+/** Top bar on every page: wordmark home link, language and theme controls. */
+export function SiteHeader() {
+    const t = useTranslations('Header');
 
     return (
         <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">

@@ -26,10 +26,12 @@ type StoryLocale = keyof typeof messages;
 function StoryProviders({
     locale,
     theme,
+    fullscreen,
     children,
 }: {
     locale: StoryLocale;
     theme: string;
+    fullscreen: boolean;
     children: ReactNode;
 }) {
     useEffect(() => {
@@ -52,7 +54,12 @@ function StoryProviders({
             messages={messages[locale]}
             timeZone="America/Los_Angeles"
         >
-            <div className="bg-background p-4 text-foreground">{children}</div>
+            {/* Full-width stories (pages, headers, banners) get no padding. */}
+            <div
+                className={`min-h-screen bg-background text-foreground ${fullscreen ? '' : 'p-4'}`}
+            >
+                {children}
+            </div>
         </NextIntlClientProvider>
     );
 }
@@ -63,6 +70,7 @@ const withProviders: Decorator = (Story, context) => (
     <StoryProviders
         locale={(context.globals.locale ?? 'en') as StoryLocale}
         theme={context.globals.theme ?? 'light'}
+        fullscreen={context.parameters.layout === 'fullscreen'}
     >
         <Story />
     </StoryProviders>
@@ -101,7 +109,7 @@ const preview: Preview = {
     initialGlobals: { locale: 'en', theme: 'light' },
     parameters: {
         options: {
-            // Docs first (Overview is the landing page), then components.
+            // The categories every story must use (see AGENTS.md).
             storySort: {
                 order: [
                     'Documentation',
@@ -113,8 +121,10 @@ const preview: Preview = {
                         'Technical',
                         ['*', 'Prototype'],
                     ],
-                    'Layout',
-                    'UI',
+                    'Components',
+                    ['Atoms', 'Molecules', 'Organisms'],
+                    'Pages',
+                    'Hooks',
                 ],
             },
         },

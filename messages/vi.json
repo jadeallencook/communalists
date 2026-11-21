@@ -16,13 +16,81 @@
         "system": "Hệ thống"
     },
     "Home": {
-        "title": "Chào mừng bạn đến với Communalists",
-        "tagline": "Chúng tôi trao cho cộng đồng những công cụ cần thiết để tự lực thông qua tương trợ."
+        "banner": {
+            "title": "Đây là hình ảnh của cộng đồng",
+            "subtitle": "Communalists mang đến cho các mạng lưới tương trợ những công cụ để tổ chức, chia sẻ và chăm sóc lẫn nhau.",
+            "imageAlt": "Một tình nguyện viên trao đĩa thức ăn nóng cho người hàng xóm tại bữa ăn cộng đồng"
+        },
+        "cta": "Tạo tài khoản",
+        "about": {
+            "title": "Được xây dựng cho tương trợ",
+            "body": "Communalists là nền tảng miễn phí để hàng xóm cùng nhau tổ chức. Hãy lập một tổ chức cho nhóm tương trợ, thư viện dụng cụ hay câu lạc bộ cộng đồng của bạn, tìm các nhóm gần bạn và vận hành chúng bằng những công cụ được tạo ra cho cách tương trợ thực sự diễn ra.",
+            "languages": "Có sẵn bằng English, Español, Tiếng Việt và 中文."
+        },
+        "features": {
+            "organizations": {
+                "title": "Tổ chức",
+                "body": "Lập một nhóm hoặc tham gia nhóm gần bạn. Mỗi tổ chức có trang công khai riêng."
+            },
+            "requests": {
+                "title": "Yêu cầu",
+                "body": "Nhận yêu cầu qua biểu mẫu công khai và theo dõi từng yêu cầu trên bảng chung cho đến khi hoàn thành."
+            },
+            "library": {
+                "title": "Thư viện",
+                "body": "Cho mượn dụng cụ và vật dụng trong nhóm, và luôn biết ai đang giữ món gì."
+            },
+            "planning": {
+                "title": "Lịch và tài liệu",
+                "body": "Lên kế hoạch sự kiện, ca trực và lưu giữ kiến thức của nhóm ở cùng một nơi."
+            }
+        },
+        "earlyDays": "Communalists đang trong giai đoạn phát triển ban đầu. Hãy tạo tài khoản ngay, các công cụ mới sẽ xuất hiện khi sẵn sàng.",
+        "join": {
+            "title": "Sẵn sàng tổ chức chưa?",
+            "body": "Miễn phí và chỉ mất một phút."
+        }
     },
     "Footer": {
         "developedBy": "Được phát triển bởi tình nguyện viên",
         "region": "Khu vực Vịnh San Francisco",
         "established": "Thành lập năm 2022",
         "openSource": "Mã nguồn mở"
+    },
+    "SignUp": {
+        "metaTitle": "Tạo tài khoản",
+        "title": "Tạo tài khoản của bạn",
+        "description": "Tham gia Communalists để tìm và lập các tổ chức tương trợ gần bạn.",
+        "name": "Tên",
+        "email": "Email",
+        "password": "Mật khẩu",
+        "passwordHint": "Ít nhất 8 ký tự.",
+        "location": "Thành phố hoặc mã bưu chính",
+        "locationPlaceholder": "ví dụ: San Jose, CA",
+        "locationHint": "Dùng để hiển thị các tổ chức gần bạn. Chúng tôi chỉ lưu khu vực chung, không bao giờ lưu địa chỉ của bạn.",
+        "submit": "Tạo tài khoản",
+        "submitting": "Đang tạo tài khoản…",
+        "errors": {
+            "required": "Trường này là bắt buộc.",
+            "tooLong": "Nội dung quá dài.",
+            "invalidEmail": "Hãy nhập địa chỉ email hợp lệ.",
+            "passwordTooShort": "Hãy dùng ít nhất 8 ký tự.",
+            "passwordTooLong": "Hãy dùng tối đa 128 ký tự.",
+            "emailInUse": "Đã có tài khoản dùng email này.",
+            "locationNotFound": "Không tìm thấy địa điểm đó. Hãy thử tên thành phố hoặc mã bưu chính.",
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+        }
+    },
+    "Welcome": {
+        "metaTitle": "Chào mừng",
+        "loading": "Đang tải tài khoản của bạn…",
+        "greeting": "Chào mừng {name}!",
+        "intro": "Tài khoản của bạn đã sẵn sàng.",
+        "area": "Khu vực của bạn: {location}",
+        "nextTitle": "Sắp tới",
+        "nextBrowse": "Khám phá các tổ chức tương trợ gần bạn",
+        "nextCreate": "Lập một tổ chức cho nhóm của bạn",
+        "comingSoon": "Sắp ra mắt",
+        "signOut": "Đăng xuất"
     }
 }

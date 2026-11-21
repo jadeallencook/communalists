@@ -16,13 +16,81 @@
         "system": "跟随系统"
     },
     "Home": {
-        "title": "欢迎来到 Communalists",
-        "tagline": "我们为社区提供所需的工具，让他们通过互助增强自身力量。"
+        "banner": {
+            "title": "这就是社区的样子",
+            "subtitle": "Communalists 为互助网络提供组织、分享和相互照顾的工具。",
+            "imageAlt": "一位志愿者在社区聚餐中将一盘热饭递给邻居"
+        },
+        "cta": "创建账户",
+        "about": {
+            "title": "为互助而建",
+            "body": "Communalists 是一个免费平台，让邻里组织起来。为你的互助小组、工具图书馆或社区俱乐部创建组织，寻找附近的团体，并用专为互助实际运作方式打造的工具来管理它们。",
+            "languages": "提供 English、Español、Tiếng Việt 和中文版本。"
+        },
+        "features": {
+            "organizations": {
+                "title": "组织",
+                "body": "创建团体或加入附近的团体。每个组织都有自己的公开页面。"
+            },
+            "requests": {
+                "title": "求助",
+                "body": "通过公开表单接收求助，并在共享看板上跟进每一项，直到完成。"
+            },
+            "library": {
+                "title": "共享库",
+                "body": "在团体内借出工具和物资，随时知道东西在谁手里。"
+            },
+            "planning": {
+                "title": "日历和文档",
+                "body": "安排活动和值班，把团体的知识集中保存在一处。"
+            }
+        },
+        "earlyDays": "Communalists 正处于早期开发阶段。现在就创建账户，新工具准备好后就会上线。",
+        "join": {
+            "title": "准备好组织起来了吗？",
+            "body": "完全免费，只需一分钟。"
+        }
     },
     "Footer": {
         "developedBy": "由志愿者开发",
         "region": "旧金山湾区",
         "established": "成立于 2022 年",
         "openSource": "开源"
+    },
+    "SignUp": {
+        "metaTitle": "创建账户",
+        "title": "创建你的账户",
+        "description": "加入 Communalists，寻找并创建你附近的互助组织。",
+        "name": "姓名",
+        "email": "电子邮件",
+        "password": "密码",
+        "passwordHint": "至少 8 个字符。",
+        "location": "城市或邮政编码",
+        "locationPlaceholder": "例如：San Jose, CA",
+        "locationHint": "用于显示你附近的组织。我们只保存大致区域，绝不保存你的地址。",
+        "submit": "创建账户",
+        "submitting": "正在创建账户…",
+        "errors": {
+            "required": "此项为必填项。",
+            "tooLong": "内容过长。",
+            "invalidEmail": "请输入有效的电子邮件地址。",
+            "passwordTooShort": "请至少使用 8 个字符。",
+            "passwordTooLong": "请不要超过 128 个字符。",
+            "emailInUse": "该电子邮件已注册账户。",
+            "locationNotFound": "找不到该地点。请尝试城市名称或邮政编码。",
+            "generic": "出了点问题，请重试。"
+        }
+    },
+    "Welcome": {
+        "metaTitle": "欢迎",
+        "loading": "正在加载你的账户…",
+        "greeting": "欢迎你，{name}！",
+        "intro": "你的账户已就绪。",
+        "area": "你的区域：{location}",
+        "nextTitle": "接下来",
+        "nextBrowse": "浏览你附近的互助组织",
+        "nextCreate": "为你的团体创建组织",
+        "comingSoon": "即将推出",
+        "signOut": "退出登录"
     }
 }

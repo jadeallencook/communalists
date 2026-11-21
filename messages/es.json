@@ -16,13 +16,81 @@
         "system": "Sistema"
     },
     "Home": {
-        "title": "Bienvenidos a Communalists",
-        "tagline": "Damos a las comunidades las herramientas que necesitan para empoderarse a través de la ayuda mutua."
+        "banner": {
+            "title": "Así se ve la comunidad",
+            "subtitle": "Communalists da a las redes de ayuda mutua las herramientas para organizarse, compartir y cuidarse entre sí.",
+            "imageAlt": "Una voluntaria entrega un plato de comida caliente a un vecino en una comida comunitaria"
+        },
+        "cta": "Crear cuenta",
+        "about": {
+            "title": "Hecho para la ayuda mutua",
+            "body": "Communalists es una plataforma gratuita donde los vecinos se organizan. Crea una organización para tu grupo de ayuda mutua, biblioteca de herramientas o club comunitario, encuentra grupos cerca de ti y gestiónalos con herramientas hechas para cómo funciona realmente la ayuda mutua.",
+            "languages": "Disponible en English, Español, Tiếng Việt y 中文."
+        },
+        "features": {
+            "organizations": {
+                "title": "Organizaciones",
+                "body": "Crea un grupo o únete a uno cerca de ti. Cada organización tiene su propia página pública."
+            },
+            "requests": {
+                "title": "Solicitudes",
+                "body": "Recibe solicitudes con un formulario público y sigue cada una en un tablero compartido hasta cumplirla."
+            },
+            "library": {
+                "title": "Biblioteca",
+                "body": "Presta herramientas y suministros dentro de tu grupo y sabe siempre quién tiene qué."
+            },
+            "planning": {
+                "title": "Calendarios y documentos",
+                "body": "Planifica eventos y turnos, y guarda el conocimiento de tu grupo en un solo lugar."
+            }
+        },
+        "earlyDays": "Communalists está en sus primeras etapas. Crea una cuenta ahora y las nuevas herramientas aparecerán a medida que estén listas.",
+        "join": {
+            "title": "¿Listo para organizarte?",
+            "body": "Es gratis y solo toma un minuto."
+        }
     },
     "Footer": {
         "developedBy": "Desarrollado por voluntarios",
         "region": "Área de la Bahía de San Francisco",
         "established": "Fundado en 2022",
         "openSource": "Código abierto"
+    },
+    "SignUp": {
+        "metaTitle": "Crear cuenta",
+        "title": "Crea tu cuenta",
+        "description": "Únete a Communalists para encontrar y crear organizaciones de ayuda mutua cerca de ti.",
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "passwordHint": "Al menos 8 caracteres.",
+        "location": "Ciudad o código postal",
+        "locationPlaceholder": "p. ej. San José, CA",
+        "locationHint": "Se usa para mostrarte organizaciones cercanas. Guardamos tu zona general, nunca tu dirección.",
+        "submit": "Crear cuenta",
+        "submitting": "Creando cuenta…",
+        "errors": {
+            "required": "Este campo es obligatorio.",
+            "tooLong": "Es demasiado largo.",
+            "invalidEmail": "Introduce un correo electrónico válido.",
+            "passwordTooShort": "Usa al menos 8 caracteres.",
+            "passwordTooLong": "Usa 128 caracteres o menos.",
+            "emailInUse": "Ya existe una cuenta con este correo electrónico.",
+            "locationNotFound": "No encontramos ese lugar. Prueba con el nombre de una ciudad o un código postal.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        }
+    },
+    "Welcome": {
+        "metaTitle": "Bienvenida",
+        "loading": "Cargando tu cuenta…",
+        "greeting": "¡Te damos la bienvenida, {name}!",
+        "intro": "Tu cuenta está lista.",
+        "area": "Tu zona: {location}",
+        "nextTitle": "Lo que viene",
+        "nextBrowse": "Explorar organizaciones de ayuda mutua cerca de ti",
+        "nextCreate": "Crear una organización para tu grupo",
+        "comingSoon": "Próximamente",
+        "signOut": "Cerrar sesión"
     }
 }

@@ -4,7 +4,7 @@ import { LanguagesIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useTransition } from 'react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/atoms/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,7 +13,7 @@ import {
     DropdownMenuRadioItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/components/atoms/dropdown-menu';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { localeNames, routing, type Locale } from '@/i18n/routing';
 

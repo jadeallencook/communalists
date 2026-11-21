@@ -2,6 +2,8 @@
 
 Communalists is becoming a **platform for mutual aid networks**: anyone can sign up, create or join an **organization**, and run it with **tools built for mutual aid**. Think Facebook Groups, but with purpose-built tools instead of a feed. Direction set by the user on 2026-11-21 ([decision #11](decisions.md)).
 
+**Built so far:** account sign-up with a general location ([accounts-and-sessions.md](technical/accounts-and-sessions.md)). Organizations and tools are next.
+
 The prototype was one organization ("Communalists") with one tool (aid requests). The rebuild generalizes both.
 
 ## Core concepts
