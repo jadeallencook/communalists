@@ -1,0 +1,348 @@
+{
+    "shared": {
+        "communalists": {
+            "english": "Communalists",
+            "spanish": "Communalists",
+            "vietnamese": "Communalists",
+            "chinese": "公社主义者"
+        },
+        "name.label": {
+            "english": "Full Name",
+            "spanish": "Nombre Completo",
+            "vietnamese": "Họ Và Tên",
+            "chinese": "全名"
+        },
+        "name.placeholder": {
+            "english": "Enter your full name",
+            "spanish": "Ingresa tu nombre completo",
+            "vietnamese": "Nhập tên đầy đủ của bạn",
+            "chinese": "输入您的全名"
+        },
+        "language.label": {
+            "english": "Spoken Language",
+            "spanish": "Lengua Hablada",
+            "vietnamese": "Ngôn Ngư Noi",
+            "chinese": "口语"
+        },
+        "location.label": {
+            "english": "Location",
+            "spanish": "Ubicación",
+            "vietnamese": "Vị Trí",
+            "chinese": "地点"
+        },
+        "email.label": {
+            "english": "Email Address",
+            "spanish": "Correo Electrónico",
+            "vietnamese": "Địa Chỉ Email",
+            "chinese": "电子邮件地址"
+        },
+        "email.placeholder": {
+            "english": "Enter your email address",
+            "spanish": "Introduce tu correo electrónico",
+            "vietnamese": "Nhập địa chỉ email của bạn",
+            "chinese": "输入你的电子邮箱地址"
+        },
+        "phone.label": {
+            "english": "Phone Number (Optional)",
+            "spanish": "Numero de Teléfono (Opcional)",
+            "vietnamese": "Số Điện Thoại (Không Bắt Buộc)",
+            "chinese": "电话号码（可选）"
+        },
+        "phone.placeholder": {
+            "english": "Enter your phone number",
+            "spanish": "Ingrese su número telefónico",
+            "vietnamese": "Nhập số điện thoại của bạn",
+            "chinese": "输入你的电话号码"
+        },
+        "method.label": {
+            "english": "Preferred Contact Method",
+            "spanish": "Método de Contacto Preferido",
+            "vietnamese": "Liên Hệ Ūa Thích",
+            "chinese": "首选联系方式"
+        },
+        "password.label": {
+            "english": "Password",
+            "spanish": "Contraseña",
+            "vietnamese": "Mật Khẩu",
+            "chinese": "密码"
+        },
+        "password.placeholder": {
+            "english": "••••••••••••••••••",
+            "spanish": "••••••••••••••••••",
+            "vietnamese": "••••••••••••••••••",
+            "chinese": "••••••••••••••••••"
+        }
+    },
+    "request-aid-form": {
+        "health.label": {
+            "english": "Do you have any relevant health conditions?",
+            "spanish": "¿Tiene alguna condición de salud relevante?",
+            "vietnamese": "Bạn có bất kỳ điều kiện sức khỏe liên quan?",
+            "chinese": "你有任何相关的健康状况吗？"
+        },
+        "health.placeholder": {
+            "english": "Enter any relevant health conditions",
+            "spanish": "Ingrese cualquier condición de salud relevante",
+            "vietnamese": "Nhập bất kỳ điều kiện sức khỏe có liên quan",
+            "chinese": "输入任何相关的健康状况"
+        },
+        "needs.label": {
+            "english": "What can we assist you with?",
+            "spanish": "¿En qué podemos ayudarte?",
+            "vietnamese": "Chúng tôi có thể hỗ trợ gì cho bạn?",
+            "chinese": "我们能为您提供什么帮助？"
+        },
+        "needs.placeholder": {
+            "english": "It is important to provide as much detail as possible about your situation and what type of aid you are looking for. By taking a few minutes to fill out this section thoroughly, we can connect you with the proper resources and support.",
+            "spanish": "Es importante proporcionar tantos detalles como sea posible sobre su situación y qué tipo de ayuda está buscando. Al tomar unos minutos para completar esta sección a fondo, te podemos conectar con los recursos y el soporte adecuados.",
+            "vietnamese": "Điều quan trọng là cung cấp càng nhiều chi tiết càng tốt về hoàn cảnh của bạn và loại hỗ trợ mà bạn đang tìm kiếm. Bằng cách dành vài phút để điền kỹ phần này, chúng tôi có thể kết nối bạn với các tài nguyên và hỗ trợ phù hợp.",
+            "chinese": "请务必尽可能详细地说明您的情况以及您正在寻找的援助类型。 花几分钟时间完整填写此部分，我们可以为您提供适当的资源和支持。"
+        },
+        "submit.button": {
+            "english": "Submit Request",
+            "spanish": "Enviar Peticion",
+            "vietnamese": "Gửi Lời đề Nghị",
+            "chinese": "提交请求"
+        },
+        "description": {
+            "english": "This is an opportunity to reach out for support in various forms, including emotional support, practical aid, hands-on help, or essentials such as furniture or groceries. To ensure we can assist as many community members as possible, we can only address a request from an individual once every three months.",
+            "spanish": "Esta es una oportunidad para buscar apoyo de diversas formas, incluido apoyo emocional, ayuda práctica, ayuda práctica o artículos esenciales como muebles o comestibles. Para garantizar que podamos ayudar a tantos miembros de la comunidad como sea posible, solo podemos atender una solicitud de un individuo una vez cada tres meses.",
+            "vietnamese": "Đây là cơ hội để tiếp cận sự hỗ trợ dưới nhiều hình thức khác nhau, bao gồm hỗ trợ về mặt tinh thần, hỗ trợ thiết thực, trợ giúp thực tế hoặc những thứ cần thiết như đồ nội thất hoặc cửa hàng tạp hóa. Để đảm bảo chúng tôi có thể hỗ trợ nhiều thành viên cộng đồng nhất có thể, chúng tôi chỉ có thể giải quyết yêu cầu từ một cá nhân ba tháng một lần.",
+            "chinese": "这是一个以各种形式寻求支持的机会，包括情感支持、实际援助、实际帮助或家具或杂货等必需品。 为了确保我们能够帮助尽可能多的社区成员，我们只能每三个月处理一次个人请求。"
+        },
+        "header": {
+            "english": "Welcome to Communalists",
+            "spanish": "Bienvenidos a Communalists",
+            "vietnamese": "Chào Mừng Bạn đến Communalists",
+            "chinese": "欢迎共产主义者"
+        }
+    },
+    "footer": {
+        "line1": {
+            "english": "Developed by Volunteers",
+            "spanish": "Desarrollada Por Voluntarias",
+            "vietnamese": "Được Phát Triển Bởi Tình Nguyện Viên",
+            "chinese": "由志愿者开发"
+        },
+        "line2": {
+            "english": "San Francisco Bay Area",
+            "spanish": "Área De La Bahía De San Francisco",
+            "vietnamese": "Khu Vực Vịnh San Francisco",
+            "chinese": "旧金山湾区"
+        },
+        "line3": {
+            "english": "Established 2022",
+            "spanish": "Establecido En 2022",
+            "vietnamese": "Thành Lập 2022",
+            "chinese": "成立于 2022 年"
+        },
+        "link": {
+            "english": "Open Source",
+            "spanish": "Fuente Abierta",
+            "vietnamese": "Mã Nguồn Mở",
+            "chinese": "开源"
+        }
+    },
+    "events-page": {
+        "header": {
+            "english": "Weekly Community Events",
+            "spanish": "Eventos Comunitarios Semanales",
+            "vietnamese": "Sự kiện cộng đồng hàng tuần",
+            "chinese": "每周社区活动"
+        },
+        "description": {
+            "english": "Check out our list of weekly community events where you can find free food, showers, essential goods, medical care, and more. Our events page is regularly updated with new opportunities to support and be a part of the efforts in your area.",
+            "spanish": "Consulte nuestra lista de eventos comunitarios semanales donde puede encontrar comida gratis, duchas, artículos esenciales, atención médica y más. Nuestra página de eventos se actualiza regularmente con nuevas oportunidades para apoyar y ser parte de los esfuerzos en su área.",
+            "vietnamese": "Kiểm tra danh sách các sự kiện cộng đồng hàng tuần của chúng tôi, nơi bạn có thể tìm thấy thức ăn miễn phí, vòi hoa sen, hàng hóa thiết yếu, dịch vụ chăm sóc y tế, v.v. Trang sự kiện của chúng tôi được cập nhật thường xuyên với các cơ hội mới để hỗ trợ và là một phần của những nỗ lực trong khu vực của bạn.",
+            "chinese": "查看我们的每周社区活动列表，您可以在其中找到免费食物、淋浴、必需品、医疗等。 我们的活动页面会定期更新，提供支持和参与您所在地区的活动的新机会。"
+        },
+        "footer": {
+            "english": "Stay informed and get involved with your community through our events page.",
+            "spanish": "Manténgase informado e involúcrese con su comunidad a través de nuestra página de eventos.",
+            "vietnamese": "Cập nhật thông tin và tham gia với cộng đồng của bạn thông qua trang sự kiện của chúng tôi.",
+            "chinese": "通过我们的活动页面随时了解情况并参与您的社区。"
+        }
+    },
+    "sign-up-form": {
+        "description": {
+            "english": "By joining our network of volunteers, you'll have the opportunity to connect with others in your area who are passionate about supporting those in need. Together, we can help ensure that everyone in our community has access to the resources and support they need to thrive.",
+            "spanish": "Al unirse a nuestra red de voluntarios, tendrá la oportunidad de conectarse con otras personas en su área que sienten pasión por apoyar a los necesitados. Juntos, podemos ayudar a garantizar que todos en nuestra comunidad tengan acceso a los recursos y el apoyo que necesitan para prosperar.",
+            "vietnamese": "Khi tham gia mạng lưới tình nguyện viên của chúng tôi, bạn sẽ có cơ hội kết nối với những người khác trong khu vực của mình, những người nhiệt tình hỗ trợ những người gặp khó khăn. Cùng nhau, chúng ta có thể giúp đảm bảo rằng mọi người trong cộng đồng của chúng ta đều có quyền truy cập vào các nguồn lực và sự hỗ trợ mà họ cần để phát triển.",
+            "chinese": "通过加入我们的志愿者网络，您将有机会与您所在地区热衷于支持有需要的人的其他人建立联系。 我们可以一起帮助确保我们社区中的每个人都能获得他们茁壮成长所需的资源和支持。"
+        },
+        "header": {
+            "english": "Become A Volunteer",
+            "spanish": "Conviértete En Voluntaria",
+            "vietnamese": "Trở Thành Tình Nguyện Viên",
+            "chinese": "成为志愿者"
+        },
+        "button": {
+            "english": "Create Account",
+            "spanish": "Crear Una Cuenta",
+            "vietnamese": "Tạo Tài Khoản",
+            "chinese": "创建账户"
+        },
+        "confirmedPassword.label": {
+            "english": "Confirm Password",
+            "spanish": "Confirmar Contraseña",
+            "vietnamese": "Xác Nhận Mật Khẩu",
+            "chinese": "确认密码"
+        },
+        "bio.label": {
+            "english": "Why do you want to become a volunteer?",
+            "spanish": "¿Por qué quieres ser voluntario?",
+            "vietnamese": "Tại sao bạn muốn trở thành một tình nguyện viên?",
+            "chinese": "你为什么想成为一名志愿者？"
+        },
+        "bio.placeholder": {
+            "english": "Tell us why you want to volunteer with us, so we can understand your motivations and make your volunteer experience as fulfilling and meaningful as possible.",
+            "spanish": "Cuéntanos por qué quieres ser voluntario con nosotros, para que podamos entender tus motivaciones y hacer que tu experiencia como voluntario sea lo más satisfactoria y significativa posible.",
+            "vietnamese": "Hãy cho chúng tôi biết lý do bạn muốn tham gia tình nguyện với chúng tôi, để chúng tôi có thể hiểu động lực của bạn và làm cho trải nghiệm tình nguyện của bạn trở nên trọn vẹn và ý nghĩa nhất có thể.",
+            "chinese": "告诉我们你为什么想和我们一起做志愿者，这样我们就能了解你的动机，让你的志愿者经历尽可能充实和有意义。"
+        },
+        "success.header": {
+            "english": "Your Volunteer Application Has Been Submitted",
+            "spanish": "Su Solicitud De Voluntariado Ha Sido Enviada",
+            "vietnamese": "Đơn Tình Nguyện Của Bạn đã được Gửi",
+            "chinese": "您的志愿者申请已提交"
+        },
+        "success.description": {
+            "english": "We appreciate your interest in becoming a part of our community of mutual aid volunteers and we are excited to have you join us in our mission. Our team will review your application and if you're approved, you will receive an email with a link for setting up your password. Thank you for taking the first step in making a difference in your community!",
+            "spanish": "Agradecemos su interés en formar parte de nuestra comunidad de voluntarios de ayuda mutua y estamos emocionados de que se una a nosotros en nuestra misión. Nuestro equipo revisará su solicitud y, si es aprobada, recibirá un correo electrónico con un enlace para configurar su contraseña. ¡Gracias por dar el primer paso para marcar la diferencia en su comunidad!",
+            "vietnamese": "Chúng tôi đánh giá cao sự quan tâm của bạn trong việc trở thành một phần của cộng đồng tình nguyện viên hỗ trợ lẫn nhau của chúng tôi và chúng tôi rất vui khi có bạn tham gia cùng chúng tôi trong sứ mệnh của chúng tôi. Nhóm của chúng tôi sẽ xem xét đơn đăng ký của bạn và nếu bạn được chấp thuận, bạn sẽ nhận được email có liên kết để thiết lập mật khẩu của mình. Cảm ơn bạn đã thực hiện bước đầu tiên trong việc tạo ra sự khác biệt trong cộng đồng của bạn!",
+            "chinese": "我们感谢您有兴趣成为我们互助志愿者社区的一员，我们很高兴您加入我们的使命。 我们的团队将审核您的申请，如果您获得批准，您将收到一封电子邮件，其中包含用于设置密码的链接。 感谢您迈出改变社区的第一步！"
+        },
+        "role.label": {
+            "english": "Preferred volunteer roles (select all that apply):",
+            "spanish": "Funciones voluntarias preferidas (seleccione todas las que correspondan):",
+            "vietnamese": "Vai trò tình nguyện ưa thích (chọn tất cả những gì phù hợp):",
+            "chinese": "首选志愿者角色（选择所有适用项）："
+        }
+    },
+    "navigation": {
+        "submit-request": {
+            "english": "Request",
+            "spanish": "Pedido",
+            "vietnamese": "Lời Yêu Cầu",
+            "chinese": "要求"
+        },
+        "log-in": {
+            "english": "Log In",
+            "spanish": "Acceso",
+            "vietnamese": "Đăng Nhập",
+            "chinese": "登录"
+        },
+        "log-out": {
+            "english": "Log Out",
+            "spanish": "Cerrar Sesión",
+            "vietnamese": "Đăng Xuất",
+            "chinese": "登出"
+        },
+        "dashboard": {
+            "english": "Dashboard",
+            "spanish": "Panel",
+            "vietnamese": "Bảng điều Khiển",
+            "chinese": "仪表板"
+        },
+        "donate": {
+            "english": "Donate",
+            "spanish": "Donar",
+            "vietnamese": "Quyên Tặng",
+            "chinese": "捐"
+        },
+        "events": {
+            "english": "Events",
+            "spanish": "Eventos",
+            "vietnamese": "Sự Kiện",
+            "chinese": "事件"
+        }
+    },
+    "log-in-form": {
+        "description": {
+            "english": "This sign in page is exclusively for those who have generously offered their time and resources to support our community.",
+            "spanish": "Esta página de inicio de sesión es exclusivamente para aquellos que generosamente han ofrecido su tiempo y recursos para apoyar a nuestra comunidad.",
+            "vietnamese": "Trang đăng nhập này dành riêng cho những người đã hào phóng cống hiến thời gian và nguồn lực của mình để hỗ trợ cộng đồng của chúng ta.",
+            "chinese": "此登录页面专供那些慷慨地提供时间和资源来支持我们社区的人使用。"
+        },
+        "header": {
+            "english": "Welcome Volunteers",
+            "spanish": "Bienvenidos Voluntarios",
+            "vietnamese": "Chào Mừng Tình Nguyện Viên",
+            "chinese": "欢迎志愿者"
+        },
+        "button": {
+            "english": "Access Dashboard",
+            "spanish": "Panel De Acceso",
+            "vietnamese": "Truy Cập Trang Tổng Quan",
+            "chinese": "访问仪表板"
+        },
+        "sign-up.button": {
+            "english": "Become A Volunteer",
+            "spanish": "Conviértete En Voluntaria",
+            "vietnamese": "Trở Thành Tình Nguyện Viên",
+            "chinese": "成为志愿者"
+        },
+        "email.placeholder": {
+            "english": "comrade@communalists.org",
+            "spanish": "camarada@communalists.org",
+            "vietnamese": "đồng_chí@communalists.org",
+            "chinese": "同志@communalists.org"
+        },
+        "signin.success": {
+            "english": "Logged in!",
+            "spanish": "¡Conectado!",
+            "vietnamese": "Dăng nhập!",
+            "chinese": "登录！"
+        },
+        "signin.error": {
+            "english": "Invalid username or password",
+            "spanish": "Usuario o contraseña invalido",
+            "vietnamese": "Sai username hoặc password",
+            "chinese": "无效的用户名或密码"
+        }
+    },
+    "donate-form": {
+        "header": {
+            "english": "Support Our Mutual Aid Efforts",
+            "spanish": "Apoye Nuestros Esfuerzos De Ayuda Mutua",
+            "vietnamese": "Hỗ Trợ Các Nỗ Lực Hỗ Trợ Lẫn Nhau Của Chúng Tôi",
+            "chinese": "支持我们的互助工作"
+        },
+        "description": {
+            "english": "Donate essential goods and services to support our mutual aid efforts through our donations page. Our coordinators will contact you to coordinate the logistics of your donation. Thank you for making a difference in our community.",
+            "spanish": "Done bienes y servicios esenciales para apoyar nuestros esfuerzos de ayuda mutua a través de nuestra página de donaciones. Nuestros coordinadores se comunicarán contigo para coordinar la logística de tu donación. Gracias por marcar la diferencia en nuestra comunidad.",
+            "vietnamese": "Quyên góp hàng hóa và dịch vụ thiết yếu để hỗ trợ các nỗ lực hỗ trợ lẫn nhau thông qua trang quyên góp của chúng tôi. Điều phối viên của chúng tôi sẽ liên hệ với bạn để điều phối hậu cần cho khoản đóng góp của bạn. Cảm ơn bạn đã tạo ra sự khác biệt trong cộng đồng của chúng tôi.",
+            "chinese": "通过我们的捐赠页面捐赠必需品和服务，以支持我们的互助工作。 我们的协调员将与您联系以协调您捐赠的后勤工作。 感谢您为我们的社区带来改变。"
+        },
+        "submit.button": {
+            "english": "Submit Donation",
+            "spanish": "Enviar Donación",
+            "vietnamese": "Gửi Quyên Góp",
+            "chinese": "提交捐款"
+        },
+        "donation.label": {
+            "english": "What would you like to donate?",
+            "spanish": "¿Qué te gustaría donar?",
+            "vietnamese": "Bạn muốn tặng gì?",
+            "chinese": "你想捐什么？"
+        },
+        "donation.placeholder": {
+            "english": "Please describe the items you would like to donate, including quantities and any relevant details.",
+            "spanish": "Describa los artículos que le gustaría donar, incluidas las cantidades y cualquier detalle relevante.",
+            "vietnamese": "Vui lòng mô tả các vật phẩm bạn muốn quyên góp, bao gồm số lượng và mọi chi tiết liên quan.",
+            "chinese": "请描述您想捐赠的物品，包括数量和任何相关细节。"
+        },
+        "success.header": {
+            "english": "Thank You For Your Submission",
+            "spanish": "Gracias Por Su Envío",
+            "vietnamese": "Cảm ơn Bạn đã Gửi",
+            "chinese": "感谢您提交"
+        },
+        "success.description": {
+            "english": "Our team has received your submission and will review it as soon as possible. We appreciate your interest in our mutual aid efforts and look forward to working together.",
+            "spanish": "Nuestro equipo ha recibido su envío y lo revisará lo antes posible. Agradecemos su interés en nuestros esfuerzos de ayuda mutua y esperamos trabajar juntos para apoyar a nuestra comunidad.",
+            "vietnamese": "Nhóm của chúng tôi đã nhận được nội dung gửi của bạn và sẽ xem xét nội dung đó ngay khi có thể. Chúng tôi đánh giá cao sự quan tâm của bạn đối với các nỗ lực hỗ trợ lẫn nhau của chúng ta và mong muốn được hợp tác cùng nhau để hỗ trợ cộng đồng của chúng ta.",
+            "chinese": "我们的团队已收到您提交的内容，并将尽快对其进行审核。 我们感谢您对我们的互助工作感兴趣，并期待共同努力支持我们的社区。"
+        }
+    }
+}

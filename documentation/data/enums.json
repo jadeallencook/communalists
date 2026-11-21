@@ -1,0 +1,71 @@
+{
+    "locations": {
+        "campbell-ca": "Campbell",
+        "cupertino-ca": "Cupertino",
+        "gilroy-ca": "Gilroy",
+        "los-altos-ca": "Los Altos",
+        "los-gatos-ca": "Los Gatos",
+        "milpitas-ca": "Milpitas",
+        "mountain-view-ca": "Mountain View",
+        "san-jose-ca": "San Jose",
+        "santa-clara-ca": "Santa Clara",
+        "sunnyvale-ca": "Sunnyvale"
+    },
+    "languages": {
+        "english": "English",
+        "spanish": "Español",
+        "vietnamese": "Tiếng Việt",
+        "chinese": "中文"
+    },
+    "methods": {
+        "email": "Email",
+        "phone": "Phone Call",
+        "text": "Text"
+    },
+    "stages": {
+        "submitted": "Received (1/4)",
+        "started": "Coordinating (2/4)",
+        "ready": "Ready (3/4)",
+        "complete": "Fulfilled (4/4)",
+        "cancelled": "Cancelled"
+    },
+    "drivers": {
+        "not-assigned": "Pending",
+        "assigned": "Coordinated"
+    },
+    "roles": {
+        "driver": "Driver",
+        "coordinator": "Coordinator",
+        "security": "Security",
+        "tech": "Tech Support",
+        "social": "Social Media",
+        "photographer": "Photography",
+        "laborer": "General Labor",
+        "cook": "Meal Prep",
+        "planner": "Event Planning",
+        "designer": "Graphic Design",
+        "emotional": "Emotional Support",
+        "legal": "Legal Support",
+        "medical": "Medical Support"
+    },
+    "days": {
+        "sun": "Sunday",
+        "mon": "Monday",
+        "tue": "Tuesday",
+        "wed": "Wednesday",
+        "thu": "Thursday",
+        "fri": "Friday",
+        "sat": "Saturday"
+    },
+    "eventTags": [
+        "shower",
+        "food",
+        "essentials",
+        "medical",
+        "haircut",
+        "recovery",
+        "legal",
+        "mail",
+        "groceries"
+    ]
+}
