@@ -29,7 +29,7 @@ export default function Page() {
 
 async function WelcomeContainer() {
     const [locale, user] = await Promise.all([getLocale(), getSessionUser()]);
-    if (!user) return redirect({ href: '/sign-up', locale });
+    if (!user) return redirect({ href: '/sign-in', locale });
 
     const profile = await getUserProfile(user.uid);
     return (

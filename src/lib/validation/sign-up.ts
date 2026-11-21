@@ -2,6 +2,12 @@ import { z } from 'zod';
 
 import { isSupportedCountry } from '@/lib/places/types';
 
+import {
+    confirmPasswordField,
+    newPasswordField,
+    passwordsMatch,
+} from './password';
+
 // Messages are translation keys under SignUp.errors in messages/*.json, so
 // the same schema works on the server and in every locale.
 export type SignUpErrorKey =
@@ -10,6 +16,7 @@ export type SignUpErrorKey =
     | 'invalidEmail'
     | 'passwordTooShort'
     | 'passwordTooLong'
+    | 'passwordMismatch'
     | 'emailInUse'
     | 'placeRequired'
     | 'placeNotFound'
@@ -22,28 +29,27 @@ const requiredText = (max: number) =>
         .min(1, { error: 'required' })
         .max(max, { error: 'tooLong' });
 
-export const signUpSchema = z.object({
-    name: requiredText(80),
-    email: z
-        .string({ error: 'required' })
-        .trim()
-        .toLowerCase()
-        .min(1, { error: 'required' })
-        .pipe(z.email({ error: 'invalidEmail' })),
-    // Not trimmed: spaces are valid password characters.
-    password: z
-        .string({ error: 'required' })
-        .min(8, { error: 'passwordTooShort' })
-        .max(128, { error: 'passwordTooLong' }),
-    country: z
-        .string({ error: 'placeRequired' })
-        .refine(isSupportedCountry, { error: 'placeRequired' }),
-    // A GeoNames id chosen from the city picker. The server looks it up, so
-    // the browser never supplies coordinates.
-    placeId: z
-        .string({ error: 'placeRequired' })
-        .regex(/^\d{1,12}$/, { error: 'placeRequired' }),
-});
+export const signUpSchema = z
+    .object({
+        name: requiredText(80),
+        email: z
+            .string({ error: 'required' })
+            .trim()
+            .toLowerCase()
+            .min(1, { error: 'required' })
+            .pipe(z.email({ error: 'invalidEmail' })),
+        password: newPasswordField,
+        country: z
+            .string({ error: 'placeRequired' })
+            .refine(isSupportedCountry, { error: 'placeRequired' }),
+        // A GeoNames id chosen from the city picker. The server looks it up, so
+        // the browser never supplies coordinates.
+        placeId: z
+            .string({ error: 'placeRequired' })
+            .regex(/^\d{1,12}$/, { error: 'placeRequired' }),
+        confirmPassword: confirmPasswordField,
+    })
+    .refine(...passwordsMatch);
 
 export type SignUpInput = z.infer<typeof signUpSchema>;
 export type SignUpField = keyof SignUpInput;

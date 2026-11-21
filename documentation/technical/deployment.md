@@ -37,7 +37,7 @@ Sign-up (decision #12) needs these on the `communalists` Vercel project, **Produ
 | `NEXT_PUBLIC_FIREBASE_APP_ID`              | `1:895012652302:web:1472a663bf95e88ad1c35f`     | No      |
 | `FIREBASE_SERVICE_ACCOUNT_KEY`             | Service-account JSON, one line                  | **Yes** |
 
-`NEXT_PUBLIC_*` values are inlined at build time, so redeploy after changing them. Also enable **Authentication → Sign-in method → Email/Password** in the Firebase console.
+`NEXT_PUBLIC_*` values are inlined at build time, so redeploy after changing them. Also enable **Authentication → Sign-in method → Email/Password** in the Firebase console, add `communalists.com` under **Authentication → Settings → Authorized domains** (password-reset links return there), set the sender name under **Authentication → Templates**, and set the templates' **action URL** to `https://communalists.com/auth/action` (our reset-password page; see `accounts-and-sessions.md`).
 
 ## Squarespace DNS for communalists.com
 

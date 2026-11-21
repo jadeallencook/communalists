@@ -22,38 +22,44 @@ messages/                 en.json, es.json, vi.json, zh.json + parity test
 src/
   app/
     [locale]/layout.tsx   Root layout: <html lang>, fonts, providers, header/footer
-    [locale]/page.tsx     Home: banner, platform intro, create-account CTA
+    [locale]/page.tsx     Home: banner, platform intro, create-account CTA, sign-in link
     [locale]/sign-up/     Container: wires the signUp action into SignUpPage
+    [locale]/sign-in/     Container: wires the signIn action into SignInPage
+    [locale]/forgot-password/  Container: wires requestPasswordReset into ForgotPasswordPage
+    [locale]/auth/action/ Firebase email links (Action URL): verifies the code, renders ResetPasswordPage
     [locale]/welcome/     Container: reads session + profile, renders WelcomePage (streamed)
+    api/places/           GET city search for the picker (cached)
     globals.css           Tailwind + shadcn tokens
     favicon.ico           Star logo (from the 2025 attempt)
   components/
     atoms/                shadcn primitives (button, input, card, field…)
-    molecules/            Small composites (FeatureCard, LocaleSwitcher, ThemeToggle)
-    organisms/            Page sections (SiteHeader, HeroBanner, SignUpForm…)
-    pages/                Presentational page views (HomePage, SignUpPage, WelcomePage)
+    molecules/            Small composites (FeatureCard, LocaleSwitcher, ThemeToggle, LocationField, LinkProblem)
+    organisms/            Page sections (SiteHeader, HeroBanner, AuthCard, SignUpForm, SignInForm, ForgotPasswordForm, ResetPasswordForm…)
+    pages/                Presentational page views (HomePage, SignUpPage, SignInPage, ForgotPasswordPage, ResetPasswordPage, WelcomePage)
     providers/            Client providers (theme)
-  hooks/                  Shared UI logic (useSignUpForm)
+  hooks/                  Shared UI logic (useSignUpForm, useSignInForm, useForgotPasswordForm, useResetPasswordForm, usePlaceSearch)
   i18n/
     routing.ts            Locales, default locale, display names
     navigation.ts         Locale-aware Link / useRouter / redirect
     request.ts            Per-request locale + messages for next-intl
+    locale-from-tag.ts    "zh-CN" → zh (for the Action URL's lang)
   assets/               Images imported by components (see AGENTS.md)
-  lib/auth/             Session cookies, server-side password sign-in
-  lib/geo/              Geocoding to a general area
+  lib/auth/             Session cookies; Firebase Auth REST (password sign-in, reset email, reset)
+  lib/places/           Place data, search, API client (city picker)
   lib/validation/       Zod schemas shared by forms and actions
   lib/users.ts          users/{uid} profiles
   lib/firebase/
     client.ts             Browser SDK (lazy; emulator-aware)
     admin.ts              Admin SDK (server-only; bypasses rules)
-  proxy.ts                Locale detection + redirect (Next 16's renamed middleware)
+  proxy.ts                Locale detection + redirect (Next 16's renamed middleware); /auth/action uses ?lang=
   global.d.ts             Types `t('…')` keys against en.json
 firebase.json, firestore.rules, database.rules.json, firestore.indexes.json
+scripts/build-places.mjs  Regenerates src/lib/places/data from GeoNames
 ```
 
 ## Request flow
 
-1. **`src/proxy.ts`** runs on every page request (not `/api`, `/_next`, `/_vercel` or files with an extension). A path without a locale (`/`) is redirected to `/{locale}` using the `NEXT_LOCALE` cookie, then `Accept-Language`, then `en`.
+1. **`src/proxy.ts`** runs on every page request (not `/api`, `/_next`, `/_vercel` or files with an extension). A path without a locale (`/`) is redirected to `/{locale}` using the `NEXT_LOCALE` cookie, then `Accept-Language`, then `en`. The exception is `/auth/action` (Firebase email links), which uses the link's `lang` first.
 2. The **`[locale]` root layout** reads the locale with `next/root-params`, 404s if it isn't supported, and sets `<html lang>`. That fixes the prototype's hard-coded `lang="en"`.
 3. Server Components get translations with `getTranslations()`. Client Components use `useTranslations()` through `NextIntlClientProvider`, which passes the messages down automatically.
 4. All four locales are **prerendered at build time** (`generateStaticParams` in the layout).

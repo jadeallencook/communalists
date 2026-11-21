@@ -46,9 +46,23 @@ export const FieldErrors: Story = {
                 name: 'required',
                 email: 'invalidEmail',
                 password: 'passwordTooShort',
+                confirmPassword: 'required',
                 placeId: 'placeRequired',
             },
             values: { name: '', email: 'not-an-email' },
+        },
+    },
+};
+
+export const PasswordMismatch: Story = {
+    args: {
+        location: { ...location, selected: sanJose },
+        state: {
+            fieldErrors: { confirmPassword: 'passwordMismatch' },
+            values: {
+                name: 'Ada Lovelace',
+                email: 'ada@example.com',
+            },
         },
     },
 };

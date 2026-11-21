@@ -49,7 +49,8 @@
         "join": {
             "title": "Sẵn sàng tổ chức chưa?",
             "body": "Miễn phí và chỉ mất một phút."
-        }
+        },
+        "signIn": "Đăng nhập"
     },
     "Footer": {
         "developedBy": "Được phát triển bởi tình nguyện viên",
@@ -60,11 +61,12 @@
     "SignUp": {
         "metaTitle": "Tạo tài khoản",
         "title": "Tạo tài khoản của bạn",
-        "description": "Tham gia Communalists để tìm và lập các tổ chức tương trợ gần bạn.",
+        "description": "Tham gia Communalists để tìm và lập các mạng lưới tương trợ gần bạn.",
         "name": "Tên",
         "email": "Email",
         "password": "Mật khẩu",
         "passwordHint": "Ít nhất 8 ký tự.",
+        "confirmPassword": "Xác nhận mật khẩu",
         "submit": "Tạo tài khoản",
         "submitting": "Đang tạo tài khoản…",
         "errors": {
@@ -76,7 +78,81 @@
             "emailInUse": "Đã có tài khoản dùng email này.",
             "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
             "placeRequired": "Hãy chọn thành phố của bạn trong danh sách.",
-            "placeNotFound": "Không tìm thấy thành phố đó. Hãy chọn lại trong danh sách."
+            "placeNotFound": "Không tìm thấy thành phố đó. Hãy chọn lại trong danh sách.",
+            "passwordMismatch": "Mật khẩu không khớp."
+        },
+        "haveAccount": "Đã có tài khoản?",
+        "signIn": "Đăng nhập"
+    },
+    "SignIn": {
+        "metaTitle": "Đăng nhập",
+        "title": "Đăng nhập",
+        "description": "Chào mừng bạn quay lại. Đăng nhập vào tài khoản Communalists của bạn.",
+        "email": "Email",
+        "password": "Mật khẩu",
+        "forgotPassword": "Quên mật khẩu?",
+        "submit": "Đăng nhập",
+        "submitting": "Đang đăng nhập…",
+        "noAccount": "Bạn mới dùng Communalists?",
+        "createAccount": "Tạo tài khoản",
+        "errors": {
+            "required": "Trường này là bắt buộc.",
+            "invalidEmail": "Nhập địa chỉ email hợp lệ.",
+            "invalidCredentials": "Email và mật khẩu không khớp với tài khoản nào.",
+            "tooManyAttempts": "Quá nhiều lần thử. Vui lòng đợi vài phút rồi thử lại.",
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+        }
+    },
+    "ForgotPassword": {
+        "metaTitle": "Quên mật khẩu",
+        "title": "Đặt lại mật khẩu",
+        "description": "Nhập email bạn đã dùng để đăng ký, chúng tôi sẽ gửi cho bạn một liên kết để chọn mật khẩu mới.",
+        "email": "Email",
+        "hint": "Liên kết chỉ dùng được một lần và hết hạn sau một giờ.",
+        "submit": "Gửi liên kết đặt lại",
+        "submitting": "Đang gửi…",
+        "sentTitle": "Kiểm tra email của bạn",
+        "sentBody": "Nếu có tài khoản với {email}, chúng tôi đã gửi liên kết đặt lại mật khẩu đến địa chỉ đó. Có thể mất vài phút, vì vậy hãy kiểm tra cả thư mục thư rác.",
+        "remembered": "Đã nhớ ra?",
+        "signIn": "Đăng nhập",
+        "errors": {
+            "required": "Trường này là bắt buộc.",
+            "invalidEmail": "Nhập địa chỉ email hợp lệ.",
+            "tooManyAttempts": "Quá nhiều yêu cầu. Vui lòng đợi vài phút rồi thử lại.",
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+        }
+    },
+    "ResetPassword": {
+        "metaTitle": "Chọn mật khẩu mới",
+        "title": "Chọn mật khẩu mới",
+        "description": "Cho {email}.",
+        "checking": "Đang kiểm tra liên kết…",
+        "newPassword": "Mật khẩu mới",
+        "passwordHint": "Ít nhất 8 ký tự.",
+        "confirmPassword": "Xác nhận mật khẩu mới",
+        "signOutNote": "Khi lưu, bạn sẽ được đăng nhập ở đây và đăng xuất khỏi mọi thiết bị khác.",
+        "submit": "Lưu mật khẩu",
+        "submitting": "Đang lưu…",
+        "problemTitle": "Đặt lại mật khẩu",
+        "remembered": "Đã nhớ ra?",
+        "signIn": "Đăng nhập",
+        "errors": {
+            "required": "Trường này là bắt buộc.",
+            "passwordTooShort": "Dùng ít nhất 8 ký tự.",
+            "passwordTooLong": "Dùng tối đa 128 ký tự.",
+            "passwordMismatch": "Mật khẩu không khớp.",
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+        }
+    },
+    "LinkProblem": {
+        "requestNew": "Yêu cầu liên kết mới",
+        "expired": {
+            "title": "Liên kết này đã hết hạn",
+            "body": "Liên kết chỉ dùng được một lần và hết hạn sau một giờ. Hãy yêu cầu liên kết mới và dùng email mới nhất."
+        },
+        "invalid": {
+            "title": "Liên kết này không hoạt động",
+            "body": "Liên kết có thể bị thiếu. Hãy sao chép toàn bộ liên kết trong email, hoặc yêu cầu liên kết mới."
         }
     },
     "Welcome": {

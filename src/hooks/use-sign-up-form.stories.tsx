@@ -19,10 +19,14 @@ import { useSignUpForm, type SignUpAction } from './use-sign-up-form';
 const mockSignUp: SignUpAction = async (_previous, formData) => {
     await new Promise((resolve) => setTimeout(resolve, 800));
     const raw = Object.fromEntries(
-        ['name', 'email', 'password', 'country', 'placeId'].map((k) => [
-            k,
-            String(formData.get(k) ?? ''),
-        ])
+        [
+            'name',
+            'email',
+            'password',
+            'confirmPassword',
+            'country',
+            'placeId',
+        ].map((k) => [k, String(formData.get(k) ?? '')])
     );
     const values = { name: raw.name, email: raw.email };
     const parsed = signUpSchema.safeParse(raw);

@@ -33,6 +33,7 @@ export async function signUp(
         name: text(formData.get('name')),
         email: text(formData.get('email')),
         password: text(formData.get('password')),
+        confirmPassword: text(formData.get('confirmPassword')),
         country: text(formData.get('country')),
         placeId: text(formData.get('placeId')),
     };

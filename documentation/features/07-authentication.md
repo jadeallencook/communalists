@@ -51,6 +51,10 @@ Flow in `src/api/auth.ts` → `signUp()`:
 
 ## In the rebuild
 
+**Built (2026-11-21):** server-side sign-up (with confirm-password) and sign-in with Firebase session cookies, at `/{locale}/sign-up` and `/{locale}/sign-in`. See `technical/accounts-and-sessions.md`. The prototype's toast errors became inline, translated field errors; its non-atomic sign-up and missing route guards are fixed. Forgot password (`/{locale}/forgot-password`) sends Firebase's reset email, and the link opens our own reset page (`/auth/action`), which signs the person in and signs out every other session (decisions #16, #17). The prototype's English-only reset copy is now translated.
+
+Original notes:
+
 - Next.js: Firebase Auth on the client plus session cookies verified in middleware, or switch to Auth.js / Clerk / Supabase Auth. Astro: middleware with session cookies.
 - Guard `/dashboard/**` on the server.
 - Create the profile record on the server when the user is created.

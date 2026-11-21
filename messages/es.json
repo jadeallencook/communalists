@@ -49,7 +49,8 @@
         "join": {
             "title": "¿Listo para organizarte?",
             "body": "Es gratis y solo toma un minuto."
-        }
+        },
+        "signIn": "Iniciar sesión"
     },
     "Footer": {
         "developedBy": "Desarrollado por voluntarios",
@@ -60,11 +61,12 @@
     "SignUp": {
         "metaTitle": "Crear cuenta",
         "title": "Crea tu cuenta",
-        "description": "Únete a Communalists para encontrar y crear organizaciones de ayuda mutua cerca de ti.",
+        "description": "Únete a Communalists para encontrar y crear redes de ayuda mutua cerca de ti.",
         "name": "Nombre",
         "email": "Correo electrónico",
         "password": "Contraseña",
         "passwordHint": "Al menos 8 caracteres.",
+        "confirmPassword": "Confirmar contraseña",
         "submit": "Crear cuenta",
         "submitting": "Creando cuenta…",
         "errors": {
@@ -76,7 +78,81 @@
             "emailInUse": "Ya existe una cuenta con este correo electrónico.",
             "generic": "Algo salió mal. Inténtalo de nuevo.",
             "placeRequired": "Elige tu ciudad de la lista.",
-            "placeNotFound": "No encontramos esa ciudad. Elígela de nuevo en la lista."
+            "placeNotFound": "No encontramos esa ciudad. Elígela de nuevo en la lista.",
+            "passwordMismatch": "Las contraseñas no coinciden."
+        },
+        "haveAccount": "¿Ya tienes una cuenta?",
+        "signIn": "Iniciar sesión"
+    },
+    "SignIn": {
+        "metaTitle": "Iniciar sesión",
+        "title": "Iniciar sesión",
+        "description": "Qué bueno verte de nuevo. Inicia sesión en tu cuenta de Communalists.",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "forgotPassword": "¿Olvidaste tu contraseña?",
+        "submit": "Iniciar sesión",
+        "submitting": "Iniciando sesión…",
+        "noAccount": "¿Eres nuevo en Communalists?",
+        "createAccount": "Crear una cuenta",
+        "errors": {
+            "required": "Este campo es obligatorio.",
+            "invalidEmail": "Ingresa un correo electrónico válido.",
+            "invalidCredentials": "Ese correo y contraseña no coinciden con ninguna cuenta.",
+            "tooManyAttempts": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        }
+    },
+    "ForgotPassword": {
+        "metaTitle": "Olvidé mi contraseña",
+        "title": "Restablece tu contraseña",
+        "description": "Ingresa el correo con el que te registraste y te enviaremos un enlace para elegir una nueva contraseña.",
+        "email": "Correo electrónico",
+        "hint": "El enlace funciona una sola vez y vence en una hora.",
+        "submit": "Enviar enlace",
+        "submitting": "Enviando…",
+        "sentTitle": "Revisa tu correo",
+        "sentBody": "Si existe una cuenta para {email}, le enviamos un enlace para restablecer tu contraseña. Puede tardar unos minutos, así que revisa también la carpeta de spam.",
+        "remembered": "¿Ya la recordaste?",
+        "signIn": "Iniciar sesión",
+        "errors": {
+            "required": "Este campo es obligatorio.",
+            "invalidEmail": "Ingresa un correo electrónico válido.",
+            "tooManyAttempts": "Demasiadas solicitudes. Espera unos minutos y vuelve a intentarlo.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        }
+    },
+    "ResetPassword": {
+        "metaTitle": "Elige una nueva contraseña",
+        "title": "Elige una nueva contraseña",
+        "description": "Para {email}.",
+        "checking": "Verificando tu enlace…",
+        "newPassword": "Nueva contraseña",
+        "passwordHint": "Al menos 8 caracteres.",
+        "confirmPassword": "Confirmar nueva contraseña",
+        "signOutNote": "Al guardar, iniciarás sesión aquí y se cerrará en todos los demás dispositivos.",
+        "submit": "Guardar contraseña",
+        "submitting": "Guardando…",
+        "problemTitle": "Restablece tu contraseña",
+        "remembered": "¿Ya la recordaste?",
+        "signIn": "Iniciar sesión",
+        "errors": {
+            "required": "Este campo es obligatorio.",
+            "passwordTooShort": "Usa al menos 8 caracteres.",
+            "passwordTooLong": "Usa 128 caracteres o menos.",
+            "passwordMismatch": "Las contraseñas no coinciden.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        }
+    },
+    "LinkProblem": {
+        "requestNew": "Solicitar un nuevo enlace",
+        "expired": {
+            "title": "Este enlace venció",
+            "body": "Los enlaces funcionan una sola vez y vencen en una hora. Solicita uno nuevo y usa el correo más reciente."
+        },
+        "invalid": {
+            "title": "Este enlace no funciona",
+            "body": "Puede estar incompleto. Copia el enlace completo del correo o solicita uno nuevo."
         }
     },
     "Welcome": {

@@ -44,7 +44,19 @@ export function HomePage() {
                 imageAlt={t('banner.imageAlt')}
                 title={t('banner.title')}
                 subtitle={t('banner.subtitle')}
-                action={createAccount('onPhoto')}
+                action={
+                    <div className="flex flex-wrap items-center gap-3">
+                        {createAccount('onPhoto')}
+                        <Button
+                            asChild
+                            size="lg"
+                            variant="ghost"
+                            className="text-white hover:bg-white/10 hover:text-white"
+                        >
+                            <Link href="/sign-in">{t('signIn')}</Link>
+                        </Button>
+                    </div>
+                }
             />
             <FeatureGrid
                 title={t('about.title')}

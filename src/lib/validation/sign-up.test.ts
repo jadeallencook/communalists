@@ -6,6 +6,7 @@ const valid = {
     name: 'Ada Lovelace',
     email: 'Ada@Example.com ',
     password: 'correct horse',
+    confirmPassword: 'correct horse',
     country: 'US',
     placeId: '5392171',
 };
@@ -27,7 +28,11 @@ describe('signUpSchema', () => {
 
     it('keeps spaces in passwords', () => {
         expect(
-            signUpSchema.parse({ ...valid, password: ' pad  me ' }).password
+            signUpSchema.parse({
+                ...valid,
+                password: ' pad  me ',
+                confirmPassword: ' pad  me ',
+            }).password
         ).toBe(' pad  me ');
     });
 
@@ -37,6 +42,7 @@ describe('signUpSchema', () => {
                 name: '  ',
                 email: 'nope',
                 password: 'short',
+                confirmPassword: 'short',
                 country: 'US',
                 placeId: '',
             })
@@ -56,8 +62,10 @@ describe('signUpSchema', () => {
         expect(errorsFor({ ...valid, name: 'x'.repeat(81) }).name).toBe(
             'tooLong'
         );
+        const long = 'x'.repeat(129);
         expect(
-            errorsFor({ ...valid, password: 'x'.repeat(129) }).password
+            errorsFor({ ...valid, password: long, confirmPassword: long })
+                .password
         ).toBe('passwordTooLong');
     });
 
@@ -74,5 +82,26 @@ describe('signUpSchema', () => {
         expect(errorsFor({ ...valid, country: 'FR' }).country).toBe(
             'placeRequired'
         );
+    });
+
+    it('requires the password typed twice, matching exactly', () => {
+        expect(errorsFor({ ...valid, confirmPassword: '' })).toEqual({
+            confirmPassword: 'required',
+        });
+        expect(
+            errorsFor({ ...valid, confirmPassword: 'correct horse ' })
+        ).toEqual({ confirmPassword: 'passwordMismatch' });
+    });
+
+    it('reports a mismatch alongside other field errors', () => {
+        expect(
+            errorsFor({ ...valid, name: '', confirmPassword: 'nope' })
+        ).toEqual({ name: 'required', confirmPassword: 'passwordMismatch' });
+    });
+
+    it("doesn't pile a mismatch onto a password that's already invalid", () => {
+        expect(
+            errorsFor({ ...valid, password: 'short', confirmPassword: 'x' })
+        ).toEqual({ password: 'passwordTooShort' });
     });
 });

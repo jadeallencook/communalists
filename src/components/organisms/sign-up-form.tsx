@@ -27,7 +27,7 @@ export interface SignUpFormProps {
     location: Omit<LocationFieldProps, 'error'>;
 }
 
-/** Name, email, password and location fields with inline errors. No logic: it renders `state`. */
+/** Name, email, password (twice) and location fields with inline errors. No logic: it renders `state`. */
 export function SignUpForm({
     state,
     formAction,
@@ -96,6 +96,21 @@ export function SignUpForm({
                     ) : (
                         <FieldDescription>{t('passwordHint')}</FieldDescription>
                     )}
+                </Field>
+
+                <Field data-invalid={!!errorFor('confirmPassword')}>
+                    <FieldLabel htmlFor="confirmPassword">
+                        {t('confirmPassword')}
+                    </FieldLabel>
+                    <Input
+                        {...fieldProps('confirmPassword')}
+                        type="password"
+                        autoComplete="new-password"
+                        required
+                    />
+                    <FieldError id="confirmPassword-error">
+                        {errorFor('confirmPassword')}
+                    </FieldError>
                 </Field>
 
                 <LocationField

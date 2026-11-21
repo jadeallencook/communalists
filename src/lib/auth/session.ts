@@ -53,3 +53,11 @@ export async function endSession(): Promise<void> {
             .catch(() => undefined);
     }
 }
+
+/**
+ * Signs a user out on every device: any session cookie issued before now
+ * fails verification. Used after a password reset.
+ */
+export async function revokeAllSessions(uid: string): Promise<void> {
+    await getAdminAuth().revokeRefreshTokens(uid);
+}

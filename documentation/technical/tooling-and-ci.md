@@ -16,15 +16,16 @@ The Firebase CLI is not a project dependency. Install it globally (`npm i -g fir
 
 ## Scripts
 
-| Script                               | What it does                                                                               |
-| ------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `pnpm dev` / `build` / `start`       | Next.js                                                                                    |
-| `pnpm lint`                          | ESLint (Next core-web-vitals + TypeScript rules, Prettier conflicts off)                   |
-| `pnpm typecheck`                     | `next typegen` (route + root-param types), then `tsc --noEmit`                             |
-| `pnpm format` / `format:check`       | Prettier                                                                                   |
-| `pnpm test` / `test:watch`           | Vitest (jsdom + Testing Library)                                                           |
-| `pnpm storybook` / `build-storybook` | Storybook 10 on port 6006                                                                  |
-| `pnpm emulators`                     | Firebase Auth (9099) + Firestore (8080) emulators, UI on 4000, project `demo-communalists` |
+| Script                                   | What it does                                                                               |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `pnpm dev` / `build` / `start`           | Next.js                                                                                    |
+| `pnpm lint`                              | ESLint (Next core-web-vitals + TypeScript rules, Prettier conflicts off)                   |
+| `pnpm typecheck`                         | `next typegen` (route + root-param types), then `tsc --noEmit`                             |
+| `pnpm format` / `format:check`           | Prettier                                                                                   |
+| `pnpm test` / `test:watch`               | Vitest (jsdom + Testing Library)                                                           |
+| `pnpm storybook` / `build-storybook`     | Storybook 10 on port 6006                                                                  |
+| `node scripts/build-places.mjs <dir> US` | Regenerates the city-picker data from GeoNames downloads (see `accounts-and-sessions.md`)  |
+| `pnpm emulators`                         | Firebase Auth (9099) + Firestore (8080) emulators, UI on 4000, project `demo-communalists` |
 
 ## Git hooks (husky 9)
 
@@ -58,4 +59,6 @@ One job on every push to `main` and every PR: `pnpm install --frozen-lockfile` (
 - **Git doesn't track empty folders.** Storybook's `staticDirs` points at `public/`, which was empty, so it existed locally but not in CI, and `build-storybook` failed there only (first CI run, 2026-11-21). `public/.gitkeep` keeps the folder. To reproduce CI exactly, build from `git archive HEAD` rather than the working tree.
 - **Storybook doesn't get Tailwind from `next.config.ts`.** Next compiles Tailwind v4 through the `@tailwindcss/turbopack` loader in `next.config.ts`, but Storybook builds with Vite and never reads that file. Without `@tailwindcss/vite` in `.storybook/main.ts` (`viteFinal`), stories render with theme tokens but **no utility classes**: serif text, unstyled buttons, visible `sr-only` labels (seen 2026-11-21). Keep `@tailwindcss/vite` on the same version as `tailwindcss`.
 - **Turbopack can't optimize AVIF images you import** ("AVIF image not supported … will emit without optimization"). Keep source images as JPEG/PNG/WebP in `src/assets/`; Next's optimizer still serves AVIF/WebP to browsers. The homepage photo arrived as AVIF named `.jpeg` and was converted to JPEG.
+- **`shadcn add` prompts to overwrite shared atoms** (e.g. `command` re-ships `button.tsx` and `input.tsx`), and piped answers don't reach every prompt. `--overwrite` is fine when those atoms are unmodified shadcn originals: run Prettier, then `git diff` to confirm nothing changed.
+- **`vitest --root /` scans the whole filesystem.** To try a TypeScript module quickly, run it with Node 24 directly (`node file.mts`; types are stripped).
 - An old global Firebase CLI (12.x) works, but it swaps in an older cached Firestore emulator JAR. Keep it current.

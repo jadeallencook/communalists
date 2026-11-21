@@ -49,7 +49,8 @@
         "join": {
             "title": "准备好组织起来了吗？",
             "body": "完全免费，只需一分钟。"
-        }
+        },
+        "signIn": "登录"
     },
     "Footer": {
         "developedBy": "由志愿者开发",
@@ -60,11 +61,12 @@
     "SignUp": {
         "metaTitle": "创建账户",
         "title": "创建你的账户",
-        "description": "加入 Communalists，寻找并创建你附近的互助组织。",
+        "description": "加入 Communalists，寻找并创建你附近的互助网络。",
         "name": "姓名",
         "email": "电子邮件",
         "password": "密码",
         "passwordHint": "至少 8 个字符。",
+        "confirmPassword": "确认密码",
         "submit": "创建账户",
         "submitting": "正在创建账户…",
         "errors": {
@@ -76,7 +78,81 @@
             "emailInUse": "该电子邮件已注册账户。",
             "generic": "出了点问题，请重试。",
             "placeRequired": "请从列表中选择你的城市。",
-            "placeNotFound": "找不到该城市，请从列表中重新选择。"
+            "placeNotFound": "找不到该城市，请从列表中重新选择。",
+            "passwordMismatch": "两次输入的密码不一致。"
+        },
+        "haveAccount": "已有账户？",
+        "signIn": "登录"
+    },
+    "SignIn": {
+        "metaTitle": "登录",
+        "title": "登录",
+        "description": "欢迎回来。登录你的 Communalists 账户。",
+        "email": "电子邮件",
+        "password": "密码",
+        "forgotPassword": "忘记密码？",
+        "submit": "登录",
+        "submitting": "正在登录…",
+        "noAccount": "第一次使用 Communalists？",
+        "createAccount": "创建账户",
+        "errors": {
+            "required": "此项为必填项。",
+            "invalidEmail": "请输入有效的电子邮件地址。",
+            "invalidCredentials": "电子邮件或密码不正确。",
+            "tooManyAttempts": "尝试次数过多。请等几分钟后再试。",
+            "generic": "出了点问题，请重试。"
+        }
+    },
+    "ForgotPassword": {
+        "metaTitle": "忘记密码",
+        "title": "重置密码",
+        "description": "输入你注册时使用的电子邮件，我们会发送一个链接，让你设置新密码。",
+        "email": "电子邮件",
+        "hint": "链接只能使用一次，一小时后失效。",
+        "submit": "发送重置链接",
+        "submitting": "正在发送…",
+        "sentTitle": "请查看你的邮箱",
+        "sentBody": "如果 {email} 有对应的账户，我们已向该邮箱发送了重置密码的链接。邮件可能需要几分钟才能送达，也请检查垃圾邮件文件夹。",
+        "remembered": "想起来了？",
+        "signIn": "登录",
+        "errors": {
+            "required": "此项为必填项。",
+            "invalidEmail": "请输入有效的电子邮件地址。",
+            "tooManyAttempts": "请求次数过多。请等几分钟后再试。",
+            "generic": "出了点问题，请重试。"
+        }
+    },
+    "ResetPassword": {
+        "metaTitle": "设置新密码",
+        "title": "设置新密码",
+        "description": "账户：{email}",
+        "checking": "正在检查链接…",
+        "newPassword": "新密码",
+        "passwordHint": "至少 8 个字符。",
+        "confirmPassword": "确认新密码",
+        "signOutNote": "保存后，你将在此登录，并在其他所有设备上退出登录。",
+        "submit": "保存密码",
+        "submitting": "正在保存…",
+        "problemTitle": "重置密码",
+        "remembered": "想起来了？",
+        "signIn": "登录",
+        "errors": {
+            "required": "此项为必填项。",
+            "passwordTooShort": "请至少使用 8 个字符。",
+            "passwordTooLong": "请不要超过 128 个字符。",
+            "passwordMismatch": "两次输入的密码不一致。",
+            "generic": "出了点问题，请重试。"
+        }
+    },
+    "LinkProblem": {
+        "requestNew": "重新获取链接",
+        "expired": {
+            "title": "此链接已失效",
+            "body": "重置链接只能使用一次，一小时后失效。请重新获取，并使用最新的邮件。"
+        },
+        "invalid": {
+            "title": "此链接无法使用",
+            "body": "链接可能不完整。请复制邮件中的完整链接，或重新获取。"
         }
     },
     "Welcome": {

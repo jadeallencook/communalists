@@ -49,7 +49,8 @@
         "join": {
             "title": "Ready to organize?",
             "body": "It's free, and it only takes a minute."
-        }
+        },
+        "signIn": "Sign in"
     },
     "Footer": {
         "developedBy": "Developed by volunteers",
@@ -60,11 +61,12 @@
     "SignUp": {
         "metaTitle": "Create account",
         "title": "Create your account",
-        "description": "Join Communalists to find and start mutual aid organizations near you.",
+        "description": "Join Communalists to find and start mutual aid networks near you.",
         "name": "Name",
         "email": "Email",
         "password": "Password",
         "passwordHint": "At least 8 characters.",
+        "confirmPassword": "Confirm password",
         "submit": "Create account",
         "submitting": "Creating account…",
         "errors": {
@@ -76,7 +78,81 @@
             "emailInUse": "An account with this email already exists.",
             "generic": "Something went wrong. Please try again.",
             "placeRequired": "Choose your city from the list.",
-            "placeNotFound": "We couldn't find that city. Choose it from the list again."
+            "placeNotFound": "We couldn't find that city. Choose it from the list again.",
+            "passwordMismatch": "Passwords don't match."
+        },
+        "haveAccount": "Already have an account?",
+        "signIn": "Sign in"
+    },
+    "SignIn": {
+        "metaTitle": "Sign in",
+        "title": "Sign in",
+        "description": "Welcome back. Sign in to your Communalists account.",
+        "email": "Email",
+        "password": "Password",
+        "forgotPassword": "Forgot password?",
+        "submit": "Sign in",
+        "submitting": "Signing in…",
+        "noAccount": "New to Communalists?",
+        "createAccount": "Create an account",
+        "errors": {
+            "required": "This field is required.",
+            "invalidEmail": "Enter a valid email address.",
+            "invalidCredentials": "That email and password don't match an account.",
+            "tooManyAttempts": "Too many attempts. Wait a few minutes and try again.",
+            "generic": "Something went wrong. Please try again."
+        }
+    },
+    "ForgotPassword": {
+        "metaTitle": "Forgot password",
+        "title": "Reset your password",
+        "description": "Enter the email you signed up with and we'll send you a link to choose a new password.",
+        "email": "Email",
+        "hint": "The link works once and expires after an hour.",
+        "submit": "Send reset link",
+        "submitting": "Sending…",
+        "sentTitle": "Check your email",
+        "sentBody": "If there's an account for {email}, we've sent it a link to reset your password. It can take a few minutes, so check your spam folder too.",
+        "remembered": "Remembered it?",
+        "signIn": "Sign in",
+        "errors": {
+            "required": "This field is required.",
+            "invalidEmail": "Enter a valid email address.",
+            "tooManyAttempts": "Too many requests. Wait a few minutes and try again.",
+            "generic": "Something went wrong. Please try again."
+        }
+    },
+    "ResetPassword": {
+        "metaTitle": "Choose a new password",
+        "title": "Choose a new password",
+        "description": "For {email}.",
+        "checking": "Checking your link…",
+        "newPassword": "New password",
+        "passwordHint": "At least 8 characters.",
+        "confirmPassword": "Confirm new password",
+        "signOutNote": "Saving signs you in here and out everywhere else.",
+        "submit": "Save password",
+        "submitting": "Saving…",
+        "problemTitle": "Reset your password",
+        "remembered": "Remembered it?",
+        "signIn": "Sign in",
+        "errors": {
+            "required": "This field is required.",
+            "passwordTooShort": "Use at least 8 characters.",
+            "passwordTooLong": "Use 128 characters or fewer.",
+            "passwordMismatch": "Passwords don't match.",
+            "generic": "Something went wrong. Please try again."
+        }
+    },
+    "LinkProblem": {
+        "requestNew": "Request a new link",
+        "expired": {
+            "title": "This link has expired",
+            "body": "Reset links work once and expire after an hour. Request a new one, then use the newest email."
+        },
+        "invalid": {
+            "title": "This link doesn't work",
+            "body": "It may be incomplete. Copy the whole link from the email, or request a new one."
         }
     },
     "Welcome": {
