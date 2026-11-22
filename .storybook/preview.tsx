@@ -115,6 +115,7 @@ const preview: Preview = {
                     'Documentation',
                     [
                         'Overview',
+                        'Getting Started',
                         'Agents Guide',
                         'Decision Log',
                         'Features',

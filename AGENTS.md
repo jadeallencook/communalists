@@ -32,6 +32,7 @@ Docs describe _what_ and _why_. Leave the line-by-line _how_ to the code, and do
 
 | Need                               | Read                                                                               |
 | ---------------------------------- | ---------------------------------------------------------------------------------- |
+| Running the project locally        | `documentation/getting-started.md`                                                 |
 | What a feature must do             | `documentation/features/NN-*.md`                                                   |
 | Data shapes and enums              | `documentation/technical/data-model.md`, `documentation/data/enums.json`           |
 | Known bugs to avoid repeating      | `documentation/technical/tech-debt.md`                                             |
@@ -58,7 +59,7 @@ Docs describe _what_ and _why_. Leave the line-by-line _how_ to the code, and do
 | `src/proxy.ts`                                                  | Locale redirects (Next 16's name for middleware); `/auth/action` uses `?lang=`                                                                                                                                    |
 | `firestore.rules`, `database.rules.json`, `firebase.json`       | Deny-all rules (deployed to production 2026-11-20) and emulator config. Deploy rules with `firebase deploy --only firestore:rules,database --project communalists`                                                |
 
-Commands: `pnpm dev`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm format`, `pnpm build`, `pnpm storybook`, `pnpm emulators`. Run `lint`, `typecheck`, `test` and `format:check` before saying a change is done. Details are in `documentation/technical/tooling-and-ci.md`.
+Commands: `pnpm dev` (emulators + Next, see `tooling-and-ci.md`), `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm format`, `pnpm build`, `pnpm storybook`, `pnpm emulators`. Run `lint`, `typecheck`, `test` and `format:check` before saying a change is done. Details are in `documentation/technical/tooling-and-ci.md`.
 
 **Next.js 16 is newer than most training data.** Before using a Next.js API you're unsure of, read the bundled docs in `node_modules/next/dist/docs/`. Known differences: `proxy.ts` replaces `middleware.ts`; Cache Components needs `generateStaticParams` for root params; read the locale with `next/root-params`, not `setRequestLocale`. See `documentation/technical/architecture.md`.
 

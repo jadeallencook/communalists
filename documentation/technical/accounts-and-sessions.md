@@ -122,9 +122,19 @@ See [decision #14](../decisions.md). The geocoder from #12 is gone.
   - `getSessionUser()` calls `connection()` first. Verifying a session reads the clock, and with `partialPrefetching` Next otherwise logs "encountered the unstable value `Date.now()` while prerendering".
   - Server actions can't read the `[locale]` root param, so forms send `locale` as a hidden field.
 
+## Local development
+
+Local dev **never uses the real Firebase project**. It runs against the emulators, so your production account doesn't exist locally; create a test account at `/en/sign-up`.
+
+```sh
+pnpm dev   # creates .env.local if needed, starts the emulators, then Next (tooling-and-ci.md → Setup)
+```
+
+Emulator data (test accounts, profiles) is kept in `.emulator-data/` (gitignored) between runs. Running `next dev` alone, without `.env.local` or the emulators, makes sign-in fail with "Something went wrong": the server has no project and no credentials. Pointing local dev at production would need a service-account key on the laptop, and local experiments would read and write real people's data, so we don't. Stop with Ctrl-C (not `kill`), or they won't save; see [tooling-and-ci](tooling-and-ci.md) for why the save only works through `scripts/dev.mjs`.
+
 ## Testing locally
 
-Unit tests cover the schema and place search (`pnpm test`). For end-to-end checks, run the emulators and a production build pointed at them:
+Unit tests cover the schemas and place search (`pnpm test`). For end-to-end checks, run the emulators and a production build pointed at them:
 
 ```sh
 pnpm emulators   # Auth + Firestore, project demo-communalists

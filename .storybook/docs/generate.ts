@@ -44,6 +44,7 @@ function titleFor(source: string): string {
         'AGENTS.md': 'Documentation/Agents Guide',
         'documentation/README.md': 'Documentation/Overview',
         'documentation/decisions.md': 'Documentation/Decision Log',
+        'documentation/getting-started.md': 'Documentation/Getting Started',
     };
     if (special[source]) return special[source];
 

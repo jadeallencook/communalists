@@ -1,6 +1,8 @@
 # Communalists: Discovery Documentation
 
-Communalists is a mutual-aid platform for South Bay (Santa Clara County, CA) organizers. It was first built between Oct 2022 and Jan 2024 (386 commits) as a React + Firebase prototype, and is now being rebuilt with Next.js, Firebase, shadcn/ui and next-intl. These docs record every feature and lesson from the earlier attempts, and how the rebuild works.
+**New here? Start with [Getting Started](getting-started.md)** to run the project locally.
+
+Communalists is a platform for mutual aid networks. It began as a tool for South Bay (Santa Clara County, CA) organizers, first built between Oct 2022 and Jan 2024 (386 commits) as a React + Firebase prototype, and is now being rebuilt with Next.js, Firebase, shadcn/ui and next-intl. These docs record every feature and lesson from the earlier attempts, and how the rebuild works.
 
 **These are living documents.** They started as a record of the prototype and are updated as the rebuild makes new choices; see the methodology in [`AGENTS.md`](../AGENTS.md). Choices made since the prototype are logged in [decisions.md](decisions.md).
 
@@ -17,7 +19,7 @@ The original source: branch `interview-demo` at commit `7ebc168`, read file by f
 
 ## Features
 
-The feature docs describe the prototype unless they have a "Rebuild" section. Rebuild progress so far: the locale routing behind [05](features/05-localization.md) and the header/footer shell from [13](features/13-navigation-and-layout.md). No other features have been started.
+The feature docs describe the prototype unless they have a "Rebuild" section. Rebuild progress so far: the locale routing behind [05](features/05-localization.md), the header/footer shell from [13](features/13-navigation-and-layout.md), and accounts from [07](features/07-authentication.md) (sign-up, sign-in, password reset, account setup; see [accounts and sessions](technical/accounts-and-sessions.md)). Organizations and tools come next.
 
 | #   | Feature                                                                           | Audience                | Status in prototype                             |
 | --- | --------------------------------------------------------------------------------- | ----------------------- | ----------------------------------------------- |
@@ -41,7 +43,9 @@ The feature docs describe the prototype unless they have a "Rebuild" section. Re
 
 | Doc                                                                   | What it covers                                                    |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Getting started](getting-started.md)                                 | Prerequisites, one-command setup, first change, troubleshooting   |
 | [Architecture](technical/architecture.md)                             | Current stack, folder layout, request flow, Next.js 16 specifics  |
+| [Accounts and sessions](technical/accounts-and-sessions.md)           | Sign-up, sign-in, reset, account setup, sessions, local Firebase  |
 | [Tooling and CI](technical/tooling-and-ci.md)                         | Setup, scripts, hooks, CI, pnpm 12 settings, setup gotchas        |
 | [Design system](technical/design-system.md)                           | shadcn/ui setup, tokens, fonts per language, Storybook            |
 | [Deployment](technical/deployment.md)                                 | Vercel projects, domains, Squarespace DNS records, deploy paths   |

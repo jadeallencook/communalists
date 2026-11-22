@@ -27,7 +27,7 @@ The `.org` redirects were switched on only after the DNS cutover. Before that, `
 
 Accounts need these on the `communalists` Vercel project (team `jadeallencook`; CLI: `--project communalists --scope jadeallencook`). **Production only for now:** our only Firebase project holds real data, so previews shouldn't get the service-account key. Working previews need a separate Firebase project with its own values on the Preview environment. Until then, auth pages on previews will fail.
 
-Status 2026-11-21: the six `NEXT_PUBLIC_FIREBASE_*` values are set on Production (values from `firebase apps:sdkconfig WEB --project communalists`); `FIREBASE_SERVICE_ACCOUNT_KEY` is **not set yet**.
+Status 2026-11-21: the six `NEXT_PUBLIC_FIREBASE_*` values are set on Production (values from `firebase apps:sdkconfig WEB --project communalists`); `FIREBASE_SERVICE_ACCOUNT_KEY` was set (sensitive) on 2026-11-22 from a key generated under Firebase → Project settings → Service accounts (`firebase-adminsdk-6240t@…`). The downloaded file was deleted after upload. Production sign-in confirmed working.
 
 | Variable                                   | Value                                            | Secret? |
 | ------------------------------------------ | ------------------------------------------------ | ------- |
