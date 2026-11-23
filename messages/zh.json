@@ -458,7 +458,10 @@
             "block": "{actor} 拒绝并屏蔽了 {target}",
             "remove": "{actor} 移除了 {target}",
             "ban": "{actor} 封禁了 {target}",
-            "unban": "{actor} 解除了对 {target} 的封禁"
+            "unban": "{actor} 解除了对 {target} 的封禁",
+            "makeModerator": "{actor} 将 {target} 设为管理员",
+            "makeOwner": "{actor} 将 {target} 设为所有者",
+            "makeMember": "{actor} 将 {target} 设为普通成员"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "原因",
@@ -483,7 +486,8 @@
             "self": "你无法对自己执行此操作。",
             "reasonRequired": "请填写原因。",
             "reasonTooLong": "原因请少于 500 个字符。",
-            "generic": "出了点问题，请重试。"
+            "generic": "出了点问题，请重试。",
+            "ownedLimit": "对方已经是 5 个组织的所有者，已达上限。"
         },
         "done": {
             "joined": "你已加入，欢迎！",
@@ -495,8 +499,16 @@
             "block": "已拒绝并屏蔽。",
             "remove": "已移除。",
             "ban": "已封禁。",
-            "unban": "已解除封禁，对方可以重新申请加入。"
-        }
+            "unban": "已解除封禁，对方可以重新申请加入。",
+            "makeModerator": "对方现在是管理员了。",
+            "makeOwner": "对方现在是所有者了。",
+            "makeMember": "对方现在是普通成员了。"
+        },
+        "makeModerator": "设为管理员",
+        "makeOwner": "设为所有者",
+        "makeMember": "设为普通成员",
+        "makeOwnerTitle": "将{name}设为所有者？",
+        "makeOwnerBody": "所有者可以在这里做任何事，包括任命其他所有者和移除管理员。目前无法撤回；对方可以通过退出团体卸任。"
     },
     "LocationField": {
         "country": "国家",

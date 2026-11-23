@@ -37,6 +37,7 @@ const meta = {
                 role: 'owner',
                 since: now - 90 * day,
                 canAct: false,
+                roleChanges: [],
             },
             {
                 uid: 'thanh',
@@ -44,6 +45,7 @@ const meta = {
                 role: 'moderator',
                 since: now - 80 * day,
                 canAct: true,
+                roleChanges: ['makeOwner', 'makeMember'],
             },
             {
                 uid: 'luis',
@@ -51,6 +53,7 @@ const meta = {
                 role: 'member',
                 since: now - 30 * day,
                 canAct: true,
+                roleChanges: ['makeModerator', 'makeOwner'],
             },
             {
                 uid: 'rosa',
@@ -58,6 +61,7 @@ const meta = {
                 role: 'member',
                 since: now - 10 * day,
                 canAct: true,
+                roleChanges: ['makeModerator', 'makeOwner'],
             },
         ],
         banned: [
@@ -114,6 +118,7 @@ export const AsModerator: Story = {
                 role: 'owner',
                 since: now - 90 * day,
                 canAct: false,
+                roleChanges: [],
             },
             {
                 uid: 'thanh',
@@ -121,6 +126,7 @@ export const AsModerator: Story = {
                 role: 'moderator',
                 since: now - 80 * day,
                 canAct: false,
+                roleChanges: [],
             },
             {
                 uid: 'luis',
@@ -128,6 +134,7 @@ export const AsModerator: Story = {
                 role: 'member',
                 since: now - 30 * day,
                 canAct: true,
+                roleChanges: ['makeModerator'],
             },
         ],
     },

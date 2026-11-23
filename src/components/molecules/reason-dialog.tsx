@@ -31,12 +31,17 @@ export interface ReasonDialogProps {
     maxLength: number;
     /** Start open (Storybook). */
     defaultOpen?: boolean;
+    /** Ask for a reason (default). False makes it a plain confirmation. */
+    withReason?: boolean;
+    /** Red confirm button (default), for removing and banning. */
+    destructive?: boolean;
 }
 
 /**
- * A destructive action that needs a written reason (remove, ban, block).
- * The reason is required here and on the server; it's kept in the group's
- * moderation log, seen by owners and moderators only.
+ * Confirms a moderation action. Removing, banning and blocking need a written
+ * reason, required here and on the server, kept in the group's moderation log
+ * and seen by owners and moderators only. `withReason={false}` just confirms
+ * (making someone an owner).
  */
 export function ReasonDialog({
     triggerLabel,
@@ -48,6 +53,8 @@ export function ReasonDialog({
     pending = false,
     maxLength,
     defaultOpen,
+    withReason = true,
+    destructive = true,
 }: ReasonDialogProps) {
     const t = useTranslations('Membership');
     const [open, setOpen] = useState(defaultOpen ?? false);
@@ -79,17 +86,21 @@ export function ReasonDialog({
                         <DialogTitle>{title}</DialogTitle>
                         <DialogDescription>{description}</DialogDescription>
                     </DialogHeader>
-                    <Field>
-                        <FieldLabel htmlFor={id}>{t('reason')}</FieldLabel>
-                        <Textarea
-                            id={id}
-                            name="reason"
-                            required
-                            maxLength={maxLength}
-                            rows={3}
-                        />
-                        <FieldDescription>{t('reasonHint')}</FieldDescription>
-                    </Field>
+                    {withReason && (
+                        <Field>
+                            <FieldLabel htmlFor={id}>{t('reason')}</FieldLabel>
+                            <Textarea
+                                id={id}
+                                name="reason"
+                                required
+                                maxLength={maxLength}
+                                rows={3}
+                            />
+                            <FieldDescription>
+                                {t('reasonHint')}
+                            </FieldDescription>
+                        </Field>
+                    )}
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button type="button" variant="outline">
@@ -98,7 +109,7 @@ export function ReasonDialog({
                         </DialogClose>
                         <Button
                             type="submit"
-                            variant="destructive"
+                            variant={destructive ? 'destructive' : 'default'}
                             disabled={pending}
                         >
                             {confirmLabel}

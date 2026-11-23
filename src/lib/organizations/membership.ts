@@ -11,9 +11,20 @@ export type OrgRole = 'owner' | 'moderator' | 'member';
 /** `pending`: asked to join. `banned`: removed or blocked, can't ask again until unbanned. */
 export type MembershipStatus = 'active' | 'pending' | 'invited' | 'banned';
 
-/** What an owner or moderator can do to someone else. */
+/**
+ * What an owner or moderator can do to someone else. Stored in the
+ * moderation log, so these keys are permanent.
+ */
 export type ModerationAction =
-    'approve' | 'deny' | 'block' | 'remove' | 'ban' | 'unban';
+    | 'approve'
+    | 'deny'
+    | 'block'
+    | 'remove'
+    | 'ban'
+    | 'unban'
+    | 'makeModerator'
+    | 'makeOwner'
+    | 'makeMember';
 
 export const MODERATION_ACTIONS: readonly ModerationAction[] = [
     'approve',
@@ -22,7 +33,20 @@ export const MODERATION_ACTIONS: readonly ModerationAction[] = [
     'remove',
     'ban',
     'unban',
+    'makeModerator',
+    'makeOwner',
+    'makeMember',
 ];
+
+/** The role each role-change action gives. */
+export const ROLE_CHANGES = {
+    makeModerator: 'moderator',
+    makeOwner: 'owner',
+    makeMember: 'member',
+} as const satisfies Partial<Record<ModerationAction, OrgRole>>;
+export type RoleChange = keyof typeof ROLE_CHANGES;
+export const isRoleChange = (action: ModerationAction): action is RoleChange =>
+    action in ROLE_CHANGES;
 
 /** Actions that need a written reason. Blocking a request is a ban. */
 export const REASON_REQUIRED: readonly ModerationAction[] = [
@@ -47,6 +71,24 @@ export function canActOn(actor: OrgRole | null, target: OrgRole): boolean {
     return false;
 }
 
+/**
+ * The role changes `actor` may make to someone with `target` role:
+ * owners make members moderators or owners, make moderators owners, and make
+ * moderators members again; moderators make members moderators. Nobody
+ * changes an owner's role here (owners are permanent for now).
+ */
+export function allowedRoleChanges(
+    actor: OrgRole | null,
+    target: OrgRole
+): RoleChange[] {
+    if (actor === 'owner') {
+        if (target === 'member') return ['makeModerator', 'makeOwner'];
+        if (target === 'moderator') return ['makeOwner', 'makeMember'];
+    }
+    if (actor === 'moderator' && target === 'member') return ['makeModerator'];
+    return [];
+}
+
 /** Which statuses each action applies to. */
 const ACTION_FROM: Record<ModerationAction, MembershipStatus[]> = {
     approve: ['pending'],
@@ -55,10 +97,18 @@ const ACTION_FROM: Record<ModerationAction, MembershipStatus[]> = {
     remove: ['active'],
     ban: ['active'],
     unban: ['banned'],
+    makeModerator: ['active'],
+    makeOwner: ['active'],
+    makeMember: ['active'],
 };
 
 export type ModerationProblem =
-    'notAllowed' | 'self' | 'notFound' | 'reasonRequired' | 'reasonTooLong';
+    | 'notAllowed'
+    | 'self'
+    | 'notFound'
+    | 'reasonRequired'
+    | 'reasonTooLong'
+    | 'ownedLimit';
 
 /** Checks one moderation action; null when it may go ahead. */
 export function moderationProblem({
@@ -78,7 +128,10 @@ export function moderationProblem({
     if (!target || !ACTION_FROM[action].includes(target.status))
         return 'notFound';
     if (target.uid === actorUid) return 'self';
-    if (!canActOn(actorRole, target.role)) return 'notAllowed';
+    if (isRoleChange(action)) {
+        if (!allowedRoleChanges(actorRole, target.role).includes(action))
+            return 'notAllowed';
+    } else if (!canActOn(actorRole, target.role)) return 'notAllowed';
     const text = (reason ?? '').trim();
     if (REASON_REQUIRED.includes(action) && text.length === 0)
         return 'reasonRequired';

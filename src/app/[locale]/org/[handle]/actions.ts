@@ -37,6 +37,7 @@ export type MembershipErrorKey =
     | 'self'
     | 'reasonRequired'
     | 'reasonTooLong'
+    | 'ownedLimit'
     | 'generic';
 
 export interface MembershipActionState {

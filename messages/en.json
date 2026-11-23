@@ -458,7 +458,10 @@
             "block": "{actor} denied and blocked {target}",
             "remove": "{actor} removed {target}",
             "ban": "{actor} banned {target}",
-            "unban": "{actor} unbanned {target}"
+            "unban": "{actor} unbanned {target}",
+            "makeModerator": "{actor} made {target} a moderator",
+            "makeOwner": "{actor} made {target} an owner",
+            "makeMember": "{actor} made {target} a regular member"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Reason",
@@ -483,7 +486,8 @@
             "self": "You can't do that to yourself.",
             "reasonRequired": "Write a reason.",
             "reasonTooLong": "Keep the reason under 500 characters.",
-            "generic": "Something went wrong. Try again."
+            "generic": "Something went wrong. Try again.",
+            "ownedLimit": "They already own 5 organizations, the most allowed."
         },
         "done": {
             "joined": "You're in. Welcome!",
@@ -495,8 +499,16 @@
             "block": "Denied and blocked.",
             "remove": "Removed.",
             "ban": "Banned.",
-            "unban": "Unbanned. They can ask to join again."
-        }
+            "unban": "Unbanned. They can ask to join again.",
+            "makeModerator": "They're now a moderator.",
+            "makeOwner": "They're now an owner.",
+            "makeMember": "They're now a regular member."
+        },
+        "makeModerator": "Make moderator",
+        "makeOwner": "Make owner",
+        "makeMember": "Make regular member",
+        "makeOwnerTitle": "Make {name} an owner?",
+        "makeOwnerBody": "Owners can do everything here, including making other owners and removing moderators. For now an owner can't be changed back; they can step down by leaving."
     },
     "LocationField": {
         "country": "Country",

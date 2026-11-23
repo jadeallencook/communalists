@@ -13,7 +13,12 @@ import {
     getOrgPeople,
 } from '@/lib/organizations';
 import { handleProblem } from '@/lib/organizations/handle';
-import { canActOn, isStaff, sortMembers } from '@/lib/organizations/membership';
+import {
+    allowedRoleChanges,
+    canActOn,
+    isStaff,
+    sortMembers,
+} from '@/lib/organizations/membership';
 import { redirect } from '@/i18n/navigation';
 
 import { MembersContainer } from './members-container';
@@ -78,6 +83,8 @@ async function MembersServerContainer({ params }: Pick<Props, 'params'>) {
                 since,
                 role: theirs,
                 canAct: uid !== user.uid && canActOn(role, theirs),
+                roleChanges:
+                    uid === user.uid ? [] : allowedRoleChanges(role, theirs),
             }))}
             banned={people
                 .filter((p) => p.status === 'banned')

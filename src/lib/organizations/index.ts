@@ -18,6 +18,7 @@ import {
 } from './directory';
 import {
     moderationProblem,
+    ROLE_CHANGES,
     type MembershipStatus,
     type ModerationAction,
     type ModerationProblem,
@@ -583,7 +584,7 @@ export type ModerateResult =
  * data (moderationProblem) and logged with the reason:
  * approve (pending → active), deny (request deleted), block (request → banned),
  * remove (member deleted), ban (member → banned), unban (ban deleted, so they
- * can ask again).
+ * can ask again), and role changes (makeModerator, makeOwner, makeMember).
  */
 export async function moderateMember(
     orgId: string,
@@ -615,6 +616,19 @@ export async function moderateMember(
         });
         if (problem) return { ok: false, error: problem } as const;
 
+        // A new owner must stay within the owned-organizations limit.
+        if (action === 'makeOwner') {
+            const owned = await tx.get(
+                memberships()
+                    .where('uid', '==', targetUid)
+                    .where('role', '==', 'owner')
+                    .where('status', '==', 'active')
+            );
+            logRead('memberships', Math.max(owned.size, 1));
+            if (owned.size >= MAX_OWNED_ORGANIZATIONS)
+                return { ok: false, error: 'ownedLimit' } as const;
+        }
+
         const now = FieldValue.serverTimestamp();
         const text = reason?.trim() || undefined;
         const countChange =
@@ -624,6 +638,11 @@ export async function moderateMember(
                   ? -1
                   : 0;
         switch (action) {
+            case 'makeModerator':
+            case 'makeOwner':
+            case 'makeMember':
+                tx.update(targetRef, { role: ROLE_CHANGES[action] });
+                break;
             case 'approve':
                 tx.update(targetRef, {
                     status: 'active',

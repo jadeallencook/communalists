@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+    allowedRoleChanges,
     canActOn,
     joinState,
     moderationProblem,
@@ -18,6 +19,30 @@ describe('canActOn', () => {
         expect(canActOn('moderator', 'owner')).toBe(false);
         expect(canActOn('member', 'member')).toBe(false);
         expect(canActOn(null, 'member')).toBe(false);
+    });
+});
+
+describe('allowedRoleChanges', () => {
+    it('lets owners make owners and moderators, and demote moderators', () => {
+        expect(allowedRoleChanges('owner', 'member')).toEqual([
+            'makeModerator',
+            'makeOwner',
+        ]);
+        expect(allowedRoleChanges('owner', 'moderator')).toEqual([
+            'makeOwner',
+            'makeMember',
+        ]);
+        expect(allowedRoleChanges('owner', 'owner')).toEqual([]);
+    });
+
+    it('lets moderators make moderators only, and members nothing', () => {
+        expect(allowedRoleChanges('moderator', 'member')).toEqual([
+            'makeModerator',
+        ]);
+        expect(allowedRoleChanges('moderator', 'moderator')).toEqual([]);
+        expect(allowedRoleChanges('moderator', 'owner')).toEqual([]);
+        expect(allowedRoleChanges('member', 'member')).toEqual([]);
+        expect(allowedRoleChanges(null, 'member')).toEqual([]);
     });
 });
 
@@ -66,6 +91,44 @@ describe('moderationProblem', () => {
             })
         ).toBeNull();
         expect(check({ reason: 'x'.repeat(501) })).toBe('reasonTooLong');
+    });
+
+    it('checks role changes against who may make them', () => {
+        expect(
+            check({ action: 'makeModerator', reason: undefined })
+        ).toBeNull();
+        expect(check({ action: 'makeOwner', reason: undefined })).toBe(
+            'notAllowed'
+        );
+        expect(
+            check({
+                action: 'makeOwner',
+                actorRole: 'owner',
+                reason: undefined,
+            })
+        ).toBeNull();
+        expect(
+            check({
+                action: 'makeMember',
+                target: { ...member, role: 'moderator' },
+                reason: undefined,
+            })
+        ).toBe('notAllowed');
+        expect(
+            check({
+                action: 'makeMember',
+                actorRole: 'owner',
+                target: { ...member, role: 'moderator' },
+                reason: undefined,
+            })
+        ).toBeNull();
+        expect(
+            check({
+                action: 'makeModerator',
+                target: pending,
+                reason: undefined,
+            })
+        ).toBe('notFound');
     });
 
     it('refuses members, oneself, the wrong status and protected roles', () => {

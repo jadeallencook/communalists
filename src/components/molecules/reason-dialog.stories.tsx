@@ -25,3 +25,17 @@ type Story = StoryObj<typeof meta>;
 export const Closed: Story = {};
 /** Open, asking for the reason. */
 export const Open: Story = { args: { defaultOpen: true } };
+/** Making someone an owner: a plain confirmation, no reason. */
+export const ConfirmOnly: Story = {
+    args: {
+        triggerLabel: 'Make owner',
+        title: 'Make Rosa Martínez an owner?',
+        description:
+            "Owners can do everything here, including making other owners. Owners can't be changed back to a regular member for now.",
+        confirmLabel: 'Make owner',
+        fields: { orgId: 'org1', uid: 'rosa', action: 'makeOwner' },
+        withReason: false,
+        destructive: false,
+        defaultOpen: true,
+    },
+};

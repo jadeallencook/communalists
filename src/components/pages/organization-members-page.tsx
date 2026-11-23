@@ -11,6 +11,7 @@ import {
     REASON_MAX_LENGTH,
     type ModerationAction,
     type OrgRole,
+    type RoleChange,
 } from '@/lib/organizations/membership';
 import { cn } from '@/lib/utils';
 
@@ -27,8 +28,15 @@ export interface OrganizationMembersPageProps {
     handle: string;
     locale: string;
     requests: Person[];
-    /** Active members, owners first. `canAct`: the viewer may remove or ban them. */
-    members: (Person & { role: OrgRole; canAct: boolean })[];
+    /**
+     * Active members, owners first. `canAct`: the viewer may remove or ban
+     * them. `roleChanges`: the role changes the viewer may make.
+     */
+    members: (Person & {
+        role: OrgRole;
+        canAct: boolean;
+        roleChanges: RoleChange[];
+    })[];
     banned: (Person & { reason?: string })[];
     log: {
         id: string;
@@ -172,6 +180,34 @@ export function OrganizationMembersPage({
                         }
                         detail={t('joinedOn', { date: date(person.since) })}
                     >
+                        {person.roleChanges.map((change) =>
+                            change === 'makeOwner' ? (
+                                <ReasonDialog
+                                    key={change}
+                                    triggerLabel={t('makeOwner')}
+                                    title={t('makeOwnerTitle', {
+                                        name: person.displayName,
+                                    })}
+                                    description={t('makeOwnerBody')}
+                                    confirmLabel={t('makeOwner')}
+                                    fields={fields(person.uid, change)}
+                                    formAction={formAction}
+                                    pending={pending}
+                                    maxLength={REASON_MAX_LENGTH}
+                                    withReason={false}
+                                    destructive={false}
+                                />
+                            ) : (
+                                <span key={change}>
+                                    {quick(
+                                        person.uid,
+                                        change,
+                                        t(change),
+                                        'ghost'
+                                    )}
+                                </span>
+                            )
+                        )}
                         {person.canAct && (
                             <>
                                 {reason(person, 'remove', t('remove'))}

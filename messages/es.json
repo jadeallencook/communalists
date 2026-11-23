@@ -458,7 +458,10 @@
             "block": "{actor} rechazó y bloqueó a {target}",
             "remove": "{actor} quitó a {target}",
             "ban": "{actor} expulsó a {target}",
-            "unban": "{actor} readmitió a {target}"
+            "unban": "{actor} readmitió a {target}",
+            "makeModerator": "{actor} hizo moderador a {target}",
+            "makeOwner": "{actor} hizo propietario a {target}",
+            "makeMember": "{actor} hizo miembro regular a {target}"
         },
         "reasonQuoted": "«{reason}»",
         "reason": "Motivo",
@@ -483,7 +486,8 @@
             "self": "No puedes hacerte eso a ti mismo.",
             "reasonRequired": "Escribe un motivo.",
             "reasonTooLong": "El motivo debe tener menos de 500 caracteres.",
-            "generic": "Algo salió mal. Inténtalo de nuevo."
+            "generic": "Algo salió mal. Inténtalo de nuevo.",
+            "ownedLimit": "Ya es propietario de 5 organizaciones, el máximo permitido."
         },
         "done": {
             "joined": "¡Ya eres miembro! Bienvenida, bienvenido.",
@@ -495,8 +499,16 @@
             "block": "Rechazado y bloqueado.",
             "remove": "Quitado.",
             "ban": "Expulsado.",
-            "unban": "Readmitido. Puede volver a pedir unirse."
-        }
+            "unban": "Readmitido. Puede volver a pedir unirse.",
+            "makeModerator": "Ahora modera el grupo.",
+            "makeOwner": "Ahora es propietario.",
+            "makeMember": "Ahora es miembro regular."
+        },
+        "makeModerator": "Hacer moderador",
+        "makeOwner": "Hacer propietario",
+        "makeMember": "Hacer miembro regular",
+        "makeOwnerTitle": "¿Hacer a {name} propietario?",
+        "makeOwnerBody": "Las personas propietarias pueden hacerlo todo aquí, incluso nombrar a otras y quitar a quienes moderan. Por ahora no se puede deshacer; pueden dejar el cargo saliendo del grupo."
     },
     "LocationField": {
         "country": "País",

@@ -458,7 +458,10 @@
             "block": "{actor} đã từ chối và chặn {target}",
             "remove": "{actor} đã xóa {target} khỏi nhóm",
             "ban": "{actor} đã cấm {target}",
-            "unban": "{actor} đã bỏ cấm {target}"
+            "unban": "{actor} đã bỏ cấm {target}",
+            "makeModerator": "{actor} đã đặt {target} làm người điều hành",
+            "makeOwner": "{actor} đã đặt {target} làm chủ nhóm",
+            "makeMember": "{actor} đã đặt {target} làm thành viên thường"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Lý do",
@@ -483,7 +486,8 @@
             "self": "Bạn không thể làm vậy với chính mình.",
             "reasonRequired": "Hãy viết lý do.",
             "reasonTooLong": "Lý do phải ít hơn 500 ký tự.",
-            "generic": "Đã xảy ra lỗi. Hãy thử lại."
+            "generic": "Đã xảy ra lỗi. Hãy thử lại.",
+            "ownedLimit": "Người này đã là chủ của 5 tổ chức, mức tối đa cho phép."
         },
         "done": {
             "joined": "Bạn đã tham gia. Chào mừng bạn!",
@@ -495,8 +499,16 @@
             "block": "Đã từ chối và chặn.",
             "remove": "Đã xóa khỏi nhóm.",
             "ban": "Đã cấm.",
-            "unban": "Đã bỏ cấm. Họ có thể xin tham gia lại."
-        }
+            "unban": "Đã bỏ cấm. Họ có thể xin tham gia lại.",
+            "makeModerator": "Họ đã là người điều hành.",
+            "makeOwner": "Họ đã là chủ nhóm.",
+            "makeMember": "Họ đã là thành viên thường."
+        },
+        "makeModerator": "Đặt làm người điều hành",
+        "makeOwner": "Đặt làm chủ nhóm",
+        "makeMember": "Đặt làm thành viên thường",
+        "makeOwnerTitle": "Đặt {name} làm chủ nhóm?",
+        "makeOwnerBody": "Chủ nhóm có thể làm mọi việc ở đây, kể cả chỉ định chủ nhóm khác và xóa người điều hành. Hiện chưa thể đổi lại; họ có thể thôi bằng cách rời nhóm."
     },
     "LocationField": {
         "country": "Quốc gia",

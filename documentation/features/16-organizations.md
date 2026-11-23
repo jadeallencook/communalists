@@ -34,11 +34,11 @@ General · Food · Housing · Transportation · Technology · Health · Childcar
 
 ## People and roles
 
-| Role      | Can                                                                                                                                                |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Owner     | Everything a moderator can, plus remove and ban moderators, manage moderators and owners, change the handle, and delete (archive) the organization |
-| Moderator | Approve or deny join requests; remove and ban **members** (not other moderators or owners); edit the profile; run the tools                        |
-| Member    | Use the members-only side of the tools                                                                                                             |
+| Role      | Can                                                                                                                                                                                                 |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Owner     | Everything a moderator can, plus make members and moderators **owners**, make moderators regular members again, remove and ban moderators, change the handle, and delete (archive) the organization |
+| Moderator | Approve or deny join requests; make members **moderators**; remove and ban **members** (not other moderators or owners); edit the profile; run the tools                                            |
+| Member    | Use the members-only side of the tools                                                                                                                                                              |
 
 - **One membership record per person per organization:** `role` (`owner` / `moderator` / `member`) and `status` (`active` / `pending` / `invited` / `banned`). This is not an array on the organization; that was the prototype's mistake ([08 → Gaps](08-organizations-and-membership.md#gaps)). It makes deny, leave, promote, remove and audit possible, and keeps member lists off every client.
 - The record also carries a small copy of the organization (name, handle, focus areas, logo), so the dashboard lists all of a person's organizations in **one query**, and a copy of the person's name, so a member list is one query too. Renaming an organization updates its copies; saving a profile updates the name copies.
@@ -86,23 +86,26 @@ The join area on a group's page depends on the viewer (`joinState` in `src/lib/o
 | Member                    | **Leave group** in the members' space, after a confirmation                              |
 
 - Joining needs a finished account (the name is shown to the group); otherwise it goes to account setup and back.
-- **The last owner can't leave.** Handing over ownership comes with phase 3, so for now the message asks them to make someone else an owner first.
+- **The last owner can't leave.** They make someone else an owner first (on the members page), then leave.
 
 ## Moderating members
 
-Owners and moderators get **Manage members** (with the number of open requests) in the members' space, leading to `/org/{handle}/members`: **Requests** (oldest first), **Members**, **Banned** and **Recent actions**.
+Owners and moderators get **Manage members** (with the number of open requests) in the members' space, leading to `/org/{handle}/members`: **Requests** (oldest first), **Members** (with role changes, remove and ban), **Banned** and **Recent actions**.
 
-| Action         | On              | Result                                    | Reason   |
-| -------------- | --------------- | ----------------------------------------- | -------- |
-| Approve        | a request       | Member                                    | —        |
-| Deny           | a request       | Request deleted; they can ask again       | —        |
-| Deny and block | a request       | Banned                                    | Required |
-| Remove         | a member        | No longer a member; they can ask again    | Required |
-| Ban            | a member        | Banned: not a member, and can't ask again | Required |
-| Unban          | a banned person | Ban lifted; they can ask again            | —        |
+| Action              | On                    | Result                                                                                 | Reason   |
+| ------------------- | --------------------- | -------------------------------------------------------------------------------------- | -------- |
+| Approve             | a request             | Member                                                                                 | —        |
+| Deny                | a request             | Request deleted; they can ask again                                                    | —        |
+| Deny and block      | a request             | Banned                                                                                 | Required |
+| Remove              | a member              | No longer a member; they can ask again                                                 | Required |
+| Ban                 | a member              | Banned: not a member, and can't ask again                                              | Required |
+| Unban               | a banned person       | Ban lifted; they can ask again                                                         | —        |
+| Make moderator      | a member              | Moderator (owners and moderators can do this)                                          | —        |
+| Make owner          | a member or moderator | Owner, after a confirmation (owners only). Refused if they already own 5 organizations | —        |
+| Make regular member | a moderator           | Member (owners only)                                                                   | —        |
 
 - **Block and ban are one thing** (status `banned`), whether it started as a request or a membership.
-- **Who can act on whom:** owners on moderators and members, moderators on members only, nobody on owners (or on themselves). The buttons follow this, and the server checks it again on fresh data.
+- **Who can act on whom:** owners on moderators and members, moderators on members only, nobody on owners (or on themselves). **Owners are permanent for now:** no one can demote or remove an owner; an owner steps down by leaving, as long as another owner remains. The buttons follow these rules, and the server checks them again on fresh data. Role changes are logged too.
 - **Reasons** (up to 500 characters) go in the group's **moderation log** with who did it and when, and a ban's reason is also kept on the banned record. Owners and moderators see them; the person acted on doesn't. The log is meant to back up decisions later, such as closing an account. Every action is logged, with or without a reason.
 
 ## Deleting
@@ -127,7 +130,7 @@ Bare `communalists.com/org/{handle}` redirects to the visitor's language, like e
 
 1. **Create and list:** the data model, create form with handle check, dashboard "Your organizations" plus "Create organization", the `/org/{handle}` page (public profile plus a member view), and the logo upload last.
 2. **Find and join:** "near you" browsing, joining by each policy, approving and denying requests, removing and banning (all built 2026-11-23).
-3. **Manage:** edit profile (including the member list setting), change handle (old one held 30 days, no redirect), promote and hand over ownership, invite, archive.
+3. **Manage:** edit profile (including the member list setting), change handle (old one held 30 days, no redirect), invite, archive. (Promoting and handing over ownership were built 2026-11-23.)
 4. **Then:** subdomains (after the domain move) and the first tool, Requests.
 
 ## Data and security notes
@@ -206,3 +209,5 @@ Bare `communalists.com/org/{handle}` redirects to the visitor's language, like e
 - **As Maya (owner of South Bay Mutual Aid):** Manage members showed 2 requests. Approving Marcus made him a member (9). Banning Luis asked for a reason, then showed him under Banned with it, and in Recent actions. At an open group, Join was instant, and Leave (after the confirmation) worked. Cancelling a request worked. Leaving her own group as the only owner was refused with the message.
 - **As Thanh (moderator):** no buttons on the owner or herself; Remove and Ban on members. At Oakland Auto Club, where she's banned, she saw "You can't join this group", and `/members` sent her back to the group page.
 - **Signed out:** the "members only" group named only its owner and moderator, plus "and 6 other members"; a "public" group named everyone.
+
+**Role changes (2026-11-23):** owners make members moderators or owners, make moderators owners, and make moderators regular members again; moderators make members moderators (`allowedRoleChanges`). Making an owner asks for confirmation and respects the 5-owned limit. Verified in a real browser: Maya made Aisha a moderator and Thanh an owner (both in Recent actions), then could leave her own group. As a moderator, Aisha saw only Make moderator, Remove and Ban on members, and nothing on the owner or herself. The 5-owned limit for a new owner is covered by the server check, not tested in the browser.
