@@ -61,6 +61,23 @@ export const VISIBILITIES = ['listed', 'unlisted'] as const;
 export type Visibility = (typeof VISIBILITIES)[number];
 
 /**
+ * Who sees every member's name on the group's page. Owners and moderators are
+ * always listed, and everyone sees the count. Missing on older groups: read
+ * it with `memberListVisibilityOf`.
+ */
+export const MEMBER_LIST_VISIBILITIES = [
+    'public',
+    'members',
+    'hidden',
+] as const;
+export type MemberListVisibility = (typeof MEMBER_LIST_VISIBILITIES)[number];
+export const DEFAULT_MEMBER_LIST_VISIBILITY: MemberListVisibility = 'members';
+export const memberListVisibilityOf = (value: unknown): MemberListVisibility =>
+    (MEMBER_LIST_VISIBILITIES as readonly unknown[]).includes(value)
+        ? (value as MemberListVisibility)
+        : DEFAULT_MEMBER_LIST_VISIBILITY;
+
+/**
  * Languages a group can say it works in (BCP 47). Names come from
  * Intl.DisplayNames in the visitor's language, so they need no translation.
  * `ase` is American Sign Language.

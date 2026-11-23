@@ -22,7 +22,9 @@ import {
 } from '@/components/molecules/social-links-field';
 import type { HandleStatus } from '@/hooks/use-handle-availability';
 import {
+    DEFAULT_MEMBER_LIST_VISIBILITY,
     JOIN_POLICIES,
+    MEMBER_LIST_VISIBILITIES,
     MAX_FOCUS_AREAS,
     OFFERED_FOCUS_AREAS,
     RADIUS_MILES,
@@ -253,6 +255,22 @@ export function CreateOrganizationForm({
                         ),
                     }))}
                     error={errorFor('visibility')}
+                />
+                <ChoiceGroup
+                    kind="radio"
+                    name="memberListVisibility"
+                    legend={t('form.memberList')}
+                    defaultValue={
+                        values.memberListVisibility ??
+                        DEFAULT_MEMBER_LIST_VISIBILITY
+                    }
+                    options={MEMBER_LIST_VISIBILITIES.map((setting) => ({
+                        value: setting,
+                        label: t(`memberLists.${setting}.label`),
+                        description: t(`memberLists.${setting}.description`),
+                    }))}
+                    hint={t('form.memberListHint')}
+                    error={errorFor('memberListVisibility')}
                 />
             </FieldGroup>
 

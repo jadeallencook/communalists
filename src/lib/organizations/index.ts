@@ -17,8 +17,17 @@ import {
     type DirectoryOrganization,
 } from './directory';
 import {
+    moderationProblem,
+    type MembershipStatus,
+    type ModerationAction,
+    type ModerationProblem,
+    type OrgRole,
+} from './membership';
+import {
     MAX_OWNED_ORGANIZATIONS,
+    memberListVisibilityOf,
     milesToKm,
+    type MemberListVisibility,
     type JoinPolicy,
     type OrgLanguage,
     type FocusArea,
@@ -38,8 +47,7 @@ import {
 // rules deny clients. Reads are cached with tags (org:{id}, handle:{handle},
 // memberships:{uid}); writers clear them. Decide access on fresh data.
 
-export type OrgRole = 'owner' | 'moderator' | 'member';
-export type MembershipStatus = 'active' | 'pending' | 'invited';
+export type { MembershipStatus, OrgRole } from './membership';
 
 export interface Organization {
     id: string;
@@ -55,6 +63,7 @@ export interface Organization {
     socials: { platform: SocialPlatform; url: string }[];
     joinPolicy: JoinPolicy;
     visibility: Visibility;
+    memberListVisibility: MemberListVisibility;
     status: 'active' | 'archived';
     memberCount: number;
     /** Storage path of the logo, if any. */
@@ -82,6 +91,8 @@ export const handleTag = (handle: string) => `handle:${handle}`;
 export const membershipsTag = (uid: string) => `memberships:${uid}`;
 /** Every directory listing. Cleared when an organization is created, or changes how it's listed. */
 export const DIRECTORY_TAG = 'directory';
+/** An organization's people (members, requests, bans) and moderation log. */
+export const orgMembersTag = (orgId: string) => `orgMembers:${orgId}`;
 
 /** Only the plain fields: cached values can't hold Firestore Timestamps. */
 function toOrganization(
@@ -102,6 +113,7 @@ function toOrganization(
         socials: data.socials ?? [],
         joinPolicy: data.joinPolicy,
         visibility: data.visibility,
+        memberListVisibility: memberListVisibilityOf(data.memberListVisibility),
         status: data.status,
         memberCount: data.memberCount ?? 0,
         logoPath: data.logoPath,
@@ -202,6 +214,7 @@ export type CreateOrganizationResult =
  */
 export async function createOrganization(
     uid: string,
+    displayName: string,
     input: OrganizationInput,
     location: GeneralArea
 ): Promise<CreateOrganizationResult> {
@@ -246,6 +259,7 @@ export async function createOrganization(
             socials: input.socials,
             joinPolicy: input.joinPolicy,
             visibility: input.visibility,
+            memberListVisibility: input.memberListVisibility,
             status: 'active',
             memberCount: 1,
             createdBy: uid,
@@ -265,6 +279,7 @@ export async function createOrganization(
                 handle: input.handle,
                 focusAreas: input.focusAreas,
             },
+            member: { displayName },
             joinedAt: now,
         });
         return { ok: true, orgId: orgRef.id, handle: input.handle } as const;
@@ -374,4 +389,306 @@ export async function getDirectoryInternational(): Promise<
     return snapshot.docs.flatMap(
         (doc) => toDirectoryOrganization(doc.id, doc.data()) ?? []
     );
+}
+
+// --- People: joining, leaving, moderating. Every write is a transaction that
+// re-reads what it decides on, keeps memberCount right, and (for moderation)
+// appends to organizations/{orgId}/moderationLog.
+
+const millis = (value: unknown) =>
+    value && typeof (value as { toMillis?: unknown }).toMillis === 'function'
+        ? (value as { toMillis: () => number }).toMillis()
+        : undefined;
+
+export interface OrgPerson {
+    uid: string;
+    displayName: string;
+    role: OrgRole;
+    status: MembershipStatus;
+    /** When they asked (pending), joined (active) or were banned. Epoch ms. */
+    since?: number;
+    /** Banned only: why. Staff-only. */
+    banReason?: string;
+}
+
+/** Everyone with a membership record in the organization, cached. Staff-only data inside: filter before showing. */
+export async function getOrgPeople(orgId: string): Promise<OrgPerson[]> {
+    'use cache';
+    cacheTag(orgMembersTag(orgId));
+    cacheLife('hours');
+    const snapshot = await memberships().where('orgId', '==', orgId).get();
+    logRead('memberships', Math.max(snapshot.size, 1));
+    return snapshot.docs.map((doc) => {
+        const d = doc.data();
+        return {
+            uid: d.uid,
+            displayName: d.member?.displayName ?? '',
+            role: d.role,
+            status: d.status,
+            since: millis(
+                d.status === 'pending'
+                    ? d.requestedAt
+                    : d.status === 'banned'
+                      ? d.bannedAt
+                      : d.joinedAt
+            ),
+            banReason: d.status === 'banned' ? d.banReason : undefined,
+        };
+    });
+}
+
+export interface ModerationLogEntry {
+    id: string;
+    action: ModerationAction;
+    targetName: string;
+    actorName: string;
+    reason?: string;
+    at?: number;
+}
+
+/** The latest moderation actions, newest first, cached. Staff-only. */
+export async function getModerationLog(
+    orgId: string,
+    limit = 50
+): Promise<ModerationLogEntry[]> {
+    'use cache';
+    cacheTag(orgMembersTag(orgId));
+    cacheLife('hours');
+    const snapshot = await organizations()
+        .doc(orgId)
+        .collection('moderationLog')
+        .orderBy('createdAt', 'desc')
+        .limit(limit)
+        .get();
+    logRead('moderationLog', Math.max(snapshot.size, 1));
+    return snapshot.docs.map((doc) => {
+        const d = doc.data();
+        return {
+            id: doc.id,
+            action: d.action,
+            targetName: d.target?.displayName ?? '',
+            actorName: d.actor?.displayName ?? '',
+            reason: d.reason || undefined,
+            at: millis(d.createdAt),
+        };
+    });
+}
+
+export type JoinResult =
+    | { ok: true; status: 'active' | 'pending' }
+    | { ok: false; error: 'banned' | 'inviteOnly' | 'notFound' };
+
+/** Joins an open organization, or asks to join one that takes requests. */
+export async function joinOrganization(
+    orgId: string,
+    uid: string,
+    displayName: string
+): Promise<JoinResult> {
+    const orgRef = organizations().doc(orgId);
+    const ref = memberships().doc(membershipId(orgId, uid));
+    return db().runTransaction(async (tx) => {
+        logRead('organizations');
+        logRead('memberships');
+        const [orgSnap, existing] = await Promise.all([
+            tx.get(orgRef),
+            tx.get(ref),
+        ]);
+        const org = orgSnap.exists
+            ? toOrganization(orgSnap.id, orgSnap.data()!)
+            : null;
+        if (!org || org.status !== 'active')
+            return { ok: false, error: 'notFound' } as const;
+        const status = existing.data()?.status as MembershipStatus | undefined;
+        if (status === 'banned') return { ok: false, error: 'banned' } as const;
+        if (status === 'active' || status === 'pending')
+            return { ok: true, status } as const;
+        if (org.joinPolicy === 'invite')
+            return { ok: false, error: 'inviteOnly' } as const;
+
+        const now = FieldValue.serverTimestamp();
+        const open = org.joinPolicy === 'open';
+        tx.set(ref, {
+            orgId,
+            uid,
+            role: 'member',
+            status: open ? 'active' : 'pending',
+            org: {
+                name: org.name,
+                handle: org.handle,
+                focusAreas: org.focusAreas,
+            },
+            member: { displayName },
+            ...(open ? { joinedAt: now } : { requestedAt: now }),
+        });
+        if (open)
+            tx.update(orgRef, {
+                memberCount: FieldValue.increment(1),
+                updatedAt: now,
+            });
+        return { ok: true, status: open ? 'active' : 'pending' } as const;
+    });
+}
+
+/** Withdraws the user's own pending request. */
+export async function cancelJoinRequest(orgId: string, uid: string) {
+    const ref = memberships().doc(membershipId(orgId, uid));
+    await db().runTransaction(async (tx) => {
+        logRead('memberships');
+        const snap = await tx.get(ref);
+        if (snap.data()?.status === 'pending') tx.delete(ref);
+    });
+}
+
+export type LeaveResult =
+    { ok: true } | { ok: false; error: 'lastOwner' | 'notMember' };
+
+/** Leaves the organization. The last owner can't. */
+export async function leaveOrganization(
+    orgId: string,
+    uid: string
+): Promise<LeaveResult> {
+    const orgRef = organizations().doc(orgId);
+    const ref = memberships().doc(membershipId(orgId, uid));
+    return db().runTransaction(async (tx) => {
+        logRead('memberships');
+        const snap = await tx.get(ref);
+        const d = snap.data();
+        if (d?.status !== 'active')
+            return { ok: false, error: 'notMember' } as const;
+        if (d.role === 'owner') {
+            const owners = await tx.get(
+                memberships()
+                    .where('orgId', '==', orgId)
+                    .where('role', '==', 'owner')
+                    .where('status', '==', 'active')
+            );
+            logRead('memberships', Math.max(owners.size, 1));
+            if (owners.size <= 1)
+                return { ok: false, error: 'lastOwner' } as const;
+        }
+        tx.delete(ref);
+        tx.update(orgRef, {
+            memberCount: FieldValue.increment(-1),
+            updatedAt: FieldValue.serverTimestamp(),
+        });
+        return { ok: true } as const;
+    });
+}
+
+export type ModerateResult =
+    { ok: true; targetUid: string } | { ok: false; error: ModerationProblem };
+
+/**
+ * One moderation action by `actorUid` on `targetUid`, checked against fresh
+ * data (moderationProblem) and logged with the reason:
+ * approve (pending → active), deny (request deleted), block (request → banned),
+ * remove (member deleted), ban (member → banned), unban (ban deleted, so they
+ * can ask again).
+ */
+export async function moderateMember(
+    orgId: string,
+    actorUid: string,
+    targetUid: string,
+    action: ModerationAction,
+    reason?: string
+): Promise<ModerateResult> {
+    const orgRef = organizations().doc(orgId);
+    const actorRef = memberships().doc(membershipId(orgId, actorUid));
+    const targetRef = memberships().doc(membershipId(orgId, targetUid));
+    const logRef = orgRef.collection('moderationLog').doc();
+    return db().runTransaction(async (tx) => {
+        logRead('memberships', 2);
+        const [actorSnap, targetSnap] = await Promise.all([
+            tx.get(actorRef),
+            tx.get(targetRef),
+        ]);
+        const actor = actorSnap.data();
+        const target = targetSnap.data();
+        const problem = moderationProblem({
+            action,
+            actorUid,
+            actorRole: actor?.status === 'active' ? actor.role : null,
+            target: target
+                ? { uid: targetUid, role: target.role, status: target.status }
+                : null,
+            reason,
+        });
+        if (problem) return { ok: false, error: problem } as const;
+
+        const now = FieldValue.serverTimestamp();
+        const text = reason?.trim() || undefined;
+        const countChange =
+            action === 'approve'
+                ? 1
+                : action === 'remove' || action === 'ban'
+                  ? -1
+                  : 0;
+        switch (action) {
+            case 'approve':
+                tx.update(targetRef, {
+                    status: 'active',
+                    joinedAt: now,
+                    requestedAt: FieldValue.delete(),
+                });
+                break;
+            case 'deny':
+            case 'remove':
+            case 'unban':
+                tx.delete(targetRef);
+                break;
+            case 'block':
+            case 'ban':
+                // A ban keeps the record so they can't ask again.
+                tx.update(targetRef, {
+                    status: 'banned',
+                    role: 'member',
+                    bannedAt: now,
+                    banReason: text,
+                    joinedAt: FieldValue.delete(),
+                    requestedAt: FieldValue.delete(),
+                });
+                break;
+        }
+        if (countChange)
+            tx.update(orgRef, {
+                memberCount: FieldValue.increment(countChange),
+                updatedAt: now,
+            });
+        tx.create(logRef, {
+            action,
+            target: {
+                uid: targetUid,
+                displayName: target!.member?.displayName ?? '',
+            },
+            actor: {
+                uid: actorUid,
+                displayName: actor!.member?.displayName ?? '',
+            },
+            ...(text ? { reason: text } : {}),
+            createdAt: now,
+        });
+        return { ok: true, targetUid } as const;
+    });
+}
+
+/**
+ * Keeps the name copied onto a person's memberships in step with their
+ * profile. Returns the organizations touched, so their caches can be cleared.
+ */
+export async function syncMemberName(
+    uid: string,
+    displayName: string
+): Promise<string[]> {
+    const snapshot = await memberships().where('uid', '==', uid).get();
+    logRead('memberships', Math.max(snapshot.size, 1));
+    const stale = snapshot.docs.filter(
+        (doc) => doc.data().member?.displayName !== displayName
+    );
+    for (let i = 0; i < stale.length; i += 400) {
+        const batch = db().batch();
+        for (const doc of stale.slice(i, i + 400))
+            batch.update(doc.ref, { 'member.displayName': displayName });
+        await batch.commit();
+    }
+    return stale.map((doc) => doc.data().orgId as string);
 }

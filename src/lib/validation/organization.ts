@@ -11,6 +11,7 @@ import {
     RADIUS_MILES,
     REACH_SCOPES,
     SOCIAL_PLATFORM_KEYS,
+    MEMBER_LIST_VISIBILITIES,
     VISIBILITIES,
     type FocusArea,
     type SocialPlatform,
@@ -126,6 +127,9 @@ export const organizationSchema = z
             .max(SOCIAL_PLATFORM_KEYS.length),
         joinPolicy: z.enum(JOIN_POLICIES, { error: 'required' }),
         visibility: z.enum(VISIBILITIES, { error: 'required' }),
+        memberListVisibility: z.enum(MEMBER_LIST_VISIBILITIES, {
+            error: 'required',
+        }),
     })
     .superRefine((input, ctx) => {
         if (
@@ -179,6 +183,7 @@ export interface CreateOrganizationState {
         socials: { platform: string; url: string }[];
         joinPolicy: string;
         visibility: string;
+        memberListVisibility: string;
     }>;
 }
 
@@ -207,5 +212,6 @@ export function organizationFormValues(formData: FormData) {
             .filter((s) => s.url.trim()),
         joinPolicy: text('joinPolicy'),
         visibility: text('visibility'),
+        memberListVisibility: text('memberListVisibility'),
     };
 }

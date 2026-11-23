@@ -12,9 +12,18 @@ import {
     getMembershipFresh,
     getOrganizationByHandle,
     getOrganizationByHandleFresh,
+    getOrgPeople,
 } from '@/lib/organizations';
+import {
+    isStaff,
+    joinState,
+    sortMembers,
+    visibleMembers,
+} from '@/lib/organizations/membership';
 import { handleProblem } from '@/lib/organizations/handle';
 import { redirect } from '@/i18n/navigation';
+
+import { JoinPanelContainer } from './join-panel-container';
 
 type Props = PageProps<'/[locale]/org/[handle]'>;
 
@@ -61,12 +70,49 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
 
     // Members-only content is an access decision: always a fresh read.
     const user = await getSessionUser();
-    const membership = user ? await getMembershipFresh(org.id, user.uid) : null;
+    const [membership, people, locale] = await Promise.all([
+        user ? getMembershipFresh(org.id, user.uid) : null,
+        getOrgPeople(org.id),
+        getLocale(),
+    ]);
     const role = membership?.status === 'active' ? membership.role : null;
+
+    // Requests and bans are staff-only: only active members leave this function.
+    const active = sortMembers(
+        people.filter((p) => p.status === 'active'),
+        locale
+    );
+    const named =
+        visibleMembers(org.memberListVisibility, role) === 'everyone'
+            ? active
+            : active.filter((p) => p.role !== 'member');
 
     return (
         <OrganizationPage
             role={role}
+            join={
+                <JoinPanelContainer
+                    state={joinState(!!user, org.joinPolicy, membership)}
+                    orgId={org.id}
+                    handle={org.handle}
+                    name={org.name}
+                />
+            }
+            members={{
+                people: named.map(({ uid, displayName, role }) => ({
+                    uid,
+                    displayName,
+                    role,
+                })),
+                total: active.length,
+                setting: org.memberListVisibility,
+                viewerIsMember: !!role,
+            }}
+            pendingRequests={
+                isStaff(role)
+                    ? people.filter((p) => p.status === 'pending').length
+                    : 0
+            }
             profile={{
                 name: org.name,
                 handle: org.handle,
@@ -75,7 +121,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                 place: org.location.label,
                 reach: org.reach,
                 languages: org.languages,
-                memberCount: org.memberCount,
+                memberCount: active.length,
                 website: org.website,
                 contactEmail: org.contactEmail,
                 socials: org.socials,

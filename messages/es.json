@@ -346,7 +346,9 @@
             "socialRemove": "Quitar el enlace de {platform}",
             "socialAdd": "Agregar un enlace",
             "submit": "Crear organización",
-            "submitting": "Creando…"
+            "submitting": "Creando…",
+            "memberList": "Lista de miembros",
+            "memberListHint": "Las personas propietarias y moderadoras siempre se muestran, y todo el mundo ve cuántos miembros hay."
         },
         "new": {
             "metaTitle": "Crear una organización",
@@ -386,10 +388,114 @@
             "roleOwner": "propietario",
             "roleModerator": "moderador",
             "roleMember": "miembro",
-            "joinComingSoon": "Pronto podrás unirte.",
             "unlisted": "No listada: solo quienes tengan el enlace pueden encontrar esta página.",
             "noDescription": "Todavía no hay descripción.",
             "focusAreas": "Áreas de trabajo"
+        },
+        "memberLists": {
+            "public": {
+                "label": "Todo el mundo",
+                "description": "Cualquiera puede ver el nombre de cada miembro, incluso sin iniciar sesión"
+            },
+            "members": {
+                "label": "Solo miembros",
+                "description": "Los miembros ven a todos; el resto ve a quienes administran y el total"
+            },
+            "hidden": {
+                "label": "Solo el total",
+                "description": "Solo se nombra a quienes administran; ellos siguen viendo a todos"
+            }
+        }
+    },
+    "Membership": {
+        "signInToJoin": "Inicia sesión para unirte",
+        "signInHint": "Necesitas una cuenta gratuita para unirte.",
+        "join": "Unirme",
+        "askToJoin": "Pedir unirme",
+        "joinHint": "Cualquiera puede unirse a este grupo.",
+        "askHint": "Una persona propietaria o moderadora revisará tu solicitud.",
+        "pending": "Solicitud enviada. Una persona propietaria o moderadora la revisará.",
+        "cancelRequest": "Cancelar solicitud",
+        "inviteOnly": "Este grupo es solo por invitación.",
+        "banned": "No puedes unirte a este grupo.",
+        "leave": "Salir del grupo",
+        "leaveTitle": "¿Salir de {name}?",
+        "leaveBody": "Perderás el acceso al espacio de miembros. Puedes volver a pedir unirte más adelante.",
+        "keep": "Quedarme",
+        "leaveConfirm": "Salir",
+        "membersTitle": "Miembros",
+        "roles": {
+            "owner": "Propietario",
+            "moderator": "Moderador",
+            "member": "Miembro"
+        },
+        "andOthers": "{count, plural, one {y # miembro más.} other {y # miembros más.}}",
+        "listMembersOnly": "Solo los miembros pueden ver a todos.",
+        "listHidden": "Este grupo mantiene privada su lista de miembros.",
+        "manage": "Gestionar miembros",
+        "requestCount": "{count, plural, one {# solicitud} other {# solicitudes}}",
+        "manageTitle": "Gestionar miembros",
+        "requestsTitle": "Solicitudes para unirse",
+        "noRequests": "No hay solicitudes por ahora.",
+        "askedOn": "Lo pidió el {date}",
+        "approve": "Aprobar",
+        "deny": "Rechazar",
+        "block": "Rechazar y bloquear",
+        "joinedOn": "Se unió el {date}",
+        "remove": "Quitar",
+        "ban": "Expulsar",
+        "bannedTitle": "Expulsados",
+        "noBans": "No hay nadie expulsado.",
+        "bannedOn": "Expulsado el {date}",
+        "bannedOnWithReason": "Expulsado el {date}: «{reason}»",
+        "unban": "Readmitir",
+        "logTitle": "Acciones recientes",
+        "logHint": "Solo lo ven las personas propietarias y moderadoras.",
+        "noLog": "Nada todavía.",
+        "log": {
+            "approve": "{actor} aprobó a {target}",
+            "deny": "{actor} rechazó la solicitud de {target}",
+            "block": "{actor} rechazó y bloqueó a {target}",
+            "remove": "{actor} quitó a {target}",
+            "ban": "{actor} expulsó a {target}",
+            "unban": "{actor} readmitió a {target}"
+        },
+        "reasonQuoted": "«{reason}»",
+        "reason": "Motivo",
+        "reasonHint": "Obligatorio. Solo lo ven las personas propietarias y moderadoras, no la persona afectada.",
+        "back": "Volver",
+        "removeTitle": "¿Quitar a {name}?",
+        "removeBody": "Dejará de ser miembro. Puede volver a pedir unirse.",
+        "removeConfirm": "Quitar",
+        "banTitle": "¿Expulsar a {name}?",
+        "banBody": "Dejará de ser miembro y no podrá volver a pedir unirse a menos que lo readmitas.",
+        "banConfirm": "Expulsar",
+        "blockTitle": "¿Rechazar y bloquear a {name}?",
+        "blockBody": "Su solicitud se rechaza y no podrá volver a pedirlo a menos que lo readmitas.",
+        "blockConfirm": "Rechazar y bloquear",
+        "errors": {
+            "banned": "No puedes unirte a este grupo.",
+            "inviteOnly": "Este grupo es solo por invitación.",
+            "lastOwner": "Eres la única persona propietaria. Nombra a otra antes de salir.",
+            "notMember": "No eres miembro de este grupo.",
+            "notFound": "Eso cambió mientras tanto. La página ya muestra lo último.",
+            "notAllowed": "No puedes hacer eso con esta persona.",
+            "self": "No puedes hacerte eso a ti mismo.",
+            "reasonRequired": "Escribe un motivo.",
+            "reasonTooLong": "El motivo debe tener menos de 500 caracteres.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        },
+        "done": {
+            "joined": "¡Ya eres miembro! Bienvenida, bienvenido.",
+            "requested": "Solicitud enviada.",
+            "cancelled": "Solicitud cancelada.",
+            "left": "Saliste del grupo.",
+            "approve": "Aprobado.",
+            "deny": "Solicitud rechazada.",
+            "block": "Rechazado y bloqueado.",
+            "remove": "Quitado.",
+            "ban": "Expulsado.",
+            "unban": "Readmitido. Puede volver a pedir unirse."
         }
     },
     "LocationField": {

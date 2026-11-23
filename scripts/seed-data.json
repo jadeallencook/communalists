@@ -107,7 +107,10 @@
             "focusAreas": ["general", "food", "housing"],
             "description": "Neighbors helping neighbors across the South Bay: weekly grocery runs, a community fridge, and help finding housing.",
             "placeId": "5392171",
-            "reach": { "scope": "local", "radiusMiles": 25 },
+            "reach": {
+                "scope": "local",
+                "radiusMiles": 25
+            },
             "languages": ["en", "es", "vi"],
             "website": "https://example.org/",
             "contactEmail": "hello@example.org",
@@ -119,6 +122,7 @@
             ],
             "joinPolicy": "request",
             "visibility": "listed",
+            "memberListVisibility": "members",
             "members": [
                 ["seed-maya", "owner"],
                 ["seed-thanh", "moderator"],
@@ -128,7 +132,9 @@
                 ["seed-linh", "member"],
                 ["seed-wei", "member"],
                 ["seed-aisha", "member"]
-            ]
+            ],
+            "requests": ["seed-marcus", "seed-priya"],
+            "banned": []
         },
         {
             "id": "seed-oakland-auto",
@@ -137,17 +143,28 @@
             "focusAreas": ["transportation", "hobbies"],
             "description": "Free basic car repair on Saturdays, and rides to appointments for people without a car.",
             "placeId": "5378538",
-            "reach": { "scope": "local", "radiusMiles": 50 },
+            "reach": {
+                "scope": "local",
+                "radiusMiles": 50
+            },
             "languages": ["en", "es"],
             "socials": [],
             "joinPolicy": "open",
             "visibility": "listed",
+            "memberListVisibility": "public",
             "members": [
                 ["seed-luis", "owner"],
                 ["seed-maya", "moderator"],
                 ["seed-marcus", "moderator"],
                 ["seed-aisha", "member"],
                 ["seed-daniel", "member"]
+            ],
+            "requests": [],
+            "banned": [
+                [
+                    "seed-thanh",
+                    "Kept posting ads for a paid repair shop after two warnings."
+                ]
             ]
         },
         {
@@ -157,16 +174,22 @@
             "focusAreas": ["housing", "legal"],
             "description": "Tenants organizing together. Members only.",
             "placeId": "5392171",
-            "reach": { "scope": "local", "radiusMiles": 10 },
+            "reach": {
+                "scope": "local",
+                "radiusMiles": 10
+            },
             "languages": ["en", "es"],
             "socials": [],
             "joinPolicy": "invite",
             "visibility": "unlisted",
+            "memberListVisibility": "hidden",
             "members": [
                 ["seed-maya", "owner"],
                 ["seed-rosa", "member"],
                 ["seed-linh", "member"]
-            ]
+            ],
+            "requests": ["seed-priya"],
+            "banned": []
         },
         {
             "id": "seed-disaster",
@@ -175,11 +198,14 @@
             "focusAreas": ["disasterRelief", "health"],
             "description": "Volunteers who show up after fires, floods and earthquakes, wherever they happen.",
             "placeId": "5378538",
-            "reach": { "scope": "international" },
+            "reach": {
+                "scope": "international"
+            },
             "languages": ["en", "es", "zh", "vi"],
             "socials": [],
             "joinPolicy": "request",
             "visibility": "listed",
+            "memberListVisibility": "public",
             "members": [
                 ["seed-luis", "owner"],
                 ["seed-aisha", "moderator"],
@@ -187,7 +213,9 @@
                 ["seed-marcus", "member"],
                 ["seed-wei", "member"],
                 ["seed-thanh", "member"]
-            ]
+            ],
+            "requests": ["seed-maya"],
+            "banned": []
         },
         {
             "id": "seed-tool-library",
@@ -196,18 +224,24 @@
             "focusAreas": ["lending", "environment"],
             "description": "Borrow a drill, a ladder or a pressure washer for free. Return it next week. Repair café on the first Sunday of the month.",
             "placeId": "5327684",
-            "reach": { "scope": "local", "radiusMiles": 15 },
+            "reach": {
+                "scope": "local",
+                "radiusMiles": 15
+            },
             "languages": ["en"],
             "website": "https://example.net/",
             "socials": [],
             "joinPolicy": "open",
             "visibility": "listed",
+            "memberListVisibility": "public",
             "members": [
                 ["seed-priya", "owner"],
                 ["seed-marcus", "member"],
                 ["seed-aisha", "member"],
                 ["seed-luis", "member"]
-            ]
+            ],
+            "requests": [],
+            "banned": []
         },
         {
             "id": "seed-childcare",
@@ -216,17 +250,23 @@
             "focusAreas": ["childcare", "education"],
             "description": "Parents trading babysitting hours, plus a Saturday homework club for kids in grades 1 to 6.",
             "placeId": "5350734",
-            "reach": { "scope": "local", "radiusMiles": 10 },
+            "reach": {
+                "scope": "local",
+                "radiusMiles": 10
+            },
             "languages": ["en", "es"],
             "contactEmail": "coop@example.net",
             "socials": [],
             "joinPolicy": "request",
             "visibility": "listed",
+            "memberListVisibility": "members",
             "members": [
                 ["seed-rosa", "owner"],
                 ["seed-maya", "member"],
                 ["seed-daniel", "member"]
-            ]
+            ],
+            "requests": [],
+            "banned": []
         },
         {
             "id": "seed-garden",
@@ -235,16 +275,22 @@
             "focusAreas": ["environment", "food"],
             "description": "Thirty raised beds, a shared tool shed and a seed swap every spring. Extra harvest goes to the South Bay community fridge.",
             "placeId": "5393015",
-            "reach": { "scope": "local", "radiusMiles": 5 },
+            "reach": {
+                "scope": "local",
+                "radiusMiles": 5
+            },
             "languages": ["en", "zh"],
             "socials": [],
             "joinPolicy": "open",
             "visibility": "listed",
+            "memberListVisibility": "public",
             "members": [
                 ["seed-wei", "owner"],
                 ["seed-daniel", "moderator"],
                 ["seed-linh", "member"]
-            ]
+            ],
+            "requests": [],
+            "banned": []
         },
         {
             "id": "seed-pantry",
@@ -253,18 +299,24 @@
             "focusAreas": ["food"],
             "description": "Groceries every Tuesday and Friday evening, no questions asked. Rice, produce, and halal and vegetarian options.",
             "placeId": "5392171",
-            "reach": { "scope": "local", "radiusMiles": 10 },
+            "reach": {
+                "scope": "local",
+                "radiusMiles": 10
+            },
             "languages": ["vi", "en"],
             "contactEmail": "pantry@example.net",
             "socials": [],
             "joinPolicy": "request",
             "visibility": "listed",
+            "memberListVisibility": "members",
             "members": [
                 ["seed-thanh", "owner"],
                 ["seed-linh", "moderator"],
                 ["seed-wei", "member"],
                 ["seed-luis", "member"]
-            ]
+            ],
+            "requests": ["seed-aisha"],
+            "banned": []
         }
     ]
 }

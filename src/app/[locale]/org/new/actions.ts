@@ -36,7 +36,8 @@ export async function createOrganizationAction(
     const user = await getSessionUser();
     if (!user) return redirect({ href: '/sign-in', locale });
     // Creating needs a finished account (name and city).
-    if (!isSetupComplete(await getUserProfileFresh(user.uid))) {
+    const profile = await getUserProfileFresh(user.uid);
+    if (!isSetupComplete(profile)) {
         return redirect({
             href: { pathname: '/account/setup', query: { next: '/org/new' } },
             locale,
@@ -64,6 +65,7 @@ export async function createOrganizationAction(
     try {
         result = await createOrganization(
             user.uid,
+            profile?.displayName ?? '', // set: isSetupComplete checked it
             input,
             toGeneralArea(place)
         );

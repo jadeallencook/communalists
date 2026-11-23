@@ -14,6 +14,7 @@ import {
     DIRECTORY_TAG,
     handleTag,
     membershipsTag,
+    orgMembersTag,
     orgTag,
 } from '@/lib/organizations';
 import { userTag } from '@/lib/users';
@@ -75,6 +76,7 @@ export async function resetTestData(): Promise<ResetTestDataState> {
     for (const { id, handle } of SEEDED.organizations) {
         updateTag(orgTag(id));
         updateTag(handleTag(handle));
+        updateTag(orgMembersTag(id));
     }
     updateTag(DIRECTORY_TAG);
     refresh();

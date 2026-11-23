@@ -17,6 +17,7 @@ const valid = {
     socials: [{ platform: 'instagram', url: 'instagram.com/sbma' }],
     joinPolicy: 'request',
     visibility: 'listed',
+    memberListVisibility: 'members',
 };
 
 const errorsFor = (input: Record<string, unknown>) => {

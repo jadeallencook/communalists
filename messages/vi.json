@@ -346,7 +346,9 @@
             "socialRemove": "Xóa liên kết {platform}",
             "socialAdd": "Thêm liên kết",
             "submit": "Tạo tổ chức",
-            "submitting": "Đang tạo…"
+            "submitting": "Đang tạo…",
+            "memberList": "Danh sách thành viên",
+            "memberListHint": "Chủ nhóm và người điều hành luôn được hiển thị, và ai cũng thấy số lượng thành viên."
         },
         "new": {
             "metaTitle": "Tạo tổ chức",
@@ -386,10 +388,114 @@
             "roleOwner": "chủ sở hữu",
             "roleModerator": "người điều hành",
             "roleMember": "thành viên",
-            "joinComingSoon": "Sắp có thể tham gia.",
             "unlisted": "Không công khai: chỉ người có liên kết mới tìm thấy trang này.",
             "noDescription": "Chưa có mô tả.",
             "focusAreas": "Lĩnh vực hoạt động"
+        },
+        "memberLists": {
+            "public": {
+                "label": "Mọi người",
+                "description": "Ai cũng thấy tên của mọi thành viên, kể cả người chưa đăng nhập"
+            },
+            "members": {
+                "label": "Chỉ thành viên",
+                "description": "Thành viên thấy tất cả; người khác thấy chủ nhóm, người điều hành và số lượng"
+            },
+            "hidden": {
+                "label": "Chỉ số lượng",
+                "description": "Chỉ nêu tên chủ nhóm và người điều hành; họ vẫn thấy tất cả"
+            }
+        }
+    },
+    "Membership": {
+        "signInToJoin": "Đăng nhập để tham gia",
+        "signInHint": "Bạn cần một tài khoản miễn phí để tham gia.",
+        "join": "Tham gia",
+        "askToJoin": "Xin tham gia",
+        "joinHint": "Ai cũng có thể tham gia nhóm này.",
+        "askHint": "Chủ nhóm hoặc người điều hành sẽ xem xét yêu cầu của bạn.",
+        "pending": "Đã gửi yêu cầu. Chủ nhóm hoặc người điều hành sẽ xem xét.",
+        "cancelRequest": "Hủy yêu cầu",
+        "inviteOnly": "Nhóm này chỉ nhận người được mời.",
+        "banned": "Bạn không thể tham gia nhóm này.",
+        "leave": "Rời nhóm",
+        "leaveTitle": "Rời {name}?",
+        "leaveBody": "Bạn sẽ mất quyền vào khu vực thành viên. Bạn có thể xin tham gia lại sau.",
+        "keep": "Ở lại",
+        "leaveConfirm": "Rời nhóm",
+        "membersTitle": "Thành viên",
+        "roles": {
+            "owner": "Chủ sở hữu",
+            "moderator": "Người điều hành",
+            "member": "Thành viên"
+        },
+        "andOthers": "{count, plural, other {và # thành viên khác.}}",
+        "listMembersOnly": "Chỉ thành viên mới xem được tất cả.",
+        "listHidden": "Nhóm này giữ kín danh sách thành viên.",
+        "manage": "Quản lý thành viên",
+        "requestCount": "{count, plural, other {# yêu cầu}}",
+        "manageTitle": "Quản lý thành viên",
+        "requestsTitle": "Yêu cầu tham gia",
+        "noRequests": "Hiện chưa có yêu cầu nào.",
+        "askedOn": "Đã xin ngày {date}",
+        "approve": "Chấp nhận",
+        "deny": "Từ chối",
+        "block": "Từ chối và chặn",
+        "joinedOn": "Tham gia ngày {date}",
+        "remove": "Xóa khỏi nhóm",
+        "ban": "Cấm",
+        "bannedTitle": "Bị cấm",
+        "noBans": "Không có ai bị cấm.",
+        "bannedOn": "Bị cấm ngày {date}",
+        "bannedOnWithReason": "Bị cấm ngày {date}: “{reason}”",
+        "unban": "Bỏ cấm",
+        "logTitle": "Hoạt động gần đây",
+        "logHint": "Chỉ chủ nhóm và người điều hành thấy phần này.",
+        "noLog": "Chưa có gì.",
+        "log": {
+            "approve": "{actor} đã chấp nhận {target}",
+            "deny": "{actor} đã từ chối yêu cầu của {target}",
+            "block": "{actor} đã từ chối và chặn {target}",
+            "remove": "{actor} đã xóa {target} khỏi nhóm",
+            "ban": "{actor} đã cấm {target}",
+            "unban": "{actor} đã bỏ cấm {target}"
+        },
+        "reasonQuoted": "“{reason}”",
+        "reason": "Lý do",
+        "reasonHint": "Bắt buộc. Chỉ chủ nhóm và người điều hành thấy, người bị xử lý thì không.",
+        "back": "Quay lại",
+        "removeTitle": "Xóa {name} khỏi nhóm?",
+        "removeBody": "Họ sẽ không còn là thành viên. Họ có thể xin tham gia lại.",
+        "removeConfirm": "Xóa khỏi nhóm",
+        "banTitle": "Cấm {name}?",
+        "banBody": "Họ sẽ không còn là thành viên và không thể xin tham gia lại trừ khi bạn bỏ cấm.",
+        "banConfirm": "Cấm",
+        "blockTitle": "Từ chối và chặn {name}?",
+        "blockBody": "Yêu cầu của họ bị từ chối và họ không thể xin lại trừ khi bạn bỏ cấm.",
+        "blockConfirm": "Từ chối và chặn",
+        "errors": {
+            "banned": "Bạn không thể tham gia nhóm này.",
+            "inviteOnly": "Nhóm này chỉ nhận người được mời.",
+            "lastOwner": "Bạn là chủ nhóm duy nhất. Hãy chỉ định người khác làm chủ nhóm trước khi rời.",
+            "notMember": "Bạn không phải thành viên của nhóm này.",
+            "notFound": "Điều này đã thay đổi trong lúc đó. Trang đã hiển thị thông tin mới nhất.",
+            "notAllowed": "Bạn không thể làm vậy với người này.",
+            "self": "Bạn không thể làm vậy với chính mình.",
+            "reasonRequired": "Hãy viết lý do.",
+            "reasonTooLong": "Lý do phải ít hơn 500 ký tự.",
+            "generic": "Đã xảy ra lỗi. Hãy thử lại."
+        },
+        "done": {
+            "joined": "Bạn đã tham gia. Chào mừng bạn!",
+            "requested": "Đã gửi yêu cầu.",
+            "cancelled": "Đã hủy yêu cầu.",
+            "left": "Bạn đã rời nhóm.",
+            "approve": "Đã chấp nhận.",
+            "deny": "Đã từ chối yêu cầu.",
+            "block": "Đã từ chối và chặn.",
+            "remove": "Đã xóa khỏi nhóm.",
+            "ban": "Đã cấm.",
+            "unban": "Đã bỏ cấm. Họ có thể xin tham gia lại."
         }
     },
     "LocationField": {

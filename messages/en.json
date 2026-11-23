@@ -346,7 +346,9 @@
             "socialRemove": "Remove {platform} link",
             "socialAdd": "Add a link",
             "submit": "Create organization",
-            "submitting": "Creating…"
+            "submitting": "Creating…",
+            "memberList": "Member list",
+            "memberListHint": "Owners and moderators are always shown, and everyone sees how many members there are."
         },
         "new": {
             "metaTitle": "Create an organization",
@@ -386,10 +388,114 @@
             "roleOwner": "an owner",
             "roleModerator": "a moderator",
             "roleMember": "a member",
-            "joinComingSoon": "Joining opens soon.",
             "unlisted": "Unlisted: only people with the link can find this page.",
             "noDescription": "No description yet.",
             "focusAreas": "Focus areas"
+        },
+        "memberLists": {
+            "public": {
+                "label": "Everyone",
+                "description": "Anyone can see every member's name, even people who aren't signed in"
+            },
+            "members": {
+                "label": "Members only",
+                "description": "Members see everyone; others see owners, moderators and the count"
+            },
+            "hidden": {
+                "label": "Just the count",
+                "description": "Only owners and moderators are named; owners and moderators still see everyone"
+            }
+        }
+    },
+    "Membership": {
+        "signInToJoin": "Sign in to join",
+        "signInHint": "You need a free account to join.",
+        "join": "Join",
+        "askToJoin": "Ask to join",
+        "joinHint": "Anyone can join this group.",
+        "askHint": "An owner or moderator will review your request.",
+        "pending": "Request sent. An owner or moderator will review it.",
+        "cancelRequest": "Cancel request",
+        "inviteOnly": "This group is invite only.",
+        "banned": "You can't join this group.",
+        "leave": "Leave group",
+        "leaveTitle": "Leave {name}?",
+        "leaveBody": "You'll lose access to the members' space. You can ask to join again later.",
+        "keep": "Stay",
+        "leaveConfirm": "Leave",
+        "membersTitle": "Members",
+        "roles": {
+            "owner": "Owner",
+            "moderator": "Moderator",
+            "member": "Member"
+        },
+        "andOthers": "{count, plural, one {and # other member.} other {and # other members.}}",
+        "listMembersOnly": "Only members can see everyone.",
+        "listHidden": "This group keeps its member list private.",
+        "manage": "Manage members",
+        "requestCount": "{count, plural, one {# request} other {# requests}}",
+        "manageTitle": "Manage members",
+        "requestsTitle": "Requests to join",
+        "noRequests": "No requests right now.",
+        "askedOn": "Asked {date}",
+        "approve": "Approve",
+        "deny": "Deny",
+        "block": "Deny and block",
+        "joinedOn": "Joined {date}",
+        "remove": "Remove",
+        "ban": "Ban",
+        "bannedTitle": "Banned",
+        "noBans": "Nobody is banned.",
+        "bannedOn": "Banned {date}",
+        "bannedOnWithReason": "Banned {date}: “{reason}”",
+        "unban": "Unban",
+        "logTitle": "Recent actions",
+        "logHint": "Only owners and moderators see this.",
+        "noLog": "Nothing yet.",
+        "log": {
+            "approve": "{actor} approved {target}",
+            "deny": "{actor} denied {target}'s request",
+            "block": "{actor} denied and blocked {target}",
+            "remove": "{actor} removed {target}",
+            "ban": "{actor} banned {target}",
+            "unban": "{actor} unbanned {target}"
+        },
+        "reasonQuoted": "“{reason}”",
+        "reason": "Reason",
+        "reasonHint": "Required. Only owners and moderators see it, not the person you're acting on.",
+        "back": "Back",
+        "removeTitle": "Remove {name}?",
+        "removeBody": "They'll stop being a member. They can ask to join again.",
+        "removeConfirm": "Remove",
+        "banTitle": "Ban {name}?",
+        "banBody": "They'll stop being a member and can't ask to join again unless you unban them.",
+        "banConfirm": "Ban",
+        "blockTitle": "Deny and block {name}?",
+        "blockBody": "Their request is denied, and they can't ask again unless you unban them.",
+        "blockConfirm": "Deny and block",
+        "errors": {
+            "banned": "You can't join this group.",
+            "inviteOnly": "This group is invite only.",
+            "lastOwner": "You're the only owner. Make someone else an owner before you leave.",
+            "notMember": "You're not a member of this group.",
+            "notFound": "That changed in the meantime. The page now shows the latest.",
+            "notAllowed": "You can't do that to this person.",
+            "self": "You can't do that to yourself.",
+            "reasonRequired": "Write a reason.",
+            "reasonTooLong": "Keep the reason under 500 characters.",
+            "generic": "Something went wrong. Try again."
+        },
+        "done": {
+            "joined": "You're in. Welcome!",
+            "requested": "Request sent.",
+            "cancelled": "Request cancelled.",
+            "left": "You left the group.",
+            "approve": "Approved.",
+            "deny": "Request denied.",
+            "block": "Denied and blocked.",
+            "remove": "Removed.",
+            "ban": "Banned.",
+            "unban": "Unbanned. They can ask to join again."
         }
     },
     "LocationField": {

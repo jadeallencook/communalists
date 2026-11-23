@@ -9,6 +9,7 @@ import {
     normalizeWebUrl,
     OFFERED_FOCUS_AREAS,
     REACH_SCOPES,
+    MEMBER_LIST_VISIBILITIES,
     VISIBILITIES,
 } from './options';
 
@@ -44,6 +45,11 @@ describe('stored keys are permanent', () => {
         expect(REACH_SCOPES).toEqual(['local', 'national', 'international']);
         expect(JOIN_POLICIES).toEqual(['request', 'open', 'invite']);
         expect(VISIBILITIES).toEqual(['listed', 'unlisted']);
+        expect(MEMBER_LIST_VISIBILITIES).toEqual([
+            'public',
+            'members',
+            'hidden',
+        ]);
     });
 
     it('offers enough focus areas to choose up to the cap', () => {

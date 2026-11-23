@@ -54,16 +54,16 @@ The toolbar lists these three first:
 
 Under **More accounts** (collapsed) are eight more: Thanh Nguyễn, Wei Chen, Aisha Bello, Daniel Park, Rosa Martínez, Priya Patel, Marcus Johnson and Linh Trần. Between them they cover all four UI languages, own the four newer groups, and fill out member lists, so groups have between 3 and 8 members. Mark an account `"featured": true` in `seed-data.json` to list it at the top. Emails use `example.com` and `example.net`, which are reserved and can never reach a real person.
 
-| Organization                                              | Shows off                                               |
-| --------------------------------------------------------- | ------------------------------------------------------- |
-| South Bay Mutual Aid (`/org/sbma`)                        | Local 25 mi, request to join, website, email, Instagram |
-| Oakland Auto Club (`/org/oakland-auto-club`)              | Local 50 mi, open joining, two moderators               |
-| Alum Rock Tenants Union (`/org/alum-rock-tenants`)        | Unlisted, invite only                                   |
-| Mutual Aid Disaster Network (`/org/disaster-network`)     | International reach                                     |
-| East Bay Tool Library (`/org/east-bay-tools`)             | Lending, Berkeley, open joining, English only           |
-| Fremont Childcare Co-op (`/org/fremont-childcare`)        | Childcare, contact email only                           |
-| Santa Clara Community Garden (`/org/sc-community-garden`) | Small radius (5 mi), English and Chinese                |
-| Little Saigon Food Pantry (`/org/little-saigon-pantry`)   | One focus area, Vietnamese first                        |
+| Organization                                              | Shows off                                                                                                       |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| South Bay Mutual Aid (`/org/sbma`)                        | Local 25 mi, request to join, website, email, Instagram; 2 pending requests (Marcus, Priya) for Maya to approve |
+| Oakland Auto Club (`/org/oakland-auto-club`)              | Local 50 mi, open joining, two moderators, public member list; Thanh is banned (with a reason in the log)       |
+| Alum Rock Tenants Union (`/org/alum-rock-tenants`)        | Unlisted, invite only, member list shows just the count                                                         |
+| Mutual Aid Disaster Network (`/org/disaster-network`)     | International reach; Maya has a pending request                                                                 |
+| East Bay Tool Library (`/org/east-bay-tools`)             | Lending, Berkeley, open joining, English only                                                                   |
+| Fremont Childcare Co-op (`/org/fremont-childcare`)        | Childcare, contact email only                                                                                   |
+| Santa Clara Community Garden (`/org/sc-community-garden`) | Small radius (5 mi), English and Chinese                                                                        |
+| Little Saigon Food Pantry (`/org/little-saigon-pantry`)   | One focus area, Vietnamese first                                                                                |
 
 - Seeding only touches these accounts and organizations (fixed IDs starting `seed-`), so anything you created yourself stays. If you took one of their handles, that organization is skipped. A seeded account or organization that's no longer in the file (say, after renaming one) is removed on the next seed or reset.
 - Resetting doesn't sign you out. **Reset test data** also clears the app's cache; after `pnpm seed` from a terminal, restart `pnpm dev`, or pages can show cached data for a while.

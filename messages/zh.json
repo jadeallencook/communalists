@@ -346,7 +346,9 @@
             "socialRemove": "删除 {platform} 链接",
             "socialAdd": "添加链接",
             "submit": "创建组织",
-            "submitting": "正在创建…"
+            "submitting": "正在创建…",
+            "memberList": "成员名单",
+            "memberListHint": "所有者和管理员始终会显示，所有人都能看到成员人数。"
         },
         "new": {
             "metaTitle": "创建组织",
@@ -386,10 +388,114 @@
             "roleOwner": "所有者",
             "roleModerator": "管理员",
             "roleMember": "成员",
-            "joinComingSoon": "即将开放加入。",
             "unlisted": "不公开列出：只有拿到链接的人才能找到此页面。",
             "noDescription": "暂无简介。",
             "focusAreas": "工作领域"
+        },
+        "memberLists": {
+            "public": {
+                "label": "所有人",
+                "description": "任何人都能看到每位成员的名字，包括未登录的人"
+            },
+            "members": {
+                "label": "仅成员",
+                "description": "成员能看到所有人；其他人只能看到所有者、管理员和人数"
+            },
+            "hidden": {
+                "label": "仅显示人数",
+                "description": "只显示所有者和管理员的名字；他们仍能看到所有人"
+            }
+        }
+    },
+    "Membership": {
+        "signInToJoin": "登录后加入",
+        "signInHint": "加入需要一个免费账户。",
+        "join": "加入",
+        "askToJoin": "申请加入",
+        "joinHint": "任何人都可以加入这个团体。",
+        "askHint": "所有者或管理员会审核你的申请。",
+        "pending": "申请已发送。所有者或管理员会进行审核。",
+        "cancelRequest": "取消申请",
+        "inviteOnly": "这个团体仅限受邀加入。",
+        "banned": "你无法加入这个团体。",
+        "leave": "退出团体",
+        "leaveTitle": "退出{name}？",
+        "leaveBody": "你将无法进入成员空间。之后可以重新申请加入。",
+        "keep": "留下",
+        "leaveConfirm": "退出",
+        "membersTitle": "成员",
+        "roles": {
+            "owner": "所有者",
+            "moderator": "管理员",
+            "member": "成员"
+        },
+        "andOthers": "{count, plural, other {以及另外 # 名成员。}}",
+        "listMembersOnly": "只有成员能看到全部名单。",
+        "listHidden": "这个团体不公开成员名单。",
+        "manage": "管理成员",
+        "requestCount": "{count, plural, other {# 个申请}}",
+        "manageTitle": "管理成员",
+        "requestsTitle": "加入申请",
+        "noRequests": "目前没有申请。",
+        "askedOn": "于 {date} 申请",
+        "approve": "批准",
+        "deny": "拒绝",
+        "block": "拒绝并屏蔽",
+        "joinedOn": "于 {date} 加入",
+        "remove": "移除",
+        "ban": "封禁",
+        "bannedTitle": "已封禁",
+        "noBans": "没有被封禁的人。",
+        "bannedOn": "于 {date} 封禁",
+        "bannedOnWithReason": "于 {date} 封禁：“{reason}”",
+        "unban": "解除封禁",
+        "logTitle": "最近的操作",
+        "logHint": "只有所有者和管理员能看到。",
+        "noLog": "暂无记录。",
+        "log": {
+            "approve": "{actor} 批准了 {target}",
+            "deny": "{actor} 拒绝了 {target} 的申请",
+            "block": "{actor} 拒绝并屏蔽了 {target}",
+            "remove": "{actor} 移除了 {target}",
+            "ban": "{actor} 封禁了 {target}",
+            "unban": "{actor} 解除了对 {target} 的封禁"
+        },
+        "reasonQuoted": "“{reason}”",
+        "reason": "原因",
+        "reasonHint": "必填。只有所有者和管理员能看到，被处理的人看不到。",
+        "back": "返回",
+        "removeTitle": "移除{name}？",
+        "removeBody": "对方将不再是成员，但可以重新申请加入。",
+        "removeConfirm": "移除",
+        "banTitle": "封禁{name}？",
+        "banBody": "对方将不再是成员，除非你解除封禁，否则无法再申请加入。",
+        "banConfirm": "封禁",
+        "blockTitle": "拒绝并屏蔽{name}？",
+        "blockBody": "对方的申请会被拒绝，除非你解除封禁，否则无法再申请。",
+        "blockConfirm": "拒绝并屏蔽",
+        "errors": {
+            "banned": "你无法加入这个团体。",
+            "inviteOnly": "这个团体仅限受邀加入。",
+            "lastOwner": "你是唯一的所有者。退出前请先让其他人成为所有者。",
+            "notMember": "你不是这个团体的成员。",
+            "notFound": "情况已经发生变化，页面已显示最新内容。",
+            "notAllowed": "你无法对这个人执行此操作。",
+            "self": "你无法对自己执行此操作。",
+            "reasonRequired": "请填写原因。",
+            "reasonTooLong": "原因请少于 500 个字符。",
+            "generic": "出了点问题，请重试。"
+        },
+        "done": {
+            "joined": "你已加入，欢迎！",
+            "requested": "申请已发送。",
+            "cancelled": "申请已取消。",
+            "left": "你已退出团体。",
+            "approve": "已批准。",
+            "deny": "已拒绝申请。",
+            "block": "已拒绝并屏蔽。",
+            "remove": "已移除。",
+            "ban": "已封禁。",
+            "unban": "已解除封禁，对方可以重新申请加入。"
         }
     },
     "LocationField": {

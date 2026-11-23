@@ -201,7 +201,17 @@ if (removed) say(`Removed ${removed} old test accounts and organizations.`);
 
 // --- Organizations, their handles and memberships.
 let skipped = 0;
-for (const { members, placeId, reach, ...org } of organizations) {
+const nameOf = Object.fromEntries(
+    users.map((u) => [u.uid, u.profile?.displayName ?? ''])
+);
+for (const {
+    members,
+    requests = [],
+    banned = [],
+    placeId,
+    reach,
+    ...org
+} of organizations) {
     const handleRef = db.collection('handles').doc(org.handle);
     const claimed = await handleRef.get();
     if (claimed.exists && claimed.data().orgId !== org.id) {
@@ -212,16 +222,18 @@ for (const { members, placeId, reach, ...org } of organizations) {
         continue;
     }
 
-    // Start from a clean member list for seeded organizations.
-    const old = await db
-        .collection('memberships')
-        .where('orgId', '==', org.id)
-        .get();
+    // Start from a clean member list and moderation log for seeded organizations.
+    const orgRef = db.collection('organizations').doc(org.id);
+    const [old, oldLog] = await Promise.all([
+        db.collection('memberships').where('orgId', '==', org.id).get(),
+        orgRef.collection('moderationLog').get(),
+    ]);
     const batch = db.batch();
     old.docs.forEach((doc) => batch.delete(doc.ref));
+    oldLog.docs.forEach((doc) => batch.delete(doc.ref));
 
     const owner = members.find(([, role]) => role === 'owner')[0];
-    batch.set(db.collection('organizations').doc(org.id), {
+    batch.set(orgRef, {
         ...org,
         location: area(placeId),
         reach: reachFor(reach),
@@ -232,18 +244,42 @@ for (const { members, placeId, reach, ...org } of organizations) {
         updatedAt: now,
     });
     batch.set(handleRef, { orgId: org.id, createdAt: now });
-    for (const [uid, role] of members) {
+    const copy = {
+        name: org.name,
+        handle: org.handle,
+        focusAreas: org.focusAreas,
+    };
+    const membership = (uid, fields) =>
         batch.set(db.collection('memberships').doc(`${org.id}_${uid}`), {
             orgId: org.id,
             uid,
-            role,
-            status: 'active',
-            org: {
-                name: org.name,
-                handle: org.handle,
-                focusAreas: org.focusAreas,
-            },
-            joinedAt: now,
+            org: copy,
+            member: { displayName: nameOf[uid] },
+            ...fields,
+        });
+    for (const [uid, role] of members) {
+        membership(uid, { role, status: 'active', joinedAt: now });
+    }
+    for (const uid of requests) {
+        membership(uid, {
+            role: 'member',
+            status: 'pending',
+            requestedAt: now,
+        });
+    }
+    for (const [uid, reason] of banned) {
+        membership(uid, {
+            role: 'member',
+            status: 'banned',
+            banReason: reason,
+            bannedAt: now,
+        });
+        batch.set(orgRef.collection('moderationLog').doc(), {
+            action: 'ban',
+            target: { uid, displayName: nameOf[uid] },
+            actor: { uid: owner, displayName: nameOf[owner] },
+            reason,
+            createdAt: now,
         });
     }
     await batch.commit();

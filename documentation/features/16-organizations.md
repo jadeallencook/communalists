@@ -2,7 +2,7 @@
 
 The heart of the platform: people create, find and join **organizations**, and an organization's tools only work for its members. This is the rebuild's design, agreed with the user on 2026-11-22 ([decision #22](../decisions.md)). It replaces the prototype's single hard-coded organization ([08](08-organizations-and-membership.md)). Read 08's "Gaps" for what went wrong there.
 
-**Status:** phase 1 built 2026-11-22, except the logo upload. Finding organizations (the first half of phase 2) built 2026-11-23; joining is next. See "Built" at the end.
+**Status:** phase 1 built 2026-11-22, except the logo upload. Phase 2 (finding, joining, moderating members) built 2026-11-23. See "Built" at the end.
 
 ## What an organization has
 
@@ -21,6 +21,7 @@ The heart of the platform: people create, find and join **organizations**, and a
 | Logo             | Optional image upload (Firebase Storage). Type and size checked on the server.                                                                                                                                                                                                    |
 | Join policy      | `request` (default): people ask, owners or moderators approve. `open`: join instantly. `invite`: invited people only.                                                                                                                                                             |
 | Visibility       | `listed` (default): shows up when browsing. `unlisted`: reachable by link only (for groups that don't want to be found, like a tenant union organizing against a landlord).                                                                                                       |
+| Member list      | Who sees every member's name on the group's page: `public` (anyone, signed out too), `members` (default: members see everyone), or `hidden` (just the count). Owners and moderators are always named, and everyone sees the count. Staff always see everyone on the members page. |
 
 ### Focus areas
 
@@ -33,14 +34,14 @@ General · Food · Housing · Transportation · Technology · Health · Childcar
 
 ## People and roles
 
-| Role      | Can                                                                                                                     |
-| --------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Owner     | Everything a moderator can, plus manage moderators and owners, change the handle, and delete (archive) the organization |
-| Moderator | Approve or deny join requests, invite and remove members, edit the profile, run the tools                               |
-| Member    | Use the members-only side of the tools                                                                                  |
+| Role      | Can                                                                                                                                                |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Owner     | Everything a moderator can, plus remove and ban moderators, manage moderators and owners, change the handle, and delete (archive) the organization |
+| Moderator | Approve or deny join requests; remove and ban **members** (not other moderators or owners); edit the profile; run the tools                        |
+| Member    | Use the members-only side of the tools                                                                                                             |
 
-- **One membership record per person per organization:** `role` (`owner` / `moderator` / `member`) and `status` (`active` / `pending` / `invited`). This is not an array on the organization; that was the prototype's mistake ([08 → Gaps](08-organizations-and-membership.md#gaps)). It makes deny, leave, promote, remove and audit possible, and keeps member lists off every client.
-- The record also carries a small copy of the organization (name, handle, focus areas, logo), so the dashboard lists all of a person's organizations in **one query**. Renaming an organization updates those copies.
+- **One membership record per person per organization:** `role` (`owner` / `moderator` / `member`) and `status` (`active` / `pending` / `invited` / `banned`). This is not an array on the organization; that was the prototype's mistake ([08 → Gaps](08-organizations-and-membership.md#gaps)). It makes deny, leave, promote, remove and audit possible, and keeps member lists off every client.
+- The record also carries a small copy of the organization (name, handle, focus areas, logo), so the dashboard lists all of a person's organizations in **one query**, and a copy of the person's name, so a member list is one query too. Renaming an organization updates its copies; saving a profile updates the name copies.
 - **An organization always has at least one owner.** The last owner can't leave or step down without handing ownership to someone.
 - **A person can own at most 5 organizations** (abuse limit; open sign-up means open creation).
 - Creating requires a finished account (name and city), which `requireAccount` guarantees.
@@ -71,6 +72,39 @@ General · Food · Housing · Transportation · Technology · Health · Childcar
 
 Filtering and sorting happen in memory (`src/lib/organizations/directory.ts`), so no composite indexes are needed. This reads every group in a 100 mi circle once per city per cache lifetime, which is fine at today's size. With thousands of groups per region, add paging and push the reach and status filters into the queries (with indexes).
 
+## Joining
+
+The join area on a group's page depends on the viewer (`joinState` in `src/lib/organizations/membership.ts`):
+
+| Viewer                    | Sees                                                                                     |
+| ------------------------- | ---------------------------------------------------------------------------------------- |
+| Signed out                | **Sign in to join** (sign-in doesn't return to the group yet; it lands on the dashboard) |
+| Open group                | **Join**: they're a member at once                                                       |
+| Group that takes requests | **Ask to join**, then "Request sent" with **Cancel request**                             |
+| Invite-only group         | "This group is invite only." (inviting comes later)                                      |
+| Banned                    | "You can't join this group." The policy doesn't matter                                   |
+| Member                    | **Leave group** in the members' space, after a confirmation                              |
+
+- Joining needs a finished account (the name is shown to the group); otherwise it goes to account setup and back.
+- **The last owner can't leave.** Handing over ownership comes with phase 3, so for now the message asks them to make someone else an owner first.
+
+## Moderating members
+
+Owners and moderators get **Manage members** (with the number of open requests) in the members' space, leading to `/org/{handle}/members`: **Requests** (oldest first), **Members**, **Banned** and **Recent actions**.
+
+| Action         | On              | Result                                    | Reason   |
+| -------------- | --------------- | ----------------------------------------- | -------- |
+| Approve        | a request       | Member                                    | —        |
+| Deny           | a request       | Request deleted; they can ask again       | —        |
+| Deny and block | a request       | Banned                                    | Required |
+| Remove         | a member        | No longer a member; they can ask again    | Required |
+| Ban            | a member        | Banned: not a member, and can't ask again | Required |
+| Unban          | a banned person | Ban lifted; they can ask again            | —        |
+
+- **Block and ban are one thing** (status `banned`), whether it started as a request or a membership.
+- **Who can act on whom:** owners on moderators and members, moderators on members only, nobody on owners (or on themselves). The buttons follow this, and the server checks it again on fresh data.
+- **Reasons** (up to 500 characters) go in the group's **moderation log** with who did it and when, and a ban's reason is also kept on the banned record. Owners and moderators see them; the person acted on doesn't. The log is meant to back up decisions later, such as closing an account. Every action is logged, with or without a reason.
+
 ## Deleting
 
 Owners can delete. It **archives**: data is kept, the page and listings disappear, and the handle stays reserved. Hard deletion is a later, deliberate admin action.
@@ -84,15 +118,16 @@ Owners can delete. It **archives**: data is kept, the page and listings disappea
 | `/org/new`               | Signed in         | Create form; the creator becomes owner                                                                   |
 | `/org/{handle}`          | Anyone            | Public profile (name, focus areas, description, location and reach, languages, links, logo, join button) |
 | `/org/{handle}` (member) | Members           | Plus a members-only home, where tools will appear                                                        |
-| `/org/{handle}/manage`   | Owners/moderators | Profile, people, join requests, handle (phase 3)                                                         |
+| `/org/{handle}/members`  | Owners/moderators | Requests, members, bans and the moderation log                                                           |
+| `/org/{handle}/manage`   | Owners/moderators | Profile, handle, roles (phase 3)                                                                         |
 
 Bare `communalists.com/org/{handle}` redirects to the visitor's language, like every page, so it works on flyers.
 
 ## Phases
 
 1. **Create and list:** the data model, create form with handle check, dashboard "Your organizations" plus "Create organization", the `/org/{handle}` page (public profile plus a member view), and the logo upload last.
-2. **Find and join:** "near you" browsing (built 2026-11-23), joining by each policy, approving and denying requests.
-3. **Manage:** edit profile, change handle (old one held 30 days, no redirect), promote, remove, leave, archive.
+2. **Find and join:** "near you" browsing, joining by each policy, approving and denying requests, removing and banning (all built 2026-11-23).
+3. **Manage:** edit profile (including the member list setting), change handle (old one held 30 days, no redirect), promote and hand over ownership, invite, archive.
 4. **Then:** subdomains (after the domain move) and the first tool, Requests.
 
 ## Data and security notes
@@ -100,7 +135,7 @@ Bare `communalists.com/org/{handle}` redirects to the visitor's language, like e
 - All reads and writes go through server actions and the Admin SDK (deny-all rules stay); every action checks the caller's membership and role on the server.
 - Reads are cached with tags (`org:{id}`, the user's membership list) and cleared by the actions that write ([firebase.md → Caching reads](../technical/firebase.md#caching-reads-in-the-rebuild)).
 - Logos need Storage rules, the Storage emulator locally, and type and size limits enforced on the server.
-- Contact email is the only personal-ish field and it's opt-in and public by design. Member lists are members-only.
+- Contact email is the only personal-ish field and it's opt-in and public by design. Member names are shown only as the group's member list setting allows (members only by default); requests, bans and reasons are staff-only and never leave the server for anyone else.
 
 ## Built (phase 1, 2026-11-22)
 
@@ -153,3 +188,21 @@ Bare `communalists.com/org/{handle}` redirects to the visitor's language, like e
 - **By URL:** San Jose at 25 mi gives 4 local groups (the unlisted tenants union never shows), and 50 mi adds Oakland and Berkeley. Food narrows to 3. Vietnamese with local only gives the 2 that list it. Oakland at 10 mi gives Oakland and Berkeley. The Spanish page loads.
 - **In a real browser, signed in as Thanh:** `/find` starts from her city. Choosing Housing updates the results and the URL. Switching the city to Berkeley keeps the filter. The dashboard shows the 2 closest groups she isn't in, and links to `/find`.
 - A production build passes (`/find` is partly prerendered).
+
+## Built (joining and moderating, 2026-11-23)
+
+| Piece                                                                                                                                           | Where                                                                                                        |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Rules: who can act on whom, reasons, join state, whose names show (pure, tested)                                                                | `src/lib/organizations/membership.ts`                                                                        |
+| Firestore: `joinOrganization`, `cancelJoinRequest`, `leaveOrganization`, `moderateMember`, `getOrgPeople`, `getModerationLog`, `syncMemberName` | `src/lib/organizations/index.ts`                                                                             |
+| Server actions                                                                                                                                  | `src/app/[locale]/org/[handle]/actions.ts` (`membershipAction`, `moderateAction`)                            |
+| Pages                                                                                                                                           | `/org/{handle}` (join area, member list, Manage members), `/org/{handle}/members`                            |
+| UI                                                                                                                                              | `JoinPanel`, `MemberList`, `ReasonDialog`, `OrganizationMembersPage`; member list setting in the create form |
+
+**How it behaves:** every write is a transaction that re-reads what it decides on and keeps `memberCount` right. Each action clears the group's caches (`org:{id}`, `orgMembers:{id}`, `directory`) and the affected person's dashboard.
+
+**Verified 2026-11-23** in a real browser against the seeded emulators:
+
+- **As Maya (owner of South Bay Mutual Aid):** Manage members showed 2 requests. Approving Marcus made him a member (9). Banning Luis asked for a reason, then showed him under Banned with it, and in Recent actions. At an open group, Join was instant, and Leave (after the confirmation) worked. Cancelling a request worked. Leaving her own group as the only owner was refused with the message.
+- **As Thanh (moderator):** no buttons on the owner or herself; Remove and Ban on members. At Oakland Auto Club, where she's banned, she saw "You can't join this group", and `/members` sent her back to the group page.
+- **Signed out:** the "members only" group named only its owner and moderator, plus "and 6 other members"; a "public" group named everyone.
