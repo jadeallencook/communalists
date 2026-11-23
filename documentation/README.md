@@ -19,7 +19,7 @@ The original source: branch `interview-demo` at commit `7ebc168`, read file by f
 
 ## Features
 
-The feature docs describe the prototype unless they have a "Rebuild" section. Rebuild progress so far: the locale routing behind [05](features/05-localization.md), the header/footer shell from [13](features/13-navigation-and-layout.md), and accounts from [07](features/07-authentication.md) (sign-up, sign-in, password reset, account setup; see [accounts and sessions](technical/accounts-and-sessions.md)). Organizations and tools come next.
+The feature docs describe the prototype unless they have a "Rebuild" section. Rebuild progress so far: the locale routing behind [05](features/05-localization.md), the header/footer shell from [13](features/13-navigation-and-layout.md), accounts from [07](features/07-authentication.md) (sign-up, sign-in, password reset, account setup; see [accounts and sessions](technical/accounts-and-sessions.md)), and creating organizations ([16](features/16-organizations.md), phase 1). Finding and joining organizations, then tools, come next.
 
 | #   | Feature                                                                           | Audience                | Status in prototype                             |
 | --- | --------------------------------------------------------------------------------- | ----------------------- | ----------------------------------------------- |
@@ -38,6 +38,7 @@ The feature docs describe the prototype unless they have a "Rebuild" section. Re
 | 13  | [Navigation, layout and feedback](features/13-navigation-and-layout.md)           | Everyone                | Live                                            |
 | 14  | [Removed experiments](features/14-removed-experiments.md)                         | —                       | Cut from the product                            |
 | 15  | [Little Free Library](features/15-little-free-library.md)                         | Public                  | Built in the 2025 Next.js attempt, then removed |
+| 16  | [Organizations (rebuild)](features/16-organizations.md)                           | Everyone                | Rebuild: phase 1 built 2026-11-22 (logo next)   |
 
 ## Technical docs
 

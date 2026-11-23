@@ -1,6 +1,23 @@
 # Data Model
 
-> **Scope.** This describes the **prototype's** data. The rebuild keeps Firebase (same project, databases emptied, decision #4), but its Firestore schema hasn't been designed yet. Use the relational sketch at the end as the conceptual model, and record the new schema here when it's decided.
+> **Scope.** The first section is the **rebuild's** Firestore schema (same project, databases emptied, decision #4). Everything after it describes the **prototype's** data, kept for its lessons.
+
+## Rebuild (current)
+
+All access is through the Admin SDK on the server; rules deny clients ([firebase.md](firebase.md#security-in-the-rebuild-server-only-access)). No Realtime Database.
+
+| Collection      | Doc ID          | Fields                                                                                                                                                                                                                                                                                                                                                                | Written by                                                                     |
+| --------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `users`         | uid             | `displayName`, `locale` (preferred language), `location { placeId, country, label, lat, lng, geohash }`, `createdAt`, `updatedAt`. All optional                                                                                                                                                                                                                       | Account setup and settings ([accounts-and-sessions](accounts-and-sessions.md)) |
+| `organizations` | auto            | `name`, `handle`, `focusAreas[]` (1–3 keys, [decision #23](../decisions.md)), `description`, `location` (same shape as users), `reach { scope, radiusMiles?, radiusKm? }`, `languages[]`, `website?`, `contactEmail?`, `socials[{ platform, url }]`, `joinPolicy`, `visibility`, `status` (`active`/`archived`), `memberCount`, `createdBy`, `createdAt`, `updatedAt` | Create (phase 1); edit (phase 3)                                               |
+| `handles`       | the handle      | `orgId`, `createdAt` (later: a hold-until date for renamed handles)                                                                                                                                                                                                                                                                                                   | Same transaction as the organization                                           |
+| `memberships`   | `{orgId}_{uid}` | `orgId`, `uid`, `role` (`owner`/`moderator`/`member`), `status` (`active`/`pending`/`invited`), `org { name, handle, focusAreas }` (a copy, for listing), `joinedAt`                                                                                                                                                                                                  | Create (owner); joining (phase 2)                                              |
+
+**Stored keys are permanent.** Values from fixed lists (`focusAreas`, `reach.scope`, `joinPolicy`, `visibility`, `role`, `status`) are stored as readable keys and never renamed once live; labels come from `messages/*.json`, so wording changes need no migration. `src/lib/organizations/options.test.ts` locks the lists.
+
+Queries in use: `memberships where uid == X and status == active` (dashboard), and the same plus `role == owner` (the 5-owned limit). Both are equality-only, so no composite index is needed. Design and rules: [features/16](../features/16-organizations.md).
+
+## Prototype
 
 In the prototype, all data lived in one Firebase project: four Firestore collections plus two Realtime Database paths. Enum values are in [`../data/enums.json`](../data/enums.json).
 

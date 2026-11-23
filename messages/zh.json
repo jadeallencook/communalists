@@ -210,11 +210,161 @@
         "area": "你的地区：{location}",
         "organizationsTitle": "你的组织",
         "emptyTitle": "你还没有加入任何组织",
-        "emptyBody": "加入或创建组织后，它的工具会显示在这里。",
-        "nextTitle": "即将推出",
+        "emptyBody": "为你的团体创建一个组织。查找和加入附近组织的功能即将推出。",
         "nextBrowse": "浏览你附近的互助组织",
-        "nextCreate": "为你的团体创建组织",
-        "comingSoon": "即将推出"
+        "comingSoon": "即将推出",
+        "create": "创建组织",
+        "ownedLimit": "你拥有 5 个组织，已达上限。",
+        "findTitle": "查找附近的组织"
+    },
+    "Organizations": {
+        "focusAreas": {
+            "general": "综合",
+            "food": "食物",
+            "housing": "住房",
+            "transportation": "交通",
+            "technology": "科技",
+            "health": "健康",
+            "childcare": "育儿",
+            "education": "教育",
+            "clothing": "衣物",
+            "lending": "借用",
+            "disasterRelief": "救灾",
+            "legal": "法律",
+            "labor": "劳工",
+            "arts": "艺术",
+            "hobbies": "兴趣爱好",
+            "faith": "信仰",
+            "animals": "动物",
+            "environment": "环境",
+            "other": "其他"
+        },
+        "roles": {
+            "owner": "所有者",
+            "moderator": "管理员",
+            "member": "成员"
+        },
+        "reach": {
+            "local": {
+                "label": "本地",
+                "description": "你所在城市一定距离内的人"
+            },
+            "national": {
+                "label": "全国",
+                "description": "你所在国家的任何人"
+            },
+            "international": {
+                "label": "国际",
+                "description": "任何地方的任何人"
+            }
+        },
+        "reachSummary": {
+            "local": "{place} 方圆 {miles} 英里内",
+            "national": "全国 · 总部位于 {place}",
+            "international": "国际 · 总部位于 {place}"
+        },
+        "joinPolicies": {
+            "request": {
+                "label": "申请加入",
+                "description": "成员提出申请，由所有者和管理员批准"
+            },
+            "open": {
+                "label": "开放",
+                "description": "任何人都可以立即加入"
+            },
+            "invite": {
+                "label": "仅限邀请",
+                "description": "只有你邀请的人才能加入"
+            }
+        },
+        "visibilities": {
+            "listed": {
+                "label": "公开列出",
+                "description": "在大家寻找组织时显示"
+            },
+            "unlisted": {
+                "label": "不公开列出",
+                "description": "只有拿到链接的人才能找到"
+            }
+        },
+        "form": {
+            "aboutTitle": "简介",
+            "whereTitle": "地点",
+            "joiningTitle": "加入方式",
+            "linksTitle": "链接",
+            "name": "名称",
+            "nameHint": "大家所熟知的团体名称。",
+            "handle": "标识",
+            "handleHint": "你的公开地址。只能使用小写字母、数字和连字符。",
+            "handleAvailable": "可以使用。",
+            "focusAreas": "你的团体做哪方面的工作？",
+            "focusAreasHint": "最多选择 {max} 项。",
+            "description": "简介",
+            "descriptionHint": "你的团体做什么、为谁服务。最多 2000 个字符。",
+            "locationHint": "团体所在地。只填城市，不填具体地址。",
+            "reach": "服务范围",
+            "radius": "半径",
+            "radiusOption": "{miles} 英里",
+            "languages": "使用的语言",
+            "languagesHint": "你的团体能用哪些语言提供帮助。",
+            "joinPolicy": "谁可以加入",
+            "visibility": "可见性",
+            "website": "网站",
+            "websiteHint": "选填。",
+            "contactEmail": "联系邮箱",
+            "contactEmailHint": "选填。会公开显示在你的页面上。",
+            "socials": "社交媒体",
+            "socialsHint": "选填。每个平台一个链接。",
+            "socialPlatform": "平台",
+            "socialUrl": "{platform} 链接",
+            "socialRemove": "删除 {platform} 链接",
+            "socialAdd": "添加链接",
+            "submit": "创建组织",
+            "submitting": "正在创建…"
+        },
+        "new": {
+            "metaTitle": "创建组织",
+            "title": "创建组织",
+            "description": "为你的团体建立一个主页。你将成为它的所有者。"
+        },
+        "errors": {
+            "required": "此项为必填项。",
+            "tooShort": "内容太短。",
+            "tooLong": "内容太长。",
+            "handleTooShort": "至少使用 3 个字符。",
+            "handleTooLong": "不要超过 30 个字符。",
+            "handleFormat": "只能使用小写字母、数字和单个连字符，且以字母或数字开头和结尾。",
+            "handleReserved": "该标识已被保留，请换一个。",
+            "handleTaken": "该标识已被占用，请换一个。",
+            "focusAreasRequired": "请至少选择一项。",
+            "focusAreasTooMany": "最多只能选择 {max} 项。",
+            "placeRequired": "请从列表中选择你的城市。",
+            "placeNotFound": "找不到该城市，请从列表中重新选择。",
+            "radiusRequired": "请选择半径。",
+            "languagesRequired": "请至少选择一种语言。",
+            "invalidUrl": "请输入网址，例如 example.org。",
+            "invalidEmail": "请输入有效的电子邮件地址。",
+            "socialMismatch": "有链接不属于所选的平台。",
+            "socialDuplicate": "每个平台只能添加一次。",
+            "ownedLimit": "你已拥有 5 个组织，已达上限。",
+            "generic": "出了点问题，请重试。"
+        },
+        "page": {
+            "members": "{count, plural, other {# 名成员}}",
+            "website": "网站",
+            "contact": "联系方式",
+            "languages": "语言",
+            "links": "链接",
+            "membersTitle": "成员空间",
+            "membersBody": "你是{role}。组织的工具会显示在这里。",
+            "roleOwner": "所有者",
+            "roleModerator": "管理员",
+            "roleMember": "成员",
+            "joinComingSoon": "即将开放加入。",
+            "unlisted": "不公开列出：只有拿到链接的人才能找到此页面。",
+            "noDescription": "暂无简介。",
+            "focusAreas": "工作领域"
+        }
     },
     "LocationField": {
         "country": "国家",

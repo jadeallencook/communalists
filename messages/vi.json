@@ -210,11 +210,161 @@
         "area": "Khu vực của bạn: {location}",
         "organizationsTitle": "Tổ chức của bạn",
         "emptyTitle": "Bạn chưa tham gia tổ chức nào",
-        "emptyBody": "Khi bạn tham gia hoặc lập một tổ chức, các công cụ của tổ chức sẽ hiện ở đây.",
-        "nextTitle": "Sắp ra mắt",
+        "emptyBody": "Hãy tạo một tổ chức cho nhóm của bạn. Tính năng tìm và tham gia tổ chức gần bạn sắp ra mắt.",
         "nextBrowse": "Tìm các tổ chức tương trợ gần bạn",
-        "nextCreate": "Lập một tổ chức cho nhóm của bạn",
-        "comingSoon": "Sắp ra mắt"
+        "comingSoon": "Sắp ra mắt",
+        "create": "Tạo tổ chức",
+        "ownedLimit": "Bạn sở hữu 5 tổ chức, mức tối đa cho phép.",
+        "findTitle": "Tìm tổ chức gần bạn"
+    },
+    "Organizations": {
+        "focusAreas": {
+            "general": "Tổng quát",
+            "food": "Thực phẩm",
+            "housing": "Nhà ở",
+            "transportation": "Giao thông",
+            "technology": "Công nghệ",
+            "health": "Sức khỏe",
+            "childcare": "Chăm sóc trẻ em",
+            "education": "Giáo dục",
+            "clothing": "Quần áo",
+            "lending": "Cho mượn",
+            "disasterRelief": "Cứu trợ thiên tai",
+            "legal": "Pháp lý",
+            "labor": "Lao động",
+            "arts": "Nghệ thuật",
+            "hobbies": "Sở thích",
+            "faith": "Tín ngưỡng",
+            "animals": "Động vật",
+            "environment": "Môi trường",
+            "other": "Khác"
+        },
+        "roles": {
+            "owner": "Chủ sở hữu",
+            "moderator": "Người điều hành",
+            "member": "Thành viên"
+        },
+        "reach": {
+            "local": {
+                "label": "Địa phương",
+                "description": "Những người trong một khoảng cách nhất định từ thành phố của bạn"
+            },
+            "national": {
+                "label": "Toàn quốc",
+                "description": "Bất kỳ ai trong nước"
+            },
+            "international": {
+                "label": "Quốc tế",
+                "description": "Bất kỳ ai, ở bất cứ đâu"
+            }
+        },
+        "reachSummary": {
+            "local": "Trong vòng {miles} dặm quanh {place}",
+            "national": "Toàn quốc · đặt tại {place}",
+            "international": "Quốc tế · đặt tại {place}"
+        },
+        "joinPolicies": {
+            "request": {
+                "label": "Xin tham gia",
+                "description": "Mọi người gửi yêu cầu; chủ sở hữu và người điều hành duyệt"
+            },
+            "open": {
+                "label": "Mở",
+                "description": "Ai cũng có thể tham gia ngay"
+            },
+            "invite": {
+                "label": "Chỉ theo lời mời",
+                "description": "Chỉ những người bạn mời mới tham gia được"
+            }
+        },
+        "visibilities": {
+            "listed": {
+                "label": "Công khai",
+                "description": "Hiện ra khi mọi người tìm tổ chức"
+            },
+            "unlisted": {
+                "label": "Không công khai",
+                "description": "Chỉ người có liên kết mới tìm thấy"
+            }
+        },
+        "form": {
+            "aboutTitle": "Giới thiệu",
+            "whereTitle": "Ở đâu",
+            "joiningTitle": "Tham gia",
+            "linksTitle": "Liên kết",
+            "name": "Tên",
+            "nameHint": "Tên nhóm của bạn, như mọi người vẫn gọi.",
+            "handle": "Tên định danh",
+            "handleHint": "Địa chỉ công khai của bạn. Chữ thường, số và dấu gạch ngang.",
+            "handleAvailable": "Có thể dùng.",
+            "focusAreas": "Nhóm của bạn hoạt động về lĩnh vực nào?",
+            "focusAreasHint": "Chọn tối đa {max}.",
+            "description": "Mô tả",
+            "descriptionHint": "Nhóm của bạn làm gì và cho ai. Tối đa 2.000 ký tự.",
+            "locationHint": "Nơi nhóm của bạn hoạt động. Chỉ thành phố; không bao giờ là địa chỉ.",
+            "reach": "Phạm vi",
+            "radius": "Bán kính",
+            "radiusOption": "{miles} dặm",
+            "languages": "Ngôn ngữ sử dụng",
+            "languagesHint": "Những ngôn ngữ nhóm của bạn có thể hỗ trợ.",
+            "joinPolicy": "Ai có thể tham gia",
+            "visibility": "Hiển thị",
+            "website": "Trang web",
+            "websiteHint": "Không bắt buộc.",
+            "contactEmail": "Email liên hệ",
+            "contactEmailHint": "Không bắt buộc. Hiển thị công khai trên trang của bạn.",
+            "socials": "Mạng xã hội",
+            "socialsHint": "Không bắt buộc. Mỗi nền tảng một liên kết.",
+            "socialPlatform": "Nền tảng",
+            "socialUrl": "Liên kết {platform}",
+            "socialRemove": "Xóa liên kết {platform}",
+            "socialAdd": "Thêm liên kết",
+            "submit": "Tạo tổ chức",
+            "submitting": "Đang tạo…"
+        },
+        "new": {
+            "metaTitle": "Tạo tổ chức",
+            "title": "Tạo tổ chức",
+            "description": "Tạo một mái nhà cho nhóm của bạn. Bạn sẽ là chủ sở hữu."
+        },
+        "errors": {
+            "required": "Trường này là bắt buộc.",
+            "tooShort": "Quá ngắn.",
+            "tooLong": "Quá dài.",
+            "handleTooShort": "Dùng ít nhất 3 ký tự.",
+            "handleTooLong": "Dùng tối đa 30 ký tự.",
+            "handleFormat": "Dùng chữ thường, số và dấu gạch ngang đơn; bắt đầu và kết thúc bằng chữ hoặc số.",
+            "handleReserved": "Tên định danh này đã được dành riêng. Hãy thử tên khác.",
+            "handleTaken": "Tên định danh này đã có người dùng. Hãy thử tên khác.",
+            "focusAreasRequired": "Hãy chọn ít nhất một.",
+            "focusAreasTooMany": "Chỉ chọn tối đa {max}.",
+            "placeRequired": "Hãy chọn thành phố trong danh sách.",
+            "placeNotFound": "Không tìm thấy thành phố đó. Hãy chọn lại trong danh sách.",
+            "radiusRequired": "Hãy chọn bán kính.",
+            "languagesRequired": "Hãy chọn ít nhất một ngôn ngữ.",
+            "invalidUrl": "Nhập địa chỉ web, ví dụ example.org.",
+            "invalidEmail": "Nhập địa chỉ email hợp lệ.",
+            "socialMismatch": "Một liên kết không thuộc nền tảng đã chọn.",
+            "socialDuplicate": "Mỗi nền tảng chỉ thêm một lần.",
+            "ownedLimit": "Bạn đã sở hữu 5 tổ chức, mức tối đa cho phép.",
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+        },
+        "page": {
+            "members": "{count, plural, other {# thành viên}}",
+            "website": "Trang web",
+            "contact": "Liên hệ",
+            "languages": "Ngôn ngữ",
+            "links": "Liên kết",
+            "membersTitle": "Không gian thành viên",
+            "membersBody": "Bạn là {role}. Các công cụ của tổ chức sẽ hiện ở đây.",
+            "roleOwner": "chủ sở hữu",
+            "roleModerator": "người điều hành",
+            "roleMember": "thành viên",
+            "joinComingSoon": "Sắp có thể tham gia.",
+            "unlisted": "Không công khai: chỉ người có liên kết mới tìm thấy trang này.",
+            "noDescription": "Chưa có mô tả.",
+            "focusAreas": "Lĩnh vực hoạt động"
+        }
     },
     "LocationField": {
         "country": "Quốc gia",

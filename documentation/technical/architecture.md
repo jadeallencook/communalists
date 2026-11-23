@@ -27,12 +27,15 @@ src/
     [locale]/sign-in/     Container: wires the signIn action into SignInPage
     [locale]/forgot-password/  Container: wires requestPasswordReset into ForgotPasswordPage
     [locale]/account/setup/ Container: required profile questions (name, language, city); returns to ?next=
+    [locale]/org/new/     Create an organization (form container + action)
+    [locale]/org/[handle]/ An organization's page (public profile + members' space)
     [locale]/auth/action/ Firebase email links (Action URL): verifies the code, renders ResetPasswordPage
     [locale]/dashboard/   Container: requireAccount, renders DashboardPage (streamed); /welcome redirects here
     [locale]/account/settings/ Container: edit profile (setup form in settings mode)
     [locale]/header-slots.tsx  Header's signed-in parts (session + profile), streamed in <Suspense>
     actions/sign-out.ts   Shared sign-out server action (account menu)
     api/places/           GET city search for the picker (cached)
+    api/handles/[handle]/ GET handle availability for the create form (signed-in only)
     globals.css           Tailwind + shadcn tokens
     favicon.ico           Star logo (from the 2025 attempt)
   components/
@@ -49,6 +52,7 @@ src/
     locale-from-tag.ts    "zh-CN" → zh (for the Action URL's lang)
   assets/               Images imported by components (see AGENTS.md)
   lib/auth/             Session cookies; requireAccount() gate; Firebase Auth REST (password sign-in, reset email, reset)
+  lib/organizations/    Organizations: options, handle rules, Firestore (create, cached reads)
   lib/build-info.ts     Version + commit for the footer (pure)
   lib/account-setup.ts  Required profile questions, what's missing, safe ?next= (pure)
   lib/places/           Place data, search, API client (city picker)

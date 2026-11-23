@@ -1,0 +1,182 @@
+import {
+    GlobeIcon,
+    LanguagesIcon,
+    MailIcon,
+    MapPinIcon,
+    UsersIcon,
+} from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+
+import { initials } from '@/lib/initials';
+import { languageName } from '@/lib/organizations/client';
+import {
+    SOCIAL_PLATFORMS,
+    type FocusArea,
+    type ReachScope,
+    type SocialPlatform,
+} from '@/lib/organizations/options';
+
+export interface OrganizationProfileProps {
+    name: string;
+    handle: string;
+    /** What the group works on, 1 to 3. */
+    focusAreas: FocusArea[];
+    description: string;
+    /** The city, e.g. "San Jose, California". */
+    place: string;
+    reach: { scope: ReachScope; radiusMiles?: number };
+    languages: string[];
+    memberCount: number;
+    website?: string;
+    contactEmail?: string;
+    socials: { platform: SocialPlatform; url: string }[];
+    unlisted?: boolean;
+}
+
+const host = (url: string) => {
+    try {
+        return new URL(url).hostname.replace(/^www\./, '');
+    } catch {
+        return url;
+    }
+};
+
+/** An organization's public profile: who they are, where, in which languages, and how to reach them. */
+export function OrganizationProfile({
+    name,
+    handle,
+    focusAreas,
+    description,
+    place,
+    reach,
+    languages,
+    memberCount,
+    website,
+    contactEmail,
+    socials,
+    unlisted = false,
+}: OrganizationProfileProps) {
+    const t = useTranslations('Organizations');
+    const locale = useLocale();
+    const reachText =
+        reach.scope === 'local'
+            ? t('reachSummary.local', { miles: reach.radiusMiles ?? 0, place })
+            : t(`reachSummary.${reach.scope}`, { place });
+
+    const facts = [
+        { icon: MapPinIcon, text: reachText },
+        { icon: UsersIcon, text: t('page.members', { count: memberCount }) },
+        {
+            icon: LanguagesIcon,
+            text: languages
+                .map((code) => languageName(code, locale))
+                .join(', '),
+        },
+    ];
+
+    return (
+        <article className="flex flex-col gap-8">
+            <header className="flex items-start gap-4">
+                <span
+                    aria-hidden
+                    className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-muted text-xl font-semibold"
+                >
+                    {initials(name)}
+                </span>
+                <div className="flex min-w-0 flex-col gap-1">
+                    <h1 className="font-heading text-3xl font-semibold tracking-tight text-balance">
+                        {name}
+                    </h1>
+                    <p className="text-muted-foreground">/org/{handle}</p>
+                    {focusAreas.length > 0 && (
+                        <ul
+                            aria-label={t('page.focusAreas')}
+                            className="mt-1 flex flex-wrap gap-1.5"
+                        >
+                            {focusAreas.map((area) => (
+                                <li
+                                    key={area}
+                                    className="rounded-full bg-muted px-2.5 py-0.5 text-xs"
+                                >
+                                    {t(`focusAreas.${area}`)}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            </header>
+
+            {unlisted && (
+                <p className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+                    {t('page.unlisted')}
+                </p>
+            )}
+
+            <p className="text-pretty whitespace-pre-line">
+                {description || (
+                    <span className="text-muted-foreground">
+                        {t('page.noDescription')}
+                    </span>
+                )}
+            </p>
+
+            <ul className="flex flex-col gap-2 text-sm">
+                {facts.map(({ icon: Icon, text }) => (
+                    <li key={text} className="flex items-start gap-2">
+                        <Icon
+                            aria-hidden
+                            className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+                        />
+                        <span>{text}</span>
+                    </li>
+                ))}
+            </ul>
+
+            {(website || contactEmail || socials.length > 0) && (
+                <section className="flex flex-col gap-2">
+                    <h2 className="font-heading text-lg font-semibold">
+                        {t('page.links')}
+                    </h2>
+                    <ul className="flex flex-wrap gap-2 text-sm">
+                        {website && (
+                            <li>
+                                <a
+                                    href={website}
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                    className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 hover:bg-muted"
+                                >
+                                    <GlobeIcon aria-hidden className="size-4" />
+                                    {host(website)}
+                                </a>
+                            </li>
+                        )}
+                        {contactEmail && (
+                            <li>
+                                <a
+                                    href={`mailto:${contactEmail}`}
+                                    className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 hover:bg-muted"
+                                >
+                                    <MailIcon aria-hidden className="size-4" />
+                                    {contactEmail}
+                                </a>
+                            </li>
+                        )}
+                        {socials.map(({ platform, url }) => (
+                            <li key={platform}>
+                                <a
+                                    href={url}
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                    className="inline-flex items-center rounded-lg border px-3 py-1.5 hover:bg-muted"
+                                >
+                                    {SOCIAL_PLATFORMS[platform].name}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            )}
+        </article>
+    );
+}

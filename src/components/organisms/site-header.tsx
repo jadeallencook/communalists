@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import type { ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
 
 import { LocaleSwitcher } from '@/components/molecules/locale-switcher';
 import { ThemeToggle } from '@/components/molecules/theme-toggle';
@@ -31,7 +31,13 @@ export function SiteHeader({ nav, account }: SiteHeaderProps) {
                     className="flex items-center gap-1"
                 >
                     {nav}
-                    <LocaleSwitcher />
+                    {/* It reads the URL, which pages with params (like /org/[handle])
+                        only know at request time: Next requires <Suspense> there. */}
+                    <Suspense
+                        fallback={<div aria-hidden className="h-8 w-24" />}
+                    >
+                        <LocaleSwitcher />
+                    </Suspense>
                     <ThemeToggle />
                     {account}
                 </nav>

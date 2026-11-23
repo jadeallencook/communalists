@@ -43,16 +43,17 @@ The prototype's feature docs now describe **one possible configuration** of the 
 
 ## Decided (2026-11-21)
 
-| Question                | Decision                                                                                                                                                                       |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Organization subdomains | Wildcard `*.communalists.com` on Vercel. **DNS moves from Squarespace to Vercel nameservers** (wildcards need Vercel DNS); email, DKIM and Google records are recreated there. |
-| "In their area"         | **Distance from a point.** Organizations set a location; users browse within a radius of themselves or a place they search. Needs geo queries (e.g. geohash) in Firestore.     |
-| Joining                 | **Each organization chooses:** open, request-to-join (moderators approve), or invite-only.                                                                                     |
-| First tool              | **Requests:** public form + internal kanban with assignment and comments, generalized from the prototype.                                                                      |
+| Question                | Decision                                                                                                                                                                                          |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Organization addresses  | **`communalists.com/org/{handle}`** (decided 2026-11-22, #22). Subdomains (`{handle}.communalists.com`) are optional and later; they'd need the wildcard and DNS move below.                      |
+| Organization subdomains | (Later, optional.) Wildcard `*.communalists.com` on Vercel. **DNS moves from Squarespace to Vercel nameservers** (wildcards need Vercel DNS); email, DKIM and Google records are recreated there. |
+| "In their area"         | **Distance from a point.** Organizations set a location; users browse within a radius of themselves or a place they search. Needs geo queries (e.g. geohash) in Firestore.                        |
+| Joining                 | **Each organization chooses:** open, request-to-join (moderators approve), or invite-only.                                                                                                        |
+| First tool              | **Requests:** public form + internal kanban with assignment and comments, generalized from the prototype.                                                                                         |
 
 ## Open questions
 
-- Roles beyond member and moderator (e.g. owner, admin), and what each can do.
-- Which subdomains are reserved (`www`, `storybook`, `app`, `api`, …) and the rules for slugs.
+Roles, handle rules, reserved words and organization fields were settled on 2026-11-22: see [features/16](features/16-organizations.md).
+
 - Whether tools are a fixed set the platform provides.
 - Platform-level moderation, now that anyone can create an organization (reporting, abuse, slug squatting).

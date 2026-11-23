@@ -209,12 +209,162 @@
         "greeting": "Hola, {name}",
         "area": "Tu zona: {location}",
         "organizationsTitle": "Tus organizaciones",
-        "emptyTitle": "Todavía no te has unido a ninguna organización",
-        "emptyBody": "Cuando te unas a una o crees la tuya, sus herramientas aparecerán aquí.",
-        "nextTitle": "Próximamente",
+        "emptyTitle": "Todavía no estás en ninguna organización",
+        "emptyBody": "Crea una para tu grupo. Pronto podrás buscar y unirte a organizaciones cerca de ti.",
         "nextBrowse": "Explora organizaciones de ayuda mutua cerca de ti",
-        "nextCreate": "Crea una organización para tu grupo",
-        "comingSoon": "Próximamente"
+        "comingSoon": "Próximamente",
+        "create": "Crear organización",
+        "ownedLimit": "Eres propietario de 5 organizaciones, el máximo permitido.",
+        "findTitle": "Organizaciones cerca de ti"
+    },
+    "Organizations": {
+        "focusAreas": {
+            "general": "General",
+            "food": "Alimentos",
+            "housing": "Vivienda",
+            "transportation": "Transporte",
+            "technology": "Tecnología",
+            "health": "Salud",
+            "childcare": "Cuidado infantil",
+            "education": "Educación",
+            "clothing": "Ropa",
+            "lending": "Préstamos",
+            "disasterRelief": "Ayuda en desastres",
+            "legal": "Legal",
+            "labor": "Trabajo",
+            "arts": "Arte",
+            "hobbies": "Pasatiempos",
+            "faith": "Fe",
+            "animals": "Animales",
+            "environment": "Medio ambiente",
+            "other": "Otro"
+        },
+        "roles": {
+            "owner": "Propietario",
+            "moderator": "Moderador",
+            "member": "Miembro"
+        },
+        "reach": {
+            "local": {
+                "label": "Local",
+                "description": "Personas a cierta distancia de tu ciudad"
+            },
+            "national": {
+                "label": "Nacional",
+                "description": "Cualquier persona en tu país"
+            },
+            "international": {
+                "label": "Internacional",
+                "description": "Cualquier persona, en cualquier lugar"
+            }
+        },
+        "reachSummary": {
+            "local": "A {miles} mi de {place}",
+            "national": "En todo el país · con sede en {place}",
+            "international": "Internacional · con sede en {place}"
+        },
+        "joinPolicies": {
+            "request": {
+                "label": "Solicitar unirse",
+                "description": "Las personas lo piden; propietarios y moderadores aprueban"
+            },
+            "open": {
+                "label": "Abierta",
+                "description": "Cualquiera puede unirse de inmediato"
+            },
+            "invite": {
+                "label": "Solo con invitación",
+                "description": "Solo pueden unirse las personas que invites"
+            }
+        },
+        "visibilities": {
+            "listed": {
+                "label": "Visible",
+                "description": "Aparece cuando la gente busca organizaciones"
+            },
+            "unlisted": {
+                "label": "No listada",
+                "description": "Solo quienes tengan el enlace pueden encontrarla"
+            }
+        },
+        "form": {
+            "aboutTitle": "Información",
+            "whereTitle": "Dónde",
+            "joiningTitle": "Unirse",
+            "linksTitle": "Enlaces",
+            "name": "Nombre",
+            "nameHint": "El nombre de tu grupo, como lo conoce la gente.",
+            "handle": "Identificador",
+            "handleHint": "Tu dirección pública. Letras minúsculas, números y guiones.",
+            "handleAvailable": "Disponible.",
+            "focusAreas": "¿En qué trabaja tu grupo?",
+            "focusAreasHint": "Elige hasta {max}.",
+            "description": "Descripción",
+            "descriptionHint": "Qué hace tu grupo y para quién. Hasta 2000 caracteres.",
+            "locationHint": "Dónde tiene su sede tu grupo. Solo la ciudad; nunca una dirección.",
+            "reach": "Alcance",
+            "radius": "Radio",
+            "radiusOption": "{miles} millas",
+            "languages": "Idiomas",
+            "languagesHint": "Los idiomas en los que tu grupo puede ayudar.",
+            "joinPolicy": "Quién puede unirse",
+            "visibility": "Visibilidad",
+            "website": "Sitio web",
+            "websiteHint": "Opcional.",
+            "contactEmail": "Correo de contacto",
+            "contactEmailHint": "Opcional. Se muestra públicamente en tu página.",
+            "socials": "Redes sociales",
+            "socialsHint": "Opcional. Un enlace por plataforma.",
+            "socialPlatform": "Plataforma",
+            "socialUrl": "Enlace de {platform}",
+            "socialRemove": "Quitar el enlace de {platform}",
+            "socialAdd": "Agregar un enlace",
+            "submit": "Crear organización",
+            "submitting": "Creando…"
+        },
+        "new": {
+            "metaTitle": "Crear una organización",
+            "title": "Crear una organización",
+            "description": "Crea un espacio para tu grupo. Serás su propietario."
+        },
+        "errors": {
+            "required": "Este campo es obligatorio.",
+            "tooShort": "Es demasiado corto.",
+            "tooLong": "Es demasiado largo.",
+            "handleTooShort": "Usa al menos 3 caracteres.",
+            "handleTooLong": "Usa 30 caracteres o menos.",
+            "handleFormat": "Usa letras minúsculas, números y guiones simples; empieza y termina con una letra o un número.",
+            "handleReserved": "Ese identificador está reservado. Prueba otro.",
+            "handleTaken": "Ese identificador ya está en uso. Prueba otro.",
+            "focusAreasRequired": "Elige al menos una.",
+            "focusAreasTooMany": "Elige hasta {max}.",
+            "placeRequired": "Elige tu ciudad de la lista.",
+            "placeNotFound": "No encontramos esa ciudad. Vuelve a elegirla de la lista.",
+            "radiusRequired": "Elige un radio.",
+            "languagesRequired": "Elige al menos un idioma.",
+            "invalidUrl": "Escribe una dirección web, como ejemplo.org.",
+            "invalidEmail": "Ingresa un correo electrónico válido.",
+            "socialMismatch": "Uno de los enlaces no es de la plataforma elegida.",
+            "socialDuplicate": "Agrega cada plataforma solo una vez.",
+            "ownedLimit": "Ya eres propietario de 5 organizaciones, el máximo permitido.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        },
+        "page": {
+            "members": "{count, plural, one {# miembro} other {# miembros}}",
+            "website": "Sitio web",
+            "contact": "Contacto",
+            "languages": "Idiomas",
+            "links": "Enlaces",
+            "membersTitle": "Espacio de miembros",
+            "membersBody": "Eres {role}. Aquí aparecerán las herramientas de tu organización.",
+            "roleOwner": "propietario",
+            "roleModerator": "moderador",
+            "roleMember": "miembro",
+            "joinComingSoon": "Pronto podrás unirte.",
+            "unlisted": "No listada: solo quienes tengan el enlace pueden encontrar esta página.",
+            "noDescription": "Todavía no hay descripción.",
+            "focusAreas": "Áreas de trabajo"
+        }
     },
     "LocationField": {
         "country": "País",

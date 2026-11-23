@@ -18,6 +18,34 @@ Add an entry when you choose a framework or library, change the data model, add 
 
 ## Decisions
 
+### 23. Organizations: focus areas instead of a type, stored as permanent keys — 2026-11-23
+
+**Status:** Accepted. Changes the "type" field in #22.
+**Context:** #22's single "type" list mixed two questions: what kind of group it is (tenant union, club, student group) and what it works on (food, a community fridge, disaster relief). Groups fit several choices, and a general mutual aid network had to pick one. The user also asked whether stored values should be readable keys or opaque IDs, so labels can change later.
+**Decision:**
+
+- Replace `type` with **`focusAreas`**: what the group works on, **1 to 3** from a fixed translated list of short labels (General, Food, Housing, Transportation, Technology, …, Other). Shortened the same day: one word where possible, choosing the broader word where one word narrows the meaning (Lending over Tools, Environment over Gardening), with keys renamed to match before anything shipped. The full list is in [features/16](features/16-organizations.md#focus-areas).
+- Drop "kind of group" for now; add it later as an optional field if browsing needs it.
+- Store **readable keys** (`food`, `disasterRelief`) and treat them as **permanent**: never rename or reuse one. Labels come from the message files, so wording can change freely. Retire a key by hiding it from forms (`RETIRED_FOCUS_AREAS`), not by deleting it. A test locks the key lists for focus areas, reach, join policy and visibility.
+
+**Alternatives:** Keep the mixed type list (confusing, and single-select forced general networks into one box); two fields, kind and focus (more for creators to fill in, and nobody browses by kind yet); single-select focus (doesn't fit groups that do several things); no cap (groups tick everything to show up in every search); opaque IDs (labels are already separate from keys, so IDs add nothing, and they make the database and logs unreadable; changing a key's meaning needs a migration either way).
+**Consequences:** Done before any real organizations existed, so no migration. The form uses controlled checkboxes that disable at the cap (`ChoiceGroup` gained `selected`/`max`); cards and profiles list the areas. Phase 2 filters by focus area. Docs updated: features/16, technical/data-model.
+
+### 22. Organizations: design, addresses, roles and limits — 2026-11-22
+
+**Status:** Accepted. Changes #10/#11's subdomain plan to path-based addresses first. The "type" field was replaced by focus areas in #23.
+**Context:** Organizations are the next feature and the core of the product. The prototype stored members as arrays on one organization ([features/08](features/08-organizations-and-membership.md)).
+**Decision:** Full design in [features/16](features/16-organizations.md):
+
+- **Address:** `communalists.com/org/{handle}`, with subdomains optional later.
+- **Fields:** name, unique handle, type (a fixed translated list plus Other), description, city-level location, reach (local 5–100 mi, national, international), languages, website, socials, public contact email, logo, join policy (default request-to-join), listed/unlisted.
+- **Membership:** one record per person per organization, with roles owner, moderator and member.
+- **Limits:** at least one owner per organization, and at most 5 organizations owned per person.
+- **Handles:** renames allowed (once per 30 days). No redirects; the old handle is held for 30 days so nobody else can claim it, so each organization holds at most one old handle.
+- **Deleting** archives the organization.
+  **Alternatives:** Subdomains first (blocked on the domain move); `/network/`, `/net/`, `/o/` paths; redirecting old handles (they pile up with every rename, and the user is fine with groups breaking their own links); member arrays on the organization (the prototype's approach, which couldn't reject, leave or promote, and sent member lists to everyone); free-text types (can't translate or filter); locking handles forever.
+  **Consequences:** No DNS work needed to launch organizations. Handle uniqueness needs a `handles/` collection written in the same transaction. Renaming an organization updates the copies on membership records. Logos bring in Firebase Storage. Built in four phases, starting with create and list.
+
 ### 21. Cache profile reads on the server, tagged per user — 2026-11-22
 
 **Status:** Accepted

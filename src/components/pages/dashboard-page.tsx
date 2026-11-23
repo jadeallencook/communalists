@@ -1,21 +1,43 @@
-import { UsersIcon } from 'lucide-react';
+import { PlusIcon, UsersIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
+import {
+    OrganizationCard,
+    type OrganizationCardProps,
+} from '@/components/molecules/organization-card';
+import { Link } from '@/i18n/navigation';
 
 export interface DashboardPageProps {
     name: string;
     /** The profile's city, e.g. "San Jose, California". */
     areaLabel?: string;
+    /** Organizations the user is an active member of. */
+    organizations: OrganizationCardProps[];
+    /** False once the user owns the most organizations allowed. */
+    canCreate: boolean;
 }
 
 /**
- * The signed-in home. For now: a greeting, the user's area, and an empty
- * "your organizations" state. Organizations and their tools (services) will
- * be listed here, and in the header next to Dashboard.
+ * The signed-in home: your organizations, creating one, and (soon) finding
+ * ones near you. A user can't do much until they're in an organization.
  */
-export function DashboardPage({ name, areaLabel }: DashboardPageProps) {
+export function DashboardPage({
+    name,
+    areaLabel,
+    organizations,
+    canCreate,
+}: DashboardPageProps) {
     const t = useTranslations('Dashboard');
+    const createButton = canCreate ? (
+        <Button asChild>
+            <Link href="/org/new">
+                <PlusIcon aria-hidden />
+                {t('create')}
+            </Link>
+        </Button>
+    ) : null;
 
     return (
         <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-4 py-12">
@@ -31,38 +53,52 @@ export function DashboardPage({ name, areaLabel }: DashboardPageProps) {
             </header>
 
             <div className="flex flex-col gap-3">
-                <h2 className="font-heading text-xl font-semibold">
-                    {t('organizationsTitle')}
-                </h2>
-                <div className="flex flex-col items-start gap-2 rounded-lg border border-dashed p-6">
-                    <UsersIcon
-                        aria-hidden
-                        className="size-5 text-muted-foreground"
-                    />
-                    <p className="font-medium">{t('emptyTitle')}</p>
-                    <p className="text-sm text-muted-foreground">
-                        {t('emptyBody')}
-                    </p>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                    <h2 className="font-heading text-xl font-semibold">
+                        {t('organizationsTitle')}
+                    </h2>
+                    {organizations.length > 0 && createButton}
                 </div>
+                {organizations.length > 0 ? (
+                    <ul className="flex flex-col gap-2">
+                        {organizations.map((org) => (
+                            <li key={org.handle}>
+                                <OrganizationCard {...org} />
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <div className="flex flex-col items-start gap-3 rounded-lg border border-dashed p-6">
+                        <UsersIcon
+                            aria-hidden
+                            className="size-5 text-muted-foreground"
+                        />
+                        <div className="flex flex-col gap-1">
+                            <p className="font-medium">{t('emptyTitle')}</p>
+                            <p className="text-sm text-muted-foreground">
+                                {t('emptyBody')}
+                            </p>
+                        </div>
+                        {createButton}
+                    </div>
+                )}
+                {!canCreate && (
+                    <p className="text-sm text-muted-foreground">
+                        {t('ownedLimit')}
+                    </p>
+                )}
             </div>
 
             <div className="flex flex-col gap-3">
                 <h2 className="font-heading text-xl font-semibold">
-                    {t('nextTitle')}
+                    {t('findTitle')}
                 </h2>
-                <ul className="flex flex-col gap-2">
-                    {[t('nextBrowse'), t('nextCreate')].map((item) => (
-                        <li
-                            key={item}
-                            className="flex items-center justify-between gap-4 rounded-lg border p-4"
-                        >
-                            <span>{item}</span>
-                            <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
-                                {t('comingSoon')}
-                            </span>
-                        </li>
-                    ))}
-                </ul>
+                <div className="flex items-center justify-between gap-4 rounded-lg border p-4">
+                    <span>{t('nextBrowse')}</span>
+                    <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
+                        {t('comingSoon')}
+                    </span>
+                </div>
             </div>
         </section>
     );

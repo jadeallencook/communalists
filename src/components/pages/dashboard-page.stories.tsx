@@ -11,7 +11,12 @@ const meta = {
     title: 'Pages/Dashboard',
     component: DashboardPage,
     parameters: { layout: 'fullscreen' },
-    args: { name: 'Ada Lovelace', areaLabel: 'San Jose, California' },
+    args: {
+        name: 'Ada Lovelace',
+        areaLabel: 'San Jose, California',
+        organizations: [],
+        canCreate: true,
+    },
     decorators: [
         (Story) => (
             <>
@@ -37,11 +42,54 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+/** New user: nothing joined yet, so the empty state leads with Create. */
+export const NoOrganizations: Story = {};
+
+export const WithOrganizations: Story = {
+    args: {
+        organizations: [
+            {
+                name: 'Oakland Auto Club',
+                handle: 'oakland-auto-club',
+                focusAreas: ['hobbies', 'transportation'],
+                role: 'member',
+            },
+            {
+                name: 'South Bay Mutual Aid',
+                handle: 'sbma',
+                focusAreas: ['general', 'food'],
+                role: 'owner',
+            },
+            {
+                name: 'Tenants of Alum Rock',
+                handle: 'alum-rock-tenants',
+                focusAreas: ['housing'],
+                role: 'moderator',
+            },
+        ],
+    },
+};
+
+/** Owns the most organizations allowed: no Create button, and a note why. */
+export const AtOwnershipLimit: Story = {
+    args: {
+        canCreate: false,
+        organizations: [
+            {
+                name: 'South Bay Mutual Aid',
+                handle: 'sbma',
+                focusAreas: ['general', 'food'],
+                role: 'owner',
+            },
+        ],
+    },
+};
+
 export const LongName: Story = {
     args: {
         name: 'Maria de los Ángeles Fernández-Villanueva',
         areaLabel: 'Rancho Santa Margarita, California',
     },
 };
+
 export const Loading: Story = { render: () => <DashboardPageLoading /> };

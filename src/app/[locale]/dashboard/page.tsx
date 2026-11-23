@@ -7,6 +7,8 @@ import {
     DashboardPageLoading,
 } from '@/components/pages/dashboard-page';
 import { requireAccount } from '@/lib/auth/require-account';
+import { getMemberships } from '@/lib/organizations';
+import { MAX_OWNED_ORGANIZATIONS } from '@/lib/organizations/options';
 
 export async function generateMetadata(): Promise<Metadata> {
     const t = await getTranslations('Dashboard');
@@ -24,11 +26,20 @@ export default function Page() {
 }
 
 async function DashboardContainer() {
-    const { profile } = await requireAccount('/dashboard');
+    const { user, profile } = await requireAccount('/dashboard');
+    const memberships = await getMemberships(user.uid);
+    const owned = memberships.filter((m) => m.role === 'owner').length;
     return (
         <DashboardPage
             name={profile.displayName}
             areaLabel={profile.location.label}
+            organizations={memberships.map(({ org, role }) => ({
+                name: org.name,
+                handle: org.handle,
+                focusAreas: org.focusAreas,
+                role,
+            }))}
+            canCreate={owned < MAX_OWNED_ORGANIZATIONS}
         />
     );
 }
