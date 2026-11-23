@@ -52,6 +52,12 @@ export interface DirectorySearch extends DirectoryFilters {
 }
 
 export const DEFAULT_RADIUS_MILES: RadiusMiles = 25;
+/**
+ * Where /find starts for visitors who aren't signed in and haven't chosen a
+ * city: San Francisco (GeoNames 5391959). The page says it's a starting
+ * point, so nobody mistakes it for "nothing near you".
+ */
+export const DEFAULT_PLACE = { country: 'US', placeId: '5391959' } as const;
 /** Local candidates are read once out to this distance, then narrowed by the radius filter. */
 export const MAX_RADIUS_MILES: RadiusMiles = 100;
 const KM_PER_MILE = 1.609344;

@@ -5,45 +5,44 @@ import { Skeleton } from '@/components/atoms/skeleton';
 import { Link } from '@/i18n/navigation';
 
 export interface HeroActionsProps {
-    /** Signed in: one button to the dashboard. Signed out: create account and sign in. */
+    /** Both lead with Browse organizations; the second button is Create account (signed out) or the dashboard (signed in). */
     signedIn: boolean;
 }
 
-const onPhoto = 'bg-white text-neutral-950 hover:bg-white/90';
+// Styled to sit on the photo. The secondary button has a visible white
+// border, so it reads as a button without relying on colour.
+const primary = 'bg-white text-neutral-950 hover:bg-white/90';
+const secondary =
+    'border-white/80 bg-transparent text-white hover:bg-white/10 hover:text-white dark:border-white/80 dark:bg-transparent';
 
-/** The homepage banner's buttons, styled to sit on the photo. */
+/** The homepage banner's buttons: browse organizations first, then create an account (or go to the dashboard). */
 export function HeroActions({ signedIn }: HeroActionsProps) {
     const t = useTranslations('Home');
-
-    if (signedIn) {
-        return (
-            <Button asChild size="lg" className={onPhoto}>
-                <Link href="/dashboard">{t('dashboard')}</Link>
-            </Button>
-        );
-    }
     return (
         <div className="flex flex-wrap items-center gap-3">
-            <Button asChild size="lg" className={onPhoto}>
-                <Link href="/sign-up">{t('cta')}</Link>
+            <Button asChild size="lg" className={primary}>
+                <Link href="/find">{t('browse')}</Link>
             </Button>
-            <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-white/80 bg-transparent text-white hover:bg-white/10 hover:text-white dark:border-white/80 dark:bg-transparent"
-            >
-                <Link href="/sign-in">{t('signIn')}</Link>
+            <Button asChild size="lg" variant="outline" className={secondary}>
+                {signedIn ? (
+                    <Link href="/dashboard">{t('dashboard')}</Link>
+                ) : (
+                    <Link href="/sign-up">{t('cta')}</Link>
+                )}
             </Button>
         </div>
     );
 }
 
 /**
- * Shown while the session is checked: a button-sized skeleton on the photo, at
- * the buttons' height so the banner doesn't jump. One block, because signed in
- * and signed out both lead with one filled button.
+ * Shown while the session is checked: two button-sized skeletons on the
+ * photo, the same size as the buttons, so the banner doesn't jump.
  */
 export function HeroActionsPlaceholder() {
-    return <Skeleton className="h-10 w-40 bg-white/25" />;
+    return (
+        <div className="flex flex-wrap items-center gap-3" aria-hidden>
+            <Skeleton className="h-10 w-52 bg-white/25" />
+            <Skeleton className="h-10 w-36 bg-white/15" />
+        </div>
+    );
 }

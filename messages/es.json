@@ -63,7 +63,7 @@
             "title": "¿Listo para organizarte?",
             "body": "Es gratis y solo toma un minuto."
         },
-        "signIn": "Iniciar sesión"
+        "browse": "Explorar organizaciones"
     },
     "Footer": {
         "developedBy": "Desarrollado por voluntarios",
@@ -241,7 +241,8 @@
         "createPrompt": "¿No ves tu grupo? Ponlo en el mapa.",
         "focusAreas": "Áreas de trabajo",
         "languages": "Idiomas",
-        "create": "Crear organización"
+        "create": "Crear organización",
+        "defaultCity": "Mostrando organizaciones cerca de {city} como punto de partida. Elige tu ciudad arriba para ver lo que hay cerca de ti."
     },
     "Organizations": {
         "focusAreas": {

@@ -63,7 +63,7 @@
             "title": "Sẵn sàng tổ chức chưa?",
             "body": "Miễn phí và chỉ mất một phút."
         },
-        "signIn": "Đăng nhập"
+        "browse": "Xem các tổ chức"
     },
     "Footer": {
         "developedBy": "Được phát triển bởi tình nguyện viên",
@@ -241,7 +241,8 @@
         "createPrompt": "Không thấy nhóm của bạn? Hãy đưa nhóm lên bản đồ.",
         "focusAreas": "Lĩnh vực hoạt động",
         "languages": "Ngôn ngữ sử dụng",
-        "create": "Tạo tổ chức"
+        "create": "Tạo tổ chức",
+        "defaultCity": "Đang hiển thị các tổ chức gần {city} để bắt đầu. Hãy chọn thành phố của bạn ở trên để xem những gì gần bạn."
     },
     "Organizations": {
         "focusAreas": {

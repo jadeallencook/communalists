@@ -63,7 +63,7 @@
             "title": "Ready to organize?",
             "body": "It's free, and it only takes a minute."
         },
-        "signIn": "Sign in"
+        "browse": "Browse organizations"
     },
     "Footer": {
         "developedBy": "Developed by volunteers",
@@ -241,7 +241,8 @@
         "createPrompt": "Don't see your group? Put it on the map.",
         "focusAreas": "Focus areas",
         "languages": "Languages spoken",
-        "create": "Create organization"
+        "create": "Create organization",
+        "defaultCity": "Showing organizations near {city}, a starting point. Choose your city above to see what's near you."
     },
     "Organizations": {
         "focusAreas": {

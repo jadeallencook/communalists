@@ -20,5 +20,5 @@ type Story = StoryObj<typeof meta>;
 
 export const SignedOut: Story = {};
 export const SignedIn: Story = { args: { signedIn: true } };
-/** While the session is checked: a skeleton the buttons' height. */
+/** While the session is checked: two skeletons the size of the buttons. */
 export const Loading: Story = { render: () => <HeroActionsPlaceholder /> };

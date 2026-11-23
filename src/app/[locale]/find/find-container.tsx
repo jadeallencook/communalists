@@ -26,11 +26,14 @@ export function FindContainer({
     place,
     results,
     canCreate,
+    defaultCity,
 }: {
     search: DirectorySearch;
     place: PlaceOption | null;
     results: DirectoryResults | null;
     canCreate: boolean;
+    /** The city is the default, not one the visitor chose. */
+    defaultCity: boolean;
 }) {
     const locale = useLocale();
     const router = useRouter();
@@ -73,16 +76,19 @@ export function FindContainer({
                             (data.get(key) as string | null) ?? undefined;
                         const list = (key: string) =>
                             data.getAll(key) as string[];
-                        go(
-                            parseDirectorySearch({
-                                country: text('country'),
-                                placeId: text('placeId'),
-                                radius: text('radius'),
-                                focusAreas: list('focusAreas'),
-                                languages: list('languages'),
-                                reach: list('reach'),
-                            })
-                        );
+                        const next = parseDirectorySearch({
+                            country: text('country'),
+                            placeId: text('placeId'),
+                            radius: text('radius'),
+                            focusAreas: list('focusAreas'),
+                            languages: list('languages'),
+                            reach: list('reach'),
+                        });
+                        // Still on the default city: keep it out of the URL,
+                        // so it stays labelled as a starting point.
+                        if (defaultCity && next.placeId === place?.id)
+                            next.placeId = undefined;
+                        go(next);
                     }}
                 />
             }
@@ -92,6 +98,7 @@ export function FindContainer({
             reach={search.reach}
             pending={pending}
             canCreate={canCreate}
+            defaultCity={defaultCity}
         />
     );
 }

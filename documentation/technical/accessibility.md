@@ -50,7 +50,7 @@
 
 ## Known gaps (fix list, 2026-11-23)
 
-**Fixed 2026-11-23:** the members page squeezed names to one letter per line on phones (now stacked), its actions were borderless text (now outlined, red for remove and ban), and its repeated buttons didn't name the person (now "Remove: Luis Hernández"). Control borders were 1.26:1 in light mode and the focus ring 2.6:1 (now the `control` and `ring` tokens, measured: outlines 4.3:1 light / 5.4:1 dark, focus ring 7.5:1 / 10.6:1, role labels 18:1 / 14.5:1, small grey text 4.74:1 / 7.66:1). The join panel's Leave and the homepage's Sign in are outlined too.
+**Fixed 2026-11-23:** the members page squeezed names to one letter per line on phones (now stacked), its actions were borderless text (now outlined, red for remove and ban), and its repeated buttons didn't name the person (now "Remove: Luis Hernández"). Control borders were 1.26:1 in light mode and the focus ring 2.6:1 (now the `control` and `ring` tokens, measured: outlines 4.3:1 light / 5.4:1 dark, focus ring 7.5:1 / 10.6:1, role labels 18:1 / 14.5:1, small grey text 4.74:1 / 7.66:1). The join panel's Leave, the homepage banner's secondary button and the header's Sign in are outlined too.
 
 Still to fix:
 
@@ -58,5 +58,5 @@ Still to fix:
 - **/find:** after filters change, the new result counts aren't announced.
 - **Skeletons and spinners** pulse regardless of reduced-motion settings.
 - **Contrast** measured on the members page only; other pages use the same tokens but haven't been measured one by one.
-- **Header** links (Sign in, Dashboard) are borderless `ghost` buttons. That's the common pattern for navigation, but worth a check with users.
+- **Header:** the signed-in Dashboard link is still a borderless `ghost` button (common for navigation, and it's marked when current). Sign in is outlined.
 - **The Storybook a11y check only reports** (`a11y: { test: 'todo' }`); it doesn't fail anything, and stories aren't run in CI.

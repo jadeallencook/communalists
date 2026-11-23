@@ -57,7 +57,7 @@ General · Food · Housing · Transportation · Technology · Health · Childcar
 
 `/find` (public, in all four languages) and a preview on the dashboard. Only **listed, active** organizations appear ([decision #26](../decisions.md)).
 
-- **From a city:** the visitor's chosen city, or for a signed-in visitor with none chosen, their profile's city. Signed-out visitors pick one with the same picker as account setup.
+- **From a city:** the visitor's chosen city; otherwise a signed-in visitor's profile city; otherwise **San Francisco** (`DEFAULT_PLACE`, the user's choice 2026-11-23), with a note that it's a starting point and to choose their own city. The default stays out of the URL until they pick a city, so the note stays while they filter. The homepage banner's main button, **Browse organizations**, leads here.
 - **Distance** (5, 10, 25, 50 or 100 mi; 25 by default) applies to **local** groups: every local group **based** within that distance shows, closest first. The group's own service radius isn't checked (the user's call, 2026-11-23: more results, and people can judge for themselves). This replaces the earlier plan of checking each group's radius.
 - **Nationwide** groups show when they're based in the visitor's country, and **international** groups always. Both are sorted biggest first.
 - **Filters:** groups that are local, national or international (all by default; choosing none means all), focus areas, languages spoken. Focus areas and languages match if a group has **any** of the chosen ones.

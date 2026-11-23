@@ -63,7 +63,7 @@
             "title": "准备好组织起来了吗？",
             "body": "完全免费，只需一分钟。"
         },
-        "signIn": "登录"
+        "browse": "浏览组织"
     },
     "Footer": {
         "developedBy": "由志愿者开发",
@@ -241,7 +241,8 @@
         "createPrompt": "没有看到你的团体？把它加到地图上吧。",
         "focusAreas": "工作领域",
         "languages": "使用的语言",
-        "create": "创建组织"
+        "create": "创建组织",
+        "defaultCity": "先显示{city}附近的组织。在上方选择你的城市，查看你附近的组织。"
     },
     "Organizations": {
         "focusAreas": {

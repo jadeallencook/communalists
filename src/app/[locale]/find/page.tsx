@@ -10,6 +10,7 @@ import {
     getDirectoryNational,
 } from '@/lib/organizations';
 import {
+    DEFAULT_PLACE,
     filterDirectory,
     parseDirectorySearch,
 } from '@/lib/organizations/directory';
@@ -23,8 +24,9 @@ export async function generateMetadata(): Promise<Metadata> {
     return { title: t('metaTitle'), description: t('intro') };
 }
 
-// Public. The search lives in the URL (shareable); signed-in visitors with no
-// city in the URL search from their profile's city. Reads the URL and the
+// Public. The search lives in the URL (shareable); with no city in the URL,
+// signed-in visitors search from their profile's city and everyone else from
+// DEFAULT_PLACE (San Francisco), which the page labels as a starting point. Reads the URL and the
 // session, so it streams behind <Suspense>. Design: features/16 →
 // "Finding organizations".
 export default function Page({ searchParams }: PageProps<'/[locale]/find'>) {
@@ -40,12 +42,18 @@ async function FindServerContainer({
 }: Pick<PageProps<'/[locale]/find'>, 'searchParams'>) {
     const [params, user] = await Promise.all([searchParams, getSessionUser()]);
     const search = parseDirectorySearch(params);
+    // No city in the URL: the profile's city, or else the default one.
     if (!search.placeId && user) {
         const home = (await getUserProfile(user.uid))?.location;
         if (home) {
             search.country = home.country;
             search.placeId = home.placeId;
         }
+    }
+    const usingDefault = !search.placeId;
+    if (usingDefault) {
+        search.country = DEFAULT_PLACE.country;
+        search.placeId = DEFAULT_PLACE.placeId;
     }
     const place = search.placeId
         ? getPlace(search.country, search.placeId)
@@ -81,6 +89,7 @@ async function FindServerContainer({
             place={place ? { id: place.id, label: place.label } : null}
             results={results}
             canCreate={!!user}
+            defaultCity={usingDefault && !!place}
         />
     );
 }

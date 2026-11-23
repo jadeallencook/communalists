@@ -14,9 +14,11 @@ export function SignedOutLinks({ current }: SignedOutLinksProps) {
     const t = useTranslations('HeaderLinks');
     return (
         <>
+            {/* Outlined, like the banner's secondary button: it reads as a
+                button without relying on colour. */}
             <Button
                 asChild
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 className="aria-[current=page]:bg-muted"
             >

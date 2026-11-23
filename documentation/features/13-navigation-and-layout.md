@@ -40,7 +40,7 @@ Translated, four lines: "Developed by Volunteers / **San Francisco Bay Area** / 
 - **Signed out:** Sign in and Create account, always visible; the current page's link is marked active.
 - **Signed in:** a Dashboard link, plus an account menu (initials → name, Account settings, Sign out). On phones, Dashboard and Create account fold away; Dashboard moves into the menu.
 - **Active link:** marked with `aria-current` (Dashboard on the dashboard, Sign in / Create account on their pages).
-- **Homepage banner:** "Go to your dashboard" when signed in, instead of Create account / Sign in; the closing sign-up band is hidden.
+- **Homepage banner:** **Browse organizations** (to `/find`) as the main button, then **Create account** (outlined) when signed out or **Go to your dashboard** when signed in (2026-11-23). Sign in lives in the header, as an outlined button. Signed in, the closing sign-up band is hidden.
 - **Not built:** dashboard sub-navigation (the prototype's Overview / Requests / Settings tabs return with organizations); a full mobile drawer (not needed while the header has so few links).
 
 The rest of this section is the original advice, kept for reference:

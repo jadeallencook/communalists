@@ -27,6 +27,8 @@ export interface FindOrganizationsPageProps {
     pending?: boolean;
     /** Offer "Create organization" (signed in). */
     canCreate?: boolean;
+    /** The city is the default starting point, not the visitor's: say so. */
+    defaultCity?: boolean;
 }
 
 /** Search for organizations: filters beside results grouped by reach. */
@@ -38,6 +40,7 @@ export function FindOrganizationsPage({
     reach,
     pending = false,
     canCreate = false,
+    defaultCity = false,
 }: FindOrganizationsPageProps) {
     const t = useTranslations('Find');
 
@@ -65,6 +68,12 @@ export function FindOrganizationsPage({
                     <p role="status" className="sr-only">
                         {pending ? t('updating') : ''}
                     </p>
+                    {defaultCity && cityLabel && (
+                        <Notice
+                            icon={<MapPinIcon />}
+                            text={t('defaultCity', { city: cityLabel })}
+                        />
+                    )}
                     {results === null ? (
                         <Notice icon={<MapPinIcon />} text={t('chooseCity')} />
                     ) : (

@@ -141,6 +141,15 @@ export const NoCity: Story = {
     args: { results: null, cityLabel: undefined, canCreate: false },
 };
 
+/** Signed out with no city chosen: San Francisco as a labelled starting point. */
+export const DefaultCity: Story = {
+    args: {
+        cityLabel: 'San Francisco, California',
+        defaultCity: true,
+        canCreate: false,
+    },
+};
+
 /** Nothing matches the filters. */
 export const NoMatches: Story = {
     args: { results: { local: [], national: [], international: [] } },
