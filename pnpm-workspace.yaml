@@ -12,6 +12,9 @@ allowBuilds:
   '@swc/core': false
   # Postinstall not needed for firebase-admin / gRPC usage.
   protobufjs: false
+  # Native regex addon, optional for the Hosting emulator (superstatic falls
+  # back to JS RegExp). Comes with firebase-tools; we don't emulate Hosting.
+  re2: false
 
 # Keep pnpm's minimum release age (supply-chain protection) intact. If a tool
 # adds `minimumReleaseAgeExclude` entries, pin to an older version instead.
