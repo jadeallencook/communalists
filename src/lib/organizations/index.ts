@@ -1,14 +1,21 @@
 import 'server-only';
 
 import { FieldValue } from 'firebase-admin/firestore';
+import { geohashQueryBounds } from 'geofire-common';
 import { cacheLife, cacheTag } from 'next/cache';
 import { cache } from 'react';
 
 import { getAdminDb } from '@/lib/firebase/admin';
 import { logRead } from '@/lib/firebase/read-log';
 import type { GeneralArea } from '@/lib/places';
+import type { CountryCode } from '@/lib/places/types';
 import type { OrganizationInput } from '@/lib/validation/organization';
 
+import {
+    MAX_RADIUS_MILES,
+    distanceMiles,
+    type DirectoryOrganization,
+} from './directory';
 import {
     MAX_OWNED_ORGANIZATIONS,
     milesToKm,
@@ -73,6 +80,8 @@ const membershipId = (orgId: string, uid: string) => `${orgId}_${uid}`;
 export const orgTag = (orgId: string) => `org:${orgId}`;
 export const handleTag = (handle: string) => `handle:${handle}`;
 export const membershipsTag = (uid: string) => `memberships:${uid}`;
+/** Every directory listing. Cleared when an organization is created, or changes how it's listed. */
+export const DIRECTORY_TAG = 'directory';
 
 /** Only the plain fields: cached values can't hold Firestore Timestamps. */
 function toOrganization(
@@ -260,4 +269,109 @@ export async function createOrganization(
         });
         return { ok: true, orgId: orgRef.id, handle: input.handle } as const;
     });
+}
+
+// --- Directory (finding organizations). Listed, active groups only. Each
+// read is cached under DIRECTORY_TAG; filtering happens in memory
+// (./directory.ts), so the queries need no composite indexes.
+
+function toDirectoryOrganization(
+    id: string,
+    data: FirebaseFirestore.DocumentData
+): DirectoryOrganization | null {
+    if (data.status !== 'active' || data.visibility !== 'listed') return null;
+    return {
+        id,
+        name: data.name,
+        handle: data.handle,
+        focusAreas: data.focusAreas ?? [],
+        description: data.description ?? '',
+        location: {
+            label: data.location.label,
+            country: data.location.country,
+            lat: data.location.lat,
+            lng: data.location.lng,
+        },
+        reach: data.reach.scope,
+        languages: data.languages ?? [],
+        joinPolicy: data.joinPolicy,
+        memberCount: data.memberCount ?? 0,
+    };
+}
+
+/**
+ * Local groups based within MAX_RADIUS_MILES of a point, cached per city.
+ * Geohash ranges around the point (geofire's bounds), then exact distance.
+ */
+export async function getDirectoryLocal(origin: {
+    placeId: string;
+    lat: number;
+    lng: number;
+}): Promise<DirectoryOrganization[]> {
+    'use cache';
+    cacheTag(DIRECTORY_TAG);
+    cacheLife('hours');
+    const bounds = geohashQueryBounds(
+        [origin.lat, origin.lng],
+        MAX_RADIUS_MILES * 1609.344
+    );
+    const snapshots = await Promise.all(
+        bounds.map(([start, end]) =>
+            organizations()
+                .orderBy('location.geohash')
+                .startAt(start)
+                .endAt(end)
+                .get()
+        )
+    );
+    const found: DirectoryOrganization[] = [];
+    for (const snapshot of snapshots) {
+        logRead('organizations', Math.max(snapshot.size, 1));
+        for (const doc of snapshot.docs) {
+            const org = toDirectoryOrganization(doc.id, doc.data());
+            if (
+                org?.reach === 'local' &&
+                distanceMiles(origin, org.location) <= MAX_RADIUS_MILES
+            )
+                found.push(org);
+        }
+    }
+    return found;
+}
+
+/** Nationwide groups based in this country, cached per country. */
+export async function getDirectoryNational(
+    country: CountryCode
+): Promise<DirectoryOrganization[]> {
+    'use cache';
+    cacheTag(DIRECTORY_TAG);
+    cacheLife('hours');
+    const snapshot = await organizations()
+        .where('reach.scope', '==', 'national')
+        .where('location.country', '==', country)
+        .where('status', '==', 'active')
+        .where('visibility', '==', 'listed')
+        .get();
+    logRead('organizations', Math.max(snapshot.size, 1));
+    return snapshot.docs.flatMap(
+        (doc) => toDirectoryOrganization(doc.id, doc.data()) ?? []
+    );
+}
+
+/** International groups, cached. */
+export async function getDirectoryInternational(): Promise<
+    DirectoryOrganization[]
+> {
+    'use cache';
+    cacheTag(DIRECTORY_TAG);
+    cacheLife('hours');
+    const snapshot = await organizations()
+        .where('reach.scope', '==', 'international')
+        .where('status', '==', 'active')
+        .where('visibility', '==', 'listed')
+        .get();
+    logRead('organizations', Math.max(snapshot.size, 1));
+    return snapshot.docs.flatMap(
+        (doc) => toDirectoryOrganization(doc.id, doc.data()) ?? []
+    );
 }

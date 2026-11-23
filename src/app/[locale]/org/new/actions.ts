@@ -7,6 +7,7 @@ import { isSetupComplete } from '@/lib/account-setup';
 import { getSessionUser } from '@/lib/auth/session';
 import {
     createOrganization,
+    DIRECTORY_TAG,
     handleTag,
     membershipsTag,
 } from '@/lib/organizations';
@@ -76,9 +77,10 @@ export async function createOrganizationAction(
             : { formError: 'ownedLimit', values };
     }
 
-    // The dashboard lists it, and the handle now resolves.
+    // The dashboard lists it, the handle now resolves, and /find shows it.
     updateTag(membershipsTag(user.uid));
     updateTag(handleTag(result.handle));
+    updateTag(DIRECTORY_TAG);
     redirect({ href: `/org/${result.handle}`, locale });
     return {};
 }

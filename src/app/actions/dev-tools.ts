@@ -10,7 +10,12 @@ import { DEFAULT_NEXT_PATH } from '@/lib/account-setup';
 import { signInWithPassword } from '@/lib/auth/password-sign-in';
 import { startSession } from '@/lib/auth/session';
 import { isLocalDev, isTestAccount, SEEDED, TEST_PASSWORD } from '@/lib/dev';
-import { handleTag, membershipsTag, orgTag } from '@/lib/organizations';
+import {
+    DIRECTORY_TAG,
+    handleTag,
+    membershipsTag,
+    orgTag,
+} from '@/lib/organizations';
 import { userTag } from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
@@ -71,6 +76,7 @@ export async function resetTestData(): Promise<ResetTestDataState> {
         updateTag(orgTag(id));
         updateTag(handleTag(handle));
     }
+    updateTag(DIRECTORY_TAG);
     refresh();
     return { status: 'done', at: Date.now() };
 }

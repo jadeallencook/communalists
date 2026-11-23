@@ -16,6 +16,8 @@ const meta = {
         areaLabel: 'San Jose, California',
         organizations: [],
         canCreate: true,
+        nearby: [],
+        nearbyRadiusMiles: 25,
     },
     decorators: [
         (Story) => (
@@ -65,6 +67,32 @@ export const WithOrganizations: Story = {
                 handle: 'alum-rock-tenants',
                 focusAreas: ['housing'],
                 role: 'moderator',
+            },
+        ],
+    },
+};
+
+/** Organizations near you that you're not in, closest first. */
+export const WithNearby: Story = {
+    args: {
+        nearby: [
+            {
+                name: 'Little Saigon Food Pantry',
+                handle: 'little-saigon-pantry',
+                focusAreas: ['food'],
+                detail: 'In San Jose, California',
+            },
+            {
+                name: 'Santa Clara Community Garden',
+                handle: 'sc-community-garden',
+                focusAreas: ['environment', 'food'],
+                detail: '3 mi away · Santa Clara, California',
+            },
+            {
+                name: 'Fremont Childcare Co-op',
+                handle: 'fremont-childcare',
+                focusAreas: ['childcare', 'education'],
+                detail: '15 mi away · Fremont, California',
             },
         ],
     },

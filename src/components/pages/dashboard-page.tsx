@@ -1,4 +1,4 @@
-import { PlusIcon, UsersIcon } from 'lucide-react';
+import { ArrowRightIcon, PlusIcon, UsersIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/atoms/button';
@@ -17,17 +17,24 @@ export interface DashboardPageProps {
     organizations: OrganizationCardProps[];
     /** False once the user owns the most organizations allowed. */
     canCreate: boolean;
+    /** The closest few local organizations the user isn't in, with distance in `detail`. */
+    nearby: OrganizationCardProps[];
+    /** How far "nearby" looked, for the empty message. */
+    nearbyRadiusMiles: number;
 }
 
 /**
- * The signed-in home: your organizations, creating one, and (soon) finding
- * ones near you. A user can't do much until they're in an organization.
+ * The signed-in home: your organizations, creating one, and a few
+ * organizations near you (all of them on /find). A user can't do much until
+ * they're in an organization.
  */
 export function DashboardPage({
     name,
     areaLabel,
     organizations,
     canCreate,
+    nearby,
+    nearbyRadiusMiles,
 }: DashboardPageProps) {
     const t = useTranslations('Dashboard');
     const createButton = canCreate ? (
@@ -93,12 +100,25 @@ export function DashboardPage({
                 <h2 className="font-heading text-xl font-semibold">
                     {t('findTitle')}
                 </h2>
-                <div className="flex items-center justify-between gap-4 rounded-lg border p-4">
-                    <span>{t('nextBrowse')}</span>
-                    <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
-                        {t('comingSoon')}
-                    </span>
-                </div>
+                {nearby.length > 0 ? (
+                    <ul className="flex flex-col gap-2">
+                        {nearby.map((org) => (
+                            <li key={org.handle}>
+                                <OrganizationCard {...org} />
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+                        {t('findEmpty', { miles: nearbyRadiusMiles })}
+                    </p>
+                )}
+                <Button asChild variant="outline" className="self-start">
+                    <Link href="/find">
+                        {t('findSeeAll')}
+                        <ArrowRightIcon aria-hidden />
+                    </Link>
+                </Button>
             </div>
         </section>
     );

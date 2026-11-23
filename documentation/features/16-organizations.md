@@ -2,7 +2,7 @@
 
 The heart of the platform: people create, find and join **organizations**, and an organization's tools only work for its members. This is the rebuild's design, agreed with the user on 2026-11-22 ([decision #22](../decisions.md)). It replaces the prototype's single hard-coded organization ([08](08-organizations-and-membership.md)). Read 08's "Gaps" for what went wrong there.
 
-**Status:** phase 1 built 2026-11-22, except the logo upload (next). See "Built" at the end.
+**Status:** phase 1 built 2026-11-22, except the logo upload. Finding organizations (the first half of phase 2) built 2026-11-23; joining is next. See "Built" at the end.
 
 ## What an organization has
 
@@ -54,13 +54,22 @@ General · Food · Housing · Transportation · Technology · Health · Childcar
 
 ## Finding organizations
 
-Browsing shows **listed, active** organizations:
+`/find` (public, in all four languages) and a preview on the dashboard. Only **listed, active** organizations appear ([decision #26](../decisions.md)).
 
-- **local:** within the organization's own radius of the visitor's city. It's a geohash range query around the visitor (up to the largest radius, 100 mi), then each organization's own radius is checked;
-- **national:** same country as the visitor;
-- **international:** everyone.
+- **From a city:** the visitor's chosen city, or for a signed-in visitor with none chosen, their profile's city. Signed-out visitors pick one with the same picker as account setup.
+- **Distance** (5, 10, 25, 50 or 100 mi; 25 by default) applies to **local** groups: every local group **based** within that distance shows, closest first. The group's own service radius isn't checked (the user's call, 2026-11-23: more results, and people can judge for themselves). This replaces the earlier plan of checking each group's radius.
+- **Nationwide** groups show when they're based in the visitor's country, and **international** groups always. Both are sorted biggest first.
+- **Filters:** groups that are local, national or international (all by default; choosing none means all), focus areas, languages spoken. Focus areas and languages match if a group has **any** of the chosen ones.
+- **Results are grouped** into "Near {city}", "Nationwide" and "International", each with a count and an empty message. Cards show focus areas and "4 mi away · Santa Clara, California" (or "In {city}" under a mile). Signed-in visitors also get a "Create organization" prompt.
+- **Live, in the URL:** each change replaces the URL (`/find?country=US&placeId=5392171&radius=50&focusAreas=food&languages=vi&reach=local`), so a search can be shared or bookmarked; defaults are left out. Old results dim while new ones load. Unknown or malformed values in the URL are ignored, never an error. Without JavaScript the form submits as a plain GET (though the city picker needs JavaScript).
+- **Dashboard:** "Find organizations near you" shows the 3 closest local groups within 25 mi that you're not already in, and links to `/find`.
 
-Filters: focus areas, languages spoken.
+**How it reads.** Three cached reads, all tagged `directory`, cleared when an organization is created (and by the dev toolbar's reset):
+
+- local groups within 100 mi of the city: geohash range queries on `location.geohash` (geofire's bounds), then exact distance. Cached per city, so the distance and other filters cost no reads;
+- nationwide groups in a country, and international groups: equality-only queries.
+
+Filtering and sorting happen in memory (`src/lib/organizations/directory.ts`), so no composite indexes are needed. This reads every group in a 100 mi circle once per city per cache lifetime, which is fine at today's size. With thousands of groups per region, add paging and push the reach and status filters into the queries (with indexes).
 
 ## Deleting
 
@@ -70,7 +79,8 @@ Owners can delete. It **archives**: data is kept, the page and listings disappea
 
 | Route                    | Who               | What                                                                                                     |
 | ------------------------ | ----------------- | -------------------------------------------------------------------------------------------------------- |
-| `/dashboard`             | Signed in         | **Your organizations** (cards), **Create organization**, and a way to find organizations near you        |
+| `/dashboard`             | Signed in         | **Your organizations** (cards), **Create organization**, and the closest organizations you're not in     |
+| `/find`                  | Anyone            | Find organizations from a city, with distance, reach, focus area and language filters                    |
 | `/org/new`               | Signed in         | Create form; the creator becomes owner                                                                   |
 | `/org/{handle}`          | Anyone            | Public profile (name, focus areas, description, location and reach, languages, links, logo, join button) |
 | `/org/{handle}` (member) | Members           | Plus a members-only home, where tools will appear                                                        |
@@ -81,7 +91,7 @@ Bare `communalists.com/org/{handle}` redirects to the visitor's language, like e
 ## Phases
 
 1. **Create and list:** the data model, create form with handle check, dashboard "Your organizations" plus "Create organization", the `/org/{handle}` page (public profile plus a member view), and the logo upload last.
-2. **Find and join:** "near you" browsing, joining by each policy, approving and denying requests.
+2. **Find and join:** "near you" browsing (built 2026-11-23), joining by each policy, approving and denying requests.
 3. **Manage:** edit profile, change handle (old one held 30 days, no redirect), promote, remove, leave, archive.
 4. **Then:** subdomains (after the domain move) and the first tool, Requests.
 
@@ -128,3 +138,18 @@ Bare `communalists.com/org/{handle}` redirects to the visitor's language, like e
   - Cards list focus areas in the UI language's list style ("General and Food"; Chinese "A、B和C"). Re-run 2026-11-23 after the switch to focus areas.
 - **In a real browser:** the dashboard, the organization page, and the create form (the handle suggested and checked live, a social link added, submitted, landing on the new page).
 - **Bug found and fixed:** American Sign Language (`ase`) showed as its raw code, because browsers don't name it. It now has a fallback name in all four languages, with a test that no offered language ever shows a bare code.
+
+## Built (finding, 2026-11-23)
+
+| Piece                                                                                  | Where                                                                                           |
+| -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Filters from the URL, filtering and sorting (pure, tested)                             | `src/lib/organizations/directory.ts`                                                            |
+| Cached reads: `getDirectoryLocal`, `getDirectoryNational`, `getDirectoryInternational` | `src/lib/organizations/index.ts`                                                                |
+| Page and live filters                                                                  | `src/app/[locale]/find/` (server container + `FindContainer`)                                   |
+| UI                                                                                     | `OrganizationFilters`, `FindOrganizationsPage`, `OrganizationCard` (`detail`), all in Storybook |
+
+**Verified 2026-11-23** against the seeded emulators:
+
+- **By URL:** San Jose at 25 mi gives 4 local groups (the unlisted tenants union never shows), and 50 mi adds Oakland and Berkeley. Food narrows to 3. Vietnamese with local only gives the 2 that list it. Oakland at 10 mi gives Oakland and Berkeley. The Spanish page loads.
+- **In a real browser, signed in as Thanh:** `/find` starts from her city. Choosing Housing updates the results and the URL. Switching the city to Berkeley keeps the filter. The dashboard shows the 2 closest groups she isn't in, and links to `/find`.
+- A production build passes (`/find` is partly prerendered).

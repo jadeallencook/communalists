@@ -11,6 +11,8 @@ export interface OrganizationCardProps {
     focusAreas: FocusArea[];
     /** The viewer's role, when they're a member. */
     role?: 'owner' | 'moderator' | 'member';
+    /** Replaces the `/org/{handle}` after the focus areas, e.g. "3 mi away · Santa Clara, California". */
+    detail?: string;
 }
 
 /** A link to one organization: initials, name, what it works on, and your role. */
@@ -19,6 +21,7 @@ export function OrganizationCard({
     handle,
     focusAreas,
     role,
+    detail,
 }: OrganizationCardProps) {
     const t = useTranslations('Organizations');
     const locale = useLocale();
@@ -42,7 +45,8 @@ export function OrganizationCard({
             <span className="flex min-w-0 flex-1 flex-col">
                 <span className="truncate font-medium">{name}</span>
                 <span className="truncate text-sm text-muted-foreground">
-                    {areas ? `${areas} · ` : ''}/org/{handle}
+                    {areas ? `${areas} · ` : ''}
+                    {detail ?? `/org/${handle}`}
                 </span>
             </span>
             {role && (

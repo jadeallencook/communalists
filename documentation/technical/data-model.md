@@ -15,7 +15,7 @@ All access is through the Admin SDK on the server; rules deny clients ([firebase
 
 **Stored keys are permanent.** Values from fixed lists (`focusAreas`, `reach.scope`, `joinPolicy`, `visibility`, `role`, `status`) are stored as readable keys and never renamed once live; labels come from `messages/*.json`, so wording changes need no migration. `src/lib/organizations/options.test.ts` locks the lists.
 
-Queries in use: `memberships where uid == X and status == active` (dashboard), and the same plus `role == owner` (the 5-owned limit). Both are equality-only, so no composite index is needed. Design and rules: [features/16](../features/16-organizations.md).
+Queries in use: `memberships where uid == X and status == active` (dashboard), and the same plus `role == owner` (the 5-owned limit); for finding organizations, `organizations` ordered by `location.geohash` between geohash bounds (local), and `reach.scope == national/international` with `status == active`, `visibility == listed` (and `location.country` for national). All are equality-only or a range on one field, so no composite index is needed. Design and rules: [features/16](../features/16-organizations.md).
 
 ## Prototype
 

@@ -7,8 +7,14 @@ import {
     DashboardPageLoading,
 } from '@/components/pages/dashboard-page';
 import { requireAccount } from '@/lib/auth/require-account';
-import { getMemberships } from '@/lib/organizations';
+import { getDirectoryLocal, getMemberships } from '@/lib/organizations';
+import {
+    DEFAULT_RADIUS_MILES,
+    filterDirectory,
+} from '@/lib/organizations/directory';
 import { MAX_OWNED_ORGANIZATIONS } from '@/lib/organizations/options';
+
+const NEARBY_COUNT = 3;
 
 export async function generateMetadata(): Promise<Metadata> {
     const t = await getTranslations('Dashboard');
@@ -27,8 +33,29 @@ export default function Page() {
 
 async function DashboardContainer() {
     const { user, profile } = await requireAccount('/dashboard');
-    const memberships = await getMemberships(user.uid);
+    const home = profile.location;
+    const [memberships, candidates, t] = await Promise.all([
+        getMemberships(user.uid),
+        getDirectoryLocal({
+            placeId: home.placeId,
+            lat: home.lat,
+            lng: home.lng,
+        }),
+        getTranslations('Find'),
+    ]);
     const owned = memberships.filter((m) => m.role === 'owner').length;
+    // The closest few local groups the user isn't in; /find has the rest.
+    const mine = new Set(memberships.map((m) => m.orgId));
+    const nearby = filterDirectory(
+        candidates.filter((org) => !mine.has(org.id)),
+        home,
+        {
+            radiusMiles: DEFAULT_RADIUS_MILES,
+            focusAreas: [],
+            languages: [],
+            reach: ['local'],
+        }
+    ).local.slice(0, NEARBY_COUNT);
     return (
         <DashboardPage
             name={profile.displayName}
@@ -40,6 +67,19 @@ async function DashboardContainer() {
                 role,
             }))}
             canCreate={owned < MAX_OWNED_ORGANIZATIONS}
+            nearby={nearby.map(({ org, distanceMiles }) => ({
+                name: org.name,
+                handle: org.handle,
+                focusAreas: org.focusAreas,
+                detail:
+                    distanceMiles < 1
+                        ? t('inCity', { city: org.location.label })
+                        : t('away', {
+                              miles: distanceMiles,
+                              city: org.location.label,
+                          }),
+            }))}
+            nearbyRadiusMiles={DEFAULT_RADIUS_MILES}
         />
     );
 }

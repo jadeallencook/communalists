@@ -40,3 +40,10 @@ export const LongName: Story = {
         focusAreas: ['food'],
     },
 };
+/** In search results: distance and city instead of the handle. */
+export const WithDistance: Story = {
+    args: {
+        role: undefined,
+        detail: '3 mi away · Santa Clara, California',
+    },
+};
