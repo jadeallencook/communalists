@@ -57,3 +57,11 @@ export const Locked: Story = {
         lockedReason: 'Only owners can change the handle.',
     },
 };
+/** A person's username (account setup and settings). */
+export const Username: Story = {
+    args: {
+        kind: 'username',
+        value: 'maya-thompson',
+        status: { state: 'available' },
+    },
+};

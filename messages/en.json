@@ -16,7 +16,8 @@
         "open": "Account menu for {name}",
         "dashboard": "Dashboard",
         "settings": "Account settings",
-        "signOut": "Sign out"
+        "signOut": "Sign out",
+        "profile": "Your profile"
     },
     "LocaleSwitcher": {
         "label": "Language"
@@ -188,7 +189,13 @@
             "languageRequired": "Choose a language.",
             "placeRequired": "Choose your city from the list.",
             "placeNotFound": "We couldn't find that city. Choose it from the list again.",
-            "generic": "Something went wrong. Please try again."
+            "generic": "Something went wrong. Please try again.",
+            "usernameTooShort": "Use at least 3 characters.",
+            "usernameTooLong": "Use 30 characters or fewer.",
+            "usernameFormat": "Use lowercase letters, numbers and single hyphens, starting and ending with a letter or number.",
+            "usernameReserved": "That username is reserved. Try another.",
+            "usernameTaken": "That username is taken. Try another.",
+            "usernameCooldown": "You can change your username once every 30 days."
         },
         "settings": {
             "submit": "Save changes",
@@ -201,7 +208,10 @@
         "title": "Account settings",
         "description": "Your name, language and city.",
         "email": "Email",
-        "profileTitle": "Profile"
+        "profileTitle": "Profile",
+        "publicProfileTitle": "Your profile",
+        "publicProfileBody": "Choose what you share on your profile, and with whom.",
+        "publicProfileLink": "Edit your profile"
     },
     "Dashboard": {
         "metaTitle": "Dashboard",
@@ -539,6 +549,91 @@
             "joinPolicy": "who can join",
             "visibility": "the visibility",
             "memberListVisibility": "the member list setting"
+        }
+    },
+    "Profile": {
+        "username": {
+            "label": "Username",
+            "hint": "Your profile address. Lowercase letters, numbers and hyphens.",
+            "available": "Available.",
+            "current": "This is your current username.",
+            "cooldown": "You can change your username again on {date}.",
+            "errors": {
+                "tooShort": "Use at least 3 characters.",
+                "tooLong": "Use 30 characters or fewer.",
+                "format": "Use lowercase letters, numbers and single hyphens, starting and ending with a letter or number.",
+                "reserved": "That username is reserved. Try another.",
+                "taken": "That username is taken. Try another."
+            }
+        },
+        "private": "The rest of this profile is private.",
+        "empty": "Nothing shared yet.",
+        "languages": "Languages",
+        "links": "Links",
+        "groups": "Groups",
+        "opensNewTab": "(opens in a new tab)",
+        "selfNote": "This is your profile as you see it. Others see only what you've chosen to share with them.",
+        "edit": "Edit profile",
+        "settingsTitle": "Your profile",
+        "settingsIntro": "Everything here is optional and starts empty. You choose who sees it; your name is always shown. Your email and saved city are never shown, unless you choose to show your city.",
+        "viewProfile": "View your profile",
+        "visibilities": {
+            "public": {
+                "label": "Everyone",
+                "description": "Anyone, even people who aren't signed in"
+            },
+            "groups": {
+                "label": "People in my groups",
+                "description": "Signed-in people who share at least one group with you"
+            },
+            "name": {
+                "label": "Just my name",
+                "description": "Everyone else sees only your name"
+            }
+        },
+        "form": {
+            "visibility": "Who can see your profile",
+            "visibilityHint": "Your name is always shown. Search engines never list your profile.",
+            "aboutTitle": "About you",
+            "pronouns": "Pronouns",
+            "pronounsHint": "Optional. For example: she/her, they/them.",
+            "bio": "Bio",
+            "bioHint": "Optional. {left} characters left.",
+            "languages": "Languages you speak",
+            "languagesHint": "Optional.",
+            "showArea": "Show my city ({city})",
+            "showAreaHint": "Only the city's name, never anything more precise.",
+            "linksTitle": "Links",
+            "website": "Website",
+            "groupsTitle": "Your groups",
+            "groupsHint": "A group is only shown to people who could already see you in it, so private groups stay private.",
+            "groupsShow": "Show my groups on my profile",
+            "save": "Save profile",
+            "saving": "Saving…",
+            "saved": "Saved."
+        },
+        "preview": {
+            "title": "Preview",
+            "who": "See your profile as:",
+            "audiences": {
+                "public": "Anyone",
+                "groupmate": "Someone in your groups",
+                "signedIn": "Other members"
+            },
+            "notes": {
+                "public": "Someone who isn't signed in.",
+                "groupmate": "Someone who shares a group with you. They'd also see groups you share with them.",
+                "signedIn": "A signed-in member who doesn't share a group with you."
+            }
+        },
+        "errors": {
+            "required": "This field is required.",
+            "bioTooLong": "Keep your bio under 300 characters.",
+            "pronounsTooLong": "Keep pronouns under 40 characters.",
+            "invalidUrl": "Enter a web address, like example.org.",
+            "socialMismatch": "One of the links isn't on the platform chosen for it.",
+            "socialDuplicate": "Add each platform only once.",
+            "generic": "Something went wrong. Please try again."
         }
     },
     "LocationField": {

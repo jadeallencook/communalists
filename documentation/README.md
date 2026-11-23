@@ -39,6 +39,7 @@ The feature docs describe the prototype unless they have a "Rebuild" section. Re
 | 14  | [Removed experiments](features/14-removed-experiments.md)                         | —                       | Cut from the product                            |
 | 15  | [Little Free Library](features/15-little-free-library.md)                         | Public                  | Built in the 2025 Next.js attempt, then removed |
 | 16  | [Organizations (rebuild)](features/16-organizations.md)                           | Everyone                | Rebuild: phase 1 built 2026-11-22 (logo next)   |
+| 17  | [Profiles and skills (rebuild)](features/17-profiles.md)                          | Everyone                | Rebuild: phase 1 (profiles) built 2026-11-23    |
 
 ## Technical docs
 

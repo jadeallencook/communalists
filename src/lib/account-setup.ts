@@ -5,12 +5,18 @@
 // missingSetupSteps, and add the field to the setup form. Every account
 // missing it is sent to /account/setup on its next visit; no data migration.
 
-export const SETUP_STEPS = ['name', 'language', 'location'] as const;
+export const SETUP_STEPS = [
+    'name',
+    'username',
+    'language',
+    'location',
+] as const;
 export type SetupStep = (typeof SETUP_STEPS)[number];
 
 /** The profile fields setup looks at. Every one may be missing (old accounts). */
 export interface SetupProfile {
     displayName?: string | null;
+    username?: string | null;
     locale?: string | null;
     location?: { placeId?: string | null } | null;
 }
@@ -20,6 +26,7 @@ export function missingSetupSteps(
 ): SetupStep[] {
     const answered: Record<SetupStep, boolean> = {
         name: !!profile?.displayName?.trim(),
+        username: !!profile?.username,
         language: !!profile?.locale,
         location: !!profile?.location?.placeId,
     };

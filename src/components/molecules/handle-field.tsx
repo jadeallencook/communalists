@@ -27,6 +27,8 @@ export interface HandleFieldProps {
      * the field is read-only and this explains why. Already translated.
      */
     lockedReason?: string;
+    /** `handle` (a group's /org/ address, default) or `username` (a person's /comrade/ address). */
+    kind?: 'handle' | 'username';
 }
 
 const reasonKey = {
@@ -44,24 +46,33 @@ export function HandleField({
     status,
     error,
     lockedReason,
+    kind = 'handle',
 }: HandleFieldProps) {
     const t = useTranslations('Organizations');
+    const tu = useTranslations('Profile.username');
+    const user = kind === 'username';
+    const prefix = user ? 'communalists.com/comrade/' : 'communalists.com/org/';
+    const id = user ? 'username' : 'handle';
     const live =
         status.state === 'unavailable'
-            ? t(`errors.${reasonKey[status.reason]}`)
+            ? user
+                ? tu(`errors.${status.reason}`)
+                : t(`errors.${reasonKey[status.reason]}`)
             : undefined;
     const shownError = error ?? live;
 
     return (
         <Field data-invalid={!!shownError}>
-            <FieldLabel htmlFor="handle">{t('form.handle')}</FieldLabel>
+            <FieldLabel htmlFor={id}>
+                {user ? tu('label') : t('form.handle')}
+            </FieldLabel>
             <InputGroup>
                 <InputGroupAddon>
-                    <InputGroupText>communalists.com/org/</InputGroupText>
+                    <InputGroupText>{prefix}</InputGroupText>
                 </InputGroupAddon>
                 <InputGroupInput
-                    id="handle"
-                    name="handle"
+                    id={id}
+                    name={id}
                     value={value}
                     onChange={(event) => onChange(event.target.value)}
                     autoCapitalize="none"
@@ -69,7 +80,7 @@ export function HandleField({
                     spellCheck={false}
                     maxLength={30}
                     aria-invalid={shownError ? true : undefined}
-                    aria-describedby="handle-status"
+                    aria-describedby={`${id}-status`}
                     readOnly={!!lockedReason}
                     required
                 />
@@ -83,7 +94,7 @@ export function HandleField({
                     {(status.state === 'unavailable' || error) && <XIcon />}
                 </InputGroupAddon>
             </InputGroup>
-            <div id="handle-status" aria-live="polite">
+            <div id={`${id}-status`} aria-live="polite">
                 {shownError ? (
                     <FieldError>{shownError}</FieldError>
                 ) : lockedReason ? (
@@ -94,10 +105,12 @@ export function HandleField({
                     </FieldDescription>
                 ) : status.state === 'available' ? (
                     <FieldDescription>
-                        {t('form.handleAvailable')}
+                        {user ? tu('available') : t('form.handleAvailable')}
                     </FieldDescription>
                 ) : (
-                    <FieldDescription>{t('form.handleHint')}</FieldDescription>
+                    <FieldDescription>
+                        {user ? tu('hint') : t('form.handleHint')}
+                    </FieldDescription>
                 )}
             </div>
         </Field>

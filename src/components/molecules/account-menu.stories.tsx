@@ -24,7 +24,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+/** With "Your profile" (accounts with a username). */
+export const Default: Story = { args: { username: 'ada-lovelace' } };
 export const LongNameAndEmail: Story = {
     args: {
         name: 'Maria de los Ángeles Fernández-Villanueva',

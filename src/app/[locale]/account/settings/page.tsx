@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getFormatter, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import {
@@ -7,6 +7,7 @@ import {
     AccountSettingsPageLoading,
 } from '@/components/pages/account-settings-page';
 import { requireAccount } from '@/lib/auth/require-account';
+import { nextHandleChangeAt } from '@/lib/organizations/handle';
 import { isSupportedCountry } from '@/lib/places/types';
 
 import { AccountSettingsFormContainer } from './account-settings-form-container';
@@ -27,6 +28,11 @@ export default function Page() {
 async function AccountSettingsContainer() {
     const { user, profile } = await requireAccount('/account/settings');
     const { location } = profile;
+    const [t, format] = await Promise.all([
+        getTranslations('Profile.username'),
+        getFormatter(),
+    ]);
+    const nextChange = nextHandleChangeAt(profile.usernameChangedAt);
     return (
         <AccountSettingsPage
             email={user.email}
@@ -40,6 +46,16 @@ async function AccountSettingsContainer() {
                             : undefined
                     }
                     place={{ id: location.placeId, label: location.label }}
+                    username={profile.username}
+                    usernameLockedReason={
+                        nextChange
+                            ? t('cooldown', {
+                                  date: format.dateTime(new Date(nextChange), {
+                                      dateStyle: 'medium',
+                                  }),
+                              })
+                            : undefined
+                    }
                 />
             }
         />

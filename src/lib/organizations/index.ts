@@ -9,6 +9,7 @@ import { getAdminDb } from '@/lib/firebase/admin';
 import { logRead } from '@/lib/firebase/read-log';
 import type { GeneralArea } from '@/lib/places';
 import type { CountryCode } from '@/lib/places/types';
+import type { ProfileGroup } from '@/lib/profiles';
 import type { OrganizationInput } from '@/lib/validation/organization';
 
 import { changedFields, COPIED_FIELDS, type OrgEditField } from './edit';
@@ -103,6 +104,14 @@ export const membershipsTag = (uid: string) => `memberships:${uid}`;
 export const DIRECTORY_TAG = 'directory';
 /** An organization's people (members, requests, bans) and moderation log. */
 export const orgMembersTag = (orgId: string) => `orgMembers:${orgId}`;
+
+/** The person copied onto each membership, so member lists are one query. */
+export interface MemberCopy {
+    displayName: string;
+    username?: string;
+}
+const memberCopy = (member: MemberCopy) =>
+    JSON.parse(JSON.stringify(member)) as MemberCopy; // drops undefined
 
 /** Only the plain fields: cached values can't hold Firestore Timestamps. */
 function toOrganization(
@@ -241,7 +250,7 @@ export type CreateOrganizationResult =
  */
 export async function createOrganization(
     uid: string,
-    displayName: string,
+    member: MemberCopy,
     input: OrganizationInput,
     location: GeneralArea
 ): Promise<CreateOrganizationResult> {
@@ -307,7 +316,7 @@ export async function createOrganization(
                 handle: input.handle,
                 focusAreas: input.focusAreas,
             },
-            member: { displayName },
+            member: memberCopy(member),
             joinedAt: now,
         });
         return { ok: true, orgId: orgRef.id, handle: input.handle } as const;
@@ -426,6 +435,8 @@ export async function getDirectoryInternational(): Promise<
 export interface OrgPerson {
     uid: string;
     displayName: string;
+    /** For linking to /comrade/{username}. Missing only for accounts mid-setup. */
+    username?: string;
     role: OrgRole;
     status: MembershipStatus;
     /** When they asked (pending), joined (active) or were banned. Epoch ms. */
@@ -434,18 +445,60 @@ export interface OrgPerson {
     banReason?: string;
 }
 
-/** Everyone with a membership record in the organization, cached. Staff-only data inside: filter before showing. */
+/**
+ * Everyone with a membership record in the organization, cached. Staff-only
+ * data inside: filter before showing. Memberships made before the name (or
+ * username) was copied onto them are repaired here: read from the profile,
+ * shown, and written back, so each costs one extra read once.
+ */
 export async function getOrgPeople(orgId: string): Promise<OrgPerson[]> {
     'use cache';
     cacheTag(orgMembersTag(orgId));
     cacheLife('hours');
     const snapshot = await memberships().where('orgId', '==', orgId).get();
     logRead('memberships', Math.max(snapshot.size, 1));
+
+    const missing = snapshot.docs.filter((doc) => {
+        const copy = doc.data().member;
+        return !copy?.displayName || !copy?.username;
+    });
+    const repaired = new Map<string, MemberCopy>();
+    if (missing.length > 0) {
+        const profiles = await db().getAll(
+            ...missing.map((doc) =>
+                db().collection('users').doc(doc.data().uid)
+            )
+        );
+        logRead('users (member copy repair)', profiles.length);
+        const batch = db().batch();
+        missing.forEach((doc, i) => {
+            const p = profiles[i].data();
+            if (!p?.displayName) return;
+            const copy = memberCopy({
+                displayName: p.displayName,
+                username: p.username,
+            });
+            repaired.set(doc.id, copy);
+            batch.update(doc.ref, { member: copy });
+        });
+        if (repaired.size > 0)
+            await batch
+                .commit()
+                .catch((error: Error) =>
+                    console.error(
+                        '[org] member copy repair failed',
+                        error.message
+                    )
+                );
+    }
+
     return snapshot.docs.map((doc) => {
         const d = doc.data();
+        const member = repaired.get(doc.id) ?? d.member ?? {};
         return {
             uid: d.uid,
-            displayName: d.member?.displayName ?? '',
+            displayName: member.displayName ?? '',
+            username: member.username,
             role: d.role,
             status: d.status,
             since: millis(
@@ -511,7 +564,7 @@ export type JoinResult =
 export async function joinOrganization(
     orgId: string,
     uid: string,
-    displayName: string
+    member: MemberCopy
 ): Promise<JoinResult> {
     const orgRef = organizations().doc(orgId);
     const ref = memberships().doc(membershipId(orgId, uid));
@@ -546,7 +599,7 @@ export async function joinOrganization(
                 handle: org.handle,
                 focusAreas: org.focusAreas,
             },
-            member: { displayName },
+            member: memberCopy(member),
             ...(open ? { joinedAt: now } : { requestedAt: now }),
         });
         if (open)
@@ -719,22 +772,29 @@ export async function moderateMember(
 }
 
 /**
- * Keeps the name copied onto a person's memberships in step with their
- * profile. Returns the organizations touched, so their caches can be cleared.
+ * Keeps the name and username copied onto a person's memberships in step
+ * with their profile. Returns the organizations touched, so their caches can
+ * be cleared.
  */
-export async function syncMemberName(
+export async function syncMemberCopy(
     uid: string,
-    displayName: string
+    member: { displayName: string; username?: string }
 ): Promise<string[]> {
     const snapshot = await memberships().where('uid', '==', uid).get();
     logRead('memberships', Math.max(snapshot.size, 1));
-    const stale = snapshot.docs.filter(
-        (doc) => doc.data().member?.displayName !== displayName
-    );
+    const stale = snapshot.docs.filter((doc) => {
+        const copy = doc.data().member ?? {};
+        return (
+            copy.displayName !== member.displayName ||
+            copy.username !== member.username
+        );
+    });
     for (let i = 0; i < stale.length; i += 400) {
         const batch = db().batch();
         for (const doc of stale.slice(i, i + 400))
-            batch.update(doc.ref, { 'member.displayName': displayName });
+            batch.update(doc.ref, {
+                member: JSON.parse(JSON.stringify(member)),
+            });
         await batch.commit();
     }
     return stale.map((doc) => doc.data().orgId as string);
@@ -894,4 +954,29 @@ export async function updateOrganization(
         copyHolders = snapshot.docs.map((doc) => doc.data().uid as string);
     }
     return { ...result, copyHolders };
+}
+
+// --- A person's groups, for their profile (src/lib/profiles.ts decides which
+// a viewer may see).
+
+/** The person's active groups, with the settings that decide who may see each. Cached reads. */
+export async function getProfileGroups(uid: string): Promise<ProfileGroup[]> {
+    const memberships = await getMemberships(uid);
+    const orgs = await Promise.all(
+        memberships.map((m) => getOrganizationByHandle(m.org.handle))
+    );
+    return memberships.flatMap((m, i) => {
+        const org = orgs[i];
+        if (!org || org.id !== m.orgId) return [];
+        return [
+            {
+                orgId: org.id,
+                name: org.name,
+                handle: org.handle,
+                role: m.role,
+                listed: org.visibility === 'listed',
+                memberList: org.memberListVisibility,
+            },
+        ];
+    });
 }

@@ -1,4 +1,9 @@
-import { LayoutDashboardIcon, LogOutIcon, SettingsIcon } from 'lucide-react';
+import {
+    LayoutDashboardIcon,
+    LogOutIcon,
+    SettingsIcon,
+    UserIcon,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/atoms/button';
@@ -18,6 +23,8 @@ export interface AccountMenuProps {
     email?: string;
     /** Sent with sign-out so the redirect stays in this language. */
     locale: string;
+    /** Their profile address; adds "Your profile". Missing mid-setup. */
+    username?: string;
     /** In the app, the signOut server action. */
     signOutAction: (formData: FormData) => void | Promise<void>;
 }
@@ -28,6 +35,7 @@ export function AccountMenu({
     email,
     locale,
     signOutAction,
+    username,
 }: AccountMenuProps) {
     const t = useTranslations('AccountMenu');
 
@@ -65,6 +73,14 @@ export function AccountMenu({
                         {t('dashboard')}
                     </Link>
                 </DropdownMenuItem>
+                {username && (
+                    <DropdownMenuItem asChild>
+                        <Link href={`/comrade/${username}`}>
+                            <UserIcon aria-hidden />
+                            {t('profile')}
+                        </Link>
+                    </DropdownMenuItem>
+                )}
                 <DropdownMenuItem asChild>
                     <Link href="/account/settings">
                         <SettingsIcon aria-hidden />

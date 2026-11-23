@@ -17,7 +17,7 @@ import {
     orgMembersTag,
     orgTag,
 } from '@/lib/organizations';
-import { userTag } from '@/lib/users';
+import { userTag, usernameTag } from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 
@@ -69,6 +69,7 @@ export async function resetTestData(): Promise<ResetTestDataState> {
         console.error('[dev] reset test data failed', (error as Error).message);
         return { status: 'failed', at: Date.now() };
     }
+    for (const username of SEEDED.usernames) updateTag(usernameTag(username));
     for (const uid of SEEDED.uids) {
         updateTag(userTag(uid));
         updateTag(membershipsTag(uid));

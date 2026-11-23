@@ -33,6 +33,7 @@ export async function HeaderAccount() {
             email={user.email}
             locale={locale}
             signOutAction={signOut}
+            username={profile?.username}
         />
     );
 }

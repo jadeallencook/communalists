@@ -8,7 +8,26 @@
             "profile": {
                 "displayName": "Maya Thompson",
                 "locale": "en",
-                "placeId": "5392171"
+                "placeId": "5392171",
+                "username": "maya-thompson",
+                "publicProfile": {
+                    "visibility": "public",
+                    "pronouns": "she/her",
+                    "bio": "Organizer with South Bay Mutual Aid. I drive the Tuesday grocery route and can help with tenant paperwork.",
+                    "languages": ["en", "es"],
+                    "showArea": true,
+                    "website": "https://example.com/",
+                    "socials": [
+                        {
+                            "platform": "instagram",
+                            "url": "https://www.instagram.com/example"
+                        }
+                    ],
+                    "groups": {
+                        "show": true,
+                        "hidden": []
+                    }
+                }
             }
         },
         {
@@ -18,7 +37,20 @@
             "profile": {
                 "displayName": "Luis Hernández",
                 "locale": "es",
-                "placeId": "5378538"
+                "placeId": "5378538",
+                "username": "luis-hernandez",
+                "publicProfile": {
+                    "visibility": "groups",
+                    "pronouns": "él/he",
+                    "bio": "Mecánico voluntario los sábados en Oakland. Puedo ayudar con frenos, aceite y llantas.",
+                    "languages": ["es", "en"],
+                    "showArea": false,
+                    "socials": [],
+                    "groups": {
+                        "show": true,
+                        "hidden": []
+                    }
+                }
             }
         },
         {
@@ -32,7 +64,20 @@
             "profile": {
                 "displayName": "Thanh Nguyễn",
                 "locale": "vi",
-                "placeId": "5392171"
+                "placeId": "5392171",
+                "username": "thanh-nguyen",
+                "publicProfile": {
+                    "visibility": "groups",
+                    "pronouns": "chị/she",
+                    "bio": "Điều phối kho thực phẩm Little Saigon. Tôi có thể giúp dịch tiếng Việt.",
+                    "languages": ["vi", "en"],
+                    "showArea": true,
+                    "socials": [],
+                    "groups": {
+                        "show": true,
+                        "hidden": []
+                    }
+                }
             }
         },
         {
@@ -41,7 +86,19 @@
             "profile": {
                 "displayName": "Wei Chen",
                 "locale": "zh",
-                "placeId": "5393015"
+                "placeId": "5393015",
+                "username": "wei-chen",
+                "publicProfile": {
+                    "visibility": "name",
+                    "bio": "Gardener. Ask me about tomatoes.",
+                    "languages": ["zh", "en"],
+                    "showArea": false,
+                    "socials": [],
+                    "groups": {
+                        "show": true,
+                        "hidden": []
+                    }
+                }
             }
         },
         {
@@ -50,7 +107,19 @@
             "profile": {
                 "displayName": "Aisha Bello",
                 "locale": "en",
-                "placeId": "5378538"
+                "placeId": "5378538",
+                "username": "aisha-bello",
+                "publicProfile": {
+                    "visibility": "public",
+                    "bio": "Nurse. I help with first aid trainings and disaster response.",
+                    "languages": ["en"],
+                    "showArea": false,
+                    "socials": [],
+                    "groups": {
+                        "show": false,
+                        "hidden": []
+                    }
+                }
             }
         },
         {
@@ -59,7 +128,8 @@
             "profile": {
                 "displayName": "Daniel Park",
                 "locale": "en",
-                "placeId": "5400075"
+                "placeId": "5400075",
+                "username": "daniel-park"
             }
         },
         {
@@ -68,7 +138,8 @@
             "profile": {
                 "displayName": "Rosa Martínez",
                 "locale": "es",
-                "placeId": "5350734"
+                "placeId": "5350734",
+                "username": "rosa-martinez"
             }
         },
         {
@@ -77,7 +148,8 @@
             "profile": {
                 "displayName": "Priya Patel",
                 "locale": "en",
-                "placeId": "5327684"
+                "placeId": "5327684",
+                "username": "priya-patel"
             }
         },
         {
@@ -86,7 +158,8 @@
             "profile": {
                 "displayName": "Marcus Johnson",
                 "locale": "en",
-                "placeId": "5378538"
+                "placeId": "5378538",
+                "username": "marcus-johnson"
             }
         },
         {
@@ -95,7 +168,8 @@
             "profile": {
                 "displayName": "Linh Trần",
                 "locale": "vi",
-                "placeId": "5392171"
+                "placeId": "5392171",
+                "username": "linh-tran"
             }
         }
     ],

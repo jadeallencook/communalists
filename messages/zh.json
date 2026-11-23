@@ -16,7 +16,8 @@
         "open": "{name} 的账户菜单",
         "dashboard": "控制台",
         "settings": "账户设置",
-        "signOut": "退出登录"
+        "signOut": "退出登录",
+        "profile": "你的个人资料"
     },
     "LocaleSwitcher": {
         "label": "语言"
@@ -188,7 +189,13 @@
             "languageRequired": "请选择一种语言。",
             "placeRequired": "请从列表中选择你的城市。",
             "placeNotFound": "找不到该城市，请从列表中重新选择。",
-            "generic": "出了点问题，请重试。"
+            "generic": "出了点问题，请重试。",
+            "usernameTooShort": "请至少使用 3 个字符。",
+            "usernameTooLong": "请使用不超过 30 个字符。",
+            "usernameFormat": "请使用小写字母、数字和单个连字符，并以字母或数字开头和结尾。",
+            "usernameReserved": "这个用户名已被保留，请换一个。",
+            "usernameTaken": "这个用户名已被使用，请换一个。",
+            "usernameCooldown": "用户名每 30 天只能更改一次。"
         },
         "settings": {
             "submit": "保存更改",
@@ -201,7 +208,10 @@
         "title": "账户设置",
         "description": "你的姓名、语言和城市。",
         "email": "电子邮件",
-        "profileTitle": "个人资料"
+        "profileTitle": "个人资料",
+        "publicProfileTitle": "你的个人资料",
+        "publicProfileBody": "选择在个人资料中分享什么，以及分享给谁。",
+        "publicProfileLink": "编辑个人资料"
     },
     "Dashboard": {
         "metaTitle": "控制台",
@@ -539,6 +549,91 @@
             "joinPolicy": "加入方式",
             "visibility": "可见性",
             "memberListVisibility": "成员名单设置"
+        }
+    },
+    "Profile": {
+        "username": {
+            "label": "用户名",
+            "hint": "你的个人资料地址。小写字母、数字和连字符。",
+            "available": "可以使用。",
+            "current": "这是你当前的用户名。",
+            "cooldown": "你可以在 {date} 再次更改用户名。",
+            "errors": {
+                "tooShort": "请至少使用 3 个字符。",
+                "tooLong": "请使用不超过 30 个字符。",
+                "format": "请使用小写字母、数字和单个连字符，并以字母或数字开头和结尾。",
+                "reserved": "这个用户名已被保留，请换一个。",
+                "taken": "这个用户名已被使用，请换一个。"
+            }
+        },
+        "private": "这份个人资料的其余部分是私密的。",
+        "empty": "还没有分享任何内容。",
+        "languages": "语言",
+        "links": "链接",
+        "groups": "团体",
+        "opensNewTab": "（在新标签页中打开）",
+        "selfNote": "这是你自己看到的个人资料。其他人只能看到你选择分享给他们的内容。",
+        "edit": "编辑个人资料",
+        "settingsTitle": "你的个人资料",
+        "settingsIntro": "这里的所有内容都是可选的，一开始都是空的。由你决定谁能看到；你的名字始终显示。你的邮箱和保存的城市永远不会显示，除非你选择显示城市。",
+        "viewProfile": "查看你的个人资料",
+        "visibilities": {
+            "public": {
+                "label": "所有人",
+                "description": "任何人，包括未登录的人"
+            },
+            "groups": {
+                "label": "我所在团体的成员",
+                "description": "与你至少同属一个团体的已登录用户"
+            },
+            "name": {
+                "label": "仅显示我的名字",
+                "description": "其他人只能看到你的名字"
+            }
+        },
+        "form": {
+            "visibility": "谁可以查看你的个人资料",
+            "visibilityHint": "你的名字始终显示。搜索引擎永远不会收录你的个人资料。",
+            "aboutTitle": "关于你",
+            "pronouns": "代词",
+            "pronounsHint": "可选。例如：她、他、他们。",
+            "bio": "简介",
+            "bioHint": "可选。还可以输入 {left} 个字符。",
+            "languages": "你使用的语言",
+            "languagesHint": "可选。",
+            "showArea": "显示我的城市（{city}）",
+            "showAreaHint": "只显示城市名称，绝不更精确。",
+            "linksTitle": "链接",
+            "website": "网站",
+            "groupsTitle": "你的团体",
+            "groupsHint": "一个团体只会显示给原本就能在该团体中看到你的人，所以私密团体依然私密。",
+            "groupsShow": "在个人资料中显示我的团体",
+            "save": "保存个人资料",
+            "saving": "正在保存…",
+            "saved": "已保存。"
+        },
+        "preview": {
+            "title": "预览",
+            "who": "以下列身份查看你的个人资料：",
+            "audiences": {
+                "public": "任何人",
+                "groupmate": "你团体中的人",
+                "signedIn": "其他成员"
+            },
+            "notes": {
+                "public": "未登录的人。",
+                "groupmate": "与你同属一个团体的人。他们还会看到你们共同所在的团体。",
+                "signedIn": "与你不属于任何共同团体的已登录成员。"
+            }
+        },
+        "errors": {
+            "required": "此项为必填。",
+            "bioTooLong": "简介请少于 300 个字符。",
+            "pronounsTooLong": "代词请少于 40 个字符。",
+            "invalidUrl": "请输入网址，例如 example.org。",
+            "socialMismatch": "有一个链接不属于所选平台。",
+            "socialDuplicate": "每个平台只能添加一次。",
+            "generic": "出了点问题，请重试。"
         }
     },
     "LocationField": {

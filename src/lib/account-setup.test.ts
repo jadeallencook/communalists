@@ -8,6 +8,7 @@ import {
 
 const complete = {
     displayName: 'Ada',
+    username: 'ada',
     locale: 'en',
     location: { placeId: '5392171' },
 };
@@ -15,12 +16,9 @@ const locales = ['en', 'es', 'vi', 'zh'];
 
 describe('missingSetupSteps', () => {
     it('asks everything of an account with no profile (prototype users)', () => {
-        expect(missingSetupSteps(null)).toEqual([
-            'name',
-            'language',
-            'location',
-        ]);
-        expect(missingSetupSteps({})).toEqual(['name', 'language', 'location']);
+        const all = ['name', 'username', 'language', 'location'];
+        expect(missingSetupSteps(null)).toEqual(all);
+        expect(missingSetupSteps({})).toEqual(all);
     });
 
     it('asks only what is missing', () => {
@@ -30,6 +28,10 @@ describe('missingSetupSteps', () => {
         expect(missingSetupSteps({ ...complete, displayName: '  ' })).toEqual([
             'name',
         ]);
+        // Accounts from before usernames are asked for one, and nothing else.
+        expect(missingSetupSteps({ ...complete, username: undefined })).toEqual(
+            ['username']
+        );
     });
 
     it('treats a full profile as complete', () => {

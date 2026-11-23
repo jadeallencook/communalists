@@ -54,6 +54,8 @@ The toolbar lists these three first:
 
 Under **More accounts** (collapsed) are eight more: Thanh Nguyễn, Wei Chen, Aisha Bello, Daniel Park, Rosa Martínez, Priya Patel, Marcus Johnson and Linh Trần. Between them they cover all four UI languages, own the four newer groups, and fill out member lists, so groups have between 3 and 8 members. Mark an account `"featured": true` in `seed-data.json` to list it at the top. Emails use `example.com` and `example.net`, which are reserved and can never reach a real person.
 
+Everyone except Sam has a username (`/comrade/maya-thompson`, or `/@maya-thompson`), and a few profiles cover each privacy level: Maya and Aisha are public (Aisha hides her groups), Luis and Thanh share with their groups, and Wei shows just her name. Sam's account setup asks for a username, suggested from the name.
+
 | Organization                                              | Shows off                                                                                                       |
 | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | South Bay Mutual Aid (`/org/sbma`)                        | Local 25 mi, request to join, website, email, Instagram; 2 pending requests (Marcus, Priya) for Maya to approve |

@@ -65,7 +65,11 @@ export async function createOrganizationAction(
     try {
         result = await createOrganization(
             user.uid,
-            profile?.displayName ?? '', // set: isSetupComplete checked it
+            // Both set: isSetupComplete checked them.
+            {
+                displayName: profile?.displayName ?? '',
+                username: profile?.username,
+            },
             input,
             toGeneralArea(place)
         );

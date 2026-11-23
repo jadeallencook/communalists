@@ -1,11 +1,12 @@
-// Organization handles: the unique public address, communalists.com/org/{handle}.
+// Organization handles (communalists.com/org/{handle}) and usernames
+// (communalists.com/comrade/{username}) share these rules.
 // Pure rules; uniqueness is enforced on the server with handles/{handle}
 // (see src/lib/organizations/index.ts). Design: features/16-organizations.md.
 
 export const HANDLE_MIN = 3;
 export const HANDLE_MAX = 30;
 
-/** Words no organization can take: app routes, infrastructure, and the locale codes. */
+/** Words no organization or person can take: app routes, infrastructure, and the locale codes. */
 export const RESERVED_HANDLES = new Set([
     'www',
     'app',
@@ -31,6 +32,15 @@ export const RESERVED_HANDLES = new Set([
     'dev',
     'staging',
     'communalists',
+    'comrade',
+    'comrades',
+    'people',
+    'person',
+    'profile',
+    'me',
+    'find',
+    'sign-in',
+    'sign-up',
     'en',
     'es',
     'vi',

@@ -14,6 +14,9 @@ const form = (name?: string) => (
     <AccountSetupForm
         state={{}}
         formAction={fn()}
+        username="ada-lovelace"
+        onUsernameChange={fn()}
+        usernameStatus={{ state: 'available' }}
         locale="en"
         next="/dashboard"
         defaults={{ name, preferredLocale: 'en' }}

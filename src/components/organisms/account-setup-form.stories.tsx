@@ -33,6 +33,9 @@ const meta = {
         defaults: { preferredLocale: 'en' },
         languages,
         location,
+        username: 'ada-lovelace',
+        onUsernameChange: fn(),
+        usernameStatus: { state: 'available' },
     },
     decorators: [
         (Story) => (
@@ -96,5 +99,29 @@ export const SettingsSaved: Story = {
         location: { ...location, selected: sanJose },
         defaults: { name: 'Ada Lovelace', preferredLocale: 'es' },
         state: { saved: true, values: { name: 'Ada Lovelace' } },
+    },
+};
+
+/** The username someone typed is taken. */
+export const UsernameTaken: Story = {
+    args: {
+        username: 'maya',
+        usernameStatus: { state: 'unavailable', reason: 'taken' },
+    },
+};
+
+/** Settings, within 30 days of changing the username: read-only, with why. */
+export const UsernameLocked: Story = {
+    args: {
+        mode: 'settings',
+        next: undefined,
+        location: {
+            ...location,
+            selected: { id: '5392171', label: 'San Jose, California' },
+        },
+        defaults: { name: 'Ada Lovelace', preferredLocale: 'en' },
+        usernameStatus: { state: 'current' },
+        usernameLockedReason:
+            'You can change your username again on Dec 20, 2026.',
     },
 };

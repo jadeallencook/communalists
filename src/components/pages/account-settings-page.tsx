@@ -1,7 +1,9 @@
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 
+import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
+import { Link } from '@/i18n/navigation';
 
 export interface AccountSettingsPageProps {
     /** The account's email (sign-in only; changing it isn't built yet). */
@@ -36,6 +38,20 @@ export function AccountSettingsPage({ email, form }: AccountSettingsPageProps) {
                     {t('profileTitle')}
                 </h2>
                 {form}
+            </div>
+
+            <div className="flex flex-col items-start gap-2 rounded-lg border p-4">
+                <h2 className="font-heading text-lg font-semibold">
+                    {t('publicProfileTitle')}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                    {t('publicProfileBody')}
+                </p>
+                <Button asChild variant="outline" size="sm">
+                    <Link href="/account/profile">
+                        {t('publicProfileLink')}
+                    </Link>
+                </Button>
             </div>
         </section>
     );

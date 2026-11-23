@@ -16,7 +16,8 @@
         "open": "Menu tài khoản của {name}",
         "dashboard": "Bảng điều khiển",
         "settings": "Cài đặt tài khoản",
-        "signOut": "Đăng xuất"
+        "signOut": "Đăng xuất",
+        "profile": "Hồ sơ của bạn"
     },
     "LocaleSwitcher": {
         "label": "Ngôn ngữ"
@@ -188,7 +189,13 @@
             "languageRequired": "Hãy chọn một ngôn ngữ.",
             "placeRequired": "Hãy chọn thành phố của bạn trong danh sách.",
             "placeNotFound": "Không tìm thấy thành phố đó. Hãy chọn lại trong danh sách.",
-            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+            "usernameTooShort": "Dùng ít nhất 3 ký tự.",
+            "usernameTooLong": "Dùng tối đa 30 ký tự.",
+            "usernameFormat": "Dùng chữ thường, số và dấu gạch nối đơn, bắt đầu và kết thúc bằng chữ hoặc số.",
+            "usernameReserved": "Tên người dùng này đã được giữ lại. Hãy thử tên khác.",
+            "usernameTaken": "Tên người dùng này đã có người dùng. Hãy thử tên khác.",
+            "usernameCooldown": "Bạn chỉ có thể đổi tên người dùng 30 ngày một lần."
         },
         "settings": {
             "submit": "Lưu thay đổi",
@@ -201,7 +208,10 @@
         "title": "Cài đặt tài khoản",
         "description": "Tên, ngôn ngữ và thành phố của bạn.",
         "email": "Email",
-        "profileTitle": "Hồ sơ"
+        "profileTitle": "Hồ sơ",
+        "publicProfileTitle": "Hồ sơ của bạn",
+        "publicProfileBody": "Chọn những gì bạn chia sẻ trên hồ sơ, và chia sẻ với ai.",
+        "publicProfileLink": "Chỉnh sửa hồ sơ"
     },
     "Dashboard": {
         "metaTitle": "Bảng điều khiển",
@@ -539,6 +549,91 @@
             "joinPolicy": "ai có thể tham gia",
             "visibility": "chế độ hiển thị",
             "memberListVisibility": "cài đặt danh sách thành viên"
+        }
+    },
+    "Profile": {
+        "username": {
+            "label": "Tên người dùng",
+            "hint": "Địa chỉ hồ sơ của bạn. Chữ thường, số và dấu gạch nối.",
+            "available": "Có thể dùng.",
+            "current": "Đây là tên người dùng hiện tại của bạn.",
+            "cooldown": "Bạn có thể đổi tên người dùng lại vào ngày {date}.",
+            "errors": {
+                "tooShort": "Dùng ít nhất 3 ký tự.",
+                "tooLong": "Dùng tối đa 30 ký tự.",
+                "format": "Dùng chữ thường, số và dấu gạch nối đơn, bắt đầu và kết thúc bằng chữ hoặc số.",
+                "reserved": "Tên người dùng này đã được giữ lại. Hãy thử tên khác.",
+                "taken": "Tên người dùng này đã có người dùng. Hãy thử tên khác."
+            }
+        },
+        "private": "Phần còn lại của hồ sơ này được giữ riêng tư.",
+        "empty": "Chưa chia sẻ gì.",
+        "languages": "Ngôn ngữ",
+        "links": "Liên kết",
+        "groups": "Nhóm",
+        "opensNewTab": "(mở trong thẻ mới)",
+        "selfNote": "Đây là hồ sơ của bạn theo cách bạn thấy. Người khác chỉ thấy những gì bạn chọn chia sẻ với họ.",
+        "edit": "Chỉnh sửa hồ sơ",
+        "settingsTitle": "Hồ sơ của bạn",
+        "settingsIntro": "Mọi thứ ở đây đều không bắt buộc và ban đầu để trống. Bạn chọn ai được xem; tên của bạn luôn được hiển thị. Email và thành phố đã lưu của bạn không bao giờ được hiển thị, trừ khi bạn chọn hiện thành phố.",
+        "viewProfile": "Xem hồ sơ của bạn",
+        "visibilities": {
+            "public": {
+                "label": "Mọi người",
+                "description": "Bất kỳ ai, kể cả người chưa đăng nhập"
+            },
+            "groups": {
+                "label": "Người trong các nhóm của tôi",
+                "description": "Người đã đăng nhập và cùng ít nhất một nhóm với bạn"
+            },
+            "name": {
+                "label": "Chỉ tên của tôi",
+                "description": "Người khác chỉ thấy tên của bạn"
+            }
+        },
+        "form": {
+            "visibility": "Ai có thể xem hồ sơ của bạn",
+            "visibilityHint": "Tên của bạn luôn được hiển thị. Công cụ tìm kiếm không bao giờ liệt kê hồ sơ của bạn.",
+            "aboutTitle": "Về bạn",
+            "pronouns": "Đại từ nhân xưng",
+            "pronounsHint": "Không bắt buộc. Ví dụ: chị ấy, anh ấy, họ.",
+            "bio": "Giới thiệu",
+            "bioHint": "Không bắt buộc. Còn {left} ký tự.",
+            "languages": "Ngôn ngữ bạn sử dụng",
+            "languagesHint": "Không bắt buộc.",
+            "showArea": "Hiện thành phố của tôi ({city})",
+            "showAreaHint": "Chỉ tên thành phố, không bao giờ chi tiết hơn.",
+            "linksTitle": "Liên kết",
+            "website": "Trang web",
+            "groupsTitle": "Các nhóm của bạn",
+            "groupsHint": "Một nhóm chỉ được hiển thị cho người vốn đã thấy bạn trong nhóm đó, nên các nhóm riêng tư vẫn được giữ riêng tư.",
+            "groupsShow": "Hiện các nhóm của tôi trên hồ sơ",
+            "save": "Lưu hồ sơ",
+            "saving": "Đang lưu…",
+            "saved": "Đã lưu."
+        },
+        "preview": {
+            "title": "Xem trước",
+            "who": "Xem hồ sơ của bạn với tư cách:",
+            "audiences": {
+                "public": "Bất kỳ ai",
+                "groupmate": "Người trong nhóm của bạn",
+                "signedIn": "Thành viên khác"
+            },
+            "notes": {
+                "public": "Người chưa đăng nhập.",
+                "groupmate": "Người cùng nhóm với bạn. Họ cũng sẽ thấy các nhóm bạn chung với họ.",
+                "signedIn": "Thành viên đã đăng nhập nhưng không cùng nhóm nào với bạn."
+            }
+        },
+        "errors": {
+            "required": "Trường này là bắt buộc.",
+            "bioTooLong": "Phần giới thiệu phải ít hơn 300 ký tự.",
+            "pronounsTooLong": "Đại từ phải ít hơn 40 ký tự.",
+            "invalidUrl": "Hãy nhập địa chỉ web, ví dụ example.org.",
+            "socialMismatch": "Một liên kết không thuộc nền tảng đã chọn.",
+            "socialDuplicate": "Mỗi nền tảng chỉ thêm một lần.",
+            "generic": "Đã xảy ra lỗi. Hãy thử lại."
         }
     },
     "LocationField": {

@@ -95,11 +95,10 @@ export async function membershipAction(
                     locale,
                 });
             }
-            const result = await joinOrganization(
-                orgId,
-                user.uid,
-                profile?.displayName ?? ''
-            );
+            const result = await joinOrganization(orgId, user.uid, {
+                displayName: profile?.displayName ?? '',
+                username: profile?.username,
+            });
             if (!result.ok) return { error: result.error, at };
             clearOrganization(orgId, [user.uid]);
             return {

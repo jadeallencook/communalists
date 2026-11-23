@@ -16,7 +16,8 @@
         "open": "Menú de la cuenta de {name}",
         "dashboard": "Panel",
         "settings": "Configuración de la cuenta",
-        "signOut": "Cerrar sesión"
+        "signOut": "Cerrar sesión",
+        "profile": "Tu perfil"
     },
     "LocaleSwitcher": {
         "label": "Idioma"
@@ -188,7 +189,13 @@
             "languageRequired": "Elige un idioma.",
             "placeRequired": "Elige tu ciudad de la lista.",
             "placeNotFound": "No encontramos esa ciudad. Vuelve a elegirla de la lista.",
-            "generic": "Algo salió mal. Inténtalo de nuevo."
+            "generic": "Algo salió mal. Inténtalo de nuevo.",
+            "usernameTooShort": "Usa al menos 3 caracteres.",
+            "usernameTooLong": "Usa 30 caracteres o menos.",
+            "usernameFormat": "Usa letras minúsculas, números y guiones simples, empezando y terminando con una letra o un número.",
+            "usernameReserved": "Ese nombre de usuario está reservado. Prueba otro.",
+            "usernameTaken": "Ese nombre de usuario ya está en uso. Prueba otro.",
+            "usernameCooldown": "Puedes cambiar tu nombre de usuario una vez cada 30 días."
         },
         "settings": {
             "submit": "Guardar cambios",
@@ -201,7 +208,10 @@
         "title": "Configuración de la cuenta",
         "description": "Tu nombre, idioma y ciudad.",
         "email": "Correo electrónico",
-        "profileTitle": "Perfil"
+        "profileTitle": "Perfil",
+        "publicProfileTitle": "Tu perfil",
+        "publicProfileBody": "Elige qué compartes en tu perfil y con quién.",
+        "publicProfileLink": "Editar tu perfil"
     },
     "Dashboard": {
         "metaTitle": "Panel",
@@ -539,6 +549,91 @@
             "joinPolicy": "quién puede unirse",
             "visibility": "la visibilidad",
             "memberListVisibility": "la lista de miembros"
+        }
+    },
+    "Profile": {
+        "username": {
+            "label": "Nombre de usuario",
+            "hint": "La dirección de tu perfil. Letras minúsculas, números y guiones.",
+            "available": "Disponible.",
+            "current": "Este es tu nombre de usuario actual.",
+            "cooldown": "Podrás cambiar tu nombre de usuario de nuevo el {date}.",
+            "errors": {
+                "tooShort": "Usa al menos 3 caracteres.",
+                "tooLong": "Usa 30 caracteres o menos.",
+                "format": "Usa letras minúsculas, números y guiones simples, empezando y terminando con una letra o un número.",
+                "reserved": "Ese nombre de usuario está reservado. Prueba otro.",
+                "taken": "Ese nombre de usuario ya está en uso. Prueba otro."
+            }
+        },
+        "private": "El resto de este perfil es privado.",
+        "empty": "Todavía no ha compartido nada.",
+        "languages": "Idiomas",
+        "links": "Enlaces",
+        "groups": "Grupos",
+        "opensNewTab": "(se abre en una pestaña nueva)",
+        "selfNote": "Así ves tu perfil. Los demás solo ven lo que elegiste compartir con ellos.",
+        "edit": "Editar perfil",
+        "settingsTitle": "Tu perfil",
+        "settingsIntro": "Todo aquí es opcional y empieza vacío. Tú eliges quién lo ve; tu nombre siempre se muestra. Tu correo y tu ciudad guardada nunca se muestran, salvo que elijas mostrar tu ciudad.",
+        "viewProfile": "Ver tu perfil",
+        "visibilities": {
+            "public": {
+                "label": "Todo el mundo",
+                "description": "Cualquiera, incluso sin iniciar sesión"
+            },
+            "groups": {
+                "label": "Gente de mis grupos",
+                "description": "Personas con sesión iniciada que comparten al menos un grupo contigo"
+            },
+            "name": {
+                "label": "Solo mi nombre",
+                "description": "Los demás solo ven tu nombre"
+            }
+        },
+        "form": {
+            "visibility": "Quién puede ver tu perfil",
+            "visibilityHint": "Tu nombre siempre se muestra. Los buscadores nunca muestran tu perfil.",
+            "aboutTitle": "Sobre ti",
+            "pronouns": "Pronombres",
+            "pronounsHint": "Opcional. Por ejemplo: ella, él, elle.",
+            "bio": "Biografía",
+            "bioHint": "Opcional. Quedan {left} caracteres.",
+            "languages": "Idiomas que hablas",
+            "languagesHint": "Opcional.",
+            "showArea": "Mostrar mi ciudad ({city})",
+            "showAreaHint": "Solo el nombre de la ciudad, nunca nada más preciso.",
+            "linksTitle": "Enlaces",
+            "website": "Sitio web",
+            "groupsTitle": "Tus grupos",
+            "groupsHint": "Un grupo solo se muestra a quien ya podía verte en él, así los grupos privados siguen siendo privados.",
+            "groupsShow": "Mostrar mis grupos en mi perfil",
+            "save": "Guardar perfil",
+            "saving": "Guardando…",
+            "saved": "Guardado."
+        },
+        "preview": {
+            "title": "Vista previa",
+            "who": "Ver tu perfil como:",
+            "audiences": {
+                "public": "Cualquiera",
+                "groupmate": "Alguien de tus grupos",
+                "signedIn": "Otros miembros"
+            },
+            "notes": {
+                "public": "Alguien sin sesión iniciada.",
+                "groupmate": "Alguien que comparte un grupo contigo. También vería los grupos que compartes con esa persona.",
+                "signedIn": "Un miembro con sesión iniciada que no comparte ningún grupo contigo."
+            }
+        },
+        "errors": {
+            "required": "Este campo es obligatorio.",
+            "bioTooLong": "Tu biografía debe tener menos de 300 caracteres.",
+            "pronounsTooLong": "Los pronombres deben tener menos de 40 caracteres.",
+            "invalidUrl": "Escribe una dirección web, como example.org.",
+            "socialMismatch": "Uno de los enlaces no es de la plataforma elegida.",
+            "socialDuplicate": "Añade cada plataforma solo una vez.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
         }
     },
     "LocationField": {

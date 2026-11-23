@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useLocale } from 'next-intl';
+import { useState } from 'react';
 
 import { AccountSetupForm } from '@/components/organisms/account-setup-form';
 import { sampleSearch } from '@/lib/places/sample';
@@ -21,7 +22,7 @@ import { useLocationPicker } from './use-location-picker';
 const mockSave: AccountSetupAction = async (_previous, formData) => {
     await new Promise((resolve) => setTimeout(resolve, 800));
     const raw = Object.fromEntries(
-        ['name', 'locale', 'country', 'placeId'].map((k) => [
+        ['name', 'username', 'locale', 'country', 'placeId'].map((k) => [
             k,
             String(formData.get(k) ?? ''),
         ])
@@ -44,6 +45,7 @@ function UseAccountSetupFormDemo() {
     const locale = useLocale();
     const { state, formAction, pending } = useAccountSetupForm(mockSave);
     const location = useLocationPicker({ locale, search });
+    const [username, setUsername] = useState('');
     return (
         <div className="grid gap-8 md:grid-cols-2">
             <AccountSetupForm
@@ -58,6 +60,11 @@ function UseAccountSetupFormDemo() {
                     name: localeNames[code],
                 }))}
                 location={location}
+                username={username}
+                onUsernameChange={setUsername}
+                usernameStatus={
+                    username ? { state: 'available' } : { state: 'empty' }
+                }
             />
             <div className="flex flex-col gap-2 text-sm">
                 <p className="font-semibold">Hook output</p>

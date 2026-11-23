@@ -3,9 +3,9 @@ import 'server-only';
 import { updateTag } from 'next/cache';
 import { hasLocale } from 'next-intl';
 
-import { orgMembersTag, syncMemberName } from '@/lib/organizations';
+import { orgMembersTag, syncMemberCopy } from '@/lib/organizations';
 import { getPlace, toGeneralArea } from '@/lib/places';
-import { saveUserProfile, userTag } from '@/lib/users';
+import { saveUserProfile, userTag, usernameTag } from '@/lib/users';
 import {
     accountSetupSchema,
     type AccountSetupErrorKey,
@@ -35,11 +35,16 @@ export async function saveProfileForm(
 ): Promise<AccountSetupState | null> {
     const raw = {
         name: text(formData.get('name')),
+        username: text(formData.get('username')),
         locale: text(formData.get('locale')),
         country: text(formData.get('country')),
         placeId: text(formData.get('placeId')),
     };
-    const values = { name: raw.name, locale: raw.locale as never };
+    const values = {
+        name: raw.name,
+        locale: raw.locale as never,
+        username: raw.username,
+    };
 
     const parsed = accountSetupSchema.safeParse(raw);
     if (!parsed.success) {
@@ -56,9 +61,11 @@ export async function saveProfileForm(
     const place = getPlace(input.country, input.placeId);
     if (!place) return { fieldErrors: { placeId: 'placeNotFound' }, values };
 
+    let result;
     try {
-        await saveUserProfile(uid, {
+        result = await saveUserProfile(uid, {
             displayName: input.name,
+            username: input.username,
             locale: input.locale,
             location: toGeneralArea(place),
         });
@@ -66,13 +73,23 @@ export async function saveProfileForm(
         console.error('[profile] save failed', (error as Error).message); // never log PII
         return { formError: 'generic', values };
     }
+    if (!result.ok) return { fieldErrors: { username: result.error }, values };
+    if (result.usernameChanged) {
+        updateTag(usernameTag(input.username));
+        if (result.previousUsername)
+            updateTag(usernameTag(result.previousUsername));
+    }
     // Clear this user's cached profile everywhere it's shown. Only valid in
     // server actions, which is where this runs.
     updateTag(userTag(uid));
-    // Member lists show a copy of the name; bring those up to date. A failure
-    // here leaves an old name on a list, so it doesn't fail the save.
+    // Member lists show a copy of the name and username; bring those up to
+    // date. A failure here leaves an old copy on a list, so it doesn't fail
+    // the save (lists also repair missing copies themselves).
     try {
-        const orgIds = await syncMemberName(uid, input.name);
+        const orgIds = await syncMemberCopy(uid, {
+            displayName: input.name,
+            username: input.username,
+        });
         for (const orgId of orgIds) updateTag(orgMembersTag(orgId));
     } catch (error) {
         console.error(

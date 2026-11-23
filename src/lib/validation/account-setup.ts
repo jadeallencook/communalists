@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { handleProblem, normalizeHandle } from '@/lib/organizations/handle';
 import { isSupportedCountry } from '@/lib/places/types';
 import { routing } from '@/i18n/routing';
 
@@ -11,7 +12,20 @@ export type AccountSetupErrorKey =
     | 'languageRequired'
     | 'placeRequired'
     | 'placeNotFound'
+    | 'usernameTooShort'
+    | 'usernameTooLong'
+    | 'usernameFormat'
+    | 'usernameReserved'
+    | 'usernameTaken'
+    | 'usernameCooldown'
     | 'generic';
+
+const usernameError = {
+    tooShort: 'usernameTooShort',
+    tooLong: 'usernameTooLong',
+    format: 'usernameFormat',
+    reserved: 'usernameReserved',
+} as const;
 
 export const accountSetupSchema = z.object({
     name: z
@@ -19,6 +33,23 @@ export const accountSetupSchema = z.object({
         .trim()
         .min(1, { error: 'required' })
         .max(80, { error: 'tooLong' }),
+    // The profile address (same rules as group handles). Uniqueness is
+    // checked when it's claimed, in saveUserProfile.
+    username: z
+        .string({ error: 'required' })
+        .transform(normalizeHandle)
+        .superRefine((value, ctx) => {
+            if (!value) {
+                ctx.addIssue({ code: 'custom', message: 'required' });
+                return;
+            }
+            const problem = handleProblem(value);
+            if (problem)
+                ctx.addIssue({
+                    code: 'custom',
+                    message: usernameError[problem],
+                });
+        }),
     // Preferred language for emails and notifications. Not the UI language,
     // which the visitor switches freely.
     locale: z.enum(routing.locales, { error: 'languageRequired' }),
@@ -41,5 +72,5 @@ export interface AccountSetupState {
     /** Settings only: the last save worked. */
     saved?: boolean;
     // Echoed back so the form keeps what was typed.
-    values?: Partial<Pick<AccountSetupInput, 'name' | 'locale'>>;
+    values?: Partial<Pick<AccountSetupInput, 'name' | 'locale' | 'username'>>;
 }

@@ -3,8 +3,18 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { MemberList } from './member-list';
 
 const leaders = [
-    { uid: 'maya', displayName: 'Maya Thompson', role: 'owner' as const },
-    { uid: 'thanh', displayName: 'Thanh Nguyễn', role: 'moderator' as const },
+    {
+        uid: 'maya',
+        displayName: 'Maya Thompson',
+        username: 'maya-thompson',
+        role: 'owner' as const,
+    },
+    {
+        uid: 'thanh',
+        displayName: 'Thanh Nguyễn',
+        username: 'thanh-nguyen',
+        role: 'moderator' as const,
+    },
 ];
 const everyone = [
     ...leaders,

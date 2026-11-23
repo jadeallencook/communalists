@@ -57,6 +57,7 @@ async function AccountSetupContainer({
                     next={next}
                     // Prototype accounts may have a name on the Auth user.
                     name={profile?.displayName ?? user.name ?? undefined}
+                    username={profile?.username}
                     preferredLocale={profile?.locale}
                     country={
                         location && isSupportedCountry(location.country)

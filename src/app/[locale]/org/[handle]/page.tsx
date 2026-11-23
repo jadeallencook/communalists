@@ -99,9 +99,10 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                 />
             }
             members={{
-                people: named.map(({ uid, displayName, role }) => ({
+                people: named.map(({ uid, displayName, username, role }) => ({
                     uid,
                     displayName,
+                    username,
                     role,
                 })),
                 total: active.length,

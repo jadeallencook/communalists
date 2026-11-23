@@ -101,12 +101,16 @@ if (ifMissing) {
         ),
         ...users
             .filter((u) => u.profile)
-            .map(({ uid }) =>
+            .map(({ uid, profile }) =>
                 db
                     .collection('users')
                     .doc(uid)
                     .get()
-                    .then((s) => s.exists)
+                    // Also re-seed when the data gained a field (like username).
+                    .then(
+                        (s) =>
+                            s.exists && s.data().username === profile.username
+                    )
             ),
         ...organizations.map(({ id }) =>
             db
@@ -148,14 +152,32 @@ for (const { uid, email, profile } of users) {
     }
 
     const ref = db.collection('users').doc(uid);
+    // Usernames this account claimed before (say, renamed in the app).
+    const oldClaims = await db
+        .collection('usernames')
+        .where('uid', '==', uid)
+        .get();
+    await Promise.all(
+        oldClaims.docs
+            .filter((doc) => doc.id !== profile?.username)
+            .map((doc) => doc.ref.delete())
+    );
     if (profile) {
-        const { placeId, ...rest } = profile;
+        const { placeId, publicProfile, ...rest } = profile;
         await ref.set({
             ...rest,
             location: area(placeId),
+            // What they share on their profile (src/lib/profiles.ts).
+            ...(publicProfile ? { profile: publicProfile } : {}),
             createdAt: now,
             updatedAt: now,
         });
+        if (profile.username) {
+            await db
+                .collection('usernames')
+                .doc(profile.username)
+                .set({ uid, createdAt: now });
+        }
     } else {
         await ref.delete();
     }
@@ -203,6 +225,9 @@ if (removed) say(`Removed ${removed} old test accounts and organizations.`);
 let skipped = 0;
 const nameOf = Object.fromEntries(
     users.map((u) => [u.uid, u.profile?.displayName ?? ''])
+);
+const usernameOf = Object.fromEntries(
+    users.map((u) => [u.uid, u.profile?.username])
 );
 for (const {
     members,
@@ -259,7 +284,12 @@ for (const {
             orgId: org.id,
             uid,
             org: copy,
-            member: { displayName: nameOf[uid] },
+            member: JSON.parse(
+                JSON.stringify({
+                    displayName: nameOf[uid],
+                    username: usernameOf[uid],
+                })
+            ),
             ...fields,
         });
     for (const [uid, role] of members) {

@@ -18,6 +18,9 @@ const form = (state: AccountSetupState = {}) => (
         mode="settings"
         state={state}
         formAction={fn()}
+        username="ada-lovelace"
+        onUsernameChange={fn()}
+        usernameStatus={{ state: 'current' }}
         locale="en"
         defaults={{ name: 'Ada Lovelace', preferredLocale: 'es' }}
         languages={[

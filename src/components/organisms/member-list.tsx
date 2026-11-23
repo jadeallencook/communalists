@@ -1,12 +1,19 @@
 import { useTranslations } from 'next-intl';
 
+import { Link } from '@/i18n/navigation';
 import { initials } from '@/lib/initials';
 import type { OrgRole } from '@/lib/organizations/membership';
 import type { MemberListVisibility } from '@/lib/organizations/options';
 
 export interface MemberListProps {
     /** Who to name: everyone, or only owners and moderators. Sorted by the caller. */
-    people: { uid: string; displayName: string; role: OrgRole }[];
+    people: {
+        uid: string;
+        displayName: string;
+        /** Links the row to /comrade/{username}. */
+        username?: string;
+        role: OrgRole;
+    }[];
     /** All active members, including those not named. */
     total: number;
     /** The group's setting, to explain why only some are named. */
@@ -40,27 +47,43 @@ export function MemberList({
                 </span>
             </h2>
             <ul className="grid gap-2 sm:grid-cols-2">
-                {people.map((person) => (
-                    <li
-                        key={person.uid}
-                        className="flex items-center gap-3 rounded-lg border p-2.5"
-                    >
-                        <span
-                            aria-hidden
-                            className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium"
-                        >
-                            {initials(person.displayName)}
-                        </span>
-                        <span className="min-w-0 flex-1 text-sm break-words">
-                            {person.displayName}
-                        </span>
-                        {person.role !== 'member' && (
-                            <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-foreground">
-                                {t(`roles.${person.role}`)}
+                {people.map((person) => {
+                    const row = (
+                        <>
+                            <span
+                                aria-hidden
+                                className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium"
+                            >
+                                {initials(person.displayName)}
                             </span>
-                        )}
-                    </li>
-                ))}
+                            <span className="min-w-0 flex-1 text-sm break-words">
+                                {person.displayName}
+                            </span>
+                            {person.role !== 'member' && (
+                                <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-foreground">
+                                    {t(`roles.${person.role}`)}
+                                </span>
+                            )}
+                        </>
+                    );
+                    const box =
+                        'flex items-center gap-3 rounded-lg border p-2.5';
+                    return (
+                        <li key={person.uid}>
+                            {person.username ? (
+                                // The whole row opens their profile.
+                                <Link
+                                    href={`/comrade/${person.username}`}
+                                    className={`${box} transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none`}
+                                >
+                                    {row}
+                                </Link>
+                            ) : (
+                                <div className={box}>{row}</div>
+                            )}
+                        </li>
+                    );
+                })}
             </ul>
             {others > 0 && (
                 <p className="text-sm text-muted-foreground">

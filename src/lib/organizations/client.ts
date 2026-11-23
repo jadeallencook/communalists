@@ -20,6 +20,21 @@ export async function fetchHandleAvailability(
     return (await response.json()) as HandleCheck;
 }
 
+/** The same check for usernames (GET /api/usernames/{username}). */
+export async function fetchUsernameAvailability(
+    username: string,
+    signal?: AbortSignal,
+    baseUrl = ''
+): Promise<HandleCheck> {
+    const response = await fetch(
+        `${baseUrl}/api/usernames/${encodeURIComponent(username)}`,
+        { signal }
+    );
+    if (!response.ok)
+        throw new Error(`Username check failed: ${response.status}`);
+    return (await response.json()) as HandleCheck;
+}
+
 // Browsers' built-in language names miss some codes (notably `ase`,
 // American Sign Language), so those carry their own names.
 const FALLBACK_NAMES: Record<string, Record<string, string>> = {

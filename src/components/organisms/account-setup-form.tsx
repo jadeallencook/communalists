@@ -9,10 +9,12 @@ import {
     FieldLabel,
 } from '@/components/atoms/field';
 import { Input } from '@/components/atoms/input';
+import { HandleField } from '@/components/molecules/handle-field';
 import {
     LocationField,
     type LocationFieldProps,
 } from '@/components/molecules/location-field';
+import type { HandleStatus } from '@/hooks/use-handle-availability';
 import type {
     AccountSetupField,
     AccountSetupState,
@@ -35,9 +37,17 @@ export interface AccountSetupFormProps {
     languages: { code: string; name: string }[];
     /** The country + city picker, from useLocationPicker. */
     location: Omit<LocationFieldProps, 'error'>;
+    /** Typing in the name (setup suggests a username from it). */
+    onNameChange?: (name: string) => void;
+    /** The profile address. Controlled, with a live availability check. */
+    username: string;
+    onUsernameChange: (username: string) => void;
+    usernameStatus: HandleStatus;
+    /** Settings, within 30 days of a change: read-only, and why (translated). */
+    usernameLockedReason?: string;
 }
 
-/** Name, preferred language and city, for account setup and account settings. No logic: it renders `state`. */
+/** Name, username, preferred language and city, for account setup and account settings. No logic: it renders `state`. */
 export function AccountSetupForm({
     state,
     formAction,
@@ -48,6 +58,11 @@ export function AccountSetupForm({
     defaults,
     languages,
     location,
+    onNameChange,
+    username,
+    onUsernameChange,
+    usernameStatus,
+    usernameLockedReason,
 }: AccountSetupFormProps) {
     const t = useTranslations('AccountSetup');
 
@@ -70,6 +85,7 @@ export function AccountSetupForm({
                         name="name"
                         autoComplete="name"
                         defaultValue={state.values?.name ?? defaults.name}
+                        onChange={(event) => onNameChange?.(event.target.value)}
                         aria-invalid={errorFor('name') ? true : undefined}
                         aria-describedby={describe('name', 'name-hint')}
                         required
@@ -84,6 +100,15 @@ export function AccountSetupForm({
                         </FieldDescription>
                     )}
                 </Field>
+
+                <HandleField
+                    kind="username"
+                    value={username}
+                    onChange={onUsernameChange}
+                    status={usernameStatus}
+                    error={errorFor('username')}
+                    lockedReason={usernameLockedReason}
+                />
 
                 <Field data-invalid={!!errorFor('locale')}>
                     <FieldLabel htmlFor="locale">{t('language')}</FieldLabel>

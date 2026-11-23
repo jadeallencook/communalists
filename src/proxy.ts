@@ -20,6 +20,14 @@ export default function proxy(request: NextRequest) {
             return NextResponse.redirect(url);
         }
     }
+    // Short profile links: /@maya (or /es/@maya) → /comrade/maya. A real
+    // `@` folder would be a Next.js parallel route, so this forwards instead.
+    const short = pathname.match(/^(\/(?:en|es|vi|zh))?\/@([^/]+)\/?$/);
+    if (short) {
+        const url = request.nextUrl.clone();
+        url.pathname = `${short[1] ?? ''}/comrade/${short[2]}`;
+        return NextResponse.redirect(url);
+    }
     return intl(request);
 }
 

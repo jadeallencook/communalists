@@ -74,5 +74,8 @@ export const isTestAccount = (email: string) =>
 /** What the seed writes, so a reset can clear exactly those cache entries. */
 export const SEEDED = {
     uids: seed.users.map((u) => u.uid),
+    usernames: seed.users.flatMap((u) =>
+        'profile' in u && u.profile?.username ? [u.profile.username] : []
+    ),
     organizations: seed.organizations.map(({ id, handle }) => ({ id, handle })),
 };
