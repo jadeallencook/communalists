@@ -37,6 +37,7 @@ Docs describe _what_ and _why_. Leave the line-by-line _how_ to the code, and do
 | Data shapes and enums              | `documentation/technical/data-model.md`, `documentation/data/enums.json`           |
 | Known bugs to avoid repeating      | `documentation/technical/tech-debt.md`                                             |
 | Firebase cost and security lessons | `documentation/technical/firebase.md`                                              |
+| Accessibility rules and checks     | `documentation/technical/accessibility.md`                                         |
 | How the rebuild is put together    | `documentation/technical/architecture.md`, `tooling-and-ci.md`, `design-system.md` |
 | Vercel projects, domains, DNS      | `documentation/technical/deployment.md`                                            |
 | Framework choice and build order   | `documentation/technical/rebuild-plan.md`                                          |
@@ -89,6 +90,8 @@ Story conventions: put `Name.stories.tsx` next to the component, cover the impor
 ## Current product rules
 
 These are the rules we're building to today. They can change. When one does, update it here, update the feature doc, and log it in `documentation/decisions.md`.
+
+- **Accessibility is the top priority** (set by the user 2026-11-23). Many people using the platform may have a disability, and it must work for everyone. WCAG 2.2 AA is the floor: keyboard-only use with visible focus, meaningful names for screen readers, announced results and errors, sensible focus after actions, contrast in both themes, 200% zoom, reduced motion, plain language. Every change meets `documentation/technical/accessibility.md` before it's done, and its summary says what was checked.
 
 - **Multi-tenant:** every piece of tool data belongs to exactly one organization. Scope every query, rule and server check by organization and by the user's membership role.
 - **Open sign-up, gated data:** anyone can create an account and an organization. Being signed in grants nothing inside an organization; membership and role do.

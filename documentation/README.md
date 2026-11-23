@@ -19,7 +19,7 @@ The original source: branch `interview-demo` at commit `7ebc168`, read file by f
 
 ## Features
 
-The feature docs describe the prototype unless they have a "Rebuild" section. Rebuild progress so far: the locale routing behind [05](features/05-localization.md), the header/footer shell from [13](features/13-navigation-and-layout.md), accounts from [07](features/07-authentication.md) (sign-up, sign-in, password reset, account setup; see [accounts and sessions](technical/accounts-and-sessions.md)), and creating organizations ([16](features/16-organizations.md), phase 1). Finding and joining organizations, then tools, come next.
+The feature docs describe the prototype unless they have a "Rebuild" section. Rebuild progress so far: the locale routing behind [05](features/05-localization.md), the header/footer shell from [13](features/13-navigation-and-layout.md), accounts from [07](features/07-authentication.md) (sign-up, sign-in, password reset, account setup; see [accounts and sessions](technical/accounts-and-sessions.md)), and organizations ([16](features/16-organizations.md): creating, finding near you, joining, and moderating members and roles). Organization management (editing, invites), then the first tool, come next.
 
 | #   | Feature                                                                           | Audience                | Status in prototype                             |
 | --- | --------------------------------------------------------------------------------- | ----------------------- | ----------------------------------------------- |
@@ -45,6 +45,7 @@ The feature docs describe the prototype unless they have a "Rebuild" section. Re
 | Doc                                                                   | What it covers                                                    |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | [Getting started](getting-started.md)                                 | Prerequisites, one-command setup, first change, troubleshooting   |
+| [Accessibility](technical/accessibility.md)                           | The top priority: WCAG 2.2 AA rules, how to check, known gaps     |
 | [Architecture](technical/architecture.md)                             | Current stack, folder layout, request flow, Next.js 16 specifics  |
 | [Accounts and sessions](technical/accounts-and-sessions.md)           | Sign-up, sign-in, reset, account setup, sessions, local Firebase  |
 | [Tooling and CI](technical/tooling-and-ci.md)                         | Setup, scripts, hooks, CI, pnpm 12 settings, setup gotchas        |
