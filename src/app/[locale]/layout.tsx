@@ -6,6 +6,7 @@ import { locale as rootLocale } from 'next/root-params';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
+import { HeaderLinksPlaceholder } from '@/components/molecules/header-links';
 import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
 import { ThemeProvider } from '@/components/providers/theme-provider';
@@ -78,7 +79,7 @@ export default async function LocaleLayout({
                                 </Suspense>
                             }
                             account={
-                                <Suspense fallback={null}>
+                                <Suspense fallback={<HeaderLinksPlaceholder />}>
                                     <HeaderAccount />
                                 </Suspense>
                             }
@@ -90,7 +91,11 @@ export default async function LocaleLayout({
                         {isLocalDev(process.env) && (
                             <DevToolbarContainer
                                 accounts={TEST_ACCOUNTS.map(
-                                    ({ email, summary }) => ({ email, summary })
+                                    ({ email, summary, featured }) => ({
+                                        email,
+                                        summary,
+                                        featured,
+                                    })
                                 )}
                             />
                         )}

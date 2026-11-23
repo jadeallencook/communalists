@@ -2,6 +2,7 @@
 
 import {
     CheckIcon,
+    ChevronRightIcon,
     DatabaseIcon,
     LogInIcon,
     RotateCcwIcon,
@@ -23,8 +24,8 @@ import { cn } from '@/lib/utils';
 // and not in messages/*.json. See tooling-and-ci.md → "Dev toolbar".
 
 export interface DevToolbarProps {
-    /** Seeded test accounts, with a line about each. */
-    accounts: { email: string; summary: string }[];
+    /** Seeded test accounts, with a line about each. Featured ones come first; the rest sit under a collapsed "More accounts". */
+    accounts: { email: string; summary: string; featured: boolean }[];
     /** Sent with sign-in so the dashboard opens in this language. */
     locale: string;
     /** In the app, the devSignIn server action. */
@@ -69,6 +70,32 @@ export function DevToolbar({
     defaultOpen,
 }: DevToolbarProps) {
     const top = corner.startsWith('top');
+    const featured = accounts.filter((account) => account.featured);
+    const more = accounts.filter((account) => !account.featured);
+    const accountRow = ({
+        email,
+        summary,
+    }: {
+        email: string;
+        summary: string;
+    }) => (
+        <form key={email} action={signInAction}>
+            <input type="hidden" name="email" value={email} />
+            <input type="hidden" name="locale" value={locale} />
+            <button type="submit" className={row}>
+                <LogInIcon
+                    aria-hidden
+                    className="size-4 shrink-0 text-muted-foreground"
+                />
+                <span className="flex min-w-0 flex-col">
+                    <span className="truncate">{email}</span>
+                    <span className="truncate text-xs text-muted-foreground">
+                        {summary}
+                    </span>
+                </span>
+            </button>
+        </form>
+    );
     const right = corner.endsWith('right');
 
     return (
@@ -92,24 +119,26 @@ export function DevToolbar({
                     <p className="px-2.5 pt-1.5 pb-1 text-xs font-medium text-muted-foreground">
                         Sign in as
                     </p>
-                    {accounts.map(({ email, summary }) => (
-                        <form key={email} action={signInAction}>
-                            <input type="hidden" name="email" value={email} />
-                            <input type="hidden" name="locale" value={locale} />
-                            <button type="submit" className={row}>
-                                <LogInIcon
+                    {featured.map(accountRow)}
+                    {more.length > 0 && (
+                        <details className="group">
+                            <summary
+                                className={cn(
+                                    row,
+                                    'cursor-pointer list-none text-xs text-muted-foreground [&::-webkit-details-marker]:hidden'
+                                )}
+                            >
+                                <ChevronRightIcon
                                     aria-hidden
-                                    className="size-4 shrink-0 text-muted-foreground"
+                                    className="size-4 shrink-0 transition-transform group-open:rotate-90"
                                 />
-                                <span className="flex min-w-0 flex-col">
-                                    <span className="truncate">{email}</span>
-                                    <span className="truncate text-xs text-muted-foreground">
-                                        {summary}
-                                    </span>
-                                </span>
-                            </button>
-                        </form>
-                    ))}
+                                More accounts ({more.length})
+                            </summary>
+                            <div className="max-h-72 overflow-y-auto">
+                                {more.map(accountRow)}
+                            </div>
+                        </details>
+                    )}
 
                     <div className="my-1.5 border-t" />
 

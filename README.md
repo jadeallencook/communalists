@@ -23,7 +23,7 @@ pnpm dev              # creates .env.local, starts the emulators and Next → ht
 
 Full walkthrough and troubleshooting: [`documentation/getting-started.md`](documentation/getting-started.md).
 
-Click **Dev** (bottom right) to sign in as a test account in one click, or sign in as `comrade1@communalists.com` (or `comrade2`, `comrade3`) with `password123`. `pnpm dev` adds these test accounts and some organizations when they're missing; the toolbar's **Reset test data** (or `pnpm seed`) resets them. Data is kept in `.emulator-data/` between runs; stop `pnpm dev` with Ctrl-C so it saves. Emulator UI: http://127.0.0.1:4000.
+Click **Dev** (bottom right) to sign in as a test account in one click, or sign in as `maya.thompson@example.com` (or any account in [Test data](documentation/getting-started.md#test-data)) with `password123`. `pnpm dev` adds these test accounts and some organizations when they're missing; the toolbar's **Reset test data** (or `pnpm seed`) resets them. Data is kept in `.emulator-data/` between runs; stop `pnpm dev` with Ctrl-C so it saves. Emulator UI: http://127.0.0.1:4000.
 
 Other commands: `pnpm storybook` (components and docs, port 6006), `pnpm test`, `pnpm lint`, `pnpm typecheck`, `pnpm format`. Commits must follow [Conventional Commits](https://www.conventionalcommits.org/); git hooks lint, format and check the message. Details: [`documentation/technical/tooling-and-ci.md`](documentation/technical/tooling-and-ci.md).
 

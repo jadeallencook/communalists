@@ -17,7 +17,7 @@ import {
 export function DevToolbarContainer({
     accounts,
 }: {
-    accounts: Pick<TestAccount, 'email' | 'summary'>[];
+    accounts: Pick<TestAccount, 'email' | 'summary' | 'featured'>[];
 }) {
     const locale = useLocale();
     const [corner, setCorner] = useDevToolbarCorner();

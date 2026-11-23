@@ -161,6 +161,44 @@ for (const { uid, email, profile } of users) {
     }
 }
 
+// --- Leftovers: seeded accounts and organizations (ids starting `seed-`) that
+// are no longer in seed-data.json, say after renaming one. Only `seed-` ids
+// are touched, so accounts and groups you made by hand are left alone.
+const userIds = new Set(users.map((u) => u.uid));
+const orgIds = new Set(organizations.map((o) => o.id));
+const deleteWhere = async (field, value) => {
+    const found = await db
+        .collection('memberships')
+        .where(field, '==', value)
+        .get();
+    await Promise.all(found.docs.map((doc) => doc.ref.delete()));
+};
+let removed = 0;
+for (let page = await auth.listUsers(1000); ;) {
+    for (const { uid } of page.users) {
+        if (!uid.startsWith('seed-') || userIds.has(uid)) continue;
+        await auth.deleteUser(uid);
+        await db.collection('users').doc(uid).delete();
+        await deleteWhere('uid', uid);
+        removed++;
+    }
+    if (!page.pageToken) break;
+    page = await auth.listUsers(1000, page.pageToken);
+}
+for (const ref of await db.collection('organizations').listDocuments()) {
+    if (!ref.id.startsWith('seed-') || orgIds.has(ref.id)) continue;
+    const handle = (await ref.get()).data()?.handle;
+    if (handle) {
+        const handleRef = db.collection('handles').doc(handle);
+        if ((await handleRef.get()).data()?.orgId === ref.id)
+            await handleRef.delete();
+    }
+    await deleteWhere('orgId', ref.id);
+    await ref.delete();
+    removed++;
+}
+if (removed) say(`Removed ${removed} old test accounts and organizations.`);
+
 // --- Organizations, their handles and memberships.
 let skipped = 0;
 for (const { members, placeId, reach, ...org } of organizations) {
@@ -212,9 +250,9 @@ for (const { members, placeId, reach, ...org } of organizations) {
 }
 
 say(
-    `Seeded ${users.length} accounts and ${organizations.length - skipped} organizations. Password for all: ${password}`
+    `Seeded ${users.length} accounts and ${organizations.length - skipped} organizations. Password for all: ${password}. Main accounts:`
 );
-for (const { email, profile } of users) {
+for (const { email, profile } of users.filter((u) => u.featured)) {
     say(
         `  ${email}${profile ? '' : '  (no profile yet: goes to account setup)'}`
     );

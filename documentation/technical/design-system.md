@@ -32,6 +32,10 @@ Everything else is shadcn's neutral palette, which already matches the 2025 mono
 - Chinese uses system fonts. A webfont for CJK is several MB, so don't add one without measuring.
 - `<html lang>` follows the locale, so browsers pick the right CJK glyph variants.
 
+## Loading states
+
+Anything that waits on the server (a whole signed-in page, or just the header's account links and the homepage banner's buttons, which wait on the session) shows a `Skeleton` (`atoms/skeleton.tsx`) shaped and sized like what's coming, never an empty gap or "Loading…" text. The skeleton is part of the static shell, so it paints at once, and matching the size keeps the layout from jumping when the real content arrives. On a photo, tint it (`bg-white/25`) instead of the default `bg-muted`. Each placeholder has a `Loading` story next to the component.
+
 ## Storybook
 
 `pnpm storybook` shows every `*.stories.tsx`, grouped as Documentation · Components (Atoms, Molecules, Organisms) · Pages · Hooks (see `AGENTS.md` → "Components and Storybook"). Full-width stories set `layout: 'fullscreen'`, and the preview then drops its padding. The toolbar switches **Locale** (all four) and **Theme** (light/dark). The a11y addon reports accessibility violations in its panel. Tailwind reaches Storybook through `@tailwindcss/vite` (see `tooling-and-ci.md`). Geist is loaded in `.storybook/preview.tsx` because the app loads it in its layout, which Storybook doesn't render. Its CSS variables go on `<html>`, not on a story wrapper, because Radix portals dropdowns, dialogs and tooltips to `<body>`; on a wrapper they render in serif. Storybook's `next/font` shim injects it at runtime from Google Fonts. Async Server Components (header, footer) aren't rendered in Storybook; their client-side controls are.

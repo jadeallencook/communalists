@@ -38,26 +38,34 @@ Stop it with **Ctrl-C**. The emulators save their data to `.emulator-data/` on t
 
 While `pnpm dev` runs, every Firestore read is printed as `[firestore read #N] collection`, so you can see what a page costs.
 
-**Try it:** click **Dev** in the bottom-right corner and pick a test account. You're signed in and on the dashboard in one click. (Or sign in normally as `comrade1@communalists.com` / `password123`.) To look inside the local database, open the emulator UI at http://127.0.0.1:4000.
+**Try it:** click **Dev** in the bottom-right corner and pick a test account. You're signed in and on the dashboard in one click. (Or sign in normally as `maya.thompson@example.com` / `password123`.) To look inside the local database, open the emulator UI at http://127.0.0.1:4000.
 
 ### Test data
 
 `pnpm dev` adds these whenever any are missing. To put them back the way they started, use **Reset test data** in the dev toolbar, or run `pnpm seed` with the emulators running. The password for all of them is `password123`.
 
-| Account                     | Profile                         | Organizations                                                                          |
-| --------------------------- | ------------------------------- | -------------------------------------------------------------------------------------- |
-| `comrade1@communalists.com` | Comrade One, San Jose, English  | Owns South Bay Mutual Aid and Alum Rock Tenants Union; moderates Oakland Auto Club     |
-| `comrade2@communalists.com` | Comrade Two, Oakland, Spanish   | Owns Oakland Auto Club and Mutual Aid Disaster Network; member of South Bay Mutual Aid |
-| `comrade3@communalists.com` | None: signs in to account setup | None                                                                                   |
+The toolbar lists these three first:
 
-| Organization                                          | Shows off                                               |
-| ----------------------------------------------------- | ------------------------------------------------------- |
-| South Bay Mutual Aid (`/org/sbma`)                    | Local 25 mi, request to join, website, email, Instagram |
-| Oakland Auto Club (`/org/oakland-auto-club`)          | Local 50 mi, open joining, a moderator                  |
-| Alum Rock Tenants Union (`/org/alum-rock-tenants`)    | Unlisted, invite only                                   |
-| Mutual Aid Disaster Network (`/org/disaster-network`) | International reach                                     |
+| Account                      | Profile                          | Organizations                                                                                                                               |
+| ---------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `maya.thompson@example.com`  | Maya Thompson, San Jose, English | Owns South Bay Mutual Aid and Alum Rock Tenants Union; moderates Oakland Auto Club; member of Fremont Childcare Co-op                       |
+| `luis.hernandez@example.com` | Luis Hernández, Oakland, Spanish | Owns Oakland Auto Club and Mutual Aid Disaster Network; member of South Bay Mutual Aid, East Bay Tool Library and Little Saigon Food Pantry |
+| `sam.rivera@example.com`     | None: signs in to account setup  | None                                                                                                                                        |
 
-- Seeding only touches these accounts and organizations (fixed IDs), so anything you created yourself stays. If you took one of their handles, that organization is skipped.
+Under **More accounts** (collapsed) are eight more: Thanh Nguyễn, Wei Chen, Aisha Bello, Daniel Park, Rosa Martínez, Priya Patel, Marcus Johnson and Linh Trần. Between them they cover all four UI languages, own the four newer groups, and fill out member lists, so groups have between 3 and 8 members. Mark an account `"featured": true` in `seed-data.json` to list it at the top. Emails use `example.com` and `example.net`, which are reserved and can never reach a real person.
+
+| Organization                                              | Shows off                                               |
+| --------------------------------------------------------- | ------------------------------------------------------- |
+| South Bay Mutual Aid (`/org/sbma`)                        | Local 25 mi, request to join, website, email, Instagram |
+| Oakland Auto Club (`/org/oakland-auto-club`)              | Local 50 mi, open joining, two moderators               |
+| Alum Rock Tenants Union (`/org/alum-rock-tenants`)        | Unlisted, invite only                                   |
+| Mutual Aid Disaster Network (`/org/disaster-network`)     | International reach                                     |
+| East Bay Tool Library (`/org/east-bay-tools`)             | Lending, Berkeley, open joining, English only           |
+| Fremont Childcare Co-op (`/org/fremont-childcare`)        | Childcare, contact email only                           |
+| Santa Clara Community Garden (`/org/sc-community-garden`) | Small radius (5 mi), English and Chinese                |
+| Little Saigon Food Pantry (`/org/little-saigon-pantry`)   | One focus area, Vietnamese first                        |
+
+- Seeding only touches these accounts and organizations (fixed IDs starting `seed-`), so anything you created yourself stays. If you took one of their handles, that organization is skipped. A seeded account or organization that's no longer in the file (say, after renaming one) is removed on the next seed or reset.
 - Resetting doesn't sign you out. **Reset test data** also clears the app's cache; after `pnpm seed` from a terminal, restart `pnpm dev`, or pages can show cached data for a while.
 - The data lives in `scripts/seed-data.json` (written by `scripts/seed.mjs`, and read by the dev toolbar), shaped to match what the app writes. Add to it when a feature needs something to look at, and update it when a data shape changes.
 
@@ -120,7 +128,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm format:check
 | `[dev] Node X is running; .nvmrc asks for Y.`         | `nvm use`. It usually still works, but some packages need at least 24.15                                                                                                                |
 | Sign-in says "Something went wrong" locally           | You ran `next dev` (or `pnpm dev:next`) without the emulators. Use `pnpm dev`                                                                                                           |
 | `[seed] The emulators aren't running.`                | Start `pnpm dev` (or `pnpm emulators`) first, then `pnpm seed` in another terminal                                                                                                      |
-| Your communalists.com account doesn't work locally    | Expected. Local uses its own emulator accounts: use a test account (`comrade1@communalists.com` / `password123`) or sign up locally                                                     |
+| Your communalists.com account doesn't work locally    | Expected. Local uses its own emulator accounts: use a test account (`maya.thompson@example.com` / `password123`) or sign up locally                                                     |
 | Test accounts disappeared                             | `pnpm seed` brings the built-in ones back. Stop with Ctrl-C (not `kill`) so the save finishes. Saves only happen through `pnpm dev` or `pnpm emulators`, not `firebase emulators:start` |
 | `[dev] These emulator ports are in use…`              | Leftover emulators from a run that was killed. Run the `kill …` command it prints                                                                                                       |
 | Port 3000 already in use                              | Another Next dev server is running. Stop it, or `pnpm dev --port 3001`                                                                                                                  |

@@ -133,7 +133,7 @@ See [decision #14](../decisions.md). The geocoder from #12 is gone.
 
 ## Local development
 
-Local dev **never uses the real Firebase project**. It runs against the emulators, so your production account doesn't exist locally. Use a seeded test account (`comrade1@communalists.com` / `password123`, [getting-started → Test data](../getting-started.md#test-data)) or sign up at `/en/sign-up`.
+Local dev **never uses the real Firebase project**. It runs against the emulators, so your production account doesn't exist locally. Use a seeded test account (`maya.thompson@example.com` / `password123`, [getting-started → Test data](../getting-started.md#test-data)) or sign up at `/en/sign-up`.
 
 ```sh
 pnpm dev   # creates .env.local if needed, starts the emulators, then Next (tooling-and-ci.md → Setup)

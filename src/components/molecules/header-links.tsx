@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/atoms/button';
+import { Skeleton } from '@/components/atoms/skeleton';
 import { Link } from '@/i18n/navigation';
 
 export interface SignedOutLinksProps {
@@ -64,5 +65,20 @@ export function SignedInLinks({ current }: SignedInLinksProps) {
                 {t('dashboard')}
             </Link>
         </Button>
+    );
+}
+
+/**
+ * Shown while the session is checked, in place of the links and account menu.
+ * Shaped like either: the size of Sign in, plus Create account from `sm` up
+ * (signed in, the avatar and Dashboard take about the same room), so the
+ * header barely moves when they arrive.
+ */
+export function HeaderLinksPlaceholder() {
+    return (
+        <>
+            <Skeleton className="h-8 w-16" />
+            <Skeleton className="hidden h-8 w-28 sm:block" />
+        </>
     );
 }

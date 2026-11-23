@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/atoms/button';
+import { Skeleton } from '@/components/atoms/skeleton';
 import { Link } from '@/i18n/navigation';
 
 export interface HeroActionsProps {
@@ -38,7 +39,11 @@ export function HeroActions({ signedIn }: HeroActionsProps) {
     );
 }
 
-/** Holds the buttons' height while the session is checked, so the banner doesn't jump. */
+/**
+ * Shown while the session is checked: a button-sized skeleton on the photo, at
+ * the buttons' height so the banner doesn't jump. One block, because signed in
+ * and signed out both lead with one filled button.
+ */
 export function HeroActionsPlaceholder() {
-    return <div aria-hidden className="h-10" />;
+    return <Skeleton className="h-10 w-40 bg-white/25" />;
 }

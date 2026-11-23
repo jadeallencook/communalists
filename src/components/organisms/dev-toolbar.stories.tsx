@@ -3,24 +3,16 @@ import { useState } from 'react';
 import { fn } from 'storybook/test';
 
 import type { DevToolbarCorner } from '@/hooks/use-dev-toolbar-corner';
+import { TEST_ACCOUNTS } from '@/lib/dev';
 
 import { DevToolbar } from './dev-toolbar';
 
-const accounts = [
-    {
-        email: 'comrade1@communalists.com',
-        summary:
-            'Comrade One (en) · owns South Bay Mutual Aid · moderates Oakland Auto Club',
-    },
-    {
-        email: 'comrade2@communalists.com',
-        summary: 'Comrade Two (es) · member of South Bay Mutual Aid',
-    },
-    {
-        email: 'comrade3@communalists.com',
-        summary: 'No profile: goes to account setup',
-    },
-];
+// The real seeded accounts, so the story matches what the toolbar shows.
+const accounts = TEST_ACCOUNTS.map(({ email, summary, featured }) => ({
+    email,
+    summary,
+    featured,
+}));
 
 const meta = {
     title: 'Components/Organisms/Dev Toolbar',

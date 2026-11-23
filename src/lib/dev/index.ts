@@ -27,6 +27,8 @@ export interface TestAccount {
     email: string;
     /** One line for the toolbar: who this account is and what it's for. */
     summary: string;
+    /** Listed first in the toolbar; the rest go under "More accounts". */
+    featured: boolean;
 }
 
 const roleWords = {
@@ -34,17 +36,24 @@ const roleWords = {
     moderator: 'moderates',
     member: 'member of',
 };
+type Role = keyof typeof roleWords;
+const roleOrder = Object.keys(roleWords) as Role[];
 
-/** The seeded accounts (scripts/seed-data.json), described for the toolbar. */
+/**
+ * The seeded accounts (scripts/seed-data.json), described for the toolbar.
+ * The `"featured": true` ones cover the main test cases; the rest fill out
+ * member lists.
+ */
 export const TEST_ACCOUNTS: TestAccount[] = seed.users.map((user) => {
-    const roles = seed.organizations.flatMap(({ name, members }) =>
-        members
-            .filter(([uid]) => uid === user.uid)
-            .map(
-                ([, role]) =>
-                    `${roleWords[role as keyof typeof roleWords]} ${name}`
-            )
-    );
+    // Owned groups first: the line is truncated in the toolbar.
+    const roles = seed.organizations
+        .flatMap(({ name, members }) =>
+            members
+                .filter(([uid]) => uid === user.uid)
+                .map(([, role]) => ({ name, role: role as Role }))
+        )
+        .sort((a, b) => roleOrder.indexOf(a.role) - roleOrder.indexOf(b.role))
+        .map(({ name, role }) => `${roleWords[role]} ${name}`);
     const profile =
         'profile' in user && user.profile
             ? `${user.profile.displayName} (${user.profile.locale})`
@@ -53,6 +62,7 @@ export const TEST_ACCOUNTS: TestAccount[] = seed.users.map((user) => {
         uid: user.uid,
         email: user.email,
         summary: [profile, ...roles].join(' · '),
+        featured: 'featured' in user && user.featured === true,
     };
 });
 

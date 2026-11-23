@@ -33,20 +33,30 @@ describe('isLocalDev', () => {
 
 describe('TEST_ACCOUNTS', () => {
     it('lists the seeded accounts with what each is for', () => {
-        expect(TEST_ACCOUNTS.map((a) => a.email)).toEqual([
-            'comrade1@communalists.com',
-            'comrade2@communalists.com',
-            'comrade3@communalists.com',
+        expect(
+            TEST_ACCOUNTS.filter((a) => a.featured).map((a) => a.email)
+        ).toEqual([
+            'maya.thompson@example.com',
+            'luis.hernandez@example.com',
+            'sam.rivera@example.com',
         ]);
+        expect(TEST_ACCOUNTS[0].summary).toMatch(/^Maya Thompson \(en\)/);
         expect(TEST_ACCOUNTS[0].summary).toContain('owns South Bay Mutual Aid');
         expect(TEST_ACCOUNTS[0].summary).toContain(
             'moderates Oakland Auto Club'
         );
         expect(TEST_ACCOUNTS[2].summary).toContain('account setup');
+        expect(TEST_ACCOUNTS.length).toBeGreaterThan(3);
+        // Owned groups come first, since the toolbar truncates the line.
+        const thanh = TEST_ACCOUNTS.find((a) => a.uid === 'seed-thanh');
+        expect(thanh?.summary).toMatch(
+            /^Thanh Nguyễn \(vi\) · owns Little Saigon Food Pantry/
+        );
     });
 
     it('only accepts seeded emails', () => {
-        expect(isTestAccount('comrade1@communalists.com')).toBe(true);
+        expect(isTestAccount('maya.thompson@example.com')).toBe(true);
+        expect(isTestAccount('thanh.nguyen@example.com')).toBe(true);
         expect(isTestAccount('someone@example.com')).toBe(false);
     });
 });

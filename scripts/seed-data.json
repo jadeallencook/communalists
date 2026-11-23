@@ -2,26 +2,101 @@
     "password": "password123",
     "users": [
         {
-            "uid": "seed-comrade1",
-            "email": "comrade1@communalists.com",
+            "uid": "seed-maya",
+            "featured": true,
+            "email": "maya.thompson@example.com",
             "profile": {
-                "displayName": "Comrade One",
+                "displayName": "Maya Thompson",
                 "locale": "en",
                 "placeId": "5392171"
             }
         },
         {
-            "uid": "seed-comrade2",
-            "email": "comrade2@communalists.com",
+            "uid": "seed-luis",
+            "featured": true,
+            "email": "luis.hernandez@example.com",
             "profile": {
-                "displayName": "Comrade Two",
+                "displayName": "Luis Hernández",
                 "locale": "es",
                 "placeId": "5378538"
             }
         },
         {
-            "uid": "seed-comrade3",
-            "email": "comrade3@communalists.com"
+            "uid": "seed-sam",
+            "featured": true,
+            "email": "sam.rivera@example.com"
+        },
+        {
+            "uid": "seed-thanh",
+            "email": "thanh.nguyen@example.com",
+            "profile": {
+                "displayName": "Thanh Nguyễn",
+                "locale": "vi",
+                "placeId": "5392171"
+            }
+        },
+        {
+            "uid": "seed-wei",
+            "email": "wei.chen@example.com",
+            "profile": {
+                "displayName": "Wei Chen",
+                "locale": "zh",
+                "placeId": "5393015"
+            }
+        },
+        {
+            "uid": "seed-aisha",
+            "email": "aisha.bello@example.com",
+            "profile": {
+                "displayName": "Aisha Bello",
+                "locale": "en",
+                "placeId": "5378538"
+            }
+        },
+        {
+            "uid": "seed-daniel",
+            "email": "daniel.park@example.com",
+            "profile": {
+                "displayName": "Daniel Park",
+                "locale": "en",
+                "placeId": "5400075"
+            }
+        },
+        {
+            "uid": "seed-rosa",
+            "email": "rosa.martinez@example.com",
+            "profile": {
+                "displayName": "Rosa Martínez",
+                "locale": "es",
+                "placeId": "5350734"
+            }
+        },
+        {
+            "uid": "seed-priya",
+            "email": "priya.patel@example.com",
+            "profile": {
+                "displayName": "Priya Patel",
+                "locale": "en",
+                "placeId": "5327684"
+            }
+        },
+        {
+            "uid": "seed-marcus",
+            "email": "marcus.johnson@example.com",
+            "profile": {
+                "displayName": "Marcus Johnson",
+                "locale": "en",
+                "placeId": "5378538"
+            }
+        },
+        {
+            "uid": "seed-linh",
+            "email": "linh.tran@example.com",
+            "profile": {
+                "displayName": "Linh Trần",
+                "locale": "vi",
+                "placeId": "5392171"
+            }
         }
     ],
     "organizations": [
@@ -45,8 +120,14 @@
             "joinPolicy": "request",
             "visibility": "listed",
             "members": [
-                ["seed-comrade1", "owner"],
-                ["seed-comrade2", "member"]
+                ["seed-maya", "owner"],
+                ["seed-thanh", "moderator"],
+                ["seed-luis", "member"],
+                ["seed-rosa", "member"],
+                ["seed-daniel", "member"],
+                ["seed-linh", "member"],
+                ["seed-wei", "member"],
+                ["seed-aisha", "member"]
             ]
         },
         {
@@ -62,8 +143,11 @@
             "joinPolicy": "open",
             "visibility": "listed",
             "members": [
-                ["seed-comrade2", "owner"],
-                ["seed-comrade1", "moderator"]
+                ["seed-luis", "owner"],
+                ["seed-maya", "moderator"],
+                ["seed-marcus", "moderator"],
+                ["seed-aisha", "member"],
+                ["seed-daniel", "member"]
             ]
         },
         {
@@ -78,7 +162,11 @@
             "socials": [],
             "joinPolicy": "invite",
             "visibility": "unlisted",
-            "members": [["seed-comrade1", "owner"]]
+            "members": [
+                ["seed-maya", "owner"],
+                ["seed-rosa", "member"],
+                ["seed-linh", "member"]
+            ]
         },
         {
             "id": "seed-disaster",
@@ -92,7 +180,91 @@
             "socials": [],
             "joinPolicy": "request",
             "visibility": "listed",
-            "members": [["seed-comrade2", "owner"]]
+            "members": [
+                ["seed-luis", "owner"],
+                ["seed-aisha", "moderator"],
+                ["seed-priya", "member"],
+                ["seed-marcus", "member"],
+                ["seed-wei", "member"],
+                ["seed-thanh", "member"]
+            ]
+        },
+        {
+            "id": "seed-tool-library",
+            "name": "East Bay Tool Library",
+            "handle": "east-bay-tools",
+            "focusAreas": ["lending", "environment"],
+            "description": "Borrow a drill, a ladder or a pressure washer for free. Return it next week. Repair café on the first Sunday of the month.",
+            "placeId": "5327684",
+            "reach": { "scope": "local", "radiusMiles": 15 },
+            "languages": ["en"],
+            "website": "https://example.net/",
+            "socials": [],
+            "joinPolicy": "open",
+            "visibility": "listed",
+            "members": [
+                ["seed-priya", "owner"],
+                ["seed-marcus", "member"],
+                ["seed-aisha", "member"],
+                ["seed-luis", "member"]
+            ]
+        },
+        {
+            "id": "seed-childcare",
+            "name": "Fremont Childcare Co-op",
+            "handle": "fremont-childcare",
+            "focusAreas": ["childcare", "education"],
+            "description": "Parents trading babysitting hours, plus a Saturday homework club for kids in grades 1 to 6.",
+            "placeId": "5350734",
+            "reach": { "scope": "local", "radiusMiles": 10 },
+            "languages": ["en", "es"],
+            "contactEmail": "coop@example.net",
+            "socials": [],
+            "joinPolicy": "request",
+            "visibility": "listed",
+            "members": [
+                ["seed-rosa", "owner"],
+                ["seed-maya", "member"],
+                ["seed-daniel", "member"]
+            ]
+        },
+        {
+            "id": "seed-garden",
+            "name": "Santa Clara Community Garden",
+            "handle": "sc-community-garden",
+            "focusAreas": ["environment", "food"],
+            "description": "Thirty raised beds, a shared tool shed and a seed swap every spring. Extra harvest goes to the South Bay community fridge.",
+            "placeId": "5393015",
+            "reach": { "scope": "local", "radiusMiles": 5 },
+            "languages": ["en", "zh"],
+            "socials": [],
+            "joinPolicy": "open",
+            "visibility": "listed",
+            "members": [
+                ["seed-wei", "owner"],
+                ["seed-daniel", "moderator"],
+                ["seed-linh", "member"]
+            ]
+        },
+        {
+            "id": "seed-pantry",
+            "name": "Little Saigon Food Pantry",
+            "handle": "little-saigon-pantry",
+            "focusAreas": ["food"],
+            "description": "Groceries every Tuesday and Friday evening, no questions asked. Rice, produce, and halal and vegetarian options.",
+            "placeId": "5392171",
+            "reach": { "scope": "local", "radiusMiles": 10 },
+            "languages": ["vi", "en"],
+            "contactEmail": "pantry@example.net",
+            "socials": [],
+            "joinPolicy": "request",
+            "visibility": "listed",
+            "members": [
+                ["seed-thanh", "owner"],
+                ["seed-linh", "moderator"],
+                ["seed-wei", "member"],
+                ["seed-luis", "member"]
+            ]
         }
     ]
 }
