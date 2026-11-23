@@ -11,8 +11,10 @@ import { SiteHeader } from '@/components/organisms/site-header';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { routing } from '@/i18n/routing';
 import { currentBuild } from '@/lib/build-info';
+import { isLocalDev, TEST_ACCOUNTS } from '@/lib/dev';
 import { getSiteUrl } from '@/lib/site';
 
+import { DevToolbarContainer } from './dev-toolbar-container';
 import { HeaderAccount, HeaderNav } from './header-slots';
 
 import '../globals.css';
@@ -85,6 +87,13 @@ export default async function LocaleLayout({
                             {children}
                         </main>
                         <SiteFooter build={currentBuild()} />
+                        {isLocalDev(process.env) && (
+                            <DevToolbarContainer
+                                accounts={TEST_ACCOUNTS.map(
+                                    ({ email, summary }) => ({ email, summary })
+                                )}
+                            />
+                        )}
                     </ThemeProvider>
                 </NextIntlClientProvider>
             </body>

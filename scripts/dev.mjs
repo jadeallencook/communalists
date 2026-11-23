@@ -5,6 +5,8 @@
 // 1. Creates .env.local from .env.example if it's missing (emulator settings).
 // 2. Starts the Firebase emulators (Auth + Firestore; unless they're already
 //    running) and waits until Auth answers. Data is kept in .emulator-data/.
+//    Then adds the test accounts and organizations (scripts/seed.mjs) if any
+//    are missing, so the dev toolbar's one-click sign-in always works.
 // 3. Starts `next dev`. Extra arguments pass through: `pnpm dev --port 3001`.
 // 4. On Ctrl-C, stops Next, then asks the Firebase CLI to save and exit.
 //
@@ -187,10 +189,23 @@ if (await authUp()) {
     );
 }
 
+// Test accounts and organizations, only if any are missing (fast otherwise).
+const seed = spawnSync('node', ['scripts/seed.mjs', '--if-missing'], {
+    stdio: 'inherit',
+});
+if (seed.status !== 0) {
+    say('Adding test data failed (see above). Try `pnpm seed` once it is up.');
+}
+
 // --- 3. Next
 const next = emulatorsOnly
     ? null
-    : spawn('next', ['dev', ...nextArgs], { stdio: 'inherit' });
+    : spawn('next', ['dev', ...nextArgs], {
+          stdio: 'inherit',
+          // No Google metadata server off the cloud: without this, Firestore
+          // looks for one, waits seconds, and Next shows a MetadataLookupWarning.
+          env: { ...process.env, METADATA_SERVER_DETECTION: 'none' },
+      });
 
 // --- 4. Shutdown
 function stopEmulators() {

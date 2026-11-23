@@ -1,0 +1,98 @@
+{
+    "password": "password123",
+    "users": [
+        {
+            "uid": "seed-comrade1",
+            "email": "comrade1@communalists.com",
+            "profile": {
+                "displayName": "Comrade One",
+                "locale": "en",
+                "placeId": "5392171"
+            }
+        },
+        {
+            "uid": "seed-comrade2",
+            "email": "comrade2@communalists.com",
+            "profile": {
+                "displayName": "Comrade Two",
+                "locale": "es",
+                "placeId": "5378538"
+            }
+        },
+        {
+            "uid": "seed-comrade3",
+            "email": "comrade3@communalists.com"
+        }
+    ],
+    "organizations": [
+        {
+            "id": "seed-sbma",
+            "name": "South Bay Mutual Aid",
+            "handle": "sbma",
+            "focusAreas": ["general", "food", "housing"],
+            "description": "Neighbors helping neighbors across the South Bay: weekly grocery runs, a community fridge, and help finding housing.",
+            "placeId": "5392171",
+            "reach": { "scope": "local", "radiusMiles": 25 },
+            "languages": ["en", "es", "vi"],
+            "website": "https://example.org/",
+            "contactEmail": "hello@example.org",
+            "socials": [
+                {
+                    "platform": "instagram",
+                    "url": "https://www.instagram.com/example"
+                }
+            ],
+            "joinPolicy": "request",
+            "visibility": "listed",
+            "members": [
+                ["seed-comrade1", "owner"],
+                ["seed-comrade2", "member"]
+            ]
+        },
+        {
+            "id": "seed-oakland-auto",
+            "name": "Oakland Auto Club",
+            "handle": "oakland-auto-club",
+            "focusAreas": ["transportation", "hobbies"],
+            "description": "Free basic car repair on Saturdays, and rides to appointments for people without a car.",
+            "placeId": "5378538",
+            "reach": { "scope": "local", "radiusMiles": 50 },
+            "languages": ["en", "es"],
+            "socials": [],
+            "joinPolicy": "open",
+            "visibility": "listed",
+            "members": [
+                ["seed-comrade2", "owner"],
+                ["seed-comrade1", "moderator"]
+            ]
+        },
+        {
+            "id": "seed-alum-rock",
+            "name": "Alum Rock Tenants Union",
+            "handle": "alum-rock-tenants",
+            "focusAreas": ["housing", "legal"],
+            "description": "Tenants organizing together. Members only.",
+            "placeId": "5392171",
+            "reach": { "scope": "local", "radiusMiles": 10 },
+            "languages": ["en", "es"],
+            "socials": [],
+            "joinPolicy": "invite",
+            "visibility": "unlisted",
+            "members": [["seed-comrade1", "owner"]]
+        },
+        {
+            "id": "seed-disaster",
+            "name": "Mutual Aid Disaster Network",
+            "handle": "disaster-network",
+            "focusAreas": ["disasterRelief", "health"],
+            "description": "Volunteers who show up after fires, floods and earthquakes, wherever they happen.",
+            "placeId": "5378538",
+            "reach": { "scope": "international" },
+            "languages": ["en", "es", "zh", "vi"],
+            "socials": [],
+            "joinPolicy": "request",
+            "visibility": "listed",
+            "members": [["seed-comrade2", "owner"]]
+        }
+    ]
+}

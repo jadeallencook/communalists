@@ -14,9 +14,10 @@ pnpm dev                      # http://localhost:3000 → redirects to /en
 `pnpm dev` (`scripts/dev.mjs`; `npm run dev` works too) does the rest:
 
 1. Creates `.env.local` from `.env.example` if it's missing.
-2. Starts the Firebase emulators, or reuses ones already running, and waits for Auth.
-3. Starts `next dev`. Extra arguments pass through: `pnpm dev --port 3001`.
-4. On Ctrl-C, stops Next, then lets the emulators save to `.emulator-data/`.
+2. Starts the Firebase emulators, or reuses ones already running, and waits for Auth. Then runs `scripts/seed.mjs --if-missing`, which adds the test data only if any of it is missing (about half a second otherwise).
+3. Starts Next with `METADATA_SERVER_DETECTION=none`, so Firestore doesn't wait seconds looking for Google's metadata server (and Next doesn't show a `MetadataLookupWarning`).
+4. Starts `next dev`. Extra arguments pass through: `pnpm dev --port 3001`.
+5. On Ctrl-C, stops Next, then lets the emulators save to `.emulator-data/`.
 
 It also starts only Auth and Firestore (`--only auth,firestore`; the Realtime Database isn't used), removes leftover `firebase-export-*` folders, and names any process blocking an emulator port.
 
@@ -24,17 +25,36 @@ It warns when Node doesn't match `.nvmrc`. `firebase-tools` is a dev dependency,
 
 ## Scripts
 
-| Script                                   | What it does                                                                                                                                          |
-| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm dev`                               | Local development: `.env.local`, emulators and Next together (above)                                                                                  |
-| `pnpm dev:next` / `build` / `start`      | Next.js only                                                                                                                                          |
-| `pnpm lint`                              | ESLint (Next core-web-vitals + TypeScript rules, Prettier conflicts off)                                                                              |
-| `pnpm typecheck`                         | `next typegen` (route + root-param types), then `tsc --noEmit`                                                                                        |
-| `pnpm format` / `format:check`           | Prettier                                                                                                                                              |
-| `pnpm test` / `test:watch`               | Vitest (jsdom + Testing Library)                                                                                                                      |
-| `pnpm storybook` / `build-storybook`     | Storybook 10 on port 6006                                                                                                                             |
-| `node scripts/build-places.mjs <dir> US` | Regenerates the city-picker data from GeoNames downloads (see `accounts-and-sessions.md`)                                                             |
-| `pnpm emulators`                         | The same script without Next: Auth (9099) + Firestore (8080) emulators, UI on 4000, project `demo-communalists`; saves to `.emulator-data/` on Ctrl-C |
+| Script                                   | What it does                                                                                                                                                                                                                                              |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                               | Local development: `.env.local`, emulators and Next together (above)                                                                                                                                                                                      |
+| `pnpm dev:next` / `build` / `start`      | Next.js only                                                                                                                                                                                                                                              |
+| `pnpm lint`                              | ESLint (Next core-web-vitals + TypeScript rules, Prettier conflicts off)                                                                                                                                                                                  |
+| `pnpm typecheck`                         | `next typegen` (route + root-param types), then `tsc --noEmit`                                                                                                                                                                                            |
+| `pnpm format` / `format:check`           | Prettier                                                                                                                                                                                                                                                  |
+| `pnpm test` / `test:watch`               | Vitest (jsdom + Testing Library)                                                                                                                                                                                                                          |
+| `pnpm storybook` / `build-storybook`     | Storybook 10 on port 6006                                                                                                                                                                                                                                 |
+| `node scripts/build-places.mjs <dir> US` | Regenerates the city-picker data from GeoNames downloads (see `accounts-and-sessions.md`)                                                                                                                                                                 |
+| `pnpm seed`                              | Test accounts and organizations (`scripts/seed-data.json`) in the running emulators; resets them if they exist. `--if-missing` (used by `pnpm dev`) only seeds when something is missing ([getting-started → Test data](../getting-started.md#test-data)) |
+| `pnpm emulators`                         | The same script without Next: Auth (9099) + Firestore (8080) emulators, UI on 4000, project `demo-communalists`; saves to `.emulator-data/` on Ctrl-C                                                                                                     |
+
+## Dev toolbar
+
+A **Dev** menu in a corner of every page, only in local development (decision #24): one-click sign-in as a test account (then the dashboard), **Reset test data** (`pnpm seed` plus clearing the cached reads it changed), a link to the emulator UI, and a corner picker remembered in `localStorage`.
+
+| Piece                                  | Where                                                                |
+| -------------------------------------- | -------------------------------------------------------------------- |
+| The guard and test-account list (pure) | `src/lib/dev/index.ts` (`isLocalDev`, `TEST_ACCOUNTS`)               |
+| Actions (`devSignIn`, `resetTestData`) | `src/app/actions/dev-tools.ts`                                       |
+| UI and corner                          | `DevToolbar` (organism), `useDevToolbarCorner` (both in Storybook)   |
+| Wiring                                 | `src/app/[locale]/dev-toolbar-container.tsx`, rendered by the layout |
+| Test data                              | `scripts/seed-data.json`, `scripts/seed.mjs`                         |
+
+**Keeping it out of production.** `isLocalDev(process.env)` is true only for `NODE_ENV=development`, not on Vercel, with no service-account key, with both emulator hosts set, and a project ID starting with `demo-`. The layout renders the toolbar only then, and **each action checks it again**: Next server actions can be called directly by their ID whether or not any page renders them, so hiding the button alone wouldn't be enough. Sign-in also only accepts the seeded emails. Verified 2026-11-23 on a production build pointed at the emulators: no toolbar, and direct calls to both actions failed with "Dev tools are only available in local development" and set no session cookie. Unit tests cover the guard.
+
+**Adding a tool:** add a row to `DevToolbar` (props only), and if it needs the server, a server action in `dev-tools.ts` that calls `assertLocalDev()` first. Its text is English and stays out of `messages/*.json`: only developers ever see it.
+
+**Resetting keeps you signed in.** Setting a Firebase password, even to the same value, signs that account out everywhere, so the seed only resets a test account's password when it no longer matches `password123`.
 
 ## Git hooks (husky 9)
 

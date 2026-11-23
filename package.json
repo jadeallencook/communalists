@@ -21,6 +21,7 @@
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
         "emulators": "node scripts/dev.mjs --emulators-only",
+        "seed": "node scripts/seed.mjs",
         "prepare": "husky"
     },
     "lint-staged": {

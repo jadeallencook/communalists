@@ -133,7 +133,7 @@ See [decision #14](../decisions.md). The geocoder from #12 is gone.
 
 ## Local development
 
-Local dev **never uses the real Firebase project**. It runs against the emulators, so your production account doesn't exist locally; create a test account at `/en/sign-up`.
+Local dev **never uses the real Firebase project**. It runs against the emulators, so your production account doesn't exist locally. Use a seeded test account (`comrade1@communalists.com` / `password123`, [getting-started → Test data](../getting-started.md#test-data)) or sign up at `/en/sign-up`.
 
 ```sh
 pnpm dev   # creates .env.local if needed, starts the emulators, then Next (tooling-and-ci.md → Setup)
@@ -155,7 +155,7 @@ To stop a `next start` server, kill it by PID or port. The process renames itsel
 
 When checking a page's HTML, match real values or element IDs (`Welcome, Ada!`, `id="placeId-trigger"`), not translated strings. The page's translation payload contains every message in its namespaces (`Welcome, {name}!`, `Choose your city`) even when they aren't rendered. Redirects from inside `<Suspense>` arrive in the stream (`NEXT_REDIRECT;replace;/en/…`), not as a `Location` header.
 
-The Admin SDK logs a `MetadataLookupWarning` locally (it looks for Google Cloud credentials). It's harmless with the emulators.
+The Admin SDK logs a `MetadataLookupWarning` locally: Firestore asks Google's metadata server for credentials and waits a few seconds for it to time out. It's harmless with the emulators. `METADATA_SERVER_DETECTION=none` skips the lookup; `pnpm dev` (for Next) and `scripts/seed.mjs` set it. Running `pnpm dev:next` alone still shows the warning.
 
 Verified on 2026-11-21 against the emulators (after sign-in): place API (results, cache headers, 400 for unsupported countries, nothing under 2 characters); mismatched passwords → "Passwords don't match" and no account created; no city → "Choose your city"; tampered place ID → "couldn't find that city"; success → welcome showing the chosen city; duplicate email (case-insensitive) rejected; no session → sign-in; sign-out revokes the cookie; sign-in with a wrong password and with an unknown email show the same message and keep the email; sign-in field errors; sign-in (email in a different case) → welcome with a working session; `/es/sign-in` translated and linked to sign-up. Forgot password: sign-in links to it; invalid email error; a known email (any case) records exactly one reset email with `continueUrl` back to sign-in; an unknown email shows the same confirmation and sends nothing; using the code sets the new password, which then signs in, and the old one is rejected. Reset page (2026-11-21): `/auth/action?lang=es` → `/es/auth/action` (and `zh-CN` → `zh`; unsupported `lang` falls back to `Accept-Language`); no code or another mode → "doesn't work"; bogus code → "expired"; valid code → the form for that email, `noindex` and `no-referrer`, and loading the page doesn't use the code; mismatch and too-short errors; saving → welcome with a new session, another device's session is signed out, old password rejected, new one works; reusing the link → "expired" on load and on submit.
 
