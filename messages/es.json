@@ -508,7 +508,8 @@
         "makeOwner": "Hacer propietario",
         "makeMember": "Hacer miembro regular",
         "makeOwnerTitle": "¿Hacer a {name} propietario?",
-        "makeOwnerBody": "Las personas propietarias pueden hacerlo todo aquí, incluso nombrar a otras y quitar a quienes moderan. Por ahora no se puede deshacer; pueden dejar el cargo saliendo del grupo."
+        "makeOwnerBody": "Las personas propietarias pueden hacerlo todo aquí, incluso nombrar a otras y quitar a quienes moderan. Por ahora no se puede deshacer; pueden dejar el cargo saliendo del grupo.",
+        "actionFor": "{action}: {name}"
     },
     "LocationField": {
         "country": "País",

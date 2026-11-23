@@ -29,7 +29,7 @@ export interface OrganizationFiltersProps {
 }
 
 const selectClass =
-    'h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm dark:bg-input/30';
+    'h-8 w-full rounded-lg border border-control bg-transparent px-2.5 text-sm dark:bg-input/30';
 
 /** One filter as toggle chips (native checkboxes, so it works without JavaScript). */
 function Chips({
@@ -46,7 +46,7 @@ function Chips({
             {options.map((option) => (
                 <label
                     key={option.value}
-                    className="cursor-pointer rounded-full border px-2.5 py-1 text-sm transition-colors select-none hover:bg-muted has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-primary-foreground has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring"
+                    className="cursor-pointer rounded-full border border-control px-2.5 py-1 text-sm transition-colors select-none hover:bg-muted has-[:checked]:border-primary has-[:checked]:bg-primary has-[:checked]:text-primary-foreground has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring"
                 >
                     <input
                         type="checkbox"
@@ -81,7 +81,7 @@ function Group({
                 />
                 {title}
                 {count > 0 && (
-                    <span className="rounded-full bg-muted px-1.5 text-xs text-muted-foreground">
+                    <span className="rounded-full bg-muted px-1.5 text-xs text-foreground">
                         {count}
                     </span>
                 )}

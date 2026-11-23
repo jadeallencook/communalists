@@ -508,7 +508,8 @@
         "makeOwner": "设为所有者",
         "makeMember": "设为普通成员",
         "makeOwnerTitle": "将{name}设为所有者？",
-        "makeOwnerBody": "所有者可以在这里做任何事，包括任命其他所有者和移除管理员。目前无法撤回；对方可以通过退出团体卸任。"
+        "makeOwnerBody": "所有者可以在这里做任何事，包括任命其他所有者和移除管理员。目前无法撤回；对方可以通过退出团体卸任。",
+        "actionFor": "{action}：{name}"
     },
     "LocationField": {
         "country": "国家",

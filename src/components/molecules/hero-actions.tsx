@@ -30,8 +30,8 @@ export function HeroActions({ signedIn }: HeroActionsProps) {
             <Button
                 asChild
                 size="lg"
-                variant="ghost"
-                className="text-white hover:bg-white/10 hover:text-white"
+                variant="outline"
+                className="border-white/80 bg-transparent text-white hover:bg-white/10 hover:text-white dark:border-white/80 dark:bg-transparent"
             >
                 <Link href="/sign-in">{t('signIn')}</Link>
             </Button>

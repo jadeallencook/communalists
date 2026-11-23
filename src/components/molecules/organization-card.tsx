@@ -50,7 +50,7 @@ export function OrganizationCard({
                 </span>
             </span>
             {role && (
-                <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
+                <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs text-foreground">
                     {t(`roles.${role}`)}
                 </span>
             )}

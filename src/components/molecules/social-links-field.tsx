@@ -28,7 +28,7 @@ export interface SocialLinksFieldProps {
 }
 
 const selectClass =
-    'h-8 shrink-0 rounded-lg border border-input bg-transparent px-2.5 text-sm dark:bg-input/30';
+    'h-8 shrink-0 rounded-lg border border-control bg-transparent px-2.5 text-sm dark:bg-input/30';
 
 /** Rows of platform + link, with add and remove. Submits socialPlatform[] / socialUrl[]. */
 export function SocialLinksField({

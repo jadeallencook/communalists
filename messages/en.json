@@ -508,7 +508,8 @@
         "makeOwner": "Make owner",
         "makeMember": "Make regular member",
         "makeOwnerTitle": "Make {name} an owner?",
-        "makeOwnerBody": "Owners can do everything here, including making other owners and removing moderators. For now an owner can't be changed back; they can step down by leaving."
+        "makeOwnerBody": "Owners can do everything here, including making other owners and removing moderators. For now an owner can't be changed back; they can step down by leaving.",
+        "actionFor": "{action}: {name}"
     },
     "LocationField": {
         "country": "Country",

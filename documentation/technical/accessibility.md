@@ -23,9 +23,10 @@
 
 **Seeing**
 
-- Text contrast **4.5:1** (3:1 for large text and for borders of controls and focus rings), in **both light and dark** themes. Check `muted-foreground` on `muted` especially.
-- Never rely on colour alone (pair it with text or an icon).
-- Works at **200% zoom** and at **320px** wide with no sideways scrolling.
+- Text contrast **4.5:1** (3:1 for large text and for borders of controls and focus rings), in **both light and dark** themes. Small labels on a `bg-muted` chip use `text-foreground`, not `text-muted-foreground` (4.35:1 in light, too low).
+- **Never rely on colour alone, including to show something is clickable.** Every action button has a visible border or fill: use `outline` (or `default`/`destructive`), not `ghost`, for actions in page content. Destructive actions get a red outline. `ghost` is only for the header's navigation and icon buttons.
+- **Controls use the `control` colour for their edges** (`border-control`: outline buttons, inputs, textareas, selects, checkboxes, filter chips), which is ≥ 3:1 in both themes. `border` stays soft for decorative lines (cards, dividers). The focus ring (`--ring`) is solid and ≥ 3:1.
+- Works at **200% zoom** and at **320px** wide with no sideways scrolling. **Rows with actions stack on narrow screens** (name, then the buttons wrapping onto their own lines) and sit side by side only from `md` up. Names wrap rather than being cut off.
 
 **Moving and touching**
 
@@ -49,11 +50,13 @@
 
 ## Known gaps (fix list, 2026-11-23)
 
-Found by review, not yet fixed:
+**Fixed 2026-11-23:** the members page squeezed names to one letter per line on phones (now stacked), its actions were borderless text (now outlined, red for remove and ban), and its repeated buttons didn't name the person (now "Remove: Luis Hernández"). Control borders were 1.26:1 in light mode and the focus ring 2.6:1 (now the `control` and `ring` tokens, measured: outlines 4.3:1 light / 5.4:1 dark, focus ring 7.5:1 / 10.6:1, role labels 18:1 / 14.5:1, small grey text 4.74:1 / 7.66:1). The join panel's Leave and the homepage's Sign in are outlined too.
 
-- **Members page:** repeated buttons ("Approve", "Remove", "Ban", "Make moderator") don't name the person.
+Still to fix:
+
 - **Members page and join panel:** after an action, the row (or button) disappears and focus falls to the top of the page.
 - **/find:** after filters change, the new result counts aren't announced.
 - **Skeletons and spinners** pulse regardless of reduced-motion settings.
-- **Contrast** of small muted text and role badges hasn't been measured in both themes.
+- **Contrast** measured on the members page only; other pages use the same tokens but haven't been measured one by one.
+- **Header** links (Sign in, Dashboard) are borderless `ghost` buttons. That's the common pattern for navigation, but worth a check with users.
 - **The Storybook a11y check only reports** (`a11y: { test: 'todo' }`); it doesn't fail anything, and stories aren't run in CI.

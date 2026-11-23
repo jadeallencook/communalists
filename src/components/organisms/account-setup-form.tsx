@@ -95,7 +95,7 @@ export function AccountSetupForm({
                         }
                         aria-invalid={errorFor('locale') ? true : undefined}
                         aria-describedby={describe('locale', 'locale-hint')}
-                        className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm dark:bg-input/30"
+                        className="h-8 w-full rounded-lg border border-control bg-transparent px-2.5 text-sm dark:bg-input/30"
                     >
                         {languages.map(({ code, name }) => (
                             <option key={code} value={code} lang={code}>

@@ -123,9 +123,9 @@ export function JoinPanel({
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button
-                            variant="ghost"
+                            variant="outline"
                             size="sm"
-                            className="self-start text-muted-foreground"
+                            className="self-start"
                         >
                             {t('leave')}
                         </Button>

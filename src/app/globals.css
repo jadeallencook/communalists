@@ -28,6 +28,7 @@
     --color-chart-1: var(--chart-1);
     --color-ring: var(--ring);
     --color-input: var(--input);
+    --color-control: var(--control);
     --color-border: var(--border);
     --color-destructive: var(--destructive);
     --color-accent-foreground: var(--accent-foreground);
@@ -70,7 +71,12 @@
     --destructive: oklch(0.475 0.171 19.96);
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
+    /* Edges of interactive controls (button outlines, fields, checkboxes):
+       at least 3:1 against the background (WCAG 1.4.11). --border stays
+       soft for decorative lines. See technical/accessibility.md. */
+    --control: oklch(0.58 0 0);
+    /* Focus ring: solid and at least 3:1. */
+    --ring: oklch(0.45 0 0);
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
@@ -105,7 +111,8 @@
     --destructive: oklch(0.704 0.191 22.216);
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
+    --control: oklch(0.62 0 0);
+    --ring: oklch(0.8 0 0);
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);

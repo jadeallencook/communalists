@@ -19,12 +19,14 @@ Add components with `pnpm dlx shadcn@latest add <name>`. They're copied into `sr
 
 ## Tokens that differ from shadcn's defaults
 
-| Token           | Value                              | Why                                                                                                       |
-| --------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `--destructive` | `oklch(0.475 0.171 19.96)` (light) | The 2025 brand crimson `#a71d31`                                                                          |
-| `--font-sans`   | Geist, then CJK system fonts       | Geist covers Latin and **Vietnamese**; Chinese falls back to PingFang SC / Noto Sans SC / Microsoft YaHei |
+| Token             | Value                                           | Why                                                                                                               |
+| ----------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `--destructive`   | `oklch(0.475 0.171 19.96)` (light)              | The 2025 brand crimson `#a71d31`                                                                                  |
+| `--font-sans`     | Geist, then CJK system fonts                    | Geist covers Latin and **Vietnamese**; Chinese falls back to PingFang SC / Noto Sans SC / Microsoft YaHei         |
+| `--control` (new) | `oklch(0.58 0 0)` light, `oklch(0.62 0 0)` dark | Edges of interactive controls (`border-control`), ≥ 3:1 for WCAG 1.4.11. shadcn's `--input`/`--border` are ~1.3:1 |
+| `--ring`          | `oklch(0.45 0 0)` light, `oklch(0.8 0 0)` dark  | A solid focus ring ≥ 3:1 (atoms use `ring-ring`, not `ring-ring/50`)                                              |
 
-Everything else is shadcn's neutral palette, which already matches the 2025 monochrome direction.
+Everything else is shadcn's neutral palette, which already matches the 2025 monochrome direction. The outline button variant uses `border-control`, so outline buttons read as buttons without relying on colour ([accessibility](accessibility.md)).
 
 ## Typography and languages
 

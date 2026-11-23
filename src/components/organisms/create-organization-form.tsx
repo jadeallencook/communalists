@@ -65,7 +65,7 @@ export interface CreateOrganizationFormProps {
 }
 
 const selectClass =
-    'h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm dark:bg-input/30';
+    'h-8 w-full rounded-lg border border-control bg-transparent px-2.5 text-sm dark:bg-input/30';
 
 /** Everything needed to create an organization, in four sections. No logic: it renders `state`. */
 export function CreateOrganizationForm({

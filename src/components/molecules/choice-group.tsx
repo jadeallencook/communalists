@@ -93,7 +93,7 @@ export function ChoiceGroup({
                 {options.map((option) => (
                     <label
                         key={option.value}
-                        className="flex cursor-pointer items-start gap-2 rounded-lg border p-2.5 text-sm has-[:checked]:border-primary has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring"
+                        className="flex cursor-pointer items-start gap-2 rounded-lg border border-control p-2.5 text-sm has-[:checked]:border-primary has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring"
                     >
                         <input
                             type={kind}

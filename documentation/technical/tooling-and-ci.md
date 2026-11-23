@@ -82,6 +82,8 @@ One job on every push to `main` and every PR: `pnpm install --frozen-lockfile` (
 
 ## Gotchas found while setting up
 
+- **Turbopack's disk cache can serve an old `globals.css`.** On 2026-11-23 new theme variables in `src/app/globals.css` didn't show up in `pnpm dev` or even in `pnpm build`, while class changes in components did. The build was reusing a stale Tailwind transform from `.next/cache/turbopack`. Moving that folder aside fixed the build. If a change to `globals.css` doesn't show: stop `pnpm dev`, delete `.next/cache/turbopack` and `.next/dev`, and start again. Both are caches and are rebuilt.
+
 - shadcn's `init` failed halfway under pnpm 12 because of the unapproved build scripts above. Re-running after setting `allowBuilds` worked.
 - `CI=1` makes pnpm use `--frozen-lockfile`, so CLI generators (Storybook `init`) can't add dependencies under it. Run `pnpm install` afterwards.
 - **Version:** `package.json` `version` is bumped by hand at milestones (decision #19), not per commit. `next.config.ts` inlines it with `VERCEL_GIT_COMMIT_SHA` as `NEXT_PUBLIC_APP_VERSION` / `NEXT_PUBLIC_COMMIT_SHA`, for the footer (`src/lib/build-info.ts`).

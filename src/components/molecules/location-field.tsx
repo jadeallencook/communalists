@@ -91,7 +91,7 @@ export function LocationField({
                     onChange={(event) =>
                         onCountryChange(event.target.value as CountryCode)
                     }
-                    className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm dark:bg-input/30"
+                    className="h-8 w-full rounded-lg border border-control bg-transparent px-2.5 text-sm dark:bg-input/30"
                 >
                     {countries.map(({ code, name }) => (
                         <option key={code} value={code}>

@@ -79,14 +79,18 @@ export function OrganizationMembersPage({
         action,
         locale,
     });
+    // Every button has a border (not just colour) so it reads as a button,
+    // and a name that says who it's for: "Remove: Luis Hernández".
+    const forPerson = (action: string, person: Person) =>
+        t('actionFor', { action, name: person.displayName });
     const quick = (
-        uid: string,
+        person: Person,
         action: ModerationAction,
         label: string,
-        variant: 'default' | 'outline' | 'ghost' = 'outline'
+        variant: 'default' | 'outline' = 'outline'
     ) => (
         <form action={formAction}>
-            {Object.entries(fields(uid, action)).map(([key, value]) => (
+            {Object.entries(fields(person.uid, action)).map(([key, value]) => (
                 <input key={key} type="hidden" name={key} value={value} />
             ))}
             <Button
@@ -94,6 +98,7 @@ export function OrganizationMembersPage({
                 size="sm"
                 variant={variant}
                 disabled={pending}
+                aria-label={forPerson(label, person)}
             >
                 {label}
             </Button>
@@ -106,6 +111,7 @@ export function OrganizationMembersPage({
     ) => (
         <ReasonDialog
             triggerLabel={triggerLabel}
+            triggerAriaLabel={forPerson(triggerLabel, person)}
             title={t(`${action}Title`, { name: person.displayName })}
             description={t(`${action}Body`)}
             confirmLabel={t(`${action}Confirm`)}
@@ -155,13 +161,8 @@ export function OrganizationMembersPage({
                             person={person}
                             detail={t('askedOn', { date: date(person.since) })}
                         >
-                            {quick(
-                                person.uid,
-                                'approve',
-                                t('approve'),
-                                'default'
-                            )}
-                            {quick(person.uid, 'deny', t('deny'))}
+                            {quick(person, 'approve', t('approve'), 'default')}
+                            {quick(person, 'deny', t('deny'))}
                             {reason(person, 'block', t('block'))}
                         </Row>
                     ))
@@ -185,6 +186,10 @@ export function OrganizationMembersPage({
                                 <ReasonDialog
                                     key={change}
                                     triggerLabel={t('makeOwner')}
+                                    triggerAriaLabel={forPerson(
+                                        t('makeOwner'),
+                                        person
+                                    )}
                                     title={t('makeOwnerTitle', {
                                         name: person.displayName,
                                     })}
@@ -199,12 +204,7 @@ export function OrganizationMembersPage({
                                 />
                             ) : (
                                 <span key={change}>
-                                    {quick(
-                                        person.uid,
-                                        change,
-                                        t(change),
-                                        'ghost'
-                                    )}
+                                    {quick(person, change, t(change))}
                                 </span>
                             )
                         )}
@@ -237,7 +237,7 @@ export function OrganizationMembersPage({
                                       })
                             }
                         >
-                            {quick(person.uid, 'unban', t('unban'))}
+                            {quick(person, 'unban', t('unban'))}
                         </Row>
                     ))
                 )}
@@ -312,34 +312,40 @@ function Row({
     detail?: string;
     children?: ReactNode;
 }) {
+    // Stacked on narrow screens (name, then the buttons on their own lines),
+    // side by side from md up. The name wraps rather than being cut off.
     return (
-        <div className="flex flex-wrap items-center gap-3 rounded-lg border p-3">
-            <span
-                aria-hidden
-                className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium"
-            >
-                {initials(person.displayName)}
-            </span>
-            <span className="flex min-w-0 flex-1 flex-col">
-                <span className="flex items-center gap-2">
-                    <span className="truncate font-medium">
-                        {person.displayName}
+        <div className="flex flex-col gap-3 rounded-lg border p-3 md:flex-row md:items-center">
+            <div className="flex min-w-0 flex-1 items-center gap-3">
+                <span
+                    aria-hidden
+                    className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium"
+                >
+                    {initials(person.displayName)}
+                </span>
+                <span className="flex min-w-0 flex-col">
+                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <span className="font-medium break-words">
+                            {person.displayName}
+                        </span>
+                        {badge && (
+                            <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-foreground">
+                                {badge}
+                            </span>
+                        )}
                     </span>
-                    {badge && (
-                        <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-                            {badge}
+                    {detail && (
+                        <span className="text-sm break-words text-muted-foreground">
+                            {detail}
                         </span>
                     )}
                 </span>
-                {detail && (
-                    <span className="text-sm break-words text-muted-foreground">
-                        {detail}
-                    </span>
-                )}
-            </span>
-            <span className="flex flex-wrap items-center gap-1">
-                {children}
-            </span>
+            </div>
+            {children && (
+                <div className="flex flex-wrap items-center gap-2 md:shrink-0 md:justify-end">
+                    {children}
+                </div>
+            )}
         </div>
     );
 }

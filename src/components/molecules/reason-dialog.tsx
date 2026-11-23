@@ -16,10 +16,13 @@ import {
 } from '@/components/atoms/dialog';
 import { Field, FieldDescription, FieldLabel } from '@/components/atoms/field';
 import { Textarea } from '@/components/atoms/textarea';
+import { cn } from '@/lib/utils';
 
 export interface ReasonDialogProps {
     /** The button that opens it. */
     triggerLabel: string;
+    /** Its accessible name when the label alone isn't enough ("Ban: Luis Hernández"). */
+    triggerAriaLabel?: string;
     title: string;
     description: string;
     confirmLabel: string;
@@ -45,6 +48,7 @@ export interface ReasonDialogProps {
  */
 export function ReasonDialog({
     triggerLabel,
+    triggerAriaLabel,
     title,
     description,
     confirmLabel,
@@ -62,7 +66,17 @@ export function ReasonDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="ghost" size="sm">
+                {/* Outlined so it reads as a button without relying on colour;
+                    red outline for removing and banning. */}
+                <Button
+                    variant="outline"
+                    size="sm"
+                    aria-label={triggerAriaLabel}
+                    className={cn(
+                        destructive &&
+                            'border-destructive/60 text-destructive hover:bg-destructive/10 hover:text-destructive'
+                    )}
+                >
                     {triggerLabel}
                 </Button>
             </DialogTrigger>

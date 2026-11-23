@@ -508,7 +508,8 @@
         "makeOwner": "Đặt làm chủ nhóm",
         "makeMember": "Đặt làm thành viên thường",
         "makeOwnerTitle": "Đặt {name} làm chủ nhóm?",
-        "makeOwnerBody": "Chủ nhóm có thể làm mọi việc ở đây, kể cả chỉ định chủ nhóm khác và xóa người điều hành. Hiện chưa thể đổi lại; họ có thể thôi bằng cách rời nhóm."
+        "makeOwnerBody": "Chủ nhóm có thể làm mọi việc ở đây, kể cả chỉ định chủ nhóm khác và xóa người điều hành. Hiện chưa thể đổi lại; họ có thể thôi bằng cách rời nhóm.",
+        "actionFor": "{action}: {name}"
     },
     "LocationField": {
         "country": "Quốc gia",

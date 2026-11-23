@@ -51,11 +51,11 @@ export function MemberList({
                         >
                             {initials(person.displayName)}
                         </span>
-                        <span className="min-w-0 flex-1 truncate text-sm">
+                        <span className="min-w-0 flex-1 text-sm break-words">
                             {person.displayName}
                         </span>
                         {person.role !== 'member' && (
-                            <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                            <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-foreground">
                                 {t(`roles.${person.role}`)}
                             </span>
                         )}
