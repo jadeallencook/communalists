@@ -349,7 +349,10 @@
             "submit": "Crear organización",
             "submitting": "Creando…",
             "memberList": "Lista de miembros",
-            "memberListHint": "Las personas propietarias y moderadoras siempre se muestran, y todo el mundo ve cuántos miembros hay."
+            "memberListHint": "Las personas propietarias y moderadoras siempre se muestran, y todo el mundo ve cuántos miembros hay.",
+            "save": "Guardar cambios",
+            "saving": "Guardando…",
+            "handleCurrent": "Este es tu identificador actual."
         },
         "new": {
             "metaTitle": "Crear una organización",
@@ -376,7 +379,9 @@
             "socialMismatch": "Uno de los enlaces no es de la plataforma elegida.",
             "socialDuplicate": "Agrega cada plataforma solo una vez.",
             "ownedLimit": "Ya eres propietario de 5 organizaciones, el máximo permitido.",
-            "generic": "Algo salió mal. Inténtalo de nuevo."
+            "generic": "Algo salió mal. Inténtalo de nuevo.",
+            "handleCooldown": "Puedes cambiar el identificador una vez cada 30 días.",
+            "notAllowed": "Solo las personas propietarias y moderadoras pueden editar esta organización."
         },
         "page": {
             "members": "{count, plural, one {# miembro} other {# miembros}}",
@@ -406,6 +411,13 @@
                 "label": "Solo el total",
                 "description": "Solo se nombra a quienes administran; ellos siguen viendo a todos"
             }
+        },
+        "edit": {
+            "metaTitle": "Editar organización",
+            "title": "Editar organización",
+            "description": "Los cambios se ven en tu página al momento. Cambiar el identificador cambia tu dirección: los enlaces antiguos dejan de funcionar y el identificador anterior se reserva durante 30 días para que nadie más lo use.",
+            "handleOwnersOnly": "Solo las personas propietarias pueden cambiar el identificador.",
+            "handleCooldown": "Podrás cambiar el identificador de nuevo el {date}."
         }
     },
     "Membership": {
@@ -462,7 +474,8 @@
             "unban": "{actor} readmitió a {target}",
             "makeModerator": "{actor} hizo moderador a {target}",
             "makeOwner": "{actor} hizo propietario a {target}",
-            "makeMember": "{actor} hizo miembro regular a {target}"
+            "makeMember": "{actor} hizo miembro regular a {target}",
+            "editProfile": "{actor} cambió {fields}"
         },
         "reasonQuoted": "«{reason}»",
         "reason": "Motivo",
@@ -510,7 +523,23 @@
         "makeMember": "Hacer miembro regular",
         "makeOwnerTitle": "¿Hacer a {name} propietario?",
         "makeOwnerBody": "Las personas propietarias pueden hacerlo todo aquí, incluso nombrar a otras y quitar a quienes moderan. Por ahora no se puede deshacer; pueden dejar el cargo saliendo del grupo.",
-        "actionFor": "{action}: {name}"
+        "actionFor": "{action}: {name}",
+        "editOrganization": "Editar organización",
+        "fields": {
+            "name": "el nombre",
+            "handle": "el identificador",
+            "focusAreas": "las áreas de trabajo",
+            "description": "la descripción",
+            "location": "la ciudad",
+            "reach": "el alcance",
+            "languages": "los idiomas",
+            "website": "el sitio web",
+            "contactEmail": "el correo de contacto",
+            "socials": "las redes sociales",
+            "joinPolicy": "quién puede unirse",
+            "visibility": "la visibilidad",
+            "memberListVisibility": "la lista de miembros"
+        }
     },
     "LocationField": {
         "country": "País",

@@ -11,6 +11,8 @@ import type { GeneralArea } from '@/lib/places';
 import type { CountryCode } from '@/lib/places/types';
 import type { OrganizationInput } from '@/lib/validation/organization';
 
+import { changedFields, COPIED_FIELDS, type OrgEditField } from './edit';
+import { claimBlocks, handleHeldUntil, nextHandleChangeAt } from './handle';
 import {
     MAX_RADIUS_MILES,
     distanceMiles,
@@ -69,6 +71,8 @@ export interface Organization {
     memberCount: number;
     /** Storage path of the logo, if any. */
     logoPath?: string;
+    /** When the handle last changed (epoch ms), for the 30-day limit. */
+    handleChangedAt?: number;
 }
 
 export interface Membership {
@@ -86,6 +90,11 @@ const organizations = () => db().collection('organizations');
 const handles = () => db().collection('handles');
 const memberships = () => db().collection('memberships');
 const membershipId = (orgId: string, uid: string) => `${orgId}_${uid}`;
+/** Firestore Timestamp → epoch ms (cached values can't hold Timestamps). */
+const millis = (value: unknown) =>
+    value && typeof (value as { toMillis?: unknown }).toMillis === 'function'
+        ? (value as { toMillis: () => number }).toMillis()
+        : undefined;
 
 export const orgTag = (orgId: string) => `org:${orgId}`;
 export const handleTag = (handle: string) => `handle:${handle}`;
@@ -118,6 +127,7 @@ function toOrganization(
         status: data.status,
         memberCount: data.memberCount ?? 0,
         logoPath: data.logoPath,
+        handleChangedAt: millis(data.handleChangedAt),
     };
 }
 
@@ -148,9 +158,25 @@ export async function getOrganizationByHandle(
 export const getOrganizationByHandleFresh = cache(readByHandle);
 
 /** Whether anything (an organization, or a held old handle) has this handle. Always fresh. */
-export async function isHandleTaken(handle: string): Promise<boolean> {
+export async function isHandleTaken(
+    handle: string,
+    orgId: string | null = null
+): Promise<boolean> {
     logRead('handles');
-    return (await handles().doc(handle).get()).exists;
+    return claimBlocks(
+        toClaim(await handles().doc(handle).get()),
+        orgId,
+        Date.now()
+    );
+}
+
+/** A `handles/{handle}` document as the rules in ./handle.ts read it. */
+function toClaim(
+    snapshot: FirebaseFirestore.DocumentSnapshot
+): { orgId: string; heldUntil?: number } | null {
+    if (!snapshot.exists) return null;
+    const d = snapshot.data()!;
+    return { orgId: d.orgId, heldUntil: millis(d.heldUntil) };
 }
 
 /** The user's active memberships, cached, sorted by organization name. */
@@ -225,7 +251,8 @@ export async function createOrganization(
 
     return db().runTransaction(async (tx) => {
         logRead('handles');
-        if ((await tx.get(handleRef)).exists) {
+        // A held old handle can be taken once its hold has run out.
+        if (claimBlocks(toClaim(await tx.get(handleRef)), null, Date.now())) {
             return { ok: false, error: 'handleTaken' } as const;
         }
         const owned = await tx.get(
@@ -269,7 +296,7 @@ export async function createOrganization(
             ...(input.website ? { website: input.website } : {}),
             ...(input.contactEmail ? { contactEmail: input.contactEmail } : {}),
         });
-        tx.create(handleRef, { orgId: orgRef.id, createdAt: now });
+        tx.set(handleRef, { orgId: orgRef.id, createdAt: now });
         tx.create(membershipRef, {
             orgId: orgRef.id,
             uid,
@@ -396,11 +423,6 @@ export async function getDirectoryInternational(): Promise<
 // re-reads what it decides on, keeps memberCount right, and (for moderation)
 // appends to organizations/{orgId}/moderationLog.
 
-const millis = (value: unknown) =>
-    value && typeof (value as { toMillis?: unknown }).toMillis === 'function'
-        ? (value as { toMillis: () => number }).toMillis()
-        : undefined;
-
 export interface OrgPerson {
     uid: string;
     displayName: string;
@@ -438,9 +460,14 @@ export async function getOrgPeople(orgId: string): Promise<OrgPerson[]> {
     });
 }
 
+/** Everything the moderation log records: actions on people, and profile edits. */
+export type LogAction = ModerationAction | 'editProfile';
+
 export interface ModerationLogEntry {
     id: string;
-    action: ModerationAction;
+    action: LogAction;
+    /** editProfile only: the fields that changed (OrgEditField keys). */
+    fields?: string[];
     targetName: string;
     actorName: string;
     reason?: string;
@@ -467,6 +494,7 @@ export async function getModerationLog(
         return {
             id: doc.id,
             action: d.action,
+            fields: d.fields,
             targetName: d.target?.displayName ?? '',
             actorName: d.actor?.displayName ?? '',
             reason: d.reason || undefined,
@@ -710,4 +738,160 @@ export async function syncMemberName(
         await batch.commit();
     }
     return stale.map((doc) => doc.data().orgId as string);
+}
+
+// --- Editing (owners and moderators; the handle owners only).
+
+export type UpdateOrganizationResult =
+    | {
+          ok: true;
+          handle: string;
+          previousHandle: string;
+          changed: OrgEditField[];
+          /** Everyone with a membership, when their copy of the organization changed. */
+          copyHolders: string[];
+      }
+    | {
+          ok: false;
+          error: 'notAllowed' | 'notFound' | 'handleTaken' | 'handleCooldown';
+      };
+
+/**
+ * Saves an edit by `actorUid`. In one transaction: checks the actor is an
+ * active owner or moderator (owners only for the handle), the handle's
+ * 30-day limit and claim, then writes the organization, moves the handle
+ * claim (holding the old one for 30 days) and logs which fields changed.
+ * Membership copies (name, handle, focus areas) are updated afterwards in
+ * batches, so a big group doesn't hit the transaction's write limit.
+ */
+export async function updateOrganization(
+    orgId: string,
+    actorUid: string,
+    actorName: string,
+    input: OrganizationInput,
+    location: GeneralArea
+): Promise<UpdateOrganizationResult> {
+    const orgRef = organizations().doc(orgId);
+    const actorRef = memberships().doc(membershipId(orgId, actorUid));
+    const logRef = orgRef.collection('moderationLog').doc();
+    const now = Date.now();
+
+    const result = await db().runTransaction(async (tx) => {
+        logRead('organizations');
+        logRead('memberships');
+        const [orgSnap, actorSnap] = await Promise.all([
+            tx.get(orgRef),
+            tx.get(actorRef),
+        ]);
+        if (!orgSnap.exists) return { ok: false, error: 'notFound' } as const;
+        const org = toOrganization(orgSnap.id, orgSnap.data()!);
+        if (org.status !== 'active')
+            return { ok: false, error: 'notFound' } as const;
+        const actor = actorSnap.data();
+        const role = actor?.status === 'active' ? actor.role : null;
+        if (role !== 'owner' && role !== 'moderator')
+            return { ok: false, error: 'notAllowed' } as const;
+
+        const reach =
+            input.reach === 'local'
+                ? {
+                      scope: 'local' as const,
+                      radiusMiles: input.radiusMiles,
+                      radiusKm: milesToKm(input.radiusMiles!),
+                  }
+                : { scope: input.reach };
+        const changed = changedFields(
+            {
+                ...org,
+                location: org.location.placeId,
+                reach: {
+                    scope: org.reach.scope,
+                    radiusMiles: org.reach.radiusMiles,
+                },
+            },
+            {
+                ...input,
+                location: location.placeId,
+                reach: {
+                    scope: reach.scope,
+                    radiusMiles:
+                        input.reach === 'local' ? input.radiusMiles : undefined,
+                },
+            }
+        );
+
+        const handleChanged = changed.includes('handle');
+        const newHandleRef = handles().doc(input.handle);
+        if (handleChanged) {
+            if (role !== 'owner')
+                return { ok: false, error: 'notAllowed' } as const;
+            if (nextHandleChangeAt(org.handleChangedAt, now) !== null)
+                return { ok: false, error: 'handleCooldown' } as const;
+            logRead('handles');
+            if (claimBlocks(toClaim(await tx.get(newHandleRef)), orgId, now))
+                return { ok: false, error: 'handleTaken' } as const;
+        }
+
+        const stamp = FieldValue.serverTimestamp();
+        tx.update(orgRef, {
+            name: input.name,
+            handle: input.handle,
+            focusAreas: input.focusAreas,
+            description: input.description,
+            location,
+            reach,
+            languages: input.languages,
+            socials: input.socials,
+            joinPolicy: input.joinPolicy,
+            visibility: input.visibility,
+            memberListVisibility: input.memberListVisibility,
+            website: input.website ?? FieldValue.delete(),
+            contactEmail: input.contactEmail ?? FieldValue.delete(),
+            updatedAt: stamp,
+            ...(handleChanged ? { handleChangedAt: stamp } : {}),
+        });
+        if (handleChanged) {
+            tx.set(newHandleRef, { orgId, createdAt: stamp });
+            // The old handle stays claimed (but no longer resolves) for 30 days.
+            tx.set(handles().doc(org.handle), {
+                orgId,
+                heldUntil: new Date(handleHeldUntil(now)),
+                createdAt: stamp,
+            });
+        }
+        if (changed.length > 0) {
+            tx.create(logRef, {
+                action: 'editProfile',
+                fields: changed,
+                actor: { uid: actorUid, displayName: actorName },
+                createdAt: stamp,
+            });
+        }
+        return {
+            ok: true,
+            handle: input.handle,
+            previousHandle: org.handle,
+            changed,
+        } as const;
+    });
+    if (!result.ok) return result;
+
+    let copyHolders: string[] = [];
+    if (result.changed.some((field) => COPIED_FIELDS.includes(field))) {
+        const snapshot = await memberships().where('orgId', '==', orgId).get();
+        logRead('memberships', Math.max(snapshot.size, 1));
+        for (let i = 0; i < snapshot.docs.length; i += 400) {
+            const batch = db().batch();
+            for (const doc of snapshot.docs.slice(i, i + 400)) {
+                batch.update(doc.ref, {
+                    'org.name': input.name,
+                    'org.handle': input.handle,
+                    'org.focusAreas': input.focusAreas,
+                });
+            }
+            await batch.commit();
+        }
+        copyHolders = snapshot.docs.map((doc) => doc.data().uid as string);
+    }
+    return { ...result, copyHolders };
 }

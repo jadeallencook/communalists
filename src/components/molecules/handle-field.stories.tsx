@@ -45,3 +45,15 @@ export const BadFormat: Story = {
 export const TakenOnSubmit: Story = {
     args: { error: 'That handle is taken. Try another.' },
 };
+/** Editing: unchanged from the organization's current handle. */
+export const Current: Story = {
+    args: { value: 'sbma', status: { state: 'current' } },
+};
+/** Editing as a moderator (or within 30 days of a change): read-only, with why. */
+export const Locked: Story = {
+    args: {
+        value: 'sbma',
+        status: { state: 'current' },
+        lockedReason: 'Only owners can change the handle.',
+    },
+};

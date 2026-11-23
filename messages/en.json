@@ -349,7 +349,10 @@
             "submit": "Create organization",
             "submitting": "Creating…",
             "memberList": "Member list",
-            "memberListHint": "Owners and moderators are always shown, and everyone sees how many members there are."
+            "memberListHint": "Owners and moderators are always shown, and everyone sees how many members there are.",
+            "save": "Save changes",
+            "saving": "Saving…",
+            "handleCurrent": "This is your current handle."
         },
         "new": {
             "metaTitle": "Create an organization",
@@ -376,7 +379,9 @@
             "socialMismatch": "One of the links isn't on the platform chosen for it.",
             "socialDuplicate": "Add each platform only once.",
             "ownedLimit": "You already own 5 organizations, the most allowed.",
-            "generic": "Something went wrong. Please try again."
+            "generic": "Something went wrong. Please try again.",
+            "handleCooldown": "You can change the handle once every 30 days.",
+            "notAllowed": "Only owners and moderators can edit this organization."
         },
         "page": {
             "members": "{count, plural, one {# member} other {# members}}",
@@ -406,6 +411,13 @@
                 "label": "Just the count",
                 "description": "Only owners and moderators are named; owners and moderators still see everyone"
             }
+        },
+        "edit": {
+            "metaTitle": "Edit organization",
+            "title": "Edit organization",
+            "description": "Changes show on your page right away. Changing the handle changes your address: old links stop working, and the old handle is held for 30 days so nobody else can take it.",
+            "handleOwnersOnly": "Only owners can change the handle.",
+            "handleCooldown": "You can change the handle again on {date}."
         }
     },
     "Membership": {
@@ -462,7 +474,8 @@
             "unban": "{actor} unbanned {target}",
             "makeModerator": "{actor} made {target} a moderator",
             "makeOwner": "{actor} made {target} an owner",
-            "makeMember": "{actor} made {target} a regular member"
+            "makeMember": "{actor} made {target} a regular member",
+            "editProfile": "{actor} changed {fields}"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Reason",
@@ -510,7 +523,23 @@
         "makeMember": "Make regular member",
         "makeOwnerTitle": "Make {name} an owner?",
         "makeOwnerBody": "Owners can do everything here, including making other owners and removing moderators. For now an owner can't be changed back; they can step down by leaving.",
-        "actionFor": "{action}: {name}"
+        "actionFor": "{action}: {name}",
+        "editOrganization": "Edit organization",
+        "fields": {
+            "name": "the name",
+            "handle": "the handle",
+            "focusAreas": "the focus areas",
+            "description": "the description",
+            "location": "the city",
+            "reach": "the reach",
+            "languages": "the languages",
+            "website": "the website",
+            "contactEmail": "the contact email",
+            "socials": "the social links",
+            "joinPolicy": "who can join",
+            "visibility": "the visibility",
+            "memberListVisibility": "the member list setting"
+        }
     },
     "LocationField": {
         "country": "Country",

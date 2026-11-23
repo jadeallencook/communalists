@@ -224,13 +224,18 @@ for (const {
 
     // Start from a clean member list and moderation log for seeded organizations.
     const orgRef = db.collection('organizations').doc(org.id);
-    const [old, oldLog] = await Promise.all([
+    const [old, oldLog, oldHandles] = await Promise.all([
         db.collection('memberships').where('orgId', '==', org.id).get(),
         orgRef.collection('moderationLog').get(),
+        // Handles it moved to (or holds) since: renaming in the app adds these.
+        db.collection('handles').where('orgId', '==', org.id).get(),
     ]);
     const batch = db.batch();
     old.docs.forEach((doc) => batch.delete(doc.ref));
     oldLog.docs.forEach((doc) => batch.delete(doc.ref));
+    oldHandles.docs
+        .filter((doc) => doc.id !== org.handle)
+        .forEach((doc) => batch.delete(doc.ref));
 
     const owner = members.find(([, role]) => role === 'owner')[0];
     batch.set(orgRef, {

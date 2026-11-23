@@ -74,6 +74,14 @@ const meta = {
         ],
         log: [
             {
+                id: '0',
+                action: 'editProfile',
+                fields: ['name', 'memberListVisibility'],
+                actorName: 'Maya Thompson',
+                targetName: '',
+                at: now - day,
+            },
+            {
                 id: '1',
                 action: 'ban',
                 actorName: 'Maya Thompson',

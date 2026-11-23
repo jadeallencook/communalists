@@ -349,7 +349,10 @@
             "submit": "创建组织",
             "submitting": "正在创建…",
             "memberList": "成员名单",
-            "memberListHint": "所有者和管理员始终会显示，所有人都能看到成员人数。"
+            "memberListHint": "所有者和管理员始终会显示，所有人都能看到成员人数。",
+            "save": "保存更改",
+            "saving": "正在保存…",
+            "handleCurrent": "这是你当前的标识名。"
         },
         "new": {
             "metaTitle": "创建组织",
@@ -376,7 +379,9 @@
             "socialMismatch": "有链接不属于所选的平台。",
             "socialDuplicate": "每个平台只能添加一次。",
             "ownedLimit": "你已拥有 5 个组织，已达上限。",
-            "generic": "出了点问题，请重试。"
+            "generic": "出了点问题，请重试。",
+            "handleCooldown": "标识名每 30 天只能更改一次。",
+            "notAllowed": "只有所有者和管理员可以编辑这个组织。"
         },
         "page": {
             "members": "{count, plural, other {# 名成员}}",
@@ -406,6 +411,13 @@
                 "label": "仅显示人数",
                 "description": "只显示所有者和管理员的名字；他们仍能看到所有人"
             }
+        },
+        "edit": {
+            "metaTitle": "编辑组织",
+            "title": "编辑组织",
+            "description": "更改会立即显示在你的页面上。更改标识名会改变你的地址：旧链接将失效，旧标识名会保留 30 天，以免被他人使用。",
+            "handleOwnersOnly": "只有所有者可以更改标识名。",
+            "handleCooldown": "你可以在 {date} 再次更改标识名。"
         }
     },
     "Membership": {
@@ -462,7 +474,8 @@
             "unban": "{actor} 解除了对 {target} 的封禁",
             "makeModerator": "{actor} 将 {target} 设为管理员",
             "makeOwner": "{actor} 将 {target} 设为所有者",
-            "makeMember": "{actor} 将 {target} 设为普通成员"
+            "makeMember": "{actor} 将 {target} 设为普通成员",
+            "editProfile": "{actor} 更改了{fields}"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "原因",
@@ -510,7 +523,23 @@
         "makeMember": "设为普通成员",
         "makeOwnerTitle": "将{name}设为所有者？",
         "makeOwnerBody": "所有者可以在这里做任何事，包括任命其他所有者和移除管理员。目前无法撤回；对方可以通过退出团体卸任。",
-        "actionFor": "{action}：{name}"
+        "actionFor": "{action}：{name}",
+        "editOrganization": "编辑组织",
+        "fields": {
+            "name": "名称",
+            "handle": "标识名",
+            "focusAreas": "工作领域",
+            "description": "简介",
+            "location": "城市",
+            "reach": "活动范围",
+            "languages": "语言",
+            "website": "网站",
+            "contactEmail": "联系邮箱",
+            "socials": "社交链接",
+            "joinPolicy": "加入方式",
+            "visibility": "可见性",
+            "memberListVisibility": "成员名单设置"
+        }
     },
     "LocationField": {
         "country": "国家",

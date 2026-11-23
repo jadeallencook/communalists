@@ -62,12 +62,18 @@ export interface CreateOrganizationFormProps {
     location: Omit<LocationFieldProps, 'error' | 'hint'>;
     /** Languages a group can choose, already named in the UI language. */
     languageOptions: { value: string; label: string }[];
+    /** `edit`: "Save changes", plus `orgId` sent with the form. Default `create`. */
+    mode?: 'create' | 'edit';
+    /** Editing: the organization being edited. */
+    orgId?: string;
+    /** Editing, when the handle can't be changed: why (already translated). */
+    handleLockedReason?: string;
 }
 
 const selectClass =
     'h-8 w-full rounded-lg border border-control bg-transparent px-2.5 text-sm dark:bg-input/30';
 
-/** Everything needed to create an organization, in four sections. No logic: it renders `state`. */
+/** Everything needed to create (or edit) an organization, in four sections. No logic: it renders `state`. */
 export function CreateOrganizationForm({
     state,
     formAction,
@@ -86,6 +92,9 @@ export function CreateOrganizationForm({
     onSocialsChange,
     location,
     languageOptions,
+    mode = 'create',
+    orgId,
+    handleLockedReason,
 }: CreateOrganizationFormProps) {
     const t = useTranslations('Organizations');
     const errorFor = (field: OrganizationField) => {
@@ -100,6 +109,7 @@ export function CreateOrganizationForm({
     return (
         <form action={formAction} noValidate className="flex flex-col gap-10">
             <input type="hidden" name="uiLocale" value={locale} />
+            {orgId && <input type="hidden" name="orgId" value={orgId} />}
 
             <FieldGroup>
                 {section(t('form.aboutTitle'))}
@@ -128,6 +138,7 @@ export function CreateOrganizationForm({
                     onChange={onHandleChange}
                     status={handleStatus}
                     error={errorFor('handle')}
+                    lockedReason={handleLockedReason}
                 />
 
                 <ChoiceGroup
@@ -332,7 +343,13 @@ export function CreateOrganizationForm({
             )}
 
             <Button type="submit" size="lg" disabled={pending}>
-                {pending ? t('form.submitting') : t('form.submit')}
+                {mode === 'edit'
+                    ? pending
+                        ? t('form.saving')
+                        : t('form.save')
+                    : pending
+                      ? t('form.submitting')
+                      : t('form.submit')}
             </Button>
         </form>
     );

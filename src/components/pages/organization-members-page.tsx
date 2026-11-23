@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/atoms/skeleton';
 import { ReasonDialog } from '@/components/molecules/reason-dialog';
 import { Link } from '@/i18n/navigation';
 import { initials } from '@/lib/initials';
+import { ORG_EDIT_FIELDS, type OrgEditField } from '@/lib/organizations/edit';
 import {
     REASON_MAX_LENGTH,
     type ModerationAction,
@@ -40,7 +41,9 @@ export interface OrganizationMembersPageProps {
     banned: (Person & { reason?: string })[];
     log: {
         id: string;
-        action: ModerationAction;
+        action: ModerationAction | 'editProfile';
+        /** editProfile only: which fields changed. */
+        fields?: string[];
         actorName: string;
         targetName: string;
         reason?: string;
@@ -127,7 +130,7 @@ export function OrganizationMembersPage({
             <header className="flex flex-col gap-3">
                 <Button
                     asChild
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     className="self-start"
                 >
@@ -257,10 +260,28 @@ export function OrganizationMembersPage({
                                 className="flex flex-col gap-0.5 p-3 text-sm"
                             >
                                 <span>
-                                    {t(`log.${entry.action}`, {
-                                        actor: entry.actorName,
-                                        target: entry.targetName,
-                                    })}
+                                    {entry.action === 'editProfile'
+                                        ? t('log.editProfile', {
+                                              actor: entry.actorName,
+                                              fields: format.list(
+                                                  (entry.fields ?? [])
+                                                      .filter((f) =>
+                                                          (
+                                                              ORG_EDIT_FIELDS as readonly string[]
+                                                          ).includes(f)
+                                                      )
+                                                      .map((f) =>
+                                                          t(
+                                                              `fields.${f as OrgEditField}`
+                                                          )
+                                                      ),
+                                                  { type: 'conjunction' }
+                                              ),
+                                          })
+                                        : t(`log.${entry.action}`, {
+                                              actor: entry.actorName,
+                                              target: entry.targetName,
+                                          })}
                                 </span>
                                 <span className="text-xs text-muted-foreground">
                                     {date(entry.at)}

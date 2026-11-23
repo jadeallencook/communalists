@@ -22,6 +22,11 @@ export interface HandleFieldProps {
     status: HandleStatus;
     /** Already-translated error from the last submit. */
     error?: string;
+    /**
+     * Editing, when this person can't change the handle (or can't yet):
+     * the field is read-only and this explains why. Already translated.
+     */
+    lockedReason?: string;
 }
 
 const reasonKey = {
@@ -38,6 +43,7 @@ export function HandleField({
     onChange,
     status,
     error,
+    lockedReason,
 }: HandleFieldProps) {
     const t = useTranslations('Organizations');
     const live =
@@ -64,6 +70,7 @@ export function HandleField({
                     maxLength={30}
                     aria-invalid={shownError ? true : undefined}
                     aria-describedby="handle-status"
+                    readOnly={!!lockedReason}
                     required
                 />
                 <InputGroupAddon align="inline-end" aria-hidden>
@@ -79,6 +86,12 @@ export function HandleField({
             <div id="handle-status" aria-live="polite">
                 {shownError ? (
                     <FieldError>{shownError}</FieldError>
+                ) : lockedReason ? (
+                    <FieldDescription>{lockedReason}</FieldDescription>
+                ) : status.state === 'current' ? (
+                    <FieldDescription>
+                        {t('form.handleCurrent')}
+                    </FieldDescription>
                 ) : status.state === 'available' ? (
                     <FieldDescription>
                         {t('form.handleAvailable')}

@@ -41,6 +41,8 @@ export type OrganizationErrorKey =
     | 'socialMismatch'
     | 'socialDuplicate'
     | 'ownedLimit'
+    | 'handleCooldown'
+    | 'notAllowed'
     | 'generic';
 
 const optionalText = z.string().trim().max(2000, { error: 'tooLong' });

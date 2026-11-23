@@ -2,7 +2,7 @@
 
 The heart of the platform: people create, find and join **organizations**, and an organization's tools only work for its members. This is the rebuild's design, agreed with the user on 2026-11-22 ([decision #22](../decisions.md)). It replaces the prototype's single hard-coded organization ([08](08-organizations-and-membership.md)). Read 08's "Gaps" for what went wrong there.
 
-**Status:** phase 1 built 2026-11-22, except the logo upload. Phase 2 (finding, joining, moderating members) built 2026-11-23. See "Built" at the end.
+**Status:** phase 1 built 2026-11-22, except the logo upload. Phase 2 (finding, joining, moderating members) and editing built 2026-11-23. See "Built" at the end.
 
 ## What an organization has
 
@@ -108,6 +108,16 @@ Owners and moderators get **Manage members** (with the number of open requests) 
 - **Who can act on whom:** owners on moderators and members, moderators on members only, nobody on owners (or on themselves). **Owners are permanent for now:** no one can demote or remove an owner; an owner steps down by leaving, as long as another owner remains. The buttons follow these rules, and the server checks them again on fresh data. Role changes are logged too.
 - **Reasons** (up to 500 characters) go in the group's **moderation log** with who did it and when, and a ban's reason is also kept on the banned record. Owners and moderators see them; the person acted on doesn't. The log is meant to back up decisions later, such as closing an account. Every action is logged, with or without a reason.
 
+## Editing
+
+Owners and moderators get **Edit organization** in the members' space, leading to `/org/{handle}/edit`: the create form, filled in, with **Save changes**. Every field can be edited, including the member list setting. The logo isn't built yet.
+
+- **The handle is owners only,** at most once every 30 days ("Renaming" above). Moderators see it read-only ("Only owners can change the handle."), and so do owners within 30 days of a change ("You can change the handle again on {date}"). Keeping the current handle reads "This is your current handle", not "taken".
+- **Saving** checks the editor's role, the 30-day limit and the new handle's claim on fresh data in one transaction. The old handle becomes a **hold** (`heldUntil` 30 days out): it no longer resolves (not found, no redirect), and nobody else can take it until the hold ends. After that, anyone can claim it.
+- **Copies:** a new name, handle or focus areas is written to every membership's copy (in batches of 400 after the save), and every member's dashboard cache is cleared.
+- **Logged:** each save with changes adds "{actor} changed {fields}" to Recent actions, listing the fields (`editProfile` with `fields`).
+- After saving, it returns to the organization's page at its (possibly new) address.
+
 ## Deleting
 
 Owners can delete. It **archives**: data is kept, the page and listings disappear, and the handle stays reserved. Hard deletion is a later, deliberate admin action.
@@ -130,7 +140,7 @@ Bare `communalists.com/org/{handle}` redirects to the visitor's language, like e
 
 1. **Create and list:** the data model, create form with handle check, dashboard "Your organizations" plus "Create organization", the `/org/{handle}` page (public profile plus a member view), and the logo upload last.
 2. **Find and join:** "near you" browsing, joining by each policy, approving and denying requests, removing and banning (all built 2026-11-23).
-3. **Manage:** edit profile (including the member list setting), change handle (old one held 30 days, no redirect), invite, archive. (Promoting and handing over ownership were built 2026-11-23.)
+3. **Manage:** invite, archive, logo. (Promoting, handing over ownership, editing the profile and changing the handle were built 2026-11-23.)
 4. **Then:** subdomains (after the domain move) and the first tool, Requests.
 
 ## Data and security notes
@@ -211,3 +221,14 @@ Bare `communalists.com/org/{handle}` redirects to the visitor's language, like e
 - **Signed out:** the "members only" group named only its owner and moderator, plus "and 6 other members"; a "public" group named everyone.
 
 **Role changes (2026-11-23):** owners make members moderators or owners, make moderators owners, and make moderators regular members again; moderators make members moderators (`allowedRoleChanges`). Making an owner asks for confirmation and respects the 5-owned limit. Verified in a real browser: Maya made Aisha a moderator and Thanh an owner (both in Recent actions), then could leave her own group. As a moderator, Aisha saw only Make moderator, Remove and Ban on members, and nothing on the owner or herself. The 5-owned limit for a new owner is covered by the server check, not tested in the browser.
+
+## Built (editing, 2026-11-23)
+
+| Piece                                                                                                          | Where                                                                                                     |
+| -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Rules: handle cooldown and holds (`nextHandleChangeAt`, `claimBlocks`); which fields changed (`changedFields`) | `src/lib/organizations/handle.ts`, `src/lib/organizations/edit.ts` (tested)                               |
+| Firestore: `updateOrganization` (transaction, then membership copies)                                          | `src/lib/organizations/index.ts`                                                                          |
+| Page, container and action                                                                                     | `src/app/[locale]/org/[handle]/edit/`                                                                     |
+| UI                                                                                                             | `CreateOrganizationForm` (`mode="edit"`), `HandleField` (`lockedReason`, current), `EditOrganizationPage` |
+
+**Verified 2026-11-23** in a real browser against the seeded emulators. As Maya (owner), the form opened filled in. Renaming South Bay Mutual Aid and changing its handle to `sbma-network` redirected to the new address. `/org/sbma` then showed not found, the handle checker called `sbma` taken (held), the dashboard and `/find` showed the new name and link, and the handle became read-only with the date. Recent actions said "Maya Thompson changed the name and the handle". As Thanh (moderator), the handle was read-only ("Only owners…"), her dashboard showed the new name, and saving a description change worked and was logged.

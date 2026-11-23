@@ -98,3 +98,41 @@ export const Submitting: Story = {
         handleStatus: { state: 'available' },
     },
 };
+
+const editing = {
+    mode: 'edit' as const,
+    orgId: 'org1',
+    name: 'South Bay Mutual Aid',
+    handle: 'sbma',
+    handleStatus: { state: 'current' as const },
+    focusAreas: ['general', 'food', 'housing'],
+    state: {
+        values: {
+            description:
+                'Neighbors helping neighbors across the South Bay: weekly grocery runs, a community fridge, and help finding housing.',
+            radiusMiles: '25',
+            languages: ['en', 'es', 'vi'],
+            website: 'https://example.org/',
+            contactEmail: 'hello@example.org',
+            joinPolicy: 'request',
+            visibility: 'listed',
+            memberListVisibility: 'members',
+        },
+    },
+};
+/** Editing as an owner: everything filled in, the handle can change, "Save changes". */
+export const EditAsOwner: Story = { args: editing };
+/** Editing as a moderator: the handle is read-only. */
+export const EditAsModerator: Story = {
+    args: {
+        ...editing,
+        handleLockedReason: 'Only owners can change the handle.',
+    },
+};
+/** The handle changed less than 30 days ago. */
+export const EditHandleCooldown: Story = {
+    args: {
+        ...editing,
+        handleLockedReason: 'You can change the handle again on Dec 20, 2026.',
+    },
+};

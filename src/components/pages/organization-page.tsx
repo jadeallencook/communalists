@@ -1,4 +1,4 @@
-import { LockIcon, UsersIcon } from 'lucide-react';
+import { LockIcon, PencilIcon, UsersIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 
@@ -60,23 +60,27 @@ export function OrganizationPage({
                         })}
                     </p>
                     {staff && (
-                        <Button
-                            asChild
-                            variant="outline"
-                            className="mt-2 self-start"
-                        >
-                            <Link href={`/org/${profile.handle}/members`}>
-                                <UsersIcon aria-hidden />
-                                {tm('manage')}
-                                {pendingRequests > 0 && (
-                                    <span className="rounded-full bg-primary px-1.5 text-xs text-primary-foreground">
-                                        {tm('requestCount', {
-                                            count: pendingRequests,
-                                        })}
-                                    </span>
-                                )}
-                            </Link>
-                        </Button>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            <Button asChild variant="outline">
+                                <Link href={`/org/${profile.handle}/edit`}>
+                                    <PencilIcon aria-hidden />
+                                    {tm('editOrganization')}
+                                </Link>
+                            </Button>
+                            <Button asChild variant="outline">
+                                <Link href={`/org/${profile.handle}/members`}>
+                                    <UsersIcon aria-hidden />
+                                    {tm('manage')}
+                                    {pendingRequests > 0 && (
+                                        <span className="rounded-full bg-primary px-1.5 text-xs text-primary-foreground">
+                                            {tm('requestCount', {
+                                                count: pendingRequests,
+                                            })}
+                                        </span>
+                                    )}
+                                </Link>
+                            </Button>
+                        </div>
                     )}
                     <div className="mt-2 border-t pt-3">{join}</div>
                 </section>
