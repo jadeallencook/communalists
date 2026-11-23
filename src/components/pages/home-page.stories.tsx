@@ -25,4 +25,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+/** Signed out: "Create account" and "Sign in". */
+export const Default: Story = { args: { signedIn: false } };
+
+/** Signed in: one "Go to dashboard" button in place of both. */
+export const SignedIn: Story = { args: { signedIn: true } };
+
+/** While the session is checked, the buttons keep their space but stay hidden. */
+export const CheckingSession: Story = {};

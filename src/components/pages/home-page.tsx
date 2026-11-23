@@ -5,6 +5,7 @@ import {
     UsersIcon,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
 import foodServe from '@/assets/food-serve.jpg';
 import { Button } from '@/components/atoms/button';
@@ -12,6 +13,7 @@ import { CallToAction } from '@/components/organisms/call-to-action';
 import { FeatureGrid } from '@/components/organisms/feature-grid';
 import { HeroBanner } from '@/components/organisms/hero-banner';
 import { Link } from '@/i18n/navigation';
+import { cn } from '@/lib/utils';
 
 const features = [
     { id: 'organizations', icon: UsersIcon },
@@ -20,10 +22,21 @@ const features = [
     { id: 'planning', icon: CalendarDaysIcon },
 ] as const;
 
-/** The public landing page. Static content only. */
-export function HomePage() {
+export interface HomePageProps {
+    /**
+     * Signed-in visitors get a "Go to dashboard" button instead of the sign-up
+     * and sign-in buttons. Leave undefined while the session is still being
+     * checked: the buttons keep their space but stay hidden, so a signed-in
+     * visitor never sees the sign-up buttons flash.
+     */
+    signedIn?: boolean;
+}
+
+/** The public landing page. */
+export function HomePage({ signedIn }: HomePageProps) {
     const t = useTranslations('Home');
-    const createAccount = (variant: 'onPhoto' | 'default') => (
+    const pending = signedIn === undefined;
+    const primary = (variant: 'onPhoto' | 'default') => (
         <Button
             asChild
             size="lg"
@@ -33,8 +46,24 @@ export function HomePage() {
                     : undefined
             }
         >
-            <Link href="/sign-up">{t('cta')}</Link>
+            {signedIn ? (
+                <Link href="/welcome">{t('dashboard')}</Link>
+            ) : (
+                <Link href="/sign-up">{t('cta')}</Link>
+            )}
         </Button>
+    );
+    const actions = (children: ReactNode) => (
+        <div
+            className={cn(
+                'flex flex-wrap items-center gap-3',
+                pending && 'invisible'
+            )}
+            aria-hidden={pending || undefined}
+            inert={pending || undefined}
+        >
+            {children}
+        </div>
     );
 
     return (
@@ -44,19 +73,21 @@ export function HomePage() {
                 imageAlt={t('banner.imageAlt')}
                 title={t('banner.title')}
                 subtitle={t('banner.subtitle')}
-                action={
-                    <div className="flex flex-wrap items-center gap-3">
-                        {createAccount('onPhoto')}
-                        <Button
-                            asChild
-                            size="lg"
-                            variant="ghost"
-                            className="text-white hover:bg-white/10 hover:text-white"
-                        >
-                            <Link href="/sign-in">{t('signIn')}</Link>
-                        </Button>
-                    </div>
-                }
+                action={actions(
+                    <>
+                        {primary('onPhoto')}
+                        {!signedIn && (
+                            <Button
+                                asChild
+                                size="lg"
+                                variant="ghost"
+                                className="text-white hover:bg-white/10 hover:text-white"
+                            >
+                                <Link href="/sign-in">{t('signIn')}</Link>
+                            </Button>
+                        )}
+                    </>
+                )}
             />
             <FeatureGrid
                 title={t('about.title')}
@@ -73,7 +104,7 @@ export function HomePage() {
             <CallToAction
                 title={t('join.title')}
                 description={t('join.body')}
-                action={createAccount('default')}
+                action={actions(primary('default'))}
             />
         </>
     );

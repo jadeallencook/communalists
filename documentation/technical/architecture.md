@@ -22,7 +22,7 @@ messages/                 en.json, es.json, vi.json, zh.json + parity test
 src/
   app/
     [locale]/layout.tsx   Root layout: <html lang>, fonts, providers, header/footer
-    [locale]/page.tsx     Home: banner, platform intro, create-account CTA, sign-in link
+    [locale]/page.tsx     Home: banner, platform intro, create-account CTA and sign-in link (a dashboard link when signed in)
     [locale]/sign-up/     Container: wires the signUp action into SignUpPage
     [locale]/sign-in/     Container: wires the signIn action into SignInPage
     [locale]/forgot-password/  Container: wires requestPasswordReset into ForgotPasswordPage

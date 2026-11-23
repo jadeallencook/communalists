@@ -50,7 +50,8 @@
             "title": "Ready to organize?",
             "body": "It's free, and it only takes a minute."
         },
-        "signIn": "Sign in"
+        "signIn": "Sign in",
+        "dashboard": "Go to dashboard"
     },
     "Footer": {
         "developedBy": "Developed by volunteers",

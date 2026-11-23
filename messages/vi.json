@@ -50,7 +50,8 @@
             "title": "Sẵn sàng tổ chức chưa?",
             "body": "Miễn phí và chỉ mất một phút."
         },
-        "signIn": "Đăng nhập"
+        "signIn": "Đăng nhập",
+        "dashboard": "Đến bảng điều khiển"
     },
     "Footer": {
         "developedBy": "Được phát triển bởi tình nguyện viên",

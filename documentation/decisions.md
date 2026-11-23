@@ -18,6 +18,14 @@ Add an entry when you choose a framework or library, change the data model, add 
 
 ## Decisions
 
+### 20. Home page swaps the sign-up and sign-in buttons for "Go to dashboard" when signed in — 2026-11-22
+
+**Status:** Accepted
+**Context:** The user asked to remove the sign-up and log-in buttons for signed-in visitors and put a button back to the dashboard in their place.
+**Decision:** `HomePage` takes `signedIn`. When it's true, the hero's two buttons and the join band's Create account button each become one **Go to dashboard** button. It links to `/welcome`, because there is no dashboard route yet. The route checks the session behind `<Suspense>`, so the rest of the page stays prerendered. The fallback keeps the buttons invisible (not signed-out) so signed-in visitors never see them flash.
+**Alternatives:** Render the signed-out buttons as the fallback (the shell stays useful, but signed-in visitors would see "Create account" flash on every visit); make the whole page dynamic (loses the prerendered shell); check on the client (needs client auth state, which the rebuild keeps on the server).
+**Consequences:** The home page is a partial prerender instead of fully static. When a real dashboard ships, retarget the link. Docs updated: `features/06-home-and-faq.md`, `technical/architecture.md`, `technical/accounts-and-sessions.md`.
+
 ### 19. Show version and commit in the footer — 2026-11-21
 
 **Status:** Accepted

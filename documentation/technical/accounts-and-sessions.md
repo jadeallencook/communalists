@@ -164,8 +164,8 @@ Earlier record: place API (results, cache headers, 400 for unsupported countries
 
 ## Not built yet
 
-- Session-aware header (a "Sign in" / account link); today the homepage hero and the two auth pages link to each other
-- Redirecting already-signed-in visitors away from `/sign-in` and `/sign-up`; a home page for signed-in users (they land on the welcome page, which says "Your account is ready")
+- Session-aware header (a "Sign in" / account link). The home page is session-aware: signed-in visitors see **Go to dashboard** (→ `/welcome`) instead of Create account / Sign in ([06](../features/06-home-and-faq.md)). The two auth pages link to each other.
+- Redirecting already-signed-in visitors away from `/sign-in` and `/sign-up`; a real dashboard for signed-in users (today they land on the welcome page, which says "Your account is ready")
 - Email verification
 - Editing name/language/location (a profile page), deleting an account
 - Optional setup questions with "Not now"

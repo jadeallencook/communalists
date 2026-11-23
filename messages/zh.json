@@ -50,7 +50,8 @@
             "title": "准备好组织起来了吗？",
             "body": "完全免费，只需一分钟。"
         },
-        "signIn": "登录"
+        "signIn": "登录",
+        "dashboard": "前往控制面板"
     },
     "Footer": {
         "developedBy": "由志愿者开发",
