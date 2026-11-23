@@ -28,15 +28,18 @@ src/
     [locale]/forgot-password/  Container: wires requestPasswordReset into ForgotPasswordPage
     [locale]/account/setup/ Container: required profile questions (name, language, city); returns to ?next=
     [locale]/auth/action/ Firebase email links (Action URL): verifies the code, renders ResetPasswordPage
-    [locale]/welcome/     Container: reads session + profile, renders WelcomePage (streamed)
+    [locale]/dashboard/   Container: requireAccount, renders DashboardPage (streamed); /welcome redirects here
+    [locale]/account/settings/ Container: edit profile (setup form in settings mode)
+    [locale]/header-slots.tsx  Header's signed-in parts (session + profile), streamed in <Suspense>
+    actions/sign-out.ts   Shared sign-out server action (account menu)
     api/places/           GET city search for the picker (cached)
     globals.css           Tailwind + shadcn tokens
     favicon.ico           Star logo (from the 2025 attempt)
   components/
     atoms/                shadcn primitives (button, input, card, field…)
-    molecules/            Small composites (FeatureCard, LocaleSwitcher, ThemeToggle, LocationField, LinkProblem)
+    molecules/            Small composites (FeatureCard, LocaleSwitcher, ThemeToggle, LocationField, LinkProblem, AccountMenu, header links)
     organisms/            Page sections (SiteHeader, HeroBanner, AuthCard, SignUpForm, SignInForm, ForgotPasswordForm, ResetPasswordForm, AccountSetupForm…)
-    pages/                Presentational page views (HomePage, SignUpPage, SignInPage, ForgotPasswordPage, ResetPasswordPage, AccountSetupPage, WelcomePage)
+    pages/                Presentational page views (HomePage, SignUpPage, SignInPage, ForgotPasswordPage, ResetPasswordPage, AccountSetupPage, AccountSettingsPage, DashboardPage)
     providers/            Client providers (theme)
   hooks/                  Shared UI logic (useSignUpForm, useSignInForm, useForgotPasswordForm, useResetPasswordForm, useAccountSetupForm, useLocationPicker, usePlaceSearch)
   i18n/

@@ -25,8 +25,10 @@ export interface AccountSetupFormProps {
     pending?: boolean;
     /** UI locale, sent so the server answers in it. */
     locale: string;
-    /** Where to go after saving (already made safe by the caller). */
-    next: string;
+    /** `setup`: required first-time answers, then go to `next`. `settings`: edit and stay. */
+    mode?: 'setup' | 'settings';
+    /** Setup only: where to go after saving (already made safe by the caller). */
+    next?: string;
     /** Answers already on the profile, shown filled in. */
     defaults: { name?: string; preferredLocale: string };
     /** Language choices: code and the language's own name. */
@@ -35,12 +37,13 @@ export interface AccountSetupFormProps {
     location: Omit<LocationFieldProps, 'error'>;
 }
 
-/** Name, preferred language and city. No logic: it renders `state`. */
+/** Name, preferred language and city, for account setup and account settings. No logic: it renders `state`. */
 export function AccountSetupForm({
     state,
     formAction,
     pending = false,
     locale,
+    mode = 'setup',
     next,
     defaults,
     languages,
@@ -58,7 +61,7 @@ export function AccountSetupForm({
     return (
         <form action={formAction} noValidate>
             <input type="hidden" name="uiLocale" value={locale} />
-            <input type="hidden" name="next" value={next} />
+            {next && <input type="hidden" name="next" value={next} />}
             <FieldGroup>
                 <Field data-invalid={!!errorFor('name')}>
                     <FieldLabel htmlFor="name">{t('name')}</FieldLabel>
@@ -122,8 +125,18 @@ export function AccountSetupForm({
                     </p>
                 )}
 
+                {state.saved && !pending && (
+                    <p role="status" className="text-sm text-muted-foreground">
+                        {t('settings.saved')}
+                    </p>
+                )}
+
                 <Button type="submit" size="lg" disabled={pending}>
-                    {pending ? t('submitting') : t('submit')}
+                    {pending
+                        ? t('submitting')
+                        : mode === 'settings'
+                          ? t('settings.submit')
+                          : t('submit')}
                 </Button>
             </FieldGroup>
         </form>

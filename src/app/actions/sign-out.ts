@@ -6,6 +6,7 @@ import { endSession } from '@/lib/auth/session';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 
+/** Ends the session everywhere (revokes it) and goes home. Used by the account menu. */
 export async function signOut(formData: FormData): Promise<void> {
     const requested = formData.get('locale');
     const locale =

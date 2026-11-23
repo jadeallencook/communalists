@@ -4,7 +4,19 @@
     },
     "Header": {
         "skipToContent": "Skip to content",
-        "home": "Communalists home"
+        "home": "Communalists home",
+        "navigation": "Main"
+    },
+    "HeaderLinks": {
+        "signIn": "Sign in",
+        "createAccount": "Create account",
+        "dashboard": "Dashboard"
+    },
+    "AccountMenu": {
+        "open": "Account menu for {name}",
+        "dashboard": "Dashboard",
+        "settings": "Account settings",
+        "signOut": "Sign out"
     },
     "LocaleSwitcher": {
         "label": "Language"
@@ -22,6 +34,7 @@
             "imageAlt": "A volunteer hands a plate of hot food to a neighbor at a community meal"
         },
         "cta": "Create account",
+        "dashboard": "Go to your dashboard",
         "about": {
             "title": "Built for mutual aid",
             "body": "Communalists is a free platform where neighbors organize. Start an organization for your mutual aid group, tool library or community club, find groups near you, and run them with tools made for how mutual aid actually works.",
@@ -176,19 +189,32 @@
             "placeRequired": "Choose your city from the list.",
             "placeNotFound": "We couldn't find that city. Choose it from the list again.",
             "generic": "Something went wrong. Please try again."
+        },
+        "settings": {
+            "submit": "Save changes",
+            "saved": "Saved."
         }
     },
-    "Welcome": {
-        "metaTitle": "Welcome",
-        "loading": "Loading your account…",
-        "greeting": "Welcome, {name}!",
-        "intro": "Your account is ready.",
+    "AccountSettings": {
+        "metaTitle": "Account settings",
+        "loading": "Loading your settings…",
+        "title": "Account settings",
+        "description": "Your name, language and city.",
+        "email": "Email",
+        "profileTitle": "Profile"
+    },
+    "Dashboard": {
+        "metaTitle": "Dashboard",
+        "loading": "Loading your dashboard…",
+        "greeting": "Hi, {name}",
         "area": "Your area: {location}",
-        "nextTitle": "What's next",
+        "organizationsTitle": "Your organizations",
+        "emptyTitle": "You haven't joined any organizations yet",
+        "emptyBody": "When you join or start one, its tools will show up here.",
+        "nextTitle": "Coming soon",
         "nextBrowse": "Browse mutual aid organizations near you",
         "nextCreate": "Start an organization for your group",
-        "comingSoon": "Coming soon",
-        "signOut": "Sign out"
+        "comingSoon": "Coming soon"
     },
     "LocationField": {
         "country": "Country",

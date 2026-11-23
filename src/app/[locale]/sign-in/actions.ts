@@ -2,6 +2,7 @@
 
 import { hasLocale } from 'next-intl';
 
+import { DEFAULT_NEXT_PATH } from '@/lib/account-setup';
 import { IdentityToolkitError } from '@/lib/auth/identity-toolkit';
 import { signInWithPassword } from '@/lib/auth/password-sign-in';
 import { startSession } from '@/lib/auth/session';
@@ -59,6 +60,6 @@ export async function signIn(
         return { formError, values };
     }
 
-    redirect({ href: '/welcome', locale });
+    redirect({ href: DEFAULT_NEXT_PATH, locale });
     return {};
 }

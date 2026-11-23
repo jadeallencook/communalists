@@ -38,6 +38,8 @@ export type AccountSetupField = keyof AccountSetupInput;
 export interface AccountSetupState {
     fieldErrors?: Partial<Record<AccountSetupField, AccountSetupErrorKey>>;
     formError?: AccountSetupErrorKey;
+    /** Settings only: the last save worked. */
+    saved?: boolean;
     // Echoed back so the form keeps what was typed.
     values?: Partial<Pick<AccountSetupInput, 'name' | 'locale'>>;
 }

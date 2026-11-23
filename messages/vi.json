@@ -4,7 +4,19 @@
     },
     "Header": {
         "skipToContent": "Chuyển đến nội dung",
-        "home": "Trang chủ Communalists"
+        "home": "Trang chủ Communalists",
+        "navigation": "Chính"
+    },
+    "HeaderLinks": {
+        "signIn": "Đăng nhập",
+        "createAccount": "Tạo tài khoản",
+        "dashboard": "Bảng điều khiển"
+    },
+    "AccountMenu": {
+        "open": "Menu tài khoản của {name}",
+        "dashboard": "Bảng điều khiển",
+        "settings": "Cài đặt tài khoản",
+        "signOut": "Đăng xuất"
     },
     "LocaleSwitcher": {
         "label": "Ngôn ngữ"
@@ -22,6 +34,7 @@
             "imageAlt": "Một tình nguyện viên trao đĩa thức ăn nóng cho người hàng xóm tại bữa ăn cộng đồng"
         },
         "cta": "Tạo tài khoản",
+        "dashboard": "Đến bảng điều khiển",
         "about": {
             "title": "Được xây dựng cho tương trợ",
             "body": "Communalists là nền tảng miễn phí để hàng xóm cùng nhau tổ chức. Hãy lập một tổ chức cho nhóm tương trợ, thư viện dụng cụ hay câu lạc bộ cộng đồng của bạn, tìm các nhóm gần bạn và vận hành chúng bằng những công cụ được tạo ra cho cách tương trợ thực sự diễn ra.",
@@ -176,19 +189,32 @@
             "placeRequired": "Hãy chọn thành phố của bạn trong danh sách.",
             "placeNotFound": "Không tìm thấy thành phố đó. Hãy chọn lại trong danh sách.",
             "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+        },
+        "settings": {
+            "submit": "Lưu thay đổi",
+            "saved": "Đã lưu."
         }
     },
-    "Welcome": {
-        "metaTitle": "Chào mừng",
-        "loading": "Đang tải tài khoản của bạn…",
-        "greeting": "Chào mừng {name}!",
-        "intro": "Tài khoản của bạn đã sẵn sàng.",
+    "AccountSettings": {
+        "metaTitle": "Cài đặt tài khoản",
+        "loading": "Đang tải cài đặt…",
+        "title": "Cài đặt tài khoản",
+        "description": "Tên, ngôn ngữ và thành phố của bạn.",
+        "email": "Email",
+        "profileTitle": "Hồ sơ"
+    },
+    "Dashboard": {
+        "metaTitle": "Bảng điều khiển",
+        "loading": "Đang tải bảng điều khiển…",
+        "greeting": "Xin chào, {name}",
         "area": "Khu vực của bạn: {location}",
-        "nextTitle": "Sắp tới",
-        "nextBrowse": "Khám phá các tổ chức tương trợ gần bạn",
+        "organizationsTitle": "Tổ chức của bạn",
+        "emptyTitle": "Bạn chưa tham gia tổ chức nào",
+        "emptyBody": "Khi bạn tham gia hoặc lập một tổ chức, các công cụ của tổ chức sẽ hiện ở đây.",
+        "nextTitle": "Sắp ra mắt",
+        "nextBrowse": "Tìm các tổ chức tương trợ gần bạn",
         "nextCreate": "Lập một tổ chức cho nhóm của bạn",
-        "comingSoon": "Sắp ra mắt",
-        "signOut": "Đăng xuất"
+        "comingSoon": "Sắp ra mắt"
     },
     "LocationField": {
         "country": "Quốc gia",

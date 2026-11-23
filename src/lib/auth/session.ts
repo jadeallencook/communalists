@@ -3,6 +3,7 @@ import 'server-only';
 import type { DecodedIdToken } from 'firebase-admin/auth';
 import { cookies } from 'next/headers';
 import { connection } from 'next/server';
+import { cache } from 'react';
 
 import { getAdminAuth } from '@/lib/firebase/admin';
 
@@ -28,21 +29,29 @@ export async function startSession(idToken: string): Promise<void> {
     });
 }
 
-/** The signed-in user, or null. Checks revocation, so sign-out takes effect everywhere. */
-export async function getSessionUser(): Promise<DecodedIdToken | null> {
-    // Verifying checks the cookie's expiry against the current time. With
-    // partial prefetching, Next may prerender this at runtime with cookies but
-    // without a clock, and logs "unstable value Date.now()". Marking it
-    // request-time avoids that.
-    await connection();
-    const sessionCookie = (await cookies()).get(SESSION_COOKIE)?.value;
-    if (!sessionCookie) return null;
-    try {
-        return await getAdminAuth().verifySessionCookie(sessionCookie, true);
-    } catch {
-        return null;
+/**
+ * The signed-in user, or null. Checks revocation, so sign-out takes effect
+ * everywhere. Cached per request: the header and the page both ask.
+ */
+export const getSessionUser = cache(
+    async function getSessionUser(): Promise<DecodedIdToken | null> {
+        // Verifying checks the cookie's expiry against the current time. With
+        // partial prefetching, Next may prerender this at runtime with cookies but
+        // without a clock, and logs "unstable value Date.now()". Marking it
+        // request-time avoids that.
+        await connection();
+        const sessionCookie = (await cookies()).get(SESSION_COOKIE)?.value;
+        if (!sessionCookie) return null;
+        try {
+            return await getAdminAuth().verifySessionCookie(
+                sessionCookie,
+                true
+            );
+        } catch {
+            return null;
+        }
     }
-}
+);
 
 export async function endSession(): Promise<void> {
     const user = await getSessionUser();

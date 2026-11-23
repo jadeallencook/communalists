@@ -51,7 +51,7 @@ function UseAccountSetupFormDemo() {
                 formAction={formAction}
                 pending={pending}
                 locale={locale}
-                next="/welcome"
+                next="/dashboard"
                 defaults={{ preferredLocale: locale }}
                 languages={routing.locales.map((code) => ({
                     code,

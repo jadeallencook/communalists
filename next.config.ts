@@ -14,6 +14,16 @@ const nextConfig: NextConfig = {
         NEXT_PUBLIC_APP_VERSION: version,
         NEXT_PUBLIC_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA ?? '',
     },
+    // /welcome became /dashboard (decision #20); keep old links working.
+    async redirects() {
+        return [
+            {
+                source: '/:locale(en|es|vi|zh)/welcome',
+                destination: '/:locale/dashboard',
+                permanent: true,
+            },
+        ];
+    },
     cacheComponents: true,
     partialPrefetching: true,
     turbopack: {

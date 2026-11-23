@@ -29,7 +29,7 @@ const meta = {
         formAction: fn(),
         pending: false,
         locale: 'en',
-        next: '/welcome',
+        next: '/dashboard',
         defaults: { preferredLocale: 'en' },
         languages,
         location,
@@ -76,5 +76,25 @@ export const Submitting: Story = {
         location: { ...location, selected: sanJose },
         defaults: { name: 'Ada Lovelace', preferredLocale: 'en' },
         pending: true,
+    },
+};
+
+/** Account settings: edit and stay on the page. */
+export const SettingsMode: Story = {
+    args: {
+        mode: 'settings',
+        next: undefined,
+        location: { ...location, selected: sanJose },
+        defaults: { name: 'Ada Lovelace', preferredLocale: 'es' },
+    },
+};
+
+export const SettingsSaved: Story = {
+    args: {
+        mode: 'settings',
+        next: undefined,
+        location: { ...location, selected: sanJose },
+        defaults: { name: 'Ada Lovelace', preferredLocale: 'es' },
+        state: { saved: true, values: { name: 'Ada Lovelace' } },
     },
 };

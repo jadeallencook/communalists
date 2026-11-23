@@ -40,14 +40,14 @@ describe('missingSetupSteps', () => {
 
 describe('safeNextPath', () => {
     it('keeps paths on this site', () => {
-        expect(safeNextPath('/welcome', locales)).toBe('/welcome');
+        expect(safeNextPath('/dashboard', locales)).toBe('/dashboard');
         expect(safeNextPath('/orgs/sbma?tab=requests', locales)).toBe(
             '/orgs/sbma?tab=requests'
         );
     });
 
     it('drops a locale prefix (the redirect adds one)', () => {
-        expect(safeNextPath('/es/welcome', locales)).toBe('/welcome');
+        expect(safeNextPath('/es/dashboard', locales)).toBe('/dashboard');
         expect(safeNextPath('/es', locales)).toBe('/');
     });
 
@@ -59,16 +59,16 @@ describe('safeNextPath', () => {
             'welcome',
             '/wel\ncome',
             undefined,
-            ['/welcome'],
+            ['/dashboard'],
         ]) {
-            expect(safeNextPath(next, locales)).toBe('/welcome');
+            expect(safeNextPath(next, locales)).toBe('/dashboard');
         }
     });
 
     it('never points back at setup', () => {
-        expect(safeNextPath('/account/setup', locales)).toBe('/welcome');
+        expect(safeNextPath('/account/setup', locales)).toBe('/dashboard');
         expect(safeNextPath('/en/account/setup?next=/x', locales)).toBe(
-            '/welcome'
+            '/dashboard'
         );
     });
 });

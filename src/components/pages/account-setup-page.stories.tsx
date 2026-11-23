@@ -15,7 +15,7 @@ const form = (name?: string) => (
         state={{}}
         formAction={fn()}
         locale="en"
-        next="/welcome"
+        next="/dashboard"
         defaults={{ name, preferredLocale: 'en' }}
         languages={[
             { code: 'en', name: 'English' },

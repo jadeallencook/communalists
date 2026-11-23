@@ -56,8 +56,8 @@ function UseResetPasswordFormDemo() {
                     Submit to see validation. The password{' '}
                     <code>expired link</code> (typed twice) shows what happens
                     when the code expires while the form is open. In the app, a
-                    successful save signs the person in and goes to the welcome
-                    page.
+                    successful save signs the person in and goes to the
+                    dashboard.
                 </p>
             </div>
         </div>

@@ -35,6 +35,16 @@ Translated, four lines: "Developed by Volunteers / **San Francisco Bay Area** / 
 
 ## In the rebuild
 
+**Built (2026-11-22, decision #20):** the header is server-rendered with the account area streamed in `<Suspense>`, so there's no flash of the wrong links.
+
+- **Signed out:** Sign in and Create account, always visible; the current page's link is marked active.
+- **Signed in:** a Dashboard link, plus an account menu (initials → name, Account settings, Sign out). On phones, Dashboard and Create account fold away; Dashboard moves into the menu.
+- **Active link:** marked with `aria-current` (Dashboard on the dashboard, Sign in / Create account on their pages).
+- **Homepage banner:** "Go to your dashboard" when signed in, instead of Create account / Sign in; the closing sign-up band is hidden.
+- **Not built:** dashboard sub-navigation (the prototype's Overview / Requests / Settings tabs return with organizations); a full mobile drawer (not needed while the header has so few links).
+
+The rest of this section is the original advice, kept for reference:
+
 - Server-side auth so the nav renders the right links without a flash.
 - CSS transitions instead of animate.css. Respect `prefers-reduced-motion`.
 - Wire the dev-only console logger to real monitoring (Sentry or similar) in production.

@@ -4,7 +4,19 @@
     },
     "Header": {
         "skipToContent": "跳到主要内容",
-        "home": "Communalists 首页"
+        "home": "Communalists 首页",
+        "navigation": "主导航"
+    },
+    "HeaderLinks": {
+        "signIn": "登录",
+        "createAccount": "创建账户",
+        "dashboard": "控制台"
+    },
+    "AccountMenu": {
+        "open": "{name} 的账户菜单",
+        "dashboard": "控制台",
+        "settings": "账户设置",
+        "signOut": "退出登录"
     },
     "LocaleSwitcher": {
         "label": "语言"
@@ -22,6 +34,7 @@
             "imageAlt": "一位志愿者在社区聚餐中将一盘热饭递给邻居"
         },
         "cta": "创建账户",
+        "dashboard": "前往控制台",
         "about": {
             "title": "为互助而建",
             "body": "Communalists 是一个免费平台，让邻里组织起来。为你的互助小组、工具图书馆或社区俱乐部创建组织，寻找附近的团体，并用专为互助实际运作方式打造的工具来管理它们。",
@@ -176,19 +189,32 @@
             "placeRequired": "请从列表中选择你的城市。",
             "placeNotFound": "找不到该城市，请从列表中重新选择。",
             "generic": "出了点问题，请重试。"
+        },
+        "settings": {
+            "submit": "保存更改",
+            "saved": "已保存。"
         }
     },
-    "Welcome": {
-        "metaTitle": "欢迎",
-        "loading": "正在加载你的账户…",
-        "greeting": "欢迎你，{name}！",
-        "intro": "你的账户已就绪。",
-        "area": "你的区域：{location}",
-        "nextTitle": "接下来",
+    "AccountSettings": {
+        "metaTitle": "账户设置",
+        "loading": "正在加载设置…",
+        "title": "账户设置",
+        "description": "你的姓名、语言和城市。",
+        "email": "电子邮件",
+        "profileTitle": "个人资料"
+    },
+    "Dashboard": {
+        "metaTitle": "控制台",
+        "loading": "正在加载控制台…",
+        "greeting": "你好，{name}",
+        "area": "你的地区：{location}",
+        "organizationsTitle": "你的组织",
+        "emptyTitle": "你还没有加入任何组织",
+        "emptyBody": "加入或创建组织后，它的工具会显示在这里。",
+        "nextTitle": "即将推出",
         "nextBrowse": "浏览你附近的互助组织",
         "nextCreate": "为你的团体创建组织",
-        "comingSoon": "即将推出",
-        "signOut": "退出登录"
+        "comingSoon": "即将推出"
     },
     "LocationField": {
         "country": "国家",

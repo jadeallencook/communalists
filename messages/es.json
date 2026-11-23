@@ -4,7 +4,19 @@
     },
     "Header": {
         "skipToContent": "Saltar al contenido",
-        "home": "Inicio de Communalists"
+        "home": "Inicio de Communalists",
+        "navigation": "Principal"
+    },
+    "HeaderLinks": {
+        "signIn": "Iniciar sesión",
+        "createAccount": "Crear cuenta",
+        "dashboard": "Panel"
+    },
+    "AccountMenu": {
+        "open": "Menú de la cuenta de {name}",
+        "dashboard": "Panel",
+        "settings": "Configuración de la cuenta",
+        "signOut": "Cerrar sesión"
     },
     "LocaleSwitcher": {
         "label": "Idioma"
@@ -22,6 +34,7 @@
             "imageAlt": "Una voluntaria entrega un plato de comida caliente a un vecino en una comida comunitaria"
         },
         "cta": "Crear cuenta",
+        "dashboard": "Ir a tu panel",
         "about": {
             "title": "Hecho para la ayuda mutua",
             "body": "Communalists es una plataforma gratuita donde los vecinos se organizan. Crea una organización para tu grupo de ayuda mutua, biblioteca de herramientas o club comunitario, encuentra grupos cerca de ti y gestiónalos con herramientas hechas para cómo funciona realmente la ayuda mutua.",
@@ -176,19 +189,32 @@
             "placeRequired": "Elige tu ciudad de la lista.",
             "placeNotFound": "No encontramos esa ciudad. Vuelve a elegirla de la lista.",
             "generic": "Algo salió mal. Inténtalo de nuevo."
+        },
+        "settings": {
+            "submit": "Guardar cambios",
+            "saved": "Guardado."
         }
     },
-    "Welcome": {
-        "metaTitle": "Bienvenida",
-        "loading": "Cargando tu cuenta…",
-        "greeting": "¡Te damos la bienvenida, {name}!",
-        "intro": "Tu cuenta está lista.",
+    "AccountSettings": {
+        "metaTitle": "Configuración de la cuenta",
+        "loading": "Cargando tu configuración…",
+        "title": "Configuración de la cuenta",
+        "description": "Tu nombre, idioma y ciudad.",
+        "email": "Correo electrónico",
+        "profileTitle": "Perfil"
+    },
+    "Dashboard": {
+        "metaTitle": "Panel",
+        "loading": "Cargando tu panel…",
+        "greeting": "Hola, {name}",
         "area": "Tu zona: {location}",
-        "nextTitle": "Lo que viene",
-        "nextBrowse": "Explorar organizaciones de ayuda mutua cerca de ti",
-        "nextCreate": "Crear una organización para tu grupo",
-        "comingSoon": "Próximamente",
-        "signOut": "Cerrar sesión"
+        "organizationsTitle": "Tus organizaciones",
+        "emptyTitle": "Todavía no te has unido a ninguna organización",
+        "emptyBody": "Cuando te unas a una o crees la tuya, sus herramientas aparecerán aquí.",
+        "nextTitle": "Próximamente",
+        "nextBrowse": "Explora organizaciones de ayuda mutua cerca de ti",
+        "nextCreate": "Crea una organización para tu grupo",
+        "comingSoon": "Próximamente"
     },
     "LocationField": {
         "country": "País",

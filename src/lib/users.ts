@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { FieldValue, type Timestamp } from 'firebase-admin/firestore';
+import { cache } from 'react';
 
 import type { GeneralArea } from '@/lib/places';
 
@@ -51,7 +52,10 @@ export async function saveUserProfile(
     });
 }
 
-export async function getUserProfile(uid: string): Promise<UserProfile | null> {
+/** Cached per request: the header and the page both read it. */
+export const getUserProfile = cache(async function getUserProfile(
+    uid: string
+): Promise<UserProfile | null> {
     const snapshot = await users().doc(uid).get();
     return snapshot.exists ? (snapshot.data() as UserProfile) : null;
-}
+});

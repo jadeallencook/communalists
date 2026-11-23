@@ -29,7 +29,7 @@ export function missingSetupSteps(
 export const isSetupComplete = (profile: SetupProfile | null | undefined) =>
     missingSetupSteps(profile).length === 0;
 
-export const DEFAULT_NEXT_PATH = '/welcome';
+export const DEFAULT_NEXT_PATH = '/dashboard';
 
 /**
  * Makes a `?next=` value safe to redirect to: a path on this site, without a

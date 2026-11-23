@@ -5,9 +5,11 @@ import {
     UsersIcon,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
 import foodServe from '@/assets/food-serve.jpg';
 import { Button } from '@/components/atoms/button';
+import { HeroActions } from '@/components/molecules/hero-actions';
 import { CallToAction } from '@/components/organisms/call-to-action';
 import { FeatureGrid } from '@/components/organisms/feature-grid';
 import { HeroBanner } from '@/components/organisms/hero-banner';
@@ -20,22 +22,19 @@ const features = [
     { id: 'planning', icon: CalendarDaysIcon },
 ] as const;
 
-/** The public landing page. Static content only. */
-export function HomePage() {
+export interface HomePageProps {
+    /** The banner's buttons. The app streams in <HeroActions> for the visitor's session. */
+    heroActions?: ReactNode;
+    /** The closing "Ready to organize?" band; the app leaves it out for signed-in users. */
+    join?: ReactNode;
+}
+
+/** The public landing page. Static, except the session-dependent slots. */
+export function HomePage({
+    heroActions = <HeroActions signedIn={false} />,
+    join = <HomeJoinBand />,
+}: HomePageProps) {
     const t = useTranslations('Home');
-    const createAccount = (variant: 'onPhoto' | 'default') => (
-        <Button
-            asChild
-            size="lg"
-            className={
-                variant === 'onPhoto'
-                    ? 'bg-white text-neutral-950 hover:bg-white/90'
-                    : undefined
-            }
-        >
-            <Link href="/sign-up">{t('cta')}</Link>
-        </Button>
-    );
 
     return (
         <>
@@ -44,19 +43,7 @@ export function HomePage() {
                 imageAlt={t('banner.imageAlt')}
                 title={t('banner.title')}
                 subtitle={t('banner.subtitle')}
-                action={
-                    <div className="flex flex-wrap items-center gap-3">
-                        {createAccount('onPhoto')}
-                        <Button
-                            asChild
-                            size="lg"
-                            variant="ghost"
-                            className="text-white hover:bg-white/10 hover:text-white"
-                        >
-                            <Link href="/sign-in">{t('signIn')}</Link>
-                        </Button>
-                    </div>
-                }
+                action={heroActions}
             />
             <FeatureGrid
                 title={t('about.title')}
@@ -70,11 +57,23 @@ export function HomePage() {
                 }))}
                 footnote={t('earlyDays')}
             />
-            <CallToAction
-                title={t('join.title')}
-                description={t('join.body')}
-                action={createAccount('default')}
-            />
+            {join}
         </>
+    );
+}
+
+/** "Ready to organize?" with a Create account button. For signed-out visitors. */
+export function HomeJoinBand() {
+    const t = useTranslations('Home');
+    return (
+        <CallToAction
+            title={t('join.title')}
+            description={t('join.body')}
+            action={
+                <Button asChild size="lg">
+                    <Link href="/sign-up">{t('cta')}</Link>
+                </Button>
+            }
+        />
     );
 }

@@ -13,7 +13,7 @@ SignUpForm (organism, presentational; works without JS)
       2. create the Firebase Auth user (Admin SDK)
       3. sign in over Firebase's REST API → ID token
       4. exchange it for a session cookie (httpOnly)   src/lib/auth/session.ts
-  → redirect to /{locale}/account/setup?next=/welcome&from=sign-up
+  → redirect to /{locale}/account/setup?next=/dashboard&from=sign-up
 ```
 
 - **No profile yet.** `users/{uid}` is written by account setup, not sign-up, so new and old accounts take the same path.
@@ -37,7 +37,7 @@ Signed-in page container → requireAccount(next)       src/lib/auth/require-acc
 
 - **Required today:** name, preferred language and city (`SETUP_STEPS`). Each step is "answered" when its field is present. **To add a required question,** add a step, define when it counts as answered, and add the field to the form. Accounts missing it are asked on their next visit, with no migration.
 - **Not built yet:** optional questions ("Not now", remembered) and editing a profile. A complete account visiting `/account/setup` is sent on to `next`, so editing needs its own page.
-- **Every signed-in page must call `requireAccount()`** in its container (inside `<Suspense>`), not just the welcome page. The check isn't in the proxy, because a Firestore read on every request would cost money and slow down every page.
+- **Every signed-in page must call `requireAccount()`** in its container (inside `<Suspense>`), not just the dashboard. The check isn't in the proxy, because a Firestore read on every request would cost money and slow down every page.
 - **`next` is sanitized** (`safeNextPath`, tested): it must be a path on this site, not `//host` or `/\host`, have no control characters, and not point back at setup. A locale prefix is stripped, because the redirect adds the current one. Both the page and the action sanitize it, since the action can be posted directly.
 - **Preferred language ≠ UI language.** `profile.locale` is for emails and notifications. Saving setup doesn't switch the site's language.
 - **Wording:** `from=sign-up` shows "Tell us about yourself"; anything else shows "Finish setting up your account". The parameter only changes the wording, so a hand-edited URL does no harm.
@@ -51,7 +51,7 @@ SignInForm (organism) ← useSignInForm(signIn) ← SignInFormContainer   src/ap
       1. validate with signInSchema     src/lib/validation/sign-in.ts (email + "required" password only)
       2. sign in over Firebase's REST API → ID token   (same helper as sign-up)
       3. exchange it for a session cookie
-  → redirect to /{locale}/welcome
+  → redirect to /{locale}/dashboard
 ```
 
 - **No account enumeration:** wrong password, unknown email and disabled account all show the same "That email and password don't match an account." (`signInErrorFor` maps Firebase's REST codes, tested.) Firebase's own throttling (`TOO_MANY_ATTEMPTS_TRY_LATER`) shows "Too many attempts".
@@ -73,7 +73,7 @@ Email link → Action URL https://communalists.com/auth/action?mode=resetPasswor
       expired / used  → "This link has expired" + Request a new link
       no code / other mode → "This link doesn't work" + Request a new link
   → resetPassword(): set the password with the code → revoke every session (Admin SDK)
-      → sign in with the new password → session cookie → /{locale}/welcome
+      → sign in with the new password → session cookie → /{locale}/dashboard
 ```
 
 - **No account enumeration:** an unknown or disabled email gets the same "Check your email" as a real one (`forgotPasswordOutcome`, tested). Throttling (`RESET_PASSWORD_EXCEED_LIMIT`, `TOO_MANY_ATTEMPTS_TRY_LATER`) shows "Too many requests".
@@ -113,12 +113,21 @@ See [decision #14](../decisions.md). The geocoder from #12 is gone.
 - **API:** `/api/places` is public and cacheable (`s-maxage` 1 day), returns at most 8 `{ id, label }`, needs 2+ characters, and returns 400 for unsupported countries.
 - **Limits:** needs JavaScript (no-JS visitors can't pick a city, so they can't finish account setup). Places under 500 people aren't listed. City names aren't translated.
 
+## Dashboard, settings and the header
+
+- **`/{locale}/dashboard`** is the signed-in home (it was `/welcome`, which now redirects there; decision #20). Sign-in, account setup and password reset all land on it. For now it has a greeting, the user's area and an empty "Your organizations" state.
+- **`/{locale}/account/settings`** edits name, preferred language and city with the setup form in `mode="settings"`. It shares the save logic with setup (`src/app/[locale]/account/save-profile.ts`), stays on the page and shows "Saved.". The email is shown read-only. Changing it, or the password, isn't built.
+- **After a save, the action calls `refresh()`** (`next/cache`). A server action that only returns state doesn't re-render the layout, so the header kept the old name until the next navigation. Use `refresh()` in any action whose change shows outside its own form.
+- **The header's account area reads the session on every page.** `HeaderNav` and `HeaderAccount` (`src/app/[locale]/header-slots.tsx`) run inside `<Suspense>` in the layout, so the rest of the header stays static and the right links stream in with no flash. Signed out, no cookie means no work. Signed in, each page view verifies the session (a revocation lookup) and reads the profile once: `getSessionUser` and `getUserProfile` are wrapped in React `cache()`, so the header and the page share one read.
+- **Before setup is finished,** the menu shows the email instead of a name, and Dashboard leads to setup (the `requireAccount` gate).
+- **The homepage reads the session too,** only for its banner buttons and the closing sign-up band (`src/app/[locale]/page.tsx`). Signed in, the banner shows "Go to your dashboard" and the band is left out. A same-height placeholder holds the banner steady while the session is checked.
+
 ## Sessions
 
 - **Firebase session cookies:** `__session`, httpOnly, `SameSite=Lax`, `Secure` in production, 5 days. Verified with the Admin SDK on every read, **including a revocation check**.
-- **Sign out** (`src/app/[locale]/welcome/actions.ts`) deletes the cookie and revokes the user's refresh tokens, so any copied cookie stops working. Revocation is checked to the second, so a cookie created and revoked within the same second can survive; that only happens in automated tests.
+- **Sign out** (`src/app/actions/sign-out.ts`, from the header's account menu) deletes the cookie and revokes the user's refresh tokens, so any copied cookie stops working. Revocation is checked to the second, so a cookie created and revoked within the same second can survive; that only happens in automated tests.
 - **Next 16 rules:**
-  - Anything that calls `getSessionUser()` reads cookies, so it must sit inside `<Suspense>` (a build error otherwise). The welcome page prerenders its shell and streams the user part.
+  - Anything that calls `getSessionUser()` reads cookies, so it must sit inside `<Suspense>` (a build error otherwise). The dashboard and settings prerender their shell and stream the user part; so does the header's account area (`src/app/[locale]/header-slots.tsx`).
   - `getSessionUser()` calls `connection()` first. Verifying a session reads the clock, and with `partialPrefetching` Next otherwise logs "encountered the unstable value `Date.now()` while prerendering".
   - Server actions can't read the `[locale]` root param, so forms send `locale` as a hidden field.
 
@@ -160,13 +169,24 @@ Verified again on 2026-11-21 after account setup:
 - **Signed out:** setup and welcome go to sign-in.
 - **Re-run:** the forgot-password and reset-password suites still pass.
 
+Verified again on 2026-11-22 after the navigation work, with a production build against the emulators:
+
+- **Header, signed out:** Sign in + Create account on every page; on `/sign-in` and `/sign-up` the matching link is marked current (re-checked after the change from hiding it).
+- **Homepage:** signed out, banner Create account + Sign in and the join band; signed in, only "Go to your dashboard" (also in Spanish) and no join band.
+- **`/en/welcome`:** 308 to `/en/dashboard`. Settings signed out → sign-in.
+- **Before setup:** the menu shows the email.
+- **Dashboard:** greeting, area, empty state; the Dashboard link is marked current there and not on other pages.
+- **Settings:** email, name, language and city pre-filled; empty name → error; saving changes the dashboard and the menu label; Spanish header and menu labels work.
+- **Sign-in** lands on the dashboard.
+- **In a real browser:** the menu opens with name and email, Account settings and Sign out. Saving settings updates the header right away (after the `refresh()` fix). Sign out from the menu returns home signed out.
+
 Earlier record: place API (results, cache headers, 400 for unsupported countries, nothing under 2 characters); mismatched passwords → "Passwords don't match" and no account created; no city → "Choose your city"; tampered place ID → "couldn't find that city"; success → welcome showing the chosen city; duplicate email (case-insensitive) rejected; no session → sign-in; sign-out revokes the cookie; sign-in with a wrong password and with an unknown email show the same message and keep the email; sign-in field errors; sign-in (email in a different case) → welcome with a working session; `/es/sign-in` translated and linked to sign-up. Forgot password: sign-in links to it; invalid email error; a known email (any case) records exactly one reset email with `continueUrl` back to sign-in; an unknown email shows the same confirmation and sends nothing; using the code sets the new password, which then signs in, and the old one is rejected. Reset page (2026-11-21): `/auth/action?lang=es` → `/es/auth/action` (and `zh-CN` → `zh`; unsupported `lang` falls back to `Accept-Language`); no code or another mode → "doesn't work"; bogus code → "expired"; valid code → the form for that email, `noindex` and `no-referrer`, and loading the page doesn't use the code; mismatch and too-short errors; saving → welcome with a new session, another device's session is signed out, old password rejected, new one works; reusing the link → "expired" on load and on submit.
 
 ## Not built yet
 
 - Session-aware header (a "Sign in" / account link); today the homepage hero and the two auth pages link to each other
-- Redirecting already-signed-in visitors away from `/sign-in` and `/sign-up`; a home page for signed-in users (they land on the welcome page, which says "Your account is ready")
+- Redirecting already-signed-in visitors away from `/sign-in` and `/sign-up` (the header already hides those links for them)
 - Email verification
-- Editing name/language/location (a profile page), deleting an account
+- Changing email or password from settings, deleting an account
 - Optional setup questions with "Not now"
 - Rate limiting / bot protection on sign-up (e.g. Turnstile)
