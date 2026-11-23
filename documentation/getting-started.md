@@ -36,6 +36,8 @@ That one command:
 
 Stop it with **Ctrl-C**. The emulators save their data to `.emulator-data/` on the way out, so your test accounts are there next time. Pass Next options through: `pnpm dev --port 3001`.
 
+While `pnpm dev` runs, every Firestore read is printed as `[firestore read #N] collection`, so you can see what a page costs.
+
 **Try it:** create an account at http://localhost:3000/en/sign-up, finish account setup (name, language, city), and you'll land on the dashboard. The header shows a Dashboard link and your initials (account menu with settings and sign out). To look inside the local database, open the emulator UI at http://127.0.0.1:4000.
 
 ### Why `.env.local` needs nothing

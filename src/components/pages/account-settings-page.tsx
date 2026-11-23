@@ -1,6 +1,8 @@
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 
+import { Skeleton } from '@/components/atoms/skeleton';
+
 export interface AccountSettingsPageProps {
     /** The account's email (sign-in only; changing it isn't built yet). */
     email?: string;
@@ -39,14 +41,29 @@ export function AccountSettingsPage({ email, form }: AccountSettingsPageProps) {
     );
 }
 
-/** Placeholder while the account loads. */
+/** Shown while the account loads: the page's shape, so it fills in rather than flashing a loading screen. */
 export function AccountSettingsPageLoading() {
     const t = useTranslations('AccountSettings');
     return (
-        <section className="mx-auto w-full max-w-xl px-4 py-12">
-            <p role="status" className="text-muted-foreground">
+        <section className="mx-auto flex w-full max-w-xl flex-col gap-8 px-4 py-12">
+            <p role="status" className="sr-only">
                 {t('loading')}
             </p>
+            <header className="flex flex-col gap-2">
+                <Skeleton className="h-9 w-64" />
+                <Skeleton className="h-5 w-56" />
+            </header>
+            <Skeleton className="h-16 w-full rounded-lg" />
+            <div className="flex flex-col gap-4">
+                <Skeleton className="h-7 w-24" />
+                {[0, 1, 2, 3].map((i) => (
+                    <div key={i} className="flex flex-col gap-2">
+                        <Skeleton className="h-4 w-28" />
+                        <Skeleton className="h-8 w-full" />
+                    </div>
+                ))}
+                <Skeleton className="h-10 w-full" />
+            </div>
         </section>
     );
 }

@@ -5,7 +5,11 @@ import { getLocale } from 'next-intl/server';
 
 import { isSetupComplete } from '@/lib/account-setup';
 import { getSessionUser } from '@/lib/auth/session';
-import { getUserProfile, type CompleteUserProfile } from '@/lib/users';
+import {
+    getUserProfile,
+    getUserProfileFresh,
+    type CompleteUserProfile,
+} from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
 
 /**
@@ -21,7 +25,11 @@ export async function requireAccount(next: string): Promise<{
     const [locale, user] = await Promise.all([getLocale(), getSessionUser()]);
     if (!user) return redirect({ href: '/sign-in', locale });
 
-    const profile = await getUserProfile(user.uid);
+    let profile = await getUserProfile(user.uid);
+    // A cached copy may predate setup (saved on another server instance), so
+    // confirm with Firestore before sending anyone back to setup.
+    if (!isSetupComplete(profile))
+        profile = await getUserProfileFresh(user.uid);
     if (!isSetupComplete(profile)) {
         return redirect({
             href: { pathname: '/account/setup', query: { next } },

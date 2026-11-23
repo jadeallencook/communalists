@@ -9,7 +9,7 @@ import {
 import { isSetupComplete, safeNextPath } from '@/lib/account-setup';
 import { getSessionUser } from '@/lib/auth/session';
 import { isSupportedCountry } from '@/lib/places/types';
-import { getUserProfile } from '@/lib/users';
+import { getUserProfileFresh } from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 
@@ -42,7 +42,8 @@ async function AccountSetupContainer({
     const next = safeNextPath(params.next, routing.locales);
     if (!user) return redirect({ href: '/sign-in', locale });
 
-    const profile = await getUserProfile(user.uid);
+    // Fresh, not cached: this decides whether setup is still needed.
+    const profile = await getUserProfileFresh(user.uid);
     // Nothing to ask: carry on. (Editing a profile will be its own page.)
     if (isSetupComplete(profile)) return redirect({ href: next, locale });
 

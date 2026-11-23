@@ -106,6 +106,7 @@ These are the rules we're building to today. They can change. When one does, upd
 - Format with Prettier: 4 spaces, single quotes, semicolons, ES5 trailing commas.
 - CI must check lockfile drift, formatting, types, lint, tests and build. Keep the lockfile committed and pin Node in `.nvmrc`.
 - Define path aliases once, in `tsconfig.json`.
+- **Firestore reads go through a cached, tagged function** (`'use cache'` + `cacheTag` + `cacheLife`), and the action that writes clears the tag (`updateTag`). Decide access on fresh data, show cached data. Call `logRead()` beside every read. See `documentation/technical/firebase.md` → "Caching reads in the rebuild".
 - Write tests for date and time logic (event open/closed in `America/Los_Angeles`), filtering and phone formatting. These were the buggy areas before.
 - Keep security rules or database policies, and indexes, in the repo, with tests.
 

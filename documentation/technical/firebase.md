@@ -6,15 +6,45 @@ What Firebase taught this project. Read it whether the rebuild stays on Firebase
 
 Firestore bills per document read, so the team reshaped data around how screens read it:
 
-| Problem                                                                     | Fix                                                                                 | Commit               |
-| --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | -------------------- |
-| One document per comment → N reads to open a request                        | One `threads/{id}` doc with an `arrayUnion`-appended array → 1 read                 | `a377129` (May 2023) |
-| One read per person to show names                                           | A flat `displayNames` map in Realtime Database, read once (RTDB bills by bandwidth) | `d153141` (Jun 2023) |
-| Refetching the same requests on every filter change                         | `DashboardContext` cache: filter locally, fetch only on a miss                      | `dcbc734` (May 2023) |
-| "Has a driver" needs `!=` or an empty check, which Firestore handles poorly | A derived `hasDriver` boolean → plain equality                                      | `1bdb5b2`            |
-| Hard to see how many reads a screen caused                                  | A styled `[communalists]` console log on every fetch                                | —                    |
+| Problem                                                                     | Fix                                                                                                                              | Commit               |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| One document per comment → N reads to open a request                        | One `threads/{id}` doc with an `arrayUnion`-appended array → 1 read                                                              | `a377129` (May 2023) |
+| One read per person to show names                                           | A flat `displayNames` map in Realtime Database, read once (RTDB bills by bandwidth)                                              | `d153141` (Jun 2023) |
+| Refetching the same requests on every filter change                         | `DashboardContext` cache: filter locally, fetch only on a miss ([PR #60](https://github.com/techletariats/communalists/pull/60)) | `dcbc734` (May 2023) |
+| "Has a driver" needs `!=` or an empty check, which Firestore handles poorly | A derived `hasDriver` boolean → plain equality                                                                                   | `1bdb5b2`            |
+| Hard to see how many reads a screen caused                                  | A styled `[communalists]` console log on every fetch                                                                             | —                    |
 
 Each fix has a cost: staleness (cache), the whole roster sent to every client (display names), duplicate fields that can drift (`hasDriver`), and a document size cap of 1 MiB (threads).
+
+## Caching reads in the rebuild
+
+The rebuild keeps the prototype's caching ideas ([PR #60](https://github.com/techletariats/communalists/pull/60): `DashboardContext`), but moves the cache from the browser tab to the server (decision #21):
+
+| Prototype (`DashboardContext`, in the browser)       | Rebuild (server)                                                                                                                                                                                               |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Maps by ID in React state, fetched once per session  | `'use cache'` functions, one entry per argument (e.g. per `uid`)                                                                                                                                               |
+| Each browser had its own copy; 30 members → 30 reads | One entry serves every request on that server instance                                                                                                                                                         |
+| Write-through: update the local copy after a write   | **Tag** entries by what they belong to (`cacheTag('user:' + uid)`) and **clear the tag** in the action that writes (`updateTag`)                                                                               |
+| Other people's changes invisible until reload        | Clearing a tag affects everyone, not just the writer                                                                                                                                                           |
+| `clearCache()` on sign-out (shared devices)          | Nothing personal is cached in the browser; sign-out ends the session server-side                                                                                                                               |
+| `log()` on every fetch                               | `logRead()` (`src/lib/firebase/read-log.ts`): prints `[firestore read #N] collection` for every read that reaches Firestore. On in `next dev`; `FIRESTORE_READ_LOG=1` turns it on for a local production build |
+
+**Convention for new data:**
+
+1. Read through a `'use cache'` function with `cacheTag(...)` and an explicit `cacheLife(...)`. Return plain data: no Firestore `Timestamp`s or class instances (they can't be cached), and never the raw snapshot.
+2. Clear the tag (`updateTag`) in every server action that changes the data. If the change shows outside the form, also `refresh()`.
+3. **Decide on fresh data, show cached data.** A cached copy can be up to `cacheLife` old on another server instance, and on Vercel the default in-memory cache is per instance (Next's docs say entries "typically don't persist across requests" on serverless). So a check that redirects someone or grants access must confirm with a fresh read when the cached copy says no (see `requireAccount` and `getUserProfileFresh`).
+4. Call `logRead()` next to every Firestore read, so `next dev` shows what each page costs.
+5. If per-instance caching proves too leaky at real traffic, `'use cache: remote'` stores entries in a shared, platform-provided cache instead (it costs money and adds latency; Next's docs list when it's worth it).
+
+**Measured on 2026-11-22** (production build, emulators, `FIRESTORE_READ_LOG=1`):
+
+- Signed out: 0 reads.
+- 12 signed-in page views (dashboard, home, settings): **0 reads** after the first, where it was 12 before caching.
+- Saving settings: the next page shows the new name; browsing goes back to 0.
+- An account mid-setup: 2 reads per gated page (cached miss + fresh confirm).
+
+**One-off reads still count.** The CSV backup on 2026-11-20 read every document in every collection, so it showed up as a few thousand reads in the console's usage chart. The Firestore Data tab in the console also counts as reads while you browse it.
 
 ## Query limits that shaped the code
 

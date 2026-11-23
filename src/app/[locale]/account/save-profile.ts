@@ -1,9 +1,10 @@
 import 'server-only';
 
+import { updateTag } from 'next/cache';
 import { hasLocale } from 'next-intl';
 
 import { getPlace, toGeneralArea } from '@/lib/places';
-import { saveUserProfile } from '@/lib/users';
+import { saveUserProfile, userTag } from '@/lib/users';
 import {
     accountSetupSchema,
     type AccountSetupErrorKey,
@@ -64,5 +65,8 @@ export async function saveProfileForm(
         console.error('[profile] save failed', (error as Error).message); // never log PII
         return { formError: 'generic', values };
     }
+    // Clear this user's cached profile everywhere it's shown. Only valid in
+    // server actions, which is where this runs.
+    updateTag(userTag(uid));
     return null;
 }

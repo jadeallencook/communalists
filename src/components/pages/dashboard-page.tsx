@@ -1,6 +1,8 @@
 import { UsersIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import { Skeleton } from '@/components/atoms/skeleton';
+
 export interface DashboardPageProps {
     name: string;
     /** The profile's city, e.g. "San Jose, California". */
@@ -66,14 +68,27 @@ export function DashboardPage({ name, areaLabel }: DashboardPageProps) {
     );
 }
 
-/** Placeholder while the account loads. */
+/** Shown while the account loads: the page's shape, so it fills in rather than flashing a loading screen. */
 export function DashboardPageLoading() {
     const t = useTranslations('Dashboard');
     return (
-        <section className="mx-auto w-full max-w-3xl px-4 py-12">
-            <p role="status" className="text-muted-foreground">
+        <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-4 py-12">
+            <p role="status" className="sr-only">
                 {t('loading')}
             </p>
+            <header className="flex flex-col gap-2">
+                <Skeleton className="h-9 w-56 sm:h-10" />
+                <Skeleton className="h-5 w-64" />
+            </header>
+            <div className="flex flex-col gap-3">
+                <Skeleton className="h-7 w-44" />
+                <Skeleton className="h-28 w-full rounded-lg" />
+            </div>
+            <div className="flex flex-col gap-3">
+                <Skeleton className="h-7 w-36" />
+                <Skeleton className="h-14 w-full rounded-lg" />
+                <Skeleton className="h-14 w-full rounded-lg" />
+            </div>
         </section>
     );
 }
