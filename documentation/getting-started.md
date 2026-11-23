@@ -10,7 +10,9 @@ From a fresh machine to a running app and your first change. You don't need a Fi
 | **Java 21+**                         | The Firebase emulators run on Java    | `java -version` |
 | Git                                  | —                                     | `git --version` |
 
-On macOS, Java is `brew install openjdk@21`; follow the `sudo ln -sfn …` line Homebrew prints so `java` is found.
+On macOS, install Java with `brew install --cask temurin@21` (a prebuilt JDK; macOS finds it without extra steps), then open a new terminal. Avoid `brew install openjdk@21`: on macOS versions Homebrew no longer builds bottles for (13 Ventura, as of 2026-11), it compiles from source and fails without the full Xcode app. Without Homebrew, the JDK 21 `.pkg` from [adoptium.net](https://adoptium.net) works the same way.
+
+After installing nvm or Java, open a new terminal (or `source ~/.zshrc`). Shells that were already open won't find `nvm` or `java`.
 
 ## 2. Set up the project
 

@@ -12,6 +12,7 @@ allowBuilds:
   '@swc/core': false
   # Postinstall not needed for firebase-admin / gRPC usage.
   protobufjs: false
+  re2: set this to true or false
 
 # Keep pnpm's minimum release age (supply-chain protection) intact. If a tool
 # adds `minimumReleaseAgeExclude` entries, pin to an older version instead.

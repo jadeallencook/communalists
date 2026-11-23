@@ -94,7 +94,7 @@ if (await authUp()) {
     if (java.error || !(javaVersion >= 21)) {
         fail(
             'The Firebase emulators need Java 21 or newer.\n' +
-                '      macOS: brew install openjdk@21  (then follow its "sudo ln -sfn" note)\n' +
+                '      macOS: brew install --cask temurin@21  (then open a new terminal)\n' +
                 '      Then run this again.'
         );
     }

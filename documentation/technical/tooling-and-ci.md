@@ -20,7 +20,7 @@ pnpm dev                      # http://localhost:3000 → redirects to /en
 
 It also starts only Auth and Firestore (`--only auth,firestore`; the Realtime Database isn't used), removes leftover `firebase-export-*` folders, and names any process blocking an emulator port.
 
-It warns when Node doesn't match `.nvmrc`. `firebase-tools` is a dev dependency, so no global install is needed. The emulators need **Java 21+** (`brew install openjdk@21`), and the script says so if it's missing. `pnpm dev:next` runs Next alone.
+It warns when Node doesn't match `.nvmrc`. `firebase-tools` is a dev dependency, so no global install is needed. The emulators need **Java 21+** (`brew install --cask temurin@21`; see `getting-started.md` for why not `openjdk@21`), and the script says so if it's missing. `pnpm dev:next` runs Next alone.
 
 ## Scripts
 
