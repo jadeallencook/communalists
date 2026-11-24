@@ -27,6 +27,7 @@ describe('stored keys are permanent', () => {
             'childcare',
             'education',
             'clothing',
+            'hygiene',
             'lending',
             'disasterRelief',
             'legal',

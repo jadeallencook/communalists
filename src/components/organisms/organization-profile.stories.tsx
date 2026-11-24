@@ -66,7 +66,7 @@ export const Unclaimed: Story = {
         unclaimed: true,
         name: 'Eastside Shower Day',
         handle: 'eastside-shower-day',
-        focusAreas: ['health', 'housing'],
+        focusAreas: ['hygiene', 'health'],
         memberCount: 0,
         contactEmail: undefined,
         socials: [],

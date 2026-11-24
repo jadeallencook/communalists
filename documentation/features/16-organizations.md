@@ -25,10 +25,11 @@ The heart of the platform: people create, find and join **organizations**, and a
 
 ### Focus areas
 
-General · Food · Housing · Transportation · Technology · Health · Childcare · Education · Clothing · Lending · Disaster relief · Legal · Labor · Arts · Hobbies · Faith · Animals · Environment · Other
+General · Food · Housing · Transportation · Technology · Health · Childcare · Education · Clothing · Hygiene · Lending · Disaster relief · Legal · Labor · Arts · Hobbies · Faith · Animals · Environment · Other
 
 - **It's "what do you work on", not "what kind of group are you".** People search by need ("food", "cars"), and one group often does several things. A "kind of group" field (tenant union, club, student group) was dropped for now; it can be added later as an optional field ([decision #23](../decisions.md)).
 - **Short labels** (one word where possible), so the checklist scans and cards stay short. Where one word would narrow the meaning, a broader word was picked: **Lending**, not Tools (libraries lend more than tools); **Environment**, not Gardening (cleanups and climate groups too). Labels can change; keys can't.
+- **Hygiene** (showers, laundry, hygiene kits, haircuts) was added on 2026-11-24 ([decision #34](../decisions.md)): showers had nowhere to go, and they were a big part of the prototype's listings.
 - **Up to 3**, so a group can say what it does without ticking everything to appear in every search. The form disables the other boxes at 3; the server enforces it too.
 - **Stored as permanent keys** (`food`, `transportation`, `disasterRelief`). Labels live in `messages/*.json` and can be reworded any time. Never rename or reuse a key. To retire one, list it in `RETIRED_FOCUS_AREAS`: it's hidden from the form and still shown on groups that have it. A test locks the key list.
 

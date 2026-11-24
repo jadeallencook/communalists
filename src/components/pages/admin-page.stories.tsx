@@ -44,7 +44,7 @@ const meta = {
             {
                 name: 'Eastside Shower Day',
                 handle: 'eastside-shower-day',
-                focusAreas: ['health', 'housing'],
+                focusAreas: ['hygiene', 'health'],
                 detail: 'San Jose, California',
             },
             {

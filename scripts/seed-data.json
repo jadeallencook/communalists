@@ -408,7 +408,7 @@
             "id": "seed-eastside-showers",
             "name": "Eastside Shower Day",
             "handle": "eastside-shower-day",
-            "focusAreas": ["health", "housing"],
+            "focusAreas": ["hygiene", "health"],
             "description": "Free hot showers, towels and hygiene kits every Wednesday morning in the church hall. Walk in, no ID needed.",
             "placeId": "5392171",
             "reach": {

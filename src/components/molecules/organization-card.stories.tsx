@@ -53,7 +53,7 @@ export const Unclaimed: Story = {
         role: undefined,
         name: 'Eastside Shower Day',
         handle: 'eastside-shower-day',
-        focusAreas: ['health', 'housing'],
+        focusAreas: ['hygiene', 'health'],
         detail: '2 mi away · San Jose, California',
         unclaimed: true,
     },

@@ -124,7 +124,7 @@ const unclaimedProfile = {
     ...sampleProfile,
     name: 'Eastside Shower Day',
     handle: 'eastside-shower-day',
-    focusAreas: ['health' as const, 'housing' as const],
+    focusAreas: ['hygiene' as const, 'health' as const],
     description:
         'Free hot showers, towels and hygiene kits every Wednesday morning in the church hall. Walk in, no ID needed.',
     memberCount: 0,

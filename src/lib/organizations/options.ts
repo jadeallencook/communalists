@@ -22,6 +22,7 @@ export const FOCUS_AREAS = [
     'childcare',
     'education',
     'clothing',
+    'hygiene',
     'lending',
     'disasterRelief',
     'legal',
