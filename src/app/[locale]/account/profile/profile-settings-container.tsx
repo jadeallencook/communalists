@@ -68,7 +68,7 @@ export function ProfileSettingsContainer({
         languages: value.languages as OrgLanguage[],
         showArea: value.showArea,
         website: value.website.trim() || undefined,
-        socials: value.socials.filter((s) => s.url.trim()),
+        socials: value.socials.filter((s) => s.handle.trim()),
         groups: {
             show: value.groupsShow,
             hidden: groups

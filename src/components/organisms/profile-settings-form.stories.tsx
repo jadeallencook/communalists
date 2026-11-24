@@ -26,7 +26,7 @@ const filled: ProfileFormValue = {
     languages: ['en', 'es'],
     showArea: true,
     website: 'example.com',
-    socials: [{ platform: 'instagram', url: 'instagram.com/example' }],
+    socials: [{ platform: 'instagram', handle: 'example' }],
     shownGroups: ['sbma', 'auto'],
 };
 const groups = [

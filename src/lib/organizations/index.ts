@@ -36,9 +36,9 @@ import {
     type OrgLanguage,
     type FocusArea,
     type ReachScope,
-    type SocialPlatform,
     type Visibility,
 } from './options';
+import { socialLinksOf, type SocialLink } from '@/lib/socials';
 
 // Organizations in Firestore (design: documentation/features/16-organizations.md).
 //
@@ -64,7 +64,7 @@ export interface Organization {
     languages: OrgLanguage[];
     website?: string;
     contactEmail?: string;
-    socials: { platform: SocialPlatform; url: string }[];
+    socials: SocialLink[];
     joinPolicy: JoinPolicy;
     visibility: Visibility;
     memberListVisibility: MemberListVisibility;
@@ -129,7 +129,7 @@ function toOrganization(
         languages: data.languages ?? [],
         website: data.website,
         contactEmail: data.contactEmail,
-        socials: data.socials ?? [],
+        socials: socialLinksOf(data.socials),
         joinPolicy: data.joinPolicy,
         visibility: data.visibility,
         memberListVisibility: memberListVisibilityOf(data.memberListVisibility),

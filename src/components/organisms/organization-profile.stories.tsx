@@ -17,8 +17,8 @@ export const sampleProfile = {
     website: 'https://southbaymutualaid.org/',
     contactEmail: 'hello@southbaymutualaid.org',
     socials: [
-        { platform: 'instagram' as const, url: 'https://instagram.com/sbma' },
-        { platform: 'discord' as const, url: 'https://discord.gg/abc' },
+        { platform: 'instagram' as const, handle: 'sbma' },
+        { platform: 'facebookGroup' as const, handle: 'southbaymutualaid' },
     ],
 };
 

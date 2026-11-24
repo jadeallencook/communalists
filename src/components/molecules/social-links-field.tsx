@@ -1,4 +1,5 @@
 import { PlusIcon, Trash2Icon } from 'lucide-react';
+import { useId } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/atoms/button';
@@ -8,17 +9,20 @@ import {
     FieldLegend,
     FieldSet,
 } from '@/components/atoms/field';
-import { Input } from '@/components/atoms/input';
+import {
+    InputGroup,
+    InputGroupAddon,
+    InputGroupInput,
+    InputGroupText,
+} from '@/components/atoms/input-group';
 import {
     SOCIAL_PLATFORM_KEYS,
     SOCIAL_PLATFORMS,
+    type SocialLink,
     type SocialPlatform,
-} from '@/lib/organizations/options';
+} from '@/lib/socials';
 
-export interface SocialLink {
-    platform: SocialPlatform;
-    url: string;
-}
+export type { SocialLink };
 
 export interface SocialLinksFieldProps {
     links: SocialLink[];
@@ -30,13 +34,18 @@ export interface SocialLinksFieldProps {
 const selectClass =
     'h-8 shrink-0 rounded-lg border border-control bg-transparent px-2.5 text-sm dark:bg-input/30';
 
-/** Rows of platform + link, with add and remove. Submits socialPlatform[] / socialUrl[]. */
+/**
+ * Rows of platform + username, with add and remove. People type only the
+ * username; the platform's address is shown in front of it. Submits
+ * socialPlatform[] / socialHandle[].
+ */
 export function SocialLinksField({
     links,
     onChange,
     error,
 }: SocialLinksFieldProps) {
     const t = useTranslations('Organizations');
+    const hintId = useId();
     const used = new Set(links.map((l) => l.platform));
     const nextPlatform = SOCIAL_PLATFORM_KEYS.find((p) => !used.has(p));
     const update = (index: number, patch: Partial<SocialLink>) =>
@@ -45,53 +54,70 @@ export function SocialLinksField({
     return (
         <FieldSet data-invalid={!!error}>
             <FieldLegend variant="label">{t('form.socials')}</FieldLegend>
-            {links.map((link, index) => (
-                <div key={index} className="flex gap-2">
-                    <select
-                        name="socialPlatform"
-                        value={link.platform}
-                        onChange={(event) =>
-                            update(index, {
-                                platform: event.target.value as SocialPlatform,
-                            })
-                        }
-                        aria-label={t('form.socialPlatform')}
-                        className={selectClass}
-                    >
-                        {SOCIAL_PLATFORM_KEYS.map((key) => (
-                            <option key={key} value={key}>
-                                {SOCIAL_PLATFORMS[key].name}
-                            </option>
-                        ))}
-                    </select>
-                    <Input
-                        name="socialUrl"
-                        type="url"
-                        inputMode="url"
-                        value={link.url}
-                        onChange={(event) =>
-                            update(index, { url: event.target.value })
-                        }
-                        placeholder={`${SOCIAL_PLATFORMS[link.platform].domains[0]}/…`}
-                        aria-label={t('form.socialUrl', {
-                            platform: SOCIAL_PLATFORMS[link.platform].name,
-                        })}
-                    />
-                    <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() =>
-                            onChange(links.filter((_, i) => i !== index))
-                        }
-                        aria-label={t('form.socialRemove', {
-                            platform: SOCIAL_PLATFORMS[link.platform].name,
-                        })}
-                    >
-                        <Trash2Icon aria-hidden />
-                    </Button>
-                </div>
-            ))}
+            {links.map((link, index) => {
+                const platform = SOCIAL_PLATFORMS[link.platform];
+                return (
+                    <div key={index} className="flex flex-wrap gap-2">
+                        <select
+                            name="socialPlatform"
+                            value={link.platform}
+                            onChange={(event) =>
+                                update(index, {
+                                    platform: event.target
+                                        .value as SocialPlatform,
+                                })
+                            }
+                            aria-label={t('form.socialPlatform')}
+                            className={selectClass}
+                        >
+                            {SOCIAL_PLATFORM_KEYS.map((key) => (
+                                <option key={key} value={key}>
+                                    {SOCIAL_PLATFORMS[key].name}
+                                </option>
+                            ))}
+                        </select>
+                        <InputGroup className="w-auto min-w-48 flex-1">
+                            <InputGroupAddon aria-hidden>
+                                <InputGroupText>
+                                    {platform.prefix}
+                                </InputGroupText>
+                            </InputGroupAddon>
+                            <InputGroupInput
+                                name="socialHandle"
+                                value={link.handle}
+                                onChange={(event) =>
+                                    update(index, {
+                                        handle: event.target.value,
+                                    })
+                                }
+                                autoCapitalize="none"
+                                autoCorrect="off"
+                                autoComplete="off"
+                                spellCheck={false}
+                                maxLength={300}
+                                aria-label={t('form.socialHandle', {
+                                    platform: platform.name,
+                                })}
+                                aria-describedby={hintId}
+                                aria-invalid={error ? true : undefined}
+                            />
+                        </InputGroup>
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() =>
+                                onChange(links.filter((_, i) => i !== index))
+                            }
+                            aria-label={t('form.socialRemove', {
+                                platform: platform.name,
+                            })}
+                        >
+                            <Trash2Icon aria-hidden />
+                        </Button>
+                    </div>
+                );
+            })}
             {nextPlatform && (
                 <Button
                     type="button"
@@ -101,7 +127,7 @@ export function SocialLinksField({
                     onClick={() =>
                         onChange([
                             ...links,
-                            { platform: nextPlatform, url: '' },
+                            { platform: nextPlatform, handle: '' },
                         ])
                     }
                 >
@@ -109,11 +135,13 @@ export function SocialLinksField({
                     {t('form.socialAdd')}
                 </Button>
             )}
-            {error ? (
-                <FieldError>{error}</FieldError>
-            ) : (
-                <FieldDescription>{t('form.socialsHint')}</FieldDescription>
-            )}
+            <div id={hintId}>
+                {error ? (
+                    <FieldError>{error}</FieldError>
+                ) : (
+                    <FieldDescription>{t('form.socialsHint')}</FieldDescription>
+                )}
+            </div>
         </FieldSet>
     );
 }

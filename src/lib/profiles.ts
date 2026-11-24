@@ -2,11 +2,8 @@
 // Firebase): the profile page, the settings preview and tests all use it.
 // Design: documentation/features/17-profiles.md (decision #31).
 
-import {
-    ORG_LANGUAGES,
-    type OrgLanguage,
-    type SocialPlatform,
-} from './organizations/options';
+import { ORG_LANGUAGES, type OrgLanguage } from './organizations/options';
+import { socialLinksOf, type SocialLink } from './socials';
 
 /** Stored keys; never rename. `groups` is the default. */
 export const PROFILE_VISIBILITIES = ['public', 'groups', 'name'] as const;
@@ -24,7 +21,7 @@ export interface ProfileSettings {
     languages: OrgLanguage[];
     /** Show their saved city's name (never more precise). */
     showArea: boolean;
-    socials: { platform: SocialPlatform; url: string }[];
+    socials: SocialLink[];
     website?: string;
     /** The groups list: on or off, and groups they've hidden (organization ids). */
     groups: { show: boolean; hidden: string[] };
@@ -45,7 +42,7 @@ export function profileSettingsOf(data: unknown): ProfileSettings {
             (ORG_LANGUAGES as readonly string[]).includes(l)
         ),
         showArea: d.showArea === true,
-        socials: Array.isArray(d.socials) ? d.socials : [],
+        socials: socialLinksOf(d.socials),
         website: d.website || undefined,
         groups: {
             show: d.groups?.show !== false,
@@ -131,7 +128,7 @@ export interface ProfileView {
         languages: OrgLanguage[];
         /** City name, only when the person turned it on. */
         area?: string;
-        socials: { platform: SocialPlatform; url: string }[];
+        socials: SocialLink[];
         website?: string;
         groups: ProfileGroup[];
     };

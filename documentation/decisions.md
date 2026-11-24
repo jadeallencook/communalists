@@ -18,6 +18,14 @@ Add an entry when you choose a framework or library, change the data model, add 
 
 ## Decisions
 
+### 32. Social links are handles, not URLs — 2026-11-24
+
+**Status:** Accepted
+**Context:** Organizations and profiles asked for a full web address per platform. That's awkward to type, and we stored whatever URL passed a domain check, so a link could point at any page on the platform (a post or a redirect) rather than a profile.
+**Decision:** People type only the username (`sbma` or `@sbma`); a pasted profile link is accepted and cut down to the username. We store `{ platform, handle }` and build the link at render time (`src/lib/socials.ts`), so it is always `https://` on the platform's own profile path. Each handle is checked against that platform's username rules. Platforms: Instagram, Facebook (page), Facebook group (`facebook.com/groups/…`, since many mutual aid groups are Facebook Groups), X, Bluesky (a bare name becomes `name.bsky.social`), TikTok, YouTube, Telegram. **Dropped:** Discord, WhatsApp and Signal. Their links are invite codes or phone numbers (`wa.me`), not handles, and a Signal username can't be turned into a link.
+**Alternatives:** Keeping the invite-link platforms with a stricter link check (left for later, if groups ask for it). Accepting handles only and refusing pasted links (rejected: more errors for people used to pasting).
+**Consequences:** Older documents with `{ platform, url }` are converted when read (`socialLinksOf`). Links that no longer fit, such as Discord, are left out and disappear the next time the form is saved. No migration is needed. Validation is shared between both forms (`src/lib/validation/socials.ts`), with a new `socialInvalid` error. Docs updated: features/16-organizations.md, features/17-profiles.md, technical/data-model.md.
+
 ### 31. Profiles: member-controlled sharing, groups filtered by each group's setting, opt-in skill search — 2026-11-23
 
 **Status:** Accepted (design; not built yet)

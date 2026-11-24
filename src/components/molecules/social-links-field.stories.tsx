@@ -24,15 +24,16 @@ export const Empty: Story = {};
 export const WithLinks: Story = {
     args: {
         links: [
-            { platform: 'instagram', url: 'https://instagram.com/sbma' },
-            { platform: 'discord', url: 'https://discord.gg/abc' },
+            { platform: 'instagram', handle: 'sbma' },
+            { platform: 'facebookGroup', handle: 'southbaymutualaid' },
+            { platform: 'bluesky', handle: 'sbma.bsky.social' },
         ],
     },
 };
 export const WithError: Story = {
     args: {
-        links: [{ platform: 'facebook', url: 'https://instagram.com/sbma' }],
-        error: "One of the links isn't on the platform chosen for it.",
+        links: [{ platform: 'x', handle: 'south bay mutual aid' }],
+        error: "One of the usernames isn't valid. Type just the username, like sbma.",
     },
 };
 

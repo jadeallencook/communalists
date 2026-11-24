@@ -39,9 +39,7 @@ export const sampleSettings = profileSettingsOf({
     languages: ['en', 'es'],
     showArea: true,
     website: 'https://example.com/',
-    socials: [
-        { platform: 'instagram', url: 'https://www.instagram.com/example' },
-    ],
+    socials: [{ platform: 'instagram', handle: 'example' }],
 });
 
 export const samplePerson = {

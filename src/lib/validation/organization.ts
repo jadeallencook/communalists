@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 import { handleProblem, normalizeHandle } from '@/lib/organizations/handle';
 import {
-    isPlatformUrl,
     JOIN_POLICIES,
     normalizeWebUrl,
     MAX_FOCUS_AREAS,
@@ -10,13 +9,12 @@ import {
     ORG_LANGUAGES,
     RADIUS_MILES,
     REACH_SCOPES,
-    SOCIAL_PLATFORM_KEYS,
     MEMBER_LIST_VISIBILITIES,
     VISIBILITIES,
     type FocusArea,
-    type SocialPlatform,
 } from '@/lib/organizations/options';
 import { isSupportedCountry } from '@/lib/places/types';
+import { socialFormValues, socialLinksSchema } from '@/lib/validation/socials';
 
 // The create-organization form. Messages are keys under
 // Organizations.errors in messages/*.json. Design: features/16-organizations.md.
@@ -38,6 +36,7 @@ export type OrganizationErrorKey =
     | 'languagesRequired'
     | 'invalidUrl'
     | 'invalidEmail'
+    | 'socialInvalid'
     | 'socialMismatch'
     | 'socialDuplicate'
     | 'ownedLimit'
@@ -119,14 +118,7 @@ export const organizationSchema = z
                 error: 'invalidEmail',
             })
             .transform((v) => v || undefined),
-        socials: z
-            .array(
-                z.object({
-                    platform: z.enum(SOCIAL_PLATFORM_KEYS as [SocialPlatform]),
-                    url: webUrl,
-                })
-            )
-            .max(SOCIAL_PLATFORM_KEYS.length),
+        socials: socialLinksSchema,
         joinPolicy: z.enum(JOIN_POLICIES, { error: 'required' }),
         visibility: z.enum(VISIBILITIES, { error: 'required' }),
         memberListVisibility: z.enum(MEMBER_LIST_VISIBILITIES, {
@@ -144,25 +136,6 @@ export const organizationSchema = z
                 message: 'radiusRequired',
             });
         }
-        const seen = new Set<string>();
-        input.socials.forEach(({ platform, url }) => {
-            if (!url) return;
-            if (seen.has(platform)) {
-                ctx.addIssue({
-                    code: 'custom',
-                    path: ['socials'],
-                    message: 'socialDuplicate',
-                });
-            }
-            seen.add(platform);
-            if (!isPlatformUrl(platform, url)) {
-                ctx.addIssue({
-                    code: 'custom',
-                    path: ['socials'],
-                    message: 'socialMismatch',
-                });
-            }
-        });
     });
 
 export type OrganizationInput = z.infer<typeof organizationSchema>;
@@ -182,7 +155,7 @@ export interface CreateOrganizationState {
         languages: string[];
         website: string;
         contactEmail: string;
-        socials: { platform: string; url: string }[];
+        socials: { platform: string; handle: string }[];
         joinPolicy: string;
         visibility: string;
         memberListVisibility: string;
@@ -195,8 +168,6 @@ export function organizationFormValues(formData: FormData) {
         const value = formData.get(key);
         return typeof value === 'string' ? value : '';
     };
-    const platforms = formData.getAll('socialPlatform').map(String);
-    const urls = formData.getAll('socialUrl').map(String);
     return {
         name: text('name'),
         handle: text('handle'),
@@ -209,9 +180,7 @@ export function organizationFormValues(formData: FormData) {
         languages: formData.getAll('languages').map(String),
         website: text('website'),
         contactEmail: text('contactEmail'),
-        socials: platforms
-            .map((platform, i) => ({ platform, url: urls[i] ?? '' }))
-            .filter((s) => s.url.trim()),
+        socials: socialFormValues(formData),
         joinPolicy: text('joinPolicy'),
         visibility: text('visibility'),
         memberListVisibility: text('memberListVisibility'),

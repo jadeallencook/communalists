@@ -4,8 +4,8 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { initials } from '@/lib/initials';
 import { languageName } from '@/lib/organizations/client';
-import { SOCIAL_PLATFORMS } from '@/lib/organizations/options';
 import type { ProfileView } from '@/lib/profiles';
+import { SOCIAL_PLATFORMS, socialLabel, socialUrl } from '@/lib/socials';
 
 export interface ProfileCardProps {
     /** Exactly what this viewer may see (profileView in src/lib/profiles.ts). */
@@ -40,8 +40,8 @@ export function ProfileCard({ view, headingLevel = 1 }: ProfileCardProps) {
                   ? [{ url: details.website, label: host(details.website) }]
                   : []),
               ...details.socials.map((s) => ({
-                  url: s.url,
-                  label: SOCIAL_PLATFORMS[s.platform]?.name ?? host(s.url),
+                  url: socialUrl(s.platform, s.handle),
+                  label: `${SOCIAL_PLATFORMS[s.platform].name} ${socialLabel(s.platform, s.handle)}`,
               })),
           ]
         : [];

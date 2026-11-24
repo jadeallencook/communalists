@@ -20,7 +20,7 @@
                     "socials": [
                         {
                             "platform": "instagram",
-                            "url": "https://www.instagram.com/example"
+                            "handle": "example"
                         }
                     ],
                     "groups": {
@@ -191,7 +191,7 @@
             "socials": [
                 {
                     "platform": "instagram",
-                    "url": "https://www.instagram.com/example"
+                    "handle": "example"
                 }
             ],
             "joinPolicy": "request",

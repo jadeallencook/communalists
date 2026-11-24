@@ -103,26 +103,6 @@ export const ORG_LANGUAGES = [
 ] as const;
 export type OrgLanguage = (typeof ORG_LANGUAGES)[number];
 
-export const SOCIAL_PLATFORMS = {
-    instagram: { name: 'Instagram', domains: ['instagram.com'] },
-    facebook: { name: 'Facebook', domains: ['facebook.com', 'fb.com'] },
-    x: { name: 'X', domains: ['x.com', 'twitter.com'] },
-    bluesky: { name: 'Bluesky', domains: ['bsky.app'] },
-    tiktok: { name: 'TikTok', domains: ['tiktok.com'] },
-    youtube: { name: 'YouTube', domains: ['youtube.com', 'youtu.be'] },
-    discord: { name: 'Discord', domains: ['discord.gg', 'discord.com'] },
-    whatsapp: {
-        name: 'WhatsApp',
-        domains: ['whatsapp.com', 'wa.me'],
-    },
-    signal: { name: 'Signal', domains: ['signal.group', 'signal.me'] },
-    telegram: { name: 'Telegram', domains: ['t.me', 'telegram.me'] },
-} as const;
-export type SocialPlatform = keyof typeof SOCIAL_PLATFORMS;
-export const SOCIAL_PLATFORM_KEYS = Object.keys(
-    SOCIAL_PLATFORMS
-) as SocialPlatform[];
-
 /** Most organizations one person can own (decision #22). */
 export const MAX_OWNED_ORGANIZATIONS = 5;
 
@@ -141,17 +121,5 @@ export function normalizeWebUrl(input: string): string | null {
         return url.toString();
     } catch {
         return null;
-    }
-}
-
-/** True when `url` is on one of the platform's domains (or a subdomain of one). */
-export function isPlatformUrl(platform: SocialPlatform, url: string): boolean {
-    try {
-        const host = new URL(url).hostname.toLowerCase().replace(/^www\./, '');
-        return SOCIAL_PLATFORMS[platform].domains.some(
-            (d) => host === d || host.endsWith(`.${d}`)
-        );
-    } catch {
-        return false;
     }
 }

@@ -14,7 +14,7 @@ const valid = {
     languages: ['en', 'vi'],
     website: 'sbma.org',
     contactEmail: ' Hello@SBMA.org ',
-    socials: [{ platform: 'instagram', url: 'instagram.com/sbma' }],
+    socials: [{ platform: 'instagram', handle: 'https://instagram.com/sbma/' }],
     joinPolicy: 'request',
     visibility: 'listed',
     memberListVisibility: 'members',
@@ -36,7 +36,7 @@ describe('organizationSchema', () => {
         expect(org.website).toBe('https://sbma.org/');
         expect(org.contactEmail).toBe('hello@sbma.org');
         expect(org.socials).toEqual([
-            { platform: 'instagram', url: 'https://instagram.com/sbma' },
+            { platform: 'instagram', handle: 'sbma' },
         ]);
     });
 
@@ -87,15 +87,15 @@ describe('organizationSchema', () => {
         expect(
             errorsFor({
                 ...valid,
-                socials: [{ platform: 'facebook', url: 'instagram.com/x' }],
+                socials: [{ platform: 'facebook', handle: 'instagram.com/x' }],
             }).socials
         ).toBe('socialMismatch');
         expect(
             errorsFor({
                 ...valid,
                 socials: [
-                    { platform: 'instagram', url: 'instagram.com/a' },
-                    { platform: 'instagram', url: 'instagram.com/b' },
+                    { platform: 'instagram', handle: 'a' },
+                    { platform: 'instagram', handle: 'b' },
                 ],
             }).socials
         ).toBe('socialDuplicate');

@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 
 import {
     FOCUS_AREAS,
-    isPlatformUrl,
     JOIN_POLICIES,
     MAX_FOCUS_AREAS,
     milesToKm,
@@ -75,30 +74,6 @@ describe('normalizeWebUrl', () => {
         ]) {
             expect(normalizeWebUrl(bad)).toBeNull();
         }
-    });
-});
-
-describe('isPlatformUrl', () => {
-    it('accepts the platform and its subdomains', () => {
-        expect(
-            isPlatformUrl('instagram', 'https://www.instagram.com/sbma')
-        ).toBe(true);
-        expect(isPlatformUrl('x', 'https://twitter.com/sbma')).toBe(true);
-        expect(isPlatformUrl('whatsapp', 'https://chat.whatsapp.com/abc')).toBe(
-            true
-        );
-    });
-
-    it('rejects look-alikes and other sites', () => {
-        expect(
-            isPlatformUrl('instagram', 'https://instagram.com.evil.io/x')
-        ).toBe(false);
-        expect(isPlatformUrl('instagram', 'https://evilinstagram.com/x')).toBe(
-            false
-        );
-        expect(isPlatformUrl('facebook', 'https://instagram.com/x')).toBe(
-            false
-        );
     });
 });
 

@@ -9,12 +9,13 @@ import { useLocale, useTranslations } from 'next-intl';
 
 import { initials } from '@/lib/initials';
 import { languageName } from '@/lib/organizations/client';
+import { type FocusArea, type ReachScope } from '@/lib/organizations/options';
 import {
     SOCIAL_PLATFORMS,
-    type FocusArea,
-    type ReachScope,
-    type SocialPlatform,
-} from '@/lib/organizations/options';
+    socialLabel,
+    socialUrl,
+    type SocialLink,
+} from '@/lib/socials';
 
 export interface OrganizationProfileProps {
     name: string;
@@ -29,7 +30,7 @@ export interface OrganizationProfileProps {
     memberCount: number;
     website?: string;
     contactEmail?: string;
-    socials: { platform: SocialPlatform; url: string }[];
+    socials: SocialLink[];
     unlisted?: boolean;
 }
 
@@ -162,15 +163,18 @@ export function OrganizationProfile({
                                 </a>
                             </li>
                         )}
-                        {socials.map(({ platform, url }) => (
+                        {socials.map(({ platform, handle }) => (
                             <li key={platform}>
                                 <a
-                                    href={url}
+                                    href={socialUrl(platform, handle)}
                                     target="_blank"
-                                    rel="noreferrer noopener"
-                                    className="inline-flex items-center rounded-lg border px-3 py-1.5 hover:bg-muted"
+                                    rel="noopener noreferrer nofollow ugc"
+                                    className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 hover:bg-muted"
                                 >
                                     {SOCIAL_PLATFORMS[platform].name}
+                                    <span className="text-muted-foreground">
+                                        {socialLabel(platform, handle)}
+                                    </span>
                                 </a>
                             </li>
                         ))}

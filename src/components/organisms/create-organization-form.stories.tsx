@@ -64,7 +64,7 @@ export const FilledIn: Story = {
         name: 'South Bay Mutual Aid',
         handle: 'south-bay-mutual-aid',
         handleStatus: { state: 'available' },
-        socials: [{ platform: 'instagram', url: 'https://instagram.com/sbma' }],
+        socials: [{ platform: 'instagram', handle: 'sbma' }],
     },
 };
 
