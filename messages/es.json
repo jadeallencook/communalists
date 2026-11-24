@@ -225,7 +225,10 @@
         "ownedLimit": "Eres propietario de 5 organizaciones, el máximo permitido.",
         "findTitle": "Organizaciones cerca de ti",
         "findSeeAll": "Ver todas las organizaciones cercanas",
-        "findEmpty": "Todavía no hay otras organizaciones a menos de {miles} mi de ti."
+        "findEmpty": "Todavía no hay otras organizaciones a menos de {miles} mi de ti.",
+        "adminTitle": "Superusuario",
+        "adminBody": "{count, plural, =0 {No hay solicitudes de reclamo pendientes.} one {# solicitud de reclamo pendiente.} other {# solicitudes de reclamo pendientes.}}",
+        "adminLink": "Abrir herramientas de superusuario"
     },
     "Find": {
         "metaTitle": "Buscar organizaciones",
@@ -362,7 +365,10 @@
             "memberListHint": "Las personas propietarias y moderadoras siempre se muestran, y todo el mundo ve cuántos miembros hay.",
             "save": "Guardar cambios",
             "saving": "Guardando…",
-            "handleCurrent": "Este es tu identificador actual."
+            "handleCurrent": "Este es tu identificador actual.",
+            "unclaimedLegend": "Superusuario",
+            "unclaimed": "Agregar como organización sin reclamar",
+            "unclaimedHint": "Para un grupo que agregas para que los vecinos lo encuentren. No aparecerás como su dueño. Cualquier superusuario puede editarlo, y el grupo puede reclamarlo."
         },
         "new": {
             "metaTitle": "Crear una organización",
@@ -407,7 +413,8 @@
             "roleMember": "miembro",
             "unlisted": "No listada: solo quienes tengan el enlace pueden encontrar esta página.",
             "noDescription": "Todavía no hay descripción.",
-            "focusAreas": "Áreas de trabajo"
+            "focusAreas": "Áreas de trabajo",
+            "unclaimed": "Sin reclamar"
         },
         "memberLists": {
             "public": {
@@ -486,7 +493,8 @@
             "makeModerator": "{actor} hizo moderador a {target}",
             "makeOwner": "{actor} hizo propietario a {target}",
             "makeMember": "{actor} hizo miembro regular a {target}",
-            "editProfile": "{actor} cambió {fields}"
+            "editProfile": "{actor} cambió {fields}",
+            "claim": "{target} reclamó esta organización"
         },
         "reasonQuoted": "«{reason}»",
         "reason": "Motivo",
@@ -512,7 +520,8 @@
             "reasonRequired": "Escribe un motivo.",
             "reasonTooLong": "El motivo debe tener menos de 500 caracteres.",
             "generic": "Algo salió mal. Inténtalo de nuevo.",
-            "ownedLimit": "Ya es propietario de 5 organizaciones, el máximo permitido."
+            "ownedLimit": "Ya es propietario de 5 organizaciones, el máximo permitido.",
+            "unclaimed": "Nadie puede unirse hasta que alguien reclame esta organización."
         },
         "done": {
             "joined": "¡Ya eres miembro! Bienvenida, bienvenido.",
@@ -550,7 +559,8 @@
             "joinPolicy": "quién puede unirse",
             "visibility": "la visibilidad",
             "memberListVisibility": "la lista de miembros"
-        }
+        },
+        "teamActor": "El equipo de Communalists"
     },
     "Profile": {
         "username": {
@@ -649,5 +659,120 @@
         "failed": "No se pudo buscar ahora. Inténtalo de nuevo.",
         "hint": "Se usa para mostrarte organizaciones cercanas. Guardamos tu ciudad, nunca tu dirección.",
         "attribution": "Lugares de GeoNames."
+    },
+    "Unclaimed": {
+        "title": "Nadie ha reclamado esta página todavía",
+        "body": "Voluntarios de Communalists agregaron {name} para que los vecinos encuentren ayuda cerca. {name} no administra esta página, así que los datos pueden estar desactualizados. Confírmalos con ellos antes de ir.",
+        "claim": "¿Es tu organización? Reclámala",
+        "claimHint": "Necesitas una cuenta gratuita. Nuestro equipo revisa cada solicitud.",
+        "adminTitle": "Herramientas de superusuario",
+        "adminBody": "Nadie ha reclamado esta organización, así que cualquier superusuario puede editarla. No apareces como su dueño.",
+        "adminLink": "Solicitudes de reclamo"
+    },
+    "Claim": {
+        "metaTitle": "Reclamar una organización",
+        "back": "Volver a {name}",
+        "title": "Reclamar {name}",
+        "intro": "Si formas parte de {name}, puedes hacerte cargo de esta página o pedirnos que la quitemos.",
+        "step1": "Dinos tu función y cómo podemos confirmar que eres tú.",
+        "step2": "Alguien del equipo de Communalists lo verifica, normalmente contactando directamente a la organización.",
+        "step3": "Si todo está bien, pasas a ser el dueño de la página (o la quitamos). Vuelve aquí para ver cómo va tu solicitud.",
+        "intent": "¿Qué te gustaría hacer?",
+        "intents": {
+            "claim": {
+                "label": "Administrar esta página",
+                "description": "Pasas a ser su dueño: puedes editarla y la gente puede pedir unirse."
+            },
+            "remove": {
+                "label": "Quitar esta página",
+                "description": "Se quitan la página y su anuncio. Elige esto si no quieres aparecer."
+            }
+        },
+        "role": "Tu función en {name}",
+        "roleHint": "Por ejemplo: pastor, coordinadora de voluntarios, personal de oficina.",
+        "message": "¿Cómo podemos confirmar que eres tú?",
+        "messageHint": "Por ejemplo: «Llamen a la oficina de la iglesia y pregunten por mí», o un enlace a una página donde aparezcas. De 10 a 1000 caracteres.",
+        "privacy": "Solo el equipo de Communalists ve tu solicitud, junto con tu nombre y el correo de tu cuenta. Los usamos solo para verificarla, y puede que te escribamos sobre ella.",
+        "submit": "Enviar solicitud",
+        "submitting": "Enviando…",
+        "errors": {
+            "intentRequired": "Elige qué te gustaría hacer.",
+            "roleRequired": "Escribe tu función.",
+            "roleTooLong": "Tu función debe tener menos de {max} caracteres.",
+            "messageTooShort": "Cuéntanos un poco más: al menos {min} caracteres.",
+            "messageTooLong": "Debe tener menos de {max} caracteres."
+        },
+        "formErrors": {
+            "notUnclaimed": "Alguien ya reclamó esta organización, o ya se quitó.",
+            "alreadyPending": "Ya tienes una solicitud pendiente para esta organización.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        },
+        "pendingTitle": "Solicitud enviada",
+        "pendingClaim": "Pediste administrar {name} el {date}. El equipo de Communalists la revisará y puede que te escriba. Vuelve aquí para ver si ya se decidió.",
+        "pendingRemove": "Pediste que quitemos la página de {name} el {date}. El equipo de Communalists la revisará y puede que te escriba. Vuelve aquí para ver si ya se decidió.",
+        "cancel": "Cancelar solicitud",
+        "denied": "No pudimos confirmar tu última solicitud. Puedes enviar una nueva con más detalles sobre cómo verificarla."
+    },
+    "Admin": {
+        "metaTitle": "Herramientas de superusuario",
+        "title": "Herramientas de superusuario",
+        "intro": "Solicitudes para reclamar o quitar organizaciones sin reclamar, y las organizaciones agregadas para que los vecinos las encuentren. Solo los superusuarios ven esta página.",
+        "claimsTitle": "Solicitudes de reclamo",
+        "claimsHint": "Verifica cada solicitud fuera de la aplicación antes de aprobarla, por ejemplo llamando a la organización a su número público. Las más antiguas primero.",
+        "noClaims": "No hay solicitudes por ahora.",
+        "intents": {
+            "claim": "{name} quiere administrar {org}",
+            "remove": "{name} pide que quitemos {org}"
+        },
+        "requestedOn": "Enviada el {date}",
+        "role": "Función",
+        "howToCheck": "Cómo verificar",
+        "email": "Correo de la cuenta",
+        "viewOrganization": "Ver {org}",
+        "viewProfile": "Ver el perfil de {name}",
+        "actionFor": "{action}: {name}, {org}",
+        "approve": {
+            "claim": {
+                "button": "Aprobar",
+                "title": "¿Hacer a {name} dueño de {org}?",
+                "body": "{name} pasa a ser el dueño y puede editar la página y aprobar miembros. La página deja de decir que no está reclamada, y los superusuarios ya no pueden editarla. Se cierran las demás solicitudes para {org}.",
+                "confirm": "Hacer dueño"
+            },
+            "remove": {
+                "button": "Quitar",
+                "title": "¿Quitar {org}?",
+                "body": "La página y su anuncio desaparecen para todos. La dirección queda reservada. Se cierran las demás solicitudes para {org}.",
+                "confirm": "Quitar"
+            }
+        },
+        "keep": "Todavía no",
+        "deny": "Rechazar",
+        "unclaimedTitle": "Organizaciones sin reclamar",
+        "addUnclaimed": "Agregar una organización sin reclamar",
+        "noUnclaimed": "Ninguna todavía.",
+        "logTitle": "Acciones recientes de superusuarios",
+        "logHint": "Solo los superusuarios ven esto.",
+        "noLog": "Nada todavía.",
+        "log": {
+            "createUnclaimed": "{actor} agregó {org}",
+            "editUnclaimed": "{actor} editó {org}",
+            "approveClaim": "{actor} hizo a {target} dueño de {org}",
+            "approveRemoval": "{actor} quitó {org} a pedido de {target}",
+            "denyClaim": "{actor} rechazó la solicitud de {target} para {org}"
+        },
+        "unknownActor": "Un superusuario",
+        "errors": {
+            "notFound": "Esa solicitud u organización ya no existe. La lista ahora muestra lo más reciente.",
+            "alreadyDecided": "Alguien ya decidió esa solicitud. La lista ahora muestra lo más reciente.",
+            "alreadyClaimed": "Alguien ya reclamó esa organización.",
+            "ownedLimit": "Ya es dueño de 5 organizaciones, el máximo permitido.",
+            "notAllowed": "Solo los superusuarios pueden hacer esto.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        },
+        "done": {
+            "approveClaim": "Aprobada. Ahora es dueño de la organización.",
+            "approveRemoval": "Quitada.",
+            "deny": "Solicitud rechazada. Puede enviar una nueva."
+        }
     }
 }

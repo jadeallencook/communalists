@@ -159,6 +159,8 @@ export interface CreateOrganizationState {
         joinPolicy: string;
         visibility: string;
         memberListVisibility: string;
+        /** Super users: add it as an unclaimed organization. */
+        unclaimed: boolean;
     }>;
 }
 

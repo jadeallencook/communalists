@@ -3,7 +3,9 @@
 import { refresh, updateTag } from 'next/cache';
 import { hasLocale } from 'next-intl';
 
+import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
+import { ADMIN_LOG_TAG } from '@/lib/organizations/claim-store';
 import {
     DIRECTORY_TAG,
     handleTag,
@@ -25,8 +27,9 @@ import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 
 /**
- * Saves the edit form. Owners and moderators may edit; only owners may change
- * the handle (once every 30 days). Every rule is checked again on fresh data
+ * Saves the edit form. Owners and moderators may edit (and super users, as
+ * owners, on unclaimed organizations); only owners may change the handle
+ * (once every 30 days). Every rule is checked again on fresh data
  * inside updateOrganization.
  */
 export async function updateOrganizationAction(
@@ -64,8 +67,11 @@ export async function updateOrganizationAction(
         const profile = await getUserProfileFresh(user.uid);
         result = await updateOrganization(
             orgId,
-            user.uid,
-            profile?.displayName ?? '',
+            {
+                uid: user.uid,
+                displayName: profile?.displayName ?? '',
+                platformAdmin: isPlatformAdmin(user.uid),
+            },
             input,
             toGeneralArea(place)
         );
@@ -90,6 +96,7 @@ export async function updateOrganizationAction(
     updateTag(orgMembersTag(orgId));
     updateTag(DIRECTORY_TAG);
     for (const uid of result.copyHolders) updateTag(membershipsTag(uid));
+    updateTag(ADMIN_LOG_TAG); // super-user edits of unclaimed organizations
     refresh();
     redirect({ href: `/org/${result.handle}`, locale });
     return {};

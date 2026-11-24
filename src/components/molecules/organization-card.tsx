@@ -13,6 +13,8 @@ export interface OrganizationCardProps {
     role?: 'owner' | 'moderator' | 'member';
     /** Replaces the `/org/{handle}` after the focus areas, e.g. "3 mi away · Santa Clara, California". */
     detail?: string;
+    /** Added by a super user and not claimed yet: shows "Unclaimed". */
+    unclaimed?: boolean;
 }
 
 /** A link to one organization: initials, name, what it works on, and your role. */
@@ -22,6 +24,7 @@ export function OrganizationCard({
     focusAreas,
     role,
     detail,
+    unclaimed = false,
 }: OrganizationCardProps) {
     const t = useTranslations('Organizations');
     const locale = useLocale();
@@ -49,6 +52,11 @@ export function OrganizationCard({
                     {detail ?? `/org/${handle}`}
                 </span>
             </span>
+            {unclaimed && !role && (
+                <span className="shrink-0 rounded-full border px-2.5 py-0.5 text-xs text-foreground">
+                    {t('page.unclaimed')}
+                </span>
+            )}
             {role && (
                 <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs text-foreground">
                     {t(`roles.${role}`)}

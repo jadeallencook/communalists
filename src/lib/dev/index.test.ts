@@ -39,6 +39,7 @@ describe('TEST_ACCOUNTS', () => {
             'maya.thompson@example.com',
             'luis.hernandez@example.com',
             'sam.rivera@example.com',
+            'jordan.lee@example.com',
         ]);
         expect(TEST_ACCOUNTS[0].summary).toMatch(/^Maya Thompson \(en\)/);
         expect(TEST_ACCOUNTS[0].summary).toContain('owns South Bay Mutual Aid');
@@ -58,5 +59,15 @@ describe('TEST_ACCOUNTS', () => {
         expect(isTestAccount('maya.thompson@example.com')).toBe(true);
         expect(isTestAccount('thanh.nguyen@example.com')).toBe(true);
         expect(isTestAccount('someone@example.com')).toBe(false);
+    });
+});
+
+describe('SEEDED_PLATFORM_ADMINS', () => {
+    it('lists the seeded super user, and the toolbar says so', async () => {
+        const { SEEDED_PLATFORM_ADMINS } = await import('.');
+        expect(SEEDED_PLATFORM_ADMINS).toEqual(['seed-jordan']);
+        expect(
+            TEST_ACCOUNTS.find((a) => a.uid === 'seed-jordan')?.summary
+        ).toContain('super user');
     });
 });

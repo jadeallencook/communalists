@@ -23,9 +23,12 @@ import { createOrganizationAction } from './actions';
 export function CreateOrganizationFormContainer({
     country,
     place,
+    unclaimedOption,
 }: {
     country?: CountryCode;
     place?: PlaceOption | null;
+    /** Super users only: offer adding it as unclaimed. */
+    unclaimedOption?: { checked: boolean };
 }) {
     const locale = useLocale();
     const { state, formAction, pending } = useCreateOrganizationForm(
@@ -42,6 +45,7 @@ export function CreateOrganizationFormContainer({
 
     return (
         <CreateOrganizationForm
+            unclaimedOption={unclaimedOption}
             state={state}
             formAction={formAction}
             pending={pending}

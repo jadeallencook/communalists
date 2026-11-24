@@ -58,15 +58,24 @@ export const TEST_ACCOUNTS: TestAccount[] = seed.users.map((user) => {
         'profile' in user && user.profile
             ? `${user.profile.displayName} (${user.profile.locale})`
             : 'No profile: goes to account setup';
+    const admin = 'platformAdmin' in user && user.platformAdmin === true;
     return {
         uid: user.uid,
         email: user.email,
-        summary: [profile, ...roles].join(' · '),
+        summary: [profile, ...(admin ? ['super user'] : []), ...roles].join(
+            ' · '
+        ),
         featured: 'featured' in user && user.featured === true,
     };
 });
 
 export const TEST_PASSWORD = seed.password;
+
+/** Seeded accounts that are super users locally (src/lib/platform-admin.ts). */
+export const SEEDED_PLATFORM_ADMINS: readonly string[] = seed.users.flatMap(
+    (user) =>
+        'platformAdmin' in user && user.platformAdmin === true ? [user.uid] : []
+);
 
 export const isTestAccount = (email: string) =>
     TEST_ACCOUNTS.some((account) => account.email === email);

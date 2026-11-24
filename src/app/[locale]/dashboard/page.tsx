@@ -6,7 +6,9 @@ import {
     DashboardPage,
     DashboardPageLoading,
 } from '@/components/pages/dashboard-page';
+import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { requireAccount } from '@/lib/auth/require-account';
+import { getPendingClaims } from '@/lib/organizations/claim-store';
 import { getDirectoryLocal, getMemberships } from '@/lib/organizations';
 import {
     DEFAULT_RADIUS_MILES,
@@ -34,7 +36,8 @@ export default function Page() {
 async function DashboardContainer() {
     const { user, profile } = await requireAccount('/dashboard');
     const home = profile.location;
-    const [memberships, candidates, t] = await Promise.all([
+    const admin = isPlatformAdmin(user.uid);
+    const [memberships, candidates, t, claims] = await Promise.all([
         getMemberships(user.uid),
         getDirectoryLocal({
             placeId: home.placeId,
@@ -42,6 +45,7 @@ async function DashboardContainer() {
             lng: home.lng,
         }),
         getTranslations('Find'),
+        admin ? getPendingClaims() : null,
     ]);
     const owned = memberships.filter((m) => m.role === 'owner').length;
     // The closest few local groups the user isn't in; /find has the rest.
@@ -71,6 +75,7 @@ async function DashboardContainer() {
                 name: org.name,
                 handle: org.handle,
                 focusAreas: org.focusAreas,
+                unclaimed: org.unclaimed,
                 detail:
                     distanceMiles < 1
                         ? t('inCity', { city: org.location.label })
@@ -80,6 +85,7 @@ async function DashboardContainer() {
                           }),
             }))}
             nearbyRadiusMiles={DEFAULT_RADIUS_MILES}
+            admin={claims ? { pendingClaims: claims.length } : undefined}
         />
     );
 }

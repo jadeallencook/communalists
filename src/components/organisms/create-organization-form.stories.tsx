@@ -59,6 +59,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Empty: Story = {};
 
+/** Super users can add it as unclaimed: nobody is listed as its owner. */
+export const SuperUserUnclaimed: Story = {
+    args: { unclaimedOption: { checked: true } },
+};
+
 export const FilledIn: Story = {
     args: {
         name: 'South Bay Mutual Aid',

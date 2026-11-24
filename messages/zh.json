@@ -225,7 +225,10 @@
         "ownedLimit": "你拥有 5 个组织，已达上限。",
         "findTitle": "查找附近的组织",
         "findSeeAll": "查看你附近的所有组织",
-        "findEmpty": "你周围 {miles} 英里内还没有其他组织。"
+        "findEmpty": "你周围 {miles} 英里内还没有其他组织。",
+        "adminTitle": "超级用户",
+        "adminBody": "{count, plural, =0 {没有待处理的认领请求。} other {有 # 个待处理的认领请求。}}",
+        "adminLink": "打开超级用户工具"
     },
     "Find": {
         "metaTitle": "查找组织",
@@ -362,7 +365,10 @@
             "memberListHint": "所有者和管理员始终会显示，所有人都能看到成员人数。",
             "save": "保存更改",
             "saving": "正在保存…",
-            "handleCurrent": "这是你当前的标识名。"
+            "handleCurrent": "这是你当前的标识名。",
+            "unclaimedLegend": "超级用户",
+            "unclaimed": "添加为未认领的组织",
+            "unclaimedHint": "用于你添加的、方便邻居找到的团体。你不会被列为负责人。任何超级用户都可以编辑，该团体也可以认领。"
         },
         "new": {
             "metaTitle": "创建组织",
@@ -407,7 +413,8 @@
             "roleMember": "成员",
             "unlisted": "不公开列出：只有拿到链接的人才能找到此页面。",
             "noDescription": "暂无简介。",
-            "focusAreas": "工作领域"
+            "focusAreas": "工作领域",
+            "unclaimed": "未认领"
         },
         "memberLists": {
             "public": {
@@ -486,7 +493,8 @@
             "makeModerator": "{actor} 将 {target} 设为管理员",
             "makeOwner": "{actor} 将 {target} 设为所有者",
             "makeMember": "{actor} 将 {target} 设为普通成员",
-            "editProfile": "{actor} 更改了{fields}"
+            "editProfile": "{actor} 更改了{fields}",
+            "claim": "{target} 认领了这个组织"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "原因",
@@ -512,7 +520,8 @@
             "reasonRequired": "请填写原因。",
             "reasonTooLong": "原因请少于 500 个字符。",
             "generic": "出了点问题，请重试。",
-            "ownedLimit": "对方已经是 5 个组织的所有者，已达上限。"
+            "ownedLimit": "对方已经是 5 个组织的所有者，已达上限。",
+            "unclaimed": "在有人认领这个组织之前，任何人都无法加入。"
         },
         "done": {
             "joined": "你已加入，欢迎！",
@@ -550,7 +559,8 @@
             "joinPolicy": "加入方式",
             "visibility": "可见性",
             "memberListVisibility": "成员名单设置"
-        }
+        },
+        "teamActor": "Communalists 团队"
     },
     "Profile": {
         "username": {
@@ -649,5 +659,120 @@
         "failed": "暂时无法搜索，请重试。",
         "hint": "用于显示你附近的组织。我们只保存你的城市，绝不保存你的地址。",
         "attribution": "地点数据来自 GeoNames。"
+    },
+    "Unclaimed": {
+        "title": "这个页面还没有人认领",
+        "body": "Communalists 志愿者添加了 {name}，方便邻居找到附近的帮助。{name} 并不管理这个页面，所以信息可能已经过时。前往之前请先向他们确认。",
+        "claim": "这是你的组织吗？认领它",
+        "claimHint": "你需要一个免费账户。我们的团队会审核每一个请求。",
+        "adminTitle": "超级用户工具",
+        "adminBody": "还没有人认领这个组织，所以每位超级用户都可以编辑它。你不会显示为它的负责人。",
+        "adminLink": "认领请求"
+    },
+    "Claim": {
+        "metaTitle": "认领组织",
+        "back": "返回 {name}",
+        "title": "认领 {name}",
+        "intro": "如果你是 {name} 的成员，你可以接管这个页面，或者请我们把它撤下。",
+        "step1": "告诉我们你的身份，以及我们如何确认是你本人。",
+        "step2": "Communalists 团队会进行核实，通常是直接联系该组织。",
+        "step3": "核实无误后，你会成为这个页面的负责人（或者我们撤下页面）。回到这里查看请求的进展。",
+        "intent": "你想做什么？",
+        "intents": {
+            "claim": {
+                "label": "管理这个页面",
+                "description": "你会成为负责人：可以编辑页面，其他人可以申请加入。"
+            },
+            "remove": {
+                "label": "撤下这个页面",
+                "description": "页面和列表信息都会被移除。如果你不想被列出，请选择这一项。"
+            }
+        },
+        "role": "你在 {name} 的身份",
+        "roleHint": "例如：牧师、志愿者协调人、办公室职员。",
+        "message": "我们如何确认是你本人？",
+        "messageHint": "例如：“打电话到教会办公室找我”，或者一个列有你名字的网页链接。10 到 1,000 个字符。",
+        "privacy": "只有 Communalists 团队能看到你的请求，以及你的名字和账户邮箱。我们只用它们来核实请求，并可能就此给你发邮件。",
+        "submit": "发送请求",
+        "submitting": "正在发送…",
+        "errors": {
+            "intentRequired": "请选择你想做什么。",
+            "roleRequired": "请填写你的身份。",
+            "roleTooLong": "身份请少于 {max} 个字符。",
+            "messageTooShort": "请多告诉我们一些：至少 {min} 个字符。",
+            "messageTooLong": "请少于 {max} 个字符。"
+        },
+        "formErrors": {
+            "notUnclaimed": "这个组织已经被认领或已被撤下。",
+            "alreadyPending": "你已经有一个关于这个组织的待处理请求。",
+            "generic": "出了点问题，请重试。"
+        },
+        "pendingTitle": "请求已发送",
+        "pendingClaim": "你在 {date} 申请管理 {name}。Communalists 团队会进行核实，并可能给你发邮件。回到这里查看是否已有结果。",
+        "pendingRemove": "你在 {date} 请我们撤下 {name} 的页面。Communalists 团队会进行核实，并可能给你发邮件。回到这里查看是否已有结果。",
+        "cancel": "取消请求",
+        "denied": "我们无法确认你上一次的请求。你可以重新发送，并更详细地说明如何核实。"
+    },
+    "Admin": {
+        "metaTitle": "超级用户工具",
+        "title": "超级用户工具",
+        "intro": "认领或撤下未认领组织的请求，以及为方便邻居查找而添加的组织。只有超级用户能看到这个页面。",
+        "claimsTitle": "认领请求",
+        "claimsHint": "批准前请在应用之外核实每个请求，例如拨打该组织公开的电话号码。最早的排在前面。",
+        "noClaims": "目前没有请求。",
+        "intents": {
+            "claim": "{name} 想管理 {org}",
+            "remove": "{name} 请我们撤下 {org}"
+        },
+        "requestedOn": "发送于 {date}",
+        "role": "身份",
+        "howToCheck": "如何核实",
+        "email": "账户邮箱",
+        "viewOrganization": "查看 {org}",
+        "viewProfile": "查看 {name} 的个人资料",
+        "actionFor": "{action}：{name}，{org}",
+        "approve": {
+            "claim": {
+                "button": "批准",
+                "title": "让 {name} 成为 {org} 的负责人？",
+                "body": "{name} 会成为负责人，可以编辑页面并批准成员。页面不再显示未认领，超级用户也不能再编辑它。{org} 的其他请求都会被关闭。",
+                "confirm": "设为负责人"
+            },
+            "remove": {
+                "button": "撤下",
+                "title": "撤下 {org}？",
+                "body": "页面和列表信息对所有人都会消失。地址会被保留。{org} 的其他请求都会被关闭。",
+                "confirm": "撤下"
+            }
+        },
+        "keep": "暂不",
+        "deny": "拒绝",
+        "unclaimedTitle": "未认领的组织",
+        "addUnclaimed": "添加未认领的组织",
+        "noUnclaimed": "还没有。",
+        "logTitle": "超级用户最近的操作",
+        "logHint": "只有超级用户能看到。",
+        "noLog": "还没有记录。",
+        "log": {
+            "createUnclaimed": "{actor} 添加了 {org}",
+            "editUnclaimed": "{actor} 编辑了 {org}",
+            "approveClaim": "{actor} 让 {target} 成为 {org} 的负责人",
+            "approveRemoval": "{actor} 应 {target} 的请求撤下了 {org}",
+            "denyClaim": "{actor} 拒绝了 {target} 对 {org} 的请求"
+        },
+        "unknownActor": "一位超级用户",
+        "errors": {
+            "notFound": "该请求或组织已不存在。列表已更新为最新内容。",
+            "alreadyDecided": "已经有人处理了该请求。列表已更新为最新内容。",
+            "alreadyClaimed": "该组织已经被认领。",
+            "ownedLimit": "对方已经是 5 个组织的负责人，已达上限。",
+            "notAllowed": "只有超级用户才能这样做。",
+            "generic": "出了点问题，请重试。"
+        },
+        "done": {
+            "approveClaim": "已批准。对方现在是该组织的负责人。",
+            "approveRemoval": "已撤下。",
+            "deny": "已拒绝请求。对方可以重新发送。"
+        }
     }
 }

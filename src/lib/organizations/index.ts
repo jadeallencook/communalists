@@ -12,6 +12,8 @@ import type { CountryCode } from '@/lib/places/types';
 import type { ProfileGroup } from '@/lib/profiles';
 import type { OrganizationInput } from '@/lib/validation/organization';
 
+import { effectiveRole } from '@/lib/platform-admin';
+
 import { changedFields, COPIED_FIELDS, type OrgEditField } from './edit';
 import { claimBlocks, handleHeldUntil, nextHandleChangeAt } from './handle';
 import {
@@ -69,6 +71,8 @@ export interface Organization {
     visibility: Visibility;
     memberListVisibility: MemberListVisibility;
     status: 'active' | 'archived';
+    /** Added by a super user and not claimed yet: no members, every super user acts as owner. */
+    unclaimed: boolean;
     memberCount: number;
     /** Storage path of the logo, if any. */
     logoPath?: string;
@@ -134,6 +138,7 @@ function toOrganization(
         visibility: data.visibility,
         memberListVisibility: memberListVisibilityOf(data.memberListVisibility),
         status: data.status,
+        unclaimed: data.claimStatus === 'unclaimed',
         memberCount: data.memberCount ?? 0,
         logoPath: data.logoPath,
         handleChangedAt: millis(data.handleChangedAt),
@@ -240,6 +245,45 @@ export const getMembershipFresh = cache(
     }
 );
 
+/** The stored reach for the form's choice: miles and km for local groups. */
+function reachOf(input: OrganizationInput) {
+    return input.reach === 'local'
+        ? {
+              scope: 'local' as const,
+              radiusMiles: input.radiusMiles,
+              radiusKm: milesToKm(input.radiusMiles!),
+          }
+        : { scope: input.reach };
+}
+
+/** A new organization document, as the create form describes it. */
+function newOrganizationFields(
+    input: OrganizationInput,
+    location: GeneralArea,
+    createdBy: string
+) {
+    const now = FieldValue.serverTimestamp();
+    return {
+        name: input.name,
+        handle: input.handle,
+        focusAreas: input.focusAreas,
+        description: input.description,
+        location,
+        reach: reachOf(input),
+        languages: input.languages,
+        socials: input.socials,
+        joinPolicy: input.joinPolicy,
+        visibility: input.visibility,
+        memberListVisibility: input.memberListVisibility,
+        status: 'active',
+        createdBy,
+        createdAt: now,
+        updatedAt: now,
+        ...(input.website ? { website: input.website } : {}),
+        ...(input.contactEmail ? { contactEmail: input.contactEmail } : {}),
+    };
+}
+
 export type CreateOrganizationResult =
     | { ok: true; orgId: string; handle: string }
     | { ok: false; error: 'handleTaken' | 'ownedLimit' };
@@ -276,34 +320,9 @@ export async function createOrganization(
         }
 
         const now = FieldValue.serverTimestamp();
-        const reach =
-            input.reach === 'local'
-                ? {
-                      scope: 'local' as const,
-                      radiusMiles: input.radiusMiles,
-                      radiusKm: milesToKm(input.radiusMiles!),
-                  }
-                : { scope: input.reach };
-
         tx.create(orgRef, {
-            name: input.name,
-            handle: input.handle,
-            focusAreas: input.focusAreas,
-            description: input.description,
-            location,
-            reach,
-            languages: input.languages,
-            socials: input.socials,
-            joinPolicy: input.joinPolicy,
-            visibility: input.visibility,
-            memberListVisibility: input.memberListVisibility,
-            status: 'active',
+            ...newOrganizationFields(input, location, uid),
             memberCount: 1,
-            createdBy: uid,
-            createdAt: now,
-            updatedAt: now,
-            ...(input.website ? { website: input.website } : {}),
-            ...(input.contactEmail ? { contactEmail: input.contactEmail } : {}),
         });
         tx.set(handleRef, { orgId: orgRef.id, createdAt: now });
         tx.create(membershipRef, {
@@ -318,6 +337,45 @@ export async function createOrganization(
             },
             member: memberCopy(member),
             joinedAt: now,
+        });
+        return { ok: true, orgId: orgRef.id, handle: input.handle } as const;
+    });
+}
+
+/**
+ * A super user adds an organization nobody has claimed yet: the
+ * organization and its handle, with no members and no owner. `createdBy` is
+ * kept for the audit trail and never shown. The owned-organizations limit
+ * doesn't apply, because nobody owns it. Logged in the admin log.
+ */
+export async function createUnclaimedOrganization(
+    adminUid: string,
+    input: OrganizationInput,
+    location: GeneralArea
+): Promise<
+    | { ok: true; orgId: string; handle: string }
+    | { ok: false; error: 'handleTaken' }
+> {
+    const orgRef = organizations().doc();
+    const handleRef = handles().doc(input.handle);
+    return db().runTransaction(async (tx) => {
+        logRead('handles');
+        if (claimBlocks(toClaim(await tx.get(handleRef)), null, Date.now())) {
+            return { ok: false, error: 'handleTaken' } as const;
+        }
+        const now = FieldValue.serverTimestamp();
+        tx.create(orgRef, {
+            ...newOrganizationFields(input, location, adminUid),
+            claimStatus: 'unclaimed',
+            memberCount: 0,
+        });
+        tx.set(handleRef, { orgId: orgRef.id, createdAt: now });
+        tx.create(db().collection('adminLog').doc(), {
+            action: 'createUnclaimed',
+            orgId: orgRef.id,
+            orgName: input.name,
+            actorUid: adminUid,
+            createdAt: now,
         });
         return { ok: true, orgId: orgRef.id, handle: input.handle } as const;
     });
@@ -348,6 +406,7 @@ function toDirectoryOrganization(
         languages: data.languages ?? [],
         joinPolicy: data.joinPolicy,
         memberCount: data.memberCount ?? 0,
+        unclaimed: data.claimStatus === 'unclaimed',
     };
 }
 
@@ -514,7 +573,7 @@ export async function getOrgPeople(orgId: string): Promise<OrgPerson[]> {
 }
 
 /** Everything the moderation log records: actions on people, and profile edits. */
-export type LogAction = ModerationAction | 'editProfile';
+export type LogAction = ModerationAction | 'editProfile' | 'claim';
 
 export interface ModerationLogEntry {
     id: string;
@@ -523,6 +582,8 @@ export interface ModerationLogEntry {
     fields?: string[];
     targetName: string;
     actorName: string;
+    /** Done by a super user, shown as "the Communalists team" rather than by name. */
+    byTeam?: boolean;
     reason?: string;
     at?: number;
 }
@@ -549,7 +610,8 @@ export async function getModerationLog(
             action: d.action,
             fields: d.fields,
             targetName: d.target?.displayName ?? '',
-            actorName: d.actor?.displayName ?? '',
+            actorName: d.actor?.team ? '' : (d.actor?.displayName ?? ''),
+            byTeam: d.actor?.team === true || undefined,
             reason: d.reason || undefined,
             at: millis(d.createdAt),
         };
@@ -558,7 +620,7 @@ export async function getModerationLog(
 
 export type JoinResult =
     | { ok: true; status: 'active' | 'pending' }
-    | { ok: false; error: 'banned' | 'inviteOnly' | 'notFound' };
+    | { ok: false; error: 'banned' | 'inviteOnly' | 'notFound' | 'unclaimed' };
 
 /** Joins an open organization, or asks to join one that takes requests. */
 export async function joinOrganization(
@@ -580,6 +642,8 @@ export async function joinOrganization(
             : null;
         if (!org || org.status !== 'active')
             return { ok: false, error: 'notFound' } as const;
+        // Nobody can approve requests until someone claims it.
+        if (org.unclaimed) return { ok: false, error: 'unclaimed' } as const;
         const status = existing.data()?.status as MembershipStatus | undefined;
         if (status === 'banned') return { ok: false, error: 'banned' } as const;
         if (status === 'active' || status === 'pending')
@@ -816,6 +880,13 @@ export type UpdateOrganizationResult =
           error: 'notAllowed' | 'notFound' | 'handleTaken' | 'handleCooldown';
       };
 
+/** Who is editing: a super user edits unclaimed organizations as their owner. */
+export interface OrgEditor {
+    uid: string;
+    displayName: string;
+    platformAdmin: boolean;
+}
+
 /**
  * Saves an edit by `actorUid`. In one transaction: checks the actor is an
  * active owner or moderator (owners only for the handle), the handle's
@@ -826,11 +897,11 @@ export type UpdateOrganizationResult =
  */
 export async function updateOrganization(
     orgId: string,
-    actorUid: string,
-    actorName: string,
+    editor: OrgEditor,
     input: OrganizationInput,
     location: GeneralArea
 ): Promise<UpdateOrganizationResult> {
+    const actorUid = editor.uid;
     const orgRef = organizations().doc(orgId);
     const actorRef = memberships().doc(membershipId(orgId, actorUid));
     const logRef = orgRef.collection('moderationLog').doc();
@@ -848,18 +919,17 @@ export async function updateOrganization(
         if (org.status !== 'active')
             return { ok: false, error: 'notFound' } as const;
         const actor = actorSnap.data();
-        const role = actor?.status === 'active' ? actor.role : null;
+        const role = effectiveRole(
+            actor?.status === 'active' ? actor.role : null,
+            org,
+            editor.platformAdmin
+        );
         if (role !== 'owner' && role !== 'moderator')
             return { ok: false, error: 'notAllowed' } as const;
+        // On an unclaimed organization, a super user edits for the team.
+        const byTeam = org.unclaimed;
 
-        const reach =
-            input.reach === 'local'
-                ? {
-                      scope: 'local' as const,
-                      radiusMiles: input.radiusMiles,
-                      radiusKm: milesToKm(input.radiusMiles!),
-                  }
-                : { scope: input.reach };
+        const reach = reachOf(input);
         const changed = changedFields(
             {
                 ...org,
@@ -923,9 +993,20 @@ export async function updateOrganization(
             tx.create(logRef, {
                 action: 'editProfile',
                 fields: changed,
-                actor: { uid: actorUid, displayName: actorName },
+                actor: byTeam
+                    ? { uid: actorUid, team: true }
+                    : { uid: actorUid, displayName: editor.displayName },
                 createdAt: stamp,
             });
+            if (byTeam)
+                tx.create(db().collection('adminLog').doc(), {
+                    action: 'editUnclaimed',
+                    orgId,
+                    orgName: input.name,
+                    actorUid,
+                    fields: changed,
+                    createdAt: stamp,
+                });
         }
         return {
             ok: true,

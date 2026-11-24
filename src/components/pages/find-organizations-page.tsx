@@ -153,6 +153,7 @@ function Section({
                                 name={org.name}
                                 handle={org.handle}
                                 focusAreas={org.focusAreas}
+                                unclaimed={org.unclaimed}
                                 detail={
                                     local
                                         ? distanceMiles < 1

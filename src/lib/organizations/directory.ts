@@ -32,6 +32,8 @@ export interface DirectoryOrganization {
     languages: OrgLanguage[];
     joinPolicy: JoinPolicy;
     memberCount: number;
+    /** Added by a super user and not claimed yet. */
+    unclaimed?: boolean;
 }
 
 export interface DirectoryFilters {

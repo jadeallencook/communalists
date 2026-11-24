@@ -47,6 +47,9 @@ type Story = StoryObj<typeof meta>;
 /** New user: nothing joined yet, so the empty state leads with Create. */
 export const NoOrganizations: Story = {};
 
+/** Super users get a link to their tools, with the requests waiting. */
+export const SuperUser: Story = { args: { admin: { pendingClaims: 2 } } };
+
 export const WithOrganizations: Story = {
     args: {
         organizations: [

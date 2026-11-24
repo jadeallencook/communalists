@@ -1,4 +1,4 @@
-import { ArrowRightIcon, PlusIcon, UsersIcon } from 'lucide-react';
+import { ArrowRightIcon, PlusIcon, ShieldIcon, UsersIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/atoms/button';
@@ -21,6 +21,8 @@ export interface DashboardPageProps {
     nearby: OrganizationCardProps[];
     /** How far "nearby" looked, for the empty message. */
     nearbyRadiusMiles: number;
+    /** Super users: a link to /admin with the number of requests waiting. */
+    admin?: { pendingClaims: number };
 }
 
 /**
@@ -35,6 +37,7 @@ export function DashboardPage({
     canCreate,
     nearby,
     nearbyRadiusMiles,
+    admin,
 }: DashboardPageProps) {
     const t = useTranslations('Dashboard');
     const createButton = canCreate ? (
@@ -58,6 +61,24 @@ export function DashboardPage({
                     </p>
                 )}
             </header>
+
+            {admin && (
+                <div className="flex flex-col items-start gap-2 rounded-lg border p-4">
+                    <h2 className="flex items-center gap-2 font-heading text-lg font-semibold">
+                        <ShieldIcon aria-hidden className="size-4" />
+                        {t('adminTitle')}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                        {t('adminBody', { count: admin.pendingClaims })}
+                    </p>
+                    <Button asChild variant="outline">
+                        <Link href="/admin">
+                            {t('adminLink')}
+                            <ArrowRightIcon aria-hidden />
+                        </Link>
+                    </Button>
+                </div>
+            )}
 
             <div className="flex flex-col gap-3">
                 <div className="flex flex-wrap items-center justify-between gap-3">

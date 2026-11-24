@@ -120,3 +120,30 @@ export const AsMember: Story = {
     },
 };
 export const Loading: Story = { render: () => <OrganizationPageLoading /> };
+const unclaimedProfile = {
+    ...sampleProfile,
+    name: 'Eastside Shower Day',
+    handle: 'eastside-shower-day',
+    focusAreas: ['health' as const, 'housing' as const],
+    description:
+        'Free hot showers, towels and hygiene kits every Wednesday morning in the church hall. Walk in, no ID needed.',
+    memberCount: 0,
+    contactEmail: undefined,
+    socials: [],
+};
+/** Added by a super user: the notice and "Claim it" instead of joining and members. */
+export const Unclaimed: Story = {
+    args: {
+        profile: unclaimedProfile,
+        join: null,
+        unclaimed: { canManage: false },
+    },
+};
+/** A super user viewing it: the edit tools, without being named as owner. */
+export const UnclaimedAsSuperUser: Story = {
+    args: {
+        profile: unclaimedProfile,
+        join: null,
+        unclaimed: { canManage: true },
+    },
+};

@@ -47,3 +47,14 @@ export const WithDistance: Story = {
         detail: '3 mi away · Santa Clara, California',
     },
 };
+/** Added by a super user and not claimed yet. */
+export const Unclaimed: Story = {
+    args: {
+        role: undefined,
+        name: 'Eastside Shower Day',
+        handle: 'eastside-shower-day',
+        focusAreas: ['health', 'housing'],
+        detail: '2 mi away · San Jose, California',
+        unclaimed: true,
+    },
+};

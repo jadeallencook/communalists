@@ -7,6 +7,7 @@ import {
     OrganizationPage,
     OrganizationPageLoading,
 } from '@/components/pages/organization-page';
+import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
 import {
     getMembershipFresh,
@@ -68,8 +69,41 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
         return redirect({ href: `/org/${handle}`, locale: await getLocale() });
     }
 
-    // Members-only content is an access decision: always a fresh read.
+    const profile = {
+        name: org.name,
+        handle: org.handle,
+        focusAreas: org.focusAreas,
+        description: org.description,
+        place: org.location.label,
+        reach: org.reach,
+        languages: org.languages,
+        memberCount: org.memberCount,
+        website: org.website,
+        contactEmail: org.contactEmail,
+        socials: org.socials,
+        unlisted: org.visibility === 'unlisted',
+    };
     const user = await getSessionUser();
+
+    // Unclaimed: no members, no joining. Super users manage it as owners.
+    if (org.unclaimed) {
+        return (
+            <OrganizationPage
+                role={null}
+                join={null}
+                members={{
+                    people: [],
+                    total: 0,
+                    setting: org.memberListVisibility,
+                    viewerIsMember: false,
+                }}
+                profile={profile}
+                unclaimed={{ canManage: isPlatformAdmin(user?.uid) }}
+            />
+        );
+    }
+
+    // Members-only content is an access decision: always a fresh read.
     const [membership, people, locale] = await Promise.all([
         user ? getMembershipFresh(org.id, user.uid) : null,
         getOrgPeople(org.id),
@@ -114,20 +148,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                     ? people.filter((p) => p.status === 'pending').length
                     : 0
             }
-            profile={{
-                name: org.name,
-                handle: org.handle,
-                focusAreas: org.focusAreas,
-                description: org.description,
-                place: org.location.label,
-                reach: org.reach,
-                languages: org.languages,
-                memberCount: active.length,
-                website: org.website,
-                contactEmail: org.contactEmail,
-                socials: org.socials,
-                unlisted: org.visibility === 'unlisted',
-            }}
+            profile={{ ...profile, memberCount: active.length }}
         />
     );
 }

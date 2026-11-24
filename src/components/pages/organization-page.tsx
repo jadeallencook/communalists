@@ -1,4 +1,4 @@
-import { LockIcon, PencilIcon, UsersIcon } from 'lucide-react';
+import { LockIcon, PencilIcon, ShieldIcon, UsersIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 
@@ -14,6 +14,7 @@ import {
     type OrganizationProfileProps,
 } from '@/components/organisms/organization-profile';
 import { Skeleton } from '@/components/atoms/skeleton';
+import { UnclaimedNotice } from '@/components/organisms/unclaimed-notice';
 
 export interface OrganizationPageProps {
     profile: OrganizationProfileProps;
@@ -24,6 +25,11 @@ export interface OrganizationPageProps {
     members: MemberListProps;
     /** Owners and moderators: open requests, shown on the Manage members link. */
     pendingRequests?: number;
+    /**
+     * Not claimed yet: the notice with "Claim it" replaces joining and the
+     * member list. `canManage` (super users) adds the edit tools.
+     */
+    unclaimed?: { canManage: boolean };
 }
 
 const roleKey = {
@@ -39,10 +45,42 @@ export function OrganizationPage({
     join,
     members,
     pendingRequests = 0,
+    unclaimed,
 }: OrganizationPageProps) {
     const t = useTranslations('Organizations');
     const tm = useTranslations('Membership');
+    const tu = useTranslations('Unclaimed');
     const staff = role === 'owner' || role === 'moderator';
+    if (unclaimed) {
+        return (
+            <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-4 py-12">
+                <OrganizationProfile {...profile} unclaimed />
+                <UnclaimedNotice name={profile.name} handle={profile.handle} />
+                {unclaimed.canManage && (
+                    <section className="flex flex-col gap-2 rounded-lg border p-5">
+                        <h2 className="flex items-center gap-2 font-heading text-lg font-semibold">
+                            <ShieldIcon aria-hidden className="size-4" />
+                            {tu('adminTitle')}
+                        </h2>
+                        <p className="text-sm text-muted-foreground">
+                            {tu('adminBody')}
+                        </p>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            <Button asChild variant="outline">
+                                <Link href={`/org/${profile.handle}/edit`}>
+                                    <PencilIcon aria-hidden />
+                                    {tm('editOrganization')}
+                                </Link>
+                            </Button>
+                            <Button asChild variant="outline">
+                                <Link href="/admin">{tu('adminLink')}</Link>
+                            </Button>
+                        </div>
+                    </section>
+                )}
+            </section>
+        );
+    }
     return (
         <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-4 py-12">
             <OrganizationProfile {...profile} />

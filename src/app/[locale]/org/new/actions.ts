@@ -4,9 +4,12 @@ import { updateTag } from 'next/cache';
 import { hasLocale } from 'next-intl';
 
 import { isSetupComplete } from '@/lib/account-setup';
+import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
+import { ADMIN_LOG_TAG } from '@/lib/organizations/claim-store';
 import {
     createOrganization,
+    createUnclaimedOrganization,
     DIRECTORY_TAG,
     handleTag,
     membershipsTag,
@@ -60,6 +63,39 @@ export async function createOrganizationAction(
 
     const place = getPlace(input.country, input.placeId);
     if (!place) return { fieldErrors: { placeId: 'placeNotFound' }, values };
+
+    // Super users can add an organization nobody owns yet (features/18).
+    if (formData.get('unclaimed') === 'on') {
+        if (!isPlatformAdmin(user.uid))
+            return { formError: 'notAllowed', values };
+        let created;
+        try {
+            created = await createUnclaimedOrganization(
+                user.uid,
+                input,
+                toGeneralArea(place)
+            );
+        } catch (error) {
+            console.error(
+                '[org] create unclaimed failed',
+                (error as Error).message
+            ); // never log PII
+            return {
+                formError: 'generic',
+                values: { ...values, unclaimed: true },
+            };
+        }
+        if (!created.ok)
+            return {
+                fieldErrors: { handle: 'handleTaken' },
+                values: { ...values, unclaimed: true },
+            };
+        updateTag(handleTag(created.handle));
+        updateTag(DIRECTORY_TAG);
+        updateTag(ADMIN_LOG_TAG);
+        redirect({ href: `/org/${created.handle}`, locale });
+        return {};
+    }
 
     let result;
     try {

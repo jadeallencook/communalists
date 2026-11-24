@@ -225,7 +225,10 @@
         "ownedLimit": "You own 5 organizations, the most allowed.",
         "findTitle": "Find organizations near you",
         "findSeeAll": "See all organizations near you",
-        "findEmpty": "No other organizations within {miles} mi of you yet."
+        "findEmpty": "No other organizations within {miles} mi of you yet.",
+        "adminTitle": "Super user",
+        "adminBody": "{count, plural, =0 {No claim requests waiting.} one {# claim request waiting.} other {# claim requests waiting.}}",
+        "adminLink": "Open super user tools"
     },
     "Find": {
         "metaTitle": "Find organizations",
@@ -362,7 +365,10 @@
             "memberListHint": "Owners and moderators are always shown, and everyone sees how many members there are.",
             "save": "Save changes",
             "saving": "Saving…",
-            "handleCurrent": "This is your current handle."
+            "handleCurrent": "This is your current handle.",
+            "unclaimedLegend": "Super user",
+            "unclaimed": "Add as an unclaimed organization",
+            "unclaimedHint": "For a group you're adding so neighbors can find it. You won't be listed as its owner. Any super user can edit it, and the group can claim it."
         },
         "new": {
             "metaTitle": "Create an organization",
@@ -407,7 +413,8 @@
             "roleMember": "a member",
             "unlisted": "Unlisted: only people with the link can find this page.",
             "noDescription": "No description yet.",
-            "focusAreas": "Focus areas"
+            "focusAreas": "Focus areas",
+            "unclaimed": "Unclaimed"
         },
         "memberLists": {
             "public": {
@@ -486,7 +493,8 @@
             "makeModerator": "{actor} made {target} a moderator",
             "makeOwner": "{actor} made {target} an owner",
             "makeMember": "{actor} made {target} a regular member",
-            "editProfile": "{actor} changed {fields}"
+            "editProfile": "{actor} changed {fields}",
+            "claim": "{target} claimed this organization"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Reason",
@@ -512,7 +520,8 @@
             "reasonRequired": "Write a reason.",
             "reasonTooLong": "Keep the reason under 500 characters.",
             "generic": "Something went wrong. Try again.",
-            "ownedLimit": "They already own 5 organizations, the most allowed."
+            "ownedLimit": "They already own 5 organizations, the most allowed.",
+            "unclaimed": "Nobody can join until this organization is claimed."
         },
         "done": {
             "joined": "You're in. Welcome!",
@@ -550,7 +559,8 @@
             "joinPolicy": "who can join",
             "visibility": "the visibility",
             "memberListVisibility": "the member list setting"
-        }
+        },
+        "teamActor": "The Communalists team"
     },
     "Profile": {
         "username": {
@@ -649,5 +659,120 @@
         "failed": "Couldn't search right now. Try again.",
         "hint": "Used to show organizations near you. We save your city, never your address.",
         "attribution": "Places from GeoNames."
+    },
+    "Unclaimed": {
+        "title": "This page hasn't been claimed yet",
+        "body": "Communalists volunteers added {name} so neighbors can find help nearby. {name} doesn't run this page, so details may be out of date. Check with them before you go.",
+        "claim": "Is this your organization? Claim it",
+        "claimHint": "You need a free account. Our team checks every request.",
+        "adminTitle": "Super user tools",
+        "adminBody": "Nobody has claimed this organization yet, so every super user can edit it. You aren't shown as its owner.",
+        "adminLink": "Claim requests"
+    },
+    "Claim": {
+        "metaTitle": "Claim an organization",
+        "back": "Back to {name}",
+        "title": "Claim {name}",
+        "intro": "If you're part of {name}, you can take over this page, or ask us to take it down.",
+        "step1": "Tell us your role and how we can confirm it's you.",
+        "step2": "Someone on the Communalists team checks, usually by contacting the organization directly.",
+        "step3": "If it checks out, you become the owner of the page (or we take it down). Come back here to see where your request stands.",
+        "intent": "What would you like?",
+        "intents": {
+            "claim": {
+                "label": "Manage this page",
+                "description": "You become its owner: you can edit it, and people can ask to join."
+            },
+            "remove": {
+                "label": "Take this page down",
+                "description": "The page and its listing are removed. Choose this if you don't want to be listed."
+            }
+        },
+        "role": "Your role at {name}",
+        "roleHint": "For example: pastor, volunteer coordinator, office staff.",
+        "message": "How can we confirm it's you?",
+        "messageHint": "For example: \"Call the church office and ask for me\", or a link to a page that lists you. 10 to 1,000 characters.",
+        "privacy": "Only the Communalists team sees your request, along with your name and your account email. We use them only to check it, and we may email you about it.",
+        "submit": "Send request",
+        "submitting": "Sending…",
+        "errors": {
+            "intentRequired": "Choose what you would like.",
+            "roleRequired": "Write your role.",
+            "roleTooLong": "Keep your role under {max} characters.",
+            "messageTooShort": "Tell us a little more: at least {min} characters.",
+            "messageTooLong": "Keep it under {max} characters."
+        },
+        "formErrors": {
+            "notUnclaimed": "This organization has already been claimed or taken down.",
+            "alreadyPending": "You already have a request waiting for this organization.",
+            "generic": "Something went wrong. Try again."
+        },
+        "pendingTitle": "Request sent",
+        "pendingClaim": "You asked to manage {name} on {date}. The Communalists team will check it and may email you. Come back here to see if it has been decided.",
+        "pendingRemove": "You asked us to take down the page for {name} on {date}. The Communalists team will check it and may email you. Come back here to see if it has been decided.",
+        "cancel": "Cancel request",
+        "denied": "We couldn't confirm your last request. You can send a new one with more detail on how to check."
+    },
+    "Admin": {
+        "metaTitle": "Super user tools",
+        "title": "Super user tools",
+        "intro": "Requests to claim or take down unclaimed organizations, and the organizations added for neighbors to find. Only super users see this page.",
+        "claimsTitle": "Claim requests",
+        "claimsHint": "Check each request outside the app before you approve it, for example by calling the organization at its public number. Oldest first.",
+        "noClaims": "No requests right now.",
+        "intents": {
+            "claim": "{name} wants to manage {org}",
+            "remove": "{name} asks us to take down {org}"
+        },
+        "requestedOn": "Sent {date}",
+        "role": "Role",
+        "howToCheck": "How to check",
+        "email": "Account email",
+        "viewOrganization": "View {org}",
+        "viewProfile": "View {name}'s profile",
+        "actionFor": "{action}: {name}, {org}",
+        "approve": {
+            "claim": {
+                "button": "Approve",
+                "title": "Make {name} the owner of {org}?",
+                "body": "{name} becomes the owner and can edit the page and approve members. The page stops saying it's unclaimed, and super users can't edit it anymore. Any other requests for {org} are closed.",
+                "confirm": "Make owner"
+            },
+            "remove": {
+                "button": "Take down",
+                "title": "Take down {org}?",
+                "body": "The page and its listing disappear for everyone. The address stays reserved. Any other requests for {org} are closed.",
+                "confirm": "Take down"
+            }
+        },
+        "keep": "Not yet",
+        "deny": "Deny",
+        "unclaimedTitle": "Unclaimed organizations",
+        "addUnclaimed": "Add an unclaimed organization",
+        "noUnclaimed": "None yet.",
+        "logTitle": "Recent super user actions",
+        "logHint": "Only super users see this.",
+        "noLog": "Nothing yet.",
+        "log": {
+            "createUnclaimed": "{actor} added {org}",
+            "editUnclaimed": "{actor} edited {org}",
+            "approveClaim": "{actor} made {target} the owner of {org}",
+            "approveRemoval": "{actor} took down {org} at {target}'s request",
+            "denyClaim": "{actor} denied {target}'s request for {org}"
+        },
+        "unknownActor": "A super user",
+        "errors": {
+            "notFound": "That request or organization is gone. The list now shows the latest.",
+            "alreadyDecided": "Someone already decided that request. The list now shows the latest.",
+            "alreadyClaimed": "That organization has already been claimed.",
+            "ownedLimit": "They already own 5 organizations, the most allowed.",
+            "notAllowed": "Only super users can do this.",
+            "generic": "Something went wrong. Try again."
+        },
+        "done": {
+            "approveClaim": "Approved. They now own the organization.",
+            "approveRemoval": "Taken down.",
+            "deny": "Request denied. They can send a new one."
+        }
     }
 }

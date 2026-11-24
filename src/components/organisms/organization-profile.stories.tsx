@@ -60,3 +60,15 @@ export const Unlisted: Story = {
         handle: 'alum-rock-tenants',
     },
 };
+/** Not claimed yet: the label, and no member count. */
+export const Unclaimed: Story = {
+    args: {
+        unclaimed: true,
+        name: 'Eastside Shower Day',
+        handle: 'eastside-shower-day',
+        focusAreas: ['health', 'housing'],
+        memberCount: 0,
+        contactEmail: undefined,
+        socials: [],
+    },
+};

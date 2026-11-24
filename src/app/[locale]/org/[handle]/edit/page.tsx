@@ -7,6 +7,7 @@ import {
     EditOrganizationPage,
     EditOrganizationPageLoading,
 } from '@/components/pages/edit-organization-page';
+import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { requireAccount } from '@/lib/auth/require-account';
 import {
     getMembershipFresh,
@@ -14,6 +15,7 @@ import {
 } from '@/lib/organizations';
 import { handleProblem, nextHandleChangeAt } from '@/lib/organizations/handle';
 import { isStaff } from '@/lib/organizations/membership';
+import { effectiveRole } from '@/lib/platform-admin';
 import { isSupportedCountry } from '@/lib/places/types';
 import { redirect } from '@/i18n/navigation';
 
@@ -49,7 +51,12 @@ async function EditServerContainer({ params }: Pick<Props, 'params'>) {
         getTranslations('Organizations'),
         getFormatter(),
     ]);
-    const role = membership?.status === 'active' ? membership.role : null;
+    // On an unclaimed organization, super users act as owners.
+    const role = effectiveRole(
+        membership?.status === 'active' ? membership.role : null,
+        org,
+        isPlatformAdmin(user.uid)
+    );
     if (!isStaff(role)) return redirect({ href: `/org/${handle}`, locale });
 
     const nextChange = nextHandleChangeAt(org.handleChangedAt);

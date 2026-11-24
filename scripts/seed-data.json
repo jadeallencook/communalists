@@ -59,6 +59,18 @@
             "email": "sam.rivera@example.com"
         },
         {
+            "uid": "seed-jordan",
+            "featured": true,
+            "platformAdmin": true,
+            "email": "jordan.lee@example.com",
+            "profile": {
+                "displayName": "Jordan Lee",
+                "locale": "en",
+                "placeId": "5392171",
+                "username": "jordan-lee"
+            }
+        },
+        {
             "uid": "seed-thanh",
             "email": "thanh.nguyen@example.com",
             "profile": {
@@ -391,6 +403,60 @@
             ],
             "requests": ["seed-aisha"],
             "banned": []
+        },
+        {
+            "id": "seed-eastside-showers",
+            "name": "Eastside Shower Day",
+            "handle": "eastside-shower-day",
+            "focusAreas": ["health", "housing"],
+            "description": "Free hot showers, towels and hygiene kits every Wednesday morning in the church hall. Walk in, no ID needed.",
+            "placeId": "5392171",
+            "reach": {
+                "scope": "local",
+                "radiusMiles": 10
+            },
+            "languages": ["en", "es"],
+            "website": "https://example.com/",
+            "socials": [],
+            "joinPolicy": "request",
+            "visibility": "listed",
+            "memberListVisibility": "members",
+            "unclaimed": true,
+            "createdBy": "seed-jordan",
+            "members": [],
+            "requests": [],
+            "banned": [],
+            "claims": [
+                {
+                    "uid": "seed-priya",
+                    "intent": "claim",
+                    "role": "Volunteer coordinator",
+                    "message": "I run the Wednesday shower day. Call the church office on the number on our website and ask for me."
+                }
+            ]
+        },
+        {
+            "id": "seed-westside-meals",
+            "name": "Westside Community Meal",
+            "handle": "westside-community-meal",
+            "focusAreas": ["food"],
+            "description": "A free hot dinner every Friday at 6 pm. Everyone is welcome.",
+            "placeId": "5392171",
+            "reach": {
+                "scope": "local",
+                "radiusMiles": 5
+            },
+            "languages": ["en"],
+            "socials": [],
+            "joinPolicy": "request",
+            "visibility": "listed",
+            "memberListVisibility": "members",
+            "unclaimed": true,
+            "createdBy": "seed-jordan",
+            "members": [],
+            "requests": [],
+            "banned": [],
+            "claims": []
         }
     ]
 }

@@ -29,15 +29,18 @@ Accounts need these on the `communalists` Vercel project (team `jadeallencook`; 
 
 Status 2026-11-21: the six `NEXT_PUBLIC_FIREBASE_*` values are set on Production (values from `firebase apps:sdkconfig WEB --project communalists`); `FIREBASE_SERVICE_ACCOUNT_KEY` was set (sensitive) on 2026-11-22 from a key generated under Firebase → Project settings → Service accounts (`firebase-adminsdk-6240t@…`). The downloaded file was deleted after upload. Production sign-in confirmed working.
 
-| Variable                                   | Value                                            | Secret? |
-| ------------------------------------------ | ------------------------------------------------ | ------- |
-| `NEXT_PUBLIC_FIREBASE_API_KEY`             | From the `communalists` Firebase web app config  | No      |
-| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`         | `communalists.firebaseapp.com`                   | No      |
-| `NEXT_PUBLIC_FIREBASE_PROJECT_ID`          | `communalists`                                   | No      |
-| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`      | `communalists.appspot.com`                       | No      |
-| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | `895012652302`                                   | No      |
-| `NEXT_PUBLIC_FIREBASE_APP_ID`              | `1:895012652302:web:1472a663bf95e88ad1c35f`      | No      |
-| `FIREBASE_SERVICE_ACCOUNT_KEY`             | Service-account JSON (the downloaded file as-is) | **Yes** |
+| Variable                                   | Value                                                                                                  | Secret?                         |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------- |
+| `NEXT_PUBLIC_FIREBASE_API_KEY`             | From the `communalists` Firebase web app config                                                        | No                              |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`         | `communalists.firebaseapp.com`                                                                         | No                              |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID`          | `communalists`                                                                                         | No                              |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`      | `communalists.appspot.com`                                                                             | No                              |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | `895012652302`                                                                                         | No                              |
+| `NEXT_PUBLIC_FIREBASE_APP_ID`              | `1:895012652302:web:1472a663bf95e88ad1c35f`                                                            | No                              |
+| `FIREBASE_SERVICE_ACCOUNT_KEY`             | Service-account JSON (the downloaded file as-is)                                                       | **Yes**                         |
+| `PLATFORM_ADMIN_UIDS`                      | Super users' Firebase UIDs, comma separated ([features/18](../features/18-unclaimed-organizations.md)) | No, but keep it out of the repo |
+
+**Super users** (2026-11-24): `PLATFORM_ADMIN_UIDS` is **not set yet** on Production; until it is, nobody there is a super user. Add it with `vercel env add PLATFORM_ADMIN_UIDS production`, then redeploy. Changing the list also needs a redeploy.
 
 **Which build is live:** the footer shows `v{version} ({short commit})`, linked to the commit on GitHub. If it doesn't match `git log -1 --format=%h` on `main`, the latest push hasn't deployed yet (or failed; check `vercel ls communalists --scope jadeallencook`). Local builds show `(dev)`. See decision #19.
 

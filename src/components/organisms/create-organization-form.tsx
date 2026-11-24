@@ -68,6 +68,11 @@ export interface CreateOrganizationFormProps {
     orgId?: string;
     /** Editing, when the handle can't be changed: why (already translated). */
     handleLockedReason?: string;
+    /**
+     * Super users creating: offer "Add as an unclaimed organization", ticked
+     * when `checked`. The server checks they're a super user.
+     */
+    unclaimedOption?: { checked: boolean };
 }
 
 const selectClass =
@@ -95,6 +100,7 @@ export function CreateOrganizationForm({
     mode = 'create',
     orgId,
     handleLockedReason,
+    unclaimedOption,
 }: CreateOrganizationFormProps) {
     const t = useTranslations('Organizations');
     const errorFor = (field: OrganizationField) => {
@@ -110,6 +116,28 @@ export function CreateOrganizationForm({
         <form action={formAction} noValidate className="flex flex-col gap-10">
             <input type="hidden" name="uiLocale" value={locale} />
             {orgId && <input type="hidden" name="orgId" value={orgId} />}
+
+            {unclaimedOption && mode === 'create' && (
+                <div className="rounded-lg border border-dashed p-4">
+                    <ChoiceGroup
+                        kind="checkbox"
+                        name="unclaimed"
+                        legend={t('form.unclaimedLegend')}
+                        defaultValue={
+                            (values.unclaimed ?? unclaimedOption.checked)
+                                ? 'on'
+                                : undefined
+                        }
+                        options={[
+                            {
+                                value: 'on',
+                                label: t('form.unclaimed'),
+                                description: t('form.unclaimedHint'),
+                            },
+                        ]}
+                    />
+                </div>
+            )}
 
             <FieldGroup>
                 {section(t('form.aboutTitle'))}

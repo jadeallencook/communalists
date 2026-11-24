@@ -41,10 +41,12 @@ export interface OrganizationMembersPageProps {
     banned: (Person & { reason?: string })[];
     log: {
         id: string;
-        action: ModerationAction | 'editProfile';
+        action: ModerationAction | 'editProfile' | 'claim';
         /** editProfile only: which fields changed. */
         fields?: string[];
         actorName: string;
+        /** Done by a super user: shown as the Communalists team. */
+        byTeam?: boolean;
         targetName: string;
         reason?: string;
         at?: number;
@@ -262,7 +264,9 @@ export function OrganizationMembersPage({
                                 <span>
                                     {entry.action === 'editProfile'
                                         ? t('log.editProfile', {
-                                              actor: entry.actorName,
+                                              actor: entry.byTeam
+                                                  ? t('teamActor')
+                                                  : entry.actorName,
                                               fields: format.list(
                                                   (entry.fields ?? [])
                                                       .filter((f) =>
@@ -279,7 +283,9 @@ export function OrganizationMembersPage({
                                               ),
                                           })
                                         : t(`log.${entry.action}`, {
-                                              actor: entry.actorName,
+                                              actor: entry.byTeam
+                                                  ? t('teamActor')
+                                                  : entry.actorName,
                                               target: entry.targetName,
                                           })}
                                 </span>

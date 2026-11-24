@@ -2,7 +2,7 @@
 
 The heart of the platform: people create, find and join **organizations**, and an organization's tools only work for its members. This is the rebuild's design, agreed with the user on 2026-11-22 ([decision #22](../decisions.md)). It replaces the prototype's single hard-coded organization ([08](08-organizations-and-membership.md)). Read 08's "Gaps" for what went wrong there.
 
-**Status:** phase 1 built 2026-11-22, except the logo upload. Phase 2 (finding, joining, moderating members) and editing built 2026-11-23. See "Built" at the end.
+**Status:** phase 1 built 2026-11-22, except the logo upload. Phase 2 (finding, joining, moderating members) and editing built 2026-11-23. See "Built" at the end. **Unclaimed organizations** (added by super users, with no owner until a group claims them) are in [18](18-unclaimed-organizations.md).
 
 ## What an organization has
 
@@ -43,7 +43,7 @@ General · Food · Housing · Transportation · Technology · Health · Childcar
 - **One membership record per person per organization:** `role` (`owner` / `moderator` / `member`) and `status` (`active` / `pending` / `invited` / `banned`). This is not an array on the organization; that was the prototype's mistake ([08 → Gaps](08-organizations-and-membership.md#gaps)). It makes deny, leave, promote, remove and audit possible, and keeps member lists off every client.
 - The record also carries a small copy of the organization (name, handle, focus areas, logo), so the dashboard lists all of a person's organizations in **one query**, and a copy of the person's name, so a member list is one query too. Renaming an organization updates its copies; saving a profile updates the name copies.
 - **An organization always has at least one owner.** The last owner can't leave or step down without handing ownership to someone.
-- **A person can own at most 5 organizations** (abuse limit; open sign-up means open creation).
+- **A person can own at most 5 organizations** (abuse limit; open sign-up means open creation). Unclaimed organizations don't count: nobody owns them ([18](18-unclaimed-organizations.md)).
 - Creating requires a finished account (name and city), which `requireAccount` guarantees.
 
 ## Handles

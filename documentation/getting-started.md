@@ -44,15 +44,16 @@ While `pnpm dev` runs, every Firestore read is printed as `[firestore read #N] c
 
 `pnpm dev` adds these whenever any are missing. To put them back the way they started, use **Reset test data** in the dev toolbar, or run `pnpm seed` with the emulators running. The password for all of them is `password123`.
 
-The toolbar lists these three first:
+The toolbar lists these four first:
 
 | Account                      | Profile                          | Organizations                                                                                                                               |
 | ---------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | `maya.thompson@example.com`  | Maya Thompson, San Jose, English | Owns South Bay Mutual Aid and Alum Rock Tenants Union; moderates Oakland Auto Club; member of Fremont Childcare Co-op                       |
 | `luis.hernandez@example.com` | Luis Hernández, Oakland, Spanish | Owns Oakland Auto Club and Mutual Aid Disaster Network; member of South Bay Mutual Aid, East Bay Tool Library and Little Saigon Food Pantry |
 | `sam.rivera@example.com`     | None: signs in to account setup  | None                                                                                                                                        |
+| `jordan.lee@example.com`     | Jordan Lee, San Jose, English    | **Super user** (locally only): `/admin`, adds and edits unclaimed organizations, decides claims. Member of nothing                          |
 
-Under **More accounts** (collapsed) are eight more: Thanh Nguyễn, Wei Chen, Aisha Bello, Daniel Park, Rosa Martínez, Priya Patel, Marcus Johnson and Linh Trần. Between them they cover all four UI languages, own the four newer groups, and fill out member lists, so groups have between 3 and 8 members. Mark an account `"featured": true` in `seed-data.json` to list it at the top. Emails use `example.com` and `example.net`, which are reserved and can never reach a real person.
+Under **More accounts** (collapsed) are eight more: Thanh Nguyễn, Wei Chen, Aisha Bello, Daniel Park, Rosa Martínez, Priya Patel, Marcus Johnson and Linh Trần. Between them they cover all four UI languages, own the four newer groups, and fill out member lists, so groups have between 3 and 8 members. Mark an account `"featured": true` in `seed-data.json` to list it at the top, and `"platformAdmin": true` to make it a super user locally (on top of any UIDs in `PLATFORM_ADMIN_UIDS`). To make your own local account a super user, add its UID to `PLATFORM_ADMIN_UIDS` in `.env.local` and restart. Emails use `example.com` and `example.net`, which are reserved and can never reach a real person.
 
 Everyone except Sam has a username (`/comrade/maya-thompson`, or `/@maya-thompson`), and a few profiles cover each privacy level: Maya and Aisha are public (Aisha hides her groups), Luis and Thanh share with their groups, and Wei shows just her name. Sam's account setup asks for a username, suggested from the name.
 
@@ -66,6 +67,8 @@ Everyone except Sam has a username (`/comrade/maya-thompson`, or `/@maya-thompso
 | Fremont Childcare Co-op (`/org/fremont-childcare`)        | Childcare, contact email only                                                                                   |
 | Santa Clara Community Garden (`/org/sc-community-garden`) | Small radius (5 mi), English and Chinese                                                                        |
 | Little Saigon Food Pantry (`/org/little-saigon-pantry`)   | One focus area, Vietnamese first                                                                                |
+| Eastside Shower Day (`/org/eastside-shower-day`)          | **Unclaimed** (added by Jordan); Priya has a pending claim for Jordan to approve or deny                        |
+| Westside Community Meal (`/org/westside-community-meal`)  | **Unclaimed**, no requests: try claiming it                                                                     |
 
 - Seeding only touches these accounts and organizations (fixed IDs starting `seed-`), so anything you created yourself stays. If you took one of their handles, that organization is skipped. A seeded account or organization that's no longer in the file (say, after renaming one) is removed on the next seed or reset.
 - Resetting doesn't sign you out. **Reset test data** also clears the app's cache; after `pnpm seed` from a terminal, restart `pnpm dev`, or pages can show cached data for a while.

@@ -216,6 +216,11 @@ for (const ref of await db.collection('organizations').listDocuments()) {
             await handleRef.delete();
     }
     await deleteWhere('orgId', ref.id);
+    const claimsLeft = await db
+        .collection('claimRequests')
+        .where('orgId', '==', ref.id)
+        .get();
+    await Promise.all(claimsLeft.docs.map((doc) => doc.ref.delete()));
     await ref.delete();
     removed++;
 }
@@ -233,6 +238,9 @@ for (const {
     members,
     requests = [],
     banned = [],
+    claims = [],
+    unclaimed = false,
+    createdBy,
     placeId,
     reach,
     ...org
@@ -249,11 +257,12 @@ for (const {
 
     // Start from a clean member list and moderation log for seeded organizations.
     const orgRef = db.collection('organizations').doc(org.id);
-    const [old, oldLog, oldHandles] = await Promise.all([
+    const [old, oldLog, oldHandles, oldClaims] = await Promise.all([
         db.collection('memberships').where('orgId', '==', org.id).get(),
         orgRef.collection('moderationLog').get(),
         // Handles it moved to (or holds) since: renaming in the app adds these.
         db.collection('handles').where('orgId', '==', org.id).get(),
+        db.collection('claimRequests').where('orgId', '==', org.id).get(),
     ]);
     const batch = db.batch();
     old.docs.forEach((doc) => batch.delete(doc.ref));
@@ -261,15 +270,18 @@ for (const {
     oldHandles.docs
         .filter((doc) => doc.id !== org.handle)
         .forEach((doc) => batch.delete(doc.ref));
+    oldClaims.docs.forEach((doc) => batch.delete(doc.ref));
 
-    const owner = members.find(([, role]) => role === 'owner')[0];
+    // Unclaimed organizations (added by a super user) have no members.
+    const owner = members.find(([, role]) => role === 'owner')?.[0];
     batch.set(orgRef, {
         ...org,
         location: area(placeId),
         reach: reachFor(reach),
         status: 'active',
+        ...(unclaimed ? { claimStatus: 'unclaimed' } : {}),
         memberCount: members.length,
-        createdBy: owner,
+        createdBy: createdBy ?? owner,
         createdAt: now,
         updatedAt: now,
     });
@@ -317,15 +329,36 @@ for (const {
             createdAt: now,
         });
     }
+    // Requests to claim (or take down) an unclaimed organization.
+    for (const { uid, intent, role, message } of claims) {
+        batch.set(db.collection('claimRequests').doc(`${org.id}_${uid}`), {
+            orgId: org.id,
+            uid,
+            intent,
+            role,
+            message,
+            status: 'pending',
+            org: { name: org.name, handle: org.handle },
+            claimant: JSON.parse(
+                JSON.stringify({
+                    displayName: nameOf[uid],
+                    username: usernameOf[uid],
+                })
+            ),
+            requestedAt: now,
+        });
+    }
     await batch.commit();
 }
 
 say(
     `Seeded ${users.length} accounts and ${organizations.length - skipped} organizations. Password for all: ${password}. Main accounts:`
 );
-for (const { email, profile } of users.filter((u) => u.featured)) {
+for (const { email, profile, platformAdmin } of users.filter(
+    (u) => u.featured
+)) {
     say(
-        `  ${email}${profile ? '' : '  (no profile yet: goes to account setup)'}`
+        `  ${email}${profile ? '' : '  (no profile yet: goes to account setup)'}${platformAdmin ? '  (super user)' : ''}`
     );
 }
 if (!ifMissing && !fromApp) {

@@ -32,6 +32,8 @@ export interface OrganizationProfileProps {
     contactEmail?: string;
     socials: SocialLink[];
     unlisted?: boolean;
+    /** Not claimed yet: an "Unclaimed" label, and no member count (it has no members). */
+    unclaimed?: boolean;
 }
 
 const host = (url: string) => {
@@ -56,6 +58,7 @@ export function OrganizationProfile({
     contactEmail,
     socials,
     unlisted = false,
+    unclaimed = false,
 }: OrganizationProfileProps) {
     const t = useTranslations('Organizations');
     const locale = useLocale();
@@ -66,7 +69,14 @@ export function OrganizationProfile({
 
     const facts = [
         { icon: MapPinIcon, text: reachText },
-        { icon: UsersIcon, text: t('page.members', { count: memberCount }) },
+        ...(unclaimed
+            ? []
+            : [
+                  {
+                      icon: UsersIcon,
+                      text: t('page.members', { count: memberCount }),
+                  },
+              ]),
         {
             icon: LanguagesIcon,
             text: languages
@@ -88,7 +98,14 @@ export function OrganizationProfile({
                     <h1 className="font-heading text-3xl font-semibold tracking-tight text-balance">
                         {name}
                     </h1>
-                    <p className="text-muted-foreground">/org/{handle}</p>
+                    <p className="flex flex-wrap items-center gap-2 text-muted-foreground">
+                        /org/{handle}
+                        {unclaimed && (
+                            <span className="rounded-full border px-2.5 py-0.5 text-xs text-foreground">
+                                {t('page.unclaimed')}
+                            </span>
+                        )}
+                    </p>
                     {focusAreas.length > 0 && (
                         <ul
                             aria-label={t('page.focusAreas')}

@@ -1,5 +1,7 @@
 # 03 · Events / Services Directory
 
+> **Rebuild:** this comes back as events on organizations, starting with unclaimed organizations that super users add ([18](18-unclaimed-organizations.md)), once the calendar tool is built. "Grace Baptist Church" below is the user's example of a group to add that way.
+
 A public listing of recurring free services in the South Bay: meals, showers, essentials, medical care, haircuts, recovery support, legal help, mail service and groceries. It lives at `/events`, and a compact version ("Events Today In San Jose") appears on the home page.
 
 **The data is hard-coded** in `src/assets/events.ts`: 26 listings from 9 organizations. They are exported to [`../data/events.json`](../data/events.json) so the rebuild keeps them. Treat them as possibly out of date, since they were last edited in 2023.

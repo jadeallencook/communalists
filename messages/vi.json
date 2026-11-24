@@ -225,7 +225,10 @@
         "ownedLimit": "Bạn sở hữu 5 tổ chức, mức tối đa cho phép.",
         "findTitle": "Tìm tổ chức gần bạn",
         "findSeeAll": "Xem tất cả tổ chức gần bạn",
-        "findEmpty": "Chưa có tổ chức nào khác trong vòng {miles} dặm quanh bạn."
+        "findEmpty": "Chưa có tổ chức nào khác trong vòng {miles} dặm quanh bạn.",
+        "adminTitle": "Siêu người dùng",
+        "adminBody": "{count, plural, =0 {Không có yêu cầu nhận trang nào đang chờ.} other {# yêu cầu nhận trang đang chờ.}}",
+        "adminLink": "Mở công cụ siêu người dùng"
     },
     "Find": {
         "metaTitle": "Tìm tổ chức",
@@ -362,7 +365,10 @@
             "memberListHint": "Chủ nhóm và người điều hành luôn được hiển thị, và ai cũng thấy số lượng thành viên.",
             "save": "Lưu thay đổi",
             "saving": "Đang lưu…",
-            "handleCurrent": "Đây là tên định danh hiện tại của bạn."
+            "handleCurrent": "Đây là tên định danh hiện tại của bạn.",
+            "unclaimedLegend": "Siêu người dùng",
+            "unclaimed": "Thêm dưới dạng tổ chức chưa được nhận",
+            "unclaimedHint": "Dành cho một nhóm bạn thêm vào để hàng xóm tìm thấy. Bạn sẽ không được ghi là chủ sở hữu. Bất kỳ siêu người dùng nào cũng có thể chỉnh sửa, và nhóm đó có thể nhận lại trang."
         },
         "new": {
             "metaTitle": "Tạo tổ chức",
@@ -407,7 +413,8 @@
             "roleMember": "thành viên",
             "unlisted": "Không công khai: chỉ người có liên kết mới tìm thấy trang này.",
             "noDescription": "Chưa có mô tả.",
-            "focusAreas": "Lĩnh vực hoạt động"
+            "focusAreas": "Lĩnh vực hoạt động",
+            "unclaimed": "Chưa được nhận"
         },
         "memberLists": {
             "public": {
@@ -486,7 +493,8 @@
             "makeModerator": "{actor} đã đặt {target} làm người điều hành",
             "makeOwner": "{actor} đã đặt {target} làm chủ nhóm",
             "makeMember": "{actor} đã đặt {target} làm thành viên thường",
-            "editProfile": "{actor} đã thay đổi {fields}"
+            "editProfile": "{actor} đã thay đổi {fields}",
+            "claim": "{target} đã nhận tổ chức này"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Lý do",
@@ -512,7 +520,8 @@
             "reasonRequired": "Hãy viết lý do.",
             "reasonTooLong": "Lý do phải ít hơn 500 ký tự.",
             "generic": "Đã xảy ra lỗi. Hãy thử lại.",
-            "ownedLimit": "Người này đã là chủ của 5 tổ chức, mức tối đa cho phép."
+            "ownedLimit": "Người này đã là chủ của 5 tổ chức, mức tối đa cho phép.",
+            "unclaimed": "Chưa ai có thể tham gia cho đến khi tổ chức này được nhận."
         },
         "done": {
             "joined": "Bạn đã tham gia. Chào mừng bạn!",
@@ -550,7 +559,8 @@
             "joinPolicy": "ai có thể tham gia",
             "visibility": "chế độ hiển thị",
             "memberListVisibility": "cài đặt danh sách thành viên"
-        }
+        },
+        "teamActor": "Nhóm Communalists"
     },
     "Profile": {
         "username": {
@@ -649,5 +659,120 @@
         "failed": "Không thể tìm kiếm lúc này. Hãy thử lại.",
         "hint": "Dùng để hiển thị các tổ chức gần bạn. Chúng tôi chỉ lưu thành phố, không bao giờ lưu địa chỉ của bạn.",
         "attribution": "Địa điểm từ GeoNames."
+    },
+    "Unclaimed": {
+        "title": "Trang này chưa được ai nhận",
+        "body": "Tình nguyện viên Communalists đã thêm {name} để hàng xóm tìm được sự giúp đỡ gần mình. {name} không quản lý trang này, nên thông tin có thể đã cũ. Hãy hỏi lại họ trước khi đến.",
+        "claim": "Đây là tổ chức của bạn? Nhận trang",
+        "claimHint": "Bạn cần một tài khoản miễn phí. Nhóm chúng tôi kiểm tra mọi yêu cầu.",
+        "adminTitle": "Công cụ siêu người dùng",
+        "adminBody": "Chưa ai nhận tổ chức này, nên mọi siêu người dùng đều có thể chỉnh sửa. Bạn không được hiển thị là chủ sở hữu.",
+        "adminLink": "Yêu cầu nhận trang"
+    },
+    "Claim": {
+        "metaTitle": "Nhận một tổ chức",
+        "back": "Quay lại {name}",
+        "title": "Nhận {name}",
+        "intro": "Nếu bạn thuộc {name}, bạn có thể tiếp quản trang này, hoặc yêu cầu chúng tôi gỡ nó xuống.",
+        "step1": "Cho chúng tôi biết vai trò của bạn và cách xác nhận đó là bạn.",
+        "step2": "Một người trong nhóm Communalists sẽ kiểm tra, thường bằng cách liên hệ trực tiếp với tổ chức.",
+        "step3": "Nếu đúng, bạn trở thành chủ sở hữu trang (hoặc chúng tôi gỡ trang). Quay lại đây để xem yêu cầu của bạn đến đâu.",
+        "intent": "Bạn muốn làm gì?",
+        "intents": {
+            "claim": {
+                "label": "Quản lý trang này",
+                "description": "Bạn trở thành chủ sở hữu: bạn có thể chỉnh sửa, và mọi người có thể xin tham gia."
+            },
+            "remove": {
+                "label": "Gỡ trang này",
+                "description": "Trang và mục liệt kê sẽ bị gỡ. Chọn mục này nếu bạn không muốn được liệt kê."
+            }
+        },
+        "role": "Vai trò của bạn tại {name}",
+        "roleHint": "Ví dụ: mục sư, điều phối viên tình nguyện, nhân viên văn phòng.",
+        "message": "Làm sao chúng tôi xác nhận đó là bạn?",
+        "messageHint": "Ví dụ: “Gọi văn phòng nhà thờ và hỏi gặp tôi”, hoặc đường dẫn đến trang có tên bạn. Từ 10 đến 1.000 ký tự.",
+        "privacy": "Chỉ nhóm Communalists thấy yêu cầu của bạn, cùng với tên và email tài khoản của bạn. Chúng tôi chỉ dùng chúng để kiểm tra, và có thể gửi email cho bạn về việc này.",
+        "submit": "Gửi yêu cầu",
+        "submitting": "Đang gửi…",
+        "errors": {
+            "intentRequired": "Chọn điều bạn muốn làm.",
+            "roleRequired": "Ghi vai trò của bạn.",
+            "roleTooLong": "Vai trò phải ít hơn {max} ký tự.",
+            "messageTooShort": "Hãy cho chúng tôi biết thêm: ít nhất {min} ký tự.",
+            "messageTooLong": "Phải ít hơn {max} ký tự."
+        },
+        "formErrors": {
+            "notUnclaimed": "Tổ chức này đã được nhận hoặc đã bị gỡ.",
+            "alreadyPending": "Bạn đã có một yêu cầu đang chờ cho tổ chức này.",
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+        },
+        "pendingTitle": "Đã gửi yêu cầu",
+        "pendingClaim": "Bạn đã xin quản lý {name} vào {date}. Nhóm Communalists sẽ kiểm tra và có thể gửi email cho bạn. Quay lại đây để xem đã có quyết định chưa.",
+        "pendingRemove": "Bạn đã yêu cầu gỡ trang của {name} vào {date}. Nhóm Communalists sẽ kiểm tra và có thể gửi email cho bạn. Quay lại đây để xem đã có quyết định chưa.",
+        "cancel": "Hủy yêu cầu",
+        "denied": "Chúng tôi chưa xác nhận được yêu cầu trước của bạn. Bạn có thể gửi yêu cầu mới, ghi rõ hơn cách kiểm tra."
+    },
+    "Admin": {
+        "metaTitle": "Công cụ siêu người dùng",
+        "title": "Công cụ siêu người dùng",
+        "intro": "Các yêu cầu nhận hoặc gỡ tổ chức chưa được nhận, và các tổ chức được thêm để hàng xóm tìm thấy. Chỉ siêu người dùng thấy trang này.",
+        "claimsTitle": "Yêu cầu nhận trang",
+        "claimsHint": "Kiểm tra từng yêu cầu bên ngoài ứng dụng trước khi duyệt, ví dụ gọi cho tổ chức theo số điện thoại công khai. Cũ nhất trước.",
+        "noClaims": "Hiện không có yêu cầu nào.",
+        "intents": {
+            "claim": "{name} muốn quản lý {org}",
+            "remove": "{name} yêu cầu gỡ {org}"
+        },
+        "requestedOn": "Gửi ngày {date}",
+        "role": "Vai trò",
+        "howToCheck": "Cách kiểm tra",
+        "email": "Email tài khoản",
+        "viewOrganization": "Xem {org}",
+        "viewProfile": "Xem hồ sơ của {name}",
+        "actionFor": "{action}: {name}, {org}",
+        "approve": {
+            "claim": {
+                "button": "Duyệt",
+                "title": "Cho {name} làm chủ sở hữu {org}?",
+                "body": "{name} trở thành chủ sở hữu và có thể chỉnh sửa trang, duyệt thành viên. Trang không còn ghi là chưa được nhận, và siêu người dùng không thể chỉnh sửa nữa. Các yêu cầu khác cho {org} sẽ được đóng.",
+                "confirm": "Cho làm chủ sở hữu"
+            },
+            "remove": {
+                "button": "Gỡ trang",
+                "title": "Gỡ {org}?",
+                "body": "Trang và mục liệt kê sẽ biến mất với mọi người. Địa chỉ vẫn được giữ lại. Các yêu cầu khác cho {org} sẽ được đóng.",
+                "confirm": "Gỡ trang"
+            }
+        },
+        "keep": "Chưa",
+        "deny": "Từ chối",
+        "unclaimedTitle": "Tổ chức chưa được nhận",
+        "addUnclaimed": "Thêm tổ chức chưa được nhận",
+        "noUnclaimed": "Chưa có.",
+        "logTitle": "Hoạt động gần đây của siêu người dùng",
+        "logHint": "Chỉ siêu người dùng thấy mục này.",
+        "noLog": "Chưa có gì.",
+        "log": {
+            "createUnclaimed": "{actor} đã thêm {org}",
+            "editUnclaimed": "{actor} đã chỉnh sửa {org}",
+            "approveClaim": "{actor} đã cho {target} làm chủ sở hữu {org}",
+            "approveRemoval": "{actor} đã gỡ {org} theo yêu cầu của {target}",
+            "denyClaim": "{actor} đã từ chối yêu cầu của {target} cho {org}"
+        },
+        "unknownActor": "Một siêu người dùng",
+        "errors": {
+            "notFound": "Yêu cầu hoặc tổ chức đó không còn nữa. Danh sách đã được cập nhật.",
+            "alreadyDecided": "Đã có người quyết định yêu cầu đó. Danh sách đã được cập nhật.",
+            "alreadyClaimed": "Tổ chức đó đã được nhận.",
+            "ownedLimit": "Người này đã sở hữu 5 tổ chức, mức tối đa cho phép.",
+            "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+        },
+        "done": {
+            "approveClaim": "Đã duyệt. Người này giờ là chủ sở hữu tổ chức.",
+            "approveRemoval": "Đã gỡ.",
+            "deny": "Đã từ chối yêu cầu. Họ có thể gửi yêu cầu mới."
+        }
     }
 }

@@ -19,7 +19,7 @@ The original source: branch `interview-demo` at commit `7ebc168`, read file by f
 
 ## Features
 
-The feature docs describe the prototype unless they have a "Rebuild" section. Rebuild progress so far: the locale routing behind [05](features/05-localization.md), the header/footer shell from [13](features/13-navigation-and-layout.md), accounts from [07](features/07-authentication.md) (sign-up, sign-in, password reset, account setup; see [accounts and sessions](technical/accounts-and-sessions.md)), and organizations ([16](features/16-organizations.md): creating, finding near you, joining, and moderating members and roles). Organization management (editing, invites), then the first tool, come next.
+The feature docs describe the prototype unless they have a "Rebuild" section. Rebuild progress so far: the locale routing behind [05](features/05-localization.md), the header/footer shell from [13](features/13-navigation-and-layout.md), accounts from [07](features/07-authentication.md) (sign-up, sign-in, password reset, account setup; see [accounts and sessions](technical/accounts-and-sessions.md)), organizations ([16](features/16-organizations.md): creating, finding near you, joining, and moderating members and roles), profiles ([17](features/17-profiles.md)), and unclaimed organizations that super users add and groups claim ([18](features/18-unclaimed-organizations.md)). Organization management (editing, invites), then the first tool, come next.
 
 | #   | Feature                                                                           | Audience                | Status in prototype                             |
 | --- | --------------------------------------------------------------------------------- | ----------------------- | ----------------------------------------------- |
@@ -40,6 +40,7 @@ The feature docs describe the prototype unless they have a "Rebuild" section. Re
 | 15  | [Little Free Library](features/15-little-free-library.md)                         | Public                  | Built in the 2025 Next.js attempt, then removed |
 | 16  | [Organizations (rebuild)](features/16-organizations.md)                           | Everyone                | Rebuild: phase 1 built 2026-11-22 (logo next)   |
 | 17  | [Profiles and skills (rebuild)](features/17-profiles.md)                          | Everyone                | Rebuild: phase 1 (profiles) built 2026-11-23    |
+| 18  | [Super users and unclaimed organizations](features/18-unclaimed-organizations.md) | Super users + everyone  | Rebuild: built 2026-11-24 (events next)         |
 
 ## Technical docs
 

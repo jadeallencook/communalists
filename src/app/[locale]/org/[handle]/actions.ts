@@ -38,6 +38,7 @@ export type MembershipErrorKey =
     | 'reasonRequired'
     | 'reasonTooLong'
     | 'ownedLimit'
+    | 'unclaimed'
     | 'generic';
 
 export interface MembershipActionState {
