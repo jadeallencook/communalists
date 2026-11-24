@@ -40,7 +40,7 @@ Status 2026-11-21: the six `NEXT_PUBLIC_FIREBASE_*` values are set on Production
 | `FIREBASE_SERVICE_ACCOUNT_KEY`             | Service-account JSON (the downloaded file as-is)                                                       | **Yes**                         |
 | `PLATFORM_ADMIN_UIDS`                      | Super users' Firebase UIDs, comma separated ([features/18](../features/18-unclaimed-organizations.md)) | No, but keep it out of the repo |
 
-**Super users** (2026-11-24): `PLATFORM_ADMIN_UIDS` is **not set yet** on Production; until it is, nobody there is a super user. Add it with `vercel env add PLATFORM_ADMIN_UIDS production`, then redeploy. Changing the list also needs a redeploy.
+**Super users:** `PLATFORM_ADMIN_UIDS` was set on Production on 2026-11-24 with one UID (the project owner's). It's read on the server at request time, so the first deploy that includes the super-user code picks it up. To change the list: `vercel env rm PLATFORM_ADMIN_UIDS production`, then `vercel env add PLATFORM_ADMIN_UIDS production --project communalists --scope jadeallencook` with the full comma-separated list, then redeploy (a running deployment keeps the values it started with).
 
 **Which build is live:** the footer shows `v{version} ({short commit})`, linked to the commit on GitHub. If it doesn't match `git log -1 --format=%h` on `main`, the latest push hasn't deployed yet (or failed; check `vercel ls communalists --scope jadeallencook`). Local builds show `(dev)`. See decision #19.
 
