@@ -372,7 +372,11 @@
             "unclaimedHint": "Para un grupo que agregas para que los vecinos lo encuentren. No aparecerás como su dueño. Cualquier superusuario puede editarlo, y el grupo puede reclamarlo.",
             "streetAddress": "Dirección (opcional)",
             "streetAddressPlaceholder": "749 Story Rd, San Jose, CA 95122",
-            "streetAddressHint": "Se muestra públicamente, con indicaciones. Solo un lugar público como una oficina, una iglesia o un centro comunitario, nunca la casa de alguien. Los eventos usarán esta dirección para empezar."
+            "streetAddressHint": "Se muestra públicamente, con indicaciones. Solo un lugar público como una oficina, una iglesia o un centro comunitario, nunca la casa de alguien. Los eventos usarán esta dirección para empezar.",
+            "foundedYear": "Año de fundación (opcional)",
+            "foundedYearHint": "Por ejemplo, 1983. Se muestra como «Desde 1983».",
+            "phone": "Teléfono (opcional)",
+            "phoneHint": "Se muestra públicamente para que la gente pueda llamar. Usa la línea de la organización, no un celular personal."
         },
         "new": {
             "metaTitle": "Crear una organización",
@@ -402,7 +406,9 @@
             "ownedLimit": "Ya eres propietario de 5 organizaciones, el máximo permitido.",
             "generic": "Algo salió mal. Inténtalo de nuevo.",
             "handleCooldown": "Puedes cambiar el identificador una vez cada 30 días.",
-            "notAllowed": "Solo las personas propietarias y moderadoras pueden editar esta organización."
+            "notAllowed": "Solo las personas propietarias y moderadoras pueden editar esta organización.",
+            "invalidPhone": "Eso no parece un número de teléfono. Incluye el código de área, como (408) 555-0123.",
+            "invalidYear": "Escribe un año de cuatro dígitos, de 1800 a este año."
         },
         "page": {
             "members": "{count, plural, one {# miembro} other {# miembros}}",
@@ -420,7 +426,8 @@
             "focusAreas": "Áreas de trabajo",
             "unclaimed": "Sin reclamar",
             "directions": "Cómo llegar",
-            "directionsTo": "Cómo llegar a {address} (se abre en una pestaña nueva)"
+            "directionsTo": "Cómo llegar a {address} (se abre en una pestaña nueva)",
+            "since": "Desde {year}"
         },
         "memberLists": {
             "public": {
@@ -565,7 +572,9 @@
             "joinPolicy": "quién puede unirse",
             "visibility": "la visibilidad",
             "memberListVisibility": "la lista de miembros",
-            "streetAddress": "la dirección"
+            "streetAddress": "la dirección",
+            "phone": "el teléfono",
+            "foundedYear": "el año de fundación"
         },
         "teamActor": "El equipo de Communalists"
     },

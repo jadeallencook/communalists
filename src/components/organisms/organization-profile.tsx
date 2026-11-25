@@ -1,8 +1,10 @@
 import {
     GlobeIcon,
     LanguagesIcon,
+    CalendarIcon,
     MailIcon,
     MapPinIcon,
+    PhoneIcon,
     NavigationIcon,
     UsersIcon,
 } from 'lucide-react';
@@ -33,6 +35,10 @@ export interface OrganizationProfileProps {
     streetAddress?: string;
     website?: string;
     contactEmail?: string;
+    /** Already formatted for the viewer, with a `tel:` link (src/lib/phone.ts). */
+    phone?: { text: string; href: string };
+    /** The year the group started. */
+    foundedYear?: number;
     socials: SocialLink[];
     unlisted?: boolean;
     /** Not claimed yet: an "Unclaimed" label, and no member count (it has no members). */
@@ -64,6 +70,8 @@ export function OrganizationProfile({
     streetAddress,
     website,
     contactEmail,
+    phone,
+    foundedYear,
     socials,
     unlisted = false,
     unclaimed = false,
@@ -85,6 +93,14 @@ export function OrganizationProfile({
                       text: t('page.members', { count: memberCount }),
                   },
               ]),
+        ...(foundedYear
+            ? [
+                  {
+                      icon: CalendarIcon,
+                      text: t('page.since', { year: String(foundedYear) }),
+                  },
+              ]
+            : []),
         {
             icon: LanguagesIcon,
             text: languages
@@ -180,7 +196,7 @@ export function OrganizationProfile({
                 )}
             </ul>
 
-            {(website || contactEmail || socials.length > 0) && (
+            {(website || contactEmail || phone || socials.length > 0) && (
                 <section className="flex flex-col gap-2">
                     <h2 className="font-heading text-lg font-semibold">
                         {t('page.links')}
@@ -196,6 +212,17 @@ export function OrganizationProfile({
                                 >
                                     <GlobeIcon aria-hidden className="size-4" />
                                     {host(website)}
+                                </a>
+                            </li>
+                        )}
+                        {phone && (
+                            <li>
+                                <a
+                                    href={phone.href}
+                                    className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 hover:bg-muted"
+                                >
+                                    <PhoneIcon aria-hidden className="size-4" />
+                                    {phone.text}
                                 </a>
                             </li>
                         )}

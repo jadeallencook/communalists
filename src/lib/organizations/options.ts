@@ -50,6 +50,9 @@ export const MAX_FOCUS_AREAS = 3;
 /** An organization's optional public street address (features/16). */
 export const STREET_ADDRESS_MAX = 200;
 
+/** The longest phone number the form takes, as typed (src/lib/phone.ts). */
+export const PHONE_INPUT_MAX = 40;
+
 export const REACH_SCOPES = ['local', 'national', 'international'] as const;
 export type ReachScope = (typeof REACH_SCOPES)[number];
 

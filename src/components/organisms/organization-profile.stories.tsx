@@ -76,3 +76,14 @@ export const Unclaimed: Story = {
 export const WithStreetAddress: Story = {
     args: { streetAddress: '749 Story Rd, San Jose, CA 95122' },
 };
+/** Every way to reach them: address, phone, email and links, and the year founded. */
+export const FullContact: Story = {
+    args: {
+        streetAddress: '749 Story Rd, San Jose, CA 95122',
+        phone: {
+            text: '(408) 555-0123 ext. 2',
+            href: 'tel:+14085550123;ext=2',
+        },
+        foundedYear: 1983,
+    },
+};

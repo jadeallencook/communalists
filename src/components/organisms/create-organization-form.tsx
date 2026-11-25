@@ -29,6 +29,7 @@ import {
     OFFERED_FOCUS_AREAS,
     RADIUS_MILES,
     REACH_SCOPES,
+    PHONE_INPUT_MAX,
     STREET_ADDRESS_MAX,
     VISIBILITIES,
     type ReachScope,
@@ -214,6 +215,34 @@ export function CreateOrganizationForm({
                         </FieldDescription>
                     )}
                 </Field>
+
+                <Field data-invalid={!!errorFor('foundedYear')}>
+                    <FieldLabel htmlFor="foundedYear">
+                        {t('form.foundedYear')}
+                    </FieldLabel>
+                    <Input
+                        id="foundedYear"
+                        name="foundedYear"
+                        defaultValue={values.foundedYear}
+                        inputMode="numeric"
+                        autoComplete="off"
+                        maxLength={4}
+                        className="max-w-32"
+                        aria-invalid={
+                            errorFor('foundedYear') ? true : undefined
+                        }
+                        aria-describedby="foundedYear-hint"
+                    />
+                    {errorFor('foundedYear') ? (
+                        <FieldError id="foundedYear-hint">
+                            {errorFor('foundedYear')}
+                        </FieldError>
+                    ) : (
+                        <FieldDescription id="foundedYear-hint">
+                            {t('form.foundedYearHint')}
+                        </FieldDescription>
+                    )}
+                </Field>
             </FieldGroup>
 
             <FieldGroup>
@@ -381,6 +410,29 @@ export function CreateOrganizationForm({
                     ) : (
                         <FieldDescription>
                             {t('form.contactEmailHint')}
+                        </FieldDescription>
+                    )}
+                </Field>
+                <Field data-invalid={!!errorFor('phone')}>
+                    <FieldLabel htmlFor="phone">{t('form.phone')}</FieldLabel>
+                    <Input
+                        id="phone"
+                        name="phone"
+                        defaultValue={values.phone}
+                        type="tel"
+                        inputMode="tel"
+                        autoComplete="off"
+                        maxLength={PHONE_INPUT_MAX}
+                        aria-invalid={errorFor('phone') ? true : undefined}
+                        aria-describedby="phone-hint"
+                    />
+                    {errorFor('phone') ? (
+                        <FieldError id="phone-hint">
+                            {errorFor('phone')}
+                        </FieldError>
+                    ) : (
+                        <FieldDescription id="phone-hint">
+                            {t('form.phoneHint')}
                         </FieldDescription>
                     )}
                 </Field>

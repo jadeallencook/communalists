@@ -372,7 +372,11 @@
             "unclaimedHint": "For a group you're adding so neighbors can find it. You won't be listed as its owner. Any super user can edit it, and the group can claim it.",
             "streetAddress": "Street address (optional)",
             "streetAddressPlaceholder": "749 Story Rd, San Jose, CA 95122",
-            "streetAddressHint": "Shown publicly, with directions. Only a public place like an office, church or community center, never someone's home. Events will start from this address."
+            "streetAddressHint": "Shown publicly, with directions. Only a public place like an office, church or community center, never someone's home. Events will start from this address.",
+            "foundedYear": "Year founded (optional)",
+            "foundedYearHint": "For example, 1983. Shown as \"Since 1983\".",
+            "phone": "Phone (optional)",
+            "phoneHint": "Shown publicly, so people can call. Use the organization's line, not a personal cell."
         },
         "new": {
             "metaTitle": "Create an organization",
@@ -402,7 +406,9 @@
             "ownedLimit": "You already own 5 organizations, the most allowed.",
             "generic": "Something went wrong. Please try again.",
             "handleCooldown": "You can change the handle once every 30 days.",
-            "notAllowed": "Only owners and moderators can edit this organization."
+            "notAllowed": "Only owners and moderators can edit this organization.",
+            "invalidPhone": "That doesn't look like a phone number. Include the area code, like (408) 555-0123.",
+            "invalidYear": "Enter a four-digit year from 1800 to this year."
         },
         "page": {
             "members": "{count, plural, one {# member} other {# members}}",
@@ -420,7 +426,8 @@
             "focusAreas": "Focus areas",
             "unclaimed": "Unclaimed",
             "directions": "Get directions",
-            "directionsTo": "Get directions to {address} (opens in a new tab)"
+            "directionsTo": "Get directions to {address} (opens in a new tab)",
+            "since": "Since {year}"
         },
         "memberLists": {
             "public": {
@@ -565,7 +572,9 @@
             "joinPolicy": "who can join",
             "visibility": "the visibility",
             "memberListVisibility": "the member list setting",
-            "streetAddress": "the street address"
+            "streetAddress": "the street address",
+            "phone": "the phone number",
+            "foundedYear": "the year founded"
         },
         "teamActor": "The Communalists team"
     },

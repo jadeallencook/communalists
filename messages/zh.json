@@ -372,7 +372,11 @@
             "unclaimedHint": "用于你添加的、方便邻居找到的团体。你不会被列为负责人。任何超级用户都可以编辑，该团体也可以认领。",
             "streetAddress": "街道地址（可选）",
             "streetAddressPlaceholder": "749 Story Rd, San Jose, CA 95122",
-            "streetAddressHint": "会公开显示，并附有路线。只填写办公室、教堂或社区中心等公共场所，绝不要填写个人住址。活动会默认使用这个地址。"
+            "streetAddressHint": "会公开显示，并附有路线。只填写办公室、教堂或社区中心等公共场所，绝不要填写个人住址。活动会默认使用这个地址。",
+            "foundedYear": "成立年份（可选）",
+            "foundedYearHint": "例如 1983。会显示为“始于 1983 年”。",
+            "phone": "电话（可选）",
+            "phoneHint": "会公开显示，方便大家来电。请填写组织的电话，不要填写个人手机。"
         },
         "new": {
             "metaTitle": "创建组织",
@@ -402,7 +406,9 @@
             "ownedLimit": "你已拥有 5 个组织，已达上限。",
             "generic": "出了点问题，请重试。",
             "handleCooldown": "标识名每 30 天只能更改一次。",
-            "notAllowed": "只有所有者和管理员可以编辑这个组织。"
+            "notAllowed": "只有所有者和管理员可以编辑这个组织。",
+            "invalidPhone": "这看起来不像电话号码。请包含区号，例如 (408) 555-0123。",
+            "invalidYear": "请输入 1800 年到今年之间的四位数年份。"
         },
         "page": {
             "members": "{count, plural, other {# 名成员}}",
@@ -420,7 +426,8 @@
             "focusAreas": "工作领域",
             "unclaimed": "未认领",
             "directions": "获取路线",
-            "directionsTo": "获取前往 {address} 的路线（在新标签页中打开）"
+            "directionsTo": "获取前往 {address} 的路线（在新标签页中打开）",
+            "since": "始于 {year} 年"
         },
         "memberLists": {
             "public": {
@@ -565,7 +572,9 @@
             "joinPolicy": "加入方式",
             "visibility": "可见性",
             "memberListVisibility": "成员名单设置",
-            "streetAddress": "街道地址"
+            "streetAddress": "街道地址",
+            "phone": "电话",
+            "foundedYear": "成立年份"
         },
         "teamActor": "Communalists 团队"
     },

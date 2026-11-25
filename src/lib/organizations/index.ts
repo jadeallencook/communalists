@@ -68,6 +68,10 @@ export interface Organization {
     streetAddress?: string;
     website?: string;
     contactEmail?: string;
+    /** Optional, public. E.164, plus `;ext=N` (src/lib/phone.ts). */
+    phone?: string;
+    /** Optional: the year the group started. */
+    foundedYear?: number;
     socials: SocialLink[];
     joinPolicy: JoinPolicy;
     visibility: Visibility;
@@ -136,6 +140,8 @@ function toOrganization(
         streetAddress: data.streetAddress,
         website: data.website,
         contactEmail: data.contactEmail,
+        phone: data.phone,
+        foundedYear: data.foundedYear,
         socials: socialLinksOf(data.socials),
         joinPolicy: data.joinPolicy,
         visibility: data.visibility,
@@ -285,6 +291,8 @@ function newOrganizationFields(
         ...(input.streetAddress ? { streetAddress: input.streetAddress } : {}),
         ...(input.website ? { website: input.website } : {}),
         ...(input.contactEmail ? { contactEmail: input.contactEmail } : {}),
+        ...(input.phone ? { phone: input.phone } : {}),
+        ...(input.foundedYear ? { foundedYear: input.foundedYear } : {}),
     };
 }
 
@@ -982,6 +990,8 @@ export async function updateOrganization(
             streetAddress: input.streetAddress ?? FieldValue.delete(),
             website: input.website ?? FieldValue.delete(),
             contactEmail: input.contactEmail ?? FieldValue.delete(),
+            phone: input.phone ?? FieldValue.delete(),
+            foundedYear: input.foundedYear ?? FieldValue.delete(),
             updatedAt: stamp,
             ...(handleChanged ? { handleChangedAt: stamp } : {}),
         });

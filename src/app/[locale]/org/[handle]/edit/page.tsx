@@ -99,6 +99,10 @@ async function EditServerContainer({ params }: Pick<Props, 'params'>) {
                             website: org.website ?? '',
                             contactEmail: org.contactEmail ?? '',
                             streetAddress: org.streetAddress ?? '',
+                            phone: org.phone ?? '',
+                            foundedYear: org.foundedYear
+                                ? String(org.foundedYear)
+                                : '',
                             joinPolicy: org.joinPolicy,
                             visibility: org.visibility,
                             memberListVisibility: org.memberListVisibility,

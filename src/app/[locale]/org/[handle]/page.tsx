@@ -22,6 +22,7 @@ import {
     visibleMembers,
 } from '@/lib/organizations/membership';
 import { handleProblem } from '@/lib/organizations/handle';
+import { phoneForDisplay } from '@/lib/phone';
 import { redirect } from '@/i18n/navigation';
 
 import { JoinPanelContainer } from './join-panel-container';
@@ -81,6 +82,8 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
         streetAddress: org.streetAddress,
         website: org.website,
         contactEmail: org.contactEmail,
+        phone: phoneForDisplay(org.phone) ?? undefined,
+        foundedYear: org.foundedYear,
         socials: org.socials,
         unlisted: org.visibility === 'unlisted',
     };

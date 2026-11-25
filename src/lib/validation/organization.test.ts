@@ -69,6 +69,33 @@ describe('organizationSchema', () => {
         );
     });
 
+    it("stores a phone number in one form, read in the group's country", () => {
+        expect(
+            organizationSchema.parse({ ...valid, phone: '(408) 293-6111' })
+                .phone
+        ).toBe('+14082936111');
+        expect(organizationSchema.parse(valid).phone).toBeUndefined();
+        expect(errorsFor({ ...valid, phone: '293-6111' })).toEqual({
+            phone: 'invalidPhone',
+        });
+    });
+
+    it('takes an optional four-digit founding year up to this year', () => {
+        expect(
+            organizationSchema.parse({ ...valid, foundedYear: ' 1983 ' })
+                .foundedYear
+        ).toBe(1983);
+        expect(
+            organizationSchema.parse({ ...valid, foundedYear: '' }).foundedYear
+        ).toBeUndefined();
+        const next = String(new Date().getFullYear() + 1);
+        for (const year of ['83', '1799', next, '19x3']) {
+            expect(errorsFor({ ...valid, foundedYear: year })).toEqual({
+                foundedYear: 'invalidYear',
+            });
+        }
+    });
+
     it('explains handle problems', () => {
         expect(errorsFor({ ...valid, handle: '' }).handle).toBe('required');
         expect(errorsFor({ ...valid, handle: 'ab' }).handle).toBe(

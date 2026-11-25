@@ -372,7 +372,11 @@
             "unclaimedHint": "Dành cho một nhóm bạn thêm vào để hàng xóm tìm thấy. Bạn sẽ không được ghi là chủ sở hữu. Bất kỳ siêu người dùng nào cũng có thể chỉnh sửa, và nhóm đó có thể nhận lại trang.",
             "streetAddress": "Địa chỉ (không bắt buộc)",
             "streetAddressPlaceholder": "749 Story Rd, San Jose, CA 95122",
-            "streetAddressHint": "Hiển thị công khai, kèm chỉ đường. Chỉ dùng nơi công cộng như văn phòng, nhà thờ hoặc trung tâm cộng đồng, không bao giờ dùng nhà riêng của ai đó. Các sự kiện sẽ mặc định dùng địa chỉ này."
+            "streetAddressHint": "Hiển thị công khai, kèm chỉ đường. Chỉ dùng nơi công cộng như văn phòng, nhà thờ hoặc trung tâm cộng đồng, không bao giờ dùng nhà riêng của ai đó. Các sự kiện sẽ mặc định dùng địa chỉ này.",
+            "foundedYear": "Năm thành lập (không bắt buộc)",
+            "foundedYearHint": "Ví dụ: 1983. Hiển thị là “Từ năm 1983”.",
+            "phone": "Điện thoại (không bắt buộc)",
+            "phoneHint": "Hiển thị công khai để mọi người có thể gọi. Dùng số của tổ chức, không dùng số di động cá nhân."
         },
         "new": {
             "metaTitle": "Tạo tổ chức",
@@ -402,7 +406,9 @@
             "ownedLimit": "Bạn đã sở hữu 5 tổ chức, mức tối đa cho phép.",
             "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
             "handleCooldown": "Bạn chỉ có thể đổi tên định danh 30 ngày một lần.",
-            "notAllowed": "Chỉ chủ nhóm và người điều hành mới có thể chỉnh sửa tổ chức này."
+            "notAllowed": "Chỉ chủ nhóm và người điều hành mới có thể chỉnh sửa tổ chức này.",
+            "invalidPhone": "Đây không giống số điện thoại. Hãy ghi cả mã vùng, ví dụ (408) 555-0123.",
+            "invalidYear": "Nhập năm có bốn chữ số, từ 1800 đến năm nay."
         },
         "page": {
             "members": "{count, plural, other {# thành viên}}",
@@ -420,7 +426,8 @@
             "focusAreas": "Lĩnh vực hoạt động",
             "unclaimed": "Chưa được nhận",
             "directions": "Chỉ đường",
-            "directionsTo": "Chỉ đường đến {address} (mở trong thẻ mới)"
+            "directionsTo": "Chỉ đường đến {address} (mở trong thẻ mới)",
+            "since": "Từ năm {year}"
         },
         "memberLists": {
             "public": {
@@ -565,7 +572,9 @@
             "joinPolicy": "ai có thể tham gia",
             "visibility": "chế độ hiển thị",
             "memberListVisibility": "cài đặt danh sách thành viên",
-            "streetAddress": "địa chỉ"
+            "streetAddress": "địa chỉ",
+            "phone": "số điện thoại",
+            "foundedYear": "năm thành lập"
         },
         "teamActor": "Nhóm Communalists"
     },

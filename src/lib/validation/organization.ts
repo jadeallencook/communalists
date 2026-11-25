@@ -10,11 +10,13 @@ import {
     RADIUS_MILES,
     REACH_SCOPES,
     MEMBER_LIST_VISIBILITIES,
+    PHONE_INPUT_MAX,
     STREET_ADDRESS_MAX,
     VISIBILITIES,
     type FocusArea,
 } from '@/lib/organizations/options';
 import { isSupportedCountry } from '@/lib/places/types';
+import { normalizePhone } from '@/lib/phone';
 import { socialFormValues, socialLinksSchema } from '@/lib/validation/socials';
 
 // The create-organization form. Messages are keys under
@@ -37,6 +39,8 @@ export type OrganizationErrorKey =
     | 'languagesRequired'
     | 'invalidUrl'
     | 'invalidEmail'
+    | 'invalidPhone'
+    | 'invalidYear'
     | 'socialInvalid'
     | 'socialMismatch'
     | 'socialDuplicate'
@@ -46,6 +50,9 @@ export type OrganizationErrorKey =
     | 'generic';
 
 const optionalText = z.string().trim().max(2000, { error: 'tooLong' });
+
+/** The earliest founding year accepted (anything older is surely a typo). */
+export const FOUNDED_YEAR_MIN = 1800;
 
 const webUrl = z
     .string()
@@ -97,6 +104,24 @@ export const organizationSchema = z
                 error: 'focusAreasTooMany',
             }),
         description: optionalText,
+        // Optional: the year the group started, shown as "Since 1983".
+        foundedYear: z
+            .string()
+            .trim()
+            .optional()
+            .transform((value, ctx) => {
+                if (!value) return undefined;
+                const year = Number(value);
+                if (
+                    !/^\d{4}$/.test(value) ||
+                    year < FOUNDED_YEAR_MIN ||
+                    year > new Date().getFullYear()
+                ) {
+                    ctx.addIssue({ code: 'custom', message: 'invalidYear' });
+                    return z.NEVER;
+                }
+                return year;
+            }),
         country: z
             .string({ error: 'placeRequired' })
             .refine(isSupportedCountry, { error: 'placeRequired' }),
@@ -126,6 +151,8 @@ export const organizationSchema = z
                 error: 'invalidEmail',
             })
             .transform((v) => v || undefined),
+        // Parsed with the organization's country below, once it's known.
+        phone: z.string().trim().max(PHONE_INPUT_MAX).optional(),
         socials: socialLinksSchema,
         joinPolicy: z.enum(JOIN_POLICIES, { error: 'required' }),
         visibility: z.enum(VISIBILITIES, { error: 'required' }),
@@ -144,6 +171,19 @@ export const organizationSchema = z
                 message: 'radiusRequired',
             });
         }
+    })
+    .transform((input, ctx) => {
+        // Numbers typed without a country code are read in the group's country.
+        const phone = normalizePhone(input.phone ?? '', input.country);
+        if (phone === null) {
+            ctx.addIssue({
+                code: 'custom',
+                path: ['phone'],
+                message: 'invalidPhone',
+            });
+            return z.NEVER;
+        }
+        return { ...input, phone };
     });
 
 export type OrganizationInput = z.infer<typeof organizationSchema>;
@@ -164,6 +204,8 @@ export interface CreateOrganizationState {
         languages: string[];
         website: string;
         contactEmail: string;
+        phone: string;
+        foundedYear: string;
         socials: { platform: string; handle: string }[];
         joinPolicy: string;
         visibility: string;
@@ -192,6 +234,8 @@ export function organizationFormValues(formData: FormData) {
         languages: formData.getAll('languages').map(String),
         website: text('website'),
         contactEmail: text('contactEmail'),
+        phone: text('phone'),
+        foundedYear: text('foundedYear'),
         socials: socialFormValues(formData),
         joinPolicy: text('joinPolicy'),
         visibility: text('visibility'),
