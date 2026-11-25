@@ -45,6 +45,8 @@ export interface OrganizationPageProps {
      * unclaimed (for one made without ticking "unclaimed"). `formAction` is
      * makeUnclaimedAction.
      */
+    /** Other organizations nearby (NearbyOrganizations), at the end of the page. */
+    nearby?: ReactNode;
     makeUnclaimed?: {
         orgId: string;
         locale: string;
@@ -67,6 +69,7 @@ export function OrganizationPage({
     pendingRequests = 0,
     unclaimed,
     makeUnclaimed,
+    nearby,
 }: OrganizationPageProps) {
     const t = useTranslations('Organizations');
     const tm = useTranslations('Membership');
@@ -99,6 +102,7 @@ export function OrganizationPage({
                         </div>
                     </section>
                 )}
+                {nearby}
             </section>
         );
     }
@@ -200,6 +204,7 @@ export function OrganizationPage({
                 </section>
             )}
             <MemberList {...members} />
+            {nearby}
         </section>
     );
 }

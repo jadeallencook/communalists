@@ -427,7 +427,11 @@
             "unclaimed": "未认领",
             "directions": "获取路线",
             "directionsTo": "获取前往 {address} 的路线（在新标签页中打开）",
-            "since": "始于 {year} 年"
+            "since": "始于 {year} 年",
+            "nearbyTitle": "{place} 附近的其他组织",
+            "nearbyAway": "距此 {miles} 英里 · {city}",
+            "nearbyInCity": "同在 {city}",
+            "nearbySeeAll": "查看 {place} 附近的所有组织"
         },
         "memberLists": {
             "public": {

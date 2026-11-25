@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
     directorySearchParams,
     filterDirectory,
+    nearbyOrganizations,
     parseDirectorySearch,
     type DirectoryFilters,
     type DirectoryOrganization,
@@ -139,6 +140,36 @@ describe('filterDirectory', () => {
         );
         expect(results.local).toHaveLength(1);
         expect(results.international).toEqual([]);
+    });
+});
+
+describe('nearbyOrganizations', () => {
+    const here = { id: 'self', ...sanJose };
+
+    it('lists other local groups within 50 mi, closest first, leaving out itself', () => {
+        const result = nearbyOrganizations(
+            [
+                org('oakland', { at: oakland }),
+                org('self', { at: sanJose }),
+                org('santa-clara', { at: santaClara }),
+                org('la', { at: losAngeles }),
+                org('national', { reach: 'national', at: santaClara }),
+            ],
+            here
+        );
+        expect(result.map((r) => r.org.id)).toEqual(['santa-clara', 'oakland']);
+        expect(result[0].distanceMiles).toBe(3);
+    });
+
+    it('shows at most 4', () => {
+        const many = ['a', 'b', 'c', 'd', 'e', 'f'].map((id) => org(id));
+        expect(nearbyOrganizations(many, here)).toHaveLength(4);
+    });
+
+    it('is empty when nothing is near', () => {
+        expect(
+            nearbyOrganizations([org('la', { at: losAngeles })], here)
+        ).toEqual([]);
     });
 });
 

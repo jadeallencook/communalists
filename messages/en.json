@@ -427,7 +427,11 @@
             "unclaimed": "Unclaimed",
             "directions": "Get directions",
             "directionsTo": "Get directions to {address} (opens in a new tab)",
-            "since": "Since {year}"
+            "since": "Since {year}",
+            "nearbyTitle": "Other organizations near {place}",
+            "nearbyAway": "{miles} mi from here · {city}",
+            "nearbyInCity": "Also in {city}",
+            "nearbySeeAll": "See all organizations near {place}"
         },
         "memberLists": {
             "public": {

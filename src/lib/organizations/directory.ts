@@ -178,3 +178,28 @@ export function filterDirectory(
     results.international.sort(bySize);
     return results;
 }
+
+/** How far "nearby organizations" on an organization's page looks, and how many it shows. */
+export const NEARBY_RADIUS_MILES: RadiusMiles = 50;
+export const NEARBY_LIMIT = 4;
+
+/**
+ * Other local organizations within NEARBY_RADIUS_MILES of an organization's
+ * city, closest first, at most NEARBY_LIMIT. Leaves out the organization
+ * itself. Candidates are already listed and active (getDirectoryLocal).
+ */
+export function nearbyOrganizations(
+    candidates: DirectoryOrganization[],
+    origin: { id: string; country: CountryCode; lat: number; lng: number }
+): DirectoryResult[] {
+    return filterDirectory(
+        candidates.filter((org) => org.id !== origin.id),
+        origin,
+        {
+            radiusMiles: NEARBY_RADIUS_MILES,
+            focusAreas: [],
+            languages: [],
+            reach: ['local'],
+        }
+    ).local.slice(0, NEARBY_LIMIT);
+}

@@ -427,7 +427,11 @@
             "unclaimed": "Sin reclamar",
             "directions": "Cómo llegar",
             "directionsTo": "Cómo llegar a {address} (se abre en una pestaña nueva)",
-            "since": "Desde {year}"
+            "since": "Desde {year}",
+            "nearbyTitle": "Otras organizaciones cerca de {place}",
+            "nearbyAway": "A {miles} mi de aquí · {city}",
+            "nearbyInCity": "También en {city}",
+            "nearbySeeAll": "Ver todas las organizaciones cerca de {place}"
         },
         "memberLists": {
             "public": {

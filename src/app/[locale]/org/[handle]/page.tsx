@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getLocale } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
+import { NearbyOrganizations } from '@/components/organisms/nearby-organizations';
 import {
     OrganizationPage,
     OrganizationPageLoading,
@@ -10,6 +11,7 @@ import {
 import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
 import {
+    getDirectoryLocal,
     getMembershipFresh,
     getOrganizationByHandle,
     getOrganizationByHandleFresh,
@@ -21,7 +23,12 @@ import {
     sortMembers,
     visibleMembers,
 } from '@/lib/organizations/membership';
+import {
+    NEARBY_RADIUS_MILES,
+    nearbyOrganizations,
+} from '@/lib/organizations/directory';
 import { handleProblem } from '@/lib/organizations/handle';
+import { isSupportedCountry } from '@/lib/places/types';
 import { makeUnclaimedProblem } from '@/lib/organizations/lifecycle';
 import { phoneForDisplay } from '@/lib/phone';
 import { redirect } from '@/i18n/navigation';
@@ -89,7 +96,10 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
         socials: org.socials,
         unlisted: org.visibility === 'unlisted',
     };
-    const user = await getSessionUser();
+    const [user, nearby] = await Promise.all([
+        getSessionUser(),
+        nearbySection(org),
+    ]);
 
     // Unclaimed: no members, no joining. Super users manage it as owners.
     if (org.unclaimed) {
@@ -105,6 +115,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                 }}
                 profile={profile}
                 unclaimed={{ canManage: isPlatformAdmin(user?.uid) }}
+                nearby={nearby}
             />
         );
     }
@@ -149,6 +160,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                 setting: org.memberListVisibility,
                 viewerIsMember: !!role,
             }}
+            nearby={nearby}
             makeUnclaimed={
                 // Shown only when it would work; the action checks again.
                 makeUnclaimedProblem({
@@ -166,6 +178,61 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                     : 0
             }
             profile={{ ...profile, memberCount: active.length }}
+        />
+    );
+}
+
+/**
+ * Up to 4 other local organizations within 50 mi of this one's city, closest
+ * first. One cached read per city (shared with /find and the dashboard).
+ */
+async function nearbySection(org: {
+    id: string;
+    location: {
+        placeId: string;
+        country: string;
+        label: string;
+        lat: number;
+        lng: number;
+    };
+}) {
+    const { location } = org;
+    if (!isSupportedCountry(location.country)) return null;
+    const [candidates, t] = await Promise.all([
+        getDirectoryLocal({
+            placeId: location.placeId,
+            lat: location.lat,
+            lng: location.lng,
+        }),
+        getTranslations('Organizations.page'),
+    ]);
+    const nearby = nearbyOrganizations(candidates, {
+        id: org.id,
+        country: location.country,
+        lat: location.lat,
+        lng: location.lng,
+    });
+    return (
+        <NearbyOrganizations
+            place={location.label}
+            organizations={nearby.map(({ org: other, distanceMiles }) => ({
+                name: other.name,
+                handle: other.handle,
+                focusAreas: other.focusAreas,
+                unclaimed: other.unclaimed,
+                detail:
+                    distanceMiles < 1
+                        ? t('nearbyInCity', { city: other.location.label })
+                        : t('nearbyAway', {
+                              miles: distanceMiles,
+                              city: other.location.label,
+                          }),
+            }))}
+            findQuery={{
+                country: location.country,
+                placeId: location.placeId,
+                radius: String(NEARBY_RADIUS_MILES),
+            }}
         />
     );
 }

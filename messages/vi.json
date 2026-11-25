@@ -427,7 +427,11 @@
             "unclaimed": "Chưa được nhận",
             "directions": "Chỉ đường",
             "directionsTo": "Chỉ đường đến {address} (mở trong thẻ mới)",
-            "since": "Từ năm {year}"
+            "since": "Từ năm {year}",
+            "nearbyTitle": "Các tổ chức khác gần {place}",
+            "nearbyAway": "Cách đây {miles} dặm · {city}",
+            "nearbyInCity": "Cũng ở {city}",
+            "nearbySeeAll": "Xem tất cả tổ chức gần {place}"
         },
         "memberLists": {
             "public": {
