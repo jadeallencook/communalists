@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [041](041-branch-protection-on-main.md)                                         | Branch protection on `main`: pull requests, code owner review, squash merges                       | 2026-11-24 |
 | [039](039-decision-log-one-file-per-decision.md)                                | The decision log is one file per decision, named by subject                                        | 2026-11-24 |
 | [038](038-nearby-organizations-on-organization-page.md)                         | Nearby organizations on each organization's page                                                   | 2026-11-24 |
 | [037](037-deleting-organizations-restore-and-make-unclaimed.md)                 | Deleting organizations: owners archive, handle held 30 days, super users restore; "Make unclaimed" | 2026-11-24 |

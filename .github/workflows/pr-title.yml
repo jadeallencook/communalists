@@ -1,0 +1,39 @@
+name: PR title
+
+# Squash merges make the PR title the commit message on `main`, so the title
+# must pass the same commitlint rules as the local commit-msg hook.
+# `edited` re-runs the check when someone fixes the title.
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-title-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  title:
+    name: PR title follows Conventional Commits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Reads the pnpm version from package.json `packageManager`.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # The title comes in through an environment variable, never interpolated
+      # into the script, so a crafted title can't run commands.
+      - name: Check the title with commitlint
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: printf '%s\n' "$PR_TITLE" | pnpm exec commitlint --verbose

@@ -67,7 +67,7 @@ Values come from Vercel (`vercel api /v6/domains/<domain>/config`) and are proje
 
 ## Deploying
 
-- **Normal path:** push to `main` and Vercel builds production for both projects; PRs and other branches get previews. Working again since 2026-11-21 (see "Known issues").
+- **Normal path:** merge a PR into `main` (branch protection requires review and green CI; see [tooling-and-ci](tooling-and-ci.md#branch-protection-on-main)) and Vercel builds production for both projects; PRs and other branches get previews. Working again since 2026-11-21 (see "Known issues").
 - **Manual path (CLI):** `vercel deploy --project <name>` (preview), plus `--prod` for production. It uploads the **working tree**, uncommitted changes included, so deploy to production only from a clean checkout of `main`.
 - **Previews** are behind Vercel Authentication. Use `vercel curl <full-deployment-url>/path` to test them.
 

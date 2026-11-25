@@ -122,6 +122,7 @@ These are the rules we're building to today. They can change. When one does, upd
 
 - **Never commit or push.** Leave every change uncommitted in the working tree; the user reviews, commits and pushes. Switching branches is fine, but never discard uncommitted work to do it.
 - When a task is done, summarize what is ready to commit (files and a suggested Conventional Commit message).
+- `main` is protected (decision #41): changes land through a squash-merged pull request with a code owner's approval and green CI. The PR title becomes the commit message, so suggest one that passes commitlint.
 
 ## Don't
 
