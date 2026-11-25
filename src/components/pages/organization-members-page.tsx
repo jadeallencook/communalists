@@ -41,7 +41,12 @@ export interface OrganizationMembersPageProps {
     banned: (Person & { reason?: string })[];
     log: {
         id: string;
-        action: ModerationAction | 'editProfile' | 'claim';
+        action:
+            | ModerationAction
+            | 'editProfile'
+            | 'claim'
+            | 'deleteOrganization'
+            | 'restoreOrganization';
         /** editProfile only: which fields changed. */
         fields?: string[];
         actorName: string;

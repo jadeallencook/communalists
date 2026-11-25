@@ -449,6 +449,23 @@
             "description": "Thay đổi sẽ hiện trên trang của bạn ngay lập tức. Đổi tên định danh sẽ đổi địa chỉ: các liên kết cũ sẽ không còn hoạt động, và tên cũ được giữ lại 30 ngày để không ai khác dùng được.",
             "handleOwnersOnly": "Chỉ chủ nhóm mới có thể đổi tên định danh.",
             "handleCooldown": "Bạn có thể đổi tên định danh lại vào ngày {date}."
+        },
+        "delete": {
+            "title": "Xóa tổ chức",
+            "body": "Khi xóa, trang và mục liệt kê sẽ biến mất với mọi người, và thành viên mất quyền truy cập ngay lập tức. Địa chỉ được giữ lại 30 ngày để không ai khác lấy được. Nếu xóa nhầm, hãy liên hệ nhóm Communalists trong vòng 30 ngày để khôi phục.",
+            "button": "Xóa tổ chức",
+            "confirmTitle": "Xóa {name}?",
+            "confirmBody": "Trang, mục liệt kê và không gian thành viên sẽ biến mất với mọi người. Trong vòng 30 ngày, nhóm Communalists có thể khôi phục; sau đó thì không.",
+            "typeName": "Nhập {name} để xác nhận",
+            "keep": "Giữ lại",
+            "confirm": "Xóa",
+            "deleting": "Đang xóa…",
+            "errors": {
+                "notAllowed": "Chỉ chủ sở hữu mới có thể xóa tổ chức.",
+                "notFound": "Tổ chức này đã bị xóa hoặc đã thay đổi. Hãy tải lại trang.",
+                "notConfirmed": "Tên bạn nhập không khớp.",
+                "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+            }
         }
     },
     "Membership": {
@@ -507,7 +524,9 @@
             "makeOwner": "{actor} đã đặt {target} làm chủ nhóm",
             "makeMember": "{actor} đã đặt {target} làm thành viên thường",
             "editProfile": "{actor} đã thay đổi {fields}",
-            "claim": "{target} đã nhận tổ chức này"
+            "claim": "{target} đã nhận tổ chức này",
+            "deleteOrganization": "{actor} đã xóa tổ chức này",
+            "restoreOrganization": "{actor} đã khôi phục tổ chức này"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Lý do",
@@ -683,7 +702,12 @@
         "claimHint": "Bạn cần một tài khoản miễn phí. Nhóm chúng tôi kiểm tra mọi yêu cầu.",
         "adminTitle": "Công cụ siêu người dùng",
         "adminBody": "Chưa ai nhận tổ chức này, nên mọi siêu người dùng đều có thể chỉnh sửa. Bạn không được hiển thị là chủ sở hữu.",
-        "adminLink": "Yêu cầu nhận trang"
+        "adminLink": "Yêu cầu nhận trang",
+        "makeUnclaimed": "Chuyển thành chưa được nhận",
+        "makeUnclaimedTitle": "Chuyển {name} thành chưa được nhận?",
+        "makeUnclaimedBody": "Bạn không còn là chủ sở hữu và thành viên. Tổ chức trở thành chưa được nhận, giữ nguyên địa chỉ và thông tin: mọi siêu người dùng đều có thể chỉnh sửa, và tổ chức đó có thể nhận lại trang. Các yêu cầu tham gia đang chờ sẽ bị xóa.",
+        "keepOwner": "Vẫn làm chủ sở hữu",
+        "makeUnclaimedConfirm": "Chuyển thành chưa được nhận"
     },
     "Claim": {
         "metaTitle": "Nhận một tổ chức",
@@ -774,7 +798,10 @@
             "editUnclaimed": "{actor} đã chỉnh sửa {org}",
             "approveClaim": "{actor} đã cho {target} làm chủ sở hữu {org}",
             "approveRemoval": "{actor} đã gỡ {org} theo yêu cầu của {target}",
-            "denyClaim": "{actor} đã từ chối yêu cầu của {target} cho {org}"
+            "denyClaim": "{actor} đã từ chối yêu cầu của {target} cho {org}",
+            "deleteUnclaimed": "{actor} đã xóa {org}",
+            "restoreOrganization": "{actor} đã khôi phục {org}",
+            "makeUnclaimed": "{actor} đã chuyển {org} thành chưa được nhận"
         },
         "unknownActor": "Một siêu người dùng",
         "errors": {
@@ -789,6 +816,20 @@
             "approveClaim": "Đã duyệt. Người này giờ là chủ sở hữu tổ chức.",
             "approveRemoval": "Đã gỡ.",
             "deny": "Đã từ chối yêu cầu. Họ có thể gửi yêu cầu mới."
+        },
+        "deletedTitle": "Đã xóa gần đây",
+        "deletedHint": "Các tổ chức bị xóa trong 30 ngày qua. Khôi phục sẽ đưa trang, địa chỉ và thành viên trở lại.",
+        "noDeleted": "Không có gì bị xóa gần đây.",
+        "deletedOn": "Đã xóa ngày {date} · có thể khôi phục đến {until}",
+        "restore": "Khôi phục",
+        "restoreFor": "Khôi phục {name}",
+        "restored": "Đã khôi phục. Trang và thành viên đã trở lại.",
+        "restoreErrors": {
+            "notFound": "Tổ chức đó không còn ở trạng thái đã xóa. Danh sách đã được cập nhật.",
+            "tooLate": "Đã quá 30 ngày nên không thể khôi phục nữa.",
+            "handleTaken": "Một tổ chức khác hiện đang dùng địa chỉ này, nên không thể khôi phục như cũ.",
+            "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
         }
     }
 }

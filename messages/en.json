@@ -449,6 +449,23 @@
             "description": "Changes show on your page right away. Changing the handle changes your address: old links stop working, and the old handle is held for 30 days so nobody else can take it.",
             "handleOwnersOnly": "Only owners can change the handle.",
             "handleCooldown": "You can change the handle again on {date}."
+        },
+        "delete": {
+            "title": "Delete organization",
+            "body": "Deleting removes the page and its listing for everyone, and members lose access right away. The address is held for 30 days so nobody else can take it. If it was a mistake, contact the Communalists team within 30 days to restore it.",
+            "button": "Delete organization",
+            "confirmTitle": "Delete {name}?",
+            "confirmBody": "The page, its listing and the members' space disappear for everyone. Within 30 days the Communalists team can restore it; after that it's gone.",
+            "typeName": "Type {name} to confirm",
+            "keep": "Keep it",
+            "confirm": "Delete",
+            "deleting": "Deleting…",
+            "errors": {
+                "notAllowed": "Only owners can delete an organization.",
+                "notFound": "This organization was already deleted or changed. Reload the page.",
+                "notConfirmed": "The name you typed doesn't match.",
+                "generic": "Something went wrong. Try again."
+            }
         }
     },
     "Membership": {
@@ -507,7 +524,9 @@
             "makeOwner": "{actor} made {target} an owner",
             "makeMember": "{actor} made {target} a regular member",
             "editProfile": "{actor} changed {fields}",
-            "claim": "{target} claimed this organization"
+            "claim": "{target} claimed this organization",
+            "deleteOrganization": "{actor} deleted this organization",
+            "restoreOrganization": "{actor} restored this organization"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Reason",
@@ -683,7 +702,12 @@
         "claimHint": "You need a free account. Our team checks every request.",
         "adminTitle": "Super user tools",
         "adminBody": "Nobody has claimed this organization yet, so every super user can edit it. You aren't shown as its owner.",
-        "adminLink": "Claim requests"
+        "adminLink": "Claim requests",
+        "makeUnclaimed": "Make unclaimed",
+        "makeUnclaimedTitle": "Make {name} unclaimed?",
+        "makeUnclaimedBody": "You stop being its owner and member. It becomes unclaimed, with the same address and details: every super user can edit it, and the organization can claim it. Any pending join requests are removed.",
+        "keepOwner": "Stay owner",
+        "makeUnclaimedConfirm": "Make unclaimed"
     },
     "Claim": {
         "metaTitle": "Claim an organization",
@@ -774,7 +798,10 @@
             "editUnclaimed": "{actor} edited {org}",
             "approveClaim": "{actor} made {target} the owner of {org}",
             "approveRemoval": "{actor} took down {org} at {target}'s request",
-            "denyClaim": "{actor} denied {target}'s request for {org}"
+            "denyClaim": "{actor} denied {target}'s request for {org}",
+            "deleteUnclaimed": "{actor} deleted {org}",
+            "restoreOrganization": "{actor} restored {org}",
+            "makeUnclaimed": "{actor} made {org} unclaimed"
         },
         "unknownActor": "A super user",
         "errors": {
@@ -789,6 +816,20 @@
             "approveClaim": "Approved. They now own the organization.",
             "approveRemoval": "Taken down.",
             "deny": "Request denied. They can send a new one."
+        },
+        "deletedTitle": "Recently deleted",
+        "deletedHint": "Organizations deleted in the last 30 days. Restoring brings back the page, its address and its members.",
+        "noDeleted": "Nothing deleted recently.",
+        "deletedOn": "Deleted {date} · restorable until {until}",
+        "restore": "Restore",
+        "restoreFor": "Restore {name}",
+        "restored": "Restored. The page and its members are back.",
+        "restoreErrors": {
+            "notFound": "That organization is no longer deleted. The list now shows the latest.",
+            "tooLate": "More than 30 days have passed, so it can no longer be restored.",
+            "handleTaken": "Another organization now has its address, so it can’t be restored as it was.",
+            "notAllowed": "Only super users can do this.",
+            "generic": "Something went wrong. Try again."
         }
     }
 }

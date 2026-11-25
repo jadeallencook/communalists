@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
 import { CreateOrganizationForm } from '@/components/organisms/create-organization-form';
+import { DeleteOrganizationSection } from '@/components/organisms/delete-organization-section';
 import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
 
@@ -79,6 +80,22 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+/** Owners also see Delete organization at the end. */
+export const AsOwner: Story = {
+    args: {
+        deleteSection: (
+            <DeleteOrganizationSection
+                name="South Bay Mutual Aid"
+                orgId="org1"
+                locale="en"
+                typed=""
+                onTypedChange={fn()}
+                confirmed={false}
+                formAction={fn()}
+            />
+        ),
+    },
+};
 export const Loading: Story = {
     render: () => <EditOrganizationPageLoading />,
 };

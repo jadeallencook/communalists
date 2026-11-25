@@ -21,6 +21,10 @@ import {
     claimDecisionSchema,
     type ClaimDecisionProblem,
 } from '@/lib/organizations/claims';
+import {
+    DELETED_TAG,
+    restoreOrganization,
+} from '@/lib/organizations/lifecycle-store';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 
@@ -73,6 +77,7 @@ export async function decideClaimAction(
 
     updateTag(CLAIMS_TAG);
     updateTag(ADMIN_LOG_TAG);
+    updateTag(DELETED_TAG); // an approved takedown can be restored
     if (decision === 'approve') {
         // The page, its listing and the new owner's dashboard all change.
         updateTag(orgTag(orgId));
@@ -91,4 +96,45 @@ export async function decideClaimAction(
                   : 'approveRemoval',
         at,
     };
+}
+
+export interface RestoreState {
+    error?: 'notFound' | 'tooLate' | 'handleTaken' | 'notAllowed' | 'generic';
+    done?: boolean;
+    at?: number;
+}
+
+/** A super user restores an organization deleted in the last 30 days. */
+export async function restoreOrganizationAction(
+    _prev: RestoreState,
+    formData: FormData
+): Promise<RestoreState> {
+    const requested = text(formData, 'locale');
+    const locale = hasLocale(routing.locales, requested)
+        ? requested
+        : routing.defaultLocale;
+    const at = Date.now();
+    const user = await getSessionUser();
+    if (!user) return redirect({ href: '/sign-in', locale });
+    if (!isPlatformAdmin(user.uid)) return { error: 'notAllowed', at };
+    const orgId = text(formData, 'orgId');
+    if (!orgId || orgId.length > 128) return { error: 'generic', at };
+
+    let result;
+    try {
+        result = await restoreOrganization(user.uid, orgId);
+    } catch (error) {
+        console.error('[org] restore failed', (error as Error).message);
+        return { error: 'generic', at };
+    }
+    updateTag(DELETED_TAG);
+    if (!result.ok) return { error: result.error, at };
+    updateTag(ADMIN_LOG_TAG);
+    updateTag(orgTag(orgId));
+    updateTag(handleTag(result.handle));
+    updateTag(orgMembersTag(orgId));
+    updateTag(DIRECTORY_TAG);
+    for (const uid of result.memberUids) updateTag(membershipsTag(uid));
+    refresh();
+    return { done: true, at };
 }

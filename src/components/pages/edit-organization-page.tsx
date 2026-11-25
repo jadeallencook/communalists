@@ -11,6 +11,8 @@ export interface EditOrganizationPageProps {
     handle: string;
     /** The app passes a container wired to the action; Storybook passes <CreateOrganizationForm mode="edit">. */
     form: ReactNode;
+    /** Owners only: the delete section (DeleteOrganizationSection, wired by a container). */
+    deleteSection?: ReactNode;
 }
 
 /** /org/{handle}/edit: back to the group, a title, and the form filled in. */
@@ -18,6 +20,7 @@ export function EditOrganizationPage({
     name,
     handle,
     form,
+    deleteSection,
 }: EditOrganizationPageProps) {
     const t = useTranslations('Organizations');
     return (
@@ -40,6 +43,7 @@ export function EditOrganizationPage({
                 <p className="text-muted-foreground">{t('edit.description')}</p>
             </header>
             {form}
+            {deleteSection}
         </section>
     );
 }

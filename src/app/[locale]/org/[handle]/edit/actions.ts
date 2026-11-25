@@ -7,6 +7,10 @@ import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
 import { ADMIN_LOG_TAG } from '@/lib/organizations/claim-store';
 import {
+    deleteOrganization,
+    DELETED_TAG,
+} from '@/lib/organizations/lifecycle-store';
+import {
     DIRECTORY_TAG,
     handleTag,
     membershipsTag,
@@ -99,5 +103,63 @@ export async function updateOrganizationAction(
     updateTag(ADMIN_LOG_TAG); // super-user edits of unclaimed organizations
     refresh();
     redirect({ href: `/org/${result.handle}`, locale });
+    return {};
+}
+
+export interface DeleteOrganizationState {
+    error?: 'notAllowed' | 'notFound' | 'notConfirmed' | 'generic';
+    /** Changes on every submit, so the same message can show twice. */
+    at?: number;
+}
+
+/**
+ * Deletes (archives) the organization: owners only, after typing its name.
+ * Checked again on fresh data in deleteOrganization. Super users can restore
+ * it for 30 days.
+ */
+export async function deleteOrganizationAction(
+    _prev: DeleteOrganizationState,
+    formData: FormData
+): Promise<DeleteOrganizationState> {
+    const requested = formData.get('uiLocale');
+    const locale =
+        typeof requested === 'string' && hasLocale(routing.locales, requested)
+            ? requested
+            : routing.defaultLocale;
+    const at = Date.now();
+    const orgId = formData.get('orgId');
+    const typed = formData.get('confirmName');
+    const user = await getSessionUser();
+    if (!user) return redirect({ href: '/sign-in', locale });
+    if (typeof orgId !== 'string' || !orgId || orgId.length > 128)
+        return { error: 'generic', at };
+
+    let result;
+    try {
+        const profile = await getUserProfileFresh(user.uid);
+        result = await deleteOrganization(
+            orgId,
+            {
+                uid: user.uid,
+                displayName: profile?.displayName ?? '',
+                platformAdmin: isPlatformAdmin(user.uid),
+            },
+            typeof typed === 'string' ? typed.slice(0, 200) : ''
+        );
+    } catch (error) {
+        console.error('[org] delete failed', (error as Error).message); // never log PII
+        return { error: 'generic', at };
+    }
+    if (!result.ok) return { error: result.error, at };
+
+    // The page, its address, listings, and every member's dashboard.
+    updateTag(orgTag(orgId));
+    updateTag(handleTag(result.handle));
+    updateTag(orgMembersTag(orgId));
+    updateTag(DIRECTORY_TAG);
+    updateTag(DELETED_TAG);
+    updateTag(ADMIN_LOG_TAG);
+    for (const uid of result.memberUids) updateTag(membershipsTag(uid));
+    redirect({ href: '/dashboard', locale });
     return {};
 }

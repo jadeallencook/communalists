@@ -449,6 +449,23 @@
             "description": "Los cambios se ven en tu página al momento. Cambiar el identificador cambia tu dirección: los enlaces antiguos dejan de funcionar y el identificador anterior se reserva durante 30 días para que nadie más lo use.",
             "handleOwnersOnly": "Solo las personas propietarias pueden cambiar el identificador.",
             "handleCooldown": "Podrás cambiar el identificador de nuevo el {date}."
+        },
+        "delete": {
+            "title": "Eliminar organización",
+            "body": "Al eliminarla, la página y su anuncio desaparecen para todos, y los miembros pierden el acceso de inmediato. La dirección queda reservada 30 días para que nadie más la tome. Si fue un error, contacta al equipo de Communalists en un plazo de 30 días para recuperarla.",
+            "button": "Eliminar organización",
+            "confirmTitle": "¿Eliminar {name}?",
+            "confirmBody": "La página, su anuncio y el espacio de miembros desaparecen para todos. En un plazo de 30 días el equipo de Communalists puede recuperarla; después ya no.",
+            "typeName": "Escribe {name} para confirmar",
+            "keep": "Conservarla",
+            "confirm": "Eliminar",
+            "deleting": "Eliminando…",
+            "errors": {
+                "notAllowed": "Solo los dueños pueden eliminar una organización.",
+                "notFound": "Esta organización ya se eliminó o cambió. Vuelve a cargar la página.",
+                "notConfirmed": "El nombre que escribiste no coincide.",
+                "generic": "Algo salió mal. Inténtalo de nuevo."
+            }
         }
     },
     "Membership": {
@@ -507,7 +524,9 @@
             "makeOwner": "{actor} hizo propietario a {target}",
             "makeMember": "{actor} hizo miembro regular a {target}",
             "editProfile": "{actor} cambió {fields}",
-            "claim": "{target} reclamó esta organización"
+            "claim": "{target} reclamó esta organización",
+            "deleteOrganization": "{actor} eliminó esta organización",
+            "restoreOrganization": "{actor} recuperó esta organización"
         },
         "reasonQuoted": "«{reason}»",
         "reason": "Motivo",
@@ -683,7 +702,12 @@
         "claimHint": "Necesitas una cuenta gratuita. Nuestro equipo revisa cada solicitud.",
         "adminTitle": "Herramientas de superusuario",
         "adminBody": "Nadie ha reclamado esta organización, así que cualquier superusuario puede editarla. No apareces como su dueño.",
-        "adminLink": "Solicitudes de reclamo"
+        "adminLink": "Solicitudes de reclamo",
+        "makeUnclaimed": "Dejar sin reclamar",
+        "makeUnclaimedTitle": "¿Dejar {name} sin reclamar?",
+        "makeUnclaimedBody": "Dejas de ser su dueño y miembro. Queda sin reclamar, con la misma dirección y datos: cualquier superusuario puede editarla y la organización puede reclamarla. Se quitan las solicitudes para unirse pendientes.",
+        "keepOwner": "Seguir de dueño",
+        "makeUnclaimedConfirm": "Dejar sin reclamar"
     },
     "Claim": {
         "metaTitle": "Reclamar una organización",
@@ -774,7 +798,10 @@
             "editUnclaimed": "{actor} editó {org}",
             "approveClaim": "{actor} hizo a {target} dueño de {org}",
             "approveRemoval": "{actor} quitó {org} a pedido de {target}",
-            "denyClaim": "{actor} rechazó la solicitud de {target} para {org}"
+            "denyClaim": "{actor} rechazó la solicitud de {target} para {org}",
+            "deleteUnclaimed": "{actor} eliminó {org}",
+            "restoreOrganization": "{actor} recuperó {org}",
+            "makeUnclaimed": "{actor} dejó {org} sin reclamar"
         },
         "unknownActor": "Un superusuario",
         "errors": {
@@ -789,6 +816,20 @@
             "approveClaim": "Aprobada. Ahora es dueño de la organización.",
             "approveRemoval": "Quitada.",
             "deny": "Solicitud rechazada. Puede enviar una nueva."
+        },
+        "deletedTitle": "Eliminadas recientemente",
+        "deletedHint": "Organizaciones eliminadas en los últimos 30 días. Al recuperarlas vuelven la página, su dirección y sus miembros.",
+        "noDeleted": "Nada eliminado recientemente.",
+        "deletedOn": "Eliminada el {date} · se puede recuperar hasta el {until}",
+        "restore": "Recuperar",
+        "restoreFor": "Recuperar {name}",
+        "restored": "Recuperada. La página y sus miembros volvieron.",
+        "restoreErrors": {
+            "notFound": "Esa organización ya no está eliminada. La lista ahora muestra lo más reciente.",
+            "tooLate": "Pasaron más de 30 días, así que ya no se puede recuperar.",
+            "handleTaken": "Otra organización tiene ahora su dirección, así que no se puede recuperar tal como estaba.",
+            "notAllowed": "Solo los superusuarios pueden hacer esto.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
         }
     }
 }

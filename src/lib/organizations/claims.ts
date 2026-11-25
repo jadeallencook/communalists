@@ -102,4 +102,7 @@ export type AdminAction =
     | 'editUnclaimed'
     | 'approveClaim'
     | 'approveRemoval'
-    | 'denyClaim';
+    | 'denyClaim'
+    | 'deleteUnclaimed'
+    | 'restoreOrganization'
+    | 'makeUnclaimed';

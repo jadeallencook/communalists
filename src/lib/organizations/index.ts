@@ -585,7 +585,12 @@ export async function getOrgPeople(orgId: string): Promise<OrgPerson[]> {
 }
 
 /** Everything the moderation log records: actions on people, and profile edits. */
-export type LogAction = ModerationAction | 'editProfile' | 'claim';
+export type LogAction =
+    | ModerationAction
+    | 'editProfile'
+    | 'claim'
+    | 'deleteOrganization'
+    | 'restoreOrganization';
 
 export interface ModerationLogEntry {
     id: string;

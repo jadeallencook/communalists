@@ -449,6 +449,23 @@
             "description": "更改会立即显示在你的页面上。更改标识名会改变你的地址：旧链接将失效，旧标识名会保留 30 天，以免被他人使用。",
             "handleOwnersOnly": "只有所有者可以更改标识名。",
             "handleCooldown": "你可以在 {date} 再次更改标识名。"
+        },
+        "delete": {
+            "title": "删除组织",
+            "body": "删除后，页面和列表信息对所有人消失，成员会立即失去访问权限。地址会保留 30 天，其他人无法使用。如果是误删，请在 30 天内联系 Communalists 团队恢复。",
+            "button": "删除组织",
+            "confirmTitle": "删除 {name}？",
+            "confirmBody": "页面、列表信息和成员空间对所有人都会消失。30 天内 Communalists 团队可以恢复；之后就无法恢复了。",
+            "typeName": "输入 {name} 以确认",
+            "keep": "保留",
+            "confirm": "删除",
+            "deleting": "正在删除…",
+            "errors": {
+                "notAllowed": "只有负责人可以删除组织。",
+                "notFound": "这个组织已被删除或已更改。请重新加载页面。",
+                "notConfirmed": "你输入的名称不一致。",
+                "generic": "出了点问题，请重试。"
+            }
         }
     },
     "Membership": {
@@ -507,7 +524,9 @@
             "makeOwner": "{actor} 将 {target} 设为所有者",
             "makeMember": "{actor} 将 {target} 设为普通成员",
             "editProfile": "{actor} 更改了{fields}",
-            "claim": "{target} 认领了这个组织"
+            "claim": "{target} 认领了这个组织",
+            "deleteOrganization": "{actor} 删除了这个组织",
+            "restoreOrganization": "{actor} 恢复了这个组织"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "原因",
@@ -683,7 +702,12 @@
         "claimHint": "你需要一个免费账户。我们的团队会审核每一个请求。",
         "adminTitle": "超级用户工具",
         "adminBody": "还没有人认领这个组织，所以每位超级用户都可以编辑它。你不会显示为它的负责人。",
-        "adminLink": "认领请求"
+        "adminLink": "认领请求",
+        "makeUnclaimed": "设为未认领",
+        "makeUnclaimedTitle": "将 {name} 设为未认领？",
+        "makeUnclaimedBody": "你将不再是它的负责人和成员。它会变为未认领，地址和信息保持不变：每位超级用户都可以编辑，该组织也可以认领。待处理的加入申请会被移除。",
+        "keepOwner": "继续担任负责人",
+        "makeUnclaimedConfirm": "设为未认领"
     },
     "Claim": {
         "metaTitle": "认领组织",
@@ -774,7 +798,10 @@
             "editUnclaimed": "{actor} 编辑了 {org}",
             "approveClaim": "{actor} 让 {target} 成为 {org} 的负责人",
             "approveRemoval": "{actor} 应 {target} 的请求撤下了 {org}",
-            "denyClaim": "{actor} 拒绝了 {target} 对 {org} 的请求"
+            "denyClaim": "{actor} 拒绝了 {target} 对 {org} 的请求",
+            "deleteUnclaimed": "{actor} 删除了 {org}",
+            "restoreOrganization": "{actor} 恢复了 {org}",
+            "makeUnclaimed": "{actor} 将 {org} 设为未认领"
         },
         "unknownActor": "一位超级用户",
         "errors": {
@@ -789,6 +816,20 @@
             "approveClaim": "已批准。对方现在是该组织的负责人。",
             "approveRemoval": "已撤下。",
             "deny": "已拒绝请求。对方可以重新发送。"
+        },
+        "deletedTitle": "最近删除",
+        "deletedHint": "过去 30 天内删除的组织。恢复后，页面、地址和成员都会回来。",
+        "noDeleted": "最近没有删除。",
+        "deletedOn": "删除于 {date} · 可恢复至 {until}",
+        "restore": "恢复",
+        "restoreFor": "恢复 {name}",
+        "restored": "已恢复。页面和成员都回来了。",
+        "restoreErrors": {
+            "notFound": "该组织已不再处于删除状态。列表已更新为最新内容。",
+            "tooLate": "已超过 30 天，无法再恢复。",
+            "handleTaken": "另一个组织现在使用了这个地址，无法按原样恢复。",
+            "notAllowed": "只有超级用户才能这样做。",
+            "generic": "出了点问题，请重试。"
         }
     }
 }

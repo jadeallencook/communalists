@@ -10,6 +10,8 @@ import {
     getPendingClaims,
     getUnclaimedOrganizations,
 } from '@/lib/organizations/claim-store';
+import { restoreDeadline } from '@/lib/organizations/lifecycle';
+import { getRecentlyDeleted } from '@/lib/organizations/lifecycle-store';
 import { getUserProfile } from '@/lib/users';
 
 import { AdminContainer } from './admin-container';
@@ -30,9 +32,10 @@ export default function Page() {
 
 async function AdminServerContainer() {
     await requirePlatformAdmin('/admin');
-    const [claims, unclaimed, log, format, t] = await Promise.all([
+    const [claims, unclaimed, deleted, log, format, t] = await Promise.all([
         getPendingClaims(),
         getUnclaimedOrganizations(),
+        getRecentlyDeleted(),
         getAdminLog(),
         getFormatter(),
         getTranslations('Admin'),
@@ -80,6 +83,12 @@ async function AdminServerContainer() {
                 handle: org.handle,
                 focusAreas: org.focusAreas,
                 detail: org.place,
+            }))}
+            deleted={deleted.map((org) => ({
+                orgId: org.id,
+                name: org.name,
+                deletedOn: date(org.archivedAt),
+                restoreUntil: date(restoreDeadline(org.archivedAt)),
             }))}
             log={log.map((entry) => ({
                 id: entry.id,

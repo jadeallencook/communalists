@@ -147,3 +147,17 @@ export const UnclaimedAsSuperUser: Story = {
         unclaimed: { canManage: true },
     },
 };
+/** A super user who made it without ticking "unclaimed": Make unclaimed. */
+export const SuperUserOwner: Story = {
+    args: {
+        role: 'owner',
+        join: memberJoin,
+        members: {
+            people: [leaders[0]],
+            total: 1,
+            setting: 'members',
+            viewerIsMember: true,
+        },
+        makeUnclaimed: { orgId: 'org1', locale: 'en', formAction: fn() },
+    },
+};

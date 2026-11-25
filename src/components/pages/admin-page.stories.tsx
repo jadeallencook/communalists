@@ -10,6 +10,15 @@ const meta = {
     args: {
         locale: 'en',
         formAction: fn(),
+        restoreAction: fn(),
+        deleted: [
+            {
+                orgId: 'org9',
+                name: 'Downtown Free Laundry',
+                deletedOn: 'Nov 24, 2026',
+                restoreUntil: 'Dec 24, 2026',
+            },
+        ],
         claims: [
             {
                 orgId: 'org1',
@@ -78,7 +87,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const WithRequests: Story = {};
-export const Empty: Story = { args: { claims: [], unclaimed: [], log: [] } };
+export const Empty: Story = {
+    args: { claims: [], unclaimed: [], deleted: [], log: [] },
+};
+/** After restoring: the organization leaves the list and the result is announced. */
+export const Restored: Story = {
+    args: {
+        deleted: [],
+        restoreNotice: 'Restored. The page and its members are back.',
+        restoreKey: 1,
+    },
+};
 /** After approving: the request is gone and the result is announced. */
 export const Approved: Story = {
     args: {

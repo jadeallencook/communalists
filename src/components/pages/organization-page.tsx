@@ -13,6 +13,16 @@ import {
     OrganizationProfile,
     type OrganizationProfileProps,
 } from '@/components/organisms/organization-profile';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/atoms/dialog';
 import { Skeleton } from '@/components/atoms/skeleton';
 import { UnclaimedNotice } from '@/components/organisms/unclaimed-notice';
 
@@ -30,6 +40,16 @@ export interface OrganizationPageProps {
      * member list. `canManage` (super users) adds the edit tools.
      */
     unclaimed?: { canManage: boolean };
+    /**
+     * Super users who own it and are its only member: hand it to the team as
+     * unclaimed (for one made without ticking "unclaimed"). `formAction` is
+     * makeUnclaimedAction.
+     */
+    makeUnclaimed?: {
+        orgId: string;
+        locale: string;
+        formAction: (formData: FormData) => void | Promise<void>;
+    };
 }
 
 const roleKey = {
@@ -46,6 +66,7 @@ export function OrganizationPage({
     members,
     pendingRequests = 0,
     unclaimed,
+    makeUnclaimed,
 }: OrganizationPageProps) {
     const t = useTranslations('Organizations');
     const tm = useTranslations('Membership');
@@ -118,6 +139,61 @@ export function OrganizationPage({
                                     )}
                                 </Link>
                             </Button>
+                            {makeUnclaimed && (
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline">
+                                            <ShieldIcon aria-hidden />
+                                            {tu('makeUnclaimed')}
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <form
+                                            action={makeUnclaimed.formAction}
+                                            className="contents"
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="orgId"
+                                                value={makeUnclaimed.orgId}
+                                            />
+                                            <input
+                                                type="hidden"
+                                                name="handle"
+                                                value={profile.handle}
+                                            />
+                                            <input
+                                                type="hidden"
+                                                name="locale"
+                                                value={makeUnclaimed.locale}
+                                            />
+                                            <DialogHeader>
+                                                <DialogTitle>
+                                                    {tu('makeUnclaimedTitle', {
+                                                        name: profile.name,
+                                                    })}
+                                                </DialogTitle>
+                                                <DialogDescription>
+                                                    {tu('makeUnclaimedBody')}
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <DialogFooter>
+                                                <DialogClose asChild>
+                                                    <Button
+                                                        type="button"
+                                                        variant="outline"
+                                                    >
+                                                        {tu('keepOwner')}
+                                                    </Button>
+                                                </DialogClose>
+                                                <Button type="submit">
+                                                    {tu('makeUnclaimedConfirm')}
+                                                </Button>
+                                            </DialogFooter>
+                                        </form>
+                                    </DialogContent>
+                                </Dialog>
+                            )}
                         </div>
                     )}
                     <div className="mt-2 border-t pt-3">{join}</div>

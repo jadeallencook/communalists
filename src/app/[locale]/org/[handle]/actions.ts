@@ -4,7 +4,10 @@ import { refresh, updateTag } from 'next/cache';
 import { hasLocale } from 'next-intl';
 
 import { isSetupComplete } from '@/lib/account-setup';
+import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
+import { ADMIN_LOG_TAG } from '@/lib/organizations/claim-store';
+import { makeOrganizationUnclaimed } from '@/lib/organizations/lifecycle-store';
 import {
     cancelJoinRequest,
     DIRECTORY_TAG,
@@ -14,6 +17,7 @@ import {
     moderateMember,
     orgMembersTag,
     orgTag,
+    handleTag,
 } from '@/lib/organizations';
 import {
     moderationSchema,
@@ -162,4 +166,37 @@ export async function moderateAction(
         console.error('[moderation] failed', (error as Error).message); // never log PII
         return { error: 'generic', at };
     }
+}
+
+/**
+ * A super user hands an organization they own (made without ticking
+ * "unclaimed") to the team as unclaimed. Only while they're its only member;
+ * checked again on fresh data. Back to the page either way.
+ */
+export async function makeUnclaimedAction(formData: FormData) {
+    const locale = localeOf(formData);
+    const orgId = text(formData, 'orgId');
+    const handle = text(formData, 'handle');
+    const user = await getSessionUser();
+    if (!user) return redirect({ href: '/sign-in', locale });
+    if (orgId && orgId.length <= 128) {
+        try {
+            const result = await makeOrganizationUnclaimed(
+                user.uid,
+                isPlatformAdmin(user.uid),
+                orgId
+            );
+            if (result.ok) {
+                updateTag(handleTag(result.handle));
+                updateTag(ADMIN_LOG_TAG);
+                clearOrganization(orgId, result.removedUids);
+            }
+        } catch (error) {
+            console.error(
+                '[org] make unclaimed failed',
+                (error as Error).message
+            );
+        }
+    }
+    redirect({ href: `/org/${handle}`, locale });
 }

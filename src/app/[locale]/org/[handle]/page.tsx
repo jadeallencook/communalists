@@ -22,9 +22,11 @@ import {
     visibleMembers,
 } from '@/lib/organizations/membership';
 import { handleProblem } from '@/lib/organizations/handle';
+import { makeUnclaimedProblem } from '@/lib/organizations/lifecycle';
 import { phoneForDisplay } from '@/lib/phone';
 import { redirect } from '@/i18n/navigation';
 
+import { makeUnclaimedAction } from './actions';
 import { JoinPanelContainer } from './join-panel-container';
 
 type Props = PageProps<'/[locale]/org/[handle]'>;
@@ -147,6 +149,17 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                 setting: org.memberListVisibility,
                 viewerIsMember: !!role,
             }}
+            makeUnclaimed={
+                // Shown only when it would work; the action checks again.
+                makeUnclaimedProblem({
+                    platformAdmin: isPlatformAdmin(user?.uid),
+                    role,
+                    unclaimed: false,
+                    activeMembers: active.length,
+                }) === null
+                    ? { orgId: org.id, locale, formAction: makeUnclaimedAction }
+                    : undefined
+            }
             pendingRequests={
                 isStaff(role)
                     ? people.filter((p) => p.status === 'pending').length

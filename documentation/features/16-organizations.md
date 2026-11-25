@@ -124,7 +124,15 @@ Owners and moderators get **Edit organization** in the members' space, leading t
 
 ## Deleting
 
-Owners can delete. It **archives**: data is kept, the page and listings disappear, and the handle stays reserved. Hard deletion is a later, deliberate admin action.
+Owners can delete, from **Delete organization** at the end of the edit page ([decision #37](../decisions.md)). Moderators can't, and super users can only on unclaimed organizations, where they act as owners.
+
+- **Confirm by typing the name.** A dialog says what happens, and **Delete** stays disabled until the name matches. Case, extra spaces and how accents were typed don't matter (`deleteConfirmed`). The server checks again on fresh data.
+- **It archives:** the organization's `status` becomes `archived`, with `archivedAt` and `archivedBy`. The page returns not found and the listings drop it. Every membership becomes `archived`, with its old status kept in `previousStatus`, so dashboards, the 5-owned limit and member lists drop it without other queries changing. Members lose access at once.
+- **The handle is held for 30 days**, like after a rename, so nobody can pose as the group to people following old flyers. After that anyone can take it.
+- **Restorable for 30 days** by a super user, from **Recently deleted** on `/admin`. Restoring brings back the page, the handle and every membership's exact status, pending requests included. After 30 days it drops off the list. The data stays until hard deletion (a later, deliberate admin job, needed once tools hold personal data).
+- **Logged** in the organization's log ("{actor} deleted / restored this organization"). Deleting an unclaimed one, and every restore, also goes in the admin log.
+
+Verified 2026-11-24 against the emulators: Maya deleted South Bay Mutual Aid (8 members, 2 requests). It left her dashboard, the page returned not found, and `sbma` read as taken. Jordan restored it from `/admin`: the page came back with 8 members, and Firestore had all 10 memberships back as they were, with no `previousStatus` left over.
 
 ## Pages
 

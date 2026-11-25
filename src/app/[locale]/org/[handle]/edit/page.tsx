@@ -15,10 +15,13 @@ import {
 } from '@/lib/organizations';
 import { handleProblem, nextHandleChangeAt } from '@/lib/organizations/handle';
 import { isStaff } from '@/lib/organizations/membership';
+import { canDelete } from '@/lib/organizations/lifecycle';
+import { phoneForDisplay } from '@/lib/phone';
 import { effectiveRole } from '@/lib/platform-admin';
 import { isSupportedCountry } from '@/lib/places/types';
 import { redirect } from '@/i18n/navigation';
 
+import { DeleteOrganizationContainer } from './delete-organization-container';
 import { EditOrganizationFormContainer } from './edit-organization-form-container';
 
 type Props = PageProps<'/[locale]/org/[handle]/edit'>;
@@ -75,6 +78,15 @@ async function EditServerContainer({ params }: Pick<Props, 'params'>) {
         <EditOrganizationPage
             name={org.name}
             handle={org.handle}
+            deleteSection={
+                // canDelete: owners (and super users on unclaimed ones).
+                canDelete(role) ? (
+                    <DeleteOrganizationContainer
+                        name={org.name}
+                        orgId={org.id}
+                    />
+                ) : undefined
+            }
             form={
                 <EditOrganizationFormContainer
                     handleLockedReason={handleLockedReason}
@@ -99,7 +111,11 @@ async function EditServerContainer({ params }: Pick<Props, 'params'>) {
                             website: org.website ?? '',
                             contactEmail: org.contactEmail ?? '',
                             streetAddress: org.streetAddress ?? '',
-                            phone: org.phone ?? '',
+                            // As people write it, not the stored +1… form.
+                            phone: org.phone
+                                ? (phoneForDisplay(org.phone)?.text ??
+                                  org.phone)
+                                : '',
                             foundedYear: org.foundedYear
                                 ? String(org.foundedYear)
                                 : '',

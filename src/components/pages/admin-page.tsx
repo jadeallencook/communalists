@@ -50,9 +50,19 @@ export interface AdminLogItem {
     on: string;
 }
 
+export interface AdminDeleted {
+    orgId: string;
+    name: string;
+    /** Already formatted. */
+    deletedOn: string;
+    restoreUntil: string;
+}
+
 export interface AdminPageProps {
     claims: AdminClaim[];
     unclaimed: OrganizationCardProps[];
+    /** Deleted in the last 30 days: restorable. */
+    deleted: AdminDeleted[];
     log: AdminLogItem[];
     /** UI locale, sent so redirects stay in it. */
     locale: string;
@@ -64,6 +74,13 @@ export interface AdminPageProps {
     notice?: string;
     /** Changes on every result, so focus moves to it each time. */
     resultKey?: number;
+    /** In the app, restoreOrganizationAction via useActionState. */
+    restoreAction: (formData: FormData) => void;
+    restorePending?: boolean;
+    /** Already translated; shown in the Recently deleted section. */
+    restoreError?: string;
+    restoreNotice?: string;
+    restoreKey?: number;
 }
 
 /**
@@ -80,6 +97,12 @@ export function AdminPage({
     error,
     notice,
     resultKey,
+    deleted,
+    restoreAction,
+    restorePending = false,
+    restoreError,
+    restoreNotice,
+    restoreKey,
 }: AdminPageProps) {
     const t = useTranslations('Admin');
     // The decided request disappears; put focus on the result instead of
@@ -88,6 +111,10 @@ export function AdminPage({
     useEffect(() => {
         if (resultKey) resultRef.current?.focus();
     }, [resultKey]);
+    const restoreRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (restoreKey) restoreRef.current?.focus();
+    }, [restoreKey]);
 
     const hidden = (claim: AdminClaim, decision: 'approve' | 'deny') => (
         <>
@@ -346,6 +373,85 @@ export function AdminPage({
                         {unclaimed.map((org) => (
                             <li key={org.handle}>
                                 <OrganizationCard {...org} />
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </section>
+
+            <section
+                aria-labelledby="admin-deleted"
+                className="flex flex-col gap-3"
+            >
+                <h2
+                    id="admin-deleted"
+                    className="font-heading text-xl font-semibold"
+                >
+                    {t('deletedTitle')}
+                    <span className="ml-2 text-base font-normal text-muted-foreground">
+                        {deleted.length}
+                    </span>
+                </h2>
+                <p className="-mt-1 text-sm text-muted-foreground">
+                    {t('deletedHint')}
+                </p>
+                <div ref={restoreRef} tabIndex={-1} className="outline-none">
+                    {restoreNotice && (
+                        <p role="status" className="text-sm">
+                            {restoreNotice}
+                        </p>
+                    )}
+                    {restoreError && (
+                        <p role="alert" className="text-sm text-destructive">
+                            {restoreError}
+                        </p>
+                    )}
+                </div>
+                {deleted.length === 0 ? (
+                    <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+                        {t('noDeleted')}
+                    </p>
+                ) : (
+                    <ul className="flex flex-col divide-y rounded-lg border">
+                        {deleted.map((org) => (
+                            <li
+                                key={org.orgId}
+                                className="flex flex-col gap-2 p-3 md:flex-row md:items-center md:justify-between"
+                            >
+                                <span className="flex flex-col">
+                                    <span className="font-medium break-words">
+                                        {org.name}
+                                    </span>
+                                    <span className="text-sm text-muted-foreground">
+                                        {t('deletedOn', {
+                                            date: org.deletedOn,
+                                            until: org.restoreUntil,
+                                        })}
+                                    </span>
+                                </span>
+                                <form action={restoreAction}>
+                                    <input
+                                        type="hidden"
+                                        name="orgId"
+                                        value={org.orgId}
+                                    />
+                                    <input
+                                        type="hidden"
+                                        name="locale"
+                                        value={locale}
+                                    />
+                                    <Button
+                                        type="submit"
+                                        size="sm"
+                                        variant="outline"
+                                        disabled={restorePending}
+                                        aria-label={t('restoreFor', {
+                                            name: org.name,
+                                        })}
+                                    >
+                                        {t('restore')}
+                                    </Button>
+                                </form>
                             </li>
                         ))}
                     </ul>

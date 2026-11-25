@@ -8,8 +8,13 @@ import { z } from 'zod';
 import type { JoinPolicy, MemberListVisibility } from './options';
 
 export type OrgRole = 'owner' | 'moderator' | 'member';
-/** `pending`: asked to join. `banned`: removed or blocked, can't ask again until unbanned. */
-export type MembershipStatus = 'active' | 'pending' | 'invited' | 'banned';
+/**
+ * `pending`: asked to join. `banned`: removed or blocked, can't ask again
+ * until unbanned. `archived`: the organization was deleted; the status before
+ * is kept in `previousStatus`, so a restore puts it back.
+ */
+export type MembershipStatus =
+    'active' | 'pending' | 'invited' | 'banned' | 'archived';
 
 /**
  * What an owner or moderator can do to someone else. Stored in the
