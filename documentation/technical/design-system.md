@@ -15,7 +15,7 @@ shadcn/ui on Tailwind CSS 4, with the **monochrome** look from the 2025 attempt:
 | Class merging | `cn` package (shadcn's replacement for clsx + tailwind-merge) |
 | Config        | `components.json`                                             |
 
-Add components with `pnpm dlx shadcn@latest add <name>`. They're copied into `src/components/atoms/` (`components.json` → `aliases.ui`) and are ours to edit. Every one needs a story under `Components/Atoms`. Installed so far: button, card, command, dialog, dropdown-menu, field, input, input-group, label, popover, separator, textarea. When `shadcn add` asks to overwrite an existing atom (a dependency like `button`), overwriting is safe only if we haven't edited that file. Check `git diff` afterwards.
+Add components with `pnpm dlx shadcn@latest add <name>`. They're copied into `src/components/atoms/` (`components.json` → `aliases.ui`) and are ours to edit. Every one needs a story under `Components/Atoms`. Installed so far: button, card, command, dialog, dropdown-menu, field, input, input-group, label, popover, separator, textarea. When `shadcn add` asks to overwrite an existing atom (a dependency like `button`), overwriting is safe only if we haven't edited that file. Check `git diff` afterwards. **Edited so far:** `button` (text wraps: `min-h-*` instead of `h-*`, no `whitespace-nowrap`, `max-w-full`; see `accessibility.md`), so don't let `shadcn add` overwrite it.
 
 ## Tokens that differ from shadcn's defaults
 

@@ -48,7 +48,7 @@ export function NearbyOrganizations({
             </ul>
             <Button asChild variant="outline" className="self-start">
                 <Link href={{ pathname: '/find', query: findQuery }}>
-                    {t('nearbySeeAll', { place })}
+                    {t('nearbySeeAll')}
                     <ArrowRightIcon aria-hidden />
                 </Link>
             </Button>

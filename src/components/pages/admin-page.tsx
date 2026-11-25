@@ -1,6 +1,6 @@
 'use client';
 
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, UploadIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 
@@ -352,17 +352,25 @@ export function AdminPage({
                             {unclaimed.length}
                         </span>
                     </h2>
-                    <Button asChild>
-                        <Link
-                            href={{
-                                pathname: '/org/new',
-                                query: { unclaimed: '1' },
-                            }}
-                        >
-                            <PlusIcon aria-hidden />
-                            {t('addUnclaimed')}
-                        </Link>
-                    </Button>
+                    <div className="flex flex-wrap gap-2">
+                        <Button asChild variant="outline">
+                            <Link href="/admin/import">
+                                <UploadIcon aria-hidden />
+                                {t('importUnclaimed')}
+                            </Link>
+                        </Button>
+                        <Button asChild>
+                            <Link
+                                href={{
+                                    pathname: '/org/new',
+                                    query: { unclaimed: '1' },
+                                }}
+                            >
+                                <PlusIcon aria-hidden />
+                                {t('addUnclaimed')}
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
                 {unclaimed.length === 0 ? (
                     <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">

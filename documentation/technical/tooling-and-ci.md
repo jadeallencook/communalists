@@ -73,7 +73,7 @@ One job on every push to `main` and every PR: `pnpm install --frozen-lockfile` (
 
 ## Branch protection on `main`
 
-A GitHub ruleset, "Protect main" (Settings → Rules → Rulesets), set up in [decision #41](../decisions/041-branch-protection-on-main.md). Its definition is kept in `.github/rulesets/main.json` so rule changes get reviewed like code. **GitHub doesn't read that file**: change the ruleset on GitHub as well, in the same PR, by editing it there or importing the file (New ruleset → Import a ruleset). To check for drift, export the live ruleset from its page and compare.
+A GitHub ruleset, "Protect main" (Settings → Rules → Rulesets), set up in [decision #42](../decisions/042-branch-protection-on-main.md). Its definition is kept in `.github/rulesets/main.json` so rule changes get reviewed like code. **GitHub doesn't read that file**: change the ruleset on GitHub as well, in the same PR, by editing it there or importing the file (New ruleset → Import a ruleset). To check for drift, export the live ruleset from its page and compare.
 
 | Rule                 | Setting                                                                                                                 |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------- |

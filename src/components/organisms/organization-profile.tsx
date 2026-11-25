@@ -43,6 +43,8 @@ export interface OrganizationProfileProps {
     unlisted?: boolean;
     /** Not claimed yet: an "Unclaimed" label, and no member count (it has no members). */
     unclaimed?: boolean;
+    /** The name's heading level: 1 on its own page, lower when shown inside another page (a preview). */
+    headingLevel?: 1 | 2 | 3 | 4;
 }
 
 /** A map search for the address; nothing is sent until someone clicks. */
@@ -75,7 +77,10 @@ export function OrganizationProfile({
     socials,
     unlisted = false,
     unclaimed = false,
+    headingLevel = 1,
 }: OrganizationProfileProps) {
+    const Name = `h${headingLevel}` as const;
+    const Section = `h${headingLevel + 1}` as 'h2' | 'h3' | 'h4' | 'h5';
     const t = useTranslations('Organizations');
     const locale = useLocale();
     const reachText =
@@ -119,9 +124,9 @@ export function OrganizationProfile({
                     {initials(name)}
                 </span>
                 <div className="flex min-w-0 flex-col gap-1">
-                    <h1 className="font-heading text-3xl font-semibold tracking-tight text-balance">
+                    <Name className="font-heading text-3xl font-semibold tracking-tight text-balance">
                         {name}
-                    </h1>
+                    </Name>
                     <p className="flex flex-wrap items-center gap-2 text-muted-foreground">
                         /org/{handle}
                         {unclaimed && (
@@ -198,9 +203,9 @@ export function OrganizationProfile({
 
             {(website || contactEmail || phone || socials.length > 0) && (
                 <section className="flex flex-col gap-2">
-                    <h2 className="font-heading text-lg font-semibold">
+                    <Section className="font-heading text-lg font-semibold">
                         {t('page.links')}
-                    </h2>
+                    </Section>
                     <ul className="flex flex-wrap gap-2 text-sm">
                         {website && (
                             <li>

@@ -1,4 +1,4 @@
-# 041 · Branch protection on `main`: pull requests, code owner review, squash merges
+# 042 · Branch protection on `main`: pull requests, code owner review, squash merges
 
 **Date:** 2026-11-24
 **Status:** Accepted
