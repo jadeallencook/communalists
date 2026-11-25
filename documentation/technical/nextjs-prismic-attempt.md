@@ -1,6 +1,6 @@
 # Second Attempt: Next.js + Prismic (2025)
 
-Between the prototype and the current rebuild there was a second attempt on `main`: 50 commits, from 2025-04-26 ("removed all project files and created blank slate") to 2025-11-03. It built only the **public, CMS-driven marketing shell**: home, a Little Free Library page, a 404 page, nav and footer. No dashboard, auth, forms or data layer. It was removed on 2026-11-20 to restart from these docs (see [decisions.md](../decisions.md) #2). The code stays in git history at `81eed51`.
+Between the prototype and the current rebuild there was a second attempt on `main`: 50 commits, from 2025-04-26 ("removed all project files and created blank slate") to 2025-11-03. It built only the **public, CMS-driven marketing shell**: home, a Little Free Library page, a 404 page, nav and footer. No dashboard, auth, forms or data layer. It was removed on 2026-11-20 to restart from these docs (see decision [#2](../decisions/002-reset-main-to-docs-only-remove-nextjs-prismic-attempt.md)). The code stays in git history at `81eed51`.
 
 ## Stack
 

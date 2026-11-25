@@ -4,7 +4,7 @@
 
 Communalists is a platform for mutual aid networks. It began as a tool for South Bay (Santa Clara County, CA) organizers, first built between Oct 2022 and Jan 2024 (386 commits) as a React + Firebase prototype, and is now being rebuilt with Next.js, Firebase, shadcn/ui and next-intl. These docs record every feature and lesson from the earlier attempts, and how the rebuild works.
 
-**These are living documents.** They started as a record of the prototype and are updated as the rebuild makes new choices; see the methodology in [`AGENTS.md`](../AGENTS.md). Choices made since the prototype are logged in [decisions.md](decisions.md).
+**These are living documents.** They started as a record of the prototype and are updated as the rebuild makes new choices; see the methodology in [`AGENTS.md`](../AGENTS.md). Choices made since the prototype are logged in [decisions/](decisions/README.md), one file per decision.
 
 The original source: branch `interview-demo` at commit `7ebc168`, read file by file on 2026-11-20. File paths in the feature and technical docs point at that commit, so you can look them up in the git history (`github.com/techletariats/communalists`; it was `jadeallencook/communalists` before moving to the Techletariats org) after the files are gone. A second attempt (Next.js + Prismic, 2025) is recorded at commit `81eed51`. The rebuild's foundation (layout shell, i18n, Firebase wiring, tooling) was scaffolded on 2026-11-20.
 

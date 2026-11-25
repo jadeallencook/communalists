@@ -1,6 +1,6 @@
 # Rebuild Plan
 
-> **Decided 2026-11-20:** Next.js App Router, Firebase (same project, emptied), Vercel, Tailwind + shadcn/ui, Firestore-backed services with an admin UI (no CMS), and `next-intl` locale routing from day one. See [decisions.md](../decisions.md) #3–#8. Where the options below differ from those decisions, the decisions win.
+> **Decided 2026-11-20:** Next.js App Router, Firebase (same project, emptied), Vercel, Tailwind + shadcn/ui, Firestore-backed services with an admin UI (no CMS), and `next-intl` locale routing from day one. See decisions [#3](../decisions/003-nextjs-app-router-framework.md), [#4](../decisions/004-firebase-backend-same-project-emptied.md), [#5](../decisions/005-vercel-hosting.md), [#6](../decisions/006-tailwind-shadcn-design-system.md), [#7](../decisions/007-services-and-events-in-firestore-edited-in-dashboard.md), [#8](../decisions/008-locale-routing-from-first-commit.md). Where the options below differ from those decisions, the decisions win.
 
 **Recommendation: Next.js (App Router).** About half of Communalists is an authenticated, data-heavy dashboard with mutations, modals and live-ish data. That is Next.js's home turf. Astro shines for content sites, and the public half is mostly content, but in Astro the dashboard would become one big React island with its own routing and data layer, which is roughly what this prototype already was.
 

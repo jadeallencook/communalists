@@ -1,6 +1,6 @@
 # 18 · Super users and unclaimed organizations (rebuild)
 
-While there are few users, the people running Communalists add organizations themselves so neighbors can find help nearby, such as a church's weekly free shower. These pages are **unclaimed**: nobody owns them, and the real organization can **claim** the page or ask for it to be **taken down**. Agreed with the user on 2026-11-24 ([decision #33](../decisions.md)).
+While there are few users, the people running Communalists add organizations themselves so neighbors can find help nearby, such as a church's weekly free shower. These pages are **unclaimed**: nobody owns them, and the real organization can **claim** the page or ask for it to be **taken down**. Agreed with the user on 2026-11-24 ([decision #33](../decisions/033-super-users-and-unclaimed-organizations-claims.md)).
 
 **Status:** built 2026-11-24. **Next:** super users add **events** to unclaimed organizations, once the calendar tool exists. That brings back the prototype's events directory ([03](03-events-directory.md)) with real data.
 
@@ -28,7 +28,7 @@ A few accounts ("super users", or platform admins in code) can do what nobody el
 
 ## Making an organization unclaimed
 
-For a super user who added an organization the normal way by mistake, and so is listed as its owner ([decision #37](../decisions.md)). **Make unclaimed** appears in the members' space when they're a super user, an owner, and its only active member. After a confirmation, their membership and any join requests are removed, and it becomes unclaimed with the same handle and details. It's refused when anyone else is a member, because they'd silently lose their group. Logged in the admin log.
+For a super user who added an organization the normal way by mistake, and so is listed as its owner ([decision #37](../decisions/037-deleting-organizations-restore-and-make-unclaimed.md)). **Make unclaimed** appears in the members' space when they're a super user, an owner, and its only active member. After a confirmation, their membership and any join requests are removed, and it becomes unclaimed with the same handle and details. It's refused when anyone else is a member, because they'd silently lose their group. Logged in the admin log.
 
 Verified 2026-11-24: as Jordan, created Mistake Pantry without ticking unclaimed, so he was listed as Owner. **Make unclaimed** turned it into an unclaimed page, with its phone, year and address unchanged.
 

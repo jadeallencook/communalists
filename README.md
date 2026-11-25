@@ -31,4 +31,4 @@ Other commands: `pnpm storybook` (components and docs, port 6006), `pnpm test`, 
 
 - [`AGENTS.md`](AGENTS.md): how we work, conventions, and rules for contributors and AI agents
 - [`documentation/`](documentation/README.md): every feature, technical decision and lesson from earlier versions
-- [`documentation/decisions.md`](documentation/decisions.md): why things are the way they are
+- [`documentation/decisions/`](documentation/decisions/README.md): why things are the way they are, one file per decision

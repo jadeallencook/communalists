@@ -1,6 +1,6 @@
 # Deployment
 
-Two Vercel projects (Hobby plan, account `jadeallencook`) build from the same repo, `techletariats/communalists` (moved from `jadeallencook/communalists`; same repo ID 543376659), on branch `main`. The domain is registered at Squarespace Domains, and DNS is managed there. See [decisions.md](../decisions.md) #10 for why it's set up this way.
+Two Vercel projects (Hobby plan, account `jadeallencook`) build from the same repo, `techletariats/communalists` (moved from `jadeallencook/communalists`; same repo ID 543376659), on branch `main`. The domain is registered at Squarespace Domains, and DNS is managed there. See decision [#10](../decisions/010-domains-communalists-com-and-storybook.md) for why it's set up this way.
 
 ## Projects
 
@@ -79,7 +79,7 @@ Values come from Vercel (`vercel api /v6/domains/<domain>/config`) and are proje
 
 ## Planned: move DNS to Vercel (wildcard subdomains)
 
-Organization pages at `{slug}.communalists.com` need `*.communalists.com`, which needs Vercel nameservers ([decision #11](../decisions.md), [product-vision.md](../product-vision.md)). Steps:
+Organization pages at `{slug}.communalists.com` need `*.communalists.com`, which needs Vercel nameservers ([decision #11](../decisions/011-multi-organization-platform.md), [product-vision.md](../product-vision.md)). Steps:
 
 1. **Blocked (2026-11-21):** `vercel domains add communalists.com` says the domain "already exists under a different context": it's owned by **another Vercel account or team**, not `jadeallencook`. Remove it there (or verify ownership through the Vercel dashboard's add-domain flow) so this account owns it.
 2. Recreate these records in Vercel DNS **before** switching nameservers (copied from Squarespace's authoritative servers on 2026-11-21):

@@ -1,0 +1,8 @@
+# 018 · Sign-up asks only credentials; every account finishes on one setup page
+
+**Date:** 2026-11-21
+**Status:** Accepted. Supersedes the profile-at-sign-up part of [#12](012-accounts-server-side-signup-session-cookies-general-area-location.md) and moves [#14](014-location-city-picker-not-geocoder.md)'s city picker to setup.
+**Context:** Prototype accounts can still sign in (about 103 Firebase Auth users) but have no profile, and we'll want more answers from users later. The user asked for a popover or a separate page.
+**Decision:** A **dedicated page**, `/{locale}/account/setup`. Sign-up collects only email and password, then sends people there. Required questions (name, preferred language, city) are listed in code (`src/lib/account-setup.ts`). `requireAccount()` in each signed-in page's container redirects any account missing an answer, then returns it to `?next=` (sanitized). Prototype data from the backup is **not imported**; those users answer again.
+**Alternatives:** A popover or dialog (can be dismissed or bypassed, needs JavaScript, harder on phones); a banner that blocks only some features; keeping name and city on sign-up (two places asking the same questions); pre-filling names or locations from the backup (moves old personal data into the new system, and old locations were a fixed list that doesn't map to cities).
+**Consequences:** One code path for new, old and future-incomplete accounts. Adding a required question needs no migration. Every signed-in page must call `requireAccount()`. Setup needs JavaScript (city picker). `profile.locale` now means preferred language for emails, not the UI language. Optional questions and profile editing are still to build.

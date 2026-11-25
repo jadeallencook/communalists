@@ -1,6 +1,6 @@
 # Accessibility
 
-**Accessibility is the top priority for everything we build** (set by the user 2026-11-23, [decision #29](../decisions.md)). Many people who use mutual aid have a disability: low vision, blindness, motor or tremor, deafness, cognitive or learning disabilities, chronic illness and fatigue. Many are older, on an old phone, or reading in a second language. If they can't use a tool, it isn't doing its job. A change isn't done until it meets this page.
+**Accessibility is the top priority for everything we build** (set by the user 2026-11-23, [decision #29](../decisions/029-accessibility-top-priority.md)). Many people who use mutual aid have a disability: low vision, blindness, motor or tremor, deafness, cognitive or learning disabilities, chronic illness and fatigue. Many are older, on an old phone, or reading in a second language. If they can't use a tool, it isn't doing its job. A change isn't done until it meets this page.
 
 **The floor is [WCAG 2.2](https://www.w3.org/TR/WCAG22/) level AA.** Where AAA is cheap (larger targets, plainer language), do it.
 

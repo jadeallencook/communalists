@@ -1,6 +1,6 @@
 # Accounts and Sessions
 
-Anyone can create an account at `/{locale}/sign-up` with an email and a password (typed twice). Every account then answers the same required questions (name, username, preferred language, city) at `/{locale}/account/setup`. That includes new sign-ups, prototype accounts with no profile, and anyone missing a question we add later. Returning users sign in at `/{locale}/sign-in`. Anyone who forgot their password requests a link at `/{locale}/forgot-password` and chooses a new one at `/{locale}/auth/action`. Signed-in pages go through `requireAccount()`: signed out → sign-in; incomplete → setup. Built 2026-11-21 ([decisions #12, #15–#18](../decisions.md)).
+Anyone can create an account at `/{locale}/sign-up` with an email and a password (typed twice). Every account then answers the same required questions (name, username, preferred language, city) at `/{locale}/account/setup`. That includes new sign-ups, prototype accounts with no profile, and anyone missing a question we add later. Returning users sign in at `/{locale}/sign-in`. Anyone who forgot their password requests a link at `/{locale}/forgot-password` and chooses a new one at `/{locale}/auth/action`. Signed-in pages go through `requireAccount()`: signed out → sign-in; incomplete → setup. Built 2026-11-21 (decisions [#12](../decisions/012-accounts-server-side-signup-session-cookies-general-area-location.md), [#15](../decisions/015-sign-in-page-and-confirm-password.md), [#16](../decisions/016-forgot-password-firebase-reset-email.md), [#17](../decisions/017-reset-password-page-auth-action.md), [#18](../decisions/018-sign-up-credentials-only-then-account-setup.md)).
 
 ## Sign-up flow
 
@@ -104,7 +104,7 @@ Firestore rules still deny all client access. The profile is read and written on
 
 ## Location
 
-See [decision #14](../decisions.md). The geocoder from #12 is gone.
+See [decision #14](../decisions/014-location-city-picker-not-geocoder.md). The geocoder from #12 is gone.
 
 - **Picker:** on the account-setup form, a country select (US only for now) plus a type-ahead city picker (`LocationField` molecule; state in `useLocationPicker`). `usePlaceSearch` waits ~200 ms after typing stops, calls `GET /api/places?country=US&q=…`, cancels stale requests, and keeps the last results visible while loading. The form submits `country` and `placeId` as hidden inputs.
 - **Data:** GeoNames `cities500` (places with 500+ people), US only: 20,748 places in 50 states + DC, ~0.9 MB at `src/lib/places/data/us.json`. Neighborhoods, abandoned and historical places are excluded, and duplicate names within a state keep the most populous. Refresh or add a country with `scripts/build-places.mjs`. **License: CC BY 4.0, credited under the city field.**

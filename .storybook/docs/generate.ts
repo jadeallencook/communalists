@@ -35,7 +35,9 @@ const clean = (text: string) =>
     text
         .replace(/^Prototype:\s*/, '')
         .replace(/\s*·\s*/g, ' ')
-        .replace(/\s*\/\s*/g, ' & ')
+        .replace(/\s+\/\s+/g, ' & ') // "Events / Services"
+        .replace(/(^|\s)\/(?=\w)/g, '$1') // "/find page" → "find page"
+        .replace(/\//g, '-') // "shadcn/ui" → "shadcn-ui"
         .replace(/[`"]/g, '')
         .trim();
 
@@ -43,7 +45,6 @@ function titleFor(source: string): string {
     const special: Record<string, string> = {
         'AGENTS.md': 'Documentation/Agents Guide',
         'documentation/README.md': 'Documentation/Overview',
-        'documentation/decisions.md': 'Documentation/Decision Log',
         'documentation/getting-started.md': 'Documentation/Getting Started',
     };
     if (special[source]) return special[source];

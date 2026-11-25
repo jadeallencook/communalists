@@ -6,7 +6,7 @@ Guidance for AI coding agents (and humans) working in this repository.
 
 Communalists is a **platform for mutual aid networks**: anyone can sign up, create or join **organizations** (e.g. "South Bay Mutual Aid", "Oakland Auto Club"), and run them with **tools** built for mutual aid (requests + kanban, a lending library, calendars, documents…). Each tool can have a public side and a members-only side, and each organization gets a public page at `{slug}.communalists.com`. It's like Facebook Groups, with purpose-built tools instead of a feed. The UI is in English, Spanish, Vietnamese and Chinese. Read `documentation/product-vision.md` first.
 
-Two earlier codebases came first: a React + Webpack + Firebase prototype (2022–2024, commit `7ebc168`) and a Next.js + Prismic marketing shell (2025, commit `81eed51`). Both were removed, and the repo now starts from these docs. The rebuild uses **Next.js (App Router) + Firebase + Tailwind/shadcn/ui, hosted on Vercel, with locale routing (`en`, `es`, `vi`, `zh`) from day one**. See `documentation/decisions.md` #3–#8. What both attempts taught is kept in `documentation/`.
+Two earlier codebases came first: a React + Webpack + Firebase prototype (2022–2024, commit `7ebc168`) and a Next.js + Prismic marketing shell (2025, commit `81eed51`). Both were removed, and the repo now starts from these docs. The rebuild uses **Next.js (App Router) + Firebase + Tailwind/shadcn/ui, hosted on Vercel, with locale routing (`en`, `es`, `vi`, `zh`) from day one**. See decisions #3–#8 in `documentation/decisions/` (`003-…` to `008-…`). What both attempts taught is kept in `documentation/`.
 
 ## Working methodology
 
@@ -19,7 +19,7 @@ The prototype was for discovery, and so is the rebuild. We expect to change dire
 3. **Treat docs as guidance, not law.** The prototype's choices are a starting point. If the user picks a different direction, follow the user and update the docs to match. Don't argue for the old design just because it's written down, but do point out anything in the docs that suggests the new direction could repeat a known mistake (rule 2).
 4. **Update in the same change.** When a feature, data shape, rule, dependency or decision changes, edit the matching doc in the same commit or PR. Don't leave a doc describing behavior that no longer exists.
 5. **Write down what you learn.** If you hit a non-obvious constraint, a bug's root cause, a library quirk, a cost or performance finding, or a user preference about how the product should work, add it to the relevant doc. If nothing fits, create a new one. If it would have saved you time, it belongs in the docs.
-6. **Log decisions.** Every meaningful choice gets an entry in `documentation/decisions.md`: what we chose, what we considered, and why. That covers picking a framework, dropping a feature, changing the data model, or going against something in these docs.
+6. **Log decisions.** Every meaningful choice gets its own file in `documentation/decisions/`, named `NNN-what-it-is-about.md` so it can be found with `ls` or `grep`: what we chose, what we considered, and why. See `documentation/decisions/README.md` for the template and index. That covers picking a framework, dropping a feature, changing the data model, or going against something in these docs.
 7. **Keep history, don't erase it.** When the rebuild replaces a prototype behavior, rewrite the doc to describe the **current** behavior. Keep the old approach in a short "Prototype" note when the lesson still matters. Delete only what is truly obsolete.
 8. **Fix stale docs on sight.** If you notice a doc that's wrong, outdated, or missing a link, fix it now, even if it isn't part of your task. Mention it in your summary.
 9. **Say what you changed.** At the end of a task, list the docs you created or updated, or say plainly that none needed changes.
@@ -42,7 +42,7 @@ Docs describe _what_ and _why_. Leave the line-by-line _how_ to the code, and do
 | Vercel projects, domains, DNS      | `documentation/technical/deployment.md`                                            |
 | Framework choice and build order   | `documentation/technical/rebuild-plan.md`                                          |
 | Seed data                          | `documentation/data/events.json`, `documentation/data/translations.json`           |
-| Choices already made, and why      | `documentation/decisions.md`                                                       |
+| Choices already made, and why      | `documentation/decisions/` (one file each; `ls` it to find related ones)           |
 
 ## Codebase
 
@@ -91,7 +91,7 @@ Story conventions: put `Name.stories.tsx` next to the component, cover the impor
 
 ## Current product rules
 
-These are the rules we're building to today. They can change. When one does, update it here, update the feature doc, and log it in `documentation/decisions.md`.
+These are the rules we're building to today. They can change. When one does, update it here, update the feature doc, and log it in `documentation/decisions/`.
 
 - **Accessibility is the top priority** (set by the user 2026-11-23). Many people using the platform may have a disability, and it must work for everyone. WCAG 2.2 AA is the floor: keyboard-only use with visible focus, meaningful names for screen readers, announced results and errors, sensible focus after actions, contrast in both themes, 200% zoom, reduced motion, plain language. Every change meets `documentation/technical/accessibility.md` before it's done, and its summary says what was checked.
 

@@ -1,0 +1,8 @@
+# 039 · The decision log is one file per decision, named by subject
+
+**Date:** 2026-11-24
+**Status:** Accepted
+**Context:** `documentation/decisions.md` had grown to 38 entries in one file. Reading it to find the one decision that matters loaded the whole log into context. The user asked to split it, with file names that say what each is about, so people and agents can `ls` or `grep` the folder and open only the related ones, and with a collapsible section in Storybook.
+**Decision:** One file per decision in `documentation/decisions/`, named `NNN-what-it-is-about.md` (three digits so `ls` sorts them; the subject in words people would search for). `README.md` there has the template, how to add one, and an index, newest first. Docs link to the specific file (`[decision #33](../decisions/033-super-users-and-unclaimed-organizations-claims.md)`), and numbers inside decisions link to each other. Storybook shows them under **Documentation → Decisions**, with the Decision Log first. Doc titles now turn `shadcn/ui` into `shadcn-ui` and drop a path's leading slash, instead of turning every slash into "&".
+**Alternatives:** Folders by area (features, infrastructure…; a decision often spans several, so it would need a home picked each time); dates in file names (the number already orders them, and the subject matters more when searching); keeping one file with a table of contents (still one big read).
+**Consequences:** Adding a decision means a new file and an index row. Old links to `decisions.md` were all rewritten; the file is gone. Docs updated: AGENTS, README, documentation/README, getting-started, and every doc that linked a decision.

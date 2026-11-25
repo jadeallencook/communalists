@@ -123,7 +123,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm format:check
 
 - Commits follow [Conventional Commits](https://www.conventionalcommits.org/): `feat(auth): …`, `fix: …`, `docs: …`. The `commit-msg` hook rejects anything else; the `pre-commit` hook lints and formats staged files.
 - CI runs the same checks plus the production build on every push.
-- **Pushing to `main` deploys to communalists.com.** The footer shows `v{version} ({commit})`, so you can confirm your commit is live. Bump `package.json` `version` only when a milestone ships ([decision #19](decisions.md)).
+- **Pushing to `main` deploys to communalists.com.** The footer shows `v{version} ({commit})`, so you can confirm your commit is live. Bump `package.json` `version` only when a milestone ships ([decision #19](decisions/019-footer-shows-version-and-commit.md)).
 
 ## Troubleshooting
 
@@ -146,4 +146,4 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm format:check
 - [Product vision](product-vision.md): what we're building
 - [Architecture](technical/architecture.md): how the pieces fit
 - [Accounts and sessions](technical/accounts-and-sessions.md): sign-up, sign-in, account setup, local Firebase
-- [Decision log](decisions.md): why things are the way they are
+- [Decision log](decisions/README.md): why things are the way they are

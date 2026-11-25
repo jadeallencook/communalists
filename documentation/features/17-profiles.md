@@ -1,22 +1,22 @@
 # 17 · Profiles and skills (rebuild)
 
-People get a page of their own: a name always, and whatever else they choose to share, with whom. Profiles also let people find others nearby with a skill they need ("someone who knows graphic design for our flyer"). Designed with the user on 2026-11-23 ([decision #31](../decisions.md)). **Phase 1 (profiles) built 2026-11-23**; previews and skills are next.
+People get a page of their own: a name always, and whatever else they choose to share, with whom. Profiles also let people find others nearby with a skill they need ("someone who knows graphic design for our flyer"). Designed with the user on 2026-11-23 ([decision #31](../decisions/031-profiles-visibility-groups-skill-search.md)). **Phase 1 (profiles) built 2026-11-23**; previews and skills are next.
 
 **Principle: members are in control of what they share.** Nothing is shown until the person adds it, every part follows their visibility choice, and they can preview exactly what others see. A profile never reveals more than a group already does about its members.
 
 ## What a profile has
 
-| Field        | Rules                                                                                                                                                                                      |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Name         | The account's display name. **Always shown** to anyone who reaches the page, whatever the visibility.                                                                                      |
-| Username     | The address: `communalists.com/comrade/{username}` (`/@{username}` forwards there). Required; see "Usernames".                                                                             |
-| Pronouns     | Optional, short free text ("she/her", "elle"). Shown next to the name, in previews too.                                                                                                    |
-| Bio          | Optional plain text, about 300 characters. Not translated (user content).                                                                                                                  |
-| Languages    | Optional, from the same list as groups.                                                                                                                                                    |
-| General area | Their city, **only if they turn it on**. Never more precise than the city. (Their saved city is otherwise used only for finding.)                                                          |
-| Social links | Optional, the same platforms and username rules as groups (just the username, [decision #32](../decisions.md)), plus one personal website. The way to get in touch until messaging exists. |
-| Skills       | Optional, from a fixed, translated list; see "Skills".                                                                                                                                     |
-| Groups       | The groups they're in, filtered; see "Groups on a profile".                                                                                                                                |
+| Field        | Rules                                                                                                                                                                                                                           |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name         | The account's display name. **Always shown** to anyone who reaches the page, whatever the visibility.                                                                                                                           |
+| Username     | The address: `communalists.com/comrade/{username}` (`/@{username}` forwards there). Required; see "Usernames".                                                                                                                  |
+| Pronouns     | Optional, short free text ("she/her", "elle"). Shown next to the name, in previews too.                                                                                                                                         |
+| Bio          | Optional plain text, about 300 characters. Not translated (user content).                                                                                                                                                       |
+| Languages    | Optional, from the same list as groups.                                                                                                                                                                                         |
+| General area | Their city, **only if they turn it on**. Never more precise than the city. (Their saved city is otherwise used only for finding.)                                                                                               |
+| Social links | Optional, the same platforms and username rules as groups (just the username, [decision #32](../decisions/032-social-links-as-handles-not-urls.md)), plus one personal website. The way to get in touch until messaging exists. |
+| Skills       | Optional, from a fixed, translated list; see "Skills".                                                                                                                                                                          |
+| Groups       | The groups they're in, filtered; see "Groups on a profile".                                                                                                                                                                     |
 
 **Never shown:** email, the exact saved city (unless "General area" is on, and then only its name), pending requests, bans, moderation reasons, or anything from a group's members-only space.
 
