@@ -342,7 +342,7 @@
             "focusAreasHint": "Choose up to {max}.",
             "description": "Description",
             "descriptionHint": "What your group does, and for whom. Up to 2,000 characters.",
-            "locationHint": "Where your group is based. Just the city; never an address.",
+            "locationHint": "The city your group is based in. People nearby find you by it.",
             "reach": "Reach",
             "radius": "Radius",
             "radiusOption": "{miles} miles",
@@ -369,7 +369,10 @@
             "handleCurrent": "This is your current handle.",
             "unclaimedLegend": "Super user",
             "unclaimed": "Add as an unclaimed organization",
-            "unclaimedHint": "For a group you're adding so neighbors can find it. You won't be listed as its owner. Any super user can edit it, and the group can claim it."
+            "unclaimedHint": "For a group you're adding so neighbors can find it. You won't be listed as its owner. Any super user can edit it, and the group can claim it.",
+            "streetAddress": "Street address (optional)",
+            "streetAddressPlaceholder": "749 Story Rd, San Jose, CA 95122",
+            "streetAddressHint": "Shown publicly, with directions. Only a public place like an office, church or community center, never someone's home. Events will start from this address."
         },
         "new": {
             "metaTitle": "Create an organization",
@@ -415,7 +418,9 @@
             "unlisted": "Unlisted: only people with the link can find this page.",
             "noDescription": "No description yet.",
             "focusAreas": "Focus areas",
-            "unclaimed": "Unclaimed"
+            "unclaimed": "Unclaimed",
+            "directions": "Get directions",
+            "directionsTo": "Get directions to {address} (opens in a new tab)"
         },
         "memberLists": {
             "public": {
@@ -559,7 +564,8 @@
             "socials": "the social links",
             "joinPolicy": "who can join",
             "visibility": "the visibility",
-            "memberListVisibility": "the member list setting"
+            "memberListVisibility": "the member list setting",
+            "streetAddress": "the street address"
         },
         "teamActor": "The Communalists team"
     },

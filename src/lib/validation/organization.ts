@@ -10,6 +10,7 @@ import {
     RADIUS_MILES,
     REACH_SCOPES,
     MEMBER_LIST_VISIBILITIES,
+    STREET_ADDRESS_MAX,
     VISIBILITIES,
     type FocusArea,
 } from '@/lib/organizations/options';
@@ -102,6 +103,13 @@ export const organizationSchema = z
         placeId: z
             .string({ error: 'placeRequired' })
             .regex(/^\d{1,12}$/, { error: 'placeRequired' }),
+        // Optional and public: a place people go to, never a home (features/16).
+        streetAddress: z
+            .string()
+            .trim()
+            .max(STREET_ADDRESS_MAX, { error: 'tooLong' })
+            .optional()
+            .transform((v) => v?.replace(/\s+/g, ' ') || undefined),
         reach: z.enum(REACH_SCOPES, { error: 'required' }),
         // Only used (and required) for local reach.
         radiusMiles: z.coerce.number().optional(),
@@ -152,6 +160,7 @@ export interface CreateOrganizationState {
         description: string;
         reach: string;
         radiusMiles: string;
+        streetAddress: string;
         languages: string[];
         website: string;
         contactEmail: string;
@@ -177,6 +186,7 @@ export function organizationFormValues(formData: FormData) {
         description: text('description'),
         country: text('country'),
         placeId: text('placeId'),
+        streetAddress: text('streetAddress'),
         reach: text('reach'),
         radiusMiles: text('radiusMiles'),
         languages: formData.getAll('languages').map(String),

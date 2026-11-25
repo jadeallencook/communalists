@@ -342,7 +342,7 @@
             "focusAreasHint": "Chọn tối đa {max}.",
             "description": "Mô tả",
             "descriptionHint": "Nhóm của bạn làm gì và cho ai. Tối đa 2.000 ký tự.",
-            "locationHint": "Nơi nhóm của bạn hoạt động. Chỉ thành phố; không bao giờ là địa chỉ.",
+            "locationHint": "Thành phố nơi nhóm của bạn hoạt động. Người ở gần sẽ tìm thấy bạn qua đó.",
             "reach": "Phạm vi",
             "radius": "Bán kính",
             "radiusOption": "{miles} dặm",
@@ -369,7 +369,10 @@
             "handleCurrent": "Đây là tên định danh hiện tại của bạn.",
             "unclaimedLegend": "Siêu người dùng",
             "unclaimed": "Thêm dưới dạng tổ chức chưa được nhận",
-            "unclaimedHint": "Dành cho một nhóm bạn thêm vào để hàng xóm tìm thấy. Bạn sẽ không được ghi là chủ sở hữu. Bất kỳ siêu người dùng nào cũng có thể chỉnh sửa, và nhóm đó có thể nhận lại trang."
+            "unclaimedHint": "Dành cho một nhóm bạn thêm vào để hàng xóm tìm thấy. Bạn sẽ không được ghi là chủ sở hữu. Bất kỳ siêu người dùng nào cũng có thể chỉnh sửa, và nhóm đó có thể nhận lại trang.",
+            "streetAddress": "Địa chỉ (không bắt buộc)",
+            "streetAddressPlaceholder": "749 Story Rd, San Jose, CA 95122",
+            "streetAddressHint": "Hiển thị công khai, kèm chỉ đường. Chỉ dùng nơi công cộng như văn phòng, nhà thờ hoặc trung tâm cộng đồng, không bao giờ dùng nhà riêng của ai đó. Các sự kiện sẽ mặc định dùng địa chỉ này."
         },
         "new": {
             "metaTitle": "Tạo tổ chức",
@@ -415,7 +418,9 @@
             "unlisted": "Không công khai: chỉ người có liên kết mới tìm thấy trang này.",
             "noDescription": "Chưa có mô tả.",
             "focusAreas": "Lĩnh vực hoạt động",
-            "unclaimed": "Chưa được nhận"
+            "unclaimed": "Chưa được nhận",
+            "directions": "Chỉ đường",
+            "directionsTo": "Chỉ đường đến {address} (mở trong thẻ mới)"
         },
         "memberLists": {
             "public": {
@@ -559,7 +564,8 @@
             "socials": "liên kết mạng xã hội",
             "joinPolicy": "ai có thể tham gia",
             "visibility": "chế độ hiển thị",
-            "memberListVisibility": "cài đặt danh sách thành viên"
+            "memberListVisibility": "cài đặt danh sách thành viên",
+            "streetAddress": "địa chỉ"
         },
         "teamActor": "Nhóm Communalists"
     },

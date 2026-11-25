@@ -72,3 +72,7 @@ export const Unclaimed: Story = {
         socials: [],
     },
 };
+/** With a public street address and a directions link. */
+export const WithStreetAddress: Story = {
+    args: { streetAddress: '749 Story Rd, San Jose, CA 95122' },
+};

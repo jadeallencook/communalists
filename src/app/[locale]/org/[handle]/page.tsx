@@ -78,6 +78,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
         reach: org.reach,
         languages: org.languages,
         memberCount: org.memberCount,
+        streetAddress: org.streetAddress,
         website: org.website,
         contactEmail: org.contactEmail,
         socials: org.socials,

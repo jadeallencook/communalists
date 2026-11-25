@@ -98,6 +98,7 @@ async function EditServerContainer({ params }: Pick<Props, 'params'>) {
                             languages: org.languages,
                             website: org.website ?? '',
                             contactEmail: org.contactEmail ?? '',
+                            streetAddress: org.streetAddress ?? '',
                             joinPolicy: org.joinPolicy,
                             visibility: org.visibility,
                             memberListVisibility: org.memberListVisibility,

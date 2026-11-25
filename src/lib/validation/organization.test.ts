@@ -52,6 +52,23 @@ describe('organizationSchema', () => {
         expect(org.contactEmail).toBeUndefined();
     });
 
+    it('takes an optional street address, tidied', () => {
+        expect(
+            organizationSchema.parse({
+                ...valid,
+                streetAddress: '  749 Story Rd,\n  San Jose, CA 95122 ',
+            }).streetAddress
+        ).toBe('749 Story Rd, San Jose, CA 95122');
+        expect(
+            organizationSchema.parse({ ...valid, streetAddress: '   ' })
+                .streetAddress
+        ).toBeUndefined();
+        expect(organizationSchema.parse(valid).streetAddress).toBeUndefined();
+        expect(errorsFor({ ...valid, streetAddress: 'x'.repeat(201) })).toEqual(
+            { streetAddress: 'tooLong' }
+        );
+    });
+
     it('explains handle problems', () => {
         expect(errorsFor({ ...valid, handle: '' }).handle).toBe('required');
         expect(errorsFor({ ...valid, handle: 'ab' }).handle).toBe(

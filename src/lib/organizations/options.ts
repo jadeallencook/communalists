@@ -47,6 +47,9 @@ export const OFFERED_FOCUS_AREAS = FOCUS_AREAS.filter(
 /** Enough to say what a group does without ticking every box to show up everywhere. */
 export const MAX_FOCUS_AREAS = 3;
 
+/** An organization's optional public street address (features/16). */
+export const STREET_ADDRESS_MAX = 200;
+
 export const REACH_SCOPES = ['local', 'national', 'international'] as const;
 export type ReachScope = (typeof REACH_SCOPES)[number];
 

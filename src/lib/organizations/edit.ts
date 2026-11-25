@@ -8,6 +8,7 @@ export const ORG_EDIT_FIELDS = [
     'focusAreas',
     'description',
     'location',
+    'streetAddress',
     'reach',
     'languages',
     'website',

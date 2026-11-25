@@ -18,6 +18,14 @@ Add an entry when you choose a framework or library, change the data model, add 
 
 ## Decisions
 
+### 35. Organizations can have an optional public street address — 2026-11-24
+
+**Status:** Accepted. Changes the "city only, never a street address" rule in features/16 (decision #22).
+**Context:** While preparing the first unclaimed organizations, we found two had moved since 2023 (Martha's Kitchen and Front Door Communities). Places like food banks and shower programs are useful only if people know where to go. The user asked for an optional address that events default to.
+**Decision:** An optional, public, one-line `streetAddress` on organizations, shown with a **Get directions** link (a Google Maps search URL, so nothing is sent until someone clicks). The city stays the location used for distance and `/find`. The form hint says it must be a public place, never a home. Events (later) will default to it and can use their own, for groups with several sites or mobile stops. Edits log it as "the street address".
+**Alternatives:** Keeping city only (people can't find the door); a structured address (street, zip, …; more typing for no gain yet); geocoding the address for distance (more precise, but a paid lookup and a privacy question, not needed while the city works); requiring it (would push home-based groups, like a tenant union, to publish a home).
+**Consequences:** We can't tell a home from a public place, so we rely on the hint and on moderation. An optional public **phone** field was also suggested, since most of these groups publish a phone, not an email; not built yet. Docs updated: features/16, technical/data-model.
+
 ### 34. A "Hygiene" focus area — 2026-11-24
 
 **Status:** Accepted

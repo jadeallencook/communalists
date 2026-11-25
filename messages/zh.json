@@ -342,7 +342,7 @@
             "focusAreasHint": "最多选择 {max} 项。",
             "description": "简介",
             "descriptionHint": "你的团体做什么、为谁服务。最多 2000 个字符。",
-            "locationHint": "团体所在地。只填城市，不填具体地址。",
+            "locationHint": "你的团体所在的城市。附近的人会据此找到你。",
             "reach": "服务范围",
             "radius": "半径",
             "radiusOption": "{miles} 英里",
@@ -369,7 +369,10 @@
             "handleCurrent": "这是你当前的标识名。",
             "unclaimedLegend": "超级用户",
             "unclaimed": "添加为未认领的组织",
-            "unclaimedHint": "用于你添加的、方便邻居找到的团体。你不会被列为负责人。任何超级用户都可以编辑，该团体也可以认领。"
+            "unclaimedHint": "用于你添加的、方便邻居找到的团体。你不会被列为负责人。任何超级用户都可以编辑，该团体也可以认领。",
+            "streetAddress": "街道地址（可选）",
+            "streetAddressPlaceholder": "749 Story Rd, San Jose, CA 95122",
+            "streetAddressHint": "会公开显示，并附有路线。只填写办公室、教堂或社区中心等公共场所，绝不要填写个人住址。活动会默认使用这个地址。"
         },
         "new": {
             "metaTitle": "创建组织",
@@ -415,7 +418,9 @@
             "unlisted": "不公开列出：只有拿到链接的人才能找到此页面。",
             "noDescription": "暂无简介。",
             "focusAreas": "工作领域",
-            "unclaimed": "未认领"
+            "unclaimed": "未认领",
+            "directions": "获取路线",
+            "directionsTo": "获取前往 {address} 的路线（在新标签页中打开）"
         },
         "memberLists": {
             "public": {
@@ -559,7 +564,8 @@
             "socials": "社交链接",
             "joinPolicy": "加入方式",
             "visibility": "可见性",
-            "memberListVisibility": "成员名单设置"
+            "memberListVisibility": "成员名单设置",
+            "streetAddress": "街道地址"
         },
         "teamActor": "Communalists 团队"
     },

@@ -26,6 +26,15 @@ describe('changedFields', () => {
         ).toEqual(['focusAreas', 'location']);
     });
 
+    it('notices a new street address', () => {
+        expect(
+            changedFields(
+                { streetAddress: undefined },
+                { streetAddress: '749 Story Rd' }
+            )
+        ).toEqual(['streetAddress']);
+    });
+
     it('treats missing and undefined as the same', () => {
         expect(changedFields({ website: undefined }, {})).toEqual([]);
     });

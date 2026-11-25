@@ -408,6 +408,7 @@
             "id": "seed-eastside-showers",
             "name": "Eastside Shower Day",
             "handle": "eastside-shower-day",
+            "streetAddress": "100 Example Street, San Jose, CA 95112",
             "focusAreas": ["hygiene", "health"],
             "description": "Free hot showers, towels and hygiene kits every Wednesday morning in the church hall. Walk in, no ID needed.",
             "placeId": "5392171",

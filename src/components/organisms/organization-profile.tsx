@@ -3,6 +3,7 @@ import {
     LanguagesIcon,
     MailIcon,
     MapPinIcon,
+    NavigationIcon,
     UsersIcon,
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
@@ -28,6 +29,8 @@ export interface OrganizationProfileProps {
     reach: { scope: ReachScope; radiusMiles?: number };
     languages: string[];
     memberCount: number;
+    /** Optional public street address, with a directions link. */
+    streetAddress?: string;
     website?: string;
     contactEmail?: string;
     socials: SocialLink[];
@@ -35,6 +38,10 @@ export interface OrganizationProfileProps {
     /** Not claimed yet: an "Unclaimed" label, and no member count (it has no members). */
     unclaimed?: boolean;
 }
+
+/** A map search for the address; nothing is sent until someone clicks. */
+const directionsUrl = (address: string) =>
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 
 const host = (url: string) => {
     try {
@@ -54,6 +61,7 @@ export function OrganizationProfile({
     reach,
     languages,
     memberCount,
+    streetAddress,
     website,
     contactEmail,
     socials,
@@ -148,6 +156,28 @@ export function OrganizationProfile({
                         <span>{text}</span>
                     </li>
                 ))}
+                {streetAddress && (
+                    <li className="flex items-start gap-2">
+                        <NavigationIcon
+                            aria-hidden
+                            className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+                        />
+                        <span className="flex flex-wrap gap-x-2">
+                            <span>{streetAddress}</span>
+                            <a
+                                href={directionsUrl(streetAddress)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline underline-offset-2"
+                                aria-label={t('page.directionsTo', {
+                                    address: streetAddress,
+                                })}
+                            >
+                                {t('page.directions')}
+                            </a>
+                        </span>
+                    </li>
+                )}
             </ul>
 
             {(website || contactEmail || socials.length > 0) && (

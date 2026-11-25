@@ -64,6 +64,8 @@ export interface Organization {
     location: GeneralArea;
     reach: { scope: ReachScope; radiusKm?: number; radiusMiles?: number };
     languages: OrgLanguage[];
+    /** Optional, public: where people go (never a home). Events will default to it. */
+    streetAddress?: string;
     website?: string;
     contactEmail?: string;
     socials: SocialLink[];
@@ -131,6 +133,7 @@ function toOrganization(
         location: data.location,
         reach: data.reach,
         languages: data.languages ?? [],
+        streetAddress: data.streetAddress,
         website: data.website,
         contactEmail: data.contactEmail,
         socials: socialLinksOf(data.socials),
@@ -279,6 +282,7 @@ function newOrganizationFields(
         createdBy,
         createdAt: now,
         updatedAt: now,
+        ...(input.streetAddress ? { streetAddress: input.streetAddress } : {}),
         ...(input.website ? { website: input.website } : {}),
         ...(input.contactEmail ? { contactEmail: input.contactEmail } : {}),
     };
@@ -975,6 +979,7 @@ export async function updateOrganization(
             joinPolicy: input.joinPolicy,
             visibility: input.visibility,
             memberListVisibility: input.memberListVisibility,
+            streetAddress: input.streetAddress ?? FieldValue.delete(),
             website: input.website ?? FieldValue.delete(),
             contactEmail: input.contactEmail ?? FieldValue.delete(),
             updatedAt: stamp,

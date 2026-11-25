@@ -29,6 +29,7 @@ import {
     OFFERED_FOCUS_AREAS,
     RADIUS_MILES,
     REACH_SCOPES,
+    STREET_ADDRESS_MAX,
     VISIBILITIES,
     type ReachScope,
 } from '@/lib/organizations/options';
@@ -222,6 +223,32 @@ export function CreateOrganizationForm({
                     hint={t('form.locationHint')}
                     error={errorFor('placeId') ?? errorFor('country')}
                 />
+                <Field data-invalid={!!errorFor('streetAddress')}>
+                    <FieldLabel htmlFor="streetAddress">
+                        {t('form.streetAddress')}
+                    </FieldLabel>
+                    <Input
+                        id="streetAddress"
+                        name="streetAddress"
+                        autoComplete="off"
+                        defaultValue={values.streetAddress}
+                        maxLength={STREET_ADDRESS_MAX}
+                        placeholder={t('form.streetAddressPlaceholder')}
+                        aria-invalid={
+                            errorFor('streetAddress') ? true : undefined
+                        }
+                        aria-describedby="streetAddress-hint"
+                    />
+                    {errorFor('streetAddress') ? (
+                        <FieldError id="streetAddress-hint">
+                            {errorFor('streetAddress')}
+                        </FieldError>
+                    ) : (
+                        <FieldDescription id="streetAddress-hint">
+                            {t('form.streetAddressHint')}
+                        </FieldDescription>
+                    )}
+                </Field>
                 <ChoiceGroup
                     kind="radio"
                     name="reach"

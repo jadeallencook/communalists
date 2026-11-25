@@ -342,7 +342,7 @@
             "focusAreasHint": "Elige hasta {max}.",
             "description": "Descripción",
             "descriptionHint": "Qué hace tu grupo y para quién. Hasta 2000 caracteres.",
-            "locationHint": "Dónde tiene su sede tu grupo. Solo la ciudad; nunca una dirección.",
+            "locationHint": "La ciudad donde está tu grupo. La gente cercana te encuentra por ella.",
             "reach": "Alcance",
             "radius": "Radio",
             "radiusOption": "{miles} millas",
@@ -369,7 +369,10 @@
             "handleCurrent": "Este es tu identificador actual.",
             "unclaimedLegend": "Superusuario",
             "unclaimed": "Agregar como organización sin reclamar",
-            "unclaimedHint": "Para un grupo que agregas para que los vecinos lo encuentren. No aparecerás como su dueño. Cualquier superusuario puede editarlo, y el grupo puede reclamarlo."
+            "unclaimedHint": "Para un grupo que agregas para que los vecinos lo encuentren. No aparecerás como su dueño. Cualquier superusuario puede editarlo, y el grupo puede reclamarlo.",
+            "streetAddress": "Dirección (opcional)",
+            "streetAddressPlaceholder": "749 Story Rd, San Jose, CA 95122",
+            "streetAddressHint": "Se muestra públicamente, con indicaciones. Solo un lugar público como una oficina, una iglesia o un centro comunitario, nunca la casa de alguien. Los eventos usarán esta dirección para empezar."
         },
         "new": {
             "metaTitle": "Crear una organización",
@@ -415,7 +418,9 @@
             "unlisted": "No listada: solo quienes tengan el enlace pueden encontrar esta página.",
             "noDescription": "Todavía no hay descripción.",
             "focusAreas": "Áreas de trabajo",
-            "unclaimed": "Sin reclamar"
+            "unclaimed": "Sin reclamar",
+            "directions": "Cómo llegar",
+            "directionsTo": "Cómo llegar a {address} (se abre en una pestaña nueva)"
         },
         "memberLists": {
             "public": {
@@ -559,7 +564,8 @@
             "socials": "las redes sociales",
             "joinPolicy": "quién puede unirse",
             "visibility": "la visibilidad",
-            "memberListVisibility": "la lista de miembros"
+            "memberListVisibility": "la lista de miembros",
+            "streetAddress": "la dirección"
         },
         "teamActor": "El equipo de Communalists"
     },
