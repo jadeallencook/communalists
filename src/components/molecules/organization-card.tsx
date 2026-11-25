@@ -34,6 +34,12 @@ export function OrganizationCard({
         style: 'long',
         type: 'conjunction',
     }).format(focusAreas.map((area) => t(`focusAreas.${area}`)));
+    // "Food and Housing", "3 mi away", "Santa Clara, California": lines break
+    // between these, not inside them.
+    const parts = [
+        ...(areas ? [areas] : []),
+        ...(detail ?? `/org/${handle}`).split(' · '),
+    ];
     return (
         <Link
             href={`/org/${handle}`}
@@ -45,23 +51,35 @@ export function OrganizationCard({
             >
                 {initials(name)}
             </span>
-            <span className="flex min-w-0 flex-1 flex-col">
-                <span className="truncate font-medium">{name}</span>
-                <span className="truncate text-sm text-muted-foreground">
-                    {areas ? `${areas} · ` : ''}
-                    {detail ?? `/org/${handle}`}
+            {/* Names and details wrap rather than being cut off; the label
+                sits beside the name when there's room, under it when not. */}
+            <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="font-medium break-words">{name}</span>
+                    {role ? (
+                        <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-foreground">
+                            {t(`roles.${role}`)}
+                        </span>
+                    ) : (
+                        unclaimed && (
+                            <span className="rounded-full border px-2.5 py-0.5 text-xs text-foreground">
+                                {t('page.unclaimed')}
+                            </span>
+                        )
+                    )}
+                </span>
+                <span className="text-sm break-words text-muted-foreground">
+                    {parts.map((part, i) => (
+                        <span key={i}>
+                            {i > 0 && ' · '}
+                            {/* Each part stays on one line when it fits. */}
+                            <span className="inline-block max-w-full">
+                                {part}
+                            </span>
+                        </span>
+                    ))}
                 </span>
             </span>
-            {unclaimed && !role && (
-                <span className="shrink-0 rounded-full border px-2.5 py-0.5 text-xs text-foreground">
-                    {t('page.unclaimed')}
-                </span>
-            )}
-            {role && (
-                <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs text-foreground">
-                    {t(`roles.${role}`)}
-                </span>
-            )}
             <ChevronRightIcon
                 aria-hidden
                 className="size-4 shrink-0 text-muted-foreground"

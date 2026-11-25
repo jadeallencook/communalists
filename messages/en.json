@@ -431,7 +431,7 @@
             "nearbyTitle": "Other organizations near {place}",
             "nearbyAway": "{miles} mi from here · {city}",
             "nearbyInCity": "Also in {city}",
-            "nearbySeeAll": "See all organizations near {place}"
+            "nearbySeeAll": "See all nearby"
         },
         "memberLists": {
             "public": {

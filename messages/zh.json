@@ -431,7 +431,7 @@
             "nearbyTitle": "{place} 附近的其他组织",
             "nearbyAway": "距此 {miles} 英里 · {city}",
             "nearbyInCity": "同在 {city}",
-            "nearbySeeAll": "查看 {place} 附近的所有组织"
+            "nearbySeeAll": "查看附近全部"
         },
         "memberLists": {
             "public": {

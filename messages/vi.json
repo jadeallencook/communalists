@@ -431,7 +431,7 @@
             "nearbyTitle": "Các tổ chức khác gần {place}",
             "nearbyAway": "Cách đây {miles} dặm · {city}",
             "nearbyInCity": "Cũng ở {city}",
-            "nearbySeeAll": "Xem tất cả tổ chức gần {place}"
+            "nearbySeeAll": "Xem tất cả gần đây"
         },
         "memberLists": {
             "public": {
