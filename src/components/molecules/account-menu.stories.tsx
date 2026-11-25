@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
 import { AccountMenu } from './account-menu';
+import { samplePersonPhoto } from './photo-fixtures';
 
 const meta = {
     title: 'Components/Molecules/Account Menu',
@@ -36,4 +37,7 @@ export const ChineseName: Story = { args: { name: '王小明' } };
 /** An account that hasn't finished setup: its email stands in for the name. */
 export const NoNameYet: Story = {
     args: { name: 'ada@example.com', email: 'ada@example.com' },
+};
+export const WithPhoto: Story = {
+    args: { username: 'ada-lovelace', photoUrl: samplePersonPhoto },
 };

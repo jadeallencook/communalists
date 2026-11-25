@@ -1,5 +1,6 @@
 import { PencilIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
 import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
@@ -11,10 +12,16 @@ export interface ProfilePageProps {
     view: ProfileView;
     /** Their own profile: they see all of it, plus a way to edit and preview. */
     isSelf?: boolean;
+    /** Their own profile: a PhotoEditor (wired by the route) to change their photo. */
+    photoEditor?: ReactNode;
 }
 
 /** /comrade/{username}: a person's profile, as this viewer may see it. */
-export function ProfilePage({ view, isSelf = false }: ProfilePageProps) {
+export function ProfilePage({
+    view,
+    isSelf = false,
+    photoEditor,
+}: ProfilePageProps) {
     const t = useTranslations('Profile');
     return (
         <section className="mx-auto flex w-full max-w-2xl flex-col gap-8 px-4 py-12">
@@ -31,7 +38,7 @@ export function ProfilePage({ view, isSelf = false }: ProfilePageProps) {
                     </Button>
                 </div>
             )}
-            <ProfileCard view={view} />
+            <ProfileCard view={view} photoEditor={photoEditor} />
         </section>
     );
 }

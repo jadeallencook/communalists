@@ -31,9 +31,11 @@ import { handleProblem } from '@/lib/organizations/handle';
 import { isSupportedCountry } from '@/lib/places/types';
 import { makeUnclaimedProblem } from '@/lib/organizations/lifecycle';
 import { phoneForDisplay } from '@/lib/phone';
+import { photoUrl } from '@/lib/photos';
+import { PhotoEditor } from '@/components/organisms/photo-editor';
 import { redirect } from '@/i18n/navigation';
 
-import { makeUnclaimedAction } from './actions';
+import { makeUnclaimedAction, saveOrganizationPhotoAction } from './actions';
 import { JoinPanelContainer } from './join-panel-container';
 
 type Props = PageProps<'/[locale]/org/[handle]'>;
@@ -95,7 +97,20 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
         foundedYear: org.foundedYear,
         socials: org.socials,
         unlisted: org.visibility === 'unlisted',
+        photoUrl: photoUrl('org', org.id, org.photoVersion),
     };
+    // Owners and moderators (super users on unclaimed ones) change the photo
+    // right here; the action checks again.
+    const photoEditor = (
+        <PhotoEditor
+            name={org.name}
+            photoUrl={profile.photoUrl}
+            shape="rounded"
+            audience="org"
+            saveAction={saveOrganizationPhotoAction}
+            fields={{ orgId: org.id }}
+        />
+    );
     const [user, nearby] = await Promise.all([
         getSessionUser(),
         nearbySection(org),
@@ -113,7 +128,12 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                     setting: org.memberListVisibility,
                     viewerIsMember: false,
                 }}
-                profile={profile}
+                profile={{
+                    ...profile,
+                    photoEditor: isPlatformAdmin(user?.uid)
+                        ? photoEditor
+                        : undefined,
+                }}
                 unclaimed={{ canManage: isPlatformAdmin(user?.uid) }}
                 nearby={nearby}
             />
@@ -177,7 +197,11 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                     ? people.filter((p) => p.status === 'pending').length
                     : 0
             }
-            profile={{ ...profile, memberCount: active.length }}
+            profile={{
+                ...profile,
+                memberCount: active.length,
+                photoEditor: isStaff(role) ? photoEditor : undefined,
+            }}
         />
     );
 }
@@ -220,6 +244,7 @@ async function nearbySection(org: {
                 handle: other.handle,
                 focusAreas: other.focusAreas,
                 unclaimed: other.unclaimed,
+                photoUrl: photoUrl('org', other.id, other.photoVersion),
                 detail:
                     distanceMiles < 1
                         ? t('nearbyInCity', { city: other.location.label })

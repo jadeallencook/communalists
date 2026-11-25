@@ -9,8 +9,9 @@ import {
     UsersIcon,
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
-import { initials } from '@/lib/initials';
+import { Avatar } from '@/components/molecules/avatar';
 import { languageName } from '@/lib/organizations/client';
 import { type FocusArea, type ReachScope } from '@/lib/organizations/options';
 import {
@@ -45,6 +46,10 @@ export interface OrganizationProfileProps {
     unclaimed?: boolean;
     /** The name's heading level: 1 on its own page, lower when shown inside another page (a preview). */
     headingLevel?: 1 | 2 | 3 | 4;
+    /** From photoUrl() in src/lib/photos.ts; initials without one. */
+    photoUrl?: string;
+    /** For people who may change it: a PhotoEditor, shown instead of the plain photo. */
+    photoEditor?: ReactNode;
 }
 
 /** A map search for the address; nothing is sent until someone clicks. */
@@ -78,6 +83,8 @@ export function OrganizationProfile({
     unlisted = false,
     unclaimed = false,
     headingLevel = 1,
+    photoUrl,
+    photoEditor,
 }: OrganizationProfileProps) {
     const Name = `h${headingLevel}` as const;
     const Section = `h${headingLevel + 1}` as 'h2' | 'h3' | 'h4' | 'h5';
@@ -117,12 +124,15 @@ export function OrganizationProfile({
     return (
         <article className="flex flex-col gap-8">
             <header className="flex items-start gap-4">
-                <span
-                    aria-hidden
-                    className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-muted text-xl font-semibold"
-                >
-                    {initials(name)}
-                </span>
+                {photoEditor ?? (
+                    <Avatar
+                        name={name}
+                        photoUrl={photoUrl}
+                        shape="rounded"
+                        size="lg"
+                        className="font-semibold"
+                    />
+                )}
                 <div className="flex min-w-0 flex-col gap-1">
                     <Name className="font-heading text-3xl font-semibold tracking-tight text-balance">
                         {name}

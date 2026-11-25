@@ -19,6 +19,9 @@ export const ORG_EDIT_FIELDS = [
     'joinPolicy',
     'visibility',
     'memberListVisibility',
+    // Changed on its own (the photo editor), never by the form; listed so
+    // the moderation log can name it.
+    'photo',
 ] as const;
 export type OrgEditField = (typeof ORG_EDIT_FIELDS)[number];
 

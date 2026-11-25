@@ -10,9 +10,13 @@ import {
 import { getSessionUser } from '@/lib/auth/session';
 import { getMemberships, getProfileGroups } from '@/lib/organizations';
 import { handleProblem } from '@/lib/organizations/handle';
+import { PhotoEditor } from '@/components/organisms/photo-editor';
+import { photoUrl } from '@/lib/photos';
 import { profileView, profileViewer } from '@/lib/profiles';
 import { getUidByUsername, getUserProfile } from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
+
+import { saveProfilePhotoAction } from '@/app/[locale]/account/profile/actions';
 
 type Props = PageProps<'/[locale]/comrade/[username]'>;
 
@@ -71,6 +75,7 @@ async function ProfileServerContainer({ params }: Pick<Props, 'params'>) {
             name: person.displayName!,
             username,
             areaLabel: person.location?.label,
+            photoUrl: photoUrl('user', uid, person.photoVersion),
             settings: person.profile,
             groups,
         },
@@ -81,5 +86,20 @@ async function ProfileServerContainer({ params }: Pick<Props, 'params'>) {
         }),
         viewerOrgIds
     );
-    return <ProfilePage view={view} isSelf={isSelf} />;
+    return (
+        <ProfilePage
+            view={view}
+            isSelf={isSelf}
+            photoEditor={
+                isSelf ? (
+                    <PhotoEditor
+                        name={view.name}
+                        photoUrl={view.photoUrl}
+                        audience="profile"
+                        saveAction={saveProfilePhotoAction}
+                    />
+                ) : undefined
+            }
+        />
+    );
 }

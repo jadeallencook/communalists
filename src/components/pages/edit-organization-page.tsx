@@ -13,6 +13,8 @@ export interface EditOrganizationPageProps {
     form: ReactNode;
     /** Owners only: the delete section (DeleteOrganizationSection, wired by a container). */
     deleteSection?: ReactNode;
+    /** The organization's photo with a way to change it (PhotoEditor, variant "field"). */
+    photo?: ReactNode;
 }
 
 /** /org/{handle}/edit: back to the group, a title, and the form filled in. */
@@ -21,8 +23,10 @@ export function EditOrganizationPage({
     handle,
     form,
     deleteSection,
+    photo,
 }: EditOrganizationPageProps) {
     const t = useTranslations('Organizations');
+    const tp = useTranslations('Photo');
     return (
         <section className="mx-auto flex w-full max-w-2xl flex-col gap-8 px-4 py-12">
             <header className="flex flex-col gap-3">
@@ -42,6 +46,23 @@ export function EditOrganizationPage({
                 </h1>
                 <p className="text-muted-foreground">{t('edit.description')}</p>
             </header>
+            {photo && (
+                <section
+                    aria-labelledby="organization-photo"
+                    className="flex flex-col gap-3"
+                >
+                    <h2
+                        id="organization-photo"
+                        className="font-heading text-lg font-semibold"
+                    >
+                        {tp('field')}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                        {tp('descriptionOrg')}
+                    </p>
+                    {photo}
+                </section>
+            )}
             {form}
             {deleteSection}
         </section>

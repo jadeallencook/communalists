@@ -597,7 +597,8 @@
             "memberListVisibility": "la lista de miembros",
             "streetAddress": "la dirección",
             "phone": "el teléfono",
-            "foundedYear": "el año de fundación"
+            "foundedYear": "el año de fundación",
+            "photo": "la foto"
         },
         "teamActor": "El equipo de Communalists"
     },
@@ -982,5 +983,41 @@
                 "invalid": "Edita la fila para elegir un valor de la lista."
             }
         }
+    },
+    "Photo": {
+        "change": "Cambiar foto",
+        "changeFor": "Cambiar la foto de {name}",
+        "titleOrg": "Foto de {name}",
+        "titleProfile": "Tu foto",
+        "description": "Arrastra la foto o usa los botones de flecha para moverla, y el control deslizante para acercarla. Solo se muestra lo que queda dentro de la forma.",
+        "descriptionOrg": "Se muestra en tu página y dondequiera que aparezca tu organización.",
+        "descriptionProfile": "La ven las mismas personas que pueden ver el resto de tu perfil.",
+        "choose": "Elegir foto",
+        "chooseAnother": "Elegir otra foto",
+        "types": "JPEG, PNG o WebP, de al menos 128 píxeles de ancho y de alto.",
+        "position": "Posición de la foto",
+        "zoom": "Acercar",
+        "save": "Guardar foto",
+        "saving": "Guardando…",
+        "remove": "Quitar foto",
+        "removing": "Quitando…",
+        "cancel": "Cancelar",
+        "saved": "Foto guardada.",
+        "removed": "Foto quitada.",
+        "field": "Foto",
+        "none": "Todavía no hay foto. Se muestran tus iniciales.",
+        "errors": {
+            "type": "Elige una imagen JPEG, PNG o WebP.",
+            "tooBig": "El archivo es demasiado grande. Elige uno de menos de 20 MB.",
+            "tooSmall": "La foto es demasiado pequeña. Elige una de al menos 128 píxeles de ancho y de alto.",
+            "unreadable": "No se pudo abrir el archivo. Prueba con otra foto.",
+            "invalid": "No se pudo usar el archivo. Prueba con otra foto.",
+            "notAllowed": "No puedes cambiar esta foto.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        },
+        "moveUp": "Mover arriba",
+        "moveDown": "Mover abajo",
+        "moveLeft": "Mover a la izquierda",
+        "moveRight": "Mover a la derecha"
     }
 }

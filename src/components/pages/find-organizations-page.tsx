@@ -11,6 +11,7 @@ import type {
     DirectoryResults,
 } from '@/lib/organizations/directory';
 import type { ReachScope } from '@/lib/organizations/options';
+import { photoUrl } from '@/lib/photos';
 import { cn } from '@/lib/utils';
 
 export interface FindOrganizationsPageProps {
@@ -154,6 +155,11 @@ function Section({
                                 handle={org.handle}
                                 focusAreas={org.focusAreas}
                                 unclaimed={org.unclaimed}
+                                photoUrl={photoUrl(
+                                    'org',
+                                    org.id,
+                                    org.photoVersion
+                                )}
                                 detail={
                                     local
                                         ? distanceMiles < 1

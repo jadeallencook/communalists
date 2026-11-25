@@ -20,6 +20,10 @@ import { phoneForDisplay } from '@/lib/phone';
 import { effectiveRole } from '@/lib/platform-admin';
 import { isSupportedCountry } from '@/lib/places/types';
 import { redirect } from '@/i18n/navigation';
+import { PhotoEditor } from '@/components/organisms/photo-editor';
+import { photoUrl } from '@/lib/photos';
+
+import { saveOrganizationPhotoAction } from '../actions';
 
 import { DeleteOrganizationContainer } from './delete-organization-container';
 import { EditOrganizationFormContainer } from './edit-organization-form-container';
@@ -78,6 +82,17 @@ async function EditServerContainer({ params }: Pick<Props, 'params'>) {
         <EditOrganizationPage
             name={org.name}
             handle={org.handle}
+            photo={
+                <PhotoEditor
+                    variant="field"
+                    name={org.name}
+                    photoUrl={photoUrl('org', org.id, org.photoVersion)}
+                    shape="rounded"
+                    audience="org"
+                    saveAction={saveOrganizationPhotoAction}
+                    fields={{ orgId: org.id }}
+                />
+            }
             deleteSection={
                 // canDelete: owners (and super users on unclaimed ones).
                 canDelete(role) ? (

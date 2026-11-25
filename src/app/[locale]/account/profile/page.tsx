@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import { ProfileSettingsPageLoading } from '@/components/pages/profile-settings-page';
 import { requireAccount } from '@/lib/auth/require-account';
 import { getProfileGroups } from '@/lib/organizations';
+import { photoUrl } from '@/lib/photos';
 
 import { ProfileSettingsContainer } from './profile-settings-container';
 
@@ -32,6 +33,7 @@ async function ProfileSettingsServerContainer() {
             areaLabel={profile.location.label}
             settings={profile.profile}
             groups={groups}
+            photoUrl={photoUrl('user', user.uid, profile.photoVersion)}
         />
     );
 }

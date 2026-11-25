@@ -35,7 +35,8 @@ The rebuild keeps the prototype's caching ideas ([PR #60](https://github.com/tec
 2. Clear the tag (`updateTag`) in every server action that changes the data. If the change shows outside the form, also `refresh()`.
 3. **Decide on fresh data, show cached data.** A cached copy can be up to `cacheLife` old on another server instance, and on Vercel the default in-memory cache is per instance (Next's docs say entries "typically don't persist across requests" on serverless). So a check that redirects someone or grants access must confirm with a fresh read when the cached copy says no (see `requireAccount` and `getUserProfileFresh`).
 4. Call `logRead()` next to every Firestore read, so `next dev` shows what each page costs.
-5. If per-instance caching proves too leaky at real traffic, `'use cache: remote'` stores entries in a shared, platform-provided cache instead (it costs money and adds latency; Next's docs list when it's worth it).
+5. **Route handlers that decide access read fresh, not through `'use cache'`.** Found 2026-11-25 with `/api/photos`: in `next dev`, its cached `getUserProfile` stayed stale after a server action's `updateTag`, and the stale copy then showed up on the next page load too. The route now reads Firestore directly (two documents in one `getAll`), and its URL carries a version so browsers cache the response instead ([decision #42](../decisions/042-photos-in-firestore-served-by-our-route.md)).
+6. If per-instance caching proves too leaky at real traffic, `'use cache: remote'` stores entries in a shared, platform-provided cache instead (it costs money and adds latency; Next's docs list when it's worth it).
 
 **Measured on 2026-11-22** (production build, emulators, `FIRESTORE_READ_LOG=1`):
 

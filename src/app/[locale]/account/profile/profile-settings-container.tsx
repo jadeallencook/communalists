@@ -11,6 +11,7 @@ import {
     ProfileSettingsForm,
     type ProfileFormValue,
 } from '@/components/organisms/profile-settings-form';
+import { PhotoEditor } from '@/components/organisms/photo-editor';
 import { ProfileSettingsPage } from '@/components/pages/profile-settings-page';
 import { languageName } from '@/lib/organizations/client';
 import { ORG_LANGUAGES, type OrgLanguage } from '@/lib/organizations/options';
@@ -21,7 +22,7 @@ import {
 } from '@/lib/profiles';
 import type { ProfileSettingsState } from '@/lib/validation/profile';
 
-import { saveProfileSettingsAction } from './actions';
+import { saveProfilePhotoAction, saveProfileSettingsAction } from './actions';
 
 /**
  * Wires /account/profile: the form (controlled), the save action, and a live
@@ -33,12 +34,14 @@ export function ProfileSettingsContainer({
     areaLabel,
     settings,
     groups,
+    photoUrl,
 }: {
     name: string;
     username: string;
     areaLabel: string;
     settings: ProfileSettings;
     groups: ProfileGroup[];
+    photoUrl?: string;
 }) {
     const locale = useLocale();
     const [state, formAction, pending] = useActionState<
@@ -76,12 +79,28 @@ export function ProfileSettingsContainer({
                 .filter((id) => !value.shownGroups.includes(id)),
         },
     };
-    const person = { name, username, areaLabel, settings: draft, groups };
+    const person = {
+        name,
+        username,
+        areaLabel,
+        photoUrl,
+        settings: draft,
+        groups,
+    };
     const none = new Set<string>();
 
     return (
         <ProfileSettingsPage
             username={username}
+            photo={
+                <PhotoEditor
+                    variant="field"
+                    name={name}
+                    photoUrl={photoUrl}
+                    audience="profile"
+                    saveAction={saveProfilePhotoAction}
+                />
+            }
             form={
                 <ProfileSettingsForm
                     value={value}

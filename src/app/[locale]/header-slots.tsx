@@ -3,6 +3,7 @@ import { getLocale } from 'next-intl/server';
 import { AccountMenu } from '@/components/molecules/account-menu';
 import { signOut } from '@/app/actions/sign-out';
 import { getSessionUser } from '@/lib/auth/session';
+import { photoUrl } from '@/lib/photos';
 import { getUserProfile } from '@/lib/users';
 
 import {
@@ -34,6 +35,7 @@ export async function HeaderAccount() {
             locale={locale}
             signOutAction={signOut}
             username={profile?.username}
+            photoUrl={photoUrl('user', user.uid, profile?.photoVersion)}
         />
     );
 }

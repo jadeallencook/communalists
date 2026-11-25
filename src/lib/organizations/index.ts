@@ -7,6 +7,7 @@ import { cache } from 'react';
 
 import { getAdminDb } from '@/lib/firebase/admin';
 import { logRead } from '@/lib/firebase/read-log';
+import { photoDocId } from '@/lib/photos';
 import type { GeneralArea } from '@/lib/places';
 import type { CountryCode } from '@/lib/places/types';
 import type { ProfileGroup } from '@/lib/profiles';
@@ -80,8 +81,8 @@ export interface Organization {
     /** Added by a super user and not claimed yet: no members, every super user acts as owner. */
     unclaimed: boolean;
     memberCount: number;
-    /** Storage path of the logo, if any. */
-    logoPath?: string;
+    /** When its photo was saved (epoch ms); none without a photo (src/lib/photos.ts). */
+    photoVersion?: number;
     /** When the handle last changed (epoch ms), for the 30-day limit. */
     handleChangedAt?: number;
 }
@@ -91,9 +92,7 @@ export interface Membership {
     uid: string;
     role: OrgRole;
     status: MembershipStatus;
-    org: Pick<Organization, 'name' | 'handle' | 'focusAreas'> & {
-        logoPath?: string;
-    };
+    org: Pick<Organization, 'name' | 'handle' | 'focusAreas' | 'photoVersion'>;
 }
 
 const db = () => getAdminDb();
@@ -149,7 +148,7 @@ function toOrganization(
         status: data.status,
         unclaimed: data.claimStatus === 'unclaimed',
         memberCount: data.memberCount ?? 0,
-        logoPath: data.logoPath,
+        photoVersion: data.photoVersion,
         handleChangedAt: millis(data.handleChangedAt),
     };
 }
@@ -224,7 +223,7 @@ export async function getMemberships(uid: string): Promise<Membership[]> {
                     name: d.org.name,
                     handle: d.org.handle,
                     focusAreas: d.org.focusAreas ?? [],
-                    logoPath: d.org.logoPath,
+                    photoVersion: d.org.photoVersion,
                 },
             } satisfies Membership;
         })
@@ -419,6 +418,7 @@ function toDirectoryOrganization(
         joinPolicy: data.joinPolicy,
         memberCount: data.memberCount ?? 0,
         unclaimed: data.claimStatus === 'unclaimed',
+        photoVersion: data.photoVersion,
     };
 }
 
@@ -1055,6 +1055,106 @@ export async function updateOrganization(
         copyHolders = snapshot.docs.map((doc) => doc.data().uid as string);
     }
     return { ...result, copyHolders };
+}
+
+// --- The organization's photo (owners and moderators; super users on
+// unclaimed ones). Set apart from the form: the photo editor saves on its own.
+
+export type SetOrganizationPhotoResult =
+    | {
+          ok: true;
+          handle: string;
+          /** Everyone with a membership: their copy of the photo changed. */
+          copyHolders: string[];
+      }
+    | { ok: false; error: 'notAllowed' | 'notFound' };
+
+/**
+ * Saves (or, with null, removes) the organization's photo. One transaction
+ * checks the editor's role on fresh data, writes the photo's bytes and the
+ * new `photoVersion`, and logs it, so nobody without access can overwrite a
+ * photo. Membership copies are updated afterwards, in batches.
+ */
+export async function setOrganizationPhoto(
+    orgId: string,
+    editor: OrgEditor,
+    photo: Buffer | null
+): Promise<SetOrganizationPhotoResult> {
+    const orgRef = organizations().doc(orgId);
+    const actorRef = memberships().doc(membershipId(orgId, editor.uid));
+    const photoRef = db().collection('photos').doc(photoDocId('org', orgId));
+    const version = photo ? Date.now() : null;
+
+    const result = await db().runTransaction(async (tx) => {
+        logRead('organizations');
+        logRead('memberships');
+        const [orgSnap, actorSnap] = await Promise.all([
+            tx.get(orgRef),
+            tx.get(actorRef),
+        ]);
+        if (!orgSnap.exists) return { ok: false, error: 'notFound' } as const;
+        const org = toOrganization(orgSnap.id, orgSnap.data()!);
+        if (org.status !== 'active')
+            return { ok: false, error: 'notFound' } as const;
+        const actor = actorSnap.data();
+        const role = effectiveRole(
+            actor?.status === 'active' ? actor.role : null,
+            org,
+            editor.platformAdmin
+        );
+        if (role !== 'owner' && role !== 'moderator')
+            return { ok: false, error: 'notAllowed' } as const;
+
+        const stamp = FieldValue.serverTimestamp();
+        if (photo) {
+            tx.set(photoRef, {
+                data: photo,
+                type: 'image/webp',
+                updatedAt: stamp,
+            });
+        } else {
+            tx.delete(photoRef);
+        }
+        tx.update(orgRef, {
+            photoVersion: version ?? FieldValue.delete(),
+            updatedAt: stamp,
+        });
+        const byTeam = org.unclaimed;
+        tx.create(orgRef.collection('moderationLog').doc(), {
+            action: 'editProfile',
+            fields: ['photo'],
+            actor: byTeam
+                ? { uid: editor.uid, team: true }
+                : { uid: editor.uid, displayName: editor.displayName },
+            createdAt: stamp,
+        });
+        if (byTeam)
+            tx.create(db().collection('adminLog').doc(), {
+                action: 'editUnclaimed',
+                orgId,
+                orgName: org.name,
+                actorUid: editor.uid,
+                fields: ['photo'],
+                createdAt: stamp,
+            });
+        return { ok: true, handle: org.handle } as const;
+    });
+    if (!result.ok) return result;
+
+    const snapshot = await memberships().where('orgId', '==', orgId).get();
+    logRead('memberships', Math.max(snapshot.size, 1));
+    for (let i = 0; i < snapshot.docs.length; i += 400) {
+        const batch = db().batch();
+        for (const doc of snapshot.docs.slice(i, i + 400))
+            batch.update(doc.ref, {
+                'org.photoVersion': version ?? FieldValue.delete(),
+            });
+        await batch.commit();
+    }
+    return {
+        ...result,
+        copyHolders: snapshot.docs.map((doc) => doc.data().uid as string),
+    };
 }
 
 // --- A person's groups, for their profile (src/lib/profiles.ts decides which

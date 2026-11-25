@@ -7,6 +7,8 @@ import {
     SignedOutLinks,
 } from '@/components/molecules/header-links';
 import { JoinPanel } from '@/components/organisms/join-panel';
+import { PhotoEditor } from '@/components/organisms/photo-editor';
+import { sampleOrgPhoto } from '@/components/molecules/photo-fixtures';
 import { sampleProfile } from '@/components/organisms/organization-profile.stories';
 import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
@@ -92,12 +94,28 @@ type Story = StoryObj<typeof meta>;
 
 /** A signed-in visitor: Ask to join, and only owners and moderators named. */
 export const Public: Story = {};
-/** The owner: members' space, Manage members with 2 requests, everyone named. */
+/** The owner: members' space, Manage members with 2 requests, everyone named. Hover the photo to change it. */
 export const AsOwner: Story = {
     args: {
         role: 'owner',
         join: memberJoin,
         pendingRequests: 2,
+        profile: {
+            ...sampleProfile,
+            photoUrl: sampleOrgPhoto,
+            photoEditor: (
+                <PhotoEditor
+                    name={sampleProfile.name}
+                    photoUrl={sampleOrgPhoto}
+                    shape="rounded"
+                    audience="org"
+                    saveAction={fn(async () => ({
+                        ok: true as const,
+                        removed: false,
+                    }))}
+                />
+            ),
+        },
         members: {
             people: everyone,
             total: 8,

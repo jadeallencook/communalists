@@ -597,7 +597,8 @@
             "memberListVisibility": "the member list setting",
             "streetAddress": "the street address",
             "phone": "the phone number",
-            "foundedYear": "the year founded"
+            "foundedYear": "the year founded",
+            "photo": "the photo"
         },
         "teamActor": "The Communalists team"
     },
@@ -982,5 +983,41 @@
                 "invalid": "Edit the row to choose a value from the list."
             }
         }
+    },
+    "Photo": {
+        "change": "Change photo",
+        "changeFor": "Change the photo for {name}",
+        "titleOrg": "Photo for {name}",
+        "titleProfile": "Your photo",
+        "description": "Drag the photo or use the arrow buttons to move it, and the slider to zoom. Only what’s inside the shape is shown.",
+        "descriptionOrg": "It shows on your page and wherever your organization is listed.",
+        "descriptionProfile": "It shows to the same people who can see the rest of your profile.",
+        "choose": "Choose photo",
+        "chooseAnother": "Choose another photo",
+        "types": "JPEG, PNG or WebP, at least 128 pixels wide and tall.",
+        "position": "Photo position",
+        "zoom": "Zoom",
+        "save": "Save photo",
+        "saving": "Saving…",
+        "remove": "Remove photo",
+        "removing": "Removing…",
+        "cancel": "Cancel",
+        "saved": "Photo saved.",
+        "removed": "Photo removed.",
+        "field": "Photo",
+        "none": "No photo yet. Your initials show instead.",
+        "errors": {
+            "type": "Choose a JPEG, PNG or WebP image.",
+            "tooBig": "That file is too large. Choose one under 20 MB.",
+            "tooSmall": "That photo is too small. Choose one at least 128 pixels wide and tall.",
+            "unreadable": "That file couldn’t be opened. Try another photo.",
+            "invalid": "That file couldn’t be used. Try another photo.",
+            "notAllowed": "You can’t change this photo.",
+            "generic": "Something went wrong. Try again."
+        },
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "moveLeft": "Move left",
+        "moveRight": "Move right"
     }
 }

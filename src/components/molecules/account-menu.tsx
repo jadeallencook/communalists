@@ -15,8 +15,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/atoms/dropdown-menu';
+import { Avatar } from '@/components/molecules/avatar';
 import { Link } from '@/i18n/navigation';
-import { initials } from '@/lib/initials';
 
 export interface AccountMenuProps {
     name: string;
@@ -25,17 +25,20 @@ export interface AccountMenuProps {
     locale: string;
     /** Their profile address; adds "Your profile". Missing mid-setup. */
     username?: string;
+    /** Their photo (src/lib/photos.ts); initials without one. */
+    photoUrl?: string;
     /** In the app, the signOut server action. */
     signOutAction: (formData: FormData) => void | Promise<void>;
 }
 
-/** The signed-in user's menu: initials button → name, Dashboard (phones), Account settings, Sign out. */
+/** The signed-in user's menu: photo (or initials) button → name, Dashboard (phones), Account settings, Sign out. */
 export function AccountMenu({
     name,
     email,
     locale,
     signOutAction,
     username,
+    photoUrl,
 }: AccountMenuProps) {
     const t = useTranslations('AccountMenu');
 
@@ -48,12 +51,12 @@ export function AccountMenu({
                     className="rounded-full"
                     aria-label={t('open', { name })}
                 >
-                    <span
-                        aria-hidden
-                        className="flex size-7 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground"
-                    >
-                        {initials(name)}
-                    </span>
+                    <Avatar
+                        name={name}
+                        photoUrl={photoUrl}
+                        size="sm"
+                        className="bg-primary text-primary-foreground"
+                    />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">

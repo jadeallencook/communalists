@@ -130,6 +130,7 @@ describe('profileView', () => {
         name: 'Maya Thompson',
         username: 'maya-thompson',
         areaLabel: 'San Jose, California',
+        photoUrl: '/api/photos/user/u1?v=1',
         groups: [group('a', { memberList: 'public' })],
     };
 
@@ -151,8 +152,27 @@ describe('profileView', () => {
             name: 'Maya Thompson',
             username: 'maya-thompson',
             pronouns: undefined,
+            photoUrl: undefined,
             details: null,
         });
+    });
+
+    it('shows the photo only to people who see the details', () => {
+        const photoFor = (
+            visibility: 'public' | 'groups' | 'name',
+            viewer: 'self' | 'groupmate' | 'signedIn' | 'public'
+        ) =>
+            profileView(
+                { ...person, settings: profileSettingsOf({ visibility }) },
+                viewer,
+                new Set()
+            ).photoUrl;
+        expect(photoFor('public', 'public')).toBe(person.photoUrl);
+        expect(photoFor('groups', 'groupmate')).toBe(person.photoUrl);
+        expect(photoFor('groups', 'signedIn')).toBeUndefined();
+        expect(photoFor('groups', 'public')).toBeUndefined();
+        expect(photoFor('name', 'groupmate')).toBeUndefined();
+        expect(photoFor('name', 'self')).toBe(person.photoUrl);
     });
 
     it('shows the city only when turned on', () => {

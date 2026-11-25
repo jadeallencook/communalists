@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
+import { sampleOrgPhoto } from '@/components/molecules/photo-fixtures';
 import { CreateOrganizationForm } from '@/components/organisms/create-organization-form';
+import { PhotoEditor } from '@/components/organisms/photo-editor';
 import { DeleteOrganizationSection } from '@/components/organisms/delete-organization-section';
 import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
@@ -18,6 +20,19 @@ const meta = {
     args: {
         name: 'South Bay Mutual Aid',
         handle: 'sbma',
+        photo: (
+            <PhotoEditor
+                variant="field"
+                name="South Bay Mutual Aid"
+                photoUrl={sampleOrgPhoto}
+                shape="rounded"
+                audience="org"
+                saveAction={fn(async () => ({
+                    ok: true as const,
+                    removed: false,
+                }))}
+            />
+        ),
         form: (
             <CreateOrganizationForm
                 mode="edit"

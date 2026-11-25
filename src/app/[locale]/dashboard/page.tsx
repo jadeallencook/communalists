@@ -15,6 +15,7 @@ import {
     filterDirectory,
 } from '@/lib/organizations/directory';
 import { MAX_OWNED_ORGANIZATIONS } from '@/lib/organizations/options';
+import { photoUrl } from '@/lib/photos';
 
 const NEARBY_COUNT = 3;
 
@@ -64,11 +65,12 @@ async function DashboardContainer() {
         <DashboardPage
             name={profile.displayName}
             areaLabel={profile.location.label}
-            organizations={memberships.map(({ org, role }) => ({
+            organizations={memberships.map(({ orgId, org, role }) => ({
                 name: org.name,
                 handle: org.handle,
                 focusAreas: org.focusAreas,
                 role,
+                photoUrl: photoUrl('org', orgId, org.photoVersion),
             }))}
             canCreate={owned < MAX_OWNED_ORGANIZATIONS}
             nearby={nearby.map(({ org, distanceMiles }) => ({
@@ -76,6 +78,7 @@ async function DashboardContainer() {
                 handle: org.handle,
                 focusAreas: org.focusAreas,
                 unclaimed: org.unclaimed,
+                photoUrl: photoUrl('org', org.id, org.photoVersion),
                 detail:
                     distanceMiles < 1
                         ? t('inCity', { city: org.location.label })

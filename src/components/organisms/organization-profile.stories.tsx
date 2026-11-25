@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import type { FocusArea } from '@/lib/organizations/options';
 
+import { sampleOrgPhoto } from '@/components/molecules/photo-fixtures';
+
 import { OrganizationProfile } from './organization-profile';
 
 export const sampleProfile = {
@@ -87,3 +89,5 @@ export const FullContact: Story = {
         foundedYear: 1983,
     },
 };
+/** With a photo. */
+export const WithPhoto: Story = { args: { photoUrl: sampleOrgPhoto } };

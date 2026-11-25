@@ -2,7 +2,7 @@
 
 The heart of the platform: people create, find and join **organizations**, and an organization's tools only work for its members. This is the rebuild's design, agreed with the user on 2026-11-22 ([decision #22](../decisions/022-organizations-design-handles-roles-limits.md)). It replaces the prototype's single hard-coded organization ([08](08-organizations-and-membership.md)). Read 08's "Gaps" for what went wrong there.
 
-**Status:** phase 1 built 2026-11-22, except the logo upload. Phase 2 (finding, joining, moderating members) and editing built 2026-11-23. See "Built" at the end. **Unclaimed organizations** (added by super users, with no owner until a group claims them) are in [18](18-unclaimed-organizations.md).
+**Status:** phase 1 built 2026-11-22 (the photo, planned as a logo, came 2026-11-25: [19](19-photos.md)). Phase 2 (finding, joining, moderating members) and editing built 2026-11-23. See "Built" at the end. **Unclaimed organizations** (added by super users, with no owner until a group claims them) are in [18](18-unclaimed-organizations.md).
 
 ## What an organization has
 
@@ -21,7 +21,7 @@ The heart of the platform: people create, find and join **organizations**, and a
 | Socials          | Optional list of `{ platform, handle }`: Instagram, Facebook (page), Facebook group, X, Bluesky, TikTok, YouTube, Telegram. People type just the username; a pasted profile link is cut down to it. We build the link, so it's always that platform's profile page ([decision #32](../decisions/032-social-links-as-handles-not-urls.md)).                                                                                                                         |
 | Contact email    | Optional, **public** on the organization's page.                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | Phone            | Optional, **public**, with a tap-to-call link. Typed any way ("408.293.6111", "(408) 293-6111 ext 2"), read in the group's country, and stored as one value: E.164 plus `;ext=N` (`src/lib/phone.ts`, using `libphonenumber-js`). Shown in local format to visitors in the same country, international otherwise. The hint asks for the organization's line, not a personal cell ([decision #36](../decisions/036-organization-phone-number-and-year-founded.md)). |
-| Logo             | Optional image upload (Firebase Storage). Type and size checked on the server.                                                                                                                                                                                                                                                                                                                                                                                     |
+| Photo            | Optional; changed from the page (hover the photo) or the edit page. See [19](19-photos.md) ([decision #42](../decisions/042-photos-in-firestore-served-by-our-route.md)).                                                                                                                                                                                                                                                                                          |
 | Join policy      | `request` (default): people ask, owners or moderators approve. `open`: join instantly. `invite`: invited people only.                                                                                                                                                                                                                                                                                                                                              |
 | Visibility       | `listed` (default): shows up when browsing. `unlisted`: reachable by link only (for groups that don't want to be found, like a tenant union organizing against a landlord).                                                                                                                                                                                                                                                                                        |
 | Member list      | Who sees every member's name on the group's page: `public` (anyone, signed out too), `members` (default: members see everyone), or `hidden` (just the count). Owners and moderators are always named, and everyone sees the count. Staff always see everyone on the members page.                                                                                                                                                                                  |
@@ -45,7 +45,7 @@ General · Food · Housing · Transportation · Technology · Health · Childcar
 | Member    | Use the members-only side of the tools                                                                                                                                                              |
 
 - **One membership record per person per organization:** `role` (`owner` / `moderator` / `member`) and `status` (`active` / `pending` / `invited` / `banned`). This is not an array on the organization; that was the prototype's mistake ([08 → Gaps](08-organizations-and-membership.md#gaps)). It makes deny, leave, promote, remove and audit possible, and keeps member lists off every client.
-- The record also carries a small copy of the organization (name, handle, focus areas, logo), so the dashboard lists all of a person's organizations in **one query**, and a copy of the person's name, so a member list is one query too. Renaming an organization updates its copies; saving a profile updates the name copies.
+- The record also carries a small copy of the organization (name, handle, focus areas, photo version), so the dashboard lists all of a person's organizations in **one query**, and a copy of the person's name, so a member list is one query too. Renaming an organization (or changing its photo) updates its copies; saving a profile updates the name copies.
 - **An organization always has at least one owner.** The last owner can't leave or step down without handing ownership to someone.
 - **A person can own at most 5 organizations** (abuse limit; open sign-up means open creation). Unclaimed organizations don't count: nobody owns them ([18](18-unclaimed-organizations.md)).
 - Creating requires a finished account (name and city), which `requireAccount` guarantees.
@@ -115,7 +115,7 @@ Owners and moderators get **Manage members** (with the number of open requests) 
 
 ## Editing
 
-Owners and moderators get **Edit organization** in the members' space, leading to `/org/{handle}/edit`: the create form, filled in, with **Save changes**. Every field can be edited, including the member list setting. The logo isn't built yet.
+Owners and moderators get **Edit organization** in the members' space, leading to `/org/{handle}/edit`: the create form, filled in, with **Save changes**. Every field can be edited, including the member list setting. The photo has its own section at the top and saves on its own ([19](19-photos.md)).
 
 - **The handle is owners only,** at most once every 30 days ("Renaming" above). Moderators see it read-only ("Only owners can change the handle."), and so do owners within 30 days of a change ("You can change the handle again on {date}"). Keeping the current handle reads "This is your current handle", not "taken".
 - **Saving** checks the editor's role, the 30-day limit and the new handle's claim on fresh data in one transaction. The old handle becomes a **hold** (`heldUntil` 30 days out): it no longer resolves (not found, no redirect), and nobody else can take it until the hold ends. After that, anyone can claim it.
@@ -137,30 +137,30 @@ Verified 2026-11-24 against the emulators: Maya deleted South Bay Mutual Aid (8 
 
 ## Pages
 
-| Route                    | Who               | What                                                                                                     |
-| ------------------------ | ----------------- | -------------------------------------------------------------------------------------------------------- |
-| `/dashboard`             | Signed in         | **Your organizations** (cards), **Create organization**, and the closest organizations you're not in     |
-| `/find`                  | Anyone            | Find organizations from a city, with distance, reach, focus area and language filters                    |
-| `/org/new`               | Signed in         | Create form; the creator becomes owner                                                                   |
-| `/org/{handle}`          | Anyone            | Public profile (name, focus areas, description, location and reach, languages, links, logo, join button) |
-| `/org/{handle}` (member) | Members           | Plus a members-only home, where tools will appear                                                        |
-| `/org/{handle}/members`  | Owners/moderators | Requests, members, bans and the moderation log                                                           |
-| `/org/{handle}/manage`   | Owners/moderators | Profile, handle, roles (phase 3)                                                                         |
+| Route                    | Who               | What                                                                                                      |
+| ------------------------ | ----------------- | --------------------------------------------------------------------------------------------------------- |
+| `/dashboard`             | Signed in         | **Your organizations** (cards), **Create organization**, and the closest organizations you're not in      |
+| `/find`                  | Anyone            | Find organizations from a city, with distance, reach, focus area and language filters                     |
+| `/org/new`               | Signed in         | Create form; the creator becomes owner                                                                    |
+| `/org/{handle}`          | Anyone            | Public profile (name, focus areas, description, location and reach, languages, links, photo, join button) |
+| `/org/{handle}` (member) | Members           | Plus a members-only home, where tools will appear                                                         |
+| `/org/{handle}/members`  | Owners/moderators | Requests, members, bans and the moderation log                                                            |
+| `/org/{handle}/manage`   | Owners/moderators | Profile, handle, roles (phase 3)                                                                          |
 
 Bare `communalists.com/org/{handle}` redirects to the visitor's language, like every page, so it works on flyers.
 
 ## Phases
 
-1. **Create and list:** the data model, create form with handle check, dashboard "Your organizations" plus "Create organization", the `/org/{handle}` page (public profile plus a member view), and the logo upload last.
+1. **Create and list:** the data model, create form with handle check, dashboard "Your organizations" plus "Create organization", the `/org/{handle}` page (public profile plus a member view), and the photo (built 2026-11-25, [19](19-photos.md)).
 2. **Find and join:** "near you" browsing, joining by each policy, approving and denying requests, removing and banning (all built 2026-11-23).
-3. **Manage:** invite, archive, logo. (Promoting, handing over ownership, editing the profile and changing the handle were built 2026-11-23.)
+3. **Manage:** invite, archive. (The photo was built 2026-11-25.) (Promoting, handing over ownership, editing the profile and changing the handle were built 2026-11-23.)
 4. **Then:** subdomains (after the domain move) and the first tool, Requests.
 
 ## Data and security notes
 
 - All reads and writes go through server actions and the Admin SDK (deny-all rules stay); every action checks the caller's membership and role on the server.
 - Reads are cached with tags (`org:{id}`, the user's membership list) and cleared by the actions that write ([firebase.md → Caching reads](../technical/firebase.md#caching-reads-in-the-rebuild)).
-- Logos need Storage rules, the Storage emulator locally, and type and size limits enforced on the server.
+- Photos are small WebP files in Firestore, checked and re-encoded on the server, not in Firebase Storage ([decision #42](../decisions/042-photos-in-firestore-served-by-our-route.md)).
 - Contact email is the only personal-ish field and it's opt-in and public by design. Member names are shown only as the group's member list setting allows (members only by default); requests, bans and reasons are staff-only and never leave the server for anyone else.
 
 ## Built (phase 1, 2026-11-22)

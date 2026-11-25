@@ -1,4 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { fn } from 'storybook/test';
+
+import { samplePersonPhoto } from '@/components/molecules/photo-fixtures';
+import { PhotoEditor } from '@/components/organisms/photo-editor';
 
 import {
     privateView,
@@ -32,7 +36,23 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Public: Story = {};
-/** Their own profile: everything, plus Edit profile. */
-export const Self: Story = { args: { view: selfView, isSelf: true } };
+/** Their own profile: everything, plus Edit profile. Hover the photo to change it. */
+export const Self: Story = {
+    args: {
+        view: { ...selfView, photoUrl: samplePersonPhoto },
+        isSelf: true,
+        photoEditor: (
+            <PhotoEditor
+                name={selfView.name}
+                photoUrl={samplePersonPhoto}
+                audience="profile"
+                saveAction={fn(async () => ({
+                    ok: true as const,
+                    removed: false,
+                }))}
+            />
+        ),
+    },
+};
 export const Private: Story = { args: { view: privateView } };
 export const Loading: Story = { render: () => <ProfilePageLoading /> };

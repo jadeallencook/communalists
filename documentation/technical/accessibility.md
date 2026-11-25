@@ -11,7 +11,8 @@
 - Everything works with a keyboard alone, in a sensible order, with a **visible focus ring** (don't remove outlines; the shadcn atoms already show one).
 - Dialogs trap focus, close with Escape, and return focus to what opened them (Radix does this; keep using the `dialog` atom).
 - **After an action, put focus somewhere sensible.** If the thing you acted on disappears (an approved request, a removed member), move focus to the result message or the list heading, not the top of the page.
-- No keyboard traps, no hover-only controls.
+- No keyboard traps, no hover-only controls. A control that appears on hover (like the photo's pencil button, [features/19](../features/19-photos.md)) must also appear on keyboard focus (`focus-visible:opacity-100`) and stay visible on touch screens (`[@media(hover:none)]:opacity-100`).
+- **Anything you can drag has a single-tap alternative** (WCAG 2.5.7): the photo crop has arrow buttons and a zoom slider.
 
 **Screen readers**
 
@@ -59,4 +60,5 @@ Still to fix:
 - **Skeletons and spinners** pulse regardless of reduced-motion settings.
 - **Contrast** measured on the members page only; other pages use the same tokens but haven't been measured one by one.
 - **Header:** the signed-in Dashboard link is still a borderless `ghost` button (common for navigation, and it's marked when current). Sign in is outlined.
+- **The `dialog` atom's close button** says "Close" in English in every language (from shadcn; found 2026-11-25). It needs a translated label passed in.
 - **The Storybook a11y check only reports** (`a11y: { test: 'todo' }`); it doesn't fail anything, and stories aren't run in CI.

@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { ProfileCard } from './profile-card';
+import { samplePersonPhoto } from '@/components/molecules/photo-fixtures';
+
 import { privateView, publicView, selfView } from './profile-fixtures';
 
 const meta = {
@@ -42,4 +44,8 @@ export const LongName: Story = {
             name: 'Maria de los Ángeles Fernández-Villanueva',
         },
     },
+};
+/** With a photo (shown only to people who see the details). */
+export const WithPhoto: Story = {
+    args: { view: { ...publicView, photoUrl: samplePersonPhoto } },
 };

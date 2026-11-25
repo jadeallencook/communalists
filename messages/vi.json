@@ -597,7 +597,8 @@
             "memberListVisibility": "cài đặt danh sách thành viên",
             "streetAddress": "địa chỉ",
             "phone": "số điện thoại",
-            "foundedYear": "năm thành lập"
+            "foundedYear": "năm thành lập",
+            "photo": "ảnh"
         },
         "teamActor": "Nhóm Communalists"
     },
@@ -982,5 +983,41 @@
                 "invalid": "Sửa dòng để chọn một giá trị từ danh sách."
             }
         }
+    },
+    "Photo": {
+        "change": "Đổi ảnh",
+        "changeFor": "Đổi ảnh của {name}",
+        "titleOrg": "Ảnh của {name}",
+        "titleProfile": "Ảnh của bạn",
+        "description": "Kéo ảnh hoặc dùng các nút mũi tên để di chuyển, và dùng thanh trượt để phóng to. Chỉ phần bên trong khung được hiển thị.",
+        "descriptionOrg": "Ảnh hiện trên trang của bạn và ở mọi nơi tổ chức của bạn được liệt kê.",
+        "descriptionProfile": "Ảnh hiện cho cùng những người có thể xem phần còn lại của hồ sơ bạn.",
+        "choose": "Chọn ảnh",
+        "chooseAnother": "Chọn ảnh khác",
+        "types": "JPEG, PNG hoặc WebP, rộng và cao ít nhất 128 điểm ảnh.",
+        "position": "Vị trí ảnh",
+        "zoom": "Phóng to",
+        "save": "Lưu ảnh",
+        "saving": "Đang lưu…",
+        "remove": "Gỡ ảnh",
+        "removing": "Đang gỡ…",
+        "cancel": "Hủy",
+        "saved": "Đã lưu ảnh.",
+        "removed": "Đã gỡ ảnh.",
+        "field": "Ảnh",
+        "none": "Chưa có ảnh. Chữ viết tắt tên của bạn sẽ hiện thay thế.",
+        "errors": {
+            "type": "Hãy chọn ảnh JPEG, PNG hoặc WebP.",
+            "tooBig": "Tệp quá lớn. Hãy chọn tệp dưới 20 MB.",
+            "tooSmall": "Ảnh quá nhỏ. Hãy chọn ảnh rộng và cao ít nhất 128 điểm ảnh.",
+            "unreadable": "Không mở được tệp. Hãy thử ảnh khác.",
+            "invalid": "Không dùng được tệp này. Hãy thử ảnh khác.",
+            "notAllowed": "Bạn không thể đổi ảnh này.",
+            "generic": "Đã xảy ra lỗi. Hãy thử lại."
+        },
+        "moveUp": "Di chuyển lên",
+        "moveDown": "Di chuyển xuống",
+        "moveLeft": "Di chuyển sang trái",
+        "moveRight": "Di chuyển sang phải"
     }
 }

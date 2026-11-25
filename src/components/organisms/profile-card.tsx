@@ -1,8 +1,9 @@
 import { GlobeIcon, LanguagesIcon, LockIcon, MapPinIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
+import { Avatar } from '@/components/molecules/avatar';
 import { Link } from '@/i18n/navigation';
-import { initials } from '@/lib/initials';
 import { languageName } from '@/lib/organizations/client';
 import type { ProfileView } from '@/lib/profiles';
 import { SOCIAL_PLATFORMS, socialLabel, socialUrl } from '@/lib/socials';
@@ -12,6 +13,8 @@ export interface ProfileCardProps {
     view: ProfileView;
     /** Heading level for the name: 1 on the profile page, 2 in a preview. */
     headingLevel?: 1 | 2;
+    /** Their own profile: a PhotoEditor, shown instead of the plain photo. */
+    photoEditor?: ReactNode;
 }
 
 const host = (url: string) => {
@@ -27,7 +30,11 @@ const host = (url: string) => {
  * viewer (bio, city, languages, links, groups), or a note that the rest is
  * private. No logic: `view` is already filtered on the server.
  */
-export function ProfileCard({ view, headingLevel = 1 }: ProfileCardProps) {
+export function ProfileCard({
+    view,
+    headingLevel = 1,
+    photoEditor,
+}: ProfileCardProps) {
     const t = useTranslations('Profile');
     const tOrg = useTranslations('Organizations');
     const locale = useLocale();
@@ -49,12 +56,13 @@ export function ProfileCard({ view, headingLevel = 1 }: ProfileCardProps) {
     return (
         <article className="flex flex-col gap-6">
             <header className="flex items-center gap-4">
-                <span
-                    aria-hidden
-                    className="flex size-16 shrink-0 items-center justify-center rounded-full bg-muted text-xl font-medium"
-                >
-                    {initials(view.name)}
-                </span>
+                {photoEditor ?? (
+                    <Avatar
+                        name={view.name}
+                        photoUrl={view.photoUrl}
+                        size="lg"
+                    />
+                )}
                 <div className="flex min-w-0 flex-col">
                     <Heading className="font-heading text-2xl font-semibold tracking-tight break-words sm:text-3xl">
                         {view.name}

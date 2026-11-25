@@ -13,6 +13,7 @@ import {
     handleHeldUntil,
     nextHandleChangeAt,
 } from '@/lib/organizations/handle';
+import { photoDocId } from '@/lib/photos';
 import { profileSettingsOf, type ProfileSettings } from '@/lib/profiles';
 
 // users/{uid}: the public-safe profile for an account. Email and password
@@ -39,6 +40,8 @@ export interface UserProfile {
     usernameChangedAt?: number;
     /** What they share on their profile, and with whom (src/lib/profiles.ts). */
     profile: ProfileSettings;
+    /** When their photo was saved (epoch ms); none without one (src/lib/photos.ts). */
+    photoVersion?: number;
 }
 
 /** A profile that has passed account setup. */
@@ -73,6 +76,7 @@ async function readProfile(uid: string): Promise<UserProfile | null> {
         username: d.username,
         usernameChangedAt: millis(d.usernameChangedAt),
         profile: profileSettingsOf(d.profile),
+        photoVersion: d.photoVersion,
     };
 }
 
@@ -184,6 +188,38 @@ export async function saveProfileSettings(
             },
             { merge: true }
         );
+}
+
+/**
+ * Saves (or, with null, removes) the person's photo: its bytes and the new
+ * `photoVersion`, written together. Returns the new version.
+ */
+export async function setUserPhoto(
+    uid: string,
+    photo: Buffer | null
+): Promise<number | null> {
+    const version = photo ? Date.now() : null;
+    const photoRef = getAdminDb()
+        .collection('photos')
+        .doc(photoDocId('user', uid));
+    const batch = getAdminDb().batch();
+    if (photo)
+        batch.set(photoRef, {
+            data: photo,
+            type: 'image/webp',
+            updatedAt: FieldValue.serverTimestamp(),
+        });
+    else batch.delete(photoRef);
+    batch.set(
+        users().doc(uid),
+        {
+            photoVersion: version ?? FieldValue.delete(),
+            updatedAt: FieldValue.serverTimestamp(),
+        },
+        { merge: true }
+    );
+    await batch.commit();
+    return version;
 }
 
 /** Whether a username is taken by someone else (or held). Always fresh. */

@@ -1,8 +1,8 @@
 import { ChevronRightIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
+import { Avatar } from '@/components/molecules/avatar';
 import { Link } from '@/i18n/navigation';
-import { initials } from '@/lib/initials';
 import type { FocusArea } from '@/lib/organizations/options';
 
 export interface OrganizationCardProps {
@@ -15,9 +15,11 @@ export interface OrganizationCardProps {
     detail?: string;
     /** Added by a super user and not claimed yet: shows "Unclaimed". */
     unclaimed?: boolean;
+    /** From photoUrl() in src/lib/photos.ts; initials without one. */
+    photoUrl?: string;
 }
 
-/** A link to one organization: initials, name, what it works on, and your role. */
+/** A link to one organization: photo (or initials), name, what it works on, and your role. */
 export function OrganizationCard({
     name,
     handle,
@@ -25,6 +27,7 @@ export function OrganizationCard({
     role,
     detail,
     unclaimed = false,
+    photoUrl,
 }: OrganizationCardProps) {
     const t = useTranslations('Organizations');
     const locale = useLocale();
@@ -45,12 +48,7 @@ export function OrganizationCard({
             href={`/org/${handle}`}
             className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         >
-            <span
-                aria-hidden
-                className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-muted font-medium"
-            >
-                {initials(name)}
-            </span>
+            <Avatar name={name} photoUrl={photoUrl} shape="rounded" size="md" />
             {/* Names and details wrap rather than being cut off; the label
                 sits beside the name when there's room, under it when not. */}
             <span className="flex min-w-0 flex-1 flex-col gap-0.5">

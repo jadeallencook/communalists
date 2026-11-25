@@ -18,11 +18,14 @@ import {
     orgMembersTag,
     orgTag,
     handleTag,
+    setOrganizationPhoto,
 } from '@/lib/organizations';
 import {
     moderationSchema,
     type ModerationAction,
 } from '@/lib/organizations/membership';
+import { photoFromForm } from '@/lib/photo-store';
+import type { PhotoSaveResult } from '@/lib/photos';
 import { getUserProfileFresh } from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
@@ -199,4 +202,50 @@ export async function makeUnclaimedAction(formData: FormData) {
         }
     }
     redirect({ href: `/org/${handle}`, locale });
+}
+
+/**
+ * Saves or removes the organization's photo (the photo editor on its page
+ * and on the edit page). Owners and moderators, and super users on unclaimed
+ * organizations; checked again on fresh data in setOrganizationPhoto.
+ */
+export async function saveOrganizationPhotoAction(
+    formData: FormData
+): Promise<PhotoSaveResult> {
+    const user = await getSessionUser();
+    if (!user) return { ok: false, error: 'notAllowed' };
+    const orgId = text(formData, 'orgId');
+    if (!orgId || orgId.length > 128) return { ok: false, error: 'generic' };
+
+    try {
+        const read = await photoFromForm(formData);
+        if (!read.ok) return read;
+        const profile = await getUserProfileFresh(user.uid);
+        const result = await setOrganizationPhoto(
+            orgId,
+            {
+                uid: user.uid,
+                displayName: profile?.displayName ?? '',
+                platformAdmin: isPlatformAdmin(user.uid),
+            },
+            read.photo
+        );
+        if (!result.ok)
+            return {
+                ok: false,
+                error: result.error === 'notAllowed' ? 'notAllowed' : 'generic',
+            };
+        // The page, listings, the edit log, and every member's dashboard card.
+        updateTag(orgTag(orgId));
+        updateTag(handleTag(result.handle));
+        updateTag(orgMembersTag(orgId));
+        updateTag(DIRECTORY_TAG);
+        updateTag(ADMIN_LOG_TAG);
+        for (const uid of result.copyHolders) updateTag(membershipsTag(uid));
+        refresh();
+        return { ok: true, removed: read.photo === null };
+    } catch (error) {
+        console.error('[org] photo save failed', (error as Error).message); // never log PII
+        return { ok: false, error: 'generic' };
+    }
 }

@@ -597,7 +597,8 @@
             "memberListVisibility": "成员名单设置",
             "streetAddress": "街道地址",
             "phone": "电话",
-            "foundedYear": "成立年份"
+            "foundedYear": "成立年份",
+            "photo": "照片"
         },
         "teamActor": "Communalists 团队"
     },
@@ -982,5 +983,41 @@
                 "invalid": "编辑这一行，从列表中选择一个值。"
             }
         }
+    },
+    "Photo": {
+        "change": "更换照片",
+        "changeFor": "更换{name}的照片",
+        "titleOrg": "{name}的照片",
+        "titleProfile": "你的照片",
+        "description": "拖动照片或使用箭头按钮移动它，用滑块缩放。只显示框内的部分。",
+        "descriptionOrg": "照片会显示在你的页面上，以及列出你的组织的所有地方。",
+        "descriptionProfile": "能看到你个人资料其他内容的人也能看到这张照片。",
+        "choose": "选择照片",
+        "chooseAnother": "选择其他照片",
+        "types": "JPEG、PNG 或 WebP，宽和高至少 128 像素。",
+        "position": "照片位置",
+        "zoom": "缩放",
+        "save": "保存照片",
+        "saving": "正在保存…",
+        "remove": "删除照片",
+        "removing": "正在删除…",
+        "cancel": "取消",
+        "saved": "照片已保存。",
+        "removed": "照片已删除。",
+        "field": "照片",
+        "none": "还没有照片，会显示你名字的首字母。",
+        "errors": {
+            "type": "请选择 JPEG、PNG 或 WebP 图片。",
+            "tooBig": "文件太大。请选择小于 20 MB 的文件。",
+            "tooSmall": "照片太小。请选择宽和高至少 128 像素的照片。",
+            "unreadable": "无法打开该文件。请换一张照片。",
+            "invalid": "无法使用该文件。请换一张照片。",
+            "notAllowed": "你不能更换这张照片。",
+            "generic": "出了点问题。请重试。"
+        },
+        "moveUp": "向上移动",
+        "moveDown": "向下移动",
+        "moveLeft": "向左移动",
+        "moveRight": "向右移动"
     }
 }

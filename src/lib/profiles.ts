@@ -123,6 +123,8 @@ export interface ProfileView {
     name: string;
     username: string;
     pronouns?: string;
+    /** Their photo's address, only when this viewer may see it (like the details). */
+    photoUrl?: string;
     details: null | {
         bio?: string;
         languages: OrgLanguage[];
@@ -139,6 +141,8 @@ export function profileView(
         name: string;
         username: string;
         areaLabel?: string;
+        /** From photoUrl() in src/lib/photos.ts, when they have a photo. */
+        photoUrl?: string;
         settings: ProfileSettings;
         groups: ProfileGroup[];
     },
@@ -153,6 +157,9 @@ export function profileView(
         // Pronouns go with the name only when details are visible; they're
         // personal, so "Just my name" means just the name.
         pronouns: details ? settings.pronouns : undefined,
+        // A face is personal too: the photo follows the same rule
+        // (decision #42), and /api/photos checks it again.
+        photoUrl: details ? person.photoUrl : undefined,
         details: details
             ? {
                   bio: settings.bio,

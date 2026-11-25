@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { OrganizationCard } from './organization-card';
+import { sampleOrgPhoto } from './photo-fixtures';
 
 const meta = {
     title: 'Components/Molecules/Organization Card',
@@ -58,3 +59,4 @@ export const Unclaimed: Story = {
         unclaimed: true,
     },
 };
+export const WithPhoto: Story = { args: { photoUrl: sampleOrgPhoto } };

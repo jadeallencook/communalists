@@ -1,10 +1,12 @@
 'use server';
 
-import { updateTag } from 'next/cache';
+import { refresh, updateTag } from 'next/cache';
 
 import { getSessionUser } from '@/lib/auth/session';
 import { getProfileGroups } from '@/lib/organizations';
-import { saveProfileSettings, userTag } from '@/lib/users';
+import { photoFromForm } from '@/lib/photo-store';
+import type { PhotoSaveResult } from '@/lib/photos';
+import { saveProfileSettings, setUserPhoto, userTag } from '@/lib/users';
 import {
     profileFormValues,
     profileSettingsSchema,
@@ -48,4 +50,26 @@ export async function saveProfileSettingsAction(
     // The profile page, previews and anything else showing this person.
     updateTag(userTag(user.uid));
     return { saved: true, at };
+}
+
+/**
+ * Saves or removes the signed-in person's photo (the photo editor on their
+ * profile and in profile settings). Shown in the header too, so it refreshes.
+ */
+export async function saveProfilePhotoAction(
+    formData: FormData
+): Promise<PhotoSaveResult> {
+    const user = await getSessionUser();
+    if (!user) return { ok: false, error: 'notAllowed' };
+    try {
+        const read = await photoFromForm(formData);
+        if (!read.ok) return read;
+        await setUserPhoto(user.uid, read.photo);
+    } catch (error) {
+        console.error('[profile] photo save failed', (error as Error).message); // never log PII
+        return { ok: false, error: 'generic' };
+    }
+    updateTag(userTag(user.uid));
+    refresh();
+    return { ok: true, removed: formData.get('remove') === '1' };
 }

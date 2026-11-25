@@ -12,6 +12,8 @@ export interface ProfileSettingsPageProps {
     /** The app passes a container wired to the action. */
     form: ReactNode;
     preview: ReactNode;
+    /** Their photo with a way to change it (PhotoEditor, variant "field"). */
+    photo?: ReactNode;
 }
 
 /** /account/profile: what you share and with whom, beside a live "Preview as…". */
@@ -19,8 +21,10 @@ export function ProfileSettingsPage({
     username,
     form,
     preview,
+    photo,
 }: ProfileSettingsPageProps) {
     const t = useTranslations('Profile');
+    const tp = useTranslations('Photo');
     return (
         <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-12">
             <header className="flex flex-col gap-3">
@@ -43,7 +47,26 @@ export function ProfileSettingsPage({
                 </Button>
             </header>
             <div className="grid gap-10 lg:grid-cols-[1fr_24rem]">
-                <div className="min-w-0">{form}</div>
+                <div className="flex min-w-0 flex-col gap-8">
+                    {photo && (
+                        <section
+                            aria-labelledby="profile-photo"
+                            className="flex flex-col gap-3"
+                        >
+                            <h2
+                                id="profile-photo"
+                                className="font-heading text-lg font-semibold"
+                            >
+                                {tp('field')}
+                            </h2>
+                            <p className="text-sm text-muted-foreground">
+                                {tp('descriptionProfile')}
+                            </p>
+                            {photo}
+                        </section>
+                    )}
+                    {form}
+                </div>
                 <aside className="lg:sticky lg:top-20 lg:self-start">
                     {preview}
                 </aside>

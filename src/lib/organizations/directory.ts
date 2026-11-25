@@ -34,6 +34,8 @@ export interface DirectoryOrganization {
     memberCount: number;
     /** Added by a super user and not claimed yet. */
     unclaimed?: boolean;
+    /** When its photo was saved; none without a photo (src/lib/photos.ts). */
+    photoVersion?: number;
 }
 
 export interface DirectoryFilters {
