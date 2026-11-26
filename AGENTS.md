@@ -120,7 +120,8 @@ These are the rules we're building to today. They can change. When one does, upd
 
 ## Git
 
-- **Never commit or push.** Leave every change uncommitted in the working tree; the user reviews, commits and pushes. Switching branches is fine, but never discard uncommitted work to do it.
+- **Don't commit or push unless asked.** By default, leave every change uncommitted in the working tree; the user reviews, commits and pushes. Switching branches is fine, but never discard uncommitted work to do it.
+- **When someone asks for a pull request**, follow `.claude/skills/prepare-pull-request/SKILL.md` (decision #44): new branch, checks, commit, push, `gh pr create`. That request covers that PR only, never merging or force-pushing.
 - When a task is done, summarize what is ready to commit (files and a suggested Conventional Commit message).
 - `main` is protected (decision #42): changes land through a squash-merged pull request with a code owner's approval and green CI. The PR title becomes the commit message, so suggest one that passes commitlint.
 

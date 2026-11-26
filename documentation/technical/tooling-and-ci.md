@@ -91,6 +91,17 @@ Outside the ruleset, in Settings → General → Pull Requests: only squash merg
 
 **If you rename a CI job,** update the required check in the ruleset in the same change. Otherwise every PR waits forever on a check that never reports.
 
+**Opening a PR with an agent.** Ask it to "open a pull request". It follows `.claude/skills/prepare-pull-request/SKILL.md` ([decision #44](../decisions/044-prepare-pull-request-skill.md)):
+
+1. Run the same checks as CI.
+2. Branch as `type/short-subject`.
+3. Stage files by name, never `research/` or secrets.
+4. Commit through the hooks.
+5. Check the title with commitlint.
+6. Open the PR with a body for a reviewer: What, Why, Changes, Docs, Checks, For the reviewer.
+
+It never merges, approves or force-pushes. Humans can follow the same steps.
+
 ## Conventions
 
 - **Prettier:** 4 spaces, single quotes, semicolons, ES5 trailing commas. Markdown and YAML use 2 spaces (with 4, Prettier writes lists as `-   item`). `prettier-plugin-tailwindcss` sorts classes, including inside `cn()` and `cva()`.
