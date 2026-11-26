@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [045](045-find-organizations-sub-agent-models-and-pending-list.md)              | find-organizations: Haiku searches, Sonnet researches, and a pending list for unchecked groups     | 2026-11-25 |
 | [044](044-prepare-pull-request-skill.md)                                        | prepare-pull-request skill: agents open pull requests when asked                                   | 2026-11-25 |
 | [043](043-find-organizations-skill-and-existing-organizations-export.md)        | find-organizations skill, and an export of existing organizations                                  | 2026-11-25 |
 | [042](042-branch-protection-on-main.md)                                         | Branch protection on `main`: pull requests, code owner review, squash merges                       | 2026-11-24 |
