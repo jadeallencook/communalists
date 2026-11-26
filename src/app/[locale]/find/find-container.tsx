@@ -10,6 +10,7 @@ import { useRouter } from '@/i18n/navigation';
 import { languageName } from '@/lib/organizations/client';
 import {
     activeFilterCount,
+    directoryFilterParams,
     directoryHref,
     parseDirectorySearch,
     type DirectoryResults,
@@ -39,17 +40,41 @@ export function FindContainer({
     const locale = useLocale();
     const router = useRouter();
     const [pending, startTransition] = useTransition();
-    // The city goes in the path (/find/us/ca/oakland), filters in the query.
-    const go = (next: DirectorySearch, slug?: string) => {
-        startTransition(() =>
-            router.replace(directoryHref(next, slug), { scroll: false })
-        );
-    };
     const picker = useLocationPicker({
         locale,
         country: search.country,
         selected: place,
     });
+    // The path for a city id: the one just chosen, or the one on the page.
+    const slugFor = (id?: string) =>
+        id === picker.selected?.id
+            ? picker.selected?.slug
+            : id === place?.id
+              ? place?.slug
+              : undefined;
+    // The city goes in the path (/find/us/ca/oakland), filters in the query.
+    // `slug` is passed when the city was just chosen (the picker's state
+    // hasn't updated yet). Without a known path, the old ?placeId= form
+    // lets the server redirect to it.
+    const go = (next: DirectorySearch, slug = slugFor(next.placeId)) => {
+        let href: string;
+        if (!next.placeId || (defaultCity && next.placeId === place?.id)) {
+            // Still on the default city: keep it out of the URL, so it
+            // stays labelled as a starting point.
+            href = directoryHref(next);
+        } else if (slug) {
+            href = directoryHref(next, slug);
+        } else {
+            const query = new URLSearchParams({
+                country: next.country,
+                placeId: next.placeId,
+            });
+            for (const [key, value] of directoryFilterParams(next))
+                query.append(key, value);
+            href = `/find?${query}`;
+        }
+        startTransition(() => router.replace(href, { scroll: false }));
+    };
     const location = {
         ...picker,
         onSelect: (next: PlaceOption) => {
@@ -87,14 +112,11 @@ export function FindContainer({
                             languages: list('languages'),
                             reach: list('reach'),
                         });
-                        // Still on the default city: keep it out of the URL,
-                        // so it stays labelled as a starting point.
-                        go(
-                            next,
-                            defaultCity && next.placeId === place?.id
-                                ? undefined
-                                : place?.slug
-                        );
+                        // Typing in the city box changes the form too, but
+                        // not the search: nothing to load until a city or
+                        // filter actually changes.
+                        if (sameSearch(next, search)) return;
+                        go(next);
                     }}
                 />
             }
@@ -108,3 +130,9 @@ export function FindContainer({
         />
     );
 }
+
+/** Same city and same filters: the URL wouldn't change. */
+const sameSearch = (a: DirectorySearch, b: DirectorySearch) =>
+    a.country === b.country &&
+    a.placeId === b.placeId &&
+    directoryFilterParams(a).toString() === directoryFilterParams(b).toString();

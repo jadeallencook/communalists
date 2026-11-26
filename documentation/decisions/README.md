@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [051](051-find-defaults-to-oakland-homepage-links-there.md)                     | /find starts from Oakland; the homepage's Browse button links there when signed out                | 2026-11-26 |
 | [050](050-umami-analytics-page-views-and-named-click-events.md)                 | Umami analytics: page views and named click events                                                 | 2026-11-26 |
 | [049](049-readable-find-urls-city-in-the-path.md)                               | Readable /find URLs: the city in the path (`/find/us/ca/oakland`)                                  | 2026-11-26 |
 | [048](048-find-results-underlined-names-no-join-policy-or-unclaimed-label.md)   | /find results: underlined names, no "how to join" or Unclaimed label                               | 2026-11-26 |

@@ -4,6 +4,7 @@ import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
 import { Link } from '@/i18n/navigation';
 import { track } from '@/lib/analytics';
+import { DEFAULT_PLACE } from '@/lib/organizations/directory';
 
 export interface HeroActionsProps {
     /** Both lead with Browse organizations; the second button is Create account (signed out) or the dashboard (signed in). */
@@ -22,8 +23,9 @@ export function HeroActions({ signedIn }: HeroActionsProps) {
     return (
         <div className="flex flex-wrap items-center gap-3">
             <Button asChild size="lg" className={primary}>
+                {/* Signed in, /find starts from their profile's city. */}
                 <Link
-                    href="/find"
+                    href={signedIn ? '/find' : `/find/${DEFAULT_PLACE.slug}`}
                     {...track('browse-organizations', { from: 'hero' })}
                 >
                     {t('browse')}
