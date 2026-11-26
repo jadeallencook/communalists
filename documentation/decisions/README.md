@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [048](048-find-results-underlined-names-no-join-policy-or-unclaimed-label.md)   | /find results: underlined names, no "how to join" or Unclaimed label                               | 2026-11-26 |
 | [047](047-find-filters-common-focus-areas-first-reach-folded.md)                | /find filters: common focus areas first, reach folded away                                         | 2026-11-25 |
 | [046](046-footer-shows-commit-only-no-version-number.md)                        | Footer shows the commit only, no version number                                                    | 2026-11-25 |
 | [045](045-find-organizations-sub-agent-models-and-pending-list.md)              | find-organizations: Haiku searches, Sonnet researches, and a pending list for unchecked groups     | 2026-11-25 |

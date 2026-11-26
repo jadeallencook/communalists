@@ -13,7 +13,8 @@ const meta = {
         description:
             'Neighbors helping neighbors in San José. We run a weekly grocery share, help people find housing, and give rides to appointments.',
         languages: ['en', 'es', 'vi'],
-        joinPolicy: 'request',
+        servesWithin: { miles: 25, place: 'San Jose, California' },
+        foundedYear: 2020,
         memberCount: 42,
         website: 'https://www.southbaymutualaid.org',
         socials: [
@@ -33,12 +34,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Collapsed, as results first appear. The top opens the page; the bar under it opens the details. */
+/** Collapsed, as results first appear. The top (name underlined) opens the page; **Show details** opens the drawer, which ends with **Open page**. */
 export const Collapsed: Story = {};
 
 export const Expanded: Story = { args: { defaultOpen: true } };
 
-/** Unclaimed: labelled, and no member count (nobody has joined yet). */
+/** Unclaimed: not labelled in results, and no member count (nobody has joined yet). */
 export const Unclaimed: Story = {
     args: {
         name: 'Alameda County Community Food Bank',
@@ -46,7 +47,8 @@ export const Unclaimed: Story = {
         focusAreas: ['food'],
         detail: 'In Oakland, California',
         unclaimed: true,
-        joinPolicy: 'open',
+        servesWithin: undefined,
+        foundedYear: undefined,
         memberCount: 0,
         defaultOpen: true,
     },
@@ -56,13 +58,15 @@ export const NoDescription: Story = {
     args: {
         description: '',
         languages: [],
+        servesWithin: undefined,
+        foundedYear: undefined,
         socials: [],
         website: undefined,
         defaultOpen: true,
     },
 };
 
-/** Long descriptions are cut at four lines; the full text is on the page. */
+/** Long descriptions are cut at four lines. Tap the text or **Read more** to see the rest. */
 export const LongText: Story = {
     args: {
         name: 'East San José Community Fridge & Free Store Collective',

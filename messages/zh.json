@@ -258,13 +258,14 @@
         "defaultCity": "先显示{city}附近的组织。选择你的城市，查看你附近的组织。",
         "metaTitleNear": "{city}附近的互助组织",
         "metaDescriptionNear": "发现{city}附近的互助小组、俱乐部和网络。任何人都可以浏览；加入需要一个免费账户。",
-        "joining": "加入方式",
         "members": "成员",
         "moreFocusAreas": "另外 {count} 个",
         "filtersOn": "已启用 {count} 个筛选条件",
         "fewerFocusAreas": "收起",
         "showDetails": "查看详情",
-        "hideDetails": "收起详情"
+        "hideDetails": "收起详情",
+        "readMore": "阅读全文",
+        "showLess": "收起"
     },
     "Organizations": {
         "focusAreas": {

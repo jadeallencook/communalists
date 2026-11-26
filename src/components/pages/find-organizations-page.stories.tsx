@@ -56,7 +56,8 @@ const org = (
     location: { label, country: 'US', lat: 0, lng: 0 },
     reach,
     languages: ['en'],
-    joinPolicy: 'request',
+    ...(reach === 'local' ? { radiusMiles: 25 } : {}),
+    foundedYear: 2020,
     memberCount: 4,
     description:
         'Neighbors helping neighbors: groceries, rides and help finding housing.',

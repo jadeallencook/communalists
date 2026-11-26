@@ -15,7 +15,6 @@ import {
     RADIUS_MILES,
     REACH_SCOPES,
     type FocusArea,
-    type JoinPolicy,
     type OrgLanguage,
     type RadiusMiles,
     type ReachScope,
@@ -30,8 +29,10 @@ export interface DirectoryOrganization {
     description: string;
     location: { label: string; country: CountryCode; lat: number; lng: number };
     reach: ReachScope;
+    /** How far a local group reaches. Missing on entries cached before 2026-11-26. */
+    radiusMiles?: number;
+    foundedYear?: number;
     languages: OrgLanguage[];
-    joinPolicy: JoinPolicy;
     memberCount: number;
     /** Public links, shown when a result is expanded. */
     website?: string;

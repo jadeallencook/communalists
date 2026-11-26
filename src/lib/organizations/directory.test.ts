@@ -32,7 +32,6 @@ const org = (
         location: { label: id, country, ...at },
         reach: 'local',
         languages: ['en'],
-        joinPolicy: 'open',
         memberCount: 1,
         socials: [],
         ...rest,
