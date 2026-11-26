@@ -28,14 +28,11 @@ export function FindContainer({
     place,
     results,
     canCreate,
-    defaultCity,
 }: {
     search: DirectorySearch;
     place: PlaceOption | null;
     results: DirectoryResults | null;
     canCreate: boolean;
-    /** The city is the default, not one the visitor chose. */
-    defaultCity: boolean;
 }) {
     const locale = useLocale();
     const router = useRouter();
@@ -58,9 +55,7 @@ export function FindContainer({
     // lets the server redirect to it.
     const go = (next: DirectorySearch, slug = slugFor(next.placeId)) => {
         let href: string;
-        if (!next.placeId || (defaultCity && next.placeId === place?.id)) {
-            // Still on the default city: keep it out of the URL, so it
-            // stays labelled as a starting point.
+        if (!next.placeId) {
             href = directoryHref(next);
         } else if (slug) {
             href = directoryHref(next, slug);
@@ -126,7 +121,6 @@ export function FindContainer({
             reach={search.reach}
             pending={pending}
             canCreate={canCreate}
-            defaultCity={defaultCity}
         />
     );
 }

@@ -36,11 +36,7 @@ export interface AnalyticsEvents {
     /** "Claim this organization" on an unclaimed one. */
     'org-claim': { org: string };
     'org-claim-submit': { org: string };
-    /**
-     * A /find search was shown. `city` is the path ("us/ca/oakland"), or
-     * "default" for the starting city; a city taken from the visitor's
-     * profile is sent as "profile", because it's private.
-     */
+    /** A /find search was shown. `city` is its path ("us/ca/oakland"). */
     'find-search': {
         city: string;
         radius: string;

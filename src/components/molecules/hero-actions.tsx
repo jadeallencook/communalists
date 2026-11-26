@@ -9,6 +9,8 @@ import { DEFAULT_PLACE } from '@/lib/organizations/directory';
 export interface HeroActionsProps {
     /** Both lead with Browse organizations; the second button is Create account (signed out) or the dashboard (signed in). */
     signedIn: boolean;
+    /** Browse organizations: the visitor's starting city on /find (startingCitySlug). */
+    findHref?: string;
 }
 
 // Styled to sit on the photo. The secondary button has a visible white
@@ -18,14 +20,16 @@ const secondary =
     'border-white/80 bg-transparent text-white hover:bg-white/10 hover:text-white dark:border-white/80 dark:bg-transparent';
 
 /** The homepage banner's buttons: browse organizations first, then create an account (or go to the dashboard). */
-export function HeroActions({ signedIn }: HeroActionsProps) {
+export function HeroActions({
+    signedIn,
+    findHref = `/find/${DEFAULT_PLACE.slug}`,
+}: HeroActionsProps) {
     const t = useTranslations('Home');
     return (
         <div className="flex flex-wrap items-center gap-3">
             <Button asChild size="lg" className={primary}>
-                {/* Signed in, /find starts from their profile's city. */}
                 <Link
-                    href={signedIn ? '/find' : `/find/${DEFAULT_PLACE.slug}`}
+                    href={findHref}
                     {...track('browse-organizations', { from: 'hero' })}
                 >
                     {t('browse')}

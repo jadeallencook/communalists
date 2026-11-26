@@ -19,6 +19,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SignedOut: Story = {};
-export const SignedIn: Story = { args: { signedIn: true } };
+/** Browse goes to the profile's city. */
+export const SignedIn: Story = {
+    args: { signedIn: true, findHref: '/find/us/ca/oakland' },
+};
 /** While the session is checked: two skeletons the size of the buttons. */
 export const Loading: Story = { render: () => <HeroActionsPlaceholder /> };
