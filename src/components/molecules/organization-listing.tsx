@@ -22,6 +22,7 @@ import {
     OrganizationCardSummary,
     type OrganizationCardProps,
 } from './organization-card';
+import { track } from '@/lib/analytics';
 
 export interface OrganizationListingProps extends Omit<
     OrganizationCardProps,
@@ -150,6 +151,7 @@ export function OrganizationListing({
             <Link
                 href={`/org/${card.handle}`}
                 data-card
+                {...track('org-open', { org: card.handle, from: 'find' })}
                 className="group/card flex items-center gap-4 p-4 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset [&_[data-name]]:underline [&_[data-name]]:underline-offset-4 hover:[&_[data-name]]:decoration-2"
             >
                 {/* Results don't label unclaimed groups (2026-11-26);
@@ -163,6 +165,7 @@ export function OrganizationListing({
                 aria-expanded={open}
                 aria-controls={panelId}
                 onClick={() => setOpen(!open)}
+                {...(open ? {} : track('org-details', { org: card.handle }))}
                 className="flex w-full items-center justify-center gap-1.5 border-t px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset"
             >
                 {open ? tFind('hideDetails') : tFind('showDetails')}
@@ -244,6 +247,10 @@ export function OrganizationListing({
                                     target="_blank"
                                     rel="noreferrer noopener"
                                     className={chipClass}
+                                    {...track('org-website', {
+                                        org: card.handle,
+                                        url: website,
+                                    })}
                                 >
                                     <GlobeIcon
                                         aria-hidden
@@ -264,6 +271,10 @@ export function OrganizationListing({
                                     target="_blank"
                                     rel="noopener noreferrer nofollow ugc"
                                     className={chipClass}
+                                    {...track('org-social', {
+                                        org: card.handle,
+                                        platform,
+                                    })}
                                 >
                                     {SOCIAL_PLATFORMS[platform].name}
                                     <ExternalLinkIcon

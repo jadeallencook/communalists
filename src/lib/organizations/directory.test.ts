@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import {
     activeFilterCount,
-    directorySearchParams,
+    directoryFilterParams,
+    directoryHref,
     filterDirectory,
     nearbyOrganizations,
     parseDirectorySearch,
@@ -212,17 +213,15 @@ describe('parseDirectorySearch', () => {
         });
     });
 
-    it('round-trips through URL parameters, leaving out defaults', () => {
+    it('round-trips the filters through URL parameters, leaving out defaults', () => {
         const search = parseDirectorySearch({
-            country: 'US',
-            placeId: '5392171',
             radius: '10',
             focusAreas: ['food', 'housing'],
             reach: ['local', 'national'],
         });
-        const params = directorySearchParams(search);
+        const params = directoryFilterParams(search);
         expect(params.toString()).toBe(
-            'country=US&placeId=5392171&radius=10&focusAreas=food&focusAreas=housing&reach=local&reach=national'
+            'radius=10&focusAreas=food&focusAreas=housing&reach=local&reach=national'
         );
         expect(
             parseDirectorySearch({
@@ -231,8 +230,30 @@ describe('parseDirectorySearch', () => {
                 reach: params.getAll('reach'),
             })
         ).toEqual(search);
-        expect(directorySearchParams(parseDirectorySearch({})).toString()).toBe(
+        expect(directoryFilterParams(parseDirectorySearch({})).toString()).toBe(
             ''
+        );
+    });
+});
+
+describe('directoryHref', () => {
+    it('puts the city in the path and the filters after it', () => {
+        const filters = parseDirectorySearch({
+            radius: '10',
+            languages: ['es'],
+        });
+        expect(directoryHref(filters, 'us/ca/oakland')).toBe(
+            '/find/us/ca/oakland?radius=10&languages=es'
+        );
+        expect(directoryHref(parseDirectorySearch({}), 'us/ca/oakland')).toBe(
+            '/find/us/ca/oakland'
+        );
+    });
+
+    it('is plain /find without a city', () => {
+        expect(directoryHref(parseDirectorySearch({}))).toBe('/find');
+        expect(directoryHref(parseDirectorySearch({ radius: '50' }))).toBe(
+            '/find?radius=50'
         );
     });
 });

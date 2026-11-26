@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { searchPlaces } from '@/lib/places';
 import { isSupportedCountry, type PlaceOption } from '@/lib/places/types';
 
-// GET /api/places?country=US&q=san+jo → { results: [{ id, label }] }
+// GET /api/places?country=US&q=san+jo → { results: [{ id, label, slug }] }
 // Public and static data, so responses are cached by browsers and Vercel's CDN.
 export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl;
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     }
 
     const results: PlaceOption[] = searchPlaces(country, query).map(
-        ({ id, label }) => ({ id, label })
+        ({ id, label, slug }) => ({ id, label, slug })
     );
     return NextResponse.json(
         { results },

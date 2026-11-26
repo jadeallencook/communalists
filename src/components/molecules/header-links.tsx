@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
 import { Link } from '@/i18n/navigation';
+import { track } from '@/lib/analytics';
 
 export interface SignedOutLinksProps {
     /** Marks the link to the page the visitor is on. Both links always show, so the header doesn't shift. */
@@ -25,6 +26,7 @@ export function SignedOutLinks({ current }: SignedOutLinksProps) {
                 <Link
                     href="/sign-in"
                     aria-current={current === 'sign-in' ? 'page' : undefined}
+                    {...track('sign-in', { from: 'header' })}
                 >
                     {t('signIn')}
                 </Link>
@@ -33,6 +35,7 @@ export function SignedOutLinks({ current }: SignedOutLinksProps) {
                 <Link
                     href="/sign-up"
                     aria-current={current === 'sign-up' ? 'page' : undefined}
+                    {...track('sign-up', { from: 'header' })}
                 >
                     {t('createAccount')}
                 </Link>

@@ -13,10 +13,13 @@ export const isSupportedCountry = (value: unknown): value is CountryCode =>
 export interface PlaceOption {
     id: string; // GeoNames id
     label: string; // "San Jose, California"
+    /** Readable path, "us/ca/san-jose" (slug.ts): /find/us/ca/san-jose. */
+    slug?: string;
 }
 
 /** A place with coordinates (~1 km precision), as stored on a profile. */
 export interface Place extends PlaceOption {
+    slug: string;
     country: CountryCode;
     name: string;
     region: string;

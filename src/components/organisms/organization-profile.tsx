@@ -22,6 +22,7 @@ import {
     socialUrl,
     type SocialLink,
 } from '@/lib/socials';
+import { track } from '@/lib/analytics';
 
 export interface OrganizationProfileProps {
     name: string;
@@ -224,6 +225,7 @@ export function OrganizationProfile({
                                         <span>{streetAddress}</span>
                                         <DirectionsMenu
                                             address={streetAddress}
+                                            org={handle}
                                         />
                                     </span>
                                 </Row>
@@ -241,6 +243,10 @@ export function OrganizationProfile({
                                             target="_blank"
                                             rel="noreferrer noopener"
                                             className={linkClass}
+                                            {...track('org-website', {
+                                                org: handle,
+                                                url: website,
+                                            })}
                                         >
                                             {host(website)}
                                         </a>
@@ -251,6 +257,9 @@ export function OrganizationProfile({
                                         <a
                                             href={phone.href}
                                             className={linkClass}
+                                            {...track('org-phone', {
+                                                org: handle,
+                                            })}
                                         >
                                             {phone.text}
                                         </a>
@@ -261,23 +270,43 @@ export function OrganizationProfile({
                                         <a
                                             href={`mailto:${contactEmail}`}
                                             className={`${linkClass} break-all`}
+                                            {...track('org-email', {
+                                                org: handle,
+                                            })}
                                         >
                                             {contactEmail}
                                         </a>
                                     </Row>
                                 )}
-                                {socials.map(({ platform, handle }) => (
-                                    <Row key={platform} icon={<AtSignIcon />}>
+                                {socials.map((social) => (
+                                    <Row
+                                        key={social.platform}
+                                        icon={<AtSignIcon />}
+                                    >
                                         <a
-                                            href={socialUrl(platform, handle)}
+                                            href={socialUrl(
+                                                social.platform,
+                                                social.handle
+                                            )}
                                             target="_blank"
                                             rel="noopener noreferrer nofollow ugc"
                                             className={linkClass}
+                                            {...track('org-social', {
+                                                org: handle,
+                                                platform: social.platform,
+                                            })}
                                         >
-                                            {SOCIAL_PLATFORMS[platform].name}
+                                            {
+                                                SOCIAL_PLATFORMS[
+                                                    social.platform
+                                                ].name
+                                            }
                                         </a>{' '}
                                         <span className="break-all text-muted-foreground">
-                                            {socialLabel(platform, handle)}
+                                            {socialLabel(
+                                                social.platform,
+                                                social.handle
+                                            )}
                                         </span>
                                     </Row>
                                 ))}

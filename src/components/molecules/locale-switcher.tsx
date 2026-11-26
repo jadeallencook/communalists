@@ -16,6 +16,7 @@ import {
 } from '@/components/atoms/dropdown-menu';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { localeNames, routing, type Locale } from '@/i18n/routing';
+import { track } from '@/lib/analytics';
 
 export function LocaleSwitcher() {
     const t = useTranslations('LocaleSwitcher');
@@ -48,6 +49,9 @@ export function LocaleSwitcher() {
                             key={value}
                             value={value}
                             lang={value}
+                            {...(value === locale
+                                ? {}
+                                : track('language-change', { to: value }))}
                         >
                             {localeNames[value]}
                         </DropdownMenuRadioItem>

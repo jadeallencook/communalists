@@ -7,7 +7,7 @@ const meta = {
     component: NearbyOrganizations,
     args: {
         place: 'San Jose, California',
-        findQuery: { country: 'US', placeId: '5392171', radius: '50' },
+        findHref: '/find/us/ca/san-jose?radius=50',
         organizations: [
             {
                 name: 'Little Saigon Food Pantry',

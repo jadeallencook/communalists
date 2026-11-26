@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/atoms/button';
 import { Link } from '@/i18n/navigation';
+import { track } from '@/lib/analytics';
 
 export interface UnclaimedNoticeProps {
     name: string;
@@ -31,7 +32,12 @@ export function UnclaimedNotice({ name, handle }: UnclaimedNoticeProps) {
             <p className="text-sm text-pretty">{t('body', { name })}</p>
             <div className="flex flex-wrap items-center gap-3">
                 <Button asChild variant="outline">
-                    <Link href={`/org/${handle}/claim`}>{t('claim')}</Link>
+                    <Link
+                        href={`/org/${handle}/claim`}
+                        {...track('org-claim', { org: handle })}
+                    >
+                        {t('claim')}
+                    </Link>
                 </Button>
                 <span className="text-sm text-muted-foreground">
                     {t('claimHint')}

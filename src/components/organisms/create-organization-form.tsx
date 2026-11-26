@@ -38,6 +38,7 @@ import type {
     CreateOrganizationState,
     OrganizationField,
 } from '@/lib/validation/organization';
+import { track } from '@/lib/analytics';
 
 export interface CreateOrganizationFormProps {
     state: CreateOrganizationState;
@@ -449,7 +450,14 @@ export function CreateOrganizationForm({
                 </p>
             )}
 
-            <Button type="submit" size="lg" disabled={pending}>
+            <Button
+                type="submit"
+                size="lg"
+                disabled={pending}
+                {...(mode === 'create'
+                    ? track('create-organization-submit')
+                    : {})}
+            >
                 {mode === 'edit'
                     ? pending
                         ? t('form.saving')

@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
 import { Link } from '@/i18n/navigation';
+import { track } from '@/lib/analytics';
 
 export interface HeroActionsProps {
     /** Both lead with Browse organizations; the second button is Create account (signed out) or the dashboard (signed in). */
@@ -21,13 +22,23 @@ export function HeroActions({ signedIn }: HeroActionsProps) {
     return (
         <div className="flex flex-wrap items-center gap-3">
             <Button asChild size="lg" className={primary}>
-                <Link href="/find">{t('browse')}</Link>
+                <Link
+                    href="/find"
+                    {...track('browse-organizations', { from: 'hero' })}
+                >
+                    {t('browse')}
+                </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className={secondary}>
                 {signedIn ? (
                     <Link href="/dashboard">{t('dashboard')}</Link>
                 ) : (
-                    <Link href="/sign-up">{t('cta')}</Link>
+                    <Link
+                        href="/sign-up"
+                        {...track('sign-up', { from: 'hero' })}
+                    >
+                        {t('cta')}
+                    </Link>
                 )}
             </Button>
         </div>

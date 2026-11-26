@@ -10,6 +10,7 @@ import {
 import { Input } from '@/components/atoms/input';
 import { Link } from '@/i18n/navigation';
 import type { SignInField, SignInState } from '@/lib/validation/sign-in';
+import { track } from '@/lib/analytics';
 
 export interface SignInFormProps {
     /** Result of the last submit: field errors, form error, and the email to restore. */
@@ -91,7 +92,12 @@ export function SignInForm({
                     </p>
                 )}
 
-                <Button type="submit" size="lg" disabled={pending}>
+                <Button
+                    type="submit"
+                    size="lg"
+                    disabled={pending}
+                    {...track('sign-in-submit')}
+                >
                     {pending ? t('submitting') : t('submit')}
                 </Button>
             </FieldGroup>

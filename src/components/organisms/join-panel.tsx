@@ -14,6 +14,7 @@ import {
 } from '@/components/atoms/dialog';
 import { Link } from '@/i18n/navigation';
 import type { JoinState } from '@/lib/organizations/membership';
+import { track } from '@/lib/analytics';
 
 export interface JoinPanelProps {
     state: JoinState;
@@ -69,7 +70,12 @@ export function JoinPanel({
             body = (
                 <div className="flex flex-col gap-2">
                     <Button asChild className="w-full">
-                        <Link href="/sign-in">{t('signInToJoin')}</Link>
+                        <Link
+                            href="/sign-in"
+                            {...track('org-join-sign-in', { org: handle })}
+                        >
+                            {t('signInToJoin')}
+                        </Link>
                     </Button>
                     <span className="text-sm text-muted-foreground">
                         {t('signInHint')}
@@ -82,7 +88,15 @@ export function JoinPanel({
             body = (
                 <form action={formAction} className="flex flex-col gap-2">
                     {hidden('join')}
-                    <Button type="submit" disabled={pending} className="w-full">
+                    <Button
+                        type="submit"
+                        disabled={pending}
+                        className="w-full"
+                        {...track('org-join', {
+                            org: handle,
+                            policy: state === 'join' ? 'open' : 'request',
+                        })}
+                    >
                         {state === 'join' ? t('join') : t('askToJoin')}
                     </Button>
                     <span className="text-sm text-muted-foreground">
@@ -102,6 +116,7 @@ export function JoinPanel({
                         size="sm"
                         disabled={pending}
                         className="w-full"
+                        {...track('org-cancel-request', { org: handle })}
                     >
                         {t('cancelRequest')}
                     </Button>
@@ -155,6 +170,7 @@ export function JoinPanel({
                                     type="submit"
                                     variant="destructive"
                                     disabled={pending}
+                                    {...track('org-leave', { org: handle })}
                                 >
                                     {t('leaveConfirm')}
                                 </Button>

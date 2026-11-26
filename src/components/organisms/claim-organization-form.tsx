@@ -19,6 +19,7 @@ import {
     type ClaimErrorKey,
     type ClaimField,
 } from '@/lib/organizations/claims';
+import { track } from '@/lib/analytics';
 
 export type ClaimFormErrorKey = 'notUnclaimed' | 'alreadyPending' | 'generic';
 
@@ -141,7 +142,12 @@ export function ClaimOrganizationForm({
                 </p>
             )}
 
-            <Button type="submit" size="lg" disabled={pending}>
+            <Button
+                type="submit"
+                size="lg"
+                disabled={pending}
+                {...track('org-claim-submit', { org: handle })}
+            >
                 {pending ? t('submitting') : t('submit')}
             </Button>
         </form>
