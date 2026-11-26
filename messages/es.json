@@ -258,13 +258,14 @@
         "defaultCity": "Mostrando organizaciones cerca de {city} como punto de partida. Elige tu ciudad para ver lo que hay cerca de ti.",
         "metaTitleNear": "Organizaciones de ayuda mutua cerca de {city}",
         "metaDescriptionNear": "Descubre grupos de ayuda mutua, clubes y redes cerca de {city}. Cualquiera puede mirar; unirse requiere una cuenta gratuita.",
-        "joining": "Cómo unirse",
         "members": "Miembros",
         "moreFocusAreas": "{count} más",
         "filtersOn": "{count, plural, one {# filtro activo} other {# filtros activos}}",
         "fewerFocusAreas": "Mostrar menos",
         "showDetails": "Ver detalles",
-        "hideDetails": "Ocultar detalles"
+        "hideDetails": "Ocultar detalles",
+        "readMore": "Leer más",
+        "showLess": "Mostrar menos"
     },
     "Organizations": {
         "focusAreas": {

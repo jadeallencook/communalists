@@ -415,8 +415,11 @@ function toDirectoryOrganization(
             lng: data.location.lng,
         },
         reach: data.reach.scope,
+        ...(data.reach.scope === 'local' && data.reach.radiusMiles
+            ? { radiusMiles: data.reach.radiusMiles }
+            : {}),
+        ...(data.foundedYear ? { foundedYear: data.foundedYear } : {}),
         languages: data.languages ?? [],
-        joinPolicy: data.joinPolicy,
         memberCount: data.memberCount ?? 0,
         ...(data.website ? { website: data.website } : {}),
         socials: socialLinksOf(data.socials),

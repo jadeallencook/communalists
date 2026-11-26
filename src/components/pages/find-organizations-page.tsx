@@ -156,7 +156,15 @@ function Section({
                                 unclaimed={org.unclaimed}
                                 description={org.description}
                                 languages={org.languages}
-                                joinPolicy={org.joinPolicy}
+                                servesWithin={
+                                    org.reach === 'local' && org.radiusMiles
+                                        ? {
+                                              miles: org.radiusMiles,
+                                              place: org.location.label,
+                                          }
+                                        : undefined
+                                }
+                                foundedYear={org.foundedYear}
                                 memberCount={org.memberCount}
                                 website={org.website}
                                 socials={org.socials}

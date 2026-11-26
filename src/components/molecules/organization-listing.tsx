@@ -1,19 +1,20 @@
 'use client';
 
 import {
+    CalendarIcon,
     ChevronDownIcon,
-    DoorOpenIcon,
     ExternalLinkIcon,
     GlobeIcon,
     LanguagesIcon,
+    MapPinIcon,
     UsersIcon,
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
 import { Link } from '@/i18n/navigation';
 import { languageName } from '@/lib/organizations/client';
-import type { JoinPolicy, OrgLanguage } from '@/lib/organizations/options';
+import type { OrgLanguage } from '@/lib/organizations/options';
 import { SOCIAL_PLATFORMS, socialUrl, type SocialLink } from '@/lib/socials';
 import { cn } from '@/lib/utils';
 
@@ -28,8 +29,10 @@ export interface OrganizationListingProps extends Omit<
 > {
     description: string;
     languages: OrgLanguage[];
-    joinPolicy: JoinPolicy;
     memberCount: number;
+    /** A local group's area: "Within 10 mi of San Jose, California". */
+    servesWithin?: { miles: number; place: string };
+    foundedYear?: number;
     website?: string;
     socials?: SocialLink[];
     /** Start expanded (for previews). */
@@ -48,15 +51,18 @@ const chipClass =
     'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none';
 
 /**
- * One search result. The top is a link to the organization's page; the
- * "Show details" bar under it opens a drawer with the description,
- * languages, how to join, members, and the group's own links.
+ * One search result. The top is a link to the organization's page (the
+ * name is underlined); the "Show details" bar opens a drawer with the
+ * description (cut at four lines; tap it or "Read more" for the rest), a
+ * local group's area, its founding year, languages, members, and the
+ * group's own links.
  */
 export function OrganizationListing({
     description,
     languages,
-    joinPolicy,
     memberCount,
+    servesWithin,
+    foundedYear,
     website,
     // Entries cached before links were added have none.
     socials = [],
@@ -68,8 +74,52 @@ export function OrganizationListing({
     const locale = useLocale();
     const [open, setOpen] = useState(defaultOpen);
     const panelId = useId();
+    const descriptionId = useId();
+    const descriptionRef = useRef<HTMLParagraphElement>(null);
+    // Whether the four-line cut hides part of the description, and
+    // whether the visitor asked to see all of it.
+    const [clamped, setClamped] = useState(false);
+    const [fullDescription, setFullDescription] = useState(false);
 
-    const facts = [
+    // Measure while cut; the observer catches the drawer opening (it
+    // measures zero while hidden) and width changes like rotating a phone.
+    useEffect(() => {
+        const el = descriptionRef.current;
+        if (!el || fullDescription) return;
+        const check = () => setClamped(el.scrollHeight > el.clientHeight + 1);
+        check();
+        const observer = new ResizeObserver(check);
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [description, fullDescription]);
+
+    const expandFromText = () => {
+        // Don't fight someone selecting text to copy it.
+        if (window.getSelection()?.toString()) return;
+        setFullDescription(true);
+    };
+
+    // How to join isn't here: visitors read "Request to join" as something
+    // to do, not a fact. The group's page explains it beside the button.
+    const facts: { icon: typeof MapPinIcon; label?: string; text: string }[] = [
+        // Nationwide and international results sit under their own
+        // heading, and the card already says where they're based.
+        ...(servesWithin
+            ? [
+                  {
+                      icon: MapPinIcon,
+                      text: t('reachSummary.local', servesWithin),
+                  },
+              ]
+            : []),
+        ...(foundedYear
+            ? [
+                  {
+                      icon: CalendarIcon,
+                      text: t('page.since', { year: String(foundedYear) }),
+                  },
+              ]
+            : []),
         ...(languages.length > 0
             ? [
                   {
@@ -81,11 +131,6 @@ export function OrganizationListing({
                   },
               ]
             : []),
-        {
-            icon: DoorOpenIcon,
-            label: tFind('joining'),
-            text: t(`joinPolicies.${joinPolicy}.label`),
-        },
         // An unclaimed group has no members on the platform yet.
         ...(card.unclaimed
             ? []
@@ -100,13 +145,16 @@ export function OrganizationListing({
 
     return (
         <div className="overflow-hidden rounded-lg border transition-colors has-[a[data-card]:hover]:border-foreground/30">
-            {/* The card's top opens the page: name underlined on hover. */}
+            {/* The card's top opens the page. The name is always underlined so
+                it reads as a link; hover thickens the line. */}
             <Link
                 href={`/org/${card.handle}`}
                 data-card
-                className="group/card flex items-center gap-4 p-4 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset [&_[data-name]]:underline-offset-4 hover:[&_[data-name]]:underline"
+                className="group/card flex items-center gap-4 p-4 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset [&_[data-name]]:underline [&_[data-name]]:underline-offset-4 hover:[&_[data-name]]:decoration-2"
             >
-                <OrganizationCardSummary {...card} />
+                {/* Results don't label unclaimed groups (2026-11-26);
+                    their page still says so. */}
+                <OrganizationCardSummary {...card} unclaimed={false} />
             </Link>
 
             {/* The drawer handle: stays put while the details open below it. */}
@@ -133,20 +181,52 @@ export function OrganizationListing({
                 hidden={!open}
                 className="flex flex-col gap-4 border-t bg-muted/20 p-4"
             >
-                <p
-                    className={cn(
-                        'line-clamp-4 text-sm break-words whitespace-pre-line',
-                        !description && 'text-muted-foreground'
+                <div className="flex flex-col items-start gap-1">
+                    {/* Tapping cut-off text opens the rest; the button
+                        below does the same for keyboards and screen
+                        readers. */}
+                    <p
+                        ref={descriptionRef}
+                        id={descriptionId}
+                        onClick={
+                            clamped && !fullDescription
+                                ? expandFromText
+                                : undefined
+                        }
+                        className={cn(
+                            'text-sm break-words whitespace-pre-line',
+                            !fullDescription && 'line-clamp-4',
+                            clamped && !fullDescription && 'cursor-pointer',
+                            !description && 'text-muted-foreground'
+                        )}
+                    >
+                        {description || t('page.noDescription')}
+                    </p>
+                    {clamped && (
+                        <button
+                            type="button"
+                            aria-expanded={fullDescription}
+                            aria-controls={descriptionId}
+                            onClick={() => setFullDescription(!fullDescription)}
+                            className="rounded-sm text-sm font-medium underline underline-offset-4 hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                        >
+                            {fullDescription
+                                ? tFind('showLess')
+                                : tFind('readMore')}
+                            <span className="sr-only">: {card.name}</span>
+                        </button>
                     )}
-                >
-                    {description || t('page.noDescription')}
-                </p>
+                </div>
 
                 <ul className="flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-muted-foreground">
                     {facts.map(({ icon: Icon, label, text }) => (
-                        <li key={label} className="flex items-center gap-1.5">
+                        <li key={text} className="flex items-center gap-1.5">
                             <Icon aria-hidden className="size-4 shrink-0" />
-                            <span className="sr-only">{label}: </span>
+                            {/* "Since 2019" and "Within 10 mi of…" say what
+                                they are; the others get a label. */}
+                            {label && (
+                                <span className="sr-only">{label}: </span>
+                            )}
                             {text}
                         </li>
                     ))}

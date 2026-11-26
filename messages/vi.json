@@ -258,13 +258,14 @@
         "defaultCity": "Đang hiển thị các tổ chức gần {city} để bắt đầu. Hãy chọn thành phố của bạn để xem những gì gần bạn.",
         "metaTitleNear": "Các tổ chức tương trợ gần {city}",
         "metaDescriptionNear": "Khám phá các nhóm tương trợ, câu lạc bộ và mạng lưới gần {city}. Ai cũng có thể xem; tham gia cần một tài khoản miễn phí.",
-        "joining": "Cách tham gia",
         "members": "Thành viên",
         "moreFocusAreas": "{count} nữa",
         "filtersOn": "{count} bộ lọc đang bật",
         "fewerFocusAreas": "Ẩn bớt",
         "showDetails": "Xem chi tiết",
-        "hideDetails": "Ẩn chi tiết"
+        "hideDetails": "Ẩn chi tiết",
+        "readMore": "Đọc thêm",
+        "showLess": "Thu gọn"
     },
     "Organizations": {
         "focusAreas": {

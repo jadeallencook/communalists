@@ -258,13 +258,14 @@
         "defaultCity": "Showing organizations near {city}, a starting point. Choose your city to see what's near you.",
         "metaTitleNear": "Mutual aid organizations near {city}",
         "metaDescriptionNear": "Discover mutual aid groups, clubs and networks near {city}. Anyone can look; joining takes a free account.",
-        "joining": "Joining",
         "members": "Members",
         "moreFocusAreas": "{count} more",
         "filtersOn": "{count, plural, one {# filter on} other {# filters on}}",
         "fewerFocusAreas": "Show fewer",
         "showDetails": "Show details",
-        "hideDetails": "Hide details"
+        "hideDetails": "Hide details",
+        "readMore": "Read more",
+        "showLess": "Show less"
     },
     "Organizations": {
         "focusAreas": {
