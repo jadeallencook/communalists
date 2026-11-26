@@ -51,5 +51,6 @@ pnpm orgs:check research/organizations/{area}/organizations.csv           # the 
 
 - Search results are enough for `candidates.csv`. Open a page only in step 5, and only for NEW candidates.
 - Run `orgs:known` once on the whole list, not once per group.
+- If pages are read through `web-fetch` agents, give each one the URLs to read. They can't search, and without a URL they come back empty. Find a candidate's site with a search first. Some health-center sites (LifeLong, Roots) refuse automated reads (403), so research those by hand.
 - Let `orgs:check` find rule problems. Don't re-read the column table to check rows by hand.
 - For a big area, work city by city: candidates, known, research, then the next city. Earlier rows then count as known.

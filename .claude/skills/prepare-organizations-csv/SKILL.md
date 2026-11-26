@@ -31,7 +31,7 @@ Comma-separated, UTF-8, with a header row. Quote any cell that contains a comma,
 | `name`                 | yes              | 2–80 characters. The organization's own name, as it writes it                                                                                                                                                                                                                                    |
 | `handle`               | no               | Its address (`/org/{handle}`): 3–30 lowercase letters, numbers and single hyphens. Left blank, it's made from the name. Shorten long names                                                                                                                                                       |
 | `focusAreas`           | yes              | 1–3 of: `general, food, housing, transportation, technology, health, childcare, education, clothing, hygiene, lending, disasterRelief, legal, labor, arts, hobbies, faith, animals, environment, other` (`src/lib/organizations/options.ts`)                                                     |
-| `description`          | no               | Up to 2,000 characters. What it does and when, in plain words, for someone looking for help. No marketing copy                                                                                                                                                                                   |
+| `description`          | no               | Up to 2,000 characters. Written **as the organization** ("We are…", "We give out…"), never about it from outside. What it does and when, in plain words, for someone looking for help. No marketing copy. See "Writing the description"                                                          |
 | `foundedYear`          | no               | Four digits, 1800 to this year. Only if a source states it                                                                                                                                                                                                                                       |
 | `country`              | no               | `US` (the only country supported). Blank means `US`                                                                                                                                                                                                                                              |
 | `placeId`              | yes              | GeoNames ID from `find-place.mjs`                                                                                                                                                                                                                                                                |
@@ -50,6 +50,15 @@ Comma-separated, UTF-8, with a header row. Quote any cell that contains a comma,
 | `verification`         | no, but fill it  | Where the details came from: `official site`, `official social`, `community wiki`, `news`, or `needs verification`                                                                                                                                                                               |
 | `notes`                | no               | For the reviewer. Never imported                                                                                                                                                                                                                                                                 |
 | `sources`              | yes, in practice | The pages the details came from, separated by semicolons. Never imported, but the reviewer reads them                                                                                                                                                                                            |
+
+## Writing the description
+
+The description appears on the organization's own page, so it should read as if the group wrote it. When a group claims its page, it inherits this text.
+
+- **Use its own voice:** "We are a nonprofit serving Deep East Oakland…", not "A nonprofit serving…" or "The group runs…". Speak to the reader as "you" ("Call us to see whether you qualify").
+- **Start from its own bio** on its site or official social account. Keep its wording when the wording is short and plain. Rewrite it in plain language when it's long or reads like marketing ("empowering", "transformative"). Don't paste long passages.
+- **Then add the practical details** the bio usually leaves out: what someone can get, which days and times, and where. Those matter more than the mission statement.
+- Facts come only from the sources, the same as every other column. Writing as "we" doesn't permit claims the group didn't make.
 
 Unknown columns are reported and ignored. `verification`, `notes` and `sources` are shown to the reviewer and never stored.
 

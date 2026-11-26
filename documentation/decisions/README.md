@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [044](044-prepare-pull-request-skill.md)                                        | prepare-pull-request skill: agents open pull requests when asked                                   | 2026-11-25 |
 | [043](043-find-organizations-skill-and-existing-organizations-export.md)        | find-organizations skill, and an export of existing organizations                                  | 2026-11-25 |
 | [042](042-branch-protection-on-main.md)                                         | Branch protection on `main`: pull requests, code owner review, squash merges                       | 2026-11-24 |
 | [041](041-import-review-edit-remove-explain.md)                                 | Import review: explained problems, profile previews, edit and remove                               | 2026-11-24 |
