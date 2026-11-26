@@ -1,14 +1,10 @@
+import { normalize } from './normalize';
+import { placeIndexBySlug, placeSlug } from './slug';
 import type { CountryCode, Place, PlaceDataset } from './types';
 
 // Pure search over a place dataset. No I/O, so it's easy to test and to reuse.
 
-/** Lowercase and strip accents, so "san jose" matches "San José". */
-export const normalize = (text: string) =>
-    text
-        .normalize('NFD')
-        .replace(/\p{Diacritic}/gu, '')
-        .toLowerCase()
-        .trim();
+export { normalize };
 
 export const MIN_QUERY_LENGTH = 2;
 
@@ -19,6 +15,7 @@ function toPlace(
     const regionName = dataset.regions[region] ?? region;
     return {
         id: String(id),
+        slug: placeSlug(dataset, id, region) ?? '',
         label: `${name}, ${regionName}`,
         country: dataset.country as CountryCode,
         name,
@@ -94,4 +91,14 @@ export function searchPlaces(
 export function findPlace(dataset: PlaceDataset, id: string): Place | null {
     const entry = dataset.places.find(([placeId]) => String(placeId) === id);
     return entry ? toPlace(dataset, entry) : null;
+}
+
+/** The place at a readable path's region and city ("ca", "oakland"), if any. */
+export function findPlaceBySlug(
+    dataset: PlaceDataset,
+    region: string,
+    city: string
+): Place | null {
+    const index = placeIndexBySlug(dataset, region, city);
+    return index === null ? null : toPlace(dataset, dataset.places[index]);
 }

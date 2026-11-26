@@ -11,6 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/atoms/dropdown-menu';
+import { track } from '@/lib/analytics';
 import { directionsUrl, MAP_PROVIDER_NAMES, MAP_PROVIDERS } from '@/lib/maps';
 
 export interface DirectionsMenuProps {
@@ -18,12 +19,15 @@ export interface DirectionsMenuProps {
     address: string;
     /** Start open (for previews). */
     defaultOpen?: boolean;
+    /** The organization's handle, for analytics. */
+    org?: string;
 }
 
 /** "Get directions": choose Apple Maps, Google Maps or OpenStreetMap. */
 export function DirectionsMenu({
     address,
     defaultOpen = false,
+    org,
 }: DirectionsMenuProps) {
     const t = useTranslations('Organizations');
     return (
@@ -46,6 +50,9 @@ export function DirectionsMenu({
                             href={directionsUrl(provider, address)}
                             target="_blank"
                             rel="noopener noreferrer"
+                            {...(org
+                                ? track('org-directions', { org, provider })
+                                : {})}
                         >
                             {MAP_PROVIDER_NAMES[provider]}
                             <span className="sr-only">{t('page.newTab')}</span>

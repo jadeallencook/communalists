@@ -10,7 +10,7 @@ import { useRouter } from '@/i18n/navigation';
 import { languageName } from '@/lib/organizations/client';
 import {
     activeFilterCount,
-    directorySearchParams,
+    directoryHref,
     parseDirectorySearch,
     type DirectoryResults,
     type DirectorySearch,
@@ -39,12 +39,10 @@ export function FindContainer({
     const locale = useLocale();
     const router = useRouter();
     const [pending, startTransition] = useTransition();
-    const go = (next: DirectorySearch) => {
-        const query = directorySearchParams(next).toString();
+    // The city goes in the path (/find/us/ca/oakland), filters in the query.
+    const go = (next: DirectorySearch, slug?: string) => {
         startTransition(() =>
-            router.replace(query ? `/find?${query}` : '/find', {
-                scroll: false,
-            })
+            router.replace(directoryHref(next, slug), { scroll: false })
         );
     };
     const picker = useLocationPicker({
@@ -56,7 +54,10 @@ export function FindContainer({
         ...picker,
         onSelect: (next: PlaceOption) => {
             picker.onSelect(next);
-            go({ ...search, country: picker.country, placeId: next.id });
+            go(
+                { ...search, country: picker.country, placeId: next.id },
+                next.slug
+            );
         },
     };
 
@@ -88,9 +89,12 @@ export function FindContainer({
                         });
                         // Still on the default city: keep it out of the URL,
                         // so it stays labelled as a starting point.
-                        if (defaultCity && next.placeId === place?.id)
-                            next.placeId = undefined;
-                        go(next);
+                        go(
+                            next,
+                            defaultCity && next.placeId === place?.id
+                                ? undefined
+                                : place?.slug
+                        );
                     }}
                 />
             }

@@ -10,6 +10,7 @@ import {
 } from '@/components/atoms/field';
 import { Input } from '@/components/atoms/input';
 import type { SignUpField, SignUpState } from '@/lib/validation/sign-up';
+import { track } from '@/lib/analytics';
 
 export interface SignUpFormProps {
     /** Result of the last submit: field errors, form error, and values to restore. */
@@ -101,7 +102,12 @@ export function SignUpForm({
                     </p>
                 )}
 
-                <Button type="submit" size="lg" disabled={pending}>
+                <Button
+                    type="submit"
+                    size="lg"
+                    disabled={pending}
+                    {...track('sign-up-submit')}
+                >
                     {pending ? t('submitting') : t('submit')}
                 </Button>
             </FieldGroup>

@@ -59,6 +59,13 @@ export interface DirectorySearch extends DirectoryFilters {
 }
 
 export const DEFAULT_RADIUS_MILES: RadiusMiles = 25;
+/** No filters: the default distance and every kind of group. */
+export const DEFAULT_FILTERS: DirectoryFilters = {
+    radiusMiles: DEFAULT_RADIUS_MILES,
+    focusAreas: [],
+    languages: [],
+    reach: [...REACH_SCOPES],
+};
 /**
  * Where /find starts for visitors who aren't signed in and haven't chosen a
  * city: San Francisco (GeoNames 5391959). The page says it's a starting
@@ -77,7 +84,10 @@ const known = <T extends string>(values: readonly T[], input: string[]) =>
     values.filter((value) => input.includes(value));
 
 /**
- * The search in a /find URL. Lenient: unknown or malformed values are dropped
+ * The search in a /find URL's parameters. The city is normally in the path
+ * (/find/us/ca/oakland); `country` and `placeId` are read for older links
+ * and the filter form without JavaScript, which the page redirects to the
+ * path. Lenient: unknown or malformed values are dropped
  * (it's a URL anyone can edit), never an error.
  */
 export function parseDirectorySearch(params: Params): DirectorySearch {
@@ -97,21 +107,35 @@ export function parseDirectorySearch(params: Params): DirectorySearch {
     };
 }
 
-/** The same search as URL parameters, leaving out defaults so links stay short. */
-export function directorySearchParams(search: DirectorySearch) {
+/**
+ * The filters as URL parameters, leaving out defaults so links stay short.
+ * The city isn't one: it's in the path (directoryHref).
+ */
+export function directoryFilterParams(filters: DirectoryFilters) {
     const params = new URLSearchParams();
-    if (search.placeId) {
-        params.set('country', search.country);
-        params.set('placeId', search.placeId);
-    }
-    if (search.radiusMiles !== DEFAULT_RADIUS_MILES)
-        params.set('radius', String(search.radiusMiles));
-    for (const area of search.focusAreas) params.append('focusAreas', area);
-    for (const language of search.languages)
+    if (filters.radiusMiles !== DEFAULT_RADIUS_MILES)
+        params.set('radius', String(filters.radiusMiles));
+    for (const area of filters.focusAreas) params.append('focusAreas', area);
+    for (const language of filters.languages)
         params.append('languages', language);
-    if (search.reach.length < REACH_SCOPES.length)
-        for (const scope of search.reach) params.append('reach', scope);
+    if (filters.reach.length < REACH_SCOPES.length)
+        for (const scope of filters.reach) params.append('reach', scope);
     return params;
+}
+
+/**
+ * A /find link: the city as a readable path ("us/ca/oakland", from
+ * places/slug.ts), then the filters, e.g. /find/us/ca/oakland?radius=10.
+ * No city: plain /find (the visitor's own city or the default one).
+ * Decision #49.
+ */
+export function directoryHref(
+    filters: DirectoryFilters,
+    placeSlug?: string
+): string {
+    const path = placeSlug ? `/find/${placeSlug}` : '/find';
+    const query = directoryFilterParams(filters).toString();
+    return query ? `${path}?${query}` : path;
 }
 
 /**

@@ -15,6 +15,7 @@ import { currentBuild } from '@/lib/build-info';
 import { isLocalDev, TEST_ACCOUNTS } from '@/lib/dev';
 import { getSiteUrl } from '@/lib/site';
 
+import { Analytics } from './analytics';
 import { DevToolbarContainer } from './dev-toolbar-container';
 import { HeaderAccount, HeaderNav } from './header-slots';
 
@@ -88,6 +89,10 @@ export default async function LocaleLayout({
                             {children}
                         </main>
                         <SiteFooter build={currentBuild()} />
+                        {/* Umami loads on production only; see technical/analytics.md. */}
+                        <Analytics
+                            load={process.env.VERCEL_ENV === 'production'}
+                        />
                         {isLocalDev(process.env) && (
                             <DevToolbarContainer
                                 accounts={TEST_ACCOUNTS.map(

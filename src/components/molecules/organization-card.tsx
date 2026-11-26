@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { initials } from '@/lib/initials';
 import type { FocusArea } from '@/lib/organizations/options';
+import { track } from '@/lib/analytics';
 
 export interface OrganizationCardProps {
     name: string;
@@ -88,6 +89,7 @@ export function OrganizationCard(props: OrganizationCardProps) {
     return (
         <Link
             href={`/org/${props.handle}`}
+            {...track('org-open', { org: props.handle, from: 'card' })}
             className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         >
             <OrganizationCardSummary {...props} />

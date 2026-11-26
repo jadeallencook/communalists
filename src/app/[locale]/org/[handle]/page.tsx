@@ -24,16 +24,20 @@ import {
     visibleMembers,
 } from '@/lib/organizations/membership';
 import {
+    DEFAULT_FILTERS,
+    directoryHref,
     NEARBY_RADIUS_MILES,
     nearbyOrganizations,
 } from '@/lib/organizations/directory';
 import { handleProblem } from '@/lib/organizations/handle';
+import { getPlace } from '@/lib/places';
 import { isSupportedCountry } from '@/lib/places/types';
 import { makeUnclaimedProblem } from '@/lib/organizations/lifecycle';
 import { phoneForDisplay } from '@/lib/phone';
 import { redirect } from '@/i18n/navigation';
 
 import { makeUnclaimedAction } from './actions';
+import { TrackEvent } from '../../track-event';
 import { JoinPanelContainer } from './join-panel-container';
 
 type Props = PageProps<'/[locale]/org/[handle]'>;
@@ -101,22 +105,27 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
         nearbySection(org),
     ]);
 
+    const view = <TrackEvent event="org-view" data={{ org: org.handle }} />;
+
     // Unclaimed: no members, no joining. Super users manage it as owners.
     if (org.unclaimed) {
         return (
-            <OrganizationPage
-                role={null}
-                join={null}
-                members={{
-                    people: [],
-                    total: 0,
-                    setting: org.memberListVisibility,
-                    viewerIsMember: false,
-                }}
-                profile={profile}
-                unclaimed={{ canManage: isPlatformAdmin(user?.uid) }}
-                nearby={nearby}
-            />
+            <>
+                {view}
+                <OrganizationPage
+                    role={null}
+                    join={null}
+                    members={{
+                        people: [],
+                        total: 0,
+                        setting: org.memberListVisibility,
+                        viewerIsMember: false,
+                    }}
+                    profile={profile}
+                    unclaimed={{ canManage: isPlatformAdmin(user?.uid) }}
+                    nearby={nearby}
+                />
+            </>
         );
     }
 
@@ -139,46 +148,55 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
             : active.filter((p) => p.role !== 'member');
 
     return (
-        <OrganizationPage
-            role={role}
-            join={
-                <JoinPanelContainer
-                    state={joinState(!!user, org.joinPolicy, membership)}
-                    orgId={org.id}
-                    handle={org.handle}
-                    name={org.name}
-                />
-            }
-            members={{
-                people: named.map(({ uid, displayName, username, role }) => ({
-                    uid,
-                    displayName,
-                    username,
-                    role,
-                })),
-                total: active.length,
-                setting: org.memberListVisibility,
-                viewerIsMember: !!role,
-            }}
-            nearby={nearby}
-            makeUnclaimed={
-                // Shown only when it would work; the action checks again.
-                makeUnclaimedProblem({
-                    platformAdmin: isPlatformAdmin(user?.uid),
-                    role,
-                    unclaimed: false,
-                    activeMembers: active.length,
-                }) === null
-                    ? { orgId: org.id, locale, formAction: makeUnclaimedAction }
-                    : undefined
-            }
-            pendingRequests={
-                isStaff(role)
-                    ? people.filter((p) => p.status === 'pending').length
-                    : 0
-            }
-            profile={{ ...profile, memberCount: active.length }}
-        />
+        <>
+            {view}
+            <OrganizationPage
+                role={role}
+                join={
+                    <JoinPanelContainer
+                        state={joinState(!!user, org.joinPolicy, membership)}
+                        orgId={org.id}
+                        handle={org.handle}
+                        name={org.name}
+                    />
+                }
+                members={{
+                    people: named.map(
+                        ({ uid, displayName, username, role }) => ({
+                            uid,
+                            displayName,
+                            username,
+                            role,
+                        })
+                    ),
+                    total: active.length,
+                    setting: org.memberListVisibility,
+                    viewerIsMember: !!role,
+                }}
+                nearby={nearby}
+                makeUnclaimed={
+                    // Shown only when it would work; the action checks again.
+                    makeUnclaimedProblem({
+                        platformAdmin: isPlatformAdmin(user?.uid),
+                        role,
+                        unclaimed: false,
+                        activeMembers: active.length,
+                    }) === null
+                        ? {
+                              orgId: org.id,
+                              locale,
+                              formAction: makeUnclaimedAction,
+                          }
+                        : undefined
+                }
+                pendingRequests={
+                    isStaff(role)
+                        ? people.filter((p) => p.status === 'pending').length
+                        : 0
+                }
+                profile={{ ...profile, memberCount: active.length }}
+            />
+        </>
     );
 }
 
@@ -228,11 +246,10 @@ async function nearbySection(org: {
                               city: other.location.label,
                           }),
             }))}
-            findQuery={{
-                country: location.country,
-                placeId: location.placeId,
-                radius: String(NEARBY_RADIUS_MILES),
-            }}
+            findHref={directoryHref(
+                { ...DEFAULT_FILTERS, radiusMiles: NEARBY_RADIUS_MILES },
+                getPlace(location.country, location.placeId)?.slug
+            )}
         />
     );
 }

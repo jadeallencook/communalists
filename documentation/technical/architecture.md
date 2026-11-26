@@ -32,7 +32,9 @@ src/
     [locale]/auth/action/ Firebase email links (Action URL): verifies the code, renders ResetPasswordPage
     [locale]/dashboard/   Container: requireAccount, renders DashboardPage (streamed); /welcome redirects here
     [locale]/account/settings/ Container: edit profile (setup form in settings mode)
+    [locale]/find/[[...place]]/ Find organizations; the city in the path (/find/us/ca/oakland)
     [locale]/header-slots.tsx  Header's signed-in parts (session + profile), streamed in <Suspense>
+    [locale]/analytics.tsx     Umami loader (production) + click listener; track-event.tsx sends on render
     actions/sign-out.ts   Shared sign-out server action (account menu)
     api/places/           GET city search for the picker (cached)
     api/handles/[handle]/ GET handle availability for the create form (signed-in only)
@@ -55,7 +57,8 @@ src/
   lib/organizations/    Organizations: options, handle rules, Firestore (create, cached reads)
   lib/build-info.ts     Version + commit for the footer (pure)
   lib/account-setup.ts  Required profile questions, what's missing, safe ?next= (pure)
-  lib/places/           Place data, search, API client (city picker)
+  lib/places/           Place data, search, readable slugs (us/ca/oakland), API client (city picker)
+  lib/analytics/        Event catalog, track() attributes, what may leave the browser (pure); browser.ts sends
   lib/validation/       Zod schemas shared by forms and actions
   lib/users.ts          users/{uid} profiles
   lib/firebase/

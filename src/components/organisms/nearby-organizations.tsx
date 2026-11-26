@@ -7,14 +7,15 @@ import {
     type OrganizationCardProps,
 } from '@/components/molecules/organization-card';
 import { Link } from '@/i18n/navigation';
+import { track } from '@/lib/analytics';
 
 export interface NearbyOrganizationsProps {
     /** The organization's city, e.g. "San Jose, California". */
     place: string;
     /** Already chosen and sorted (nearbyOrganizations), with distance in `detail`. */
     organizations: OrganizationCardProps[];
-    /** /find from this city, for the rest. */
-    findQuery: { country: string; placeId: string; radius: string };
+    /** /find from this city, for the rest, e.g. "/find/us/ca/san-jose?radius=50". */
+    findHref: string;
 }
 
 /**
@@ -24,7 +25,7 @@ export interface NearbyOrganizationsProps {
 export function NearbyOrganizations({
     place,
     organizations,
-    findQuery,
+    findHref,
 }: NearbyOrganizationsProps) {
     const t = useTranslations('Organizations.page');
     if (organizations.length === 0) return null;
@@ -47,7 +48,10 @@ export function NearbyOrganizations({
                 ))}
             </ul>
             <Button asChild variant="outline" className="self-start">
-                <Link href={{ pathname: '/find', query: findQuery }}>
+                <Link
+                    href={findHref}
+                    {...track('browse-organizations', { from: 'nearby' })}
+                >
                     {t('nearbySeeAll')}
                     <ArrowRightIcon aria-hidden />
                 </Link>

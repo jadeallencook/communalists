@@ -3,7 +3,7 @@ import 'server-only';
 import { geohashForLocation } from 'geofire-common';
 
 import usPlaces from './data/us.json';
-import { findPlace, searchPlaces as search } from './search';
+import { findPlace, findPlaceBySlug, searchPlaces as search } from './search';
 import type { CountryCode, Place, PlaceDataset } from './types';
 
 // Server-side access to the place datasets (~1 MB each). Kept off the client:
@@ -22,6 +22,13 @@ export const searchPlaces = (
 
 export const getPlace = (country: CountryCode, id: string) =>
     findPlace(datasets[country], id);
+
+/** From a readable path's lowercase region and city: ("US", "ca", "oakland"). */
+export const getPlaceBySlug = (
+    country: CountryCode,
+    region: string,
+    city: string
+) => findPlaceBySlug(datasets[country], region, city);
 
 /** A profile's general area: label, ~1 km coordinates, and a geohash for radius queries. */
 export interface GeneralArea {

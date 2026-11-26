@@ -8,6 +8,7 @@ import {
     type OrganizationCardProps,
 } from '@/components/molecules/organization-card';
 import { Link } from '@/i18n/navigation';
+import { track } from '@/lib/analytics';
 
 export interface DashboardPageProps {
     name: string;
@@ -42,7 +43,10 @@ export function DashboardPage({
     const t = useTranslations('Dashboard');
     const createButton = canCreate ? (
         <Button asChild>
-            <Link href="/org/new">
+            <Link
+                href="/org/new"
+                {...track('create-organization', { from: 'dashboard' })}
+            >
                 <PlusIcon aria-hidden />
                 {t('create')}
             </Link>
@@ -135,7 +139,12 @@ export function DashboardPage({
                     </p>
                 )}
                 <Button asChild variant="outline" className="self-start">
-                    <Link href="/find">
+                    <Link
+                        href="/find"
+                        {...track('browse-organizations', {
+                            from: 'dashboard',
+                        })}
+                    >
                         {t('findSeeAll')}
                         <ArrowRightIcon aria-hidden />
                     </Link>
