@@ -10,7 +10,7 @@ export interface SiteFooterProps {
 
 const linkClass = 'underline-offset-4 hover:text-foreground hover:underline';
 
-/** Bottom of every page: who built it, the open-source link, and the running version. */
+/** Bottom of every page: who built it, the open-source link, and the running commit. */
 export function SiteFooter({ build }: SiteFooterProps) {
     const t = useTranslations('Footer');
 
@@ -43,23 +43,19 @@ export function SiteFooter({ build }: SiteFooterProps) {
 
 function BuildLabel({ build }: { build: BuildInfo }) {
     const t = useTranslations('Footer');
-    const label = `v${build.version} (${build.commit ?? 'dev'})`;
     if (!build.commitUrl || !build.commit) {
-        return <span className="font-mono text-xs">{label}</span>;
+        return <span className="font-mono text-xs">dev</span>;
     }
     return (
         <a
             href={build.commitUrl}
             target="_blank"
             rel="noreferrer"
-            title={t('build', { version: build.version, commit: build.commit })}
-            aria-label={t('build', {
-                version: build.version,
-                commit: build.commit,
-            })}
+            title={t('build', { commit: build.commit })}
+            aria-label={t('build', { commit: build.commit })}
             className={`font-mono text-xs ${linkClass}`}
         >
-            {label}
+            {build.commit}
         </a>
     );
 }

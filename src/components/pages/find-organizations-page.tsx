@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 
 import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
-import { OrganizationCard } from '@/components/molecules/organization-card';
+import { OrganizationListing } from '@/components/molecules/organization-listing';
 import { Link } from '@/i18n/navigation';
 import type {
     DirectoryResult,
@@ -149,11 +149,17 @@ function Section({
                 <ul className="flex flex-col gap-2">
                     {results.map(({ org, distanceMiles }) => (
                         <li key={org.id}>
-                            <OrganizationCard
+                            <OrganizationListing
                                 name={org.name}
                                 handle={org.handle}
                                 focusAreas={org.focusAreas}
                                 unclaimed={org.unclaimed}
+                                description={org.description}
+                                languages={org.languages}
+                                joinPolicy={org.joinPolicy}
+                                memberCount={org.memberCount}
+                                website={org.website}
+                                socials={org.socials}
                                 detail={
                                     local
                                         ? distanceMiles < 1
@@ -172,8 +178,11 @@ function Section({
                         </li>
                     ))}
                 </ul>
-            ) : (
+            ) : local ? (
                 <Notice icon={<SearchXIcon />} text={empty} />
+            ) : (
+                // Nationwide and international are often empty; a line is enough.
+                <p className="text-sm text-muted-foreground">{empty}</p>
             )}
         </div>
     );

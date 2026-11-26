@@ -1,4 +1,5 @@
 import {
+    AtSignIcon,
     GlobeIcon,
     LanguagesIcon,
     CalendarIcon,
@@ -9,7 +10,9 @@ import {
     UsersIcon,
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
+import { DirectionsMenu } from '@/components/molecules/directions-menu';
 import { initials } from '@/lib/initials';
 import { languageName } from '@/lib/organizations/client';
 import { type FocusArea, type ReachScope } from '@/lib/organizations/options';
@@ -45,11 +48,11 @@ export interface OrganizationProfileProps {
     unclaimed?: boolean;
     /** The name's heading level: 1 on its own page, lower when shown inside another page (a preview). */
     headingLevel?: 1 | 2 | 3 | 4;
+    /** Join, Ask to join…: a card heading the side column (under the header on narrow screens). */
+    action?: ReactNode;
+    /** More of the main column, after About: members, notices, nearby groups. */
+    children?: ReactNode;
 }
-
-/** A map search for the address; nothing is sent until someone clicks. */
-const directionsUrl = (address: string) =>
-    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 
 const host = (url: string) => {
     try {
@@ -59,7 +62,13 @@ const host = (url: string) => {
     }
 };
 
-/** An organization's public profile: who they are, where, in which languages, and how to reach them. */
+/**
+ * An organization's public profile: a header (name, handle, city, focus
+ * areas), About, and a side column with the action (Join…), Details and
+ * Contact. Two columns once the
+ * profile itself is wide enough (a container query, so a narrow preview stays
+ * one column); on one column the cards come right after About.
+ */
 export function OrganizationProfile({
     name,
     handle,
@@ -78,6 +87,8 @@ export function OrganizationProfile({
     unlisted = false,
     unclaimed = false,
     headingLevel = 1,
+    action,
+    children,
 }: OrganizationProfileProps) {
     const Name = `h${headingLevel}` as const;
     const Section = `h${headingLevel + 1}` as 'h2' | 'h3' | 'h4' | 'h5';
@@ -106,160 +117,216 @@ export function OrganizationProfile({
                   },
               ]
             : []),
-        {
-            icon: LanguagesIcon,
-            text: languages
-                .map((code) => languageName(code, locale))
-                .join(', '),
-        },
+        ...(languages.length > 0
+            ? [
+                  {
+                      icon: LanguagesIcon,
+                      text: languages
+                          .map((code) => languageName(code, locale))
+                          .join(', '),
+                  },
+              ]
+            : []),
     ];
+    const hasContact = !!(
+        website ||
+        contactEmail ||
+        phone ||
+        socials.length > 0
+    );
 
     return (
-        <article className="flex flex-col gap-8">
-            <header className="flex items-start gap-4">
-                <span
-                    aria-hidden
-                    className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-muted text-xl font-semibold"
-                >
-                    {initials(name)}
-                </span>
-                <div className="flex min-w-0 flex-col gap-1">
-                    <Name className="font-heading text-3xl font-semibold tracking-tight text-balance">
-                        {name}
-                    </Name>
-                    <p className="flex flex-wrap items-center gap-2 text-muted-foreground">
-                        /org/{handle}
-                        {unclaimed && (
-                            <span className="rounded-full border px-2.5 py-0.5 text-xs text-foreground">
-                                {t('page.unclaimed')}
-                            </span>
-                        )}
-                    </p>
-                    {focusAreas.length > 0 && (
-                        <ul
-                            aria-label={t('page.focusAreas')}
-                            className="mt-1 flex flex-wrap gap-1.5"
+        // From @3xl: the header, About and the rest on the left; the action
+        // and cards in a right-hand column level with the name. On one
+        // column it's the same order as the markup: header, About, the
+        // action and cards, then the rest.
+        <article className="@container">
+            <div className="grid gap-8 @3xl:grid-cols-[minmax(0,1fr)_18rem] @3xl:gap-x-12 @3xl:gap-y-10">
+                <div className="flex min-w-0 flex-col gap-8 @3xl:col-start-1 @3xl:row-start-1">
+                    <header className="flex min-w-0 items-start gap-4">
+                        <span
+                            aria-hidden
+                            className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-muted text-xl font-semibold"
                         >
-                            {focusAreas.map((area) => (
-                                <li
-                                    key={area}
-                                    className="rounded-full bg-muted px-2.5 py-0.5 text-xs"
+                            {initials(name)}
+                        </span>
+                        <div className="flex min-w-0 flex-col gap-1.5">
+                            <Name className="font-heading text-3xl font-semibold tracking-tight text-balance break-words">
+                                {name}
+                            </Name>
+                            <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-muted-foreground">
+                                <span>@{handle}</span>
+                                <span className="inline-flex items-center gap-1.5">
+                                    <MapPinIcon
+                                        aria-hidden
+                                        className="size-4 shrink-0"
+                                    />
+                                    {place}
+                                </span>
+                                {unclaimed && (
+                                    <span className="rounded-full border px-2.5 py-0.5 text-xs text-foreground">
+                                        {t('page.unclaimed')}
+                                    </span>
+                                )}
+                            </p>
+                            {focusAreas.length > 0 && (
+                                <ul
+                                    aria-label={t('page.focusAreas')}
+                                    className="mt-1 flex flex-wrap gap-1.5"
                                 >
-                                    {t(`focusAreas.${area}`)}
-                                </li>
+                                    {focusAreas.map((area) => (
+                                        <li
+                                            key={area}
+                                            className="rounded-full bg-muted px-2.5 py-0.5 text-xs"
+                                        >
+                                            {t(`focusAreas.${area}`)}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                    </header>
+
+                    {unlisted && (
+                        <p className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+                            {t('page.unlisted')}
+                        </p>
+                    )}
+
+                    <section className="flex flex-col gap-3">
+                        <Section className="font-heading text-lg font-semibold">
+                            {t('page.about')}
+                        </Section>
+                        <p className="text-pretty break-words whitespace-pre-line">
+                            {description || (
+                                <span className="text-muted-foreground">
+                                    {t('page.noDescription')}
+                                </span>
+                            )}
+                        </p>
+                    </section>
+                </div>
+
+                <div className="flex flex-col gap-4 @3xl:col-start-2 @3xl:row-span-2 @3xl:row-start-1 @3xl:self-start">
+                    {action && (
+                        <div className="rounded-lg border p-4">{action}</div>
+                    )}
+                    <Card title={t('page.details')} Heading={Section}>
+                        <ul className="flex flex-col gap-3 text-sm">
+                            {facts.map(({ icon: Icon, text }) => (
+                                <Row key={text} icon={<Icon />}>
+                                    {text}
+                                </Row>
                             ))}
+                            {streetAddress && (
+                                <Row icon={<NavigationIcon />}>
+                                    <span className="flex flex-col gap-0.5">
+                                        <span>{streetAddress}</span>
+                                        <DirectionsMenu
+                                            address={streetAddress}
+                                        />
+                                    </span>
+                                </Row>
+                            )}
                         </ul>
+                    </Card>
+
+                    {hasContact && (
+                        <Card title={t('page.contact')} Heading={Section}>
+                            <ul className="flex flex-col gap-3 text-sm">
+                                {website && (
+                                    <Row icon={<GlobeIcon />}>
+                                        <a
+                                            href={website}
+                                            target="_blank"
+                                            rel="noreferrer noopener"
+                                            className={linkClass}
+                                        >
+                                            {host(website)}
+                                        </a>
+                                    </Row>
+                                )}
+                                {phone && (
+                                    <Row icon={<PhoneIcon />}>
+                                        <a
+                                            href={phone.href}
+                                            className={linkClass}
+                                        >
+                                            {phone.text}
+                                        </a>
+                                    </Row>
+                                )}
+                                {contactEmail && (
+                                    <Row icon={<MailIcon />}>
+                                        <a
+                                            href={`mailto:${contactEmail}`}
+                                            className={`${linkClass} break-all`}
+                                        >
+                                            {contactEmail}
+                                        </a>
+                                    </Row>
+                                )}
+                                {socials.map(({ platform, handle }) => (
+                                    <Row key={platform} icon={<AtSignIcon />}>
+                                        <a
+                                            href={socialUrl(platform, handle)}
+                                            target="_blank"
+                                            rel="noopener noreferrer nofollow ugc"
+                                            className={linkClass}
+                                        >
+                                            {SOCIAL_PLATFORMS[platform].name}
+                                        </a>{' '}
+                                        <span className="break-all text-muted-foreground">
+                                            {socialLabel(platform, handle)}
+                                        </span>
+                                    </Row>
+                                ))}
+                            </ul>
+                        </Card>
                     )}
                 </div>
-            </header>
 
-            {unlisted && (
-                <p className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
-                    {t('page.unlisted')}
-                </p>
-            )}
-
-            <p className="text-pretty whitespace-pre-line">
-                {description || (
-                    <span className="text-muted-foreground">
-                        {t('page.noDescription')}
-                    </span>
+                {children && (
+                    <div className="flex min-w-0 flex-col gap-10 @3xl:col-start-1 @3xl:row-start-2">
+                        {children}
+                    </div>
                 )}
-            </p>
-
-            <ul className="flex flex-col gap-2 text-sm">
-                {facts.map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-start gap-2">
-                        <Icon
-                            aria-hidden
-                            className="mt-0.5 size-4 shrink-0 text-muted-foreground"
-                        />
-                        <span>{text}</span>
-                    </li>
-                ))}
-                {streetAddress && (
-                    <li className="flex items-start gap-2">
-                        <NavigationIcon
-                            aria-hidden
-                            className="mt-0.5 size-4 shrink-0 text-muted-foreground"
-                        />
-                        <span className="flex flex-wrap gap-x-2">
-                            <span>{streetAddress}</span>
-                            <a
-                                href={directionsUrl(streetAddress)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="underline underline-offset-2"
-                                aria-label={t('page.directionsTo', {
-                                    address: streetAddress,
-                                })}
-                            >
-                                {t('page.directions')}
-                            </a>
-                        </span>
-                    </li>
-                )}
-            </ul>
-
-            {(website || contactEmail || phone || socials.length > 0) && (
-                <section className="flex flex-col gap-2">
-                    <Section className="font-heading text-lg font-semibold">
-                        {t('page.links')}
-                    </Section>
-                    <ul className="flex flex-wrap gap-2 text-sm">
-                        {website && (
-                            <li>
-                                <a
-                                    href={website}
-                                    target="_blank"
-                                    rel="noreferrer noopener"
-                                    className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 hover:bg-muted"
-                                >
-                                    <GlobeIcon aria-hidden className="size-4" />
-                                    {host(website)}
-                                </a>
-                            </li>
-                        )}
-                        {phone && (
-                            <li>
-                                <a
-                                    href={phone.href}
-                                    className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 hover:bg-muted"
-                                >
-                                    <PhoneIcon aria-hidden className="size-4" />
-                                    {phone.text}
-                                </a>
-                            </li>
-                        )}
-                        {contactEmail && (
-                            <li>
-                                <a
-                                    href={`mailto:${contactEmail}`}
-                                    className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 hover:bg-muted"
-                                >
-                                    <MailIcon aria-hidden className="size-4" />
-                                    {contactEmail}
-                                </a>
-                            </li>
-                        )}
-                        {socials.map(({ platform, handle }) => (
-                            <li key={platform}>
-                                <a
-                                    href={socialUrl(platform, handle)}
-                                    target="_blank"
-                                    rel="noopener noreferrer nofollow ugc"
-                                    className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 hover:bg-muted"
-                                >
-                                    {SOCIAL_PLATFORMS[platform].name}
-                                    <span className="text-muted-foreground">
-                                        {socialLabel(platform, handle)}
-                                    </span>
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </section>
-            )}
+            </div>
         </article>
+    );
+}
+
+// Always underlined, so links read as links without relying on colour.
+const linkClass =
+    'underline underline-offset-4 hover:decoration-2 focus-visible:decoration-2';
+
+function Card({
+    title,
+    Heading,
+    children,
+}: {
+    title: string;
+    Heading: 'h2' | 'h3' | 'h4' | 'h5';
+    children: ReactNode;
+}) {
+    return (
+        <section className="flex flex-col gap-3 rounded-lg border p-4">
+            <Heading className="text-sm font-semibold">{title}</Heading>
+            {children}
+        </section>
+    );
+}
+
+function Row({ icon, children }: { icon: ReactNode; children: ReactNode }) {
+    return (
+        <li className="flex items-start gap-2.5">
+            <span
+                aria-hidden
+                className="mt-0.5 text-muted-foreground [&_svg]:size-4 [&_svg]:shrink-0"
+            >
+                {icon}
+            </span>
+            <span className="min-w-0">{children}</span>
+        </li>
     );
 }

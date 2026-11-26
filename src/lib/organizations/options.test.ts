@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import {
     FOCUS_AREAS,
+    FOCUS_AREAS_BY_USE,
+    focusAreasByUse,
     JOIN_POLICIES,
     MAX_FOCUS_AREAS,
     milesToKm,
@@ -82,5 +84,22 @@ describe('milesToKm', () => {
     it('rounds to whole km', () => {
         expect(milesToKm(25)).toBe(40);
         expect(milesToKm(100)).toBe(161);
+    });
+});
+
+describe('focusAreasByUse', () => {
+    it('ranks every offered focus area exactly once', () => {
+        expect([...FOCUS_AREAS_BY_USE].sort()).toEqual(
+            [...OFFERED_FOCUS_AREAS].sort()
+        );
+        expect(focusAreasByUse()).toHaveLength(OFFERED_FOCUS_AREAS.length);
+    });
+
+    it('puts the most common first', () => {
+        expect(focusAreasByUse().slice(0, 3)).toEqual([
+            'food',
+            'housing',
+            'health',
+        ]);
     });
 });

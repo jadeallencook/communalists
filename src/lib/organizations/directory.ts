@@ -7,6 +7,7 @@
 import { distanceBetween } from 'geofire-common';
 
 import { isSupportedCountry, type CountryCode } from '../places/types';
+import type { SocialLink } from '../socials';
 
 import {
     OFFERED_FOCUS_AREAS,
@@ -32,6 +33,9 @@ export interface DirectoryOrganization {
     languages: OrgLanguage[];
     joinPolicy: JoinPolicy;
     memberCount: number;
+    /** Public links, shown when a result is expanded. */
+    website?: string;
+    socials: SocialLink[];
     /** Added by a super user and not claimed yet. */
     unclaimed?: boolean;
 }
@@ -107,6 +111,20 @@ export function directorySearchParams(search: DirectorySearch) {
     if (search.reach.length < REACH_SCOPES.length)
         for (const scope of search.reach) params.append('reach', scope);
     return params;
+}
+
+/**
+ * How many filters narrow the search, beyond the city: a non-default
+ * distance, fewer than all kinds of groups, and each focus area and language.
+ * Shown on the mobile "Filters" button.
+ */
+export function activeFilterCount(search: DirectoryFilters): number {
+    return (
+        (search.radiusMiles !== DEFAULT_RADIUS_MILES ? 1 : 0) +
+        (search.reach.length < REACH_SCOPES.length ? 1 : 0) +
+        search.focusAreas.length +
+        search.languages.length
+    );
 }
 
 export interface DirectoryResult {

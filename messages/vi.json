@@ -71,7 +71,7 @@
         "region": "Khu vực Vịnh San Francisco",
         "established": "Thành lập năm 2022",
         "openSource": "Mã nguồn mở",
-        "build": "Phiên bản {version}, dựng từ commit {commit}"
+        "build": "Dựng từ commit {commit}"
     },
     "SignUp": {
         "metaTitle": "Tạo tài khoản",
@@ -255,7 +255,16 @@
         "focusAreas": "Lĩnh vực hoạt động",
         "languages": "Ngôn ngữ sử dụng",
         "create": "Tạo tổ chức",
-        "defaultCity": "Đang hiển thị các tổ chức gần {city} để bắt đầu. Hãy chọn thành phố của bạn ở trên để xem những gì gần bạn."
+        "defaultCity": "Đang hiển thị các tổ chức gần {city} để bắt đầu. Hãy chọn thành phố của bạn để xem những gì gần bạn.",
+        "metaTitleNear": "Các tổ chức tương trợ gần {city}",
+        "metaDescriptionNear": "Khám phá các nhóm tương trợ, câu lạc bộ và mạng lưới gần {city}. Ai cũng có thể xem; tham gia cần một tài khoản miễn phí.",
+        "joining": "Cách tham gia",
+        "members": "Thành viên",
+        "moreFocusAreas": "{count} nữa",
+        "filtersOn": "{count} bộ lọc đang bật",
+        "fewerFocusAreas": "Ẩn bớt",
+        "showDetails": "Xem chi tiết",
+        "hideDetails": "Ẩn chi tiết"
     },
     "Organizations": {
         "focusAreas": {
@@ -426,12 +435,16 @@
             "focusAreas": "Lĩnh vực hoạt động",
             "unclaimed": "Chưa được nhận",
             "directions": "Chỉ đường",
-            "directionsTo": "Chỉ đường đến {address} (mở trong thẻ mới)",
             "since": "Từ năm {year}",
             "nearbyTitle": "Các tổ chức khác gần {place}",
             "nearbyAway": "Cách đây {miles} dặm · {city}",
             "nearbyInCity": "Cũng ở {city}",
-            "nearbySeeAll": "Xem tất cả gần đây"
+            "nearbySeeAll": "Xem tất cả gần đây",
+            "about": "Giới thiệu",
+            "details": "Thông tin",
+            "directionsFor": " đến {address}",
+            "directionsWith": "Mở chỉ đường bằng",
+            "newTab": "(mở trong thẻ mới)"
         },
         "memberLists": {
             "public": {

@@ -34,7 +34,19 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** One supported country (today: the US), so there's no country select. */
 export const NothingChosen: Story = {};
+
+/** Once a second country has place data, the country select appears. */
+export const SeveralCountries: Story = {
+    args: {
+        countries: [
+            { code: 'US', name: 'United States' },
+            // Not supported yet; cast so the story can show the select.
+            { code: 'CA' as 'US', name: 'Canada' },
+        ],
+    },
+};
 
 export const Selected: Story = {
     args: { selected: { id: '5392171', label: 'San Jose, California' } },

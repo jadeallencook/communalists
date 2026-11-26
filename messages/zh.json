@@ -71,7 +71,7 @@
         "region": "旧金山湾区",
         "established": "成立于 2022 年",
         "openSource": "开源",
-        "build": "版本 {version}，基于提交 {commit} 构建"
+        "build": "基于提交 {commit} 构建"
     },
     "SignUp": {
         "metaTitle": "创建账户",
@@ -255,7 +255,16 @@
         "focusAreas": "工作领域",
         "languages": "使用的语言",
         "create": "创建组织",
-        "defaultCity": "先显示{city}附近的组织。在上方选择你的城市，查看你附近的组织。"
+        "defaultCity": "先显示{city}附近的组织。选择你的城市，查看你附近的组织。",
+        "metaTitleNear": "{city}附近的互助组织",
+        "metaDescriptionNear": "发现{city}附近的互助小组、俱乐部和网络。任何人都可以浏览；加入需要一个免费账户。",
+        "joining": "加入方式",
+        "members": "成员",
+        "moreFocusAreas": "另外 {count} 个",
+        "filtersOn": "已启用 {count} 个筛选条件",
+        "fewerFocusAreas": "收起",
+        "showDetails": "查看详情",
+        "hideDetails": "收起详情"
     },
     "Organizations": {
         "focusAreas": {
@@ -426,12 +435,16 @@
             "focusAreas": "工作领域",
             "unclaimed": "未认领",
             "directions": "获取路线",
-            "directionsTo": "获取前往 {address} 的路线（在新标签页中打开）",
             "since": "始于 {year} 年",
             "nearbyTitle": "{place} 附近的其他组织",
             "nearbyAway": "距此 {miles} 英里 · {city}",
             "nearbyInCity": "同在 {city}",
-            "nearbySeeAll": "查看附近全部"
+            "nearbySeeAll": "查看附近全部",
+            "about": "简介",
+            "details": "详情",
+            "directionsFor": "：前往{address}",
+            "directionsWith": "用以下应用打开路线",
+            "newTab": "（在新标签页中打开）"
         },
         "memberLists": {
             "public": {
