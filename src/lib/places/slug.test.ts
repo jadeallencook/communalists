@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
+import { DEFAULT_PLACE } from '../organizations/directory';
+
 import usPlaces from './data/us.json';
 import { findPlace, findPlaceBySlug } from './search';
 import { placeSlug, slugify } from './slug';
@@ -58,5 +60,9 @@ describe('placeSlug and findPlaceBySlug', () => {
         expect(paths.size).toBe(us.places.length);
         expect(paths.has(null)).toBe(false);
         expect(findPlaceBySlug(us, 'ca', 'oakland')?.id).toBe('5378538');
+        // The homepage links straight to the default city's path.
+        expect(findPlace(us, DEFAULT_PLACE.placeId)?.slug).toBe(
+            DEFAULT_PLACE.slug
+        );
     });
 });

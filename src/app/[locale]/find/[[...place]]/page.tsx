@@ -86,8 +86,8 @@ export async function generateMetadata({
 
 // Public. The search lives in the URL (shareable): the city in the path,
 // filters in the query. With no city in the URL, signed-in visitors search
-// from their profile's city and everyone else from DEFAULT_PLACE (San
-// Francisco), which the page labels as a starting point. Reads the URL and
+// from their profile's city and everyone else from DEFAULT_PLACE
+// (Oakland), which the page labels as a starting point. Reads the URL and
 // the session, so it streams behind <Suspense>. Design: features/16 →
 // "Finding organizations".
 export default function Page({ params, searchParams }: Props) {

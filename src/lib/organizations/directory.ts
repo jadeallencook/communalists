@@ -68,10 +68,15 @@ export const DEFAULT_FILTERS: DirectoryFilters = {
 };
 /**
  * Where /find starts for visitors who aren't signed in and haven't chosen a
- * city: San Francisco (GeoNames 5391959). The page says it's a starting
- * point, so nobody mistakes it for "nothing near you".
+ * city: Oakland (GeoNames 5378538), the user's choice 2026-11-26 (it was San
+ * Francisco). The page says it's a starting point, so nobody mistakes it for
+ * "nothing near you". The homepage's Browse button links straight to it.
  */
-export const DEFAULT_PLACE = { country: 'US', placeId: '5391959' } as const;
+export const DEFAULT_PLACE = {
+    country: 'US',
+    placeId: '5378538',
+    slug: 'us/ca/oakland',
+} as const;
 /** Local candidates are read once out to this distance, then narrowed by the radius filter. */
 export const MAX_RADIUS_MILES: RadiusMiles = 100;
 const KM_PER_MILE = 1.609344;
