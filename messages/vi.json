@@ -805,7 +805,8 @@
             "denyClaim": "{actor} đã từ chối yêu cầu của {target} cho {org}",
             "deleteUnclaimed": "{actor} đã xóa {org}",
             "restoreOrganization": "{actor} đã khôi phục {org}",
-            "makeUnclaimed": "{actor} đã chuyển {org} thành chưa được nhận"
+            "makeUnclaimed": "{actor} đã chuyển {org} thành chưa được nhận",
+            "exportOrganizations": "{actor} đã tải về danh sách tổ chức"
         },
         "unknownActor": "Một siêu người dùng",
         "errors": {
@@ -841,6 +842,9 @@
             "back": "Công cụ siêu người dùng",
             "title": "Nhập tổ chức",
             "intro": "Thêm nhiều tổ chức chưa được nhận cùng lúc từ một tệp CSV. Xem từng tổ chức như trang của nó sẽ hiển thị, sửa hoặc bỏ dòng, rồi thêm những dòng đã sẵn sàng.",
+            "existingTitle": "Trước khi tìm hiểu một khu vực",
+            "existingHint": "Tải về mọi tổ chức đã có trên Communalists, kể cả tổ chức không công khai, chưa được nhận và đã xóa, để khi tìm hiểu có thể bỏ qua chúng. Tệp có thông tin của các tổ chức không công khai, vì vậy hãy giữ kín. Mỗi lần tải về đều được ghi vào nhật ký siêu người dùng.",
+            "existingDownload": "Tải về các tổ chức đã có trên Communalists (CSV)",
             "fileLabel": "Tệp CSV",
             "fileHint": "Không có gì được thêm cho đến khi bạn xem lại các dòng và xác nhận. Các cột bắt buộc: name, focusAreas, placeId, reach và languages. Tối đa 200 dòng. Kỹ năng prepare-organizations-csv mô tả từng cột.",
             "review": "Xem lại tệp",

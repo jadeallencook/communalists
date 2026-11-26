@@ -805,7 +805,8 @@
             "denyClaim": "{actor} 拒绝了 {target} 对 {org} 的请求",
             "deleteUnclaimed": "{actor} 删除了 {org}",
             "restoreOrganization": "{actor} 恢复了 {org}",
-            "makeUnclaimed": "{actor} 将 {org} 设为未认领"
+            "makeUnclaimed": "{actor} 将 {org} 设为未认领",
+            "exportOrganizations": "{actor} 下载了组织列表"
         },
         "unknownActor": "一位超级用户",
         "errors": {
@@ -841,6 +842,9 @@
             "back": "超级用户工具",
             "title": "导入组织",
             "intro": "从一个 CSV 文件一次添加多个未认领的组织。按页面实际效果逐个查看，修改或移除某些行，然后添加已就绪的组织。",
+            "existingTitle": "调查一个地区之前",
+            "existingHint": "下载 Communalists 上已有的所有组织，包括未公开、未认领和已删除的组织，这样调查时可以跳过它们。文件中有未公开组织的信息，请妥善保管，不要外传。每次下载都会记录在超级用户日志中。",
+            "existingDownload": "下载 Communalists 上已有的组织（CSV）",
             "fileLabel": "CSV 文件",
             "fileHint": "在你查看各行并确认之前，不会添加任何内容。必填列：name、focusAreas、placeId、reach 和 languages。最多 200 行。prepare-organizations-csv 技能说明了每一列。",
             "review": "查看文件",

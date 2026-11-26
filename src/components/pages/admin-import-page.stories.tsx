@@ -37,6 +37,7 @@ const meta = {
         onDownload: fn(),
         onImport: fn(),
         onEditClose: fn(),
+        existingHref: '/api/admin/organizations',
     },
 } satisfies Meta<typeof AdminImportPage>;
 

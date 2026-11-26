@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [043](043-find-organizations-skill-and-existing-organizations-export.md)        | find-organizations skill, and an export of existing organizations                                  | 2026-11-25 |
 | [042](042-branch-protection-on-main.md)                                         | Branch protection on `main`: pull requests, code owner review, squash merges                       | 2026-11-24 |
 | [041](041-import-review-edit-remove-explain.md)                                 | Import review: explained problems, profile previews, edit and remove                               | 2026-11-24 |
 | [040](040-bulk-import-unclaimed-organizations-from-csv.md)                      | Bulk import of unclaimed organizations from a CSV                                                  | 2026-11-24 |

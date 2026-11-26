@@ -805,7 +805,8 @@
             "denyClaim": "{actor} rechazó la solicitud de {target} para {org}",
             "deleteUnclaimed": "{actor} eliminó {org}",
             "restoreOrganization": "{actor} recuperó {org}",
-            "makeUnclaimed": "{actor} dejó {org} sin reclamar"
+            "makeUnclaimed": "{actor} dejó {org} sin reclamar",
+            "exportOrganizations": "{actor} descargó la lista de organizaciones"
         },
         "unknownActor": "Un superusuario",
         "errors": {
@@ -841,6 +842,9 @@
             "back": "Herramientas de superusuario",
             "title": "Importar organizaciones",
             "intro": "Agrega muchas organizaciones sin reclamar a la vez desde un CSV. Revisa cada una tal como se verá su página, corrige o quita filas y luego agrega las que estén listas.",
+            "existingTitle": "Antes de investigar una zona",
+            "existingHint": "Descarga todas las organizaciones que ya están en Communalists, incluidas las no listadas, las sin reclamar y las eliminadas, para que la investigación las omita. El archivo tiene datos de organizaciones no listadas, así que guárdalo en privado. Cada descarga queda anotada en el registro de superusuarios.",
+            "existingDownload": "Descargar las organizaciones que ya están en Communalists (CSV)",
             "fileLabel": "Archivo CSV",
             "fileHint": "No se agrega nada hasta que revises las filas y confirmes. Columnas obligatorias: name, focusAreas, placeId, reach y languages. Hasta 200 filas. La habilidad prepare-organizations-csv describe cada columna.",
             "review": "Revisar archivo",

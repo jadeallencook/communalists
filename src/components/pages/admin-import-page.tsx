@@ -63,6 +63,8 @@ export interface AdminImportPageProps {
     announcement?: string;
     /** Changes when a new file is reviewed or rows are added, so focus moves to the result. */
     resultKey?: number;
+    /** Where the list of organizations already on Communalists downloads from. */
+    existingHref: string;
 }
 
 /**
@@ -90,6 +92,7 @@ export function AdminImportPage({
     outcomes,
     announcement,
     resultKey,
+    existingHref,
 }: AdminImportPageProps) {
     const t = useTranslations('Admin.import');
     const resultRef = useRef<HTMLHeadingElement>(null);
@@ -130,6 +133,28 @@ export function AdminImportPage({
                     {t('intro')}
                 </p>
             </header>
+
+            <section
+                aria-labelledby="import-existing"
+                className="flex flex-col gap-3 rounded-lg border p-4"
+            >
+                <h2
+                    id="import-existing"
+                    className="font-heading text-lg font-semibold"
+                >
+                    {t('existingTitle')}
+                </h2>
+                <p className="text-sm text-pretty text-muted-foreground">
+                    {t('existingHint')}
+                </p>
+                <Button asChild variant="outline" className="w-fit">
+                    {/* A plain link: a download, never prefetched. */}
+                    <a href={existingHref} download>
+                        <DownloadIcon aria-hidden />
+                        {t('existingDownload')}
+                    </a>
+                </Button>
+            </section>
 
             <form
                 action={fileAction}

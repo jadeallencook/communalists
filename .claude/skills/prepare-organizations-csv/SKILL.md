@@ -1,11 +1,13 @@
 ---
 name: prepare-organizations-csv
-description: Prepare or fix a CSV of mutual aid organizations (unverified research) for the super-user bulk import at /admin/import, which adds them as unclaimed organizations. Use when researching organizations in an area for Communalists, turning research notes or another spreadsheet into the import CSV, or fixing rows the import's check rejected.
+description: Prepare or fix a CSV of mutual aid organizations (unverified research) for the super-user bulk import at /admin/import, which adds them as unclaimed organizations. Use when turning research notes or another spreadsheet into the import CSV, fixing rows the import's check rejected, or writing rows for the find-organizations skill (which finds the groups in an area; this skill holds the column and research rules).
 ---
 
 # Prepare an organizations CSV for /admin/import
 
 The CSV becomes **public pages** on Communalists, labeled Unclaimed, that people in need use to find help and decide where to go. A wrong address or a closed group sends someone across town for nothing. **Leave a cell blank rather than guess.** Background: `documentation/features/18-unclaimed-organizations.md` → Importing from a CSV.
+
+To **find** organizations in an area (and skip ones already on Communalists), use `.claude/skills/find-organizations/`. It follows the rules here for every row.
 
 The import checks every row with the same rules as the create form (`src/lib/organizations/import.ts`, which uses `src/lib/validation/organization.ts`). If this file and the code disagree, the code wins: fix this file.
 
@@ -17,7 +19,7 @@ The import checks every row with the same rules as the create form (`src/lib/org
    `node .claude/skills/prepare-organizations-csv/find-place.mjs "San Jose" CA`
    Use the city where the organization is based or serves from. For a group with no fixed place, use the main city it serves.
 4. **Write `notes`** for anything a reviewer should check: conflicting hours or addresses, a guessed language, details left out because they couldn't be confirmed.
-5. **Self-check** the file against the rules below (column count on every row, quoting, allowed values).
+5. **Check** the file with the import's own rules, offline: `pnpm orgs:check path/to/file.csv` (from find-organizations). It prints every problem with its fix, the same as the review page. Only the database checks (handle taken, already on Communalists) are left for Review file; `pnpm orgs:known path/to/file.csv` catches most of those early.
 6. **Hand it over** for review at `/admin/import`. A super user uploads it with **Review file**, which adds nothing: it shows every row as its page will look, explains each problem and how to fix it, and lets them edit or remove rows before adding the rest. **Download CSV** there gives back the reviewed file. To try it locally: `pnpm dev`, sign in as Jordan Lee (a seeded super user) from the dev toolbar, and open `/en/admin/import`.
 
 ## Columns

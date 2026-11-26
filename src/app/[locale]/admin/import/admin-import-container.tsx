@@ -232,6 +232,7 @@ export function AdminImportContainer() {
 
     return (
         <AdminImportPage
+            existingHref="/api/admin/organizations"
             fileAction={fileAction}
             busy={busy}
             error={error}
