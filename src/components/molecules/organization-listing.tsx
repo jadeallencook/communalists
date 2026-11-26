@@ -131,7 +131,7 @@ export function OrganizationListing({
             <div
                 id={panelId}
                 hidden={!open}
-                className="flex flex-col gap-4 border-t bg-muted/20 px-4 py-4 sm:pl-19"
+                className="flex flex-col gap-4 border-t bg-muted/20 p-4"
             >
                 <p
                     className={cn(
