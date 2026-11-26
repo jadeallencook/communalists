@@ -19,8 +19,8 @@ import {
     type DirectorySearch,
 } from '@/lib/organizations/directory';
 import { getPlace, getPlaceBySlug } from '@/lib/places';
+import { startingCitySlug } from '@/lib/organizations/starting-city';
 import { isSupportedCountry, type Place } from '@/lib/places/types';
-import { getUserProfile } from '@/lib/users';
 
 import { TrackEvent } from '../../track-event';
 import { FindContainer } from '../find-container';
@@ -29,27 +29,33 @@ type Props = PageProps<'/[locale]/find/[[...place]]'>;
 
 /**
  * The city in the URL: /find/us/ca/oakland (decision #49). Anything that
- * isn't that exact path is sent to it: older ?country=&placeId= links, the
- * filter form without JavaScript, other casing, and partial paths (/find/us).
- * An unknown city is a 404.
+ * isn't that exact path is sent to it: plain /find (to the visitor's
+ * starting city, decision #52), older ?country=&placeId= links, the filter
+ * form without JavaScript, other casing, and partial paths (/find/us). An
+ * unknown city is a 404.
  */
 type CityInUrl =
-    | { kind: 'none' }
     | { kind: 'city'; place: Place }
     | { kind: 'redirect'; href: string }
     | { kind: 'notFound' };
 
 function cityInUrl(
     segments: string[] | undefined,
-    search: DirectorySearch
+    search: DirectorySearch,
+    /** For plain /find: the visitor's starting city (startingCitySlug). */
+    startingSlug: string
 ): CityInUrl {
     if (!segments?.length) {
-        if (!search.placeId) return { kind: 'none' };
+        if (!search.placeId)
+            return {
+                kind: 'redirect',
+                href: directoryHref(search, startingSlug),
+            };
         const place = getPlace(search.country, search.placeId);
         return { kind: 'redirect', href: directoryHref(search, place?.slug) };
     }
     if (segments.length !== 3)
-        return { kind: 'redirect', href: directoryHref(search) };
+        return { kind: 'redirect', href: directoryHref(search, startingSlug) };
     const [country, region, city] = segments.map((part) =>
         decodeURIComponent(part).toLowerCase()
     );
@@ -62,9 +68,8 @@ function cityInUrl(
     return { kind: 'city', place };
 }
 
-// A shared search link names its city, e.g. "Mutual aid organizations near
-// Oakland, California". Only a city in the URL counts: the profile's city is
-// private, and the default one is just a starting point.
+// A search link names its city, e.g. "Mutual aid organizations near Oakland,
+// California". Plain /find redirects, so it never gets this far.
 export async function generateMetadata({
     params,
     searchParams,
@@ -72,7 +77,8 @@ export async function generateMetadata({
     const t = await getTranslations('Find');
     const city = cityInUrl(
         (await params).place,
-        parseDirectorySearch(await searchParams)
+        parseDirectorySearch(await searchParams),
+        DEFAULT_PLACE.slug
     );
     const place = city.kind === 'city' ? city.place : null;
     const title = place
@@ -85,10 +91,9 @@ export async function generateMetadata({
 }
 
 // Public. The search lives in the URL (shareable): the city in the path,
-// filters in the query. With no city in the URL, signed-in visitors search
-// from their profile's city and everyone else from DEFAULT_PLACE
-// (Oakland), which the page labels as a starting point. Reads the URL and
-// the session, so it streams behind <Suspense>. Design: features/16 →
+// filters in the query. Plain /find redirects to the visitor's starting city:
+// their profile's, or DEFAULT_PLACE (decision #52). Reads the URL and the
+// session, so it streams behind <Suspense>. Design: features/16 →
 // "Finding organizations".
 export default function Page({ params, searchParams }: Props) {
     return (
@@ -108,60 +113,48 @@ async function FindServerContainer({
         getSessionUser(),
     ]);
     const search = parseDirectorySearch(query);
-    const city = cityInUrl(segments, search);
+    const city = cityInUrl(
+        segments,
+        search,
+        segments?.length || search.placeId
+            ? DEFAULT_PLACE.slug
+            : await startingCitySlug(user?.uid)
+    );
     if (city.kind === 'notFound') notFound();
     if (city.kind === 'redirect')
         return redirect({ href: city.href, locale: await getLocale() });
 
-    let place: Place | null = city.kind === 'city' ? city.place : null;
-    // No city in the URL: the profile's city, or else the default one.
-    if (!place && user) {
-        const home = (await getUserProfile(user.uid))?.location;
-        if (home) place = getPlace(home.country, home.placeId);
-    }
-    const usingDefault = !place;
-    place ??= getPlace(DEFAULT_PLACE.country, DEFAULT_PLACE.placeId);
-    if (place) {
-        search.country = place.country;
-        search.placeId = place.id;
-    }
+    const place = city.place;
+    search.country = place.country;
+    search.placeId = place.id;
 
-    let results = null;
-    if (place) {
-        const [local, national, international] = await Promise.all([
-            search.reach.includes('local')
-                ? getDirectoryLocal({
-                      placeId: place.id,
-                      lat: place.lat,
-                      lng: place.lng,
-                  })
-                : [],
-            search.reach.includes('national')
-                ? getDirectoryNational(place.country)
-                : [],
-            search.reach.includes('international')
-                ? getDirectoryInternational()
-                : [],
-        ]);
-        results = filterDirectory(
-            [...local, ...national, ...international],
-            place,
-            search
-        );
-    }
+    const [local, national, international] = await Promise.all([
+        search.reach.includes('local')
+            ? getDirectoryLocal({
+                  placeId: place.id,
+                  lat: place.lat,
+                  lng: place.lng,
+              })
+            : [],
+        search.reach.includes('national')
+            ? getDirectoryNational(place.country)
+            : [],
+        search.reach.includes('international')
+            ? getDirectoryInternational()
+            : [],
+    ]);
+    const results = filterDirectory(
+        [...local, ...national, ...international],
+        place,
+        search
+    );
 
     return (
         <>
-            {/* A profile's city is private: reported as "profile", never by name. */}
             <TrackEvent
                 event="find-search"
                 data={{
-                    city:
-                        city.kind === 'city'
-                            ? city.place.slug
-                            : usingDefault
-                              ? 'default'
-                              : 'profile',
+                    city: place.slug,
                     radius: String(search.radiusMiles),
                     focusAreas: search.focusAreas.join(','),
                     languages: search.languages.join(','),
@@ -170,14 +163,9 @@ async function FindServerContainer({
             />
             <FindContainer
                 search={search}
-                place={
-                    place
-                        ? { id: place.id, label: place.label, slug: place.slug }
-                        : null
-                }
+                place={{ id: place.id, label: place.label, slug: place.slug }}
                 results={results}
                 canCreate={!!user}
-                defaultCity={usingDefault && !!place}
             />
         </>
     );

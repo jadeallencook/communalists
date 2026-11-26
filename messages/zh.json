@@ -255,7 +255,6 @@
         "focusAreas": "工作领域",
         "languages": "使用的语言",
         "create": "创建组织",
-        "defaultCity": "先显示{city}附近的组织。选择你的城市，查看你附近的组织。",
         "metaTitleNear": "{city}附近的互助组织",
         "metaDescriptionNear": "发现{city}附近的互助小组、俱乐部和网络。任何人都可以浏览；加入需要一个免费账户。",
         "members": "成员",

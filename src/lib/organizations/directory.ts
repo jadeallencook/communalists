@@ -67,15 +67,15 @@ export const DEFAULT_FILTERS: DirectoryFilters = {
     reach: [...REACH_SCOPES],
 };
 /**
- * Where /find starts for visitors who aren't signed in and haven't chosen a
- * city: Oakland (GeoNames 5378538), the user's choice 2026-11-26 (it was San
- * Francisco). The page says it's a starting point, so nobody mistakes it for
- * "nothing near you". The homepage's Browse button links straight to it.
+ * Where /find starts for visitors who are signed out or have no city on
+ * their profile: San Francisco (GeoNames 5391959). Plain /find redirects to
+ * its path, and so does the homepage's Browse button. Change it here only
+ * (a test checks the slug matches the place). Decision #52.
  */
 export const DEFAULT_PLACE = {
     country: 'US',
-    placeId: '5378538',
-    slug: 'us/ca/oakland',
+    placeId: '5391959',
+    slug: 'us/ca/san-francisco',
 } as const;
 /** Local candidates are read once out to this distance, then narrowed by the radius filter. */
 export const MAX_RADIUS_MILES: RadiusMiles = 100;
