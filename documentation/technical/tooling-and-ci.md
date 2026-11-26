@@ -69,6 +69,27 @@ Tests and the build run in CI, not in the hook, to keep commits fast.
 
 One job on every push to `main` and every PR: `pnpm install --frozen-lockfile` (fails on lockfile drift) → `format:check` → `lint` → `typecheck` → `test` → `build` → `build-storybook`.
 
+**PR title (`.github/workflows/pr-title.yml`).** PRs are squash-merged, so the PR title becomes the commit message on `main`. This job runs the title through `commitlint` (the same config as the `commit-msg` hook) whenever a PR is opened, edited or pushed to. The title reaches the script through an environment variable, so a crafted title can't inject commands.
+
+## Branch protection on `main`
+
+A GitHub ruleset, "Protect main" (Settings → Rules → Rulesets), set up in [decision #42](../decisions/042-branch-protection-on-main.md). Its definition is kept in `.github/rulesets/main.json` so rule changes get reviewed like code. **GitHub doesn't read that file**: change the ruleset on GitHub as well, in the same PR, by editing it there or importing the file (New ruleset → Import a ruleset). To check for drift, export the live ruleset from its page and compare.
+
+| Rule                 | Setting                                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Pull request         | Required; 1 approval from a code owner (`.github/CODEOWNERS`: `@jadeallencook`, `@claytonleonardcook`, `@sebzicodes`)   |
+| After new pushes     | Earlier approvals are dismissed; someone other than the last pusher must approve                                        |
+| Conversations        | All must be resolved                                                                                                    |
+| Required checks      | `Lint, types, format, tests, build` and `PR title follows Conventional Commits`, from GitHub Actions; branch up to date |
+| Merge method         | Squash only; linear history                                                                                             |
+| Signed commits       | Required (GitHub signs squash merges made on the site)                                                                  |
+| Force push, deletion | Blocked                                                                                                                 |
+| Bypass               | Repository admin role, which in this personal repo is only the owner (each bypass is logged)                            |
+
+Outside the ruleset, in Settings → General → Pull Requests: only squash merging is allowed, the default message is the PR title and description, and "Always suggest updating pull request branches" is on.
+
+**If you rename a CI job,** update the required check in the ruleset in the same change. Otherwise every PR waits forever on a check that never reports.
+
 ## Conventions
 
 - **Prettier:** 4 spaces, single quotes, semicolons, ES5 trailing commas. Markdown and YAML use 2 spaces (with 4, Prettier writes lists as `-   item`). `prettier-plugin-tailwindcss` sorts classes, including inside `cn()` and `cva()`.

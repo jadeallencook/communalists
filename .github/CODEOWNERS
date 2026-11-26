@@ -1,0 +1,8 @@
+# Every change to `main` needs an approval from one of these code owners
+# (decision #42, documentation/decisions/042-branch-protection-on-main.md).
+#
+# Any one owner's approval is enough. GitHub never lets an author approve
+# their own pull request, so another owner reviews it. Owners need write
+# access to the repo, or GitHub ignores them. More specific paths can be added below; the last matching line wins.
+
+* @jadeallencook @claytonleonardcook @sebzicodes
