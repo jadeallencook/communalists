@@ -105,4 +105,5 @@ export type AdminAction =
     | 'denyClaim'
     | 'deleteUnclaimed'
     | 'restoreOrganization'
-    | 'makeUnclaimed';
+    | 'makeUnclaimed'
+    | 'exportOrganizations';

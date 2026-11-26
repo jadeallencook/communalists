@@ -65,3 +65,7 @@ storybook-static/
 
 # Unfinished emulator saves (pnpm dev removes them on start)
 firebase-export-*/
+
+# find-organizations research: the super-user export includes unlisted
+# organizations, and research is unverified. Never commit it.
+/research/

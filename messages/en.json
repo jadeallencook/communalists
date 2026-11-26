@@ -805,7 +805,8 @@
             "denyClaim": "{actor} denied {target}'s request for {org}",
             "deleteUnclaimed": "{actor} deleted {org}",
             "restoreOrganization": "{actor} restored {org}",
-            "makeUnclaimed": "{actor} made {org} unclaimed"
+            "makeUnclaimed": "{actor} made {org} unclaimed",
+            "exportOrganizations": "{actor} downloaded the list of organizations"
         },
         "unknownActor": "A super user",
         "errors": {
@@ -841,6 +842,9 @@
             "back": "Super user tools",
             "title": "Import organizations",
             "intro": "Add many unclaimed organizations at once from a CSV. Review each one as its page will look, fix or remove rows, then add the ready ones.",
+            "existingTitle": "Before you research an area",
+            "existingHint": "Download every organization already on Communalists, including unlisted, unclaimed and deleted ones, so research can skip them. The file has details of unlisted organizations, so keep it private. Each download is recorded in the super user log.",
+            "existingDownload": "Download organizations already on Communalists (CSV)",
             "fileLabel": "CSV file",
             "fileHint": "Nothing is added until you review the rows and confirm. Required columns: name, focusAreas, placeId, reach and languages. Up to 200 rows. The prepare-organizations-csv skill describes every column.",
             "review": "Review file",
