@@ -15,7 +15,7 @@ On macOS, Java is `brew install openjdk@21`; follow the `sudo ln -sfn …` line 
 ## 2. Set up the project
 
 ```sh
-git clone https://github.com/techletariats/communalists.git
+git clone https://github.com/jadeallencook/communalists.git
 cd communalists
 nvm install        # Node from .nvmrc (24.x)
 corepack enable    # once per machine; provides the pnpm version pinned in package.json
@@ -123,7 +123,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm format:check
 
 - Commits follow [Conventional Commits](https://www.conventionalcommits.org/): `feat(auth): …`, `fix: …`, `docs: …`. The `commit-msg` hook rejects anything else; the `pre-commit` hook lints and formats staged files.
 - CI runs the same checks plus the production build on every push.
-- **Pushing to `main` deploys to communalists.com.** The footer shows `v{version} ({commit})`, so you can confirm your commit is live. Bump `package.json` `version` only when a milestone ships ([decision #19](decisions/019-footer-shows-version-and-commit.md)).
+- **Pushing to `main` deploys to communalists.com.** The footer shows the commit it was built from, so you can confirm yours is live ([decision #46](decisions/046-footer-shows-commit-only-no-version-number.md)).
 
 ## Troubleshooting
 

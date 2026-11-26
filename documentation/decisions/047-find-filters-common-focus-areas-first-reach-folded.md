@@ -1,0 +1,15 @@
+# 047 · /find filters: common focus areas first, reach folded away, Filters button on phones
+
+**Date:** 2026-11-25
+**Status:** Accepted
+**Context:** On a phone, the /find filters were a long wall: three reach chips, then all 20 focus areas, and the focus area list will grow. The user asked for the most relevant focus areas at the top with a way to show more, and to fold away the "Groups that are" (reach) filter, which few people change.
+**Decision:**
+
+- **Focus areas** show eight first: the six most common (food, housing, health, general, education, legal), then clothing and hygiene, which the user moved up as basic needs people look for (they're 9th and 10th by count, just behind faith and labor). A dashed **+ 12 more** chip at the end of the same row shows the rest in that row, and becomes **Show fewer**. (A first version used a separate "More focus areas" fold-out, but it looked like a different filter, the same as "Languages spoken".) The rest start shown when one of them is chosen. Opening moves focus to the first new chip, so keyboard and screen reader users don't land at the end of the list. Hidden chips stay in the form. This chip needs JavaScript; without it only the first eight show. The order is fixed (`FOCUS_AREAS_BY_USE` in `src/lib/organizations/options.ts`), taken from how often each area appears across 285 researched groups (`research/organizations/*/organizations.csv`, 2026-11-25).
+- **"Groups that are"** is renamed **Reach** in English (matching the create form) folds away like languages, and comes **last**, after languages, since it's the filter changed least. It opens, with a count, when narrowed to fewer than all three kinds.
+- **On phones** (below the `lg` breakpoint, where the filters sit above the results), only the city shows; everything else is behind a **Filters** button with a count of filters in use (`activeFilterCount`), so results start on the first screen. The button has `aria-expanded`, and the hidden filters stay in the form, so nothing is lost. On large screens the filters always show in the sidebar. Without JavaScript the button can't open, but the city picker needs JavaScript there too.
+- Order: city, distance, focus areas, languages, reach.
+- Folded groups are native `<details>`, so they work without JavaScript, and their chips sit in a `<fieldset>` with a screen-reader legend.
+
+**Alternatives:** a bottom sheet or dialog for the phone filters (a common pattern, but it covers the results that update live behind it, and needs focus trapping, for little gain over a panel that opens in place); ranking focus areas by how many groups in the current search have each one (more relevant per city, but chips would move as filters change, which is disorienting and hard for screen reader and keyboard users); a separate "More focus areas" `<details>` under the chips (works without JavaScript, and was the first version, but read as a different filter).
+**Consequences:** Re-rank `FOCUS_AREAS_BY_USE` now and then as the platform grows; a test checks it covers every offered area exactly once.

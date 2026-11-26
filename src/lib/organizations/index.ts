@@ -418,6 +418,8 @@ function toDirectoryOrganization(
         languages: data.languages ?? [],
         joinPolicy: data.joinPolicy,
         memberCount: data.memberCount ?? 0,
+        ...(data.website ? { website: data.website } : {}),
+        socials: socialLinksOf(data.socials),
         unclaimed: data.claimStatus === 'unclaimed',
     };
 }

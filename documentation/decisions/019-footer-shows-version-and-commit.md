@@ -1,7 +1,7 @@
 # 019 · Show version and commit in the footer
 
 **Date:** 2026-11-21
-**Status:** Accepted
+**Status:** Superseded by [#46](046-footer-shows-commit-only-no-version-number.md): the version was never bumped, so the footer shows the commit only.
 **Context:** The user wanted to see which version is live on the server, and suggested the `package.json` version, bumped on every change.
 **Decision:** The footer shows `v{version} ({commit})`, e.g. `v4.0.0 (be4248f)`, with the commit linked on GitHub. The commit comes from `VERCEL_GIT_COMMIT_SHA` at build time; local builds show `(dev)`. The version is bumped **by hand at milestones** (something user-visible ships), not on every change. It continues from the existing `4.0.0`.
 **Alternatives:** Version only, bumped every change (drifts the first time someone forgets, which defeats the purpose); commit only; automatic bumps from Conventional Commits with release-please (worth it once we work through PRs).

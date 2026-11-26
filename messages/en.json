@@ -71,7 +71,7 @@
         "region": "San Francisco Bay Area",
         "established": "Established 2022",
         "openSource": "Open source",
-        "build": "Version {version}, built from commit {commit}"
+        "build": "Built from commit {commit}"
     },
     "SignUp": {
         "metaTitle": "Create account",
@@ -238,7 +238,7 @@
         "cityHint": "Distances are measured from this city.",
         "distance": "Distance",
         "distanceOption": "Within {miles} mi",
-        "reach": "Groups that are",
+        "reach": "Reach",
         "search": "Search",
         "updating": "Updating results…",
         "loading": "Loading organizations…",
@@ -255,7 +255,16 @@
         "focusAreas": "Focus areas",
         "languages": "Languages spoken",
         "create": "Create organization",
-        "defaultCity": "Showing organizations near {city}, a starting point. Choose your city above to see what's near you."
+        "defaultCity": "Showing organizations near {city}, a starting point. Choose your city to see what's near you.",
+        "metaTitleNear": "Mutual aid organizations near {city}",
+        "metaDescriptionNear": "Discover mutual aid groups, clubs and networks near {city}. Anyone can look; joining takes a free account.",
+        "joining": "Joining",
+        "members": "Members",
+        "moreFocusAreas": "{count} more",
+        "filtersOn": "{count, plural, one {# filter on} other {# filters on}}",
+        "fewerFocusAreas": "Show fewer",
+        "showDetails": "Show details",
+        "hideDetails": "Hide details"
     },
     "Organizations": {
         "focusAreas": {
@@ -426,12 +435,16 @@
             "focusAreas": "Focus areas",
             "unclaimed": "Unclaimed",
             "directions": "Get directions",
-            "directionsTo": "Get directions to {address} (opens in a new tab)",
             "since": "Since {year}",
             "nearbyTitle": "Other organizations near {place}",
             "nearbyAway": "{miles} mi from here · {city}",
             "nearbyInCity": "Also in {city}",
-            "nearbySeeAll": "See all nearby"
+            "nearbySeeAll": "See all nearby",
+            "about": "About",
+            "details": "Details",
+            "directionsFor": ", to {address}",
+            "directionsWith": "Open directions in",
+            "newTab": "(opens in a new tab)"
         },
         "memberLists": {
             "public": {

@@ -17,8 +17,8 @@ export interface OrganizationCardProps {
     unclaimed?: boolean;
 }
 
-/** A link to one organization: initials, name, what it works on, and your role. */
-export function OrganizationCard({
+/** What an organization card shows: initials, name, label, and what it works on. */
+export function OrganizationCardSummary({
     name,
     handle,
     focusAreas,
@@ -41,10 +41,7 @@ export function OrganizationCard({
         ...(detail ?? `/org/${handle}`).split(' · '),
     ];
     return (
-        <Link
-            href={`/org/${handle}`}
-            className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-        >
+        <>
             <span
                 aria-hidden
                 className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-muted font-medium"
@@ -55,7 +52,9 @@ export function OrganizationCard({
                 sits beside the name when there's room, under it when not. */}
             <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <span className="font-medium break-words">{name}</span>
+                    <span data-name className="font-medium break-words">
+                        {name}
+                    </span>
                     {role ? (
                         <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-foreground">
                             {t(`roles.${role}`)}
@@ -80,6 +79,18 @@ export function OrganizationCard({
                     ))}
                 </span>
             </span>
+        </>
+    );
+}
+
+/** A link to one organization: initials, name, what it works on, and your role. */
+export function OrganizationCard(props: OrganizationCardProps) {
+    return (
+        <Link
+            href={`/org/${props.handle}`}
+            className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+        >
+            <OrganizationCardSummary {...props} />
             <ChevronRightIcon
                 aria-hidden
                 className="size-4 shrink-0 text-muted-foreground"

@@ -37,6 +37,7 @@ const filters = (
             { value: 'vi', label: 'Vietnamese' },
             { value: 'zh', label: 'Chinese' },
         ]}
+        activeFilters={0}
         onFiltersChange={fn()}
     />
 );
@@ -52,12 +53,15 @@ const org = (
     name,
     handle,
     focusAreas,
-    description: '',
     location: { label, country: 'US', lat: 0, lng: 0 },
     reach,
     languages: ['en'],
     joinPolicy: 'request',
     memberCount: 4,
+    description:
+        'Neighbors helping neighbors: groceries, rides and help finding housing.',
+    website: 'https://example.org',
+    socials: [{ platform: 'instagram', handle: 'example' }],
 });
 
 const results: DirectoryResults = {

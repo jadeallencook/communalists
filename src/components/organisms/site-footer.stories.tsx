@@ -13,14 +13,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** On Vercel: version plus the commit it was built from, linked to GitHub. */
+/** On Vercel: the commit it was built from, linked to GitHub. */
 export const Deployed: Story = {
     args: {
-        build: buildInfo('4.0.0', 'be4248fd0123456789abcdef0123456789abcdef'),
+        build: buildInfo('be4248fd0123456789abcdef0123456789abcdef'),
     },
 };
 
-/** Local dev and local builds have no commit. */
-export const Local: Story = { args: { build: buildInfo('4.0.0', undefined) } };
+/** Local dev and local builds have no commit: shows "dev". */
+export const Local: Story = { args: { build: buildInfo(undefined) } };
 
-export const WithoutVersion: Story = {};
+export const WithoutBuild: Story = {};

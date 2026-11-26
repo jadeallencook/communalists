@@ -10,7 +10,7 @@ Firestore bills per document read, so the team reshaped data around how screens 
 | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
 | One document per comment → N reads to open a request                        | One `threads/{id}` doc with an `arrayUnion`-appended array → 1 read                                                              | `a377129` (May 2023) |
 | One read per person to show names                                           | A flat `displayNames` map in Realtime Database, read once (RTDB bills by bandwidth)                                              | `d153141` (Jun 2023) |
-| Refetching the same requests on every filter change                         | `DashboardContext` cache: filter locally, fetch only on a miss ([PR #60](https://github.com/techletariats/communalists/pull/60)) | `dcbc734` (May 2023) |
+| Refetching the same requests on every filter change                         | `DashboardContext` cache: filter locally, fetch only on a miss ([PR #60](https://github.com/jadeallencook/communalists/pull/60)) | `dcbc734` (May 2023) |
 | "Has a driver" needs `!=` or an empty check, which Firestore handles poorly | A derived `hasDriver` boolean → plain equality                                                                                   | `1bdb5b2`            |
 | Hard to see how many reads a screen caused                                  | A styled `[communalists]` console log on every fetch                                                                             | —                    |
 
@@ -18,7 +18,7 @@ Each fix has a cost: staleness (cache), the whole roster sent to every client (d
 
 ## Caching reads in the rebuild
 
-The rebuild keeps the prototype's caching ideas ([PR #60](https://github.com/techletariats/communalists/pull/60): `DashboardContext`), but moves the cache from the browser tab to the server (decision #21):
+The rebuild keeps the prototype's caching ideas ([PR #60](https://github.com/jadeallencook/communalists/pull/60): `DashboardContext`), but moves the cache from the browser tab to the server (decision #21):
 
 | Prototype (`DashboardContext`, in the browser)       | Rebuild (server)                                                                                                                                                                                               |
 | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

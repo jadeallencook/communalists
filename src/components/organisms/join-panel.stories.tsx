@@ -14,6 +14,14 @@ const meta = {
         locale: 'en',
         formAction: fn(),
     },
+    // As on the organization page: a card in the 18rem side column.
+    decorators: [
+        (Story) => (
+            <div className="max-w-72 rounded-lg border p-4">
+                <Story />
+            </div>
+        ),
+    ],
 } satisfies Meta<typeof JoinPanel>;
 
 export default meta;

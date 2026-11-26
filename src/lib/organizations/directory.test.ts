@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+    activeFilterCount,
     directorySearchParams,
     filterDirectory,
     nearbyOrganizations,
@@ -33,6 +34,7 @@ const org = (
         languages: ['en'],
         joinPolicy: 'open',
         memberCount: 1,
+        socials: [],
         ...rest,
     };
 };
@@ -233,5 +235,24 @@ describe('parseDirectorySearch', () => {
         expect(directorySearchParams(parseDirectorySearch({})).toString()).toBe(
             ''
         );
+    });
+});
+
+describe('activeFilterCount', () => {
+    it('is 0 for the defaults', () => {
+        expect(activeFilterCount(parseDirectorySearch({}))).toBe(0);
+    });
+
+    it('counts distance, reach, and each focus area and language', () => {
+        expect(
+            activeFilterCount(
+                parseDirectorySearch({
+                    radius: '50',
+                    reach: ['local'],
+                    focusAreas: ['food', 'housing'],
+                    languages: ['vi'],
+                })
+            )
+        ).toBe(5);
     });
 });

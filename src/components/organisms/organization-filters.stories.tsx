@@ -33,6 +33,7 @@ const meta = {
         search: parseDirectorySearch({ country: 'US', placeId: '5392171' }),
         location,
         languageOptions,
+        activeFilters: 0,
         onFiltersChange: fn(),
     },
     decorators: [
@@ -47,7 +48,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Defaults: 25 mi, every kind of group, no focus area or language chosen (groups folded). */
+/** Defaults: 25 mi, every kind of group, no focus area or language chosen. Eight focus areas and "+ 12 more"; languages and reach folded. */
 export const Default: Story = {};
 
 /** Some filters chosen: their groups open, with a count. */
@@ -61,6 +62,31 @@ export const Filtered: Story = {
             languages: ['vi'],
             reach: ['local'],
         }),
+        activeFilters: 5,
+    },
+};
+
+/** On a phone: the city, then a Filters button with how many are on. */
+export const Mobile: Story = {
+    args: { activeFilters: 2 },
+    globals: { viewport: { value: 'mobile1' } },
+};
+
+/** On a phone, with the filters opened. */
+export const MobileOpen: Story = {
+    args: { activeFilters: 2, defaultOpen: true },
+    globals: { viewport: { value: 'mobile1' } },
+};
+
+/** A less common focus area chosen: all focus areas show, ending in "Show fewer". */
+export const LessCommonFocusArea: Story = {
+    args: {
+        search: parseDirectorySearch({
+            country: 'US',
+            placeId: '5392171',
+            focusAreas: ['food', 'animals'],
+        }),
+        activeFilters: 2,
     },
 };
 

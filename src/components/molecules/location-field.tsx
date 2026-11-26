@@ -50,8 +50,8 @@ export interface LocationFieldProps {
 }
 
 /**
- * Country select + type-ahead city picker. Submits `country` and `placeId`
- * as hidden inputs. Purely presentational: searching is the caller's job.
+ * Country select (hidden while only one country is supported) + type-ahead
+ * city picker. Submits `country` and `placeId` as hidden inputs. Purely presentational: searching is the caller's job.
  */
 export function LocationField({
     countries,
@@ -83,23 +83,26 @@ export function LocationField({
             <input type="hidden" name="country" value={country} />
             <input type="hidden" name="placeId" value={selected?.id ?? ''} />
 
-            <Field>
-                <FieldLabel htmlFor="country">{t('country')}</FieldLabel>
-                <select
-                    id="country"
-                    value={country}
-                    onChange={(event) =>
-                        onCountryChange(event.target.value as CountryCode)
-                    }
-                    className="h-8 w-full rounded-lg border border-control bg-transparent px-2.5 text-sm dark:bg-input/30"
-                >
-                    {countries.map(({ code, name }) => (
-                        <option key={code} value={code}>
-                            {name}
-                        </option>
-                    ))}
-                </select>
-            </Field>
+            {/* Only a choice once there's more than one country to pick. */}
+            {countries.length > 1 && (
+                <Field>
+                    <FieldLabel htmlFor="country">{t('country')}</FieldLabel>
+                    <select
+                        id="country"
+                        value={country}
+                        onChange={(event) =>
+                            onCountryChange(event.target.value as CountryCode)
+                        }
+                        className="h-8 w-full rounded-lg border border-control bg-transparent px-2.5 text-sm dark:bg-input/30"
+                    >
+                        {countries.map(({ code, name }) => (
+                            <option key={code} value={code}>
+                                {name}
+                            </option>
+                        ))}
+                    </select>
+                </Field>
+            )}
 
             <Field data-invalid={!!error}>
                 <FieldLabel htmlFor="placeId-trigger">{t('city')}</FieldLabel>

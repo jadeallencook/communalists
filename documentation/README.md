@@ -6,7 +6,7 @@ Communalists is a platform for mutual aid networks. It began as a tool for South
 
 **These are living documents.** They started as a record of the prototype and are updated as the rebuild makes new choices; see the methodology in [`AGENTS.md`](../AGENTS.md). Choices made since the prototype are logged in [decisions/](decisions/README.md), one file per decision.
 
-The original source: branch `interview-demo` at commit `7ebc168`, read file by file on 2026-11-20. File paths in the feature and technical docs point at that commit, so you can look them up in the git history (`github.com/techletariats/communalists`; it was `jadeallencook/communalists` before moving to the Techletariats org) after the files are gone. A second attempt (Next.js + Prismic, 2025) is recorded at commit `81eed51`. The rebuild's foundation (layout shell, i18n, Firebase wiring, tooling) was scaffolded on 2026-11-20.
+The original source: branch `interview-demo` at commit `7ebc168`, read file by file on 2026-11-20. File paths in the feature and technical docs point at that commit, so you can look them up in the git history (`github.com/jadeallencook/communalists`; it spent a while in the `techletariats` org and moved back, with the same repo ID, so old links redirect) after the files are gone. A second attempt (Next.js + Prismic, 2025) is recorded at commit `81eed51`. The rebuild's foundation (layout shell, i18n, Firebase wiring, tooling) was scaffolded on 2026-11-20.
 
 ## What the product is
 

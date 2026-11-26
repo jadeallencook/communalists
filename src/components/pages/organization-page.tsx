@@ -77,134 +77,150 @@ export function OrganizationPage({
     const staff = role === 'owner' || role === 'moderator';
     if (unclaimed) {
         return (
-            <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-4 py-12">
-                <OrganizationProfile {...profile} unclaimed />
-                <UnclaimedNotice name={profile.name} handle={profile.handle} />
-                {unclaimed.canManage && (
-                    <section className="flex flex-col gap-2 rounded-lg border p-5">
-                        <h2 className="flex items-center gap-2 font-heading text-lg font-semibold">
-                            <ShieldIcon aria-hidden className="size-4" />
-                            {tu('adminTitle')}
-                        </h2>
-                        <p className="text-sm text-muted-foreground">
-                            {tu('adminBody')}
-                        </p>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                            <Button asChild variant="outline">
-                                <Link href={`/org/${profile.handle}/edit`}>
-                                    <PencilIcon aria-hidden />
-                                    {tm('editOrganization')}
-                                </Link>
-                            </Button>
-                            <Button asChild variant="outline">
-                                <Link href="/admin">{tu('adminLink')}</Link>
-                            </Button>
-                        </div>
-                    </section>
-                )}
-                {nearby}
+            <section className="mx-auto w-full max-w-5xl px-4 py-12">
+                <OrganizationProfile {...profile} unclaimed>
+                    <UnclaimedNotice
+                        name={profile.name}
+                        handle={profile.handle}
+                    />
+                    {unclaimed.canManage && (
+                        <section className="flex flex-col gap-2 rounded-lg border p-5">
+                            <h2 className="flex items-center gap-2 font-heading text-lg font-semibold">
+                                <ShieldIcon aria-hidden className="size-4" />
+                                {tu('adminTitle')}
+                            </h2>
+                            <p className="text-sm text-muted-foreground">
+                                {tu('adminBody')}
+                            </p>
+                            <div className="mt-2 flex flex-wrap gap-2">
+                                <Button asChild variant="outline">
+                                    <Link href={`/org/${profile.handle}/edit`}>
+                                        <PencilIcon aria-hidden />
+                                        {tm('editOrganization')}
+                                    </Link>
+                                </Button>
+                                <Button asChild variant="outline">
+                                    <Link href="/admin">{tu('adminLink')}</Link>
+                                </Button>
+                            </div>
+                        </section>
+                    )}
+                    {nearby}
+                </OrganizationProfile>
             </section>
         );
     }
     return (
-        <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-4 py-12">
-            <OrganizationProfile {...profile} />
-            {/* Visitors: Join / Ask to join. Members: Leave, inside their space. */}
-            {!role && join}
-            {role && (
-                <section className="flex flex-col gap-2 rounded-lg border p-5">
-                    <h2 className="flex items-center gap-2 font-heading text-lg font-semibold">
-                        <LockIcon aria-hidden className="size-4" />
-                        {t('page.membersTitle')}
-                    </h2>
-                    <p className="text-sm text-muted-foreground">
-                        {t('page.membersBody', {
-                            role: t(`page.${roleKey[role]}`),
-                        })}
-                    </p>
-                    {staff && (
-                        <div className="mt-2 flex flex-wrap gap-2">
-                            <Button asChild variant="outline">
-                                <Link href={`/org/${profile.handle}/edit`}>
-                                    <PencilIcon aria-hidden />
-                                    {tm('editOrganization')}
-                                </Link>
-                            </Button>
-                            <Button asChild variant="outline">
-                                <Link href={`/org/${profile.handle}/members`}>
-                                    <UsersIcon aria-hidden />
-                                    {tm('manage')}
-                                    {pendingRequests > 0 && (
-                                        <span className="rounded-full bg-primary px-1.5 text-xs text-primary-foreground">
-                                            {tm('requestCount', {
-                                                count: pendingRequests,
-                                            })}
-                                        </span>
-                                    )}
-                                </Link>
-                            </Button>
-                            {makeUnclaimed && (
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button variant="outline">
-                                            <ShieldIcon aria-hidden />
-                                            {tu('makeUnclaimed')}
-                                        </Button>
-                                    </DialogTrigger>
-                                    <DialogContent>
-                                        <form
-                                            action={makeUnclaimed.formAction}
-                                            className="contents"
-                                        >
-                                            <input
-                                                type="hidden"
-                                                name="orgId"
-                                                value={makeUnclaimed.orgId}
-                                            />
-                                            <input
-                                                type="hidden"
-                                                name="handle"
-                                                value={profile.handle}
-                                            />
-                                            <input
-                                                type="hidden"
-                                                name="locale"
-                                                value={makeUnclaimed.locale}
-                                            />
-                                            <DialogHeader>
-                                                <DialogTitle>
-                                                    {tu('makeUnclaimedTitle', {
-                                                        name: profile.name,
-                                                    })}
-                                                </DialogTitle>
-                                                <DialogDescription>
-                                                    {tu('makeUnclaimedBody')}
-                                                </DialogDescription>
-                                            </DialogHeader>
-                                            <DialogFooter>
-                                                <DialogClose asChild>
-                                                    <Button
-                                                        type="button"
-                                                        variant="outline"
-                                                    >
-                                                        {tu('keepOwner')}
+        <section className="mx-auto w-full max-w-5xl px-4 py-12">
+            {/* Visitors: Join / Ask to join, in the header. Members: Leave,
+                inside their space. */}
+            <OrganizationProfile {...profile} action={!role && join}>
+                {role && (
+                    <section className="flex flex-col gap-2 rounded-lg border p-5">
+                        <h2 className="flex items-center gap-2 font-heading text-lg font-semibold">
+                            <LockIcon aria-hidden className="size-4" />
+                            {t('page.membersTitle')}
+                        </h2>
+                        <p className="text-sm text-muted-foreground">
+                            {t('page.membersBody', {
+                                role: t(`page.${roleKey[role]}`),
+                            })}
+                        </p>
+                        {staff && (
+                            <div className="mt-2 flex flex-wrap gap-2">
+                                <Button asChild variant="outline">
+                                    <Link href={`/org/${profile.handle}/edit`}>
+                                        <PencilIcon aria-hidden />
+                                        {tm('editOrganization')}
+                                    </Link>
+                                </Button>
+                                <Button asChild variant="outline">
+                                    <Link
+                                        href={`/org/${profile.handle}/members`}
+                                    >
+                                        <UsersIcon aria-hidden />
+                                        {tm('manage')}
+                                        {pendingRequests > 0 && (
+                                            <span className="rounded-full bg-primary px-1.5 text-xs text-primary-foreground">
+                                                {tm('requestCount', {
+                                                    count: pendingRequests,
+                                                })}
+                                            </span>
+                                        )}
+                                    </Link>
+                                </Button>
+                                {makeUnclaimed && (
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button variant="outline">
+                                                <ShieldIcon aria-hidden />
+                                                {tu('makeUnclaimed')}
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <form
+                                                action={
+                                                    makeUnclaimed.formAction
+                                                }
+                                                className="contents"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    name="orgId"
+                                                    value={makeUnclaimed.orgId}
+                                                />
+                                                <input
+                                                    type="hidden"
+                                                    name="handle"
+                                                    value={profile.handle}
+                                                />
+                                                <input
+                                                    type="hidden"
+                                                    name="locale"
+                                                    value={makeUnclaimed.locale}
+                                                />
+                                                <DialogHeader>
+                                                    <DialogTitle>
+                                                        {tu(
+                                                            'makeUnclaimedTitle',
+                                                            {
+                                                                name: profile.name,
+                                                            }
+                                                        )}
+                                                    </DialogTitle>
+                                                    <DialogDescription>
+                                                        {tu(
+                                                            'makeUnclaimedBody'
+                                                        )}
+                                                    </DialogDescription>
+                                                </DialogHeader>
+                                                <DialogFooter>
+                                                    <DialogClose asChild>
+                                                        <Button
+                                                            type="button"
+                                                            variant="outline"
+                                                        >
+                                                            {tu('keepOwner')}
+                                                        </Button>
+                                                    </DialogClose>
+                                                    <Button type="submit">
+                                                        {tu(
+                                                            'makeUnclaimedConfirm'
+                                                        )}
                                                     </Button>
-                                                </DialogClose>
-                                                <Button type="submit">
-                                                    {tu('makeUnclaimedConfirm')}
-                                                </Button>
-                                            </DialogFooter>
-                                        </form>
-                                    </DialogContent>
-                                </Dialog>
-                            )}
-                        </div>
-                    )}
-                    <div className="mt-2 border-t pt-3">{join}</div>
-                </section>
-            )}
-            <MemberList {...members} />
-            {nearby}
+                                                </DialogFooter>
+                                            </form>
+                                        </DialogContent>
+                                    </Dialog>
+                                )}
+                            </div>
+                        )}
+                        <div className="mt-2 border-t pt-3">{join}</div>
+                    </section>
+                )}
+                <MemberList {...members} />
+                {nearby}
+            </OrganizationProfile>
         </section>
     );
 }
@@ -212,19 +228,21 @@ export function OrganizationPage({
 /** Shown while the organization loads. */
 export function OrganizationPageLoading() {
     return (
-        <section className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-12">
+        <section className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-12">
             <div className="flex items-start gap-4">
                 <Skeleton className="size-16 rounded-xl" />
                 <div className="flex flex-1 flex-col gap-2">
                     <Skeleton className="h-9 w-2/3" />
+                    <Skeleton className="h-5 w-1/3" />
                     <Skeleton className="h-5 w-1/2" />
                 </div>
             </div>
-            <Skeleton className="h-20 w-full" />
-            <div className="flex flex-col gap-2">
-                <Skeleton className="h-4 w-64" />
-                <Skeleton className="h-4 w-40" />
-                <Skeleton className="h-4 w-52" />
+            <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_18rem] md:gap-x-12">
+                <div className="flex flex-col gap-3">
+                    <Skeleton className="h-6 w-24" />
+                    <Skeleton className="h-20 w-full" />
+                </div>
+                <Skeleton className="h-44 w-full rounded-lg" />
             </div>
         </section>
     );

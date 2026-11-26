@@ -71,7 +71,7 @@
         "region": "Área de la Bahía de San Francisco",
         "established": "Fundado en 2022",
         "openSource": "Código abierto",
-        "build": "Versión {version}, compilada desde el commit {commit}"
+        "build": "Compilada desde el commit {commit}"
     },
     "SignUp": {
         "metaTitle": "Crear cuenta",
@@ -255,7 +255,16 @@
         "focusAreas": "Áreas de trabajo",
         "languages": "Idiomas",
         "create": "Crear organización",
-        "defaultCity": "Mostrando organizaciones cerca de {city} como punto de partida. Elige tu ciudad arriba para ver lo que hay cerca de ti."
+        "defaultCity": "Mostrando organizaciones cerca de {city} como punto de partida. Elige tu ciudad para ver lo que hay cerca de ti.",
+        "metaTitleNear": "Organizaciones de ayuda mutua cerca de {city}",
+        "metaDescriptionNear": "Descubre grupos de ayuda mutua, clubes y redes cerca de {city}. Cualquiera puede mirar; unirse requiere una cuenta gratuita.",
+        "joining": "Cómo unirse",
+        "members": "Miembros",
+        "moreFocusAreas": "{count} más",
+        "filtersOn": "{count, plural, one {# filtro activo} other {# filtros activos}}",
+        "fewerFocusAreas": "Mostrar menos",
+        "showDetails": "Ver detalles",
+        "hideDetails": "Ocultar detalles"
     },
     "Organizations": {
         "focusAreas": {
@@ -426,12 +435,16 @@
             "focusAreas": "Áreas de trabajo",
             "unclaimed": "Sin reclamar",
             "directions": "Cómo llegar",
-            "directionsTo": "Cómo llegar a {address} (se abre en una pestaña nueva)",
             "since": "Desde {year}",
             "nearbyTitle": "Otras organizaciones cerca de {place}",
             "nearbyAway": "A {miles} mi de aquí · {city}",
             "nearbyInCity": "También en {city}",
-            "nearbySeeAll": "Ver todas las cercanas"
+            "nearbySeeAll": "Ver todas las cercanas",
+            "about": "Acerca de",
+            "details": "Detalles",
+            "directionsFor": ", a {address}",
+            "directionsWith": "Abrir la ruta en",
+            "newTab": "(se abre en una pestaña nueva)"
         },
         "memberLists": {
             "public": {

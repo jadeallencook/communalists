@@ -1,6 +1,6 @@
 # Deployment
 
-Two Vercel projects (Hobby plan, account `jadeallencook`) build from the same repo, `techletariats/communalists` (moved from `jadeallencook/communalists`; same repo ID 543376659), on branch `main`. The domain is registered at Squarespace Domains, and DNS is managed there. See decision [#10](../decisions/010-domains-communalists-com-and-storybook.md) for why it's set up this way.
+Two Vercel projects (Hobby plan, account `jadeallencook`) build from the same repo, `jadeallencook/communalists` (it moved to the `techletariats` org and back; same repo ID 543376659, so old URLs redirect), on branch `main`. The domain is registered at Squarespace Domains, and DNS is managed there. See decision [#10](../decisions/010-domains-communalists-com-and-storybook.md) for why it's set up this way.
 
 ## Projects
 

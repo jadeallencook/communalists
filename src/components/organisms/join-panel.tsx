@@ -33,7 +33,8 @@ export interface JoinPanelProps {
 
 /**
  * The join area on a group's page: Join, Ask to join, the pending request,
- * or why they can't, and Leave for members. No logic: `state` decides.
+ * or why they can't (stacked, for the card at the top of the page's side
+ * column), and Leave for members (in their space). No logic: `state` decides.
  */
 export function JoinPanel({
     state,
@@ -66,8 +67,8 @@ export function JoinPanel({
     switch (state) {
         case 'signedOut':
             body = (
-                <div className="flex flex-wrap items-center gap-3">
-                    <Button asChild>
+                <div className="flex flex-col gap-2">
+                    <Button asChild className="w-full">
                         <Link href="/sign-in">{t('signInToJoin')}</Link>
                     </Button>
                     <span className="text-sm text-muted-foreground">
@@ -79,12 +80,9 @@ export function JoinPanel({
         case 'join':
         case 'request':
             body = (
-                <form
-                    action={formAction}
-                    className="flex flex-wrap items-center gap-3"
-                >
+                <form action={formAction} className="flex flex-col gap-2">
                     {hidden('join')}
-                    <Button type="submit" disabled={pending}>
+                    <Button type="submit" disabled={pending} className="w-full">
                         {state === 'join' ? t('join') : t('askToJoin')}
                     </Button>
                     <span className="text-sm text-muted-foreground">
@@ -95,10 +93,7 @@ export function JoinPanel({
             break;
         case 'pending':
             body = (
-                <form
-                    action={formAction}
-                    className="flex flex-wrap items-center gap-3"
-                >
+                <form action={formAction} className="flex flex-col gap-3">
                     {hidden('cancel')}
                     {note(<ClockIcon aria-hidden />, t('pending'))}
                     <Button
@@ -106,6 +101,7 @@ export function JoinPanel({
                         variant="outline"
                         size="sm"
                         disabled={pending}
+                        className="w-full"
                     >
                         {t('cancelRequest')}
                     </Button>

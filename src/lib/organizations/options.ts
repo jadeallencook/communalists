@@ -44,6 +44,50 @@ export const OFFERED_FOCUS_AREAS = FOCUS_AREAS.filter(
     (area) => !RETIRED_FOCUS_AREAS.includes(area)
 );
 
+/**
+ * The order /find lists focus areas in: most common first, from 285
+ * researched groups (food 144, housing 98, health 94, general 47, education
+ * 44, legal 39, then the rest; 2026-11-25). Clothing and hygiene are moved up
+ * into the first eight (the user's call: basic needs people look for, even
+ * though faith and labor are a little more common). A fixed order, so chips
+ * don't move while people click. A new key goes wherever it fits; one missing
+ * here goes last.
+ */
+export const FOCUS_AREAS_BY_USE: readonly FocusArea[] = [
+    'food',
+    'housing',
+    'health',
+    'general',
+    'education',
+    'legal',
+    'clothing',
+    'hygiene',
+    'faith',
+    'labor',
+    'childcare',
+    'arts',
+    'transportation',
+    'environment',
+    'animals',
+    'lending',
+    'hobbies',
+    'technology',
+    'disasterRelief',
+    'other',
+];
+
+/** How many of FOCUS_AREAS_BY_USE /find shows before "More focus areas". */
+export const FEATURED_FOCUS_AREAS = 8;
+
+/** Offered focus areas, most common first. */
+export const focusAreasByUse = (): FocusArea[] => {
+    const rank = (area: FocusArea) => {
+        const i = FOCUS_AREAS_BY_USE.indexOf(area);
+        return i === -1 ? FOCUS_AREAS_BY_USE.length : i;
+    };
+    return [...OFFERED_FOCUS_AREAS].sort((a, b) => rank(a) - rank(b));
+};
+
 /** Enough to say what a group does without ticking every box to show up everywhere. */
 export const MAX_FOCUS_AREAS = 3;
 

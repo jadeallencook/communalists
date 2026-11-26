@@ -1,7 +1,7 @@
 import { Markdown } from '@storybook/addon-docs/blocks';
 import type { AnchorHTMLAttributes } from 'react';
 
-const REPO = 'https://github.com/techletariats/communalists/blob/main';
+const REPO = 'https://github.com/jadeallencook/communalists/blob/main';
 
 // Resolves a link written for GitHub (relative to the .md file) to where it
 // should go inside Storybook: another doc page, the file on GitHub, or an

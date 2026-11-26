@@ -9,6 +9,7 @@ import { useLocationPicker } from '@/hooks/use-location-picker';
 import { useRouter } from '@/i18n/navigation';
 import { languageName } from '@/lib/organizations/client';
 import {
+    activeFilterCount,
     directorySearchParams,
     parseDirectorySearch,
     type DirectoryResults,
@@ -65,6 +66,7 @@ export function FindContainer({
                 <OrganizationFilters
                     action={`/${locale}/find`}
                     search={search}
+                    activeFilters={activeFilterCount(search)}
                     location={location}
                     languageOptions={ORG_LANGUAGES.map((code) => ({
                         value: code,

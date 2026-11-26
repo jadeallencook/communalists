@@ -109,7 +109,7 @@ These are the rules we're building to today. They can change. When one does, upd
 ## Engineering conventions
 
 - TypeScript in strict mode. Validate every form and every server input with a shared schema.
-- Bump `package.json` `version` when a milestone ships (something user-visible), not on every change. The footer also shows the commit, so it's always clear which build is live (decision #19).
+- Don't bump `package.json` `version`; nothing shows it. The footer shows the commit each build came from, so it's always clear which build is live (decision #46).
 - Commits follow **Conventional Commits** (`feat:`, `fix:`, `chore(scope):`), enforced by commitlint.
 - Format with Prettier: 4 spaces, single quotes, semicolons, ES5 trailing commas.
 - CI must check lockfile drift, formatting, types, lint, tests and build. Keep the lockfile committed and pin Node in `.nvmrc`.

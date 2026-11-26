@@ -19,9 +19,24 @@ import { getUserProfile } from '@/lib/users';
 
 import { FindContainer } from './find-container';
 
-export async function generateMetadata(): Promise<Metadata> {
+// A shared search link names its city, e.g. "Mutual aid organizations near
+// Oakland, California". Only a city in the URL counts: the profile's city is
+// private, and the default one is just a starting point.
+export async function generateMetadata({
+    searchParams,
+}: PageProps<'/[locale]/find'>): Promise<Metadata> {
     const t = await getTranslations('Find');
-    return { title: t('metaTitle'), description: t('intro') };
+    const search = parseDirectorySearch(await searchParams);
+    const place = search.placeId
+        ? getPlace(search.country, search.placeId)
+        : null;
+    const title = place
+        ? t('metaTitleNear', { city: place.label })
+        : t('metaTitle');
+    const description = place
+        ? t('metaDescriptionNear', { city: place.label })
+        : t('intro');
+    return { title, description, openGraph: { title, description } };
 }
 
 // Public. The search lives in the URL (shareable); with no city in the URL,
