@@ -1,7 +1,7 @@
 # 044 · prepare-pull-request skill: agents open pull requests when asked
 
 **Date:** 2026-11-25
-**Status:** Accepted
+**Status:** Accepted (screenshots step added by [#62](062-pr-screenshots-branch-before-and-after.md))
 **Context:** Since decision #42, every change reaches `main` through a squash-merged pull request. That means a branch, green CI, a Conventional Commit title (it becomes the commit on `main`) and a code owner's review. `AGENTS.md` said agents never commit or push, so every PR was made by hand. The user asked for a shared skill that any developer's agent can use to open a PR for their changes.
 **Decision:** A project skill, `.claude/skills/prepare-pull-request/SKILL.md`. When asked, an agent:
 
