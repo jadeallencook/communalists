@@ -66,7 +66,6 @@
         "search": {
             "label": "查找组织",
             "submit": "联系组织",
-            "locationPlaceholder": "搜索地点",
             "locationHint": "显示这个城市附近的组织。"
         }
     },
@@ -716,12 +715,10 @@
         "hint": "用于显示你附近的组织。我们只保存你的城市，绝不保存你的地址。",
         "attribution": "地点数据来自 GeoNames。"
     },
-    "FocusAreaField": {
+    "FocusAreaPills": {
         "label": "工作领域",
-        "placeholder": "任何领域",
-        "search": "搜索工作领域…",
-        "empty": "没有匹配的领域。请从列表中选择。",
-        "clear": "清除工作领域：{focusArea}"
+        "more": "另外 {count} 个",
+        "fewer": "收起"
     },
     "Unclaimed": {
         "title": "这个页面还没有人认领",

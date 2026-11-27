@@ -3,12 +3,12 @@ import { Suspense } from 'react';
 import { HeroSearchPlaceholder } from '@/components/organisms/hero-search';
 import { HomeJoinBand, HomePage } from '@/components/pages/home-page';
 import { getSessionUser } from '@/lib/auth/session';
-import { profileCity } from '@/lib/organizations/starting-city';
+import { startingCity } from '@/lib/organizations/starting-city';
 
 import { HomeSearchContainer } from './home-search-container';
 
 // The page is static; only the banner's search (which starts on the
-// profile's city) and the sign-up band depend on the session, so they
+// profile's city, or San Francisco) and the sign-up band depend on the session, so they
 // stream in behind <Suspense>.
 export default function Page() {
     return (
@@ -29,7 +29,7 @@ export default function Page() {
 
 async function HomeHeroSearch() {
     const user = await getSessionUser();
-    return <HomeSearchContainer profileCity={await profileCity(user?.uid)} />;
+    return <HomeSearchContainer startingCity={await startingCity(user?.uid)} />;
 }
 
 async function HomeJoin() {

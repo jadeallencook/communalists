@@ -66,7 +66,6 @@
         "search": {
             "label": "Tìm tổ chức",
             "submit": "Kết nối với các tổ chức",
-            "locationPlaceholder": "Tìm địa điểm",
             "locationHint": "Hiển thị các tổ chức gần thành phố này."
         }
     },
@@ -716,12 +715,10 @@
         "hint": "Dùng để hiển thị các tổ chức gần bạn. Chúng tôi chỉ lưu thành phố, không bao giờ lưu địa chỉ của bạn.",
         "attribution": "Địa điểm từ GeoNames."
     },
-    "FocusAreaField": {
+    "FocusAreaPills": {
         "label": "Lĩnh vực hoạt động",
-        "placeholder": "Mọi lĩnh vực",
-        "search": "Tìm lĩnh vực…",
-        "empty": "Không có lĩnh vực phù hợp. Hãy chọn một mục trong danh sách.",
-        "clear": "Bỏ lĩnh vực: {focusArea}"
+        "more": "{count} nữa",
+        "fewer": "Ẩn bớt"
     },
     "Unclaimed": {
         "title": "Trang này chưa được ai nhận",

@@ -19,8 +19,13 @@ const focusArea = {
         { value: 'food', label: 'Food' },
         { value: 'housing', label: 'Housing' },
         { value: 'health', label: 'Health' },
+        { value: 'general', label: 'General' },
+        { value: 'education', label: 'Education' },
         { value: 'legal', label: 'Legal' },
+        { value: 'clothing', label: 'Clothing' },
+        { value: 'hygiene', label: 'Hygiene' },
     ],
+    shown: 4,
     selected: null,
     onSelect: fn(),
 };
@@ -37,8 +42,10 @@ const meta = {
     parameters: { layout: 'fullscreen' },
     decorators: [
         (Story) => (
-            <div className="bg-neutral-800 p-8">
-                <Story />
+            <div className="dark overflow-hidden bg-neutral-800 py-8 text-foreground">
+                <div className="mx-auto max-w-6xl px-4">
+                    <Story />
+                </div>
             </div>
         ),
     ],
@@ -47,7 +54,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Signed out, or no city on the profile: "Search location". */
+/** No city chosen yet (the app always starts on one: the profile's city or San Francisco). */
 export const Empty: Story = {};
 /** Signed in with a city: it's filled in. */
 export const ProfileCity: Story = {
@@ -75,6 +82,10 @@ export const Filled: Story = {
             },
         },
     },
+};
+/** "+ 4 more" clicked: the pills, two rows high, run on to the screen edge. */
+export const ShowMore: Story = {
+    args: { focusArea: { ...focusArea, defaultExpanded: true } },
 };
 /** While the session is checked: a panel-sized skeleton. */
 export const Loading: Story = { render: () => <HeroSearchPlaceholder /> };

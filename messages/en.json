@@ -66,7 +66,6 @@
         "search": {
             "label": "Find organizations",
             "submit": "Connect with organizations",
-            "locationPlaceholder": "Search location",
             "locationHint": "Shows organizations near this city."
         }
     },
@@ -716,12 +715,10 @@
         "hint": "Used to show organizations near you. We save your city, never your address.",
         "attribution": "Places from GeoNames."
     },
-    "FocusAreaField": {
+    "FocusAreaPills": {
         "label": "Focus area",
-        "placeholder": "Any focus area",
-        "search": "Search focus areas…",
-        "empty": "No matching focus areas. Pick one from the list.",
-        "clear": "Clear focus area: {focusArea}"
+        "more": "{count} more",
+        "fewer": "Show fewer"
     },
     "Unclaimed": {
         "title": "This page hasn't been claimed yet",

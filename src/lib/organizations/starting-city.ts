@@ -8,7 +8,7 @@ import { DEFAULT_PLACE } from './directory';
 
 /**
  * The city on someone's profile, or null when they're signed out or have
- * none. The homepage search fills its city box with it.
+ * none.
  */
 export async function profileCity(uid?: string): Promise<PlaceOption | null> {
     if (!uid) return null;
@@ -18,6 +18,21 @@ export async function profileCity(uid?: string): Promise<PlaceOption | null> {
     return place
         ? { id: place.id, label: place.label, slug: place.slug }
         : null;
+}
+
+/**
+ * The city the homepage search starts on: the profile's city, or
+ * DEFAULT_PLACE (San Francisco) when they're signed out or have none.
+ */
+export async function startingCity(uid?: string): Promise<PlaceOption> {
+    const own = await profileCity(uid);
+    if (own) return own;
+    const place = getPlace(DEFAULT_PLACE.country, DEFAULT_PLACE.placeId);
+    return {
+        id: DEFAULT_PLACE.placeId,
+        label: place?.label ?? 'San Francisco, California',
+        slug: DEFAULT_PLACE.slug,
+    };
 }
 
 /**

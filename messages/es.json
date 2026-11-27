@@ -66,7 +66,6 @@
         "search": {
             "label": "Buscar organizaciones",
             "submit": "Conectar con organizaciones",
-            "locationPlaceholder": "Buscar ubicación",
             "locationHint": "Muestra organizaciones cerca de esta ciudad."
         }
     },
@@ -716,12 +715,10 @@
         "hint": "Se usa para mostrarte organizaciones cercanas. Guardamos tu ciudad, nunca tu dirección.",
         "attribution": "Lugares de GeoNames."
     },
-    "FocusAreaField": {
+    "FocusAreaPills": {
         "label": "Área de trabajo",
-        "placeholder": "Cualquier área",
-        "search": "Buscar áreas de trabajo…",
-        "empty": "Ningún área coincide. Elige una de la lista.",
-        "clear": "Quitar área de trabajo: {focusArea}"
+        "more": "{count} más",
+        "fewer": "Mostrar menos"
     },
     "Unclaimed": {
         "title": "Nadie ha reclamado esta página todavía",

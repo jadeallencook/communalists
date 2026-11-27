@@ -4,9 +4,9 @@ import type { FormEvent } from 'react';
 import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
 import {
-    FocusAreaField,
-    type FocusAreaFieldProps,
-} from '@/components/molecules/focus-area-field';
+    FocusAreaPills,
+    type FocusAreaPillsProps,
+} from '@/components/molecules/focus-area-pills';
 import {
     LocationField,
     type LocationFieldProps,
@@ -16,17 +16,19 @@ import { track } from '@/lib/analytics';
 export interface HeroSearchProps {
     /** Where the form goes without JavaScript: /{locale}/find, which redirects to the city's path. */
     action: string;
-    focusArea: FocusAreaFieldProps;
+    focusArea: FocusAreaPillsProps;
     location: Omit<LocationFieldProps, 'error' | 'hint' | 'placeholder'>;
     /** With JavaScript: go to /find with the chosen tag and city. */
     onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
 }
 
 /**
- * The homepage banner's search: an optional focus area and city, then
- * "Connect with organizations", which opens /find with them applied.
+ * The homepage banner's search, in one line: "Connect with organizations",
+ * the city, then focus-area pills, which opens /find with them applied.
  * Both are optional: with neither, /find opens on the visitor's starting city.
- * A solid panel, so its fields keep their normal contrast on the photo.
+ * Sits in the banner's translucent band (dark theme), so it reads on the photo.
+ * The pills may run past the header's right edge to the screen edge.
+ * On phones the pills go under the button and city.
  */
 export function HeroSearch({
     action,
@@ -42,36 +44,43 @@ export function HeroSearch({
             action={action}
             method="get"
             onSubmit={onSubmit}
-            className="flex w-full max-w-3xl flex-col gap-4 rounded-xl bg-background p-4 text-foreground shadow-lg sm:p-5"
+            className="flex w-full flex-col gap-4 md:flex-row md:items-start"
         >
-            <div className="grid gap-4 sm:grid-cols-2 sm:items-start">
-                <FocusAreaField {...focusArea} />
-                <div className="flex flex-col gap-4">
-                    <LocationField
-                        {...location}
-                        placeholder={t('locationPlaceholder')}
-                        hint={t('locationHint')}
-                    />
+            <div className="flex flex-wrap items-start gap-4 md:shrink-0 md:flex-nowrap">
+                <div className="flex flex-col gap-2">
+                    {/* Lines the button up with the city box under its label. */}
+                    <span
+                        aria-hidden
+                        className="invisible text-sm leading-snug select-none"
+                    >
+                        &nbsp;
+                    </span>
+                    <Button
+                        type="submit"
+                        {...track('browse-organizations', { from: 'hero' })}
+                    >
+                        {t('submit')}
+                    </Button>
+                </div>
+                <div className="flex min-w-48 flex-1 flex-col gap-4 md:w-64 md:flex-none">
+                    <LocationField {...location} hint={t('locationHint')} />
                 </div>
             </div>
-            <Button
-                type="submit"
-                size="lg"
-                className="self-start"
-                {...track('browse-organizations', { from: 'hero' })}
-            >
-                {t('submit')}
-            </Button>
+            {/* Runs past the container to the screen edge: (screen - 72rem) / 2 + the 1rem padding. */}
+            <FocusAreaPills
+                {...focusArea}
+                className="-mr-4 flex-1 md:-mr-[calc((100vw-min(100vw,72rem))/2+1rem)]"
+            />
         </form>
     );
 }
 
-/** While the session (and so the profile's city) is checked: a panel the same size. */
+/** While the session (and so the profile's city) is checked: a row the same height. */
 export function HeroSearchPlaceholder() {
     return (
         <Skeleton
             aria-hidden
-            className="h-60 w-full max-w-3xl rounded-xl bg-white/25 sm:h-44"
+            className="h-40 w-full rounded-lg bg-white/15 md:h-20"
         />
     );
 }

@@ -30,7 +30,11 @@ const search = (city: { id: string; label: string } | null) => (
                 { value: 'food', label: 'Food' },
                 { value: 'housing', label: 'Housing' },
                 { value: 'health', label: 'Health' },
+                { value: 'general', label: 'General' },
+                { value: 'education', label: 'Education' },
+                { value: 'legal', label: 'Legal' },
             ],
+            shown: 4,
             selected: null,
             onSelect: fn(),
         }}

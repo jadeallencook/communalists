@@ -7,33 +7,38 @@ import { HeroSearch } from '@/components/organisms/hero-search';
 import { useLocationPicker } from '@/hooks/use-location-picker';
 import { useRouter } from '@/i18n/navigation';
 import { DEFAULT_PLACE, homeSearchHref } from '@/lib/organizations/directory';
-import { focusAreasByUse } from '@/lib/organizations/options';
+import {
+    focusAreasByUse,
+    HOME_FOCUS_AREAS,
+    HOME_FOCUS_AREAS_SHOWN,
+} from '@/lib/organizations/options';
 import type { PlaceOption } from '@/lib/places/types';
 
 /**
- * Wires the homepage search: the city box starts on the profile's city (if
- * any), and "Connect with organizations" opens /find with the chosen focus
+ * Wires the homepage search: the broadest focus areas as pills (one at a
+ * time), the city box starts on the profile's city, or San Francisco, and "Connect with organizations" opens /find with the chosen focus
  * area and city, or the starting city when none is chosen.
  */
 export function HomeSearchContainer({
-    profileCity,
+    startingCity,
 }: {
-    profileCity: PlaceOption | null;
+    /** The profile's city, or San Francisco (DEFAULT_PLACE). */
+    startingCity: PlaceOption;
 }) {
     const locale = useLocale();
     const router = useRouter();
     const t = useTranslations('Organizations.focusAreas');
     const [focusArea, setFocusArea] = useState<string | null>(null);
-    const location = useLocationPicker({ locale, selected: profileCity });
+    const location = useLocationPicker({ locale, selected: startingCity });
 
     return (
         <HeroSearch
             action={`/${locale}/find`}
             focusArea={{
-                options: focusAreasByUse().map((value) => ({
-                    value,
-                    label: t(value),
-                })),
+                options: focusAreasByUse()
+                    .slice(0, HOME_FOCUS_AREAS)
+                    .map((value) => ({ value, label: t(value) })),
+                shown: HOME_FOCUS_AREAS_SHOWN,
                 selected: focusArea,
                 onSelect: setFocusArea,
             }}
@@ -47,7 +52,7 @@ export function HomeSearchContainer({
                             ...location.selected,
                             country: location.country,
                         },
-                        startingSlug: profileCity?.slug ?? DEFAULT_PLACE.slug,
+                        startingSlug: startingCity.slug ?? DEFAULT_PLACE.slug,
                     })
                 );
             }}
