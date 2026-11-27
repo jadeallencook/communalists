@@ -7,14 +7,23 @@
         "home": "Trang chủ Communalists",
         "navigation": "Chính"
     },
+    "Nav": {
+        "organizations": "Tổ chức",
+        "dictionary": "Từ điển",
+        "dashboard": "Bảng điều khiển",
+        "menu": "Menu",
+        "closeMenu": "Đóng menu",
+        "yourOrganizations": "Tổ chức của bạn",
+        "seeAllOrganizations": "Xem tất cả tổ chức của bạn",
+        "account": "Tài khoản",
+        "admin": "Quản trị"
+    },
     "HeaderLinks": {
         "signIn": "Đăng nhập",
-        "createAccount": "Tạo tài khoản",
-        "dashboard": "Bảng điều khiển"
+        "createAccount": "Tạo tài khoản"
     },
     "AccountMenu": {
         "open": "Menu tài khoản của {name}",
-        "dashboard": "Bảng điều khiển",
         "settings": "Cài đặt tài khoản",
         "signOut": "Đăng xuất",
         "profile": "Hồ sơ của bạn"
@@ -26,7 +35,8 @@
         "label": "Đổi giao diện",
         "light": "Sáng",
         "dark": "Tối",
-        "system": "Hệ thống"
+        "system": "Hệ thống",
+        "heading": "Giao diện"
     },
     "Home": {
         "banner": {

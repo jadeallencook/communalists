@@ -49,6 +49,8 @@ Events are named with stable kebab-case keys, never UI text, so reports read the
 | `sign-up`, `sign-in`               | `from`                                               | Header or homepage links                                                     |
 | `sign-up-submit`, `sign-in-submit` | none                                                 | The forms sent                                                               |
 | `language-change`                  | `to`                                                 | A different language picked in the switcher                                  |
+| `nav-link`                         | `to` (section key), `from` (`header`, `menu`)        | A site section chosen in the header or the phone menu                        |
+| `menu-open`                        | none                                                 | The phone menu opened                                                        |
 | `definition-view`                  | `slug`                                               | A dictionary word's page opens ([features/19](../features/19-dictionary.md)) |
 | `definition-share`                 | `slug`                                               | Copy link pressed on a word's page                                           |
 | `definition-open`                  | `slug`                                               | A marked word in our copy chosen, opening its page                           |

@@ -1,7 +1,7 @@
 # 020 · Session-aware header, /dashboard, and account settings
 
 **Date:** 2026-11-22
-**Status:** Accepted
+**Status:** Accepted (header layout and phone menu revised by [#61](061-site-navigation-sections-and-phone-menu-drawer.md))
 **Context:** The header had no way to sign in or see your account. There are no services (organization tools) yet. Signed-in users landed on a one-time `/welcome` page.
 **Decision:** The header's account area is rendered on the server and streamed in `<Suspense>`, so it shows the right links without a flash.
 

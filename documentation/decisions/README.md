@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [061](061-site-navigation-sections-and-phone-menu-drawer.md)                    | Site navigation: sections from one list, and a phone menu drawer                                   | 2026-11-27 |
 | [060](060-admin-sections-fail-alone-and-backfill-from-the-app.md)               | Admin dashboard sections fail on their own; backfill runs from the app                             | 2026-11-27 |
 | [059](059-umami-reports-on-the-admin-dashboard.md)                              | Umami reports on the admin dashboard                                                               | 2026-11-27 |
 | [058](058-super-user-dashboard-counts-search-and-missing-details.md)            | Super-user dashboard: counts, search, and missing details                                          | 2026-11-27 |

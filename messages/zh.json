@@ -7,14 +7,23 @@
         "home": "Communalists 首页",
         "navigation": "主导航"
     },
+    "Nav": {
+        "organizations": "组织",
+        "dictionary": "词典",
+        "dashboard": "控制台",
+        "menu": "菜单",
+        "closeMenu": "关闭菜单",
+        "yourOrganizations": "你的组织",
+        "seeAllOrganizations": "查看你的所有组织",
+        "account": "账户",
+        "admin": "管理"
+    },
     "HeaderLinks": {
         "signIn": "登录",
-        "createAccount": "创建账户",
-        "dashboard": "控制台"
+        "createAccount": "创建账户"
     },
     "AccountMenu": {
         "open": "{name} 的账户菜单",
-        "dashboard": "控制台",
         "settings": "账户设置",
         "signOut": "退出登录",
         "profile": "你的个人资料"
@@ -26,7 +35,8 @@
         "label": "切换主题",
         "light": "浅色",
         "dark": "深色",
-        "system": "跟随系统"
+        "system": "跟随系统",
+        "heading": "主题"
     },
     "Home": {
         "banner": {

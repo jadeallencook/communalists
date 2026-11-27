@@ -1,12 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { fn } from 'storybook/test';
 
 import { AccountMenu } from '@/components/molecules/account-menu';
 import {
-    SignedInLinks,
+    HeaderLinksPlaceholder,
+    NavLinks,
     SignedOutLinks,
 } from '@/components/molecules/header-links';
 
+import { MobileNav } from './mobile-nav';
+import { account, publicLinks, signedInLinks } from './mobile-nav-fixtures';
 import { SiteHeader } from './site-header';
 
 const meta = {
@@ -18,35 +20,70 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const SignedOut: Story = { args: { account: <SignedOutLinks /> } };
+const signedOut = (current?: 'sign-in' | 'sign-up') => (
+    <>
+        <div className="hidden items-center gap-1 lg:flex">
+            <SignedOutLinks current={current} />
+        </div>
+        <MobileNav links={publicLinks} current={current} />
+    </>
+);
+
+const signedIn = (
+    <>
+        <div className="hidden lg:block">
+            <AccountMenu {...account} />
+        </div>
+        <MobileNav links={signedInLinks} account={account} />
+    </>
+);
+
+export const SignedOut: Story = {
+    args: { nav: <NavLinks links={publicLinks} />, account: signedOut() },
+};
 
 /** On /sign-in, Sign in is marked as the current page. */
 export const OnSignInPage: Story = {
-    args: { account: <SignedOutLinks current="sign-in" /> },
+    args: {
+        nav: <NavLinks links={publicLinks} />,
+        account: signedOut('sign-in'),
+    },
 };
 
-const menu = (
-    <AccountMenu
-        name="Ada Lovelace"
-        email="ada@example.com"
-        locale="en"
-        signOutAction={fn()}
-    />
-);
-
 export const SignedIn: Story = {
-    args: { nav: <SignedInLinks />, account: menu },
+    args: { nav: <NavLinks links={signedInLinks} />, account: signedIn },
 };
 
 export const SignedInOnDashboard: Story = {
-    args: { nav: <SignedInLinks current="dashboard" />, account: menu },
+    args: {
+        nav: (
+            <NavLinks
+                links={signedInLinks.map((link) =>
+                    link.key === 'dashboard'
+                        ? { ...link, current: 'page' }
+                        : link
+                )}
+            />
+        ),
+        account: signedIn,
+    },
 };
 
-/** While the session is checked, the account area is empty. */
-export const Loading: Story = {};
+/** While the session is checked: the public sections, and placeholders for the account area. */
+export const Loading: Story = {
+    args: {
+        nav: <NavLinks links={publicLinks} />,
+        account: <HeaderLinksPlaceholder />,
+    },
+};
 
-/** Narrow screens: Create account and Dashboard fold into the menu. */
+/** Phones: wordmark, language, and the Menu button. */
 export const Phone: Story = {
-    args: { nav: <SignedInLinks />, account: menu },
+    args: { nav: <NavLinks links={signedInLinks} />, account: signedIn },
+    globals: { viewport: { value: 'mobile1' } },
+};
+
+export const PhoneSignedOut: Story = {
+    args: { nav: <NavLinks links={publicLinks} />, account: signedOut() },
     globals: { viewport: { value: 'mobile1' } },
 };

@@ -7,14 +7,23 @@
         "home": "Communalists home",
         "navigation": "Main"
     },
+    "Nav": {
+        "organizations": "Organizations",
+        "dictionary": "Dictionary",
+        "dashboard": "Dashboard",
+        "menu": "Menu",
+        "closeMenu": "Close menu",
+        "yourOrganizations": "Your organizations",
+        "seeAllOrganizations": "See all your organizations",
+        "account": "Account",
+        "admin": "Admin"
+    },
     "HeaderLinks": {
         "signIn": "Sign in",
-        "createAccount": "Create account",
-        "dashboard": "Dashboard"
+        "createAccount": "Create account"
     },
     "AccountMenu": {
         "open": "Account menu for {name}",
-        "dashboard": "Dashboard",
         "settings": "Account settings",
         "signOut": "Sign out",
         "profile": "Your profile"
@@ -26,7 +35,8 @@
         "label": "Toggle theme",
         "light": "Light",
         "dark": "Dark",
-        "system": "System"
+        "system": "System",
+        "heading": "Theme"
     },
     "Home": {
         "banner": {

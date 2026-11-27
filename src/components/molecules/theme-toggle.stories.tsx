@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { ThemeToggle } from './theme-toggle';
+import { ThemeOptions, ThemeToggle } from './theme-toggle';
 
 const meta = {
     title: 'Components/Molecules/Theme Toggle',
@@ -19,3 +19,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+/** The phone menu's version: three buttons, the chosen one pressed. */
+export const Options: Story = { render: () => <ThemeOptions /> };
