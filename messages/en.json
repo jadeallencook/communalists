@@ -820,7 +820,8 @@
             "makeUnclaimed": "{actor} made {org} unclaimed",
             "exportOrganizations": "{actor} downloaded the list of organizations",
             "createDefinition": "{actor} added the word {word}",
-            "editDefinition": "{actor} edited the word {word}"
+            "editDefinition": "{actor} edited the word {word}",
+            "backfillDetails": "{actor} filled in missing details on {count, plural, one {# organization} other {# organizations}}"
         },
         "unknownActor": "A super user",
         "errors": {
@@ -1106,7 +1107,16 @@
             "nearby": "{count, plural, =0 {None nearby} one {# nearby} other {# nearby}}",
             "needsResearch": "Needs research",
             "unknownOrganization": "No longer on Communalists"
-        }
+        },
+        "backfill": {
+            "title": "Older organizations",
+            "hint": "Organizations added before missing details were tracked aren't in the counts above yet. Filling them in reads each organization once and changes nothing anyone sees. It only needs to run once.",
+            "button": "Fill in missing details",
+            "pending": "Filling in…",
+            "done": "Done: checked {read}, updated {updated}.",
+            "error": "Couldn't fill in missing details. Try again."
+        },
+        "unavailable": "Couldn't load this section. Try again in a few minutes."
     },
     "Dictionary": {
         "title": "Dictionary",

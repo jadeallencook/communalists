@@ -43,7 +43,8 @@ async function get(path: string, key: string, params: Record<string, string>) {
     const url = `${API}/websites/${UMAMI_WEBSITE_ID}/${path}?${new URLSearchParams(params)}`;
     const response = await fetch(url, {
         headers: { Accept: 'application/json', Authorization: `Bearer ${key}` },
-        signal: AbortSignal.timeout(8000),
+        // Umami's 30-day metrics took over 8 s from Vercel on 2026-11-27.
+        signal: AbortSignal.timeout(20_000),
         cache: 'no-store',
     });
     // Status only: the URL has no secrets, but keep logs plain.

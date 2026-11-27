@@ -1,6 +1,7 @@
 import { useFormatter, useTranslations } from 'next-intl';
 
 import { StatTile } from '@/components/molecules/stat-tile';
+import { Unavailable } from '@/components/organisms/admin-organizations';
 import type { AdminAction } from '@/lib/organizations/claims';
 import { ACTIVITY_GROUPS, type ActivityGroup } from '@/lib/platform-stats';
 
@@ -12,15 +13,17 @@ export interface AdminLogItem {
     targetName?: string;
     /** A dictionary word, for word changes. */
     word?: string;
+    /** How many organizations, for backfillDetails. */
+    count?: number;
     /** Already formatted. */
     on: string;
 }
 
 export interface AdminActivityProps {
-    /** Super-user actions in the last 30 days, by group. */
-    activity: Record<ActivityGroup, number>;
-    /** Decisions and changes, newest first (not adds, edits or downloads). */
-    log: AdminLogItem[];
+    /** Super-user actions in the last 30 days, by group; null when it couldn't load. */
+    activity: Record<ActivityGroup, number> | null;
+    /** Decisions and changes, newest first (not adds, edits or downloads); null when it couldn't load. */
+    log: AdminLogItem[] | null;
 }
 
 const GROUPS = Object.keys(ACTIVITY_GROUPS) as ActivityGroup[];
@@ -43,15 +46,19 @@ export function AdminActivity({ activity, log }: AdminActivityProps) {
             <p className="-mt-1 text-sm text-muted-foreground">
                 {t('activityHint')}
             </p>
-            <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {GROUPS.map((group) => (
-                    <StatTile
-                        key={group}
-                        label={t(`activity.${group}`)}
-                        value={format.number(activity[group])}
-                    />
-                ))}
-            </dl>
+            {activity === null ? (
+                <Unavailable />
+            ) : (
+                <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {GROUPS.map((group) => (
+                        <StatTile
+                            key={group}
+                            label={t(`activity.${group}`)}
+                            value={format.number(activity[group])}
+                        />
+                    ))}
+                </dl>
+            )}
 
             <h3
                 id="admin-log"
@@ -62,7 +69,9 @@ export function AdminActivity({ activity, log }: AdminActivityProps) {
             <p className="-mt-1 text-sm text-muted-foreground">
                 {t('logHint')}
             </p>
-            {log.length === 0 ? (
+            {log === null ? (
+                <Unavailable />
+            ) : log.length === 0 ? (
                 <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
                     {t('noLog')}
                 </p>
@@ -82,6 +91,7 @@ export function AdminActivity({ activity, log }: AdminActivityProps) {
                                     org: entry.orgName,
                                     target: entry.targetName ?? '',
                                     word: entry.word ?? '',
+                                    count: entry.count ?? 0,
                                 })}
                             </span>
                             <span className="text-xs text-muted-foreground">

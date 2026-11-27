@@ -106,6 +106,23 @@ export const missingContact: AdminOrganizationItem[] = [
     }),
 ];
 
+export const recent: AdminOrganizationItem[] = [
+    org('Downtown Free Laundry', 'downtown-free-laundry', {
+        addedOn: 'Nov 26, 2026',
+        missingDetails: ['email', 'address'],
+    }),
+    org('Oakland Auto Club', 'oakland-auto-club', {
+        place: 'Oakland, California',
+        unclaimed: false,
+        addedOn: 'Nov 25, 2026',
+    }),
+    org('Mistake Pantry', 'mistake-pantry', {
+        unclaimed: false,
+        archived: true,
+        addedOn: 'Nov 24, 2026',
+    }),
+];
+
 export const organizations: AdminOrganizationsProps = {
     searchLimit: 10,
     gap: 'contact',
@@ -117,22 +134,7 @@ export const organizations: AdminOrganizationsProps = {
         address: 145,
     },
     missing: missingContact,
-    recent: [
-        org('Downtown Free Laundry', 'downtown-free-laundry', {
-            addedOn: 'Nov 26, 2026',
-            missingDetails: ['email', 'address'],
-        }),
-        org('Oakland Auto Club', 'oakland-auto-club', {
-            place: 'Oakland, California',
-            unclaimed: false,
-            addedOn: 'Nov 25, 2026',
-        }),
-        org('Mistake Pantry', 'mistake-pantry', {
-            unclaimed: false,
-            archived: true,
-            addedOn: 'Nov 24, 2026',
-        }),
-    ],
+    recent,
 };
 
 export const activity: AdminActivityProps = {

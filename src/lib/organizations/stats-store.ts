@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { FieldValue } from 'firebase-admin/firestore';
 import { cacheLife, cacheTag } from 'next/cache';
 
 import { getAdminDb } from '@/lib/firebase/admin';
@@ -15,7 +16,12 @@ import {
 } from '@/lib/platform-stats';
 
 import { ADMIN_LOG_TAG, CLAIMS_TAG, type AdminLogEntry } from './claim-store';
-import { DETAIL_GAPS, type DetailGap } from './details';
+import {
+    DETAIL_GAPS,
+    missingDetails,
+    missingDetailsChanged,
+    type DetailGap,
+} from './details';
 import { DIRECTORY_TAG } from './index';
 import type { FocusArea } from './options';
 
@@ -60,7 +66,10 @@ const activeUnclaimed = () =>
         .where('claimStatus', '==', 'unclaimed')
         .where('status', '==', 'active');
 
-export interface DashboardCounts {
+// The counts are four cached groups, so one failing query (an index still
+// building, say) only blanks the sections that use it.
+
+export interface CoreCounts {
     /** When these were counted (epoch ms): cached for up to an hour. */
     at: number;
     organizations: {
@@ -85,15 +94,11 @@ export interface DashboardCounts {
         receivedLast30: number;
         receivedPrevious30: number;
     };
-    /** Active unclaimed organizations missing each detail. */
-    gaps: Record<DetailGap, number>;
-    /** Super-user actions in the last 30 days, by group. */
-    activity: Record<ActivityGroup, number>;
     definitions: number;
 }
 
-/** Every number on the dashboard, about 30 reads per cache miss. */
-export async function getDashboardCounts(): Promise<DashboardCounts> {
+/** Organizations, accounts, claims and words: single-field indexes only, about 16 reads. */
+export async function getCoreCounts(): Promise<CoreCounts> {
     'use cache';
     // Creating, editing, claiming and deleting clear these.
     cacheTag(DIRECTORY_TAG, CLAIMS_TAG, ADMIN_LOG_TAG);
@@ -102,84 +107,48 @@ export async function getDashboardCounts(): Promise<DashboardCounts> {
     const w = statWindows(now);
     const users = db().collection('users');
     const claims = db().collection('claimRequests');
-    const groups = Object.keys(ACTIVITY_GROUPS) as ActivityGroup[];
-
-    const [orgs, people, decided, gaps, activity, definitions] =
-        await Promise.all([
-            Promise.all([
-                count(
-                    'organizations',
-                    organizations().where('status', '==', 'active')
-                ),
-                count('organizations', activeUnclaimed()),
-                count(
-                    'organizations',
-                    organizations().where('status', '==', 'archived')
-                ),
-                count('organizations', since(organizations(), 'claimedAt', 0)),
-                count(
-                    'organizations',
-                    within(organizations(), 'createdAt', w.last30)
-                ),
-                count(
-                    'organizations',
-                    within(organizations(), 'createdAt', w.previous30)
-                ),
-                count(
-                    'organizations',
-                    since(organizations(), 'claimedAt', w.last30.start)
-                ),
-            ]),
-            Promise.all([
-                count('users', users),
-                count('users', since(users, 'createdAt', w.last7.start)),
-                count('users', since(users, 'createdAt', w.last30.start)),
-                count('users', within(users, 'createdAt', w.previous30)),
-            ]),
-            Promise.all([
-                count(
-                    'claimRequests',
-                    claims.where('status', '==', 'approved')
-                ),
-                count('claimRequests', claims.where('status', '==', 'denied')),
-                count(
-                    'claimRequests',
-                    since(claims, 'requestedAt', w.last30.start)
-                ),
-                count(
-                    'claimRequests',
-                    within(claims, 'requestedAt', w.previous30)
-                ),
-            ]),
-            Promise.all(
-                DETAIL_GAPS.map((gap) =>
-                    count(
-                        'organizations',
-                        activeUnclaimed().where(
-                            'missingDetails',
-                            'array-contains',
-                            gap
-                        )
-                    )
-                )
+    const [orgs, people, decided, definitions] = await Promise.all([
+        Promise.all([
+            count(
+                'organizations',
+                organizations().where('status', '==', 'active')
             ),
-            Promise.all(
-                groups.map((group) =>
-                    count(
-                        'adminLog',
-                        since(
-                            adminLog().where('action', 'in', [
-                                ...ACTIVITY_GROUPS[group],
-                            ]),
-                            'createdAt',
-                            w.last30.start
-                        )
-                    )
-                )
+            count('organizations', activeUnclaimed()),
+            count(
+                'organizations',
+                organizations().where('status', '==', 'archived')
             ),
-            count('definitions', db().collection('definitions')),
-        ]);
-
+            count('organizations', since(organizations(), 'claimedAt', 0)),
+            count(
+                'organizations',
+                within(organizations(), 'createdAt', w.last30)
+            ),
+            count(
+                'organizations',
+                within(organizations(), 'createdAt', w.previous30)
+            ),
+            count(
+                'organizations',
+                since(organizations(), 'claimedAt', w.last30.start)
+            ),
+        ]),
+        Promise.all([
+            count('users', users),
+            count('users', since(users, 'createdAt', w.last7.start)),
+            count('users', since(users, 'createdAt', w.last30.start)),
+            count('users', within(users, 'createdAt', w.previous30)),
+        ]),
+        Promise.all([
+            count('claimRequests', claims.where('status', '==', 'approved')),
+            count('claimRequests', claims.where('status', '==', 'denied')),
+            count(
+                'claimRequests',
+                since(claims, 'requestedAt', w.last30.start)
+            ),
+            count('claimRequests', within(claims, 'requestedAt', w.previous30)),
+        ]),
+        count('definitions', db().collection('definitions')),
+    ]);
     return {
         at: now,
         organizations: {
@@ -203,14 +172,116 @@ export async function getDashboardCounts(): Promise<DashboardCounts> {
             receivedLast30: decided[2],
             receivedPrevious30: decided[3],
         },
-        gaps: Object.fromEntries(
-            DETAIL_GAPS.map((gap, i) => [gap, gaps[i]])
-        ) as Record<DetailGap, number>,
-        activity: Object.fromEntries(
-            groups.map((group, i) => [group, activity[i]])
-        ) as Record<ActivityGroup, number>,
         definitions,
     };
+}
+
+/** Active unclaimed organizations missing each detail (composite index), 5 reads. */
+export async function getGapCounts(): Promise<Record<DetailGap, number>> {
+    'use cache';
+    cacheTag(DIRECTORY_TAG);
+    cacheLife('hours');
+    const counts = await Promise.all(
+        DETAIL_GAPS.map((gap) =>
+            count(
+                'organizations',
+                activeUnclaimed().where('missingDetails', 'array-contains', gap)
+            )
+        )
+    );
+    return Object.fromEntries(
+        DETAIL_GAPS.map((gap, i) => [gap, counts[i]])
+    ) as Record<DetailGap, number>;
+}
+
+/** Super-user actions in the last 30 days, by group (composite index), 6 reads. */
+export async function getActivityCounts(): Promise<
+    Record<ActivityGroup, number>
+> {
+    'use cache';
+    cacheTag(ADMIN_LOG_TAG);
+    cacheLife('hours');
+    const { last30 } = statWindows(Date.now());
+    const groups = Object.keys(ACTIVITY_GROUPS) as ActivityGroup[];
+    const counts = await Promise.all(
+        groups.map((group) =>
+            count(
+                'adminLog',
+                since(
+                    adminLog().where('action', 'in', [
+                        ...ACTIVITY_GROUPS[group],
+                    ]),
+                    'createdAt',
+                    last30.start
+                )
+            )
+        )
+    );
+    return Object.fromEntries(
+        groups.map((group, i) => [group, counts[i]])
+    ) as Record<ActivityGroup, number>;
+}
+
+/** Whether the missing-details backfill has run (one equality count, 1 read). */
+export async function isMissingDetailsBackfilled(): Promise<boolean> {
+    'use cache';
+    cacheTag(ADMIN_LOG_TAG);
+    cacheLife('hours');
+    return (
+        (await count(
+            'adminLog',
+            adminLog().where('action', '==', 'backfillDetails')
+        )) > 0
+    );
+}
+
+export interface BackfillResult {
+    read: number;
+    updated: number;
+}
+
+/**
+ * Sets `missingDetails` on every organization written before it existed
+ * (2026-11-27), from the app on Vercel so nobody needs production
+ * credentials locally. Reads each organization once, writes only the ones
+ * that change, and logs the run. Safe to repeat.
+ */
+export async function backfillMissingDetails(
+    adminUid: string
+): Promise<BackfillResult> {
+    const PAGE = 300;
+    let last: FirebaseFirestore.QueryDocumentSnapshot | undefined;
+    let read = 0;
+    let updated = 0;
+    for (;;) {
+        let query = organizations().orderBy('__name__').limit(PAGE);
+        if (last) query = query.startAfter(last);
+        const snapshot = await query.get();
+        logRead('organizations', Math.max(snapshot.size, 1));
+        if (snapshot.empty) break;
+        read += snapshot.size;
+        const batch = db().batch();
+        let inBatch = 0;
+        for (const doc of snapshot.docs) {
+            const data = doc.data();
+            if (!missingDetailsChanged(data.missingDetails, data)) continue;
+            // Not updatedAt: nothing a person sees changed.
+            batch.update(doc.ref, { missingDetails: missingDetails(data) });
+            inBatch++;
+        }
+        if (inBatch > 0) await batch.commit();
+        updated += inBatch;
+        last = snapshot.docs.at(-1);
+        if (snapshot.size < PAGE) break;
+    }
+    await adminLog().add({
+        action: 'backfillDetails',
+        orgName: '',
+        actorUid: adminUid,
+        count: updated,
+        createdAt: FieldValue.serverTimestamp(),
+    });
+    return { read, updated };
 }
 
 export interface WeeklyTrends {
@@ -359,6 +430,7 @@ export async function getAdminFeed(limit = 20): Promise<AdminLogEntry[]> {
             actorUid: d.actorUid,
             targetName: d.target?.displayName,
             word: d.definition?.word,
+            count: typeof d.count === 'number' ? d.count : undefined,
             at: millis(d.createdAt),
         };
     });

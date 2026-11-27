@@ -28,3 +28,5 @@ export const Quiet: Story = {
         log: [],
     },
 };
+
+export const Unavailable: Story = { args: { activity: null, log: null } };

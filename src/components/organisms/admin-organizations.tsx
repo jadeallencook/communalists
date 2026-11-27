@@ -3,6 +3,7 @@
 import { DownloadIcon, PlusIcon, SearchIcon, UploadIcon } from 'lucide-react';
 import Form from 'next/form';
 import { useLocale, useTranslations } from 'next-intl';
+import { useEffect, useRef } from 'react';
 
 import { Button } from '@/components/atoms/button';
 import { Input } from '@/components/atoms/input';
@@ -30,11 +31,27 @@ export interface AdminOrganizationsProps {
     searchLimit: number;
     /** The missing detail being listed. */
     gap: DetailGap;
-    /** Active unclaimed organizations missing each detail. */
-    gapCounts: Record<DetailGap, number>;
-    /** The first of them, oldest first. */
-    missing: AdminOrganizationItem[];
-    recent: AdminOrganizationItem[];
+    /** Active unclaimed organizations missing each detail; null when it couldn't load. */
+    gapCounts: Record<DetailGap, number> | null;
+    /** The first of them, oldest first; null when it couldn't load. */
+    missing: AdminOrganizationItem[] | null;
+    /** Null when it couldn't load. */
+    recent: AdminOrganizationItem[] | null;
+    /** Shown until the missing-details backfill has run once. */
+    backfill?: AdminBackfillProps;
+}
+
+export interface AdminBackfillProps {
+    /** False once it has run: the form disappears. */
+    needed: boolean;
+    /** In the app, backfillMissingDetailsAction via useActionState. */
+    action: (formData: FormData) => void;
+    pending?: boolean;
+    /** Already translated. */
+    notice?: string;
+    error?: string;
+    /** Changes on every result, so focus moves to it each time. */
+    resultKey?: number;
 }
 
 /**
@@ -50,10 +67,17 @@ export function AdminOrganizations({
     gapCounts,
     missing,
     recent,
+    backfill,
 }: AdminOrganizationsProps) {
     const t = useTranslations('Admin');
     const locale = useLocale();
     const searched = query !== undefined && results !== undefined;
+    // The button disappears after a run; put focus on the result instead.
+    const backfillRef = useRef<HTMLDivElement>(null);
+    const backfillKey = backfill?.resultKey;
+    useEffect(() => {
+        if (backfillKey) backfillRef.current?.focus();
+    }, [backfillKey]);
 
     return (
         <section
@@ -178,51 +202,110 @@ export function AdminOrganizations({
                 <p className="-mt-1 text-sm text-muted-foreground">
                     {t('gapsHint')}
                 </p>
-                <nav aria-label={t('gapsFilter')}>
-                    <ul className="flex flex-wrap gap-2">
-                        {DETAIL_GAPS.map((key) => (
-                            <li key={key}>
-                                <Link
-                                    href={{
-                                        pathname: '/admin',
-                                        query: {
-                                            ...(query ? { q: query } : {}),
-                                            gap: key,
-                                        },
-                                    }}
-                                    scroll={false}
-                                    aria-current={
-                                        key === gap ? 'true' : undefined
-                                    }
-                                    className={cn(
-                                        'inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
-                                        key === gap
-                                            ? 'border-foreground bg-foreground text-background'
-                                            : 'hover:bg-muted'
-                                    )}
+                {backfill && (
+                    <div className="flex flex-col gap-2 rounded-lg border p-4">
+                        <div
+                            ref={backfillRef}
+                            tabIndex={-1}
+                            className="outline-none"
+                        >
+                            {backfill.notice && (
+                                <p role="status" className="text-sm">
+                                    {backfill.notice}
+                                </p>
+                            )}
+                            {backfill.error && (
+                                <p
+                                    role="alert"
+                                    className="text-sm text-destructive"
                                 >
-                                    {t(`gaps.${key}`)}
-                                    <span className="tabular-nums">
-                                        ({gapCounts[key]})
-                                    </span>
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
-                {missing.length === 0 ? (
-                    <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-                        {t('noGaps')}
-                    </p>
+                                    {backfill.error}
+                                </p>
+                            )}
+                        </div>
+                        {backfill.needed && (
+                            <form
+                                action={backfill.action}
+                                className="flex flex-col gap-2"
+                            >
+                                <h4 className="font-medium">
+                                    {t('backfill.title')}
+                                </h4>
+                                <p className="text-sm text-muted-foreground">
+                                    {t('backfill.hint')}
+                                </p>
+                                <input
+                                    type="hidden"
+                                    name="locale"
+                                    value={locale}
+                                />
+                                <Button
+                                    type="submit"
+                                    variant="outline"
+                                    className="w-fit"
+                                    disabled={backfill.pending}
+                                >
+                                    {backfill.pending
+                                        ? t('backfill.pending')
+                                        : t('backfill.button')}
+                                </Button>
+                            </form>
+                        )}
+                    </div>
+                )}
+                {gapCounts === null || missing === null ? (
+                    <Unavailable />
                 ) : (
                     <>
-                        <p className="text-sm text-muted-foreground">
-                            {t('gapsShowing', {
-                                shown: missing.length,
-                                count: gapCounts[gap],
-                            })}
-                        </p>
-                        <OrganizationList items={missing} />
+                        <nav aria-label={t('gapsFilter')}>
+                            <ul className="flex flex-wrap gap-2">
+                                {DETAIL_GAPS.map((key) => (
+                                    <li key={key}>
+                                        <Link
+                                            href={{
+                                                pathname: '/admin',
+                                                query: {
+                                                    ...(query
+                                                        ? { q: query }
+                                                        : {}),
+                                                    gap: key,
+                                                },
+                                            }}
+                                            scroll={false}
+                                            aria-current={
+                                                key === gap ? 'true' : undefined
+                                            }
+                                            className={cn(
+                                                'inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+                                                key === gap
+                                                    ? 'border-foreground bg-foreground text-background'
+                                                    : 'hover:bg-muted'
+                                            )}
+                                        >
+                                            {t(`gaps.${key}`)}
+                                            <span className="tabular-nums">
+                                                ({gapCounts[key]})
+                                            </span>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+                        {missing.length === 0 ? (
+                            <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+                                {t('noGaps')}
+                            </p>
+                        ) : (
+                            <>
+                                <p className="text-sm text-muted-foreground">
+                                    {t('gapsShowing', {
+                                        shown: missing.length,
+                                        count: gapCounts[gap],
+                                    })}
+                                </p>
+                                <OrganizationList items={missing} />
+                            </>
+                        )}
                     </>
                 )}
             </section>
@@ -237,7 +320,9 @@ export function AdminOrganizations({
                 >
                     {t('recentTitle')}
                 </h3>
-                {recent.length === 0 ? (
+                {recent === null ? (
+                    <Unavailable />
+                ) : recent.length === 0 ? (
                     <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
                         {t('noRecent')}
                     </p>
@@ -336,5 +421,18 @@ function OrganizationList({ items }: { items: AdminOrganizationItem[] }) {
                 );
             })}
         </ul>
+    );
+}
+
+/** A section whose data couldn't load (an index still building, Firestore down). */
+export function Unavailable() {
+    const t = useTranslations('Admin');
+    return (
+        <p
+            role="status"
+            className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground"
+        >
+            {t('unavailable')}
+        </p>
     );
 }
