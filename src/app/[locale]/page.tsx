@@ -1,21 +1,21 @@
 import { Suspense } from 'react';
 
-import {
-    HeroActions,
-    HeroActionsPlaceholder,
-} from '@/components/molecules/hero-actions';
+import { HeroSearchPlaceholder } from '@/components/organisms/hero-search';
 import { HomeJoinBand, HomePage } from '@/components/pages/home-page';
 import { getSessionUser } from '@/lib/auth/session';
-import { startingCitySlug } from '@/lib/organizations/starting-city';
+import { profileCity } from '@/lib/organizations/starting-city';
 
-// The page is static; only the buttons depend on the session, so they stream
-// in behind <Suspense> (no flash of sign-up buttons for signed-in users).
+import { HomeSearchContainer } from './home-search-container';
+
+// The page is static; only the banner's search (which starts on the
+// profile's city) and the sign-up band depend on the session, so they
+// stream in behind <Suspense>.
 export default function Page() {
     return (
         <HomePage
-            heroActions={
-                <Suspense fallback={<HeroActionsPlaceholder />}>
-                    <HomeHeroActions />
+            heroSearch={
+                <Suspense fallback={<HeroSearchPlaceholder />}>
+                    <HomeHeroSearch />
                 </Suspense>
             }
             join={
@@ -27,11 +27,9 @@ export default function Page() {
     );
 }
 
-async function HomeHeroActions() {
+async function HomeHeroSearch() {
     const user = await getSessionUser();
-    // Browse goes straight to the visitor's city (their profile's, or the default).
-    const city = await startingCitySlug(user?.uid);
-    return <HeroActions signedIn={!!user} findHref={`/find/${city}`} />;
+    return <HomeSearchContainer profileCity={await profileCity(user?.uid)} />;
 }
 
 async function HomeJoin() {

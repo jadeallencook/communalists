@@ -9,7 +9,6 @@ import type { ReactNode } from 'react';
 
 import foodServe from '@/assets/food-serve.jpg';
 import { Button } from '@/components/atoms/button';
-import { HeroActions } from '@/components/molecules/hero-actions';
 import { CallToAction } from '@/components/organisms/call-to-action';
 import { FeatureGrid } from '@/components/organisms/feature-grid';
 import { HeroBanner } from '@/components/organisms/hero-banner';
@@ -23,15 +22,15 @@ const features = [
 ] as const;
 
 export interface HomePageProps {
-    /** The banner's buttons. The app streams in <HeroActions> for the visitor's session. */
-    heroActions?: ReactNode;
+    /** The banner's search (<HeroSearch>). The app streams it in, filled with the profile's city. */
+    heroSearch?: ReactNode;
     /** The closing "Ready to organize?" band; the app leaves it out for signed-in users. */
     join?: ReactNode;
 }
 
 /** The public landing page. Static, except the session-dependent slots. */
 export function HomePage({
-    heroActions = <HeroActions signedIn={false} />,
+    heroSearch,
     join = <HomeJoinBand />,
 }: HomePageProps) {
     const t = useTranslations('Home');
@@ -43,7 +42,7 @@ export function HomePage({
                 imageAlt={t('banner.imageAlt')}
                 title={t('banner.title')}
                 subtitle={t('banner.subtitle')}
-                action={heroActions}
+                action={heroSearch}
             />
             <FeatureGrid
                 title={t('about.title')}

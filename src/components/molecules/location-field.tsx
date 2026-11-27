@@ -47,6 +47,8 @@ export interface LocationFieldProps {
     minQueryLength?: number;
     /** Replaces the default hint (which talks about the user's own city). */
     hint?: string;
+    /** Replaces "Choose your city" on the button while no city is chosen. */
+    placeholder?: string;
 }
 
 /**
@@ -68,6 +70,7 @@ export function LocationField({
     defaultOpen = false,
     minQueryLength = 2,
     hint,
+    placeholder,
 }: LocationFieldProps) {
     const t = useTranslations('LocationField');
     const [open, setOpen] = useState(defaultOpen);
@@ -123,7 +126,7 @@ export function LocationField({
                                 !selected && 'text-muted-foreground'
                             )}
                         >
-                            {selected?.label ?? t('choose')}
+                            {selected?.label ?? placeholder ?? t('choose')}
                             <ChevronsUpDownIcon
                                 aria-hidden
                                 className="opacity-50"

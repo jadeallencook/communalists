@@ -35,7 +35,6 @@
             "imageAlt": "Một tình nguyện viên trao đĩa thức ăn nóng cho người hàng xóm tại bữa ăn cộng đồng"
         },
         "cta": "Tạo tài khoản",
-        "dashboard": "Đến bảng điều khiển",
         "about": {
             "title": "Được xây dựng cho tương trợ",
             "body": "Communalists là nền tảng miễn phí để hàng xóm cùng nhau tổ chức. Hãy lập một tổ chức cho nhóm tương trợ, thư viện dụng cụ hay câu lạc bộ cộng đồng của bạn, tìm các nhóm gần bạn và vận hành chúng bằng những công cụ được tạo ra cho cách tương trợ thực sự diễn ra.",
@@ -64,7 +63,12 @@
             "title": "Sẵn sàng tổ chức chưa?",
             "body": "Miễn phí và chỉ mất một phút."
         },
-        "browse": "Xem các tổ chức"
+        "search": {
+            "label": "Tìm tổ chức",
+            "submit": "Kết nối với các tổ chức",
+            "locationPlaceholder": "Tìm địa điểm",
+            "locationHint": "Hiển thị các tổ chức gần thành phố này."
+        }
     },
     "Footer": {
         "developedBy": "Được phát triển bởi tình nguyện viên",
@@ -711,6 +715,13 @@
         "failed": "Không thể tìm kiếm lúc này. Hãy thử lại.",
         "hint": "Dùng để hiển thị các tổ chức gần bạn. Chúng tôi chỉ lưu thành phố, không bao giờ lưu địa chỉ của bạn.",
         "attribution": "Địa điểm từ GeoNames."
+    },
+    "FocusAreaField": {
+        "label": "Lĩnh vực hoạt động",
+        "placeholder": "Mọi lĩnh vực",
+        "search": "Tìm lĩnh vực…",
+        "empty": "Không có lĩnh vực phù hợp. Hãy chọn một mục trong danh sách.",
+        "clear": "Bỏ lĩnh vực: {focusArea}"
     },
     "Unclaimed": {
         "title": "Trang này chưa được ai nhận",

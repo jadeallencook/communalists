@@ -35,7 +35,6 @@
             "imageAlt": "A volunteer hands a plate of hot food to a neighbor at a community meal"
         },
         "cta": "Create account",
-        "dashboard": "Go to your dashboard",
         "about": {
             "title": "Built for mutual aid",
             "body": "Communalists is a free platform where neighbors organize. Start an organization for your mutual aid group, tool library or community club, find groups near you, and run them with tools made for how mutual aid actually works.",
@@ -64,7 +63,12 @@
             "title": "Ready to organize?",
             "body": "It's free, and it only takes a minute."
         },
-        "browse": "Browse organizations"
+        "search": {
+            "label": "Find organizations",
+            "submit": "Connect with organizations",
+            "locationPlaceholder": "Search location",
+            "locationHint": "Shows organizations near this city."
+        }
     },
     "Footer": {
         "developedBy": "Developed by volunteers",
@@ -711,6 +715,13 @@
         "failed": "Couldn't search right now. Try again.",
         "hint": "Used to show organizations near you. We save your city, never your address.",
         "attribution": "Places from GeoNames."
+    },
+    "FocusAreaField": {
+        "label": "Focus area",
+        "placeholder": "Any focus area",
+        "search": "Search focus areas…",
+        "empty": "No matching focus areas. Pick one from the list.",
+        "clear": "Clear focus area: {focusArea}"
     },
     "Unclaimed": {
         "title": "This page hasn't been claimed yet",

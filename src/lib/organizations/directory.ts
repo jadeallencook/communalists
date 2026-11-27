@@ -69,7 +69,7 @@ export const DEFAULT_FILTERS: DirectoryFilters = {
 /**
  * Where /find starts for visitors who are signed out or have no city on
  * their profile: San Francisco (GeoNames 5391959). Plain /find redirects to
- * its path, and so does the homepage's Browse button. Change it here only
+ * its path, and so does the homepage search when no city is chosen. Change it here only
  * (a test checks the slug matches the place). Decision #52.
  */
 export const DEFAULT_PLACE = {
@@ -141,6 +141,41 @@ export function directoryHref(
     const path = placeSlug ? `/find/${placeSlug}` : '/find';
     const query = directoryFilterParams(filters).toString();
     return query ? `${path}?${query}` : path;
+}
+
+/**
+ * The homepage search's link: /find from the chosen city, or from
+ * `startingSlug` (the profile's city or DEFAULT_PLACE) when none is chosen,
+ * with the chosen focus area as a filter. Only a listed focus area counts.
+ * A city without a known path uses ?country=&placeId=, which /find
+ * redirects to the path.
+ */
+export function homeSearchHref({
+    focusArea,
+    place,
+    startingSlug,
+}: {
+    focusArea?: string | null;
+    place?: { country: CountryCode; id: string; slug?: string } | null;
+    startingSlug: string;
+}): string {
+    const filters: DirectoryFilters = {
+        ...DEFAULT_FILTERS,
+        focusAreas: (OFFERED_FOCUS_AREAS as readonly string[]).includes(
+            focusArea ?? ''
+        )
+            ? [focusArea as FocusArea]
+            : [],
+    };
+    if (!place) return directoryHref(filters, startingSlug);
+    if (place.slug) return directoryHref(filters, place.slug);
+    const query = new URLSearchParams({
+        country: place.country,
+        placeId: place.id,
+    });
+    for (const [key, value] of directoryFilterParams(filters))
+        query.append(key, value);
+    return `/find?${query}`;
 }
 
 /**

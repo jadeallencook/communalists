@@ -5,6 +5,7 @@ import {
     directoryFilterParams,
     directoryHref,
     filterDirectory,
+    homeSearchHref,
     nearbyOrganizations,
     parseDirectorySearch,
     type DirectoryFilters,
@@ -255,6 +256,45 @@ describe('directoryHref', () => {
         expect(directoryHref(parseDirectorySearch({ radius: '50' }))).toBe(
             '/find?radius=50'
         );
+    });
+});
+
+describe('homeSearchHref', () => {
+    const startingSlug = 'us/ca/san-francisco';
+
+    it('starts from the starting city when nothing is chosen', () => {
+        expect(homeSearchHref({ startingSlug })).toBe(
+            '/find/us/ca/san-francisco'
+        );
+    });
+
+    it('adds the chosen focus area and uses the chosen city', () => {
+        expect(homeSearchHref({ focusArea: 'housing', startingSlug })).toBe(
+            '/find/us/ca/san-francisco?focusAreas=housing'
+        );
+        expect(
+            homeSearchHref({
+                focusArea: 'food',
+                place: { country: 'US', id: '5378538', slug: 'us/ca/oakland' },
+                startingSlug,
+            })
+        ).toBe('/find/us/ca/oakland?focusAreas=food');
+    });
+
+    it('ignores anything that is not a listed focus area', () => {
+        expect(homeSearchHref({ focusArea: 'free text', startingSlug })).toBe(
+            '/find/us/ca/san-francisco'
+        );
+    });
+
+    it('falls back to placeId when the city has no path', () => {
+        expect(
+            homeSearchHref({
+                focusArea: 'legal',
+                place: { country: 'US', id: '5378538', slug: '' },
+                startingSlug,
+            })
+        ).toBe('/find?country=US&placeId=5378538&focusAreas=legal');
     });
 });
 

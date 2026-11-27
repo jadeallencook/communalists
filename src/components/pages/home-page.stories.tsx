@@ -6,15 +6,43 @@ import {
     SignedInLinks,
     SignedOutLinks,
 } from '@/components/molecules/header-links';
-import { HeroActions } from '@/components/molecules/hero-actions';
+import { HeroSearch } from '@/components/organisms/hero-search';
 import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
 
 import { HomePage } from './home-page';
 
+const location = {
+    countries: [{ code: 'US' as const, name: 'United States' }],
+    country: 'US' as const,
+    onCountryChange: fn(),
+    query: '',
+    onQueryChange: fn(),
+    options: [],
+    onSelect: fn(),
+};
+
+const search = (city: { id: string; label: string } | null) => (
+    <HeroSearch
+        action="/en/find"
+        focusArea={{
+            options: [
+                { value: 'food', label: 'Food' },
+                { value: 'housing', label: 'Housing' },
+                { value: 'health', label: 'Health' },
+            ],
+            selected: null,
+            onSelect: fn(),
+        }}
+        location={{ ...location, selected: city }}
+        onSubmit={(event) => event.preventDefault()}
+    />
+);
+
 const meta = {
     title: 'Pages/Home',
     component: HomePage,
+    args: { heroSearch: search(null) },
     parameters: { layout: 'fullscreen' },
 } satisfies Meta<typeof HomePage>;
 
@@ -35,9 +63,12 @@ export const SignedOut: Story = {
     ],
 };
 
-/** Signed in: one dashboard button in the banner, and no sign-up band. */
+/** Signed in: the search starts on the profile's city, and no sign-up band. */
 export const SignedIn: Story = {
-    args: { heroActions: <HeroActions signedIn />, join: null },
+    args: {
+        heroSearch: search({ id: '5378538', label: 'Oakland, California' }),
+        join: null,
+    },
     decorators: [
         (Story) => (
             <>
