@@ -6,13 +6,17 @@ import { locale as rootLocale } from 'next/root-params';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
-import { HeaderLinksPlaceholder } from '@/components/molecules/header-links';
+import {
+    HeaderLinksPlaceholder,
+    NavLinks,
+} from '@/components/molecules/header-links';
 import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { routing } from '@/i18n/routing';
 import { currentBuild } from '@/lib/build-info';
 import { isLocalDev, TEST_ACCOUNTS } from '@/lib/dev';
+import { navItemsFor } from '@/lib/navigation';
 import { getSiteUrl } from '@/lib/site';
 
 import { Analytics } from './analytics';
@@ -76,7 +80,20 @@ export default async function LocaleLayout({
                         </a>
                         <SiteHeader
                             nav={
-                                <Suspense fallback={null}>
+                                // The public sections paint at once; Dashboard
+                                // joins at the end once the session is known.
+                                <Suspense
+                                    fallback={
+                                        <NavLinks
+                                            links={navItemsFor(false).map(
+                                                ({ key, href }) => ({
+                                                    key,
+                                                    href,
+                                                })
+                                            )}
+                                        />
+                                    }
+                                >
                                     <HeaderNav />
                                 </Suspense>
                             }

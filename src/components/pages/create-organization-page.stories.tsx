@@ -2,10 +2,11 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
 import { AccountMenu } from '@/components/molecules/account-menu';
-import { SignedInLinks } from '@/components/molecules/header-links';
+import { NavLinks } from '@/components/molecules/header-links';
 import { CreateOrganizationForm } from '@/components/organisms/create-organization-form';
 import { languageOptions } from '@/components/organisms/create-organization-form.stories';
 import { SiteFooter } from '@/components/organisms/site-footer';
+import { signedInLinks } from '@/components/organisms/mobile-nav-fixtures';
 import { SiteHeader } from '@/components/organisms/site-header';
 
 import {
@@ -52,7 +53,7 @@ const meta = {
         (Story) => (
             <>
                 <SiteHeader
-                    nav={<SignedInLinks />}
+                    nav={<NavLinks links={signedInLinks} />}
                     account={
                         <AccountMenu
                             name="Ada Lovelace"

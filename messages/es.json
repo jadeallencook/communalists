@@ -7,14 +7,23 @@
         "home": "Inicio de Communalists",
         "navigation": "Principal"
     },
+    "Nav": {
+        "organizations": "Organizaciones",
+        "dictionary": "Diccionario",
+        "dashboard": "Panel",
+        "menu": "Menú",
+        "closeMenu": "Cerrar menú",
+        "yourOrganizations": "Tus organizaciones",
+        "seeAllOrganizations": "Ver todas tus organizaciones",
+        "account": "Cuenta",
+        "admin": "Administración"
+    },
     "HeaderLinks": {
         "signIn": "Iniciar sesión",
-        "createAccount": "Crear cuenta",
-        "dashboard": "Panel"
+        "createAccount": "Crear cuenta"
     },
     "AccountMenu": {
         "open": "Menú de la cuenta de {name}",
-        "dashboard": "Panel",
         "settings": "Configuración de la cuenta",
         "signOut": "Cerrar sesión",
         "profile": "Tu perfil"
@@ -26,7 +35,8 @@
         "label": "Cambiar tema",
         "light": "Claro",
         "dark": "Oscuro",
-        "system": "Sistema"
+        "system": "Sistema",
+        "heading": "Tema"
     },
     "Home": {
         "banner": {

@@ -59,5 +59,5 @@ Still to fix:
 - **/find:** after filters change, the new result counts aren't announced.
 - **Skeletons and spinners** pulse regardless of reduced-motion settings.
 - **Contrast** measured on the members page only; other pages use the same tokens but haven't been measured one by one.
-- **Header:** the signed-in Dashboard link is still a borderless `ghost` button (common for navigation, and it's marked when current). Sign in is outlined.
+- **Header:** the section links (Organizations, Dictionary, Dashboard) are borderless `ghost` buttons, as is common for navigation; the current one has a fill and an underline. Sign in is outlined. The phone menu drawer (2026-11-27) is a Radix dialog: focus moves in, Esc closes it, focus returns to the Menu button, rows are at least 44px tall, and it doesn't slide with reduced motion. Its Menu button shows a word as well as the icon. The language switcher stays in the header on phones so it can be found without reading the current language.
 - **The Storybook a11y check only reports** (`a11y: { test: 'todo' }`); it doesn't fail anything, and stories aren't run in CI.

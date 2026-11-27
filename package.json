@@ -27,7 +27,8 @@
         "orgs:known": "tsx .claude/skills/find-organizations/known.ts",
         "orgs:check": "tsx --conditions=react-server .claude/skills/find-organizations/check.ts",
         "prepare": "husky",
-        "orgs:backfill-details": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/backfill-missing-details.mjs"
+        "orgs:backfill-details": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/backfill-missing-details.mjs",
+        "pr:screenshots": "node .claude/skills/prepare-pull-request/screenshots.mjs"
     },
     "lint-staged": {
         "*.{ts,tsx,mts,mjs,js}": [

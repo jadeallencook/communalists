@@ -3,6 +3,8 @@
 // Next or DOM, so it's tested directly. The browser side is ./browser.ts and
 // src/app/[locale]/analytics.tsx. Design: documentation/technical/analytics.md.
 
+import type { NavKey } from '../navigation';
+
 /** Umami Cloud website id for communalists.com. Public: it's in the page source. */
 export const UMAMI_WEBSITE_ID = 'a1687831-6fc3-4e0b-9c0c-7448fad2d67d';
 export const UMAMI_SCRIPT_URL = 'https://cloud.umami.is/script.js';
@@ -52,6 +54,10 @@ export interface AnalyticsEvents {
     'sign-up-submit': Record<string, never>;
     'sign-in-submit': Record<string, never>;
     'language-change': { to: string };
+    /** A site section was chosen in the header (wide screens) or the phone menu. */
+    'nav-link': { to: NavKey; from: 'header' | 'menu' };
+    /** The phone menu was opened. */
+    'menu-open': Record<string, never>;
     /** A dictionary word's page was opened. `slug` is the word's slug. */
     'definition-view': { slug: string };
     /** A word marked in our copy (<Definition>) was chosen, opening its page. */

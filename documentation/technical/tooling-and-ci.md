@@ -100,6 +100,7 @@ Outside the ruleset, in Settings → General → Pull Requests: only squash merg
 4. Commit through the hooks.
 5. Check the title with commitlint.
 6. Open the PR with a body for a reviewer: What, Why, Changes, Docs, Checks, For the reviewer.
+7. If the UI changed, add before/after screenshots to the description (`pnpm pr:screenshots`, [decision #62](../decisions/062-pr-screenshots-branch-before-and-after.md)). The images live on the `pr-screenshots` branch, which is never merged and has its own `vercel.json` turning deployments off. The repo is public, so only the local app with seeded test data is screenshotted.
 
 It never merges, approves or force-pushes. Humans can follow the same steps.
 

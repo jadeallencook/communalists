@@ -2,13 +2,11 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
 import { AccountMenu } from '@/components/molecules/account-menu';
-import {
-    SignedInLinks,
-    SignedOutLinks,
-} from '@/components/molecules/header-links';
+import { NavLinks, SignedOutLinks } from '@/components/molecules/header-links';
 import { WithDefinitions } from '@/components/molecules/definition-fixtures';
 import { HeroActions } from '@/components/molecules/hero-actions';
 import { SiteFooter } from '@/components/organisms/site-footer';
+import { signedInLinks } from '@/components/organisms/mobile-nav-fixtures';
 import { SiteHeader } from '@/components/organisms/site-header';
 
 import { HomePage } from './home-page';
@@ -51,7 +49,7 @@ export const SignedIn: Story = {
         (Story) => (
             <>
                 <SiteHeader
-                    nav={<SignedInLinks />}
+                    nav={<NavLinks links={signedInLinks} />}
                     account={
                         <AccountMenu
                             name="Ada Lovelace"
