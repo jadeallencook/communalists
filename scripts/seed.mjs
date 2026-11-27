@@ -26,6 +26,7 @@ import { geohashForLocation } from 'geofire-common';
 
 // Plain TypeScript with no imports: Node strips the types.
 import { parseCsv } from '../src/lib/csv.ts';
+import { missingDetails } from '../src/lib/organizations/details.ts';
 
 const PROJECT = 'demo-communalists';
 process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
@@ -325,6 +326,7 @@ for (const {
         status: 'active',
         ...(unclaimed ? { claimStatus: 'unclaimed' } : {}),
         memberCount: members.length,
+        missingDetails: missingDetails(org),
         createdBy: createdBy ?? owner,
         createdAt: now,
         updatedAt: now,

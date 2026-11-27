@@ -15,7 +15,7 @@ import {
     type ClaimRequestInput,
     type ClaimStatus,
 } from './claims';
-import { DIRECTORY_TAG, type MemberCopy } from './index';
+import type { MemberCopy } from './index';
 import { MAX_OWNED_ORGANIZATIONS, type FocusArea } from './options';
 
 // Unclaimed organizations and requests to claim them, in Firestore
@@ -146,42 +146,6 @@ export async function getPendingClaims(): Promise<ClaimRequest[]> {
         .sort((a, b) => (a.requestedAt ?? 0) - (b.requestedAt ?? 0));
 }
 
-export interface UnclaimedOrganization {
-    id: string;
-    name: string;
-    handle: string;
-    focusAreas: FocusArea[];
-    place: string;
-}
-
-/** Active unclaimed organizations, by name, cached. Super users only. */
-export async function getUnclaimedOrganizations(): Promise<
-    UnclaimedOrganization[]
-> {
-    'use cache';
-    // Creating, editing and claiming all clear the directory.
-    cacheTag(DIRECTORY_TAG);
-    cacheLife('hours');
-    const snapshot = await db()
-        .collection('organizations')
-        .where('claimStatus', '==', 'unclaimed')
-        .where('status', '==', 'active')
-        .get();
-    logRead('organizations', Math.max(snapshot.size, 1));
-    return snapshot.docs
-        .map((doc) => {
-            const d = doc.data();
-            return {
-                id: doc.id,
-                name: d.name,
-                handle: d.handle,
-                focusAreas: d.focusAreas ?? [],
-                place: d.location?.label ?? '',
-            };
-        })
-        .sort((a, b) => a.name.localeCompare(b.name));
-}
-
 export interface AdminLogEntry {
     id: string;
     action: AdminAction;
@@ -192,31 +156,6 @@ export interface AdminLogEntry {
     /** A dictionary word's English name, for createDefinition and editDefinition. */
     word?: string;
     at?: number;
-}
-
-/** The latest super-user actions, newest first, cached. Super users only. */
-export async function getAdminLog(limit = 30): Promise<AdminLogEntry[]> {
-    'use cache';
-    cacheTag(ADMIN_LOG_TAG);
-    cacheLife('hours');
-    const snapshot = await db()
-        .collection('adminLog')
-        .orderBy('createdAt', 'desc')
-        .limit(limit)
-        .get();
-    logRead('adminLog', Math.max(snapshot.size, 1));
-    return snapshot.docs.map((doc) => {
-        const d = doc.data();
-        return {
-            id: doc.id,
-            action: d.action,
-            orgName: d.orgName ?? '',
-            actorUid: d.actorUid,
-            targetName: d.target?.displayName,
-            word: d.definition?.word,
-            at: millis(d.createdAt),
-        };
-    });
 }
 
 export type DecideClaimResult =

@@ -44,12 +44,16 @@ The rebuild keeps the prototype's caching ideas ([PR #60](https://github.com/jad
 - Saving settings: the next page shows the new name; browsing goes back to 0.
 - An account mid-setup: 2 reads per gated page (cached miss + fresh confirm).
 
+**Count, don't read, for numbers (2026-11-27, decision #58).** A `count()` aggregation query costs **one read per 1,000 matching documents** (at least one), and it doesn't return the documents. The super-user dashboard shows about 30 numbers and 36 weekly counts for roughly that many reads per cache miss, where listing the 500+ unclaimed organizations cost 500+. If a number needs a condition Firestore can't filter on (like "has no phone, email or website"), store it as a derived field on write (`missingDetails`) and count that. Counts use the same indexes as the matching query, so a filter on two fields plus a range still needs a composite index.
+
+**Scripts that write around the app don't clear the cache.** The `missingDetails` backfill wrote straight to Firestore, and the dashboard kept showing its cached counts until an edit in the app cleared the `directory` tag. After a script runs, expect cached pages to be up to their `cacheLife` old, or make a change in the app that clears the tag.
+
 **One-off reads still count.** The CSV backup on 2026-11-20 read every document in every collection, so it showed up as a few thousand reads in the console's usage chart. The Firestore Data tab in the console also counts as reads while you browse it.
 
 ## Query limits that shaped the code
 
 - **No substring search.** Name and email search runs on the client over cached results.
-- **Composite indexes.** `stage == X && hasDriver == Y && coordinator == Z` needs an index for each combination of filters. The location and language filters were probably dropped partly for this reason. The `firestore.indexes.json` file isn't in the repo.
+- **Composite indexes.** `stage == X && hasDriver == Y && coordinator == Z` needs an index for each combination of filters. The location and language filters were probably dropped partly for this reason. The prototype's `firestore.indexes.json` wasn't in the repo. The rebuild's is, and lists only the composite indexes a query needs (deploy with `firebase deploy --only firestore:indexes --project communalists`).
 - **`in` queries are capped** (10 IDs then, 30 now). `getUsernames` would break on big threads.
 - `!=` queries exclude documents that lack the field, and need ordering on that field.
 
