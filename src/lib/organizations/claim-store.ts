@@ -155,6 +155,8 @@ export interface AdminLogEntry {
     targetName?: string;
     /** A dictionary word's English name, for createDefinition and editDefinition. */
     word?: string;
+    /** How many organizations, for backfillDetails. */
+    count?: number;
     at?: number;
 }
 

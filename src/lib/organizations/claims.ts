@@ -107,6 +107,8 @@ export type AdminAction =
     | 'restoreOrganization'
     | 'makeUnclaimed'
     | 'exportOrganizations'
+    // Filling in missingDetails on older organizations (once).
+    | 'backfillDetails'
     // Dictionary words (documentation/features/19-dictionary.md).
     | 'createDefinition'
     | 'editDefinition';

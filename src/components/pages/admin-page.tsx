@@ -27,6 +27,7 @@ import {
 } from '@/components/organisms/admin-analytics';
 import {
     AdminOrganizations,
+    Unavailable,
     type AdminOrganizationsProps,
 } from '@/components/organisms/admin-organizations';
 import {
@@ -67,18 +68,19 @@ export interface AdminDeleted {
 }
 
 export interface AdminPageProps {
-    /** When the numbers were counted, already formatted. */
-    asOf: string;
+    /** When the numbers were counted, already formatted; missing if they couldn't load. */
+    asOf?: string;
     claims: AdminClaim[];
-    overview: AdminOverviewProps;
+    /** Null when the counts couldn't load. */
+    overview: AdminOverviewProps | null;
     /** From Umami. */
     analytics: AdminAnalyticsProps;
     organizations: AdminOrganizationsProps;
     activity: AdminActivityProps;
     /** Deleted in the last 30 days: restorable. */
     deleted: AdminDeleted[];
-    /** How many words the dictionary has. */
-    definitionCount: number;
+    /** How many words the dictionary has; missing if the counts couldn't load. */
+    definitionCount?: number;
     /** UI locale, sent so redirects stay in it. */
     locale: string;
     /** In the app, decideClaimAction via useActionState. */
@@ -157,7 +159,7 @@ export function AdminPage({
         </>
     );
 
-    const unreachable = organizations.gapCounts.contact;
+    const unreachable = organizations.gapCounts?.contact ?? 0;
 
     return (
         <section className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-12">
@@ -168,9 +170,11 @@ export function AdminPage({
                 <p className="text-pretty text-muted-foreground">
                     {t('intro')}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                    {t('asOf', { time: asOf })}
-                </p>
+                {asOf && (
+                    <p className="text-sm text-muted-foreground">
+                        {t('asOf', { time: asOf })}
+                    </p>
+                )}
                 <nav aria-label={t('onThisPage')} className="mt-2">
                     <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
                         {SECTIONS.map((id) => (
@@ -448,7 +452,22 @@ export function AdminPage({
                 </section>
             </section>
 
-            <AdminOverview {...overview} />
+            {overview ? (
+                <AdminOverview {...overview} />
+            ) : (
+                <section
+                    aria-labelledby="admin-overview"
+                    className="flex flex-col gap-3"
+                >
+                    <h2
+                        id="admin-overview"
+                        className="font-heading text-xl font-semibold"
+                    >
+                        {t('sections.overview')}
+                    </h2>
+                    <Unavailable />
+                </section>
+            )}
 
             <AdminAnalytics {...analytics} />
 
@@ -463,10 +482,15 @@ export function AdminPage({
                         id="admin-dictionary"
                         className="font-heading text-xl font-semibold"
                     >
-                        {t('dictionaryTitle')}{' '}
-                        <span className="ml-1 text-base font-normal text-muted-foreground">
-                            {t('wordCount', { count: definitionCount })}
-                        </span>
+                        {t('dictionaryTitle')}
+                        {definitionCount !== undefined && (
+                            <>
+                                {' '}
+                                <span className="ml-1 text-base font-normal text-muted-foreground">
+                                    {t('wordCount', { count: definitionCount })}
+                                </span>
+                            </>
+                        )}
                     </h2>
                 </div>
                 <div className="flex flex-wrap gap-2">

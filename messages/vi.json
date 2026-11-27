@@ -820,7 +820,8 @@
             "makeUnclaimed": "{actor} đã chuyển {org} thành chưa được nhận",
             "exportOrganizations": "{actor} đã tải về danh sách tổ chức",
             "createDefinition": "{actor} đã thêm từ {word}",
-            "editDefinition": "{actor} đã chỉnh sửa từ {word}"
+            "editDefinition": "{actor} đã chỉnh sửa từ {word}",
+            "backfillDetails": "{actor} đã điền thông tin còn thiếu cho {count} tổ chức"
         },
         "unknownActor": "Một siêu người dùng",
         "errors": {
@@ -1106,7 +1107,16 @@
             "nearby": "{count, plural, =0 {Không có gần đó} other {# gần đó}}",
             "needsResearch": "Cần tìm hiểu thêm",
             "unknownOrganization": "Không còn trên Communalists"
-        }
+        },
+        "backfill": {
+            "title": "Tổ chức cũ",
+            "hint": "Các tổ chức được thêm trước khi thông tin còn thiếu được theo dõi chưa có trong các số liệu ở trên. Việc điền sẽ đọc mỗi tổ chức một lần và không thay đổi gì mà mọi người thấy. Chỉ cần làm một lần.",
+            "button": "Điền thông tin còn thiếu",
+            "pending": "Đang điền…",
+            "done": "Xong: đã kiểm tra {read}, cập nhật {updated}.",
+            "error": "Không điền được thông tin còn thiếu. Hãy thử lại."
+        },
+        "unavailable": "Không tải được phần này. Hãy thử lại sau vài phút."
     },
     "Dictionary": {
         "title": "Từ điển",

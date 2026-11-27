@@ -21,11 +21,14 @@ import { isDetailGap } from '@/lib/organizations/details';
 import { restoreDeadline } from '@/lib/organizations/lifecycle';
 import { getRecentlyDeleted } from '@/lib/organizations/lifecycle-store';
 import {
+    getActivityCounts,
     getAdminFeed,
-    getDashboardCounts,
+    getCoreCounts,
+    getGapCounts,
     getOrganizationsMissing,
     getRecentOrganizations,
     getWeeklyTrends,
+    isMissingDetailsBackfilled,
     searchOrganizations,
     SEARCH_LIMIT,
     type AdminOrganization,
@@ -68,9 +71,20 @@ async function AdminServerContainer({
     const terms = searchTerms(one(params.q));
     const query = terms ? terms.names[0] : undefined;
 
+    // Each dashboard read fails on its own: a query whose index is still
+    // building blanks its section instead of the whole page. Claims and
+    // Recently deleted are the page's job, so they still fail loudly.
+    const soft = <T,>(label: string, read: Promise<T>) =>
+        read.catch((error: Error) => {
+            console.error(`[admin] ${label} failed:`, error.message);
+            return null;
+        });
     const [
         claims,
-        counts,
+        core,
+        gapCounts,
+        activityCounts,
+        backfilled,
         trends,
         recent,
         missing,
@@ -82,13 +96,16 @@ async function AdminServerContainer({
         t,
     ] = await Promise.all([
         getPendingClaims(),
-        getDashboardCounts(),
-        getWeeklyTrends(),
-        getRecentOrganizations(),
-        getOrganizationsMissing(gap),
-        query ? searchOrganizations(query) : undefined,
+        soft('core counts', getCoreCounts()),
+        soft('gap counts', getGapCounts()),
+        soft('activity counts', getActivityCounts()),
+        soft('backfill check', isMissingDetailsBackfilled()),
+        soft('trends', getWeeklyTrends()),
+        soft('recent', getRecentOrganizations()),
+        soft('missing details', getOrganizationsMissing(gap)),
+        query ? soft('search', searchOrganizations(query)) : undefined,
         getRecentlyDeleted(),
-        getAdminFeed(),
+        soft('feed', getAdminFeed()),
         getUmamiReport(),
         getFormatter(),
         getTranslations('Admin'),
@@ -97,7 +114,7 @@ async function AdminServerContainer({
         at ? format.dateTime(new Date(at), { dateStyle: 'medium' }) : '';
     // Measured from when the numbers were counted (up to an hour ago), so
     // the page reads as one moment.
-    const now = counts.at;
+    const now = core?.at;
 
     // Account emails, so the team can follow up on a request. Never cached,
     // never sent anywhere but this page.
@@ -113,7 +130,7 @@ async function AdminServerContainer({
     // Super users' names for the log (cached profile reads).
     const names = new Map<string, string>();
     await Promise.all(
-        [...new Set(log.map((e) => e.actorUid))].map(async (uid) => {
+        [...new Set((log ?? []).map((e) => e.actorUid))].map(async (uid) => {
             const profile = await getUserProfile(uid);
             names.set(uid, profile?.displayName || t('unknownActor'));
         })
@@ -139,10 +156,14 @@ async function AdminServerContainer({
 
     return (
         <AdminContainer
-            asOf={format.dateTime(new Date(counts.at), {
-                dateStyle: 'medium',
-                timeStyle: 'short',
-            })}
+            asOf={
+                core
+                    ? format.dateTime(new Date(core.at), {
+                          dateStyle: 'medium',
+                          timeStyle: 'short',
+                      })
+                    : undefined
+            }
             claims={claims.map((c) => ({
                 orgId: c.orgId,
                 uid: c.uid,
@@ -155,43 +176,53 @@ async function AdminServerContainer({
                 claimantUsername: c.claimant.username,
                 claimantEmail: emails.get(c.uid),
                 requestedOn: date(c.requestedAt),
-                daysWaiting: daysSince(c.requestedAt, now),
+                // Unknown when the counts didn't load: then it isn't shown.
+                daysWaiting: now ? daysSince(c.requestedAt, now) : 0,
             }))}
             analytics={analytics}
-            overview={{
-                organizations: counts.organizations,
-                users: counts.users,
-                claims: counts.claims,
-                trends: trends.weeks.map((week, i) => ({
-                    label: format.dateTime(new Date(week.start), {
-                        month: 'short',
-                        day: 'numeric',
-                    }),
-                    users: trends.users[i],
-                    organizations: trends.organizations[i],
-                    claims: trends.claims[i],
-                })),
-            }}
+            overview={
+                core && trends
+                    ? {
+                          organizations: core.organizations,
+                          users: core.users,
+                          claims: core.claims,
+                          trends: trends.weeks.map((week, i) => ({
+                              label: format.dateTime(new Date(week.start), {
+                                  month: 'short',
+                                  day: 'numeric',
+                              }),
+                              users: trends.users[i],
+                              organizations: trends.organizations[i],
+                              claims: trends.claims[i],
+                          })),
+                      }
+                    : null
+            }
             organizations={{
                 query,
                 results: results?.map(item),
                 searchLimit: SEARCH_LIMIT,
                 gap,
-                gapCounts: counts.gaps,
-                missing: missing.map(item),
-                recent: recent.map(item),
+                gapCounts,
+                missing: missing?.map(item) ?? null,
+                recent: recent?.map(item) ?? null,
             }}
+            // Hidden once it has run, or when we can't tell.
+            backfillNeeded={backfilled === false}
             activity={{
-                activity: counts.activity,
-                log: log.map((entry) => ({
-                    id: entry.id,
-                    action: entry.action,
-                    orgName: entry.orgName,
-                    actorName: names.get(entry.actorUid) ?? t('unknownActor'),
-                    targetName: entry.targetName,
-                    word: entry.word,
-                    on: date(entry.at),
-                })),
+                activity: activityCounts,
+                log:
+                    log?.map((entry) => ({
+                        id: entry.id,
+                        action: entry.action,
+                        orgName: entry.orgName,
+                        actorName:
+                            names.get(entry.actorUid) ?? t('unknownActor'),
+                        targetName: entry.targetName,
+                        word: entry.word,
+                        count: entry.count,
+                        on: date(entry.at),
+                    })) ?? null,
             }}
             deleted={deleted.map((org) => ({
                 orgId: org.id,
@@ -199,7 +230,7 @@ async function AdminServerContainer({
                 deletedOn: date(org.archivedAt),
                 restoreUntil: date(restoreDeadline(org.archivedAt)),
             }))}
-            definitionCount={counts.definitions}
+            definitionCount={core?.definitions}
         />
     );
 }

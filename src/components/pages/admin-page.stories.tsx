@@ -3,6 +3,7 @@ import { fn } from 'storybook/test';
 
 import {
     activity,
+    recent,
     analytics,
     emptyOverview,
     organizations,
@@ -132,8 +133,19 @@ export const Searching: Story = {
         organizations: {
             ...organizations,
             query: 'oak',
-            results: organizations.recent.slice(1, 2),
+            results: recent.slice(1, 2),
         },
     },
 };
 export const Loading: Story = { render: () => <AdminPageLoading /> };
+
+/** The counts failed (an index still building): those sections say so, the rest works. */
+export const CountsUnavailable: Story = {
+    args: {
+        asOf: undefined,
+        overview: null,
+        definitionCount: undefined,
+        organizations: { ...organizations, gapCounts: null, missing: null },
+        activity: { activity: null, log: null },
+    },
+};

@@ -820,7 +820,8 @@
             "makeUnclaimed": "{actor} 将 {org} 设为未认领",
             "exportOrganizations": "{actor} 下载了组织列表",
             "createDefinition": "{actor} 添加了词语 {word}",
-            "editDefinition": "{actor} 编辑了词语 {word}"
+            "editDefinition": "{actor} 编辑了词语 {word}",
+            "backfillDetails": "{actor} 为 {count} 个组织补全了缺失信息记录"
         },
         "unknownActor": "一位超级用户",
         "errors": {
@@ -1106,7 +1107,16 @@
             "nearby": "{count, plural, =0 {附近没有} other {附近 # 个}}",
             "needsResearch": "需要查证",
             "unknownOrganization": "已不在 Communalists 上"
-        }
+        },
+        "backfill": {
+            "title": "较早的组织",
+            "hint": "在开始记录缺失信息之前添加的组织还没有计入上面的数字。补全会读取每个组织一次，不会改变任何人看到的内容。只需运行一次。",
+            "button": "补全缺失信息记录",
+            "pending": "正在补全…",
+            "done": "完成：检查了 {read} 个，更新了 {updated} 个。",
+            "error": "无法补全缺失信息记录。请重试。"
+        },
+        "unavailable": "无法加载此部分。请几分钟后再试。"
     },
     "Dictionary": {
         "title": "词典",

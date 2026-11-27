@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [060](060-admin-sections-fail-alone-and-backfill-from-the-app.md)               | Admin dashboard sections fail on their own; backfill runs from the app                             | 2026-11-27 |
 | [059](059-umami-reports-on-the-admin-dashboard.md)                              | Umami reports on the admin dashboard                                                               | 2026-11-27 |
 | [058](058-super-user-dashboard-counts-search-and-missing-details.md)            | Super-user dashboard: counts, search, and missing details                                          | 2026-11-27 |
 | [057](057-dictionary-at-slash-dictionary-with-a-to-z-letters.md)                | The dictionary at /dictionary, with A–Z letter pages                                               | 2026-11-26 |

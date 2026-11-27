@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { organizations } from './admin-fixtures';
+import { fn } from 'storybook/test';
+
+import { missingContact, organizations, recent } from './admin-fixtures';
 import { AdminOrganizations } from './admin-organizations';
 
 const meta = {
@@ -18,12 +20,12 @@ export const MissingContact: Story = {};
 export const MissingAddress: Story = {
     args: {
         gap: 'address',
-        missing: organizations.recent.slice(0, 1),
+        missing: recent.slice(0, 1),
     },
 };
 
 export const Searching: Story = {
-    args: { query: 'oak', results: organizations.recent.slice(1, 2) },
+    args: { query: 'oak', results: recent.slice(1, 2) },
 };
 
 export const NoResults: Story = {
@@ -35,7 +37,7 @@ export const ManyResults: Story = {
     args: {
         query: 'e',
         searchLimit: 2,
-        results: organizations.missing,
+        results: missingContact,
     },
 };
 
@@ -51,11 +53,37 @@ export const LongNames: Story = {
     args: {
         recent: [
             {
-                ...organizations.recent[0],
+                ...recent[0],
                 name: 'Comité de Ayuda Mutua de los Barrios del Este de San José y Alrededores',
                 handle: 'comite-de-ayuda-mutua-barrios',
                 missingDetails: ['phone', 'email', 'website', 'address'],
             },
         ],
+    },
+};
+
+/** An index still building: the lists that need it say they couldn't load. */
+export const Unavailable: Story = {
+    args: { gapCounts: null, missing: null, recent: null },
+};
+
+/** Before the missing-details backfill has run. */
+export const BackfillNeeded: Story = {
+    args: { backfill: { needed: true, action: fn() } },
+};
+
+export const BackfillRunning: Story = {
+    args: { backfill: { needed: true, action: fn(), pending: true } },
+};
+
+/** After it ran: the form is gone and the result is announced. */
+export const BackfillDone: Story = {
+    args: {
+        backfill: {
+            needed: false,
+            action: fn(),
+            notice: 'Done: checked 521, updated 509.',
+            resultKey: 1,
+        },
     },
 };

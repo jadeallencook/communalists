@@ -94,6 +94,7 @@ export const FEED_ACTIONS = [
     'makeUnclaimed',
     'createDefinition',
     'editDefinition',
+    'backfillDetails',
 ] as const satisfies readonly AdminAction[];
 
 /** The longest search we'll run. */

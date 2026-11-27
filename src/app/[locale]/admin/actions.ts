@@ -25,6 +25,7 @@ import {
     DELETED_TAG,
     restoreOrganization,
 } from '@/lib/organizations/lifecycle-store';
+import { backfillMissingDetails } from '@/lib/organizations/stats-store';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 
@@ -137,4 +138,37 @@ export async function restoreOrganizationAction(
     for (const uid of result.memberUids) updateTag(membershipsTag(uid));
     refresh();
     return { done: true, at };
+}
+
+export interface BackfillState {
+    error?: 'notAllowed' | 'generic';
+    done?: { read: number; updated: number };
+    at?: number;
+}
+
+/** A super user fills in missingDetails on organizations from before it existed. */
+export async function backfillMissingDetailsAction(
+    _prev: BackfillState,
+    formData: FormData
+): Promise<BackfillState> {
+    const requested = text(formData, 'locale');
+    const locale = hasLocale(routing.locales, requested)
+        ? requested
+        : routing.defaultLocale;
+    const at = Date.now();
+    const user = await getSessionUser();
+    if (!user) return redirect({ href: '/sign-in', locale });
+    if (!isPlatformAdmin(user.uid)) return { error: 'notAllowed', at };
+    let result;
+    try {
+        result = await backfillMissingDetails(user.uid);
+    } catch (error) {
+        console.error('[admin] backfill failed', (error as Error).message);
+        return { error: 'generic', at };
+    }
+    // The gap counts, lists and the log all change.
+    updateTag(DIRECTORY_TAG);
+    updateTag(ADMIN_LOG_TAG);
+    refresh();
+    return { done: result, at };
 }

@@ -48,6 +48,8 @@ The rebuild keeps the prototype's caching ideas ([PR #60](https://github.com/jad
 
 **Scripts that write around the app don't clear the cache.** The `missingDetails` backfill wrote straight to Firestore, and the dashboard kept showing its cached counts until an edit in the app cleared the `directory` tag. After a script runs, expect cached pages to be up to their `cacheLife` old, or make a change in the app that clears the tag.
 
+**Deploy indexes before the code that needs them (2026-11-27).** `/admin` crashed in production right after a merge, because its new composite indexes hadn't been deployed: one `FAILED_PRECONDITION` query took down the whole page. Run `firebase deploy --only firestore:indexes --project communalists` and wait until the console shows them as **Enabled** before merging. Pages built on many queries should also let each section fail on its own (decision #60).
+
 **One-off reads still count.** The CSV backup on 2026-11-20 read every document in every collection, so it showed up as a few thousand reads in the console's usage chart. The Firestore Data tab in the console also counts as reads while you browse it.
 
 ## Query limits that shaped the code
