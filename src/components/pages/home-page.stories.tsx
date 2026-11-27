@@ -6,6 +6,7 @@ import {
     SignedInLinks,
     SignedOutLinks,
 } from '@/components/molecules/header-links';
+import { WithDefinitions } from '@/components/molecules/definition-fixtures';
 import { HeroActions } from '@/components/molecules/hero-actions';
 import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
@@ -16,6 +17,14 @@ const meta = {
     title: 'Pages/Home',
     component: HomePage,
     parameters: { layout: 'fullscreen' },
+    // Marked words (mutual aid networks, organization…) get their tooltips.
+    decorators: [
+        (Story) => (
+            <WithDefinitions>
+                <Story />
+            </WithDefinitions>
+        ),
+    ],
 } satisfies Meta<typeof HomePage>;
 
 export default meta;

@@ -189,6 +189,8 @@ export interface AdminLogEntry {
     actorUid: string;
     /** The person a claim decision was about. */
     targetName?: string;
+    /** A dictionary word's English name, for createDefinition and editDefinition. */
+    word?: string;
     at?: number;
 }
 
@@ -211,6 +213,7 @@ export async function getAdminLog(limit = 30): Promise<AdminLogEntry[]> {
             orgName: d.orgName ?? '',
             actorUid: d.actorUid,
             targetName: d.target?.displayName,
+            word: d.definition?.word,
             at: millis(d.createdAt),
         };
     });

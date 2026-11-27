@@ -31,14 +31,14 @@
     "Home": {
         "banner": {
             "title": "Así se ve la comunidad",
-            "subtitle": "Communalists da a las redes de ayuda mutua las herramientas para organizarse, compartir y cuidarse entre sí.",
+            "subtitle": "Communalists da a las <network>redes de ayuda mutua</network> las herramientas para organizarse, compartir y cuidarse entre sí.",
             "imageAlt": "Una voluntaria entrega un plato de comida caliente a un vecino en una comida comunitaria"
         },
         "cta": "Crear cuenta",
         "dashboard": "Ir a tu panel",
         "about": {
             "title": "Hecho para la ayuda mutua",
-            "body": "Communalists es una plataforma gratuita donde los vecinos se organizan. Crea una organización para tu grupo de ayuda mutua, biblioteca de herramientas o club comunitario, encuentra grupos cerca de ti y gestiónalos con herramientas hechas para cómo funciona realmente la ayuda mutua.",
+            "body": "Communalists es una plataforma gratuita donde los vecinos se organizan. Crea una <org>organización</org> para tu grupo de <mutualAid>ayuda mutua</mutualAid>, <toolLibrary>biblioteca de herramientas</toolLibrary> o club comunitario, encuentra grupos cerca de ti y gestiónalos con herramientas hechas para cómo funciona realmente la ayuda mutua.",
             "languages": "Disponible en English, Español, Tiếng Việt y 中文."
         },
         "features": {
@@ -71,7 +71,8 @@
         "region": "Área de la Bahía de San Francisco",
         "established": "Fundado en 2022",
         "openSource": "Código abierto",
-        "build": "Compilada desde el commit {commit}"
+        "build": "Compilada desde el commit {commit}",
+        "dictionary": "Diccionario"
     },
     "SignUp": {
         "metaTitle": "Crear cuenta",
@@ -819,7 +820,9 @@
             "deleteUnclaimed": "{actor} eliminó {org}",
             "restoreOrganization": "{actor} recuperó {org}",
             "makeUnclaimed": "{actor} dejó {org} sin reclamar",
-            "exportOrganizations": "{actor} descargó la lista de organizaciones"
+            "exportOrganizations": "{actor} descargó la lista de organizaciones",
+            "createDefinition": "{actor} agregó la palabra {word}",
+            "editDefinition": "{actor} editó la palabra {word}"
         },
         "unknownActor": "Un superusuario",
         "errors": {
@@ -997,6 +1000,142 @@
                 "sameName": "Abre la página existente. Si es el mismo grupo, quita esta fila. Si es otro grupo, edita el nombre para distinguirlos, por ejemplo agregando la ciudad.",
                 "sameWebsite": "Abre la página existente. Si es el mismo grupo, quita esta fila.",
                 "invalid": "Edita la fila para elegir un valor de la lista."
+            }
+        },
+        "dictionaryTitle": "Diccionario",
+        "manageDictionary": "Administrar el diccionario",
+        "dictionaryHint": "Palabras explicadas en lenguaje sencillo, cada una con su propia página en /dictionary. Solo los superusuarios las agregan y editan."
+    },
+    "Dictionary": {
+        "title": "Diccionario",
+        "intro": "Palabras que verás en Communalists y en el trabajo de ayuda mutua, explicadas en lenguaje sencillo.",
+        "back": "Diccionario: {letter}",
+        "eyebrow": "Diccionario",
+        "notTranslated": "Esta palabra todavía no está escrita en {language}, así que se muestra en {shown}.",
+        "related": "Palabras relacionadas",
+        "resources": "Para saber más",
+        "resourceTypes": {
+            "book": "Libro",
+            "video": "Video",
+            "article": "Artículo",
+            "link": "Enlace"
+        },
+        "by": "de {name}",
+        "share": {
+            "copy": "Copiar enlace",
+            "copied": "Enlace copiado.",
+            "failed": "No se pudo copiar. Este es el enlace:"
+        },
+        "inline": {
+            "readMore": "Selecciona para leer más"
+        },
+        "letters": "Letras",
+        "lettersHint": "Elige una letra para ver las palabras que empiezan con ella.",
+        "letterTitle": "Diccionario: {letter}",
+        "count": "{count, plural, =0 {Sin palabras} one {# palabra} other {# palabras}}",
+        "emptyLetter": "Todavía no hay palabras que empiecen con {letter}.",
+        "noWordsShort": "(sin palabras)"
+    },
+    "AdminDefinitions": {
+        "metaTitle": "Diccionario",
+        "title": "Diccionario",
+        "intro": "Todas las palabras del diccionario. Cada una tiene su propia página que cualquiera puede abrir y compartir. Los cambios quedan en el registro de superusuarios.",
+        "backToAdmin": "Herramientas de superusuario",
+        "add": "Agregar una palabra",
+        "viewDictionary": "Ver el diccionario",
+        "saved": "Se guardó {word}.",
+        "viewWord": "Ver la página de {word}",
+        "listTitle": "Palabras",
+        "empty": "Todavía no hay palabras. Agrega la primera.",
+        "updatedOn": "Actualizada el {date}",
+        "edit": "Editar",
+        "editWord": "Editar {word}",
+        "view": "Ver",
+        "backToList": "Diccionario",
+        "addTitle": "Agregar una palabra",
+        "editTitle": "Editar “{word}”",
+        "formIntro": "Escribe la palabra en los cuatro idiomas. Usa oraciones cortas y palabras comunes, y explícala para alguien que nunca la ha oído.",
+        "slug": "Dirección",
+        "slugHint": "Letras minúsculas, números y guiones, como mutual-aid. Es la misma en todos los idiomas y no se puede cambiar después, para que los enlaces compartidos sigan funcionando.",
+        "slugFixed": "La dirección no se puede cambiar, para que los enlaces compartidos sigan funcionando.",
+        "word": "Palabra",
+        "definition": "Definición corta",
+        "definitionHint": "Una o dos oraciones, hasta {max} caracteres. Se muestra arriba en la página y dondequiera que la palabra esté marcada.",
+        "details": "Más información (opcional)",
+        "detailsHint": "Solo se muestra en la página de la palabra. Deja una línea en blanco entre párrafos.",
+        "related": "Palabras relacionadas",
+        "relatedHint": "Se enlazan al final de la página. Hasta {max}.",
+        "fieldIn": "{field} ({language})",
+        "summary": "{count, plural, one {Corrige # problema antes de guardar:} other {Corrige # problemas antes de guardar:}}",
+        "saving": "Guardando…",
+        "create": "Agregar palabra",
+        "save": "Guardar cambios",
+        "errors": {
+            "slugRequired": "Escribe una dirección.",
+            "slugFormat": "Usa de 2 a {max} letras minúsculas, números y guiones sueltos, como mutual-aid.",
+            "slugReserved": "El sitio ya usa esa dirección. Elige otra.",
+            "wordRequired": "Escribe la palabra.",
+            "wordTooLong": "Usa {max} caracteres o menos.",
+            "definitionRequired": "Escribe una definición corta.",
+            "definitionTooLong": "Usa {max} caracteres o menos.",
+            "detailsTooLong": "Usa {max} caracteres o menos.",
+            "relatedTooMany": "Elige {max} palabras relacionadas o menos."
+        },
+        "formErrors": {
+            "slugTaken": "Ya hay una palabra con esa dirección. Edita esa palabra o elige otra dirección.",
+            "notFound": "Esa palabra ya no existe. Vuelve al diccionario para ver lo más reciente.",
+            "notAllowed": "Solo los superusuarios pueden hacer esto.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        },
+        "importCsv": "Importar desde un CSV",
+        "imported": "{count, plural, =0 {No se agregó ninguna palabra.} one {Se agregó # palabra.} other {Se agregaron # palabras.}}",
+        "import": {
+            "title": "Importar palabras",
+            "intro": "Agrega muchas palabras a la vez desde un CSV. Primero se revisa cada fila y no se agrega nada hasta que elijas Agregar. Las palabras que ya están en el diccionario se omiten y nunca se cambian: edítalas una por una.",
+            "formatTitle": "El archivo",
+            "formatSlug": "slug: la dirección de la palabra, como mutual-aid. Letras minúsculas, números y guiones.",
+            "formatLanguages": "Para cada idioma (en, es, vi, zh): en_word y en_definition son obligatorias, en_details es opcional. Una línea en blanco dentro de una celda empieza un párrafo nuevo.",
+            "formatRelated": "related (opcional): direcciones de otras palabras separadas por punto y coma, como solidarity;organizer. Deben estar en el diccionario o en el mismo archivo.",
+            "formatLimit": "Hasta {max} filas. Guárdalo desde tu hoja de cálculo como CSV (UTF-8).",
+            "template": "Descargar la plantilla",
+            "file": "Archivo CSV",
+            "fileHint": "Revisar no agrega nada.",
+            "check": "Revisar archivo",
+            "checking": "Revisando…",
+            "summary": "{file}: {total, plural, one {# fila} other {# filas}}. {ready} listas, {exists} ya en el diccionario, {problems} por corregir.",
+            "ignored": "Estas columnas no se usan y se dejaron fuera: {columns}",
+            "add": "{count, plural, one {Agregar # palabra} other {Agregar # palabras}}",
+            "confirmTitle": "{count, plural, one {¿Agregar # palabra?} other {¿Agregar # palabras?}}",
+            "confirmBody": "Aparecen en /dictionary de inmediato, en todos los idiomas. Se omiten las filas que ya están en el diccionario o que tienen problemas. No se puede deshacer, pero puedes editar cada palabra después.",
+            "notYet": "Todavía no",
+            "adding": "Agregando…",
+            "confirm": "{count, plural, one {Agregar # palabra} other {Agregar # palabras}}",
+            "noneReady": "Ninguna fila está lista para agregar. Corrige el archivo y revísalo de nuevo.",
+            "noWord": "Sin palabra en inglés",
+            "line": "Línea {line}",
+            "status": {
+                "ready": "Lista",
+                "exists": "Ya está en el diccionario: se omite",
+                "problems": "{count, plural, one {# problema} other {# problemas}}"
+            },
+            "problems": {
+                "slugRepeated": "Una fila anterior tiene la misma dirección.",
+                "relatedUnknown": "No está en el diccionario ni en este archivo: {value}"
+            },
+            "fileProblems": {
+                "empty": "El archivo no tiene filas.",
+                "tooBig": "El archivo es demasiado grande. Debe pesar menos de 500 KB.",
+                "tooManyRows": "El archivo tiene más de {max} filas. Divídelo en archivos más pequeños.",
+                "missingColumns": "Al archivo le faltan estas columnas: {columns}. Empieza desde la plantilla.",
+                "noFile": "Elige un archivo CSV.",
+                "notAllowed": "Solo los superusuarios pueden hacer esto.",
+                "generic": "Algo salió mal. Inténtalo de nuevo."
+            },
+            "addErrors": {
+                "nothingReady": "Ninguna fila estaba lista, así que no se agregó nada.",
+                "changed": "El diccionario cambió mientras revisabas, así que no se agregó nada. Revisa el archivo de nuevo.",
+                "notAllowed": "Solo los superusuarios pueden hacer esto.",
+                "generic": "Algo salió mal. Inténtalo de nuevo."
             }
         }
     }

@@ -30,6 +30,11 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [057](057-dictionary-at-slash-dictionary-with-a-to-z-letters.md)                | The dictionary at /dictionary, with A–Z letter pages                                               | 2026-11-26 |
+| [056](056-dictionary-words-title-case-in-english.md)                            | Dictionary words in title case in English                                                          | 2026-11-26 |
+| [055](055-marked-words-hover-tooltip-click-opens-page.md)                       | Marked words: hover shows the definition, a click opens its page                                   | 2026-11-26 |
+| [054](054-security-rules-tests-against-the-emulator.md)                         | Security rules tests against the Firestore emulator, in CI                                         | 2026-11-26 |
+| [053](053-dictionary-shareable-definitions-super-users-manage.md)               | A dictionary: shareable definitions that super users manage                                        | 2026-11-26 |
 | [052](052-find-always-has-a-city-profile-or-default.md)                         | /find always has a city: plain /find redirects to the profile's city or San Francisco              | 2026-11-26 |
 | [051](051-find-defaults-to-oakland-homepage-links-there.md)                     | /find starts from Oakland; the homepage's Browse button links there when signed out                | 2026-11-26 |
 | [050](050-umami-analytics-page-views-and-named-click-events.md)                 | Umami analytics: page views and named click events                                                 | 2026-11-26 |

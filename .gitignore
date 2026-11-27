@@ -68,4 +68,6 @@ firebase-export-*/
 
 # find-organizations research: the super-user export includes unlisted
 # organizations, and research is unverified. Never commit it.
+# research/definitions/ holds dictionary CSVs to import (features/19);
+# kept local too, by choice.
 /research/

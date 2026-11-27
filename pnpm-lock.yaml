@@ -239,6 +239,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^21.2.4
         version: 21.2.4
+      '@firebase/rules-unit-testing':
+        specifier: ^6.0.0
+        version: 6.0.0(firebase@13.4.0(@types/react@19.3.0)(next@16.4.6(@babel/core@7.29.13(supports-color@7.2.0))(@opentelemetry/api@1.10.0)(@types/node@24.19.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0))
       '@storybook/addon-a11y':
         specifier: 10.6.7
         version: 10.6.7(storybook@10.6.7(@types/react@19.3.0)(prettier@3.10.1)(react@19.3.0))
@@ -1071,6 +1074,12 @@ packages:
     resolution: {integrity: sha512-lmVTu4jNvOmnrbPPDjhHpb2BdqiP/bwpQtpLSEaLKsYZ+srS6pS6Wfj5Ng1Dbon/HnpPA7Ph5gkI7l1ageGweQ==}
     peerDependencies:
       '@firebase/app': 0.x
+
+  '@firebase/rules-unit-testing@6.0.0':
+    resolution: {integrity: sha512-BsBqAoClN55cj9rVIruzA1vHzxl2WyS2+G/r93hjp7wM0UatlVHblvp5SPLCKylWBFMHWL4/JdFnFnYwrLdJjg==}
+    engines: {node: '>=24.12.0'}
+    peerDependencies:
+      firebase: ^13.0.0
 
   '@firebase/storage-compat@0.4.6':
     resolution: {integrity: sha512-te0IsqX1bM+OZCJF7jNSKXcMqCA2yYmpshRHjX4axy0lI/P9ZP9GLjEZMVL8wrjUWF4e3cZxMZTbck3Zd5E1hA==}
@@ -8844,6 +8853,10 @@ snapshots:
       '@firebase/logger': 0.5.2
       '@firebase/util': 1.15.3
       tslib: 2.9.1
+
+  '@firebase/rules-unit-testing@6.0.0(firebase@13.4.0(@types/react@19.3.0)(next@16.4.6(@babel/core@7.29.13(supports-color@7.2.0))(@opentelemetry/api@1.10.0)(@types/node@24.19.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0))':
+    dependencies:
+      firebase: 13.4.0(@types/react@19.3.0)(next@16.4.6(@babel/core@7.29.13(supports-color@7.2.0))(@opentelemetry/api@1.10.0)(@types/node@24.19.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)
 
   '@firebase/storage-compat@0.4.6(@firebase/app-compat@0.5.23)(@firebase/app-types@0.9.6)(@firebase/app@0.16.7)':
     dependencies:

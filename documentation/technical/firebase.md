@@ -70,6 +70,7 @@ What follows from that:
 - **The server is the only gate.** Every server action and container must check authorization itself, for example taking the uid from the verified session cookie, never from the request.
 - **`FIREBASE_SERVICE_ACCOUNT_KEY` is the master key.** Whoever holds it can read and write all data. Keep it only in Vercel's environment variables (marked sensitive). If it leaks, delete it under Project settings → Service accounts and generate a new one.
 - **Opening client access later** (e.g. live updates on a kanban board) means writing real rules for just those collections, scoped by organization membership and role, with emulator tests. Everything else stays denied.
+- **The deny-all rules are tested.** `rules/firestore.rules.test.ts` (`pnpm test:rules`, run in CI) checks that signed-out and signed-in clients can't read, write, delete or list any collection we store. Add each new collection to its list; opening one means changing its tests on purpose ([decision #54](../decisions/054-security-rules-tests-against-the-emulator.md)).
 
 ## Security in the prototype: the big unknown
 

@@ -31,14 +31,14 @@
     "Home": {
         "banner": {
             "title": "This is what community looks like",
-            "subtitle": "Communalists gives mutual aid networks the tools to organize, share and take care of each other.",
+            "subtitle": "Communalists gives <network>mutual aid networks</network> the tools to organize, share and take care of each other.",
             "imageAlt": "A volunteer hands a plate of hot food to a neighbor at a community meal"
         },
         "cta": "Create account",
         "dashboard": "Go to your dashboard",
         "about": {
             "title": "Built for mutual aid",
-            "body": "Communalists is a free platform where neighbors organize. Start an organization for your mutual aid group, tool library or community club, find groups near you, and run them with tools made for how mutual aid actually works.",
+            "body": "Communalists is a free platform where neighbors organize. Start an <org>organization</org> for your <mutualAid>mutual aid</mutualAid> group, <toolLibrary>tool library</toolLibrary> or community club, find groups near you, and run them with tools made for how mutual aid actually works.",
             "languages": "Available in English, Español, Tiếng Việt and 中文."
         },
         "features": {
@@ -71,7 +71,8 @@
         "region": "San Francisco Bay Area",
         "established": "Established 2022",
         "openSource": "Open source",
-        "build": "Built from commit {commit}"
+        "build": "Built from commit {commit}",
+        "dictionary": "Dictionary"
     },
     "SignUp": {
         "metaTitle": "Create account",
@@ -819,7 +820,9 @@
             "deleteUnclaimed": "{actor} deleted {org}",
             "restoreOrganization": "{actor} restored {org}",
             "makeUnclaimed": "{actor} made {org} unclaimed",
-            "exportOrganizations": "{actor} downloaded the list of organizations"
+            "exportOrganizations": "{actor} downloaded the list of organizations",
+            "createDefinition": "{actor} added the word {word}",
+            "editDefinition": "{actor} edited the word {word}"
         },
         "unknownActor": "A super user",
         "errors": {
@@ -997,6 +1000,142 @@
                 "sameName": "Open the existing page. If it's the same group, remove this row. If it's a different group, edit the name so people can tell them apart, for example by adding the city.",
                 "sameWebsite": "Open the existing page. If it's the same group, remove this row.",
                 "invalid": "Edit the row to choose a value from the list."
+            }
+        },
+        "dictionaryTitle": "Dictionary",
+        "manageDictionary": "Manage the dictionary",
+        "dictionaryHint": "Words explained in plain language, each with its own page at /dictionary. Only super users add and edit them."
+    },
+    "Dictionary": {
+        "title": "Dictionary",
+        "intro": "Words you'll see on Communalists and in mutual aid work, explained in plain language.",
+        "back": "Dictionary: {letter}",
+        "eyebrow": "Dictionary",
+        "notTranslated": "This word isn't written in {language} yet, so it's shown in {shown}.",
+        "related": "Related words",
+        "resources": "Learn more",
+        "resourceTypes": {
+            "book": "Book",
+            "video": "Video",
+            "article": "Article",
+            "link": "Link"
+        },
+        "by": "by {name}",
+        "share": {
+            "copy": "Copy link",
+            "copied": "Link copied.",
+            "failed": "Couldn't copy. Here's the link:"
+        },
+        "inline": {
+            "readMore": "Select to read more"
+        },
+        "letters": "Letters",
+        "lettersHint": "Choose a letter to see the words that start with it.",
+        "letterTitle": "Dictionary: {letter}",
+        "count": "{count, plural, =0 {No words} one {# word} other {# words}}",
+        "emptyLetter": "No words start with {letter} yet.",
+        "noWordsShort": "(no words)"
+    },
+    "AdminDefinitions": {
+        "metaTitle": "Dictionary",
+        "title": "Dictionary",
+        "intro": "Every word in the dictionary. Each one has its own page that anyone can open and share. Changes are recorded in the super user log.",
+        "backToAdmin": "Super user tools",
+        "add": "Add a word",
+        "viewDictionary": "View the dictionary",
+        "saved": "Saved {word}.",
+        "viewWord": "View the page for {word}",
+        "listTitle": "Words",
+        "empty": "No words yet. Add the first one.",
+        "updatedOn": "Updated {date}",
+        "edit": "Edit",
+        "editWord": "Edit {word}",
+        "view": "View",
+        "backToList": "Dictionary",
+        "addTitle": "Add a word",
+        "editTitle": "Edit “{word}”",
+        "formIntro": "Write the word in all four languages. Use short sentences and everyday words, and explain it for someone who has never heard it.",
+        "slug": "Address",
+        "slugHint": "Lowercase letters, numbers and hyphens, like mutual-aid. It’s the same in every language and can’t be changed later, so shared links keep working.",
+        "slugFixed": "The address can’t be changed, so shared links keep working.",
+        "word": "Word",
+        "definition": "Short definition",
+        "definitionHint": "One or two sentences, up to {max} characters. Shown at the top of the page and wherever the word is marked.",
+        "details": "More about it (optional)",
+        "detailsHint": "Shown only on the word’s page. Leave a blank line between paragraphs.",
+        "related": "Related words",
+        "relatedHint": "Linked at the bottom of the page. Up to {max}.",
+        "fieldIn": "{field} ({language})",
+        "summary": "{count, plural, one {Fix # problem before saving:} other {Fix # problems before saving:}}",
+        "saving": "Saving…",
+        "create": "Add word",
+        "save": "Save changes",
+        "errors": {
+            "slugRequired": "Write an address.",
+            "slugFormat": "Use 2 to {max} lowercase letters, numbers and single hyphens, like mutual-aid.",
+            "slugReserved": "That address is used by the site. Choose another.",
+            "wordRequired": "Write the word.",
+            "wordTooLong": "Use {max} characters or fewer.",
+            "definitionRequired": "Write a short definition.",
+            "definitionTooLong": "Use {max} characters or fewer.",
+            "detailsTooLong": "Use {max} characters or fewer.",
+            "relatedTooMany": "Choose {max} related words or fewer."
+        },
+        "formErrors": {
+            "slugTaken": "A word already has that address. Edit that word instead, or choose another address.",
+            "notFound": "That word is gone. Go back to the dictionary to see the latest.",
+            "notAllowed": "Only super users can do this.",
+            "generic": "Something went wrong. Try again."
+        },
+        "importCsv": "Import from a CSV",
+        "imported": "{count, plural, =0 {No words were added.} one {Added # word.} other {Added # words.}}",
+        "import": {
+            "title": "Import words",
+            "intro": "Add many words at once from a CSV. Every row is checked first, and nothing is added until you choose Add. Words already in the dictionary are skipped, never changed: edit those one at a time.",
+            "formatTitle": "The file",
+            "formatSlug": "slug: the word’s address, like mutual-aid. Lowercase letters, numbers and hyphens.",
+            "formatLanguages": "For each language (en, es, vi, zh): en_word and en_definition are required, en_details is optional. A blank line in a cell starts a new paragraph.",
+            "formatRelated": "related (optional): other words’ addresses, separated by semicolons, like solidarity;organizer. They must be in the dictionary or in the same file.",
+            "formatLimit": "Up to {max} rows. Save it from your spreadsheet as CSV (UTF-8).",
+            "template": "Download the template",
+            "file": "CSV file",
+            "fileHint": "Checking adds nothing.",
+            "check": "Check file",
+            "checking": "Checking…",
+            "summary": "{file}: {total, plural, one {# row} other {# rows}}. {ready} ready, {exists} already in the dictionary, {problems} to fix.",
+            "ignored": "These columns aren’t used and were left out: {columns}",
+            "add": "{count, plural, one {Add # word} other {Add # words}}",
+            "confirmTitle": "{count, plural, one {Add # word?} other {Add # words?}}",
+            "confirmBody": "They appear at /dictionary right away, in every language. Rows already in the dictionary or with problems are skipped. There’s no undo, but you can edit each word afterward.",
+            "notYet": "Not yet",
+            "adding": "Adding…",
+            "confirm": "{count, plural, one {Add # word} other {Add # words}}",
+            "noneReady": "No rows are ready to add. Fix the file and check it again.",
+            "noWord": "No English word",
+            "line": "Line {line}",
+            "status": {
+                "ready": "Ready",
+                "exists": "Already in the dictionary: skipped",
+                "problems": "{count, plural, one {# problem} other {# problems}}"
+            },
+            "problems": {
+                "slugRepeated": "An earlier row has the same address.",
+                "relatedUnknown": "Not in the dictionary or this file: {value}"
+            },
+            "fileProblems": {
+                "empty": "The file has no rows.",
+                "tooBig": "The file is too big. Keep it under 500 KB.",
+                "tooManyRows": "The file has more than {max} rows. Split it into smaller files.",
+                "missingColumns": "The file is missing these columns: {columns}. Start from the template.",
+                "noFile": "Choose a CSV file.",
+                "notAllowed": "Only super users can do this.",
+                "generic": "Something went wrong. Try again."
+            },
+            "addErrors": {
+                "nothingReady": "No rows were ready, so nothing was added.",
+                "changed": "The dictionary changed while you were reviewing, so nothing was added. Check the file again.",
+                "notAllowed": "Only super users can do this.",
+                "generic": "Something went wrong. Try again."
             }
         }
     }

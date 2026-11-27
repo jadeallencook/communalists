@@ -33,6 +33,7 @@
 - Targets at least **24×24px** (44px for main actions on phones where we can).
 - Respect **reduced motion**: pulsing skeletons and spinners use `motion-safe:` (or stop) when the person asks for less motion.
 - Nothing times out without warning.
+- **Content that appears on hover** (tooltips, like marked dictionary words) also appears on keyboard focus, can be hovered without disappearing, and closes with Escape (WCAG 1.4.13). Never put the only way to reach something in a hover: a marked word is also a link to its page ([features/19](../features/19-dictionary.md#marked-words-definition)).
 
 **Understanding**
 

@@ -15,6 +15,30 @@ const nextConfig: NextConfig = {
                 destination: '/:locale/dashboard',
                 permanent: true,
             },
+            // The dictionary moved from /define to /dictionary (decision #57);
+            // shared word links keep working.
+            {
+                source: '/:locale(en|es|vi|zh)/define/:slug',
+                destination: '/:locale/dictionary/:slug',
+                permanent: true,
+            },
+            {
+                source: '/:locale(en|es|vi|zh)/define',
+                destination: '/:locale/dictionary',
+                permanent: true,
+            },
+            {
+                source: '/define/:slug',
+                destination: '/dictionary/:slug',
+                permanent: true,
+            },
+            { source: '/define', destination: '/dictionary', permanent: true },
+            // The list starts at A. Not permanent, in case that changes.
+            {
+                source: '/:locale(en|es|vi|zh)/dictionary',
+                destination: '/:locale/dictionary/a',
+                permanent: false,
+            },
         ];
     },
     cacheComponents: true,

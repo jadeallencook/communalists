@@ -1,6 +1,6 @@
 'use client';
 
-import { PlusIcon, UploadIcon } from 'lucide-react';
+import { BookOpenIcon, PlusIcon, UploadIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 
@@ -46,6 +46,8 @@ export interface AdminLogItem {
     orgName: string;
     actorName: string;
     targetName?: string;
+    /** A dictionary word, for word changes. */
+    word?: string;
     /** Already formatted. */
     on: string;
 }
@@ -64,6 +66,8 @@ export interface AdminPageProps {
     /** Deleted in the last 30 days: restorable. */
     deleted: AdminDeleted[];
     log: AdminLogItem[];
+    /** How many words the dictionary has. */
+    definitionCount: number;
     /** UI locale, sent so redirects stay in it. */
     locale: string;
     /** In the app, decideClaimAction via useActionState. */
@@ -85,12 +89,14 @@ export interface AdminPageProps {
 
 /**
  * /admin, for super users: requests to claim or take down unclaimed
- * organizations, the unclaimed organizations, and what super users did.
+ * organizations, the unclaimed organizations, the dictionary, and what
+ * super users did.
  */
 export function AdminPage({
     claims,
     unclaimed,
     log,
+    definitionCount,
     locale,
     formAction,
     pending = false,
@@ -388,6 +394,32 @@ export function AdminPage({
             </section>
 
             <section
+                aria-labelledby="admin-dictionary"
+                className="flex flex-col gap-3"
+            >
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                    <h2
+                        id="admin-dictionary"
+                        className="font-heading text-xl font-semibold"
+                    >
+                        {t('dictionaryTitle')}
+                        <span className="ml-2 text-base font-normal text-muted-foreground">
+                            {definitionCount}
+                        </span>
+                    </h2>
+                    <Button asChild variant="outline">
+                        <Link href="/admin/definitions">
+                            <BookOpenIcon aria-hidden />
+                            {t('manageDictionary')}
+                        </Link>
+                    </Button>
+                </div>
+                <p className="-mt-1 text-sm text-muted-foreground">
+                    {t('dictionaryHint')}
+                </p>
+            </section>
+
+            <section
                 aria-labelledby="admin-deleted"
                 className="flex flex-col gap-3"
             >
@@ -495,6 +527,7 @@ export function AdminPage({
                                         actor: entry.actorName,
                                         org: entry.orgName,
                                         target: entry.targetName ?? '',
+                                        word: entry.word ?? '',
                                     })}
                                 </span>
                                 <span className="text-xs text-muted-foreground">

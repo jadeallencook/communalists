@@ -9,6 +9,7 @@ import type { ReactNode } from 'react';
 
 import foodServe from '@/assets/food-serve.jpg';
 import { Button } from '@/components/atoms/button';
+import { Definition } from '@/components/molecules/definition';
 import { HeroActions } from '@/components/molecules/hero-actions';
 import { CallToAction } from '@/components/organisms/call-to-action';
 import { FeatureGrid } from '@/components/organisms/feature-grid';
@@ -35,6 +36,22 @@ export function HomePage({
     join = <HomeJoinBand />,
 }: HomePageProps) {
     const t = useTranslations('Home');
+    // Words marked in the copy (first use on the page only). Each language
+    // tags its own words in messages/*.json.
+    const words = {
+        network: (text: ReactNode) => (
+            <Definition slug="mutual-aid-network">{text}</Definition>
+        ),
+        mutualAid: (text: ReactNode) => (
+            <Definition slug="mutual-aid">{text}</Definition>
+        ),
+        toolLibrary: (text: ReactNode) => (
+            <Definition slug="tool-library">{text}</Definition>
+        ),
+        org: (text: ReactNode) => (
+            <Definition slug="organization">{text}</Definition>
+        ),
+    };
 
     return (
         <>
@@ -42,12 +59,12 @@ export function HomePage({
                 image={foodServe}
                 imageAlt={t('banner.imageAlt')}
                 title={t('banner.title')}
-                subtitle={t('banner.subtitle')}
+                subtitle={t.rich('banner.subtitle', words)}
                 action={heroActions}
             />
             <FeatureGrid
                 title={t('about.title')}
-                intro={t('about.body')}
+                intro={t.rich('about.body', words)}
                 note={t('about.languages')}
                 features={features.map(({ id, icon }) => ({
                     id,

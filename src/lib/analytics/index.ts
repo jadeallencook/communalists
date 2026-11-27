@@ -52,6 +52,12 @@ export interface AnalyticsEvents {
     'sign-up-submit': Record<string, never>;
     'sign-in-submit': Record<string, never>;
     'language-change': { to: string };
+    /** A dictionary word's page was opened. `slug` is the word's slug. */
+    'definition-view': { slug: string };
+    /** A word marked in our copy (<Definition>) was chosen, opening its page. */
+    'definition-open': { slug: string };
+    /** "Copy link" was pressed on a word's page. */
+    'definition-share': { slug: string };
 }
 
 export type AnalyticsEvent = keyof AnalyticsEvents;

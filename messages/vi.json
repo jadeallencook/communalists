@@ -31,14 +31,14 @@
     "Home": {
         "banner": {
             "title": "Đây là hình ảnh của cộng đồng",
-            "subtitle": "Communalists mang đến cho các mạng lưới tương trợ những công cụ để tổ chức, chia sẻ và chăm sóc lẫn nhau.",
+            "subtitle": "Communalists mang đến cho các <network>mạng lưới tương trợ</network> những công cụ để tổ chức, chia sẻ và chăm sóc lẫn nhau.",
             "imageAlt": "Một tình nguyện viên trao đĩa thức ăn nóng cho người hàng xóm tại bữa ăn cộng đồng"
         },
         "cta": "Tạo tài khoản",
         "dashboard": "Đến bảng điều khiển",
         "about": {
             "title": "Được xây dựng cho tương trợ",
-            "body": "Communalists là nền tảng miễn phí để hàng xóm cùng nhau tổ chức. Hãy lập một tổ chức cho nhóm tương trợ, thư viện dụng cụ hay câu lạc bộ cộng đồng của bạn, tìm các nhóm gần bạn và vận hành chúng bằng những công cụ được tạo ra cho cách tương trợ thực sự diễn ra.",
+            "body": "Communalists là nền tảng miễn phí để hàng xóm cùng nhau tổ chức. Hãy lập một <org>tổ chức</org> cho nhóm <mutualAid>tương trợ</mutualAid>, <toolLibrary>thư viện dụng cụ</toolLibrary> hay câu lạc bộ cộng đồng của bạn, tìm các nhóm gần bạn và vận hành chúng bằng những công cụ được tạo ra cho cách tương trợ thực sự diễn ra.",
             "languages": "Có sẵn bằng English, Español, Tiếng Việt và 中文."
         },
         "features": {
@@ -71,7 +71,8 @@
         "region": "Khu vực Vịnh San Francisco",
         "established": "Thành lập năm 2022",
         "openSource": "Mã nguồn mở",
-        "build": "Dựng từ commit {commit}"
+        "build": "Dựng từ commit {commit}",
+        "dictionary": "Từ điển"
     },
     "SignUp": {
         "metaTitle": "Tạo tài khoản",
@@ -819,7 +820,9 @@
             "deleteUnclaimed": "{actor} đã xóa {org}",
             "restoreOrganization": "{actor} đã khôi phục {org}",
             "makeUnclaimed": "{actor} đã chuyển {org} thành chưa được nhận",
-            "exportOrganizations": "{actor} đã tải về danh sách tổ chức"
+            "exportOrganizations": "{actor} đã tải về danh sách tổ chức",
+            "createDefinition": "{actor} đã thêm từ {word}",
+            "editDefinition": "{actor} đã chỉnh sửa từ {word}"
         },
         "unknownActor": "Một siêu người dùng",
         "errors": {
@@ -997,6 +1000,142 @@
                 "sameName": "Mở trang đã có. Nếu là cùng một nhóm, hãy bỏ dòng này. Nếu là nhóm khác, hãy sửa tên để mọi người phân biệt được, ví dụ thêm tên thành phố.",
                 "sameWebsite": "Mở trang đã có. Nếu là cùng một nhóm, hãy bỏ dòng này.",
                 "invalid": "Sửa dòng để chọn một giá trị từ danh sách."
+            }
+        },
+        "dictionaryTitle": "Từ điển",
+        "manageDictionary": "Quản lý từ điển",
+        "dictionaryHint": "Các từ được giải thích bằng ngôn ngữ dễ hiểu, mỗi từ có trang riêng tại /dictionary. Chỉ siêu người dùng mới thêm và chỉnh sửa."
+    },
+    "Dictionary": {
+        "title": "Từ điển",
+        "intro": "Những từ bạn sẽ gặp trên Communalists và trong công việc tương trợ, được giải thích bằng ngôn ngữ dễ hiểu.",
+        "back": "Từ điển: {letter}",
+        "eyebrow": "Từ điển",
+        "notTranslated": "Từ này chưa được viết bằng {language}, nên đang hiển thị bằng {shown}.",
+        "related": "Từ liên quan",
+        "resources": "Tìm hiểu thêm",
+        "resourceTypes": {
+            "book": "Sách",
+            "video": "Video",
+            "article": "Bài viết",
+            "link": "Liên kết"
+        },
+        "by": "của {name}",
+        "share": {
+            "copy": "Sao chép liên kết",
+            "copied": "Đã sao chép liên kết.",
+            "failed": "Không sao chép được. Đây là liên kết:"
+        },
+        "inline": {
+            "readMore": "Chọn để đọc thêm"
+        },
+        "letters": "Chữ cái",
+        "lettersHint": "Chọn một chữ cái để xem các từ bắt đầu bằng chữ đó. Chữ có dấu được xếp theo chữ gốc (Đ theo D).",
+        "letterTitle": "Từ điển: {letter}",
+        "count": "{count, plural, =0 {Chưa có từ} other {# từ}}",
+        "emptyLetter": "Chưa có từ nào bắt đầu bằng {letter}.",
+        "noWordsShort": "(chưa có từ)"
+    },
+    "AdminDefinitions": {
+        "metaTitle": "Từ điển",
+        "title": "Từ điển",
+        "intro": "Mọi từ trong từ điển. Mỗi từ có trang riêng mà ai cũng có thể mở và chia sẻ. Các thay đổi được ghi vào nhật ký siêu người dùng.",
+        "backToAdmin": "Công cụ siêu người dùng",
+        "add": "Thêm một từ",
+        "viewDictionary": "Xem từ điển",
+        "saved": "Đã lưu {word}.",
+        "viewWord": "Xem trang của {word}",
+        "listTitle": "Các từ",
+        "empty": "Chưa có từ nào. Hãy thêm từ đầu tiên.",
+        "updatedOn": "Cập nhật {date}",
+        "edit": "Sửa",
+        "editWord": "Sửa {word}",
+        "view": "Xem",
+        "backToList": "Từ điển",
+        "addTitle": "Thêm một từ",
+        "editTitle": "Sửa “{word}”",
+        "formIntro": "Viết từ này bằng cả bốn ngôn ngữ. Dùng câu ngắn và từ ngữ thông dụng, và giải thích cho người chưa từng nghe đến nó.",
+        "slug": "Địa chỉ",
+        "slugHint": "Chữ thường, số và dấu gạch nối, như mutual-aid. Địa chỉ giống nhau ở mọi ngôn ngữ và không thể thay đổi sau này, để các liên kết đã chia sẻ vẫn hoạt động.",
+        "slugFixed": "Không thể thay đổi địa chỉ, để các liên kết đã chia sẻ vẫn hoạt động.",
+        "word": "Từ",
+        "definition": "Định nghĩa ngắn",
+        "definitionHint": "Một hoặc hai câu, tối đa {max} ký tự. Hiển thị ở đầu trang và ở bất cứ nơi nào từ này được đánh dấu.",
+        "details": "Thông tin thêm (không bắt buộc)",
+        "detailsHint": "Chỉ hiển thị trên trang của từ. Để một dòng trống giữa các đoạn.",
+        "related": "Từ liên quan",
+        "relatedHint": "Được liên kết ở cuối trang. Tối đa {max}.",
+        "fieldIn": "{field} ({language})",
+        "summary": "{count, plural, other {Sửa # lỗi trước khi lưu:}}",
+        "saving": "Đang lưu…",
+        "create": "Thêm từ",
+        "save": "Lưu thay đổi",
+        "errors": {
+            "slugRequired": "Hãy viết một địa chỉ.",
+            "slugFormat": "Dùng từ 2 đến {max} chữ thường, số và dấu gạch nối đơn, như mutual-aid.",
+            "slugReserved": "Trang web đã dùng địa chỉ này. Hãy chọn địa chỉ khác.",
+            "wordRequired": "Hãy viết từ.",
+            "wordTooLong": "Dùng tối đa {max} ký tự.",
+            "definitionRequired": "Hãy viết một định nghĩa ngắn.",
+            "definitionTooLong": "Dùng tối đa {max} ký tự.",
+            "detailsTooLong": "Dùng tối đa {max} ký tự.",
+            "relatedTooMany": "Chọn tối đa {max} từ liên quan."
+        },
+        "formErrors": {
+            "slugTaken": "Đã có một từ dùng địa chỉ này. Hãy sửa từ đó, hoặc chọn địa chỉ khác.",
+            "notFound": "Từ này không còn nữa. Quay lại từ điển để xem bản mới nhất.",
+            "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+            "generic": "Đã xảy ra lỗi. Hãy thử lại."
+        },
+        "importCsv": "Nhập từ tệp CSV",
+        "imported": "{count, plural, =0 {Không có từ nào được thêm.} other {Đã thêm # từ.}}",
+        "import": {
+            "title": "Nhập từ",
+            "intro": "Thêm nhiều từ cùng lúc từ một tệp CSV. Mỗi dòng được kiểm tra trước, và không có gì được thêm cho đến khi bạn chọn Thêm. Các từ đã có trong từ điển sẽ được bỏ qua, không bao giờ bị thay đổi: hãy sửa từng từ một.",
+            "formatTitle": "Tệp",
+            "formatSlug": "slug: địa chỉ của từ, như mutual-aid. Chữ thường, số và dấu gạch nối.",
+            "formatLanguages": "Với mỗi ngôn ngữ (en, es, vi, zh): en_word và en_definition là bắt buộc, en_details không bắt buộc. Một dòng trống trong ô sẽ bắt đầu đoạn mới.",
+            "formatRelated": "related (không bắt buộc): địa chỉ của các từ khác, cách nhau bằng dấu chấm phẩy, như solidarity;organizer. Các từ này phải có trong từ điển hoặc trong cùng tệp.",
+            "formatLimit": "Tối đa {max} dòng. Lưu từ bảng tính dưới dạng CSV (UTF-8).",
+            "template": "Tải mẫu",
+            "file": "Tệp CSV",
+            "fileHint": "Kiểm tra không thêm gì cả.",
+            "check": "Kiểm tra tệp",
+            "checking": "Đang kiểm tra…",
+            "summary": "{file}: {total} dòng. {ready} sẵn sàng, {exists} đã có trong từ điển, {problems} cần sửa.",
+            "ignored": "Các cột này không được dùng và đã bị bỏ qua: {columns}",
+            "add": "{count, plural, other {Thêm # từ}}",
+            "confirmTitle": "{count, plural, other {Thêm # từ?}}",
+            "confirmBody": "Các từ sẽ xuất hiện tại /dictionary ngay lập tức, bằng mọi ngôn ngữ. Các dòng đã có trong từ điển hoặc có lỗi sẽ bị bỏ qua. Không thể hoàn tác, nhưng bạn có thể sửa từng từ sau đó.",
+            "notYet": "Chưa",
+            "adding": "Đang thêm…",
+            "confirm": "{count, plural, other {Thêm # từ}}",
+            "noneReady": "Không có dòng nào sẵn sàng để thêm. Hãy sửa tệp và kiểm tra lại.",
+            "noWord": "Không có từ tiếng Anh",
+            "line": "Dòng {line}",
+            "status": {
+                "ready": "Sẵn sàng",
+                "exists": "Đã có trong từ điển: bỏ qua",
+                "problems": "{count, plural, other {# lỗi}}"
+            },
+            "problems": {
+                "slugRepeated": "Một dòng trước đó có cùng địa chỉ.",
+                "relatedUnknown": "Không có trong từ điển hoặc tệp này: {value}"
+            },
+            "fileProblems": {
+                "empty": "Tệp không có dòng nào.",
+                "tooBig": "Tệp quá lớn. Hãy giữ dưới 500 KB.",
+                "tooManyRows": "Tệp có hơn {max} dòng. Hãy chia thành các tệp nhỏ hơn.",
+                "missingColumns": "Tệp thiếu các cột sau: {columns}. Hãy bắt đầu từ mẫu.",
+                "noFile": "Hãy chọn một tệp CSV.",
+                "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+                "generic": "Đã xảy ra lỗi. Hãy thử lại."
+            },
+            "addErrors": {
+                "nothingReady": "Không có dòng nào sẵn sàng, nên không có gì được thêm.",
+                "changed": "Từ điển đã thay đổi trong lúc bạn xem lại, nên không có gì được thêm. Hãy kiểm tra lại tệp.",
+                "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+                "generic": "Đã xảy ra lỗi. Hãy thử lại."
             }
         }
     }

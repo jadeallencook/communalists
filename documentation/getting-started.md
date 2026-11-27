@@ -42,7 +42,7 @@ While `pnpm dev` runs, every Firestore read is printed as `[firestore read #N] c
 
 ### Test data
 
-`pnpm dev` adds these whenever any are missing. To put them back the way they started, use **Reset test data** in the dev toolbar, or run `pnpm seed` with the emulators running. The password for all of them is `password123`.
+`pnpm dev` adds these whenever any are missing, along with dictionary words from any CSVs in `research/definitions/` (git-ignored, so only if you have the file; otherwise import one at `/admin/definitions/import`, see [features/19](features/19-dictionary.md#starter-words)). To put them back the way they started, use **Reset test data** in the dev toolbar, or run `pnpm seed` with the emulators running. The password for all of them is `password123`.
 
 The toolbar lists these four first:
 
@@ -51,7 +51,7 @@ The toolbar lists these four first:
 | `maya.thompson@example.com`  | Maya Thompson, San Jose, English | Owns South Bay Mutual Aid and Alum Rock Tenants Union; moderates Oakland Auto Club; member of Fremont Childcare Co-op                       |
 | `luis.hernandez@example.com` | Luis Hernández, Oakland, Spanish | Owns Oakland Auto Club and Mutual Aid Disaster Network; member of South Bay Mutual Aid, East Bay Tool Library and Little Saigon Food Pantry |
 | `sam.rivera@example.com`     | None: signs in to account setup  | None                                                                                                                                        |
-| `jordan.lee@example.com`     | Jordan Lee, San Jose, English    | **Super user** (locally only): `/admin`, adds and edits unclaimed organizations, decides claims. Member of nothing                          |
+| `jordan.lee@example.com`     | Jordan Lee, San Jose, English    | **Super user** (locally only): `/admin`, adds and edits unclaimed organizations and dictionary words, decides claims. Member of nothing     |
 
 Under **More accounts** (collapsed) are eight more: Thanh Nguyễn, Wei Chen, Aisha Bello, Daniel Park, Rosa Martínez, Priya Patel, Marcus Johnson and Linh Trần. Between them they cover all four UI languages, own the four newer groups, and fill out member lists, so groups have between 3 and 8 members. Mark an account `"featured": true` in `seed-data.json` to list it at the top, and `"platformAdmin": true` to make it a super user locally (on top of any UIDs in `PLATFORM_ADMIN_UIDS`). To make your own local account a super user, add its UID to `PLATFORM_ADMIN_UIDS` in `.env.local` and restart. Emails use `example.com` and `example.net`, which are reserved and can never reach a real person.
 
