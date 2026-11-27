@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import {
     FeatureCard,
     type FeatureCardProps,
@@ -5,7 +7,8 @@ import {
 
 export interface FeatureGridProps {
     title: string;
-    intro?: string;
+    /** Text, or rich text (for example with marked words). */
+    intro?: ReactNode;
     note?: string;
     features: (FeatureCardProps & { id: string })[];
     footnote?: string;

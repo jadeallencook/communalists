@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 
 import { AdminPageLoading } from '@/components/pages/admin-page';
 import { requirePlatformAdmin } from '@/lib/auth/platform-admin';
+import { getDefinitions } from '@/lib/definitions/store';
 import { getAdminAuth } from '@/lib/firebase/admin';
 import {
     getAdminLog,
@@ -32,14 +33,16 @@ export default function Page() {
 
 async function AdminServerContainer() {
     await requirePlatformAdmin('/admin');
-    const [claims, unclaimed, deleted, log, format, t] = await Promise.all([
-        getPendingClaims(),
-        getUnclaimedOrganizations(),
-        getRecentlyDeleted(),
-        getAdminLog(),
-        getFormatter(),
-        getTranslations('Admin'),
-    ]);
+    const [claims, unclaimed, deleted, log, definitions, format, t] =
+        await Promise.all([
+            getPendingClaims(),
+            getUnclaimedOrganizations(),
+            getRecentlyDeleted(),
+            getAdminLog(),
+            getDefinitions(),
+            getFormatter(),
+            getTranslations('Admin'),
+        ]);
     const date = (at?: number) =>
         at ? format.dateTime(new Date(at), { dateStyle: 'medium' }) : '';
 
@@ -90,12 +93,14 @@ async function AdminServerContainer() {
                 deletedOn: date(org.archivedAt),
                 restoreUntil: date(restoreDeadline(org.archivedAt)),
             }))}
+            definitionCount={definitions.length}
             log={log.map((entry) => ({
                 id: entry.id,
                 action: entry.action,
                 orgName: entry.orgName,
                 actorName: names.get(entry.actorUid) ?? t('unknownActor'),
                 targetName: entry.targetName,
+                word: entry.word,
                 on: date(entry.at),
             }))}
         />

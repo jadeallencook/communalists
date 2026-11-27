@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 
+import { Link } from '@/i18n/navigation';
 import type { BuildInfo } from '@/lib/build-info';
 import { REPOSITORY_URL } from '@/lib/build-info';
 
@@ -10,7 +11,7 @@ export interface SiteFooterProps {
 
 const linkClass = 'underline-offset-4 hover:text-foreground hover:underline';
 
-/** Bottom of every page: who built it, the open-source link, and the running commit. */
+/** Bottom of every page: who built it, the dictionary, the open-source link, and the running commit. */
 export function SiteFooter({ build }: SiteFooterProps) {
     const t = useTranslations('Footer');
 
@@ -21,6 +22,10 @@ export function SiteFooter({ build }: SiteFooterProps) {
                     {t('developedBy')} · {t('region')} · {t('established')}
                 </p>
                 <p>
+                    <Link href="/dictionary" className={linkClass}>
+                        {t('dictionary')}
+                    </Link>
+                    {' · '}
                     <a
                         href={REPOSITORY_URL}
                         target="_blank"

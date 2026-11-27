@@ -9,6 +9,11 @@ import { hasLocale } from 'next-intl';
 import { DEFAULT_NEXT_PATH } from '@/lib/account-setup';
 import { signInWithPassword } from '@/lib/auth/password-sign-in';
 import { startSession } from '@/lib/auth/session';
+import {
+    DEFINITIONS_TAG,
+    definitionTag,
+    getDefinitionSlugsFresh,
+} from '@/lib/definitions/store';
 import { isLocalDev, isTestAccount, SEEDED, TEST_PASSWORD } from '@/lib/dev';
 import {
     DIRECTORY_TAG,
@@ -62,7 +67,13 @@ export async function resetTestData(): Promise<ResetTestDataState> {
     try {
         await promisify(execFile)(
             process.execPath,
-            ['scripts/seed.mjs', '--from-app'],
+            [
+                // seed.mjs imports src/lib/csv.ts; Node strips its types but
+                // warns that package.json has no "type". Harmless.
+                '--disable-warning=MODULE_TYPELESS_PACKAGE_JSON',
+                'scripts/seed.mjs',
+                '--from-app',
+            ],
             { cwd: process.cwd(), timeout: 60_000 }
         );
     } catch (error) {
@@ -80,6 +91,10 @@ export async function resetTestData(): Promise<ResetTestDataState> {
         updateTag(orgMembersTag(id));
     }
     updateTag(DIRECTORY_TAG);
+    updateTag(DEFINITIONS_TAG);
+    // Seeded words come from research/definitions/; clear every word's page.
+    for (const slug of await getDefinitionSlugsFresh())
+        updateTag(definitionTag(slug));
     refresh();
     return { status: 'done', at: Date.now() };
 }

@@ -9,6 +9,7 @@ const meta = {
     parameters: { layout: 'fullscreen' },
     args: {
         locale: 'en',
+        definitionCount: 12,
         formAction: fn(),
         restoreAction: fn(),
         deleted: [
@@ -79,6 +80,14 @@ const meta = {
                 targetName: 'Thanh Nguyễn',
                 on: 'Nov 20, 2026',
             },
+            {
+                id: '3',
+                action: 'createDefinition',
+                orgName: '',
+                actorName: 'Jordan Lee',
+                word: 'Mutual aid',
+                on: 'Nov 19, 2026',
+            },
         ],
     },
 } satisfies Meta<typeof AdminPage>;
@@ -88,7 +97,13 @@ type Story = StoryObj<typeof meta>;
 
 export const WithRequests: Story = {};
 export const Empty: Story = {
-    args: { claims: [], unclaimed: [], deleted: [], log: [] },
+    args: {
+        claims: [],
+        unclaimed: [],
+        deleted: [],
+        log: [],
+        definitionCount: 0,
+    },
 };
 /** After restoring: the organization leaves the list and the result is announced. */
 export const Restored: Story = {

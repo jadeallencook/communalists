@@ -1,4 +1,5 @@
 import { phoneForDisplay, normalizePhone } from '@/lib/phone';
+import { parseCsv, toCsv as toCsvText } from '@/lib/csv';
 import {
     isSocialPlatform,
     parseSocialHandle,
@@ -151,56 +152,12 @@ export interface CheckedRow {
     input?: OrganizationInput;
 }
 
-/**
- * RFC 4180 CSV: quoted fields may hold commas, quotes ("") and line breaks.
- * Accepts CRLF or LF and a leading byte-order mark. Blank lines are dropped.
- */
-export function parseCsv(text: string): string[][] {
-    const rows: string[][] = [];
-    let row: string[] = [];
-    let field = '';
-    let quoted = false;
-    const source = text.replace(/^﻿/, '');
-    for (let i = 0; i < source.length; i++) {
-        const char = source[i];
-        if (quoted) {
-            if (char === '"' && source[i + 1] === '"') {
-                field += '"';
-                i++;
-            } else if (char === '"') quoted = false;
-            else field += char;
-        } else if (char === '"' && field === '') quoted = true;
-        else if (char === ',') {
-            row.push(field);
-            field = '';
-        } else if (char === '\n' || char === '\r') {
-            if (char === '\r' && source[i + 1] === '\n') i++;
-            row.push(field);
-            rows.push(row);
-            row = [];
-            field = '';
-        } else field += char;
-    }
-    if (field !== '' || row.length > 0) {
-        row.push(field);
-        rows.push(row);
-    }
-    return rows.filter((r) => r.some((cell) => cell.trim() !== ''));
-}
-
-const csvCell = (value = '') =>
-    /[",\r\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
-
 /** The reviewed rows as a CSV in the import's own format (all columns, in order). */
 export function toCsv(rows: ImportValues[]): string {
-    return [
-        IMPORT_COLUMNS.join(','),
-        ...rows.map((values) =>
-            IMPORT_COLUMNS.map((c) => csvCell(values[c])).join(',')
-        ),
-    ]
-        .join('\n')
-        .concat('\n');
+    return toCsvText(
+        IMPORT_COLUMNS,
+        rows.map((values) => IMPORT_COLUMNS.map((c) => values[c] ?? ''))
+    );
 }
 
 /** Splits the file into rows keyed by column. Unknown columns are reported, not read. */

@@ -5,7 +5,8 @@ export interface HeroBannerProps {
     image: StaticImageData;
     imageAlt: string;
     title: string;
-    subtitle?: string;
+    /** Text, or rich text (for example with marked words). */
+    subtitle?: ReactNode;
     /** Usually a call-to-action button. */
     action?: ReactNode;
 }

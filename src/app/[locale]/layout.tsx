@@ -16,6 +16,7 @@ import { isLocalDev, TEST_ACCOUNTS } from '@/lib/dev';
 import { getSiteUrl } from '@/lib/site';
 
 import { Analytics } from './analytics';
+import { DefinitionsContainer } from './definitions-container';
 import { DevToolbarContainer } from './dev-toolbar-container';
 import { HeaderAccount, HeaderNav } from './header-slots';
 
@@ -86,7 +87,9 @@ export default async function LocaleLayout({
                             }
                         />
                         <main id="main" className="flex-1">
-                            {children}
+                            <DefinitionsContainer>
+                                {children}
+                            </DefinitionsContainer>
                         </main>
                         <SiteFooter build={currentBuild()} />
                         {/* Umami loads on production only; see technical/analytics.md. */}

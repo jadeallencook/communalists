@@ -106,4 +106,7 @@ export type AdminAction =
     | 'deleteUnclaimed'
     | 'restoreOrganization'
     | 'makeUnclaimed'
-    | 'exportOrganizations';
+    | 'exportOrganizations'
+    // Dictionary words (documentation/features/19-dictionary.md).
+    | 'createDefinition'
+    | 'editDefinition';

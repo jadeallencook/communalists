@@ -1,6 +1,8 @@
 #!/usr/bin/env node
-// `pnpm seed`: test accounts and organizations (scripts/seed-data.json) in
-// the local emulators. Running it again resets them.
+// `pnpm seed`: test accounts and organizations (scripts/seed-data.json), and
+// dictionary words from any CSVs in research/definitions/ (git ignores it; the
+// format is the /admin/definitions/import one), in the local emulators.
+// Running it again resets them.
 //
 //   --if-missing  Seed only if any seeded account or organization is missing
 //                 (`pnpm dev` runs this at every start). Otherwise do nothing.
@@ -15,12 +17,15 @@
 // src/lib/organizations/index.ts createOrganization). If you change those
 // shapes, change this too. Data model: documentation/technical/data-model.md.
 
-import { readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 
 import { initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import { geohashForLocation } from 'geofire-common';
+
+// Plain TypeScript with no imports: Node strips the types.
+import { parseCsv } from '../src/lib/csv.ts';
 
 const PROJECT = 'demo-communalists';
 process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
@@ -40,6 +45,38 @@ const fail = (message) => {
 const readJson = (path) =>
     JSON.parse(readFileSync(new URL(path, import.meta.url)));
 const { password, users, organizations } = readJson('./seed-data.json');
+
+// --- Dictionary words: every CSV in research/definitions/, in the import's
+// columns (src/lib/definitions/import.ts). Unchecked here; check a file with
+// /admin/definitions/import first. Missing folder: no words.
+const WORDS_DIR = new URL('../research/definitions/', import.meta.url);
+const LOCALES = ['en', 'es', 'vi', 'zh'];
+const definitions = (existsSync(WORDS_DIR) ? readdirSync(WORDS_DIR) : [])
+    .filter((name) => name.endsWith('.csv'))
+    .flatMap((name) => {
+        const [header, ...rows] = parseCsv(
+            readFileSync(new URL(name, WORDS_DIR), 'utf8')
+        );
+        const col = (row, name) => (row[header.indexOf(name)] ?? '').trim();
+        return rows.map((row) => ({
+            slug: col(row, 'slug').toLowerCase(),
+            related: col(row, 'related')
+                .split(';')
+                .map((s) => s.trim().toLowerCase())
+                .filter(Boolean),
+            text: Object.fromEntries(
+                LOCALES.map((l) => [
+                    l,
+                    {
+                        word: col(row, `${l}_word`),
+                        definition: col(row, `${l}_definition`),
+                        details: col(row, `${l}_details`),
+                    },
+                ])
+            ),
+        }));
+    })
+    .filter((d) => d.slug);
 
 // --- Places, from the same data file the app uses.
 const us = readJson('../src/lib/places/data/us.json');
@@ -116,6 +153,13 @@ if (ifMissing) {
             db
                 .collection('organizations')
                 .doc(id)
+                .get()
+                .then((s) => s.exists)
+        ),
+        ...definitions.map(({ slug }) =>
+            db
+                .collection('definitions')
+                .doc(slug)
                 .get()
                 .then((s) => s.exists)
         ),
@@ -351,8 +395,28 @@ for (const {
     await batch.commit();
 }
 
+// --- Dictionary words from research/definitions/, added by the seeded super
+// user. Those words are reset; words you added in the app are left alone.
+// The document matches saveDefinition in src/lib/definitions/store.ts.
+const admin = users.find((u) => u.platformAdmin)?.uid ?? 'seed-jordan';
+// Batches hold 500 writes; commit every 400 words.
+for (let i = 0; i < definitions.length; i += 400) {
+    const wordBatch = db.batch();
+    for (const definition of definitions.slice(i, i + 400)) {
+        wordBatch.set(db.collection('definitions').doc(definition.slug), {
+            ...definition,
+            resources: [],
+            createdBy: admin,
+            createdAt: now,
+            updatedBy: admin,
+            updatedAt: now,
+        });
+    }
+    await wordBatch.commit();
+}
+
 say(
-    `Seeded ${users.length} accounts and ${organizations.length - skipped} organizations. Password for all: ${password}. Main accounts:`
+    `Seeded ${users.length} accounts, ${organizations.length - skipped} organizations and ${definitions.length} dictionary words. Password for all: ${password}. Main accounts:`
 );
 for (const { email, profile, platformAdmin } of users.filter(
     (u) => u.featured

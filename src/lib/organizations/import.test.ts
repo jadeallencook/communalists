@@ -6,7 +6,6 @@ import {
     formValuesOf,
     IMPORT_MAX_ROWS,
     keepDatabaseProblems,
-    parseCsv,
     previewOf,
     readImportFile,
     toCsv,
@@ -39,22 +38,6 @@ const row = (values: ImportRow['values']): ImportRow => ({
         languages: 'en',
         ...values,
     },
-});
-
-describe('parseCsv', () => {
-    it('reads quoted commas, escaped quotes and line breaks', () => {
-        expect(parseCsv('a,b\r\n"x, y","say ""hi""\nthere"\n\n')).toEqual([
-            ['a', 'b'],
-            ['x, y', 'say "hi"\nthere'],
-        ]);
-    });
-
-    it('drops a byte-order mark and keeps empty cells', () => {
-        expect(parseCsv('﻿a,b,c\n1,,3')).toEqual([
-            ['a', 'b', 'c'],
-            ['1', '', '3'],
-        ]);
-    });
 });
 
 describe('readImportFile', () => {
