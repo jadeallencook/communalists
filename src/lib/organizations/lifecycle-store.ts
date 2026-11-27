@@ -12,6 +12,7 @@ import {
     canDelete,
     canRestore,
     deleteConfirmed,
+    RESTORE_DAYS,
     makeUnclaimedProblem,
     type MakeUnclaimedProblem,
 } from './lifecycle';
@@ -157,9 +158,15 @@ export async function getRecentlyDeleted(): Promise<DeletedOrganization[]> {
     'use cache';
     cacheTag(DELETED_TAG);
     cacheLife('minutes');
-    // One equality filter: no index needed. The 30 days are checked in memory.
+    // Restoring removes archivedAt, so a range on it alone finds what's still
+    // deleted (one field: no composite index). The cutoff is checked again in
+    // memory with the exact rule.
     const snapshot = await organizations()
-        .where('status', '==', 'archived')
+        .where(
+            'archivedAt',
+            '>=',
+            new Date(Date.now() - RESTORE_DAYS * 86_400_000)
+        )
         .get();
     logRead('organizations', Math.max(snapshot.size, 1));
     const now = Date.now();

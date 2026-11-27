@@ -30,6 +30,8 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [059](059-umami-reports-on-the-admin-dashboard.md)                              | Umami reports on the admin dashboard                                                               | 2026-11-27 |
+| [058](058-super-user-dashboard-counts-search-and-missing-details.md)            | Super-user dashboard: counts, search, and missing details                                          | 2026-11-27 |
 | [057](057-dictionary-at-slash-dictionary-with-a-to-z-letters.md)                | The dictionary at /dictionary, with A–Z letter pages                                               | 2026-11-26 |
 | [056](056-dictionary-words-title-case-in-english.md)                            | Dictionary words in title case in English                                                          | 2026-11-26 |
 | [055](055-marked-words-hover-tooltip-click-opens-page.md)                       | Marked words: hover shows the definition, a click opens its page                                   | 2026-11-26 |

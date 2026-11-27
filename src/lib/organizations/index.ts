@@ -14,6 +14,7 @@ import type { OrganizationInput } from '@/lib/validation/organization';
 
 import { effectiveRole } from '@/lib/platform-admin';
 
+import { missingDetails } from './details';
 import { changedFields, COPIED_FIELDS, type OrgEditField } from './edit';
 import { claimBlocks, handleHeldUntil, nextHandleChangeAt } from './handle';
 import {
@@ -293,6 +294,8 @@ function newOrganizationFields(
         ...(input.contactEmail ? { contactEmail: input.contactEmail } : {}),
         ...(input.phone ? { phone: input.phone } : {}),
         ...(input.foundedYear ? { foundedYear: input.foundedYear } : {}),
+        // Derived, so super users can count pages that need research.
+        missingDetails: missingDetails(input),
     };
 }
 
@@ -1002,6 +1005,7 @@ export async function updateOrganization(
             contactEmail: input.contactEmail ?? FieldValue.delete(),
             phone: input.phone ?? FieldValue.delete(),
             foundedYear: input.foundedYear ?? FieldValue.delete(),
+            missingDetails: missingDetails(input),
             updatedAt: stamp,
             ...(handleChanged ? { handleChangedAt: stamp } : {}),
         });

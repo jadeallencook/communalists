@@ -57,6 +57,22 @@ Events are named with stable kebab-case keys, never UI text, so reports read the
 
 **Profile cities reach Umami.** Since [decision #52](../decisions/052-find-always-has-a-city-profile-or-default.md), plain `/find` redirects a signed-in visitor to their profile's city, so that city is in the page view and the `find-search` event. It's a general area (a city, never an address), and Umami can't link it to an account. It used to be sent as `"profile"`.
 
+## Reports on /admin
+
+The super-user dashboard's **Visitors** section reads Umami's API on the server ([decision #59](../decisions/059-umami-reports-on-the-admin-dashboard.md)):
+
+- **Visitors and page views** for the last 30 days, from `GET /websites/{id}/stats`, compared with the period before when Umami sends it.
+- **Most-viewed organizations**, from `GET /websites/{id}/metrics?type=path`: the `/org/{handle}` paths, all languages added up and named from Firestore (cached). A handle with no active organization says so.
+- **Most-searched cities**, from the same response: the `/find/{country}/{region}/{city}` paths. Each shows how many **local** organizations `/find` lists there **today** within the default 25 miles, before filters, using the same cached directory reads as `/find`. Under 3 is labeled **Needs research**.
+
+Details:
+
+- **Key:** `UMAMI_API_KEY`, set on Vercel Production only and marked Sensitive (added 2026-11-27). Umami keys can use almost the whole account API, not just read, so the key is read only in `src/lib/analytics/umami-store.ts` (server-only), never logged and never sent to the page. If it leaks, delete it in Umami and make a new one. Without it, the section says "Not connected" (local development, previews).
+- **Calls:** `https://api.umami.is/v1` with `Authorization: Bearer <key>`, and `startAt`/`endAt` in epoch milliseconds. Each report is two calls, cached for an hour. Umami allows 50 calls per 15 seconds per key. A failed or unexpected response isn't cached: the section says it couldn't load, and the next view tries again. `src/lib/analytics/reports.ts` (tested) checks responses with zod, and also accepts the older `{ value }` stats shape.
+- **Why page paths, not event data:** on 2026-11-27 the API docs pages for event data were missing, while the metrics response (`[{ x, y }]`, a value and its count) was confirmed from Umami's source. Page paths already hold the handle and the city, so no new event was needed.
+- **Not checked against the live API yet,** because no key exists locally. After deploying, check the section on production, and fix `reports.ts` if Umami's responses differ.
+- **Adding the key:** `vercel env add` put the key in the variable's **name** twice, which exposed it. Use the dashboard instead (Project → Settings → Environments → Production → Environment Variables), where key and value are separate fields. Then check with `vercel env ls` that the name is `UMAMI_API_KEY`.
+
 ## Adding an event
 
 1. Add it to `AnalyticsEvents` in `src/lib/analytics/index.ts`, with its data. Never personal data: no names, emails, phone numbers, addresses or typed text. Handles, slugs, enum keys and public URLs are fine.
