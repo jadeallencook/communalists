@@ -14,7 +14,7 @@ const meta = {
         imageAlt: 'A volunteer hands a plate of hot food to a neighbor',
         title: 'This is what community looks like',
         subtitle:
-            'Communalists gives mutual aid networks the tools to organize, share and take care of each other.',
+            'Find the help you need or offer help you can. Communalists provides the tools to connect with people and organizations to support true mutual aid within our communities.',
     },
 } satisfies Meta<typeof HeroBanner>;
 
