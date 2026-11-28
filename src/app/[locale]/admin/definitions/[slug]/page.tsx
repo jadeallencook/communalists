@@ -18,16 +18,21 @@ export async function generateMetadata(): Promise<Metadata> {
     return { title: t('metaTitle'), robots: { index: false, follow: false } };
 }
 
-export default function Page({ params }: Props) {
+export default function Page({ params, searchParams }: Props) {
     return (
         <Suspense fallback={<AdminDefinitionsPageLoading />}>
-            <EditDefinitionContainer params={params} />
+            <EditDefinitionContainer
+                params={params}
+                searchParams={searchParams}
+            />
         </Suspense>
     );
 }
 
-async function EditDefinitionContainer({ params }: Pick<Props, 'params'>) {
+async function EditDefinitionContainer({ params, searchParams }: Props) {
     const slug = decodeURIComponent((await params).slug);
+    // `?from=page`: opened from the word's page, so go back there after saving.
+    const returnTo = (await searchParams).from === 'page' ? 'page' : 'list';
     await requirePlatformAdmin(`/admin/definitions/${slug}`);
     if (slugProblem(slug)) notFound();
     // Fresh: the form must start from what's saved now, not a cached copy.
@@ -46,6 +51,7 @@ async function EditDefinitionContainer({ params }: Pick<Props, 'params'>) {
             mode="edit"
             slug={slug}
             word={localize(definition, locale).word}
+            returnTo={returnTo}
             form={
                 <DefinitionFormContainer
                     mode="edit"
@@ -55,6 +61,7 @@ async function EditDefinitionContainer({ params }: Pick<Props, 'params'>) {
                         related: definition.related,
                     }}
                     relatedOptions={relatedOptions}
+                    returnTo={returnTo}
                 />
             }
         />

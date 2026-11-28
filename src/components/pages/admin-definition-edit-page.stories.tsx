@@ -3,7 +3,7 @@ import { fn } from 'storybook/test';
 
 import {
     mutualAidValues,
-    relatedOptions,
+    relatedField,
 } from '@/components/organisms/definition-fixtures';
 import { DefinitionForm } from '@/components/organisms/definition-form';
 
@@ -18,7 +18,7 @@ const meta = {
         form: (
             <DefinitionForm
                 mode="create"
-                relatedOptions={relatedOptions}
+                related={relatedField({ selected: [] })}
                 locale="en"
                 state={{}}
                 formAction={fn()}
@@ -40,11 +40,16 @@ export const Edit: Story = {
             <DefinitionForm
                 mode="edit"
                 initial={mutualAidValues}
-                relatedOptions={relatedOptions}
+                related={relatedField()}
                 locale="en"
                 state={{}}
                 formAction={fn()}
             />
         ),
     },
+};
+
+/** Opened from the word's page (Edit there): the back link returns to it. */
+export const EditFromPage: Story = {
+    args: { ...Edit.args, returnTo: 'page' },
 };

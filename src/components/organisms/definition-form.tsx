@@ -14,13 +14,15 @@ import {
 } from '@/components/atoms/field';
 import { Input } from '@/components/atoms/input';
 import { Textarea } from '@/components/atoms/textarea';
-import { ChoiceGroup } from '@/components/molecules/choice-group';
+import {
+    RelatedWordsField,
+    type RelatedWordsFieldProps,
+} from '@/components/molecules/related-words-field';
 import { localeNames } from '@/i18n/routing';
 import {
     DEFINITION_LOCALES,
     DEFINITION_MAX,
     DETAILS_MAX,
-    RELATED_MAX,
     SLUG_MAX,
     WORD_MAX,
     type DefinitionEntry,
@@ -53,14 +55,16 @@ export interface DefinitionFormProps {
     mode: 'create' | 'edit';
     /** What the form starts with (the word being edited). */
     initial?: DefinitionFormValues;
-    /** Other words that can be linked, already in the UI language. */
-    relatedOptions: { slug: string; word: string }[];
+    /** The related-words picker, from `useRelatedWords` (wired by the container). */
+    related: Omit<RelatedWordsFieldProps, 'id' | 'error'>;
     /** UI locale, sent so the server answers in it. */
     locale: string;
     state: DefinitionFormState;
     /** In the app, saveDefinitionAction via useActionState. */
     formAction: (formData: FormData) => void;
     pending?: boolean;
+    /** Where saving goes: the word's page when the form was opened from it, else the list. */
+    returnTo?: 'page' | 'list';
 }
 
 /** A field's name for people: "Word (Español)", "Address". */
@@ -98,11 +102,12 @@ const FIELD_ORDER: DefinitionField[] = [
 export function DefinitionForm({
     mode,
     initial,
-    relatedOptions,
+    related,
     locale,
     state,
     formAction,
     pending = false,
+    returnTo = 'list',
 }: DefinitionFormProps) {
     const t = useTranslations('AdminDefinitions');
     const values = state.values ?? initial;
@@ -142,6 +147,7 @@ export function DefinitionForm({
         <form action={formAction} noValidate className="flex flex-col gap-8">
             <input type="hidden" name="locale" value={locale} />
             <input type="hidden" name="mode" value={mode} />
+            <input type="hidden" name="returnTo" value={returnTo} />
 
             <div
                 ref={summaryRef}
@@ -302,22 +308,12 @@ export function DefinitionForm({
                     );
                 })}
 
-                {relatedOptions.length > 0 && (
-                    <div id={fieldId('related')} tabIndex={-1}>
-                        <ChoiceGroup
-                            kind="checkbox"
-                            name="related"
-                            legend={t('related')}
-                            hint={t('relatedHint', { max: RELATED_MAX })}
-                            options={relatedOptions.map((option) => ({
-                                value: option.slug,
-                                label: option.word,
-                            }))}
-                            defaultValue={values?.related ?? []}
-                            error={errorFor('related')}
-                            columns
-                        />
-                    </div>
+                {related.hasOptions && (
+                    <RelatedWordsField
+                        {...related}
+                        id={fieldId('related')}
+                        error={errorFor('related')}
+                    />
                 )}
             </FieldGroup>
 

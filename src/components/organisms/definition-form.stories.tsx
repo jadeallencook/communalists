@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
-import { mutualAidValues, relatedOptions } from './definition-fixtures';
+import { mutualAidValues, relatedField } from './definition-fixtures';
 import { DefinitionForm } from './definition-form';
 
 const meta = {
@@ -9,7 +9,7 @@ const meta = {
     component: DefinitionForm,
     args: {
         mode: 'create',
-        relatedOptions,
+        related: relatedField({ selected: [] }),
         locale: 'en',
         state: {},
         formAction: fn(),
@@ -24,7 +24,7 @@ export const Create: Story = {};
 
 /** Editing: the address is fixed, so shared links keep working. */
 export const Edit: Story = {
-    args: { mode: 'edit', initial: mutualAidValues },
+    args: { mode: 'edit', initial: mutualAidValues, related: relatedField() },
 };
 
 /** After a save with problems: the summary takes focus and links to each field. */
@@ -59,7 +59,21 @@ export const SlugTaken: Story = {
 };
 
 /** The first word: nothing to link to yet. */
-export const NoOtherWords: Story = { args: { relatedOptions: [] } };
+export const NoOtherWords: Story = {
+    args: { related: relatedField({ selected: [], hasOptions: false }) },
+};
+
+/** Too many related words (the server's check, if the limit was bypassed). */
+export const RelatedError: Story = {
+    args: {
+        related: relatedField(),
+        state: {
+            at: 1,
+            fieldErrors: { related: 'relatedTooMany' },
+            values: mutualAidValues,
+        },
+    },
+};
 
 export const Saving: Story = {
     args: { mode: 'edit', initial: mutualAidValues, pending: true },

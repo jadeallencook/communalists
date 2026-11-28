@@ -1,5 +1,10 @@
 // Sample dictionary words for stories.
-import type { DefinitionFormValues } from './definition-form';
+import { fn } from 'storybook/test';
+
+import type {
+    DefinitionFormValues,
+    DefinitionFormProps,
+} from './definition-form';
 
 export const mutualAidValues: DefinitionFormValues = {
     slug: 'mutual-aid',
@@ -41,3 +46,20 @@ export const relatedOptions = [
     { slug: 'solidarity', word: 'Solidarity' },
     { slug: 'tenant-union', word: 'Tenant union' },
 ];
+
+/** The related-words picker's props, still (stories that type use `useRelatedWords`). */
+export const relatedField = (
+    overrides: Partial<DefinitionFormProps['related']> = {}
+): DefinitionFormProps['related'] => ({
+    selected: [{ slug: 'solidarity', word: 'Solidarity' }],
+    query: '',
+    onQueryChange: fn(),
+    results: [],
+    onAdd: fn(),
+    onRemove: fn(),
+    atMax: false,
+    max: 10,
+    change: null,
+    hasOptions: true,
+    ...overrides,
+});

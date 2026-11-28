@@ -53,6 +53,8 @@
 
 **Fixed 2026-11-23:** the members page squeezed names to one letter per line on phones (now stacked), its actions were borderless text (now outlined, red for remove and ban), and its repeated buttons didn't name the person (now "Remove: Luis Hernández"). Control borders were 1.26:1 in light mode and the focus ring 2.6:1 (now the `control` and `ring` tokens, measured: outlines 4.3:1 light / 5.4:1 dark, focus ring 7.5:1 / 10.6:1, role labels 18:1 / 14.5:1, small grey text 4.74:1 / 7.66:1). The join panel's Leave, the homepage banner's secondary button and the header's Sign in are outlined too.
 
+**Fixed 2026-11-27:** search boxes built on the `Command` atom (the city picker, the dictionary's related-words search) had no focus ring. `InputGroup` draws its ring only for its own `input-group-control` slot, and cmdk's input is a different slot, so `CommandInput` now adds the same ring for `command-input`. When another component wraps an input in `InputGroup`, check that focus shows.
+
 Still to fix:
 
 - **Members page and join panel:** after an action, the row (or button) disappears and focus falls to the top of the page.
