@@ -5,6 +5,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import { DefinitionEditBar } from '@/components/molecules/definition-edit-bar';
+import { DiscussionListLoading } from '@/components/organisms/discussion';
 import { DefinitionPage } from '@/components/pages/definition-page';
 import {
     DictionaryPage,
@@ -34,6 +35,7 @@ import type { Locale } from '@/i18n/routing';
 import { JsonLd } from '../../json-ld';
 import { pageMetadata } from '../../page-metadata';
 import { TrackEvent } from '../../track-event';
+import { DiscussionContainer } from '../discussion-container';
 import { ShareContainer } from '../share-container';
 
 // /dictionary/{entry} is either a letter's list (/dictionary/m) or one word's
@@ -212,6 +214,12 @@ async function WordContainer({
                             word={text.word}
                             saved={saved}
                         />
+                    </Suspense>
+                }
+                discussion={
+                    // Reads the session too, so it streams in after the word.
+                    <Suspense fallback={<DiscussionListLoading />}>
+                        <DiscussionContainer slug={slug} locale={locale} />
                     </Suspense>
                 }
             />

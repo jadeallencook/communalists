@@ -19,29 +19,30 @@ The original source: branch `interview-demo` at commit `7ebc168`, read file by f
 
 ## Features
 
-The feature docs describe the prototype unless they have a "Rebuild" section. Rebuild progress so far: the locale routing behind [05](features/05-localization.md), the header/footer shell from [13](features/13-navigation-and-layout.md), accounts from [07](features/07-authentication.md) (sign-up, sign-in, password reset, account setup; see [accounts and sessions](technical/accounts-and-sessions.md)), organizations ([16](features/16-organizations.md): creating, finding near you, joining, and moderating members and roles), profiles ([17](features/17-profiles.md)), unclaimed organizations that super users add and groups claim ([18](features/18-unclaimed-organizations.md)), and a dictionary of plain-language definitions ([19](features/19-dictionary.md)). Organization management (editing, invites), then the first tool, come next.
+The feature docs describe the prototype unless they have a "Rebuild" section. Rebuild progress so far: the locale routing behind [05](features/05-localization.md), the header/footer shell from [13](features/13-navigation-and-layout.md), accounts from [07](features/07-authentication.md) (sign-up, sign-in, password reset, account setup; see [accounts and sessions](technical/accounts-and-sessions.md)), organizations ([16](features/16-organizations.md): creating, finding near you, joining, and moderating members and roles), profiles ([17](features/17-profiles.md)), unclaimed organizations that super users add and groups claim ([18](features/18-unclaimed-organizations.md)), a dictionary of plain-language definitions ([19](features/19-dictionary.md)), and public discussions with up votes under each word ([20](features/20-comments.md)), written to work on organization pages later. Organization management (editing, invites), then the first tool, come next.
 
-| #   | Feature                                                                           | Audience                | Status in prototype                             |
-| --- | --------------------------------------------------------------------------------- | ----------------------- | ----------------------------------------------- |
-| 01  | [Request aid form](features/01-request-aid-form.md)                               | Public                  | Live                                            |
-| 02  | [Request form kill switch](features/02-request-form-kill-switch.md)               | Moderators + public     | Live                                            |
-| 03  | [Events / services directory](features/03-events-directory.md)                    | Public                  | Live, data hard-coded                           |
-| 04  | [Donations](features/04-donations.md)                                             | Public + volunteers     | Form live, dashboard tab hidden                 |
-| 05  | [Localization (4 languages)](features/05-localization.md)                         | Everyone                | Live                                            |
-| 06  | [Home page and FAQ](features/06-home-and-faq.md)                                  | Public                  | Live                                            |
-| 07  | [Authentication](features/07-authentication.md)                                   | Volunteers              | Live                                            |
-| 08  | [Organizations and membership](features/08-organizations-and-membership.md)       | Volunteers + moderators | Live                                            |
-| 09  | [Request triage dashboard](features/09-request-triage-dashboard.md)               | Org members             | Live                                            |
-| 10  | [Request detail and coordination](features/10-request-detail-and-coordination.md) | Org members             | Live                                            |
-| 11  | [Comment threads](features/11-comment-threads.md)                                 | Org members             | Live                                            |
-| 12  | [Account settings](features/12-account-settings.md)                               | Volunteers              | Live (display name only)                        |
-| 13  | [Navigation, layout and feedback](features/13-navigation-and-layout.md)           | Everyone                | Live                                            |
-| 14  | [Removed experiments](features/14-removed-experiments.md)                         | —                       | Cut from the product                            |
-| 15  | [Little Free Library](features/15-little-free-library.md)                         | Public                  | Built in the 2025 Next.js attempt, then removed |
-| 16  | [Organizations (rebuild)](features/16-organizations.md)                           | Everyone                | Rebuild: phase 1 built 2026-11-22 (logo next)   |
-| 17  | [Profiles and skills (rebuild)](features/17-profiles.md)                          | Everyone                | Rebuild: phase 1 (profiles) built 2026-11-23    |
-| 18  | [Super users and unclaimed organizations](features/18-unclaimed-organizations.md) | Super users + everyone  | Rebuild: built 2026-11-24 (events next)         |
-| 19  | [Dictionary](features/19-dictionary.md)                                           | Everyone + super users  | Rebuild: phase 1 built 2026-11-26               |
+| #   | Feature                                                                           | Audience                | Status in prototype                                       |
+| --- | --------------------------------------------------------------------------------- | ----------------------- | --------------------------------------------------------- |
+| 01  | [Request aid form](features/01-request-aid-form.md)                               | Public                  | Live                                                      |
+| 02  | [Request form kill switch](features/02-request-form-kill-switch.md)               | Moderators + public     | Live                                                      |
+| 03  | [Events / services directory](features/03-events-directory.md)                    | Public                  | Live, data hard-coded                                     |
+| 04  | [Donations](features/04-donations.md)                                             | Public + volunteers     | Form live, dashboard tab hidden                           |
+| 05  | [Localization (4 languages)](features/05-localization.md)                         | Everyone                | Live                                                      |
+| 06  | [Home page and FAQ](features/06-home-and-faq.md)                                  | Public                  | Live                                                      |
+| 07  | [Authentication](features/07-authentication.md)                                   | Volunteers              | Live                                                      |
+| 08  | [Organizations and membership](features/08-organizations-and-membership.md)       | Volunteers + moderators | Live                                                      |
+| 09  | [Request triage dashboard](features/09-request-triage-dashboard.md)               | Org members             | Live                                                      |
+| 10  | [Request detail and coordination](features/10-request-detail-and-coordination.md) | Org members             | Live                                                      |
+| 11  | [Comment threads](features/11-comment-threads.md)                                 | Org members             | Live                                                      |
+| 12  | [Account settings](features/12-account-settings.md)                               | Volunteers              | Live (display name only)                                  |
+| 13  | [Navigation, layout and feedback](features/13-navigation-and-layout.md)           | Everyone                | Live                                                      |
+| 14  | [Removed experiments](features/14-removed-experiments.md)                         | —                       | Cut from the product                                      |
+| 15  | [Little Free Library](features/15-little-free-library.md)                         | Public                  | Built in the 2025 Next.js attempt, then removed           |
+| 16  | [Organizations (rebuild)](features/16-organizations.md)                           | Everyone                | Rebuild: phase 1 built 2026-11-22 (logo next)             |
+| 17  | [Profiles and skills (rebuild)](features/17-profiles.md)                          | Everyone                | Rebuild: phase 1 (profiles) built 2026-11-23              |
+| 18  | [Super users and unclaimed organizations](features/18-unclaimed-organizations.md) | Super users + everyone  | Rebuild: built 2026-11-24 (events next)                   |
+| 19  | [Dictionary](features/19-dictionary.md)                                           | Everyone + super users  | Rebuild: phases 1–3 built 2026-11-26–27                   |
+| 20  | [Comments and discussions](features/20-comments.md)                               | Everyone + super users  | Rebuild: built 2026-11-27 (on words; organizations later) |
 
 ## Technical docs
 

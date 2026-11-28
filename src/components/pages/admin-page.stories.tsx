@@ -98,6 +98,7 @@ export const Empty: Story = {
                 lifecycle: 0,
                 words: 0,
                 exports: 0,
+                comments: 2,
             },
             log: [],
         },

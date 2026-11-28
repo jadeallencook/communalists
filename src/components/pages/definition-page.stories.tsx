@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
 import { CopyLinkButton } from '@/components/molecules/copy-link-button';
+import { sampleComments } from '@/components/molecules/comment-fixtures';
 import { DefinitionEditBar } from '@/components/molecules/definition-edit-bar';
+import { Discussion } from '@/components/organisms/discussion';
 
 import { DefinitionPage, DefinitionPageLoading } from './definition-page';
 
@@ -117,6 +119,34 @@ export const WithResources: Story = {
                 url: 'https://example.com/video',
             },
         ],
+    },
+};
+
+/** With its discussion, as a signed-out visitor sees it. */
+export const WithDiscussion: Story = {
+    args: {
+        discussion: (
+            <Discussion
+                viewer={{
+                    status: 'signedOut',
+                    signUpHref: '/sign-up',
+                    signInHref: '/sign-in',
+                }}
+                counts={{ all: 4, en: 3, es: 1, vi: 0, zh: 0 }}
+                comments={sampleComments.filter((c) => c.lang === 'en')}
+                sort="top"
+                onSortChange={fn()}
+                readerLanguage="en"
+                language="en"
+                onLanguageChange={fn()}
+                hasMore={false}
+                onLoadMore={fn()}
+                onVote={fn()}
+                onReport={fn()}
+                onDelete={fn()}
+                onHide={fn()}
+            />
+        ),
     },
 };
 

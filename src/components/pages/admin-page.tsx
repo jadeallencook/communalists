@@ -2,6 +2,7 @@
 
 import {
     BookOpenIcon,
+    FlagIcon,
     ClockIcon,
     FileUpIcon,
     PlusIcon,
@@ -88,6 +89,8 @@ export interface AdminPageProps {
     deleted: AdminDeleted[];
     /** How many words the dictionary has; missing if the counts couldn't load. */
     definitionCount?: number;
+    /** Comments with open reports; missing if the count couldn't load. */
+    reportedComments?: number;
     /** UI locale, sent so redirects stay in it. */
     locale: string;
     /** In the app, decideClaimAction via useActionState. */
@@ -132,6 +135,7 @@ export function AdminPage({
     organizations,
     activity,
     definitionCount,
+    reportedComments,
     locale,
     formAction,
     pending = false,
@@ -208,6 +212,17 @@ export function AdminPage({
                 >
                     {t('sections.attention')}
                 </h2>
+                {reportedComments !== undefined && reportedComments > 0 && (
+                    <p className="rounded-lg border p-4 text-sm">
+                        {t('attentionReports', { count: reportedComments })}{' '}
+                        <Link
+                            href="/admin/comments"
+                            className="underline underline-offset-2"
+                        >
+                            {t('attentionReportsLink')}
+                        </Link>
+                    </p>
+                )}
                 {unreachable > 0 ? (
                     <p className="rounded-lg border p-4 text-sm">
                         {t('attentionGaps', { count: unreachable })}{' '}
@@ -223,7 +238,8 @@ export function AdminPage({
                         </Link>
                     </p>
                 ) : (
-                    claims.length === 0 && (
+                    claims.length === 0 &&
+                    !reportedComments && (
                         <p className="text-sm text-muted-foreground">
                             {t('attentionClear')}
                         </p>
@@ -527,6 +543,17 @@ export function AdminPage({
                         <Link href="/admin/definitions">
                             <BookOpenIcon aria-hidden />
                             {t('manageDictionary')}
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <Link href="/admin/comments">
+                            <FlagIcon aria-hidden />
+                            {t('reportedComments')}
+                            {reportedComments !== undefined && (
+                                <span className="tabular-nums">
+                                    ({reportedComments})
+                                </span>
+                            )}
                         </Link>
                     </Button>
                 </div>

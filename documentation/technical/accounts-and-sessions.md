@@ -13,8 +13,10 @@ SignUpForm (organism, presentational; works without JS)
       2. create the Firebase Auth user (Admin SDK)
       3. sign in over Firebase's REST API → ID token
       4. exchange it for a session cookie (httpOnly)   src/lib/auth/session.ts
-  → redirect to /{locale}/account/setup?next=/dashboard&from=sign-up
+  → redirect to /{locale}/account/setup?next=/dashboard&from=sign-up   (or ?next= from the sign-up page's own address)
 ```
+
+- **Coming back where you started** (added 2026-11-27 for discussions, [decision #67](../decisions/067-word-discussions-public-flat-comments-with-up-votes.md)): `/sign-in?next=…` and `/sign-up?next=…` carry a path on this site in a hidden field, and the link between the two pages keeps it. Sign-in redirects there; sign-up passes it on to setup, which redirects there afterward. Without one, both go to `/dashboard` as before. `requireAccount(next)` now sends signed-out visitors to `/sign-in?next=…` too. The pages read it inside `<Suspense>` (the card shows meanwhile), and it's sanitized like setup's (below).
 
 - **No profile yet.** `users/{uid}` is written by account setup, not sign-up, so new and old accounts take the same path.
 - **Password twice:** `confirmPassword` is checked by the schema, never sent to Firebase or stored. Zod skips object-level checks once any field fails, so the mismatch check (`passwordsMatch` in `src/lib/validation/password.ts`, shared with reset) uses `when` to run alongside other field errors. It stays quiet if the password itself is already invalid.

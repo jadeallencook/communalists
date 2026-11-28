@@ -56,9 +56,12 @@ const PATHS = [
     'claimRequests/org1_someone',
     'adminLog/entry1',
     'definitions/mutual-aid',
-    // Phase 3 of the dictionary (features/19): comments and their votes.
+    // Comments on a word (features/20): the comments, one vote per person
+    // per comment, open reports and the per-person rate limit.
     'definitions/mutual-aid/comments/c1',
-    'definitions/mutual-aid/comments/c1/votes/someone',
+    'definitions/mutual-aid/commentVotes/c1_someone',
+    'commentReports/definition~mutual-aid~c1',
+    'commentLimits/someone',
 ];
 
 // The test contexts are typed as the compat SDK, but work with the modular
@@ -85,10 +88,13 @@ describe.each(clients)('a %s client', (_who, db) => {
         await assertFails(deleteDoc(doc(db(), path)));
     });
 
-    it.each(['definitions', 'organizations', 'adminLog'])(
-        'can’t list %s',
-        async (name) => {
-            await assertFails(getDocs(collection(db(), name)));
-        }
-    );
+    it.each([
+        'definitions',
+        'organizations',
+        'adminLog',
+        'definitions/mutual-aid/comments',
+        'commentReports',
+    ])('can’t list %s', async (name) => {
+        await assertFails(getDocs(collection(db(), name)));
+    });
 });

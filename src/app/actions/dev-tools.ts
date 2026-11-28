@@ -9,6 +9,7 @@ import { hasLocale } from 'next-intl';
 import { DEFAULT_NEXT_PATH } from '@/lib/account-setup';
 import { signInWithPassword } from '@/lib/auth/password-sign-in';
 import { startSession } from '@/lib/auth/session';
+import { COMMENT_REPORTS_TAG, commentsTag } from '@/lib/comments/store';
 import {
     DEFINITIONS_TAG,
     definitionTag,
@@ -93,8 +94,12 @@ export async function resetTestData(): Promise<ResetTestDataState> {
     updateTag(DIRECTORY_TAG);
     updateTag(DEFINITIONS_TAG);
     // Seeded words come from research/definitions/; clear every word's page.
-    for (const slug of await getDefinitionSlugsFresh())
+    // …and its discussion (seeded comments are reset too).
+    for (const slug of await getDefinitionSlugsFresh()) {
         updateTag(definitionTag(slug));
+        updateTag(commentsTag({ kind: 'definition', id: slug }));
+    }
+    updateTag(COMMENT_REPORTS_TAG);
     refresh();
     return { status: 'done', at: Date.now() };
 }

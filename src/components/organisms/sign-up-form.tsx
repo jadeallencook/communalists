@@ -20,6 +20,8 @@ export interface SignUpFormProps {
     pending?: boolean;
     /** Sent with the form so the server can answer in the right language. */
     locale: string;
+    /** Where to go afterward (a path, no locale), like back to a discussion. */
+    next?: string;
 }
 
 /** Email and password (twice) with inline errors. Profile questions come after, on account setup. No logic: it renders `state`. */
@@ -28,6 +30,7 @@ export function SignUpForm({
     formAction,
     pending = false,
     locale,
+    next,
 }: SignUpFormProps) {
     const t = useTranslations('SignUp');
 
@@ -48,6 +51,7 @@ export function SignUpForm({
     return (
         <form action={formAction} noValidate>
             <input type="hidden" name="locale" value={locale} />
+            {next && <input type="hidden" name="next" value={next} />}
             <FieldGroup>
                 <Field data-invalid={!!errorFor('email')}>
                     <FieldLabel htmlFor="email">{t('email')}</FieldLabel>

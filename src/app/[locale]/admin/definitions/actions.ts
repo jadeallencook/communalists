@@ -15,6 +15,11 @@ import {
     type DefinitionErrorKey,
 } from '@/lib/definitions';
 import {
+    COMMENT_REPORTS_TAG,
+    commentsTag,
+    deleteAllComments,
+} from '@/lib/comments/store';
+import {
     DEFINITIONS_TAG,
     definitionTag,
     deleteDefinition,
@@ -123,6 +128,14 @@ export async function removeDefinitionAction(
         return { error: 'generic', at };
     }
     if (!result.ok) return { error: 'notFound', at };
+    // Its discussion goes too. The word is already gone, so a failure here
+    // only leaves unreachable comments behind: log it and carry on.
+    const target = { kind: 'definition', id: slug } as const;
+    await deleteAllComments(target).catch((error: Error) =>
+        console.error('[definitions] removing comments failed', error.message)
+    );
+    updateTag(commentsTag(target));
+    updateTag(COMMENT_REPORTS_TAG);
 
     updateTag(DEFINITIONS_TAG);
     updateTag(definitionTag(slug));

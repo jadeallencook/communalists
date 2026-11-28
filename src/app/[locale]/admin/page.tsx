@@ -6,6 +6,7 @@ import { AdminPageLoading } from '@/components/pages/admin-page';
 import type { AdminOrganizationItem } from '@/components/organisms/admin-organizations';
 import type { AdminAnalyticsProps } from '@/components/organisms/admin-analytics';
 import { getUmamiReport, type UmamiReport } from '@/lib/analytics/umami-store';
+import { getOpenReportCount } from '@/lib/comments/store';
 import { requirePlatformAdmin } from '@/lib/auth/platform-admin';
 import { getAdminAuth } from '@/lib/firebase/admin';
 import {
@@ -92,6 +93,7 @@ async function AdminServerContainer({
         deleted,
         log,
         umami,
+        reportedComments,
         format,
         t,
     ] = await Promise.all([
@@ -107,6 +109,7 @@ async function AdminServerContainer({
         getRecentlyDeleted(),
         soft('feed', getAdminFeed()),
         getUmamiReport(),
+        soft('reported comments', getOpenReportCount()),
         getFormatter(),
         getTranslations('Admin'),
     ]);
@@ -231,6 +234,7 @@ async function AdminServerContainer({
                 restoreUntil: date(restoreDeadline(org.archivedAt)),
             }))}
             definitionCount={core?.definitions}
+            reportedComments={reportedComments ?? undefined}
         />
     );
 }

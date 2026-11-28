@@ -3,6 +3,7 @@
 // Next or DOM, so it's tested directly. The browser side is ./browser.ts and
 // src/app/[locale]/analytics.tsx. Design: documentation/technical/analytics.md.
 
+import type { CommentTargetKind } from '../comments';
 import type { NavKey } from '../navigation';
 
 /** Umami Cloud website id for communalists.com. Public: it's in the page source. */
@@ -64,6 +65,17 @@ export interface AnalyticsEvents {
     'definition-open': { slug: string };
     /** "Copy link" was pressed on a word's page. */
     'definition-share': { slug: string };
+    /**
+     * Signed out, "Create an account" or "Sign in" was pressed in a
+     * discussion. `on` is the target's kind (`definition`), `id` its slug.
+     */
+    'discussion-join': {
+        on: CommentTargetKind;
+        id: string;
+        to: 'sign-up' | 'sign-in';
+    };
+    /** "Post comment" was pressed (an attempt; the server may refuse). Never the text. */
+    'comment-post': { on: CommentTargetKind; id: string };
 }
 
 export type AnalyticsEvent = keyof AnalyticsEvents;
