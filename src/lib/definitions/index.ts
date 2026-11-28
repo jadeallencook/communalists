@@ -369,6 +369,24 @@ export type Letter = string;
 export const isLetter = (segment: string) =>
     segment.length === 1 && LETTERS.includes(segment);
 
+/**
+ * The nearest letters before and after `current` that have words, for the
+ * Previous and Next links under a letter's list. Empty letters are skipped;
+ * there's no wrapping from Z to A.
+ */
+export function neighborLetters(
+    letters: readonly { letter: Letter; count: number }[],
+    current: Letter
+): { previous?: Letter; next?: Letter } {
+    const at = letters.findIndex((item) => item.letter === current);
+    if (at === -1) return {};
+    const withWords = (item: { count: number }) => item.count > 0;
+    return {
+        previous: letters.slice(0, at).findLast(withWords)?.letter,
+        next: letters.slice(at + 1).find(withWords)?.letter,
+    };
+}
+
 // The first character of each pinyin initial, in pinyin order (no words start
 // with i, u or v). With the pinyin collation, a character belongs to the last
 // one it sorts at or after: 互 (hù) falls between 哈 (h) and 丌 (j), so h.

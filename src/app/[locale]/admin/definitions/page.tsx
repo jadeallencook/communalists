@@ -12,7 +12,7 @@ import { getDefinitions } from '@/lib/definitions/store';
 
 type Props = PageProps<'/[locale]/admin/definitions'>;
 
-/** `?imported=3` after a CSV import; anything else shows nothing. */
+/** `?imported=3` after a CSV import; anything else shows nothing. (`?removed={slug}` after removing a word.) */
 const importedCount = (value: string | string[] | undefined) =>
     typeof value === 'string' && /^\d{1,3}$/.test(value)
         ? Number(value)
@@ -68,6 +68,12 @@ async function AdminDefinitionsContainer({
             }))}
             saved={saved ? { slug: saved.slug, word: saved.word } : undefined}
             imported={importedCount(params.imported)}
+            removed={
+                typeof params.removed === 'string' &&
+                !slugProblem(params.removed)
+                    ? params.removed
+                    : undefined
+            }
         />
     );
 }

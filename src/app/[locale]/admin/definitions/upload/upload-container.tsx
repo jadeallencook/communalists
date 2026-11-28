@@ -4,18 +4,19 @@ import { useLocale } from 'next-intl';
 import { useActionState } from 'react';
 
 import {
-    AdminDefinitionUploadPage,
+    DefinitionUpload,
     type CheckDefinitionUpdateState,
     type SaveDefinitionUpdateState,
-} from '@/components/pages/admin-definition-upload-page';
+} from '@/components/organisms/definition-upload';
+import { AdminDefinitionUploadPage } from '@/components/pages/admin-definition-upload-page';
 
 import {
     checkDefinitionUpdateAction,
     saveDefinitionUpdateAction,
 } from './actions';
 
-/** Wires the "Upload a definition" page to its two actions. */
-export function DefinitionUploadContainer() {
+/** The check and save actions, wired once for both places the upload is used. */
+function useDefinitionUpload() {
     const locale = useLocale();
     const [check, checkAction, checkPending] = useActionState<
         CheckDefinitionUpdateState,
@@ -25,15 +26,29 @@ export function DefinitionUploadContainer() {
         SaveDefinitionUpdateState,
         FormData
     >(saveDefinitionUpdateAction, {});
+    return {
+        locale,
+        check,
+        checkAction,
+        checkPending,
+        save,
+        saveAction,
+        savePending,
+    };
+}
+
+/** Wires the "Upload a definition" page to its two actions. */
+export function DefinitionUploadContainer() {
+    return <AdminDefinitionUploadPage {...useDefinitionUpload()} />;
+}
+
+/** The same upload on a word's edit page, accepting only that word's file. */
+export function WordUploadContainer({ slug }: { slug: string }) {
     return (
-        <AdminDefinitionUploadPage
-            locale={locale}
-            check={check}
-            checkAction={checkAction}
-            checkPending={checkPending}
-            save={save}
-            saveAction={saveAction}
-            savePending={savePending}
+        <DefinitionUpload
+            {...useDefinitionUpload()}
+            slug={slug}
+            headingLevel={3}
         />
     );
 }

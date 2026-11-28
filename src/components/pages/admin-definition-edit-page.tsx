@@ -13,15 +13,24 @@ export interface AdminDefinitionEditPageProps {
     form: ReactNode;
     /** `page` when opened from the word's page: the back link goes there. */
     returnTo?: 'page' | 'list';
+    /** Editing only: the upload for this word's file, wired by its container. */
+    upload?: ReactNode;
+    /** Editing only: "Remove this word", wired by its container. */
+    remove?: ReactNode;
 }
 
-/** /admin/definitions/new and /admin/definitions/{slug}: one word's form. */
+/**
+ * /admin/definitions/new and /admin/definitions/{slug}: one word's form. When
+ * editing, also replacing its text from a file and removing it.
+ */
 export function AdminDefinitionEditPage({
     mode,
     word,
     slug,
     form,
     returnTo = 'list',
+    upload,
+    remove,
 }: AdminDefinitionEditPageProps) {
     const t = useTranslations('AdminDefinitions');
     const backToPage = returnTo === 'page' && mode === 'edit' && !!slug;
@@ -58,7 +67,31 @@ export function AdminDefinitionEditPage({
                     </Link>
                 )}
             </header>
+            {upload && (
+                <section
+                    aria-labelledby="replace-from-file"
+                    className="flex flex-col gap-3 rounded-lg border p-5"
+                >
+                    <h2
+                        id="replace-from-file"
+                        className="font-heading text-lg font-semibold"
+                    >
+                        {t('replace.title')}
+                    </h2>
+                    <p className="text-sm text-pretty text-muted-foreground">
+                        {t('replace.intro', { word: word ?? slug ?? '' })}
+                    </p>
+                    {upload}
+                </section>
+            )}
+            {upload && (
+                // So the form isn't read as part of the section above it.
+                <h2 className="-mb-4 font-heading text-lg font-semibold">
+                    {t('replace.formTitle')}
+                </h2>
+            )}
             {form}
+            {remove}
         </section>
     );
 }

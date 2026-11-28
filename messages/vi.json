@@ -839,7 +839,8 @@
             "exportOrganizations": "{actor} đã tải về danh sách tổ chức",
             "createDefinition": "{actor} đã thêm từ {word}",
             "editDefinition": "{actor} đã chỉnh sửa từ {word}",
-            "backfillDetails": "{actor} đã điền thông tin còn thiếu cho {count} tổ chức"
+            "backfillDetails": "{actor} đã điền thông tin còn thiếu cho {count} tổ chức",
+            "deleteDefinition": "{actor} đã xóa từ {word}"
         },
         "unknownActor": "Một siêu người dùng",
         "errors": {
@@ -1101,7 +1102,7 @@
             "edited": "Lần sửa trang chưa được nhận",
             "claims": "Yêu cầu đã quyết định",
             "lifecycle": "Đã xóa, khôi phục hoặc chuyển thành chưa được nhận",
-            "words": "Từ được thêm hoặc sửa",
+            "words": "Từ được thêm, sửa hoặc xóa",
             "exports": "Lần tải danh sách tổ chức"
         },
         "gapNames": {
@@ -1168,7 +1169,10 @@
         "noWordsShort": "(chưa có từ)",
         "metaTitleWord": "{word}: ý nghĩa và định nghĩa",
         "metaKeywordsWord": "{word}, {word} là gì, nghĩa của {word}, định nghĩa {word}",
-        "setName": "Từ điển tương trợ Communalists"
+        "setName": "Từ điển tương trợ Communalists",
+        "otherLetters": "Các chữ cái khác",
+        "previousLetter": "Chữ cái trước: {letter}",
+        "nextLetter": "Chữ cái tiếp theo: {letter}"
     },
     "AdminDefinitions": {
         "metaTitle": "Từ điển",
@@ -1321,12 +1325,33 @@
                 "tooBig": "Tệp quá lớn. Hãy giữ dưới 500 KB.",
                 "noFile": "Hãy chọn một tệp CSV.",
                 "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
-                "generic": "Đã xảy ra lỗi. Hãy thử lại."
+                "generic": "Đã xảy ra lỗi. Hãy thử lại.",
+                "otherWord": "Tệp này dành cho {fileSlug}, không phải {slug}. Hãy tải lên ở trang chỉnh sửa của từ đó, hoặc ở Tải lên định nghĩa."
             },
             "saveErrors": {
                 "changed": "Từ này đã thay đổi sau khi bạn kiểm tra tệp, nên chưa có gì được lưu. Hãy kiểm tra tệp lại để xem bản mới nhất.",
                 "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
                 "generic": "Đã xảy ra lỗi. Hãy thử lại."
+            }
+        },
+        "removed": "Đã xóa {slug} khỏi từ điển.",
+        "replace": {
+            "title": "Thay bằng một tệp",
+            "intro": "Tải lên một tệp CSV có một từ cho {word} để thay nội dung của từ này bằng mọi ngôn ngữ. Bạn sẽ thấy mọi thay đổi trước khi lưu. Các từ liên quan giữ nguyên, và những gì bạn đã gõ trong biểu mẫu bên dưới mà chưa lưu sẽ bị mất.",
+            "formTitle": "Sửa trực tiếp"
+        },
+        "remove": {
+            "title": "Xóa từ này",
+            "intro": "Xóa vĩnh viễn {word} khỏi từ điển.",
+            "button": "Xóa {word}",
+            "confirmTitle": "Xóa {word}?",
+            "confirmBody": "Trang của từ này sẽ không còn hoạt động, và từ này được bỏ khỏi danh sách từ liên quan của các từ khác. Ở những trang của chúng tôi có đánh dấu từ này, nó sẽ hiện như chữ thường. Không thể hoàn tác, nhưng nhật ký siêu người dùng vẫn giữ một bản sao nội dung.",
+            "notYet": "Chưa",
+            "removing": "Đang xóa…",
+            "errors": {
+                "notFound": "Từ này đã bị xóa. Quay lại từ điển để xem bản mới nhất.",
+                "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+                "generic": "Đã có lỗi xảy ra. Hãy thử lại."
             }
         }
     }

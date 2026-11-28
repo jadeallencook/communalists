@@ -4,24 +4,27 @@ import { refresh, updateTag } from 'next/cache';
 import { hasLocale } from 'next-intl';
 
 import type { DefinitionFormState } from '@/components/organisms/definition-form';
+import type { RemoveDefinitionState } from '@/components/organisms/definition-remove';
 import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
 import {
     definitionFromForm,
     definitionInputSchema,
     fieldForIssue,
+    slugProblem,
     type DefinitionErrorKey,
 } from '@/lib/definitions';
 import {
     DEFINITIONS_TAG,
     definitionTag,
+    deleteDefinition,
     saveDefinition,
 } from '@/lib/definitions/store';
 import { ADMIN_LOG_TAG } from '@/lib/organizations/claim-store';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 
-// A super user adds or edits a dictionary word.
+// A super user adds, edits or removes a dictionary word.
 // Design: documentation/features/19-dictionary.md.
 
 const text = (formData: FormData, key: string) => {
@@ -89,6 +92,45 @@ export async function saveDefinitionAction(
         });
     return redirect({
         href: { pathname: '/admin/definitions', query: { saved: slug } },
+        locale,
+    });
+}
+
+/**
+ * A super user removes a word for good (after a confirmation on its edit
+ * page). It's taken off other words' related lists too.
+ */
+export async function removeDefinitionAction(
+    _prev: RemoveDefinitionState,
+    formData: FormData
+): Promise<RemoveDefinitionState> {
+    const requested = text(formData, 'locale');
+    const locale = hasLocale(routing.locales, requested)
+        ? requested
+        : routing.defaultLocale;
+    const at = Date.now();
+    const user = await getSessionUser();
+    if (!user) return redirect({ href: '/sign-in', locale });
+    if (!isPlatformAdmin(user.uid)) return { error: 'notAllowed', at };
+    const slug = text(formData, 'slug');
+    if (slugProblem(slug)) return { error: 'notFound', at };
+
+    let result;
+    try {
+        result = await deleteDefinition(user.uid, slug);
+    } catch (error) {
+        console.error('[definitions] remove failed', (error as Error).message);
+        return { error: 'generic', at };
+    }
+    if (!result.ok) return { error: 'notFound', at };
+
+    updateTag(DEFINITIONS_TAG);
+    updateTag(definitionTag(slug));
+    for (const other of result.unlinked) updateTag(definitionTag(other));
+    updateTag(ADMIN_LOG_TAG);
+    refresh();
+    return redirect({
+        href: { pathname: '/admin/definitions', query: { removed: slug } },
         locale,
     });
 }

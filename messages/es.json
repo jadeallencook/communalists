@@ -839,7 +839,8 @@
             "exportOrganizations": "{actor} descargó la lista de organizaciones",
             "createDefinition": "{actor} agregó la palabra {word}",
             "editDefinition": "{actor} editó la palabra {word}",
-            "backfillDetails": "{actor} completó los datos faltantes de {count, plural, one {# organización} other {# organizaciones}}"
+            "backfillDetails": "{actor} completó los datos faltantes de {count, plural, one {# organización} other {# organizaciones}}",
+            "deleteDefinition": "{actor} quitó la palabra {word}"
         },
         "unknownActor": "Un superusuario",
         "errors": {
@@ -1101,7 +1102,7 @@
             "edited": "Ediciones de páginas sin reclamar",
             "claims": "Solicitudes decididas",
             "lifecycle": "Eliminadas, restauradas o dejadas sin reclamar",
-            "words": "Palabras agregadas o editadas",
+            "words": "Palabras agregadas, editadas o quitadas",
             "exports": "Descargas de la lista de organizaciones"
         },
         "gapNames": {
@@ -1168,7 +1169,10 @@
         "noWordsShort": "(sin palabras)",
         "metaTitleWord": "{word}: significado y definición",
         "metaKeywordsWord": "{word}, significado de {word}, definición de {word}, qué es {word}",
-        "setName": "Diccionario de ayuda mutua de Communalists"
+        "setName": "Diccionario de ayuda mutua de Communalists",
+        "otherLetters": "Otras letras",
+        "previousLetter": "Letra anterior: {letter}",
+        "nextLetter": "Letra siguiente: {letter}"
     },
     "AdminDefinitions": {
         "metaTitle": "Diccionario",
@@ -1321,10 +1325,31 @@
                 "tooBig": "El archivo es demasiado grande. Debe pesar menos de 500 KB.",
                 "noFile": "Elige un archivo CSV.",
                 "notAllowed": "Solo los superusuarios pueden hacer esto.",
-                "generic": "Algo salió mal. Inténtalo de nuevo."
+                "generic": "Algo salió mal. Inténtalo de nuevo.",
+                "otherWord": "Este archivo es para {fileSlug}, no para {slug}. Súbelo en la página de edición de esa palabra o en Subir una definición."
             },
             "saveErrors": {
                 "changed": "La palabra cambió después de revisar el archivo, así que no se guardó nada. Revisa el archivo de nuevo para ver lo más reciente.",
+                "notAllowed": "Solo los superusuarios pueden hacer esto.",
+                "generic": "Algo salió mal. Inténtalo de nuevo."
+            }
+        },
+        "removed": "Se quitó {slug} del diccionario.",
+        "replace": {
+            "title": "Reemplazar desde un archivo",
+            "intro": "Sube un CSV de una sola palabra para {word} y reemplaza su texto en todos los idiomas. Verás cada cambio antes de que se guarde nada. Las palabras relacionadas no cambian, y lo que hayas escrito en el formulario de abajo sin guardar se pierde.",
+            "formTitle": "Editar a mano"
+        },
+        "remove": {
+            "title": "Quitar esta palabra",
+            "intro": "Quita {word} del diccionario para siempre.",
+            "button": "Quitar {word}",
+            "confirmTitle": "¿Quitar {word}?",
+            "confirmBody": "Su página deja de funcionar y se quita de las palabras relacionadas de otras palabras. Donde nuestras páginas la marcan, se muestra como texto normal. No se puede deshacer, pero el registro de superusuarios guarda una copia de su texto.",
+            "notYet": "Todavía no",
+            "removing": "Quitando…",
+            "errors": {
+                "notFound": "Esa palabra ya no está. Vuelve al diccionario para ver lo más reciente.",
                 "notAllowed": "Solo los superusuarios pueden hacer esto.",
                 "generic": "Algo salió mal. Inténtalo de nuevo."
             }

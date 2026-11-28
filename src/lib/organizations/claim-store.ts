@@ -153,7 +153,7 @@ export interface AdminLogEntry {
     actorUid: string;
     /** The person a claim decision was about. */
     targetName?: string;
-    /** A dictionary word's English name, for createDefinition and editDefinition. */
+    /** A dictionary word's English name, for createDefinition, editDefinition and deleteDefinition. */
     word?: string;
     /** How many organizations, for backfillDetails. */
     count?: number;

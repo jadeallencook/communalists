@@ -839,7 +839,8 @@
             "exportOrganizations": "{actor} 下载了组织列表",
             "createDefinition": "{actor} 添加了词语 {word}",
             "editDefinition": "{actor} 编辑了词语 {word}",
-            "backfillDetails": "{actor} 为 {count} 个组织补全了缺失信息记录"
+            "backfillDetails": "{actor} 为 {count} 个组织补全了缺失信息记录",
+            "deleteDefinition": "{actor} 删除了词语 {word}"
         },
         "unknownActor": "一位超级用户",
         "errors": {
@@ -1101,7 +1102,7 @@
             "edited": "对未认领页面的编辑",
             "claims": "已决定的请求",
             "lifecycle": "删除、恢复或设为未认领",
-            "words": "添加或编辑的词条",
+            "words": "添加、编辑或删除的词条",
             "exports": "组织列表的下载"
         },
         "gapNames": {
@@ -1168,7 +1169,10 @@
         "noWordsShort": "（没有词语）",
         "metaTitleWord": "{word}：含义和定义",
         "metaKeywordsWord": "{word}, {word}的意思, {word}的定义, 什么是{word}",
-        "setName": "Communalists 互助词典"
+        "setName": "Communalists 互助词典",
+        "otherLetters": "其他字母",
+        "previousLetter": "上一个字母：{letter}",
+        "nextLetter": "下一个字母：{letter}"
     },
     "AdminDefinitions": {
         "metaTitle": "词典",
@@ -1321,12 +1325,33 @@
                 "tooBig": "文件太大。请保持在 500 KB 以下。",
                 "noFile": "请选择一个 CSV 文件。",
                 "notAllowed": "只有超级用户可以这样做。",
-                "generic": "出了点问题。请重试。"
+                "generic": "出了点问题。请重试。",
+                "otherWord": "这个文件是 {fileSlug} 的，不是 {slug} 的。请在那个词的编辑页面上传，或使用“上传定义”。"
             },
             "saveErrors": {
                 "changed": "检查文件后该词已被更改，因此没有保存任何内容。请重新检查文件以查看最新内容。",
                 "notAllowed": "只有超级用户可以这样做。",
                 "generic": "出了点问题。请重试。"
+            }
+        },
+        "removed": "已从词典中删除 {slug}。",
+        "replace": {
+            "title": "用文件替换",
+            "intro": "上传 {word} 的单词 CSV 文件，替换它在所有语言中的文字。保存前你会看到每一处改动。相关词语保持不变；你在下方表单中输入但尚未保存的内容会丢失。",
+            "formTitle": "手动编辑"
+        },
+        "remove": {
+            "title": "删除这个词",
+            "intro": "将 {word} 从词典中永久删除。",
+            "button": "删除 {word}",
+            "confirmTitle": "删除 {word}？",
+            "confirmBody": "它的页面将无法打开，也会从其他词语的相关词语中移除。在我们的页面中标记它的地方，它会显示为普通文字。此操作无法撤销，但超级用户日志会保留一份它的文字副本。",
+            "notYet": "暂不",
+            "removing": "正在删除…",
+            "errors": {
+                "notFound": "这个词已经被删除。请返回词典查看最新内容。",
+                "notAllowed": "只有超级用户才能执行此操作。",
+                "generic": "出了点问题，请重试。"
             }
         }
     }

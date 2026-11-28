@@ -839,7 +839,8 @@
             "exportOrganizations": "{actor} downloaded the list of organizations",
             "createDefinition": "{actor} added the word {word}",
             "editDefinition": "{actor} edited the word {word}",
-            "backfillDetails": "{actor} filled in missing details on {count, plural, one {# organization} other {# organizations}}"
+            "backfillDetails": "{actor} filled in missing details on {count, plural, one {# organization} other {# organizations}}",
+            "deleteDefinition": "{actor} removed the word {word}"
         },
         "unknownActor": "A super user",
         "errors": {
@@ -1101,7 +1102,7 @@
             "edited": "Edits to unclaimed pages",
             "claims": "Requests decided",
             "lifecycle": "Deleted, restored or made unclaimed",
-            "words": "Words added or edited",
+            "words": "Words added, edited or removed",
             "exports": "Downloads of the organization list"
         },
         "gapNames": {
@@ -1168,7 +1169,10 @@
         "noWordsShort": "(no words)",
         "metaTitleWord": "{word}: Meaning and Definition",
         "metaKeywordsWord": "{word}, {word} meaning, {word} definition, what is {word}",
-        "setName": "Communalists Mutual Aid Dictionary"
+        "setName": "Communalists Mutual Aid Dictionary",
+        "otherLetters": "Other letters",
+        "previousLetter": "Previous letter: {letter}",
+        "nextLetter": "Next letter: {letter}"
     },
     "AdminDefinitions": {
         "metaTitle": "Dictionary",
@@ -1321,10 +1325,31 @@
                 "tooBig": "The file is too big. Keep it under 500 KB.",
                 "noFile": "Choose a CSV file.",
                 "notAllowed": "Only super users can do this.",
-                "generic": "Something went wrong. Try again."
+                "generic": "Something went wrong. Try again.",
+                "otherWord": "This file is for {fileSlug}, not {slug}. Upload it on that word’s edit page, or on Upload a definition."
             },
             "saveErrors": {
                 "changed": "The word changed after you checked the file, so nothing was saved. Check the file again to see the latest.",
+                "notAllowed": "Only super users can do this.",
+                "generic": "Something went wrong. Try again."
+            }
+        },
+        "removed": "Removed {slug} from the dictionary.",
+        "replace": {
+            "title": "Replace from a file",
+            "intro": "Upload a one-word CSV for {word} to replace its text in every language. You’ll see every change before anything is saved. Related words stay as they are, and anything you’ve typed in the form below and not saved is lost.",
+            "formTitle": "Edit by hand"
+        },
+        "remove": {
+            "title": "Remove this word",
+            "intro": "Takes {word} out of the dictionary for good.",
+            "button": "Remove {word}",
+            "confirmTitle": "Remove {word}?",
+            "confirmBody": "Its page stops working, and it’s taken off other words’ related words. Where our pages mark it, it shows as plain text. There’s no undo, but the super user log keeps a copy of its text.",
+            "notYet": "Not yet",
+            "removing": "Removing…",
+            "errors": {
+                "notFound": "That word is already gone. Go back to the dictionary to see the latest.",
                 "notAllowed": "Only super users can do this.",
                 "generic": "Something went wrong. Try again."
             }
