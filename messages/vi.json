@@ -1493,5 +1493,44 @@
                 "generic": "Đã có lỗi xảy ra. Hãy thử lại."
             }
         }
+    },
+    "Errors": {
+        "title": "Đã xảy ra lỗi",
+        "body": "Không tải được trang này. Có thể lỗi từ phía chúng tôi. Hãy thử lại, hoặc quay lại sau vài phút.",
+        "retry": "Thử lại",
+        "home": "Về trang chủ",
+        "reference": "Mã tham chiếu: {digest}"
+    },
+    "NotFound": {
+        "eyebrow": "Không tìm thấy trang",
+        "tried": "Bạn đã thử:",
+        "general": {
+            "metaTitle": "Không tìm thấy trang",
+            "title": "Chúng tôi không tìm thấy trang đó",
+            "body": "Địa chỉ có thể bị gõ sai, hoặc trang đã được chuyển đi hay bị gỡ xuống.",
+            "home": "Về trang chủ",
+            "organizations": "Tìm tổ chức",
+            "dictionary": "Xem từ điển"
+        },
+        "word": {
+            "metaTitle": "Không tìm thấy từ",
+            "title": "Từ điển chưa có từ “{word}”",
+            "body": "Hãy kiểm tra chính tả, hoặc xem từ điển. Từ mới được thêm dần theo thời gian.",
+            "suggestions": "Có phải bạn muốn tìm:",
+            "browse": "Xem từ điển"
+        },
+        "organization": {
+            "metaTitle": "Không tìm thấy tổ chức",
+            "title": "Không tìm thấy tổ chức nào ở “{handle}”",
+            "body": "Tổ chức có thể đổi địa chỉ, và địa chỉ cũ sẽ ngừng hoạt động sau một thời gian. Tổ chức cũng có thể đã bị gỡ xuống. Hãy thử tìm theo tên hoặc nơi chốn.",
+            "find": "Tìm tổ chức",
+            "create": "Lập một tổ chức"
+        },
+        "person": {
+            "metaTitle": "Không tìm thấy hồ sơ",
+            "title": "Không tìm thấy ai có tên người dùng “{username}”",
+            "body": "Mọi người có thể đổi tên người dùng, và tên cũ sẽ ngừng hoạt động. Hãy kiểm tra chính tả, hoặc tìm họ qua một tổ chức họ tham gia.",
+            "find": "Tìm tổ chức"
+        }
     }
 }

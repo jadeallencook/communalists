@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { connection } from 'next/server';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
@@ -51,6 +52,9 @@ type Props = PageProps<'/[locale]/organization/[handle]'>;
 
 /** Cached lookup; a miss is confirmed fresh (it may have just been created on another instance). */
 async function findOrganization(raw: string) {
+    // Per request, like the page: a miss is confirmed with a fresh read,
+    // which Next otherwise flags while prerendering.
+    await connection();
     const handle = decodeURIComponent(raw).toLowerCase();
     if (handleProblem(handle)) return { handle, org: null };
     const org =
@@ -61,7 +65,13 @@ async function findOrganization(raw: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { org } = await findOrganization((await params).handle);
-    if (!org) return {};
+    // Its not-found page says the rest (./not-found.tsx).
+    if (!org)
+        return {
+            title: (await getTranslations('NotFound.organization'))(
+                'metaTitle'
+            ),
+        };
     const t = await getTranslations('Organizations');
     const names = { name: org.name, place: org.location.label };
     const areas = org.focusAreas.map((area) => t(`focusAreas.${area}`));

@@ -44,6 +44,9 @@ Translated, four lines: "Developed by Volunteers / **San Francisco Bay Area** / 
 - **Phones and narrow windows (below `lg`, including 200% zoom):** wordmark, language switcher, and a **Menu** button (icon and word) that opens a drawer from the right with everything else: Create account and Sign in when signed out; sections; your organizations; account links; a Light/Dark/System choice; Sign out. Links close the drawer. The language switcher stays outside the drawer on purpose: someone who can't read the current language has to be able to find it.
 - **Your organizations** come from `getMemberships` (cached per user, cleared when they join, leave or an organization changes), so a signed-in page costs no extra read once it's cached. If the read fails, the menu goes without the list rather than breaking the page.
 - **Homepage banner:** **Browse organizations** (to `/find/organizations`) as the main button, then **Create account** (outlined) when signed out or **Go to your dashboard** when signed in (2026-11-23). Signed in, the closing sign-up band is hidden.
+- **Not found and errors** (2026-11-27, decisions [#68](../decisions/068-firebase-failures-show-an-error-never-break-the-app.md) and [#69](../decisions/069-not-found-pages-general-and-per-kind.md)). Both keep the header and footer, in the visitor's language:
+  - **Not found:** an unknown address gets the general 404, with the address tried and links to Home, Organizations and the Dictionary. Words, organizations and profiles have their own, saying why it can happen and what to do next. A missing word suggests close words ("Did you mean: Mutual Aid").
+  - **Errors:** a page that fails gets "Something went wrong" with Try again. If the layout itself fails, `global-error.tsx` says it in all four languages.
 - **Not built:** an organization's own navigation (comes with its first tool); dashboard sub-navigation.
 
 The rest of this section is the original advice, kept for reference:

@@ -94,7 +94,7 @@ Listing someone's groups could undo the groups' own privacy (an unlisted tenants
 - **Signed out:**
   - Maya (public) shows her bio, pronouns, city and two groups. South Bay is listed because she's the owner. Oakland Auto Club is listed because its member list is public. The unlisted tenants union and the members-only childcare co-op are left out.
   - Luis ("my groups") and Wei ("just my name") show only their names.
-  - Unknown usernames show not found, and `/@…` forwards.
+  - Unknown usernames show not found, and `/@…` forwards. (Since 2026-11-27, a not-found page of its own explains usernames can change, without hinting whether one was used: [decision #69](../decisions/069-not-found-pages-general-and-per-kind.md).)
 - **As Maya:**
   - Her own page shows everything, including the tenants union.
   - Luis's page shows his bio and pronouns, since they share groups. It lists the four groups that would name him to her, but not the pantry, whose member list is members-only and which she isn't in.

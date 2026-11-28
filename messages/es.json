@@ -1493,5 +1493,44 @@
                 "generic": "Algo salió mal. Inténtalo de nuevo."
             }
         }
+    },
+    "Errors": {
+        "title": "Algo salió mal",
+        "body": "Esta página no se pudo cargar. Puede ser un problema de nuestra parte. Inténtalo de nuevo o vuelve en unos minutos.",
+        "retry": "Intentar de nuevo",
+        "home": "Ir a la página de inicio",
+        "reference": "Referencia: {digest}"
+    },
+    "NotFound": {
+        "eyebrow": "Página no encontrada",
+        "tried": "Intentaste:",
+        "general": {
+            "metaTitle": "Página no encontrada",
+            "title": "No encontramos esa página",
+            "body": "Puede que la dirección tenga un error, o que la página se haya movido o eliminado.",
+            "home": "Ir a la página de inicio",
+            "organizations": "Buscar organizaciones",
+            "dictionary": "Ver el diccionario"
+        },
+        "word": {
+            "metaTitle": "Palabra no encontrada",
+            "title": "Aún no hay ninguna palabra “{word}” en el diccionario",
+            "body": "Revisa cómo está escrita o explora el diccionario. Agregamos palabras nuevas con el tiempo.",
+            "suggestions": "¿Quisiste decir…?",
+            "browse": "Ver el diccionario"
+        },
+        "organization": {
+            "metaTitle": "Organización no encontrada",
+            "title": "No encontramos ninguna organización en “{handle}”",
+            "body": "Las organizaciones pueden cambiar su dirección, y una dirección antigua deja de funcionar después de un tiempo. También puede que la hayan quitado. Búscala por nombre o lugar.",
+            "find": "Buscar organizaciones",
+            "create": "Crear una organización"
+        },
+        "person": {
+            "metaTitle": "Perfil no encontrado",
+            "title": "No encontramos a nadie con el nombre de usuario “{username}”",
+            "body": "Las personas pueden cambiar su nombre de usuario, y el anterior deja de funcionar. Revisa cómo está escrito o búscala a través de una organización a la que pertenezca.",
+            "find": "Buscar organizaciones"
+        }
     }
 }

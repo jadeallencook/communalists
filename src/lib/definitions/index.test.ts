@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { routing } from '@/i18n/routing';
 
 import {
+    closestWords,
+    editDistance,
     searchWords,
     changedFields,
     cleanRelated,
@@ -437,5 +439,43 @@ describe('searchWords', () => {
     });
     it('stops at the limit', () => {
         expect(slugs('f', 1)).toEqual(['food-pantry']);
+    });
+});
+
+describe('closestWords', () => {
+    const words = [
+        { slug: 'mutual-aid', word: 'Mutual Aid' },
+        { slug: 'mutual-aid-network', word: 'Mutual Aid Network' },
+        { slug: 'solidarity', word: 'Solidarity' },
+        { slug: 'repair-cafe', word: 'Repair Café' },
+        { slug: 'free-fridge', word: 'Free Fridge' },
+    ];
+    const slugs = (address: string, limit?: number) =>
+        closestWords(words, address, limit).map((w) => w.slug);
+
+    it('finds words the address starts or is part of', () => {
+        expect(slugs('mutual')).toEqual(['mutual-aid', 'mutual-aid-network']);
+        expect(slugs('fridge')).toEqual(['free-fridge']);
+    });
+
+    it('finds close spellings, ignoring accents', () => {
+        expect(slugs('mutal-aid')).toContain('mutual-aid');
+        expect(slugs('solidarty')).toEqual(['solidarity']);
+        expect(slugs('repair-cafe')).toEqual(['repair-cafe']);
+    });
+
+    it('suggests nothing for unrelated addresses', () => {
+        expect(slugs('unknown')).toEqual([]);
+        expect(slugs('')).toEqual([]);
+    });
+
+    it('keeps to the limit', () => {
+        expect(slugs('mutual', 1)).toEqual(['mutual-aid']);
+    });
+
+    it('counts single-letter edits', () => {
+        expect(editDistance('kitten', 'sitting')).toBe(3);
+        expect(editDistance('same', 'same')).toBe(0);
+        expect(editDistance('', 'abc')).toBe(3);
     });
 });

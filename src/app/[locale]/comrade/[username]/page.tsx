@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getLocale } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import {
@@ -33,7 +33,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { person } = await findPerson((await params).username);
     // Kept out of search engines, even public profiles (decision #31).
     return {
-        title: person?.displayName,
+        title:
+            person?.displayName ??
+            (await getTranslations('NotFound.person'))('metaTitle'),
         robots: { index: false, follow: false },
     };
 }

@@ -1493,5 +1493,44 @@
                 "generic": "出了点问题，请重试。"
             }
         }
+    },
+    "Errors": {
+        "title": "出了点问题",
+        "body": "无法加载此页面。可能是我们这边的问题。请重试，或过几分钟再来。",
+        "retry": "重试",
+        "home": "返回首页",
+        "reference": "参考编号：{digest}"
+    },
+    "NotFound": {
+        "eyebrow": "找不到页面",
+        "tried": "你访问的地址：",
+        "general": {
+            "metaTitle": "找不到页面",
+            "title": "我们找不到这个页面",
+            "body": "地址可能有拼写错误，或者页面已被移动或删除。",
+            "home": "返回首页",
+            "organizations": "查找组织",
+            "dictionary": "浏览词典"
+        },
+        "word": {
+            "metaTitle": "找不到词语",
+            "title": "词典里还没有“{word}”这个词",
+            "body": "请检查拼写，或浏览词典。我们会陆续添加新词。",
+            "suggestions": "你是不是要找：",
+            "browse": "浏览词典"
+        },
+        "organization": {
+            "metaTitle": "找不到组织",
+            "title": "在“{handle}”找不到任何组织",
+            "body": "组织可以更改地址，旧地址过一段时间后会失效。组织也可能已被下架。请试着按名称或地点查找。",
+            "find": "查找组织",
+            "create": "创建组织"
+        },
+        "person": {
+            "metaTitle": "找不到个人资料",
+            "title": "找不到用户名为“{username}”的人",
+            "body": "用户可以更改用户名，旧用户名会失效。请检查拼写，或通过他们所在的组织找到他们。",
+            "find": "查找组织"
+        }
     }
 }

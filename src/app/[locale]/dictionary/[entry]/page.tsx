@@ -67,8 +67,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             description: t('intro'),
         });
     }
+    // A missing word is confirmed with a fresh read; like the page, the
+    // metadata is per request (otherwise Next flags the read while
+    // prerendering).
+    await connection();
     const { definition } = await findDefinition(entry);
-    if (!definition) return {};
+    // Its not-found page says the rest (./not-found.tsx).
+    if (!definition)
+        return { title: (await getTranslations('NotFound.word'))('metaTitle') };
     const { slug, word, definition: meaning } = localize(definition, locale);
     return pageMetadata({
         path: `/dictionary/${slug}`,

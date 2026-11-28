@@ -29,6 +29,7 @@ The organization's structured data names only its general area (`location.label`
 
 ## Kept out of search
 
+- **Not found** ([decision #69](../decisions/069-not-found-pages-general-and-per-kind.md)): unmatched addresses answer **404**. Missing words, organizations and profiles show their own not-found pages but answer **200 with `noindex`** (they find out inside streamed content, after the status is sent). Each has a "… not found" title.
 - **`noindex`**: profiles (`/comrade/…`, decision #31), unlisted or archived organizations, and every signed-in, admin, setup, password and organization-management page.
 - **`robots.txt`** (`src/app/robots.ts`): production allows everything except `/api/`, `/*/account/`, `/*/admin`, `/*/dashboard` and `/*/auth/` (they redirect signed-out visitors anyway). **Previews and local builds disallow everything**, so a preview URL never competes with communalists.com.
 

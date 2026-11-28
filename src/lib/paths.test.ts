@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
 import { RESERVED_HANDLES } from './organizations/handle';
-import { FIND_KINDS, findPath, organizationPath } from './paths';
+import {
+    addressSegment,
+    FIND_KINDS,
+    findPath,
+    organizationPath,
+} from './paths';
 
 describe('paths', () => {
     it('builds organization addresses', () => {
@@ -33,5 +38,20 @@ describe('paths', () => {
             ...FIND_KINDS,
         ])
             expect(RESERVED_HANDLES.has(word)).toBe(true);
+    });
+});
+
+describe('addressSegment', () => {
+    it('reads one part of an address', () => {
+        expect(addressSegment('/dictionary/mutal-aid', 1)).toBe('mutal-aid');
+        expect(addressSegment('/organization/south-bay/edit', 1)).toBe(
+            'south-bay'
+        );
+        expect(addressSegment('/dictionary', 1)).toBe('');
+    });
+
+    it('decodes escapes, and keeps bad ones as typed', () => {
+        expect(addressSegment('/dictionary/caf%C3%A9', 1)).toBe('café');
+        expect(addressSegment('/dictionary/100%', 1)).toBe('100%');
     });
 });
