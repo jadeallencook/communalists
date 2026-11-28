@@ -7,7 +7,11 @@ import {
     sampleComments,
 } from '@/components/molecules/comment-fixtures';
 
-import { Discussion, DiscussionListLoading } from './discussion';
+import {
+    Discussion,
+    DiscussionListLoading,
+    DiscussionUnavailable,
+} from './discussion';
 
 const form = (
     <CommentForm
@@ -154,4 +158,9 @@ export const Chinese: Story = {
 /** The skeleton while the first page streams in. */
 export const Loading: Story = {
     render: () => <DiscussionListLoading />,
+};
+
+/** The comments couldn't load (say, an index still building): the rest of the page is fine. */
+export const Unavailable: Story = {
+    render: () => <DiscussionUnavailable />,
 };

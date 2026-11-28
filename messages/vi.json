@@ -1277,7 +1277,8 @@
         "seeOtherLanguages": "{count, plural, other {Xem # bình luận bằng ngôn ngữ khác}}",
         "writtenIn": "Viết bằng {language}",
         "changeLanguage": "Đổi",
-        "changeLanguageLabel": "Đổi ngôn ngữ của bình luận"
+        "changeLanguageLabel": "Đổi ngôn ngữ của bình luận",
+        "unavailable": "Hiện không tải được bình luận. Hãy thử lại sau vài phút."
     },
     "AdminComments": {
         "metaTitle": "Bình luận bị báo cáo",

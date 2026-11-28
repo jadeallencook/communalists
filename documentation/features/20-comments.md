@@ -57,6 +57,7 @@ All four were chosen for the first version (the user's choice, since comments ar
 ## Reads and cost
 
 - A page of comments (`getComments`, per order, language and cursor) and the counts (`getCommentCounts`: all and each language, five aggregation reads) are cached for days and tagged `comments:{kind}~{id}`. Posting, voting, deleting and moderating clear the tag, so the next reader sees the change.
+- **The discussion fails on its own.** If its reads fail (say, an index still building after a deploy), the word's page renders as usual and the section says "Comments couldn't load right now. Try again in a few minutes." The error is logged. Show more and the order or language buttons already announce a failed load. Added 2026-11-27, after production hit exactly this ([firebase.md](../technical/firebase.md)).
 - **What the viewer voted for is read fresh** (it's theirs alone): one query, only for signed-in viewers. Authors' names come from the cached profiles.
 - The first page is rendered on the server inside its own `<Suspense>`, so the word never waits on it, and it's crawlable. **Show more** and changing the order call `GET /api/comments/{kind}/{id}?sort=top|newest&after={cursor}`, which answers `private, no-store` (it depends on the session); its page reads are cached like the first page. Pages loaded one after another can overlap when votes change: repeats are dropped.
 - Open reports (`getOpenReports`, `getOpenReportCount`) are cached and tagged `commentReports`.

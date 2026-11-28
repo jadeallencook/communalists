@@ -1277,7 +1277,8 @@
         "seeOtherLanguages": "{count, plural, other {查看其他语言的 # 条评论}}",
         "writtenIn": "使用{language}撰写",
         "changeLanguage": "更改",
-        "changeLanguageLabel": "更改评论所用的语言"
+        "changeLanguageLabel": "更改评论所用的语言",
+        "unavailable": "暂时无法加载评论。请过几分钟再试。"
     },
     "AdminComments": {
         "metaTitle": "被举报的评论",
