@@ -65,8 +65,7 @@
         },
         "search": {
             "label": "Find organizations",
-            "submit": "Connect with organizations",
-            "locationHint": "Shows organizations near this city."
+            "submit": "Find organizations"
         }
     },
     "Footer": {
@@ -716,9 +715,7 @@
         "attribution": "Places from GeoNames."
     },
     "FocusAreaPills": {
-        "label": "Focus area",
-        "more": "{count} more",
-        "fewer": "Show fewer"
+        "label": "Focus area"
     },
     "Unclaimed": {
         "title": "This page hasn't been claimed yet",

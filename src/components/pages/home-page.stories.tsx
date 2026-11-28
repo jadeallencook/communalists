@@ -34,7 +34,6 @@ const search = (city: { id: string; label: string } | null) => (
                 { value: 'education', label: 'Education' },
                 { value: 'legal', label: 'Legal' },
             ],
-            shown: 4,
             selected: null,
             onSelect: fn(),
         }}

@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { FormEvent } from 'react';
 
@@ -23,12 +24,11 @@ export interface HeroSearchProps {
 }
 
 /**
- * The homepage banner's search, in one line: "Connect with organizations",
- * the city, then focus-area pills, which opens /find with them applied.
- * Both are optional: with neither, /find opens on the visitor's starting city.
- * Sits in the banner's translucent band (dark theme), so it reads on the photo.
- * The pills may run past the header's right edge to the screen edge.
- * On phones the pills go under the button and city.
+ * The homepage banner's search, in one line: the city, focus-area pills,
+ * then "Find organizations", which opens /find with them applied. Both
+ * are optional: with neither, /find opens on the visitor's starting city.
+ * Sits in the banner's translucent band (dark theme), so it reads on the
+ * photo, and lines up with the header's edges. On phones the three stack.
  */
 export function HeroSearch({
     action,
@@ -44,33 +44,29 @@ export function HeroSearch({
             action={action}
             method="get"
             onSubmit={onSubmit}
-            className="flex w-full flex-col gap-4 md:flex-row md:items-start"
+            className="flex w-full flex-col gap-4 md:flex-row md:items-start md:gap-6"
         >
-            <div className="flex flex-wrap items-start gap-4 md:shrink-0 md:flex-nowrap">
-                <div className="flex flex-col gap-2">
-                    {/* Lines the button up with the city box under its label. */}
-                    <span
-                        aria-hidden
-                        className="invisible text-sm leading-snug select-none"
-                    >
-                        &nbsp;
-                    </span>
-                    <Button
-                        type="submit"
-                        {...track('browse-organizations', { from: 'hero' })}
-                    >
-                        {t('submit')}
-                    </Button>
-                </div>
-                <div className="flex min-w-48 flex-1 flex-col gap-4 md:w-64 md:flex-none">
-                    <LocationField {...location} hint={t('locationHint')} />
-                </div>
+            <div className="flex flex-col md:w-64 md:shrink-0">
+                {/* Only the GeoNames credit: the label and button say what the city does. */}
+                <LocationField {...location} hint={null} />
             </div>
-            {/* Runs past the container to the screen edge: (screen - 72rem) / 2 + the 1rem padding. */}
-            <FocusAreaPills
-                {...focusArea}
-                className="-mr-4 flex-1 md:-mr-[calc((100vw-min(100vw,72rem))/2+1rem)]"
-            />
+            <FocusAreaPills {...focusArea} className="flex-1" />
+            <div className="flex flex-col gap-2 md:shrink-0">
+                {/* Lines the button up with the city box under its label. */}
+                <span
+                    aria-hidden
+                    className="hidden text-sm leading-snug select-none md:invisible md:block"
+                >
+                    &nbsp;
+                </span>
+                <Button
+                    type="submit"
+                    {...track('browse-organizations', { from: 'hero' })}
+                >
+                    {t('submit')}
+                    <ArrowRightIcon aria-hidden />
+                </Button>
+            </div>
         </form>
     );
 }
@@ -80,7 +76,7 @@ export function HeroSearchPlaceholder() {
     return (
         <Skeleton
             aria-hidden
-            className="h-40 w-full rounded-lg bg-white/15 md:h-20"
+            className="h-72 w-full rounded-lg bg-white/15 md:h-24"
         />
     );
 }

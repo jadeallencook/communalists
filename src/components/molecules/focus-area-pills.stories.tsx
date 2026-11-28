@@ -22,7 +22,7 @@ const options: FocusAreaOption[] = [
 const meta = {
     title: 'Components/Molecules/Focus Area Pills',
     component: FocusAreaPills,
-    args: { options, shown: 4, selected: null, onSelect: fn() },
+    args: { options, selected: null, onSelect: fn() },
     decorators: [
         (Story) => (
             <div className="max-w-xl">
@@ -52,10 +52,16 @@ export const Interactive: Story = {
     },
 };
 export const Selected: Story = { args: { selected: 'housing' } };
-/** "+ 4 more" clicked: the line is longer than its box and scrolls sideways. */
-export const Expanded: Story = { args: { defaultExpanded: true } };
-/** A pill behind "+ N more" is chosen, so they start shown. */
-export const HiddenSelected: Story = { args: { selected: 'hygiene' } };
+/** Narrow space: the pills wrap onto more lines, each as wide as its label. */
+export const Narrow: Story = {
+    decorators: [
+        (Story) => (
+            <div className="max-w-60">
+                <Story />
+            </div>
+        ),
+    ],
+};
 /** Long labels (Vietnamese). */
 export const LongLabels: Story = {
     args: {
@@ -65,7 +71,9 @@ export const LongLabels: Story = {
             { value: 'health', label: 'Sức khỏe' },
             { value: 'general', label: 'Hỗ trợ tổng quát' },
             { value: 'education', label: 'Giáo dục' },
+            { value: 'legal', label: 'Pháp lý' },
+            { value: 'clothing', label: 'Quần áo' },
+            { value: 'hygiene', label: 'Vệ sinh cá nhân' },
         ],
-        defaultExpanded: true,
     },
 };

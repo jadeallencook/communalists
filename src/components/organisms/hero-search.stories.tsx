@@ -25,7 +25,6 @@ const focusArea = {
         { value: 'clothing', label: 'Clothing' },
         { value: 'hygiene', label: 'Hygiene' },
     ],
-    shown: 4,
     selected: null,
     onSelect: fn(),
 };
@@ -82,10 +81,6 @@ export const Filled: Story = {
             },
         },
     },
-};
-/** "+ 4 more" clicked: the pills, two rows high, run on to the screen edge. */
-export const ShowMore: Story = {
-    args: { focusArea: { ...focusArea, defaultExpanded: true } },
 };
 /** While the session is checked: a panel-sized skeleton. */
 export const Loading: Story = { render: () => <HeroSearchPlaceholder /> };

@@ -7,17 +7,14 @@ import { HeroSearch } from '@/components/organisms/hero-search';
 import { useLocationPicker } from '@/hooks/use-location-picker';
 import { useRouter } from '@/i18n/navigation';
 import { DEFAULT_PLACE, homeSearchHref } from '@/lib/organizations/directory';
-import {
-    focusAreasByUse,
-    HOME_FOCUS_AREAS,
-    HOME_FOCUS_AREAS_SHOWN,
-} from '@/lib/organizations/options';
+import { focusAreasByUse, HOME_FOCUS_AREAS } from '@/lib/organizations/options';
 import type { PlaceOption } from '@/lib/places/types';
 
 /**
  * Wires the homepage search: the broadest focus areas as pills (one at a
- * time), the city box starts on the profile's city, or San Francisco, and "Connect with organizations" opens /find with the chosen focus
- * area and city, or the starting city when none is chosen.
+ * time), the city box starts on the profile's city, or San Francisco, and
+ * "Find organizations" opens /find with the chosen focus area and city, or
+ * the starting city when none is chosen.
  */
 export function HomeSearchContainer({
     startingCity,
@@ -38,7 +35,6 @@ export function HomeSearchContainer({
                 options: focusAreasByUse()
                     .slice(0, HOME_FOCUS_AREAS)
                     .map((value) => ({ value, label: t(value) })),
-                shown: HOME_FOCUS_AREAS_SHOWN,
                 selected: focusArea,
                 onSelect: setFocusArea,
             }}

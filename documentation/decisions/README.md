@@ -30,7 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
-| [053](053-homepage-search-focus-area-and-city.md)                               | Homepage search: "Connect with organizations", a city and focus-area pills                         | 2026-11-26 |
+| [053](053-homepage-search-focus-area-and-city.md)                               | Homepage search: a city, focus-area pills and "Find organizations"                                 | 2026-11-26 |
 | [052](052-find-always-has-a-city-profile-or-default.md)                         | /find always has a city: plain /find redirects to the profile's city or San Francisco              | 2026-11-26 |
 | [051](051-find-defaults-to-oakland-homepage-links-there.md)                     | /find starts from Oakland; the homepage's Browse button links there when signed out                | 2026-11-26 |
 | [050](050-umami-analytics-page-views-and-named-click-events.md)                 | Umami analytics: page views and named click events                                                 | 2026-11-26 |

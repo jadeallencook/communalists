@@ -80,13 +80,11 @@ export const FOCUS_AREAS_BY_USE: readonly FocusArea[] = [
 export const FEATURED_FOCUS_AREAS = 8;
 
 /**
- * The homepage search offers only the broadest, most common focus areas:
- * the first HOME_FOCUS_AREAS of FOCUS_AREAS_BY_USE, HOME_FOCUS_AREAS_SHOWN
- * of them before "+ N more", so the pills fit beside the city box. The rest
- * are on /find. Decision #53.
+ * The homepage search offers only the broadest, most common focus areas,
+ * all shown as pills: the first HOME_FOCUS_AREAS of FOCUS_AREAS_BY_USE.
+ * The rest are on /find. Decision #53.
  */
 export const HOME_FOCUS_AREAS = FEATURED_FOCUS_AREAS;
-export const HOME_FOCUS_AREAS_SHOWN = 4;
 
 /** Offered focus areas, most common first. */
 export const focusAreasByUse = (): FocusArea[] => {

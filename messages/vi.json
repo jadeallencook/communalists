@@ -65,8 +65,7 @@
         },
         "search": {
             "label": "Tìm tổ chức",
-            "submit": "Kết nối với các tổ chức",
-            "locationHint": "Hiển thị các tổ chức gần thành phố này."
+            "submit": "Tìm tổ chức"
         }
     },
     "Footer": {
@@ -716,9 +715,7 @@
         "attribution": "Địa điểm từ GeoNames."
     },
     "FocusAreaPills": {
-        "label": "Lĩnh vực hoạt động",
-        "more": "{count} nữa",
-        "fewer": "Ẩn bớt"
+        "label": "Lĩnh vực hoạt động"
     },
     "Unclaimed": {
         "title": "Trang này chưa được ai nhận",

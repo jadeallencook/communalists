@@ -29,26 +29,26 @@ The city searched on `/find` is in the path (`/find/us/ca/oakland`, decision [#4
 
 Events are named with stable kebab-case keys, never UI text, so reports read the same in all four languages and survive copy changes. `org` is always the organization's **handle**.
 
-| Event                              | Data                                                 | When                                                                  |
-| ---------------------------------- | ---------------------------------------------------- | --------------------------------------------------------------------- |
-| `org-view`                         | `org`                                                | An organization's page opens (any language)                           |
-| `org-open`                         | `org`, `from` (`find`, `card`)                       | An organization's name is clicked in `/find` results or a card        |
-| `org-details`                      | `org`                                                | A `/find` result is expanded                                          |
-| `org-website`                      | `org`, `url`                                         | The website link (page or `/find` result)                             |
-| `org-social`                       | `org`, `platform`                                    | A social link                                                         |
-| `org-phone`, `org-email`           | `org`                                                | The phone or email link (the number and address are not sent)         |
-| `org-directions`                   | `org`, `provider`                                    | Apple Maps, Google Maps or OpenStreetMap in the directions menu       |
-| `org-join`                         | `org`, `policy` (`open`, `request`)                  | Join or Ask to join pressed                                           |
-| `org-join-sign-in`                 | `org`                                                | Signed out, "Sign in to join" pressed                                 |
-| `org-cancel-request`, `org-leave`  | `org`                                                | Cancel a request; confirm leaving                                     |
-| `org-claim`, `org-claim-submit`    | `org`                                                | "Claim" on an unclaimed group; the claim form sent                    |
-| `find-search`                      | `city`, `radius`, `focusAreas`, `languages`, `reach` | Each `/find` search shown. `city` is the path, e.g. `us/ca/oakland`   |
-| `browse-organizations`             | `from` (`hero`, `dashboard`, `nearby`)               | A link to `/find` (`hero`: the homepage's Connect with organizations) |
-| `create-organization`              | `from` (`dashboard`, `find`)                         | A link to `/org/new`                                                  |
-| `create-organization-submit`       | none                                                 | The create form sent (not the edit form)                              |
-| `sign-up`, `sign-in`               | `from`                                               | Header or homepage links                                              |
-| `sign-up-submit`, `sign-in-submit` | none                                                 | The forms sent                                                        |
-| `language-change`                  | `to`                                                 | A different language picked in the switcher                           |
+| Event                              | Data                                                 | When                                                                 |
+| ---------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------- |
+| `org-view`                         | `org`                                                | An organization's page opens (any language)                          |
+| `org-open`                         | `org`, `from` (`find`, `card`)                       | An organization's name is clicked in `/find` results or a card       |
+| `org-details`                      | `org`                                                | A `/find` result is expanded                                         |
+| `org-website`                      | `org`, `url`                                         | The website link (page or `/find` result)                            |
+| `org-social`                       | `org`, `platform`                                    | A social link                                                        |
+| `org-phone`, `org-email`           | `org`                                                | The phone or email link (the number and address are not sent)        |
+| `org-directions`                   | `org`, `provider`                                    | Apple Maps, Google Maps or OpenStreetMap in the directions menu      |
+| `org-join`                         | `org`, `policy` (`open`, `request`)                  | Join or Ask to join pressed                                          |
+| `org-join-sign-in`                 | `org`                                                | Signed out, "Sign in to join" pressed                                |
+| `org-cancel-request`, `org-leave`  | `org`                                                | Cancel a request; confirm leaving                                    |
+| `org-claim`, `org-claim-submit`    | `org`                                                | "Claim" on an unclaimed group; the claim form sent                   |
+| `find-search`                      | `city`, `radius`, `focusAreas`, `languages`, `reach` | Each `/find` search shown. `city` is the path, e.g. `us/ca/oakland`  |
+| `browse-organizations`             | `from` (`hero`, `dashboard`, `nearby`)               | A link to `/find` (`hero`: the homepage search's Find organizations) |
+| `create-organization`              | `from` (`dashboard`, `find`)                         | A link to `/org/new`                                                 |
+| `create-organization-submit`       | none                                                 | The create form sent (not the edit form)                             |
+| `sign-up`, `sign-in`               | `from`                                               | Header or homepage links                                             |
+| `sign-up-submit`, `sign-in-submit` | none                                                 | The forms sent                                                       |
+| `language-change`                  | `to`                                                 | A different language picked in the switcher                          |
 
 **Clicks are attempts, not outcomes.** A `*-submit` or `org-join` event means the button was pressed. The form may still fail validation or the server may refuse. Count real outcomes (members, organizations) from Firestore.
 

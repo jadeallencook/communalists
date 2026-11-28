@@ -65,8 +65,7 @@
         },
         "search": {
             "label": "查找组织",
-            "submit": "联系组织",
-            "locationHint": "显示这个城市附近的组织。"
+            "submit": "查找组织"
         }
     },
     "Footer": {
@@ -716,9 +715,7 @@
         "attribution": "地点数据来自 GeoNames。"
     },
     "FocusAreaPills": {
-        "label": "工作领域",
-        "more": "另外 {count} 个",
-        "fewer": "收起"
+        "label": "工作领域"
     },
     "Unclaimed": {
         "title": "这个页面还没有人认领",

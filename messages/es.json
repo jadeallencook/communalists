@@ -65,8 +65,7 @@
         },
         "search": {
             "label": "Buscar organizaciones",
-            "submit": "Conectar con organizaciones",
-            "locationHint": "Muestra organizaciones cerca de esta ciudad."
+            "submit": "Buscar organizaciones"
         }
     },
     "Footer": {
@@ -716,9 +715,7 @@
         "attribution": "Lugares de GeoNames."
     },
     "FocusAreaPills": {
-        "label": "Área de trabajo",
-        "more": "{count} más",
-        "fewer": "Mostrar menos"
+        "label": "Área de trabajo"
     },
     "Unclaimed": {
         "title": "Nadie ha reclamado esta página todavía",
