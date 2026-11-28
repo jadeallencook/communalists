@@ -7,8 +7,10 @@ import {
     profileView,
     profileViewer,
     seesDetails,
+    visibleEndorsements,
     visibleGroups,
     visiblePhoto,
+    type ProfileEndorsement,
     type ProfileGroup,
 } from './profiles';
 
@@ -36,6 +38,7 @@ describe('profileSettingsOf', () => {
             socials: [],
             website: undefined,
             groups: { show: true, hidden: [] },
+            endorsements: { show: true },
         });
     });
 
@@ -125,6 +128,77 @@ describe('visibleGroups', () => {
         });
         expect(visibleGroups(groups, off, 'public', new Set())).toEqual([]);
         expect(visibleGroups(groups, off, 'self', new Set())).toHaveLength(5);
+    });
+});
+
+describe('visibleEndorsements', () => {
+    const endorsement = (orgId: string, listed = true): ProfileEndorsement => ({
+        orgId,
+        name: orgId,
+        handle: orgId,
+        listed,
+    });
+    const all = [endorsement('garden'), endorsement('went-unlisted', false)];
+    const settings = (visibility: 'public' | 'groups' | 'name', show = true) =>
+        profileSettingsOf({ visibility, endorsements: { show } });
+    const none = new Set<string>();
+
+    it('follow the profile visibility, like the bio', () => {
+        expect(
+            visibleEndorsements(all, settings('public'), 'public', none)
+        ).toEqual([all[0]]);
+        expect(
+            visibleEndorsements(all, settings('groups'), 'signedIn', none)
+        ).toEqual([]);
+        expect(
+            visibleEndorsements(all, settings('groups'), 'groupmate', none)
+        ).toEqual([all[0]]);
+        expect(
+            visibleEndorsements(all, settings('name'), 'groupmate', none)
+        ).toEqual([]);
+    });
+
+    it('can be turned off, except for the person themself', () => {
+        expect(
+            visibleEndorsements(all, settings('public', false), 'public', none)
+        ).toEqual([]);
+        expect(
+            visibleEndorsements(all, settings('name', false), 'self', none)
+        ).toEqual(all);
+    });
+
+    it('show a group that became unlisted only to its members', () => {
+        expect(
+            visibleEndorsements(
+                all,
+                settings('public'),
+                'signedIn',
+                new Set(['went-unlisted'])
+            )
+        ).toEqual(all);
+    });
+
+    it('are on by default, and missing from stored profiles means on', () => {
+        expect(profileSettingsOf({}).endorsements.show).toBe(true);
+        expect(
+            profileSettingsOf({ endorsements: { show: false } }).endorsements
+                .show
+        ).toBe(false);
+    });
+
+    it('come with the profile view', () => {
+        const view = profileView(
+            {
+                name: 'Maya',
+                username: 'maya',
+                settings: settings('public'),
+                groups: [],
+                endorsements: all,
+            },
+            'public',
+            none
+        );
+        expect(view.details?.endorsements).toEqual([all[0]]);
     });
 });
 

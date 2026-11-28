@@ -67,6 +67,8 @@ const PATHS = [
     'organizations/org1/comments/c1',
     'organizations/org1/commentVotes/c1_someone',
     'commentReports/organization~org1~c1~reply',
+    // Endorsements (decision #73): one per person per organization.
+    'endorsements/org1_someone',
 ];
 
 // The test contexts are typed as the compat SDK, but work with the modular

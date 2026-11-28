@@ -31,9 +31,18 @@ export const NothingShared: Story = {
         view: {
             name: 'Daniel Park',
             username: 'daniel-park',
-            details: { languages: [], socials: [], groups: [] },
+            details: {
+                languages: [],
+                socials: [],
+                groups: [],
+                endorsements: [],
+            },
         },
     },
+};
+/** Their endorsements couldn't be loaded: the section says so, the rest shows. */
+export const EndorsementsFailed: Story = {
+    args: { endorsementsFailed: true },
 };
 export const LongName: Story = {
     args: {

@@ -321,11 +321,13 @@ for (const { uid, email, profile, photo } of users) {
 const userIds = new Set(users.map((u) => u.uid));
 const orgIds = new Set(organizations.map((o) => o.id));
 const deleteWhere = async (field, value) => {
-    const found = await db
-        .collection('memberships')
-        .where(field, '==', value)
-        .get();
-    await Promise.all(found.docs.map((doc) => doc.ref.delete()));
+    for (const collection of ['memberships', 'endorsements']) {
+        const found = await db
+            .collection(collection)
+            .where(field, '==', value)
+            .get();
+        await Promise.all(found.docs.map((doc) => doc.ref.delete()));
+    }
 };
 let removed = 0;
 for (let page = await auth.listUsers(1000); ;) {
@@ -374,6 +376,7 @@ for (const {
     requests = [],
     banned = [],
     claims = [],
+    endorsedBy = [],
     unclaimed = false,
     createdBy,
     placeId,
@@ -393,14 +396,17 @@ for (const {
 
     // Start from a clean member list and moderation log for seeded organizations.
     const orgRef = db.collection('organizations').doc(org.id);
-    const [old, oldLog, oldHandles, oldClaims] = await Promise.all([
-        db.collection('memberships').where('orgId', '==', org.id).get(),
-        orgRef.collection('moderationLog').get(),
-        // Handles it moved to (or holds) since: renaming in the app adds these.
-        db.collection('handles').where('orgId', '==', org.id).get(),
-        db.collection('claimRequests').where('orgId', '==', org.id).get(),
-    ]);
+    const [old, oldLog, oldHandles, oldClaims, oldEndorsements] =
+        await Promise.all([
+            db.collection('memberships').where('orgId', '==', org.id).get(),
+            orgRef.collection('moderationLog').get(),
+            // Handles it moved to (or holds) since: renaming in the app adds these.
+            db.collection('handles').where('orgId', '==', org.id).get(),
+            db.collection('claimRequests').where('orgId', '==', org.id).get(),
+            db.collection('endorsements').where('orgId', '==', org.id).get(),
+        ]);
     const batch = db.batch();
+    oldEndorsements.docs.forEach((doc) => batch.delete(doc.ref));
     old.docs.forEach((doc) => batch.delete(doc.ref));
     oldLog.docs.forEach((doc) => batch.delete(doc.ref));
     oldHandles.docs
@@ -421,6 +427,7 @@ for (const {
         status: 'active',
         ...(unclaimed ? { claimStatus: 'unclaimed' } : {}),
         memberCount: members.length,
+        endorsementCount: endorsedBy.length,
         missingDetails: missingDetails(org),
         createdBy: createdBy ?? owner,
         createdAt: now,
@@ -451,6 +458,14 @@ for (const {
         });
     for (const [uid, role] of members) {
         membership(uid, { role, status: 'active', joinedAt: now });
+    }
+    // People showing it off on their profile (src/lib/endorsements).
+    for (const uid of endorsedBy) {
+        batch.set(db.collection('endorsements').doc(`${org.id}_${uid}`), {
+            orgId: org.id,
+            uid,
+            createdAt: now,
+        });
     }
     for (const uid of requests) {
         membership(uid, {

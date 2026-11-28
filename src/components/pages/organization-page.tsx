@@ -33,6 +33,8 @@ export interface OrganizationPageProps {
     role: 'owner' | 'moderator' | 'member' | null;
     /** The join area (JoinPanel, wired by a container). */
     join: ReactNode;
+    /** The Endorse card (EndorsePanel, wired by a container), for members and visitors alike. */
+    endorse?: ReactNode;
     members: MemberListProps;
     /** Owners and moderators: open requests, shown on the Manage members link. */
     pendingRequests?: number;
@@ -73,6 +75,7 @@ export function OrganizationPage({
     profile,
     role,
     join,
+    endorse,
     members,
     pendingRequests = 0,
     unclaimed,
@@ -88,7 +91,7 @@ export function OrganizationPage({
     if (unclaimed) {
         return (
             <section className="mx-auto w-full max-w-5xl px-4 py-12">
-                <OrganizationProfile {...profile} unclaimed>
+                <OrganizationProfile {...profile} unclaimed endorse={endorse}>
                     <UnclaimedNotice
                         name={profile.name}
                         handle={profile.handle}
@@ -130,7 +133,11 @@ export function OrganizationPage({
         <section className="mx-auto w-full max-w-5xl px-4 py-12">
             {/* Visitors: Join / Ask to join, in the header. Members: Leave,
                 inside their space. */}
-            <OrganizationProfile {...profile} action={!role && join}>
+            <OrganizationProfile
+                {...profile}
+                action={!role && join}
+                endorse={endorse}
+            >
                 {role && (
                     <section className="flex flex-col gap-2 rounded-lg border p-5">
                         <h2 className="flex items-center gap-2 font-heading text-lg font-semibold">

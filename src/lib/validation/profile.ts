@@ -52,6 +52,7 @@ export const profileSettingsSchema = z.object({
     groupsShow: z.boolean(),
     /** Groups ticked "show on my profile". The server works out the hidden ones. */
     shownGroups: z.array(z.string().max(128)).max(500),
+    endorsementsShow: z.boolean(),
 });
 
 export type ProfileSettingsInput = z.infer<typeof profileSettingsSchema>;
@@ -81,6 +82,7 @@ export function profileFormValues(formData: FormData) {
         socials: socialFormValues(formData),
         groupsShow: formData.get('groupsShow') === 'on',
         shownGroups: formData.getAll('shownGroups').map(String),
+        endorsementsShow: formData.get('endorsementsShow') === 'on',
     };
 }
 
@@ -101,5 +103,6 @@ export function toProfileSettings(
             show: input.groupsShow,
             hidden: myGroups.filter((id) => !input.shownGroups.includes(id)),
         },
+        endorsements: { show: input.endorsementsShow },
     };
 }

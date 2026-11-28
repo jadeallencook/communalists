@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 
 import { ProfileSettingsPageLoading } from '@/components/pages/profile-settings-page';
 import { requireAccount } from '@/lib/auth/require-account';
+import { getProfileEndorsements } from '@/lib/endorsements/store';
 import { getProfileGroups } from '@/lib/organizations';
 
 import { ProfileSettingsContainer } from './profile-settings-container';
@@ -24,7 +25,15 @@ export default function Page() {
 
 async function ProfileSettingsServerContainer() {
     const { user, profile } = await requireAccount('/account/profile');
-    const groups = await getProfileGroups(user.uid);
+    const [groups, endorsements] = await Promise.all([
+        getProfileGroups(user.uid),
+        // Only listed here; saving doesn't need them, so a failed read
+        // shows its own message and the form still works.
+        getProfileEndorsements(user.uid).catch((error: Error) => {
+            console.error('[endorsements] settings read failed', error.message);
+            return null;
+        }),
+    ]);
     return (
         <ProfileSettingsContainer
             name={profile.displayName}
@@ -33,6 +42,7 @@ async function ProfileSettingsServerContainer() {
             photo={profile.photo?.large}
             settings={profile.profile}
             groups={groups}
+            endorsements={endorsements}
         />
     );
 }

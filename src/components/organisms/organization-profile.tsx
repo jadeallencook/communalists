@@ -53,6 +53,8 @@ export interface OrganizationProfileProps {
     headingLevel?: 1 | 2 | 3 | 4;
     /** Join, Ask to join…: a card heading the side column (under the header on narrow screens). */
     action?: ReactNode;
+    /** The Endorse card (EndorsePanel), under the action in the side column. */
+    endorse?: ReactNode;
     /** More of the main column, after About: members, notices, nearby groups. */
     children?: ReactNode;
 }
@@ -92,6 +94,7 @@ export function OrganizationProfile({
     unclaimed = false,
     headingLevel = 1,
     action,
+    endorse,
     children,
 }: OrganizationProfileProps) {
     const Name = `h${headingLevel}` as const;
@@ -214,6 +217,9 @@ export function OrganizationProfile({
                 <div className="flex flex-col gap-4 @3xl:col-start-2 @3xl:row-span-2 @3xl:row-start-1 @3xl:self-start">
                     {action && (
                         <div className="rounded-lg border p-4">{action}</div>
+                    )}
+                    {endorse && (
+                        <div className="rounded-lg border p-4">{endorse}</div>
                     )}
                     <Card title={t('page.details')} Heading={Section}>
                         <ul className="flex flex-col gap-3 text-sm">

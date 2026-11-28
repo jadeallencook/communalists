@@ -14,6 +14,8 @@ export interface ProfilePageProps {
     isSelf?: boolean;
     /** Super users: remove the photo (moderation). The server decides who gets it. */
     moderation?: ReactNode;
+    /** Their endorsements couldn't be loaded (and this viewer would see them). */
+    endorsementsFailed?: boolean;
 }
 
 /** /comrade/{username}: a person's profile, as this viewer may see it. */
@@ -21,6 +23,7 @@ export function ProfilePage({
     view,
     isSelf = false,
     moderation,
+    endorsementsFailed = false,
 }: ProfilePageProps) {
     const t = useTranslations('Profile');
     return (
@@ -38,7 +41,7 @@ export function ProfilePage({
                     </Button>
                 </div>
             )}
-            <ProfileCard view={view} />
+            <ProfileCard view={view} endorsementsFailed={endorsementsFailed} />
             {moderation}
         </section>
     );

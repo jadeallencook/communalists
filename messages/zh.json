@@ -696,7 +696,12 @@
             "groupsShow": "在个人资料中显示我的团体",
             "save": "保存个人资料",
             "saving": "正在保存…",
-            "saved": "已保存。"
+            "saved": "已保存。",
+            "endorsementsTitle": "你认可的组织",
+            "endorsementsHint": "在任何公开组织的页面上点“认可”，它就会显示在这里。你不需要是成员。它们遵循你的个人资料可见范围。要取消认可，请打开该组织的页面。",
+            "endorsementsShow": "在我的个人资料上显示我认可的组织",
+            "endorsementsNone": "你还没有认可任何组织。",
+            "endorsementsList": "你认可的组织"
         },
         "preview": {
             "title": "预览",
@@ -723,7 +728,28 @@
             "generic": "出了点问题，请重试。"
         },
         "metaDescription": "{name} 在 Communalists 上，这是一个面向互助网络的免费平台。",
-        "cardAlt": "{name} 的个人资料卡片"
+        "cardAlt": "{name} 的个人资料卡片",
+        "endorsements": "认可的组织",
+        "endorsementsFailed": "暂时无法加载认可的组织，请稍后再试。"
+    },
+    "Endorsements": {
+        "title": "认可",
+        "count": "{count, plural, other {# 人认可}}",
+        "none": "还没有人认可。",
+        "hint": "在你的个人资料上展示这个组织。你不需要是成员。",
+        "youEndorse": "你认可了这个组织，它显示在你的个人资料上。",
+        "endorse": "认可",
+        "remove": "取消认可",
+        "signIn": "登录后认可",
+        "loadFailed": "暂时无法确认你的认可，请稍后再试。",
+        "done": {
+            "endorsed": "已认可，现在显示在你的个人资料上。",
+            "removed": "已取消认可。"
+        },
+        "errors": {
+            "notFound": "这个组织已不能被认可。",
+            "generic": "出了点问题，请再试一次。"
+        }
     },
     "LocationField": {
         "country": "国家",

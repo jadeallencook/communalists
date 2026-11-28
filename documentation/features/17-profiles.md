@@ -18,6 +18,7 @@ People get a page of their own: a name always, and whatever else they choose to 
 | Social links | Optional, the same platforms and username rules as groups (just the username, [decision #32](../decisions/032-social-links-as-handles-not-urls.md)), plus one personal website. The way to get in touch until messaging exists. |
 | Skills       | Optional, from a fixed, translated list; see "Skills".                                                                                                                                                                          |
 | Groups       | The groups they're in, filtered; see "Groups on a profile".                                                                                                                                                                     |
+| Endorses     | Organizations they endorse, member or not; see "Endorsements".                                                                                                                                                                  |
 
 **Never shown:** email, the exact saved city (unless "General area" is on, and then only its name), pending requests, bans, moderation reasons, or anything from a group's members-only space.
 
@@ -56,6 +57,19 @@ Listing someone's groups could undo the groups' own privacy (an unlisted tenants
 - People can also turn the list off, or hide individual groups.
 - Roles show next to each group (Owner, Moderator).
 
+## Endorsements
+
+Built 2026-11-28 ([decision #73](../decisions/073-endorsements-on-profiles-count-on-organization-pages.md)). People show off the organizations they like, without having to join them.
+
+- **Endorsing:** an **Endorse** card on every listed, active organization's page (claimed or unclaimed), in the side column under the join card, for members and visitors alike. It shows "Endorsed by N people" (or "No endorsements yet"), then **Endorse**, or "You endorse this group" with **Remove endorsement**. Signed out, it's **Sign in to endorse**, coming back to the page; an account without a username goes through setup first. No note, just the endorsement.
+- **Unlisted groups can't be endorsed**, and show no card. If a group becomes unlisted later, people who endorsed it still see the card, so they can take theirs back.
+- **On the profile**, an **Endorses** section after Groups lists them newest first, with each logo, linking to the group's page. It **follows the profile visibility** like the bio, and **"Show the organizations I endorse on my profile"** in settings turns it off (on by default). A group that has become unlisted shows only to its own members, as in "Groups on a profile". Archived groups drop off.
+- **The organization's page shows the count only**, never who; names stay on profiles, under each person's visibility.
+- **Settings** list your endorsements with links; take one back on the group's page. "Preview as…" shows the section like the page.
+- **Accessibility:** the button is one element in every state and is never `disabled` while saving (it's `aria-disabled`), so keyboard focus stays on it after pressing; the result ("Endorsed. It's on your profile now.", "Endorsement removed.") is announced. A disabled button drops focus to the page, which we found testing this; the join panel still does that.
+- **If loading fails** ([decision #68](../decisions/068-firebase-failures-show-an-error-never-break-the-app.md)): the profile says it couldn't load endorsements (only to viewers who'd see them), settings say so above the rest of the form, and the card shows the count with a message instead of the button.
+- **Code:** rules and the form schema `src/lib/endorsements/` (pure, tested), Firestore `src/lib/endorsements/store.ts`, who sees which `visibleEndorsements` in `src/lib/profiles.ts`, the card `EndorsePanel`, its action and container in `src/app/[locale]/organization/[handle]/`.
+
 ## Usernames
 
 - **Chosen at account setup**, suggested from the name (`maya-thompson`) with a live availability check. Existing accounts are asked once, through the same `requireAccount` → setup step as other required answers.
@@ -83,7 +97,8 @@ Listing someone's groups could undo the groups' own privacy (an unlisted tenants
 
 ## Data (planned)
 
-- `users/{uid}` (server-only) gains `username`, `usernameChangedAt`, `photo { id, large, small }` (built) and `profile { visibility, pronouns, bio, languages[], showArea, socials[], website?, groups { show, hidden[] }, skills[], findableBySkills }`. Memberships copy `member { displayName, username, photo, visibility }`.
+- `users/{uid}` (server-only) gains `username`, `usernameChangedAt`, `photo { id, large, small }` (built) and `profile { visibility, pronouns, bio, languages[], showArea, socials[], website?, groups { show, hidden[] }, endorsements { show }, skills[], findableBySkills }`.
+- `endorsements/{orgId}_{uid}` → `{ orgId, uid, createdAt }` (built), with `endorsementCount` on the organization, changed in the same transaction. Read by `uid` (one equality filter, no composite index), cached per person and cleared when they endorse or take one back. Memberships copy `member { displayName, username, photo, visibility }`.
 - `usernames/{username}` → `{ uid, heldUntil? }`, claimed like `handles/{handle}`.
 - A small `skillListings/{uid}` document only for people who opted in (skills, coarse location, geohash), so skill search never reads private profiles. Its query (skill + area) needs a composite index, kept in `firestore.indexes.json`.
 - Visibility is decided per request on the server: the viewer's and the person's active memberships (cached) decide "shares a group" and which groups to list.
