@@ -1,12 +1,15 @@
 import { GlobeIcon, LanguagesIcon, LockIcon, MapPinIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
 import { Link } from '@/i18n/navigation';
 import { Avatar } from '@/components/molecules/avatar';
+import { ComradeLinks } from '@/components/molecules/comrade-links';
+import { PROFILE_COMRADES_SHOWN } from '@/lib/comrades';
 import { languageName } from '@/lib/organizations/client';
 import type { ProfileView } from '@/lib/profiles';
 import { SOCIAL_PLATFORMS, socialLabel, socialUrl } from '@/lib/socials';
-import { organizationPath } from '@/lib/paths';
+import { comradesPath, organizationPath } from '@/lib/paths';
 
 export interface ProfileCardProps {
     /** Exactly what this viewer may see (profileView in src/lib/profiles.ts). */
@@ -15,6 +18,13 @@ export interface ProfileCardProps {
     headingLevel?: 1 | 2;
     /** Their endorsements couldn't be loaded (and this viewer would see them). */
     endorsementsFailed?: boolean;
+    /** Their comrades couldn't be loaded (and this viewer would see them). */
+    comradesFailed?: boolean;
+    /**
+     * In the header, beside the name (under it on phones): the comrade
+     * button (ComradeButton), or nothing (their own profile, previews).
+     */
+    action?: ReactNode;
 }
 
 const host = (url: string) => {
@@ -34,6 +44,8 @@ export function ProfileCard({
     view,
     headingLevel = 1,
     endorsementsFailed = false,
+    comradesFailed = false,
+    action,
 }: ProfileCardProps) {
     const t = useTranslations('Profile');
     const tOrg = useTranslations('Organizations');
@@ -55,26 +67,29 @@ export function ProfileCard({
 
     return (
         <article className="flex flex-col gap-6">
-            <header className="flex items-center gap-4">
-                <Avatar
-                    name={view.name}
-                    photo={view.photo}
-                    size={headingLevel === 1 ? 96 : 64}
-                />
-                <div className="flex min-w-0 flex-col">
-                    <Heading className="font-heading text-2xl font-semibold tracking-tight break-words sm:text-3xl">
-                        {view.name}
-                    </Heading>
-                    <p className="text-sm text-muted-foreground">
-                        @{view.username}
-                        {view.pronouns && (
-                            <>
-                                {' · '}
-                                <span>{view.pronouns}</span>
-                            </>
-                        )}
-                    </p>
+            <header className="flex flex-wrap items-center gap-x-6 gap-y-4">
+                <div className="flex min-w-0 flex-1 items-center gap-4">
+                    <Avatar
+                        name={view.name}
+                        photo={view.photo}
+                        size={headingLevel === 1 ? 96 : 64}
+                    />
+                    <div className="flex min-w-0 flex-col">
+                        <Heading className="font-heading text-2xl font-semibold tracking-tight break-words sm:text-3xl">
+                            {view.name}
+                        </Heading>
+                        <p className="text-sm text-muted-foreground">
+                            @{view.username}
+                            {view.pronouns && (
+                                <>
+                                    {' · '}
+                                    <span>{view.pronouns}</span>
+                                </>
+                            )}
+                        </p>
+                    </div>
                 </div>
+                {action}
             </header>
 
             {!details ? (
@@ -212,13 +227,50 @@ export function ProfileCard({
                             )}
                         </section>
                     )}
+                    {(details.comrades.length > 0 || comradesFailed) && (
+                        <section className="flex flex-col gap-2">
+                            <Sub className="text-sm font-medium">
+                                {t('comrades')}
+                            </Sub>
+                            {comradesFailed ? (
+                                <p className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+                                    {t('comradesFailed')}
+                                </p>
+                            ) : (
+                                <>
+                                    <p className="text-sm text-muted-foreground">
+                                        {t('comradesCount', {
+                                            count: details.comrades.length,
+                                        })}
+                                    </p>
+                                    <ComradeLinks
+                                        comrades={details.comrades.slice(
+                                            0,
+                                            PROFILE_COMRADES_SHOWN
+                                        )}
+                                    />
+                                    {details.comrades.length >
+                                        PROFILE_COMRADES_SHOWN && (
+                                        <Link
+                                            href={comradesPath(view.username)}
+                                            className="self-start text-sm underline underline-offset-4 hover:decoration-2"
+                                        >
+                                            {t('comradesSeeAll')}
+                                        </Link>
+                                    )}
+                                </>
+                            )}
+                        </section>
+                    )}
                     {!details.bio &&
                         !details.area &&
                         details.languages.length === 0 &&
                         links.length === 0 &&
                         details.groups.length === 0 &&
                         details.endorsements.length === 0 &&
-                        !endorsementsFailed && (
+                        !endorsementsFailed &&
+                        details.comrades.length === 0 &&
+                        !comradesFailed && (
                             <p className="text-sm text-muted-foreground">
                                 {t('empty')}
                             </p>

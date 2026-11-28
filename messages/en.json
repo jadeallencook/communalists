@@ -669,12 +669,12 @@
                 "description": "Anyone, even people who aren't signed in"
             },
             "groups": {
-                "label": "People in my groups",
-                "description": "Signed-in people who share at least one group with you"
+                "label": "My groups and comrades",
+                "description": "Signed-in people who share at least one group with you, and your comrades"
             },
             "name": {
-                "label": "Just my name",
-                "description": "Everyone else sees only your name"
+                "label": "Only my comrades",
+                "description": "Your comrades see your profile. Everyone else sees only your name"
             }
         },
         "form": {
@@ -701,7 +701,12 @@
             "endorsementsHint": "Endorse any listed group from its page to show it off here. You don't need to be a member. They follow your profile visibility. To take one back, open the group's page.",
             "endorsementsShow": "Show the organizations I endorse on my profile",
             "endorsementsNone": "You haven't endorsed any organizations yet.",
-            "endorsementsList": "Organizations you endorse"
+            "endorsementsList": "Organizations you endorse",
+            "comradesTitle": "Comrades",
+            "comradesHint": "Your comrades always see your whole profile. On your profile, each comrade is only listed to people who could already see their profile.",
+            "comradesShow": "Show my comrades on my profile",
+            "comradeRequests": "Who can send you comrade requests",
+            "comradeRequestsHint": "If you decline a request, the sender isn't told."
         },
         "preview": {
             "title": "Preview",
@@ -709,12 +714,14 @@
             "audiences": {
                 "public": "Anyone",
                 "groupmate": "Someone in your groups",
-                "signedIn": "Other members"
+                "signedIn": "Other members",
+                "comrade": "A comrade"
             },
             "notes": {
                 "public": "Someone who isn't signed in.",
-                "groupmate": "Someone who shares a group with you. They'd also see groups you share with them.",
-                "signedIn": "A signed-in member who doesn't share a group with you."
+                "groupmate": "Someone who shares a group with you. They'd also see groups you share with them. Comrades are listed if their own profile is public.",
+                "signedIn": "A signed-in member who doesn't share a group with you.",
+                "comrade": "One of your comrades. They see your whole profile, whatever you choose above."
             }
         },
         "errors": {
@@ -730,7 +737,25 @@
         "metaDescription": "{name} is on Communalists, a free platform for mutual aid networks.",
         "cardAlt": "Profile card for {name}",
         "endorsements": "Endorses",
-        "endorsementsFailed": "Couldn't load endorsements right now. Try again later."
+        "endorsementsFailed": "Couldn't load endorsements right now. Try again later.",
+        "comradeRequestOptions": {
+            "anyone": {
+                "label": "Anyone signed in",
+                "description": "Anyone with an account can ask"
+            },
+            "groups": {
+                "label": "People in my groups",
+                "description": "Only people who share at least one group with you"
+            },
+            "nobody": {
+                "label": "Nobody",
+                "description": "No one can send you a request. You can still send them"
+            }
+        },
+        "comrades": "Comrades",
+        "comradesCount": "{count, plural, one {# comrade} other {# comrades}}",
+        "comradesSeeAll": "See all comrades",
+        "comradesFailed": "Couldn't load comrades right now. Try again later."
     },
     "Endorsements": {
         "title": "Endorsements",
@@ -1658,5 +1683,57 @@
             "reasonHint": "Required. Kept in the admin log, which only super users see.",
             "done": "{kind, select, users {Photo removed.} other {Logo removed.}}"
         }
+    },
+    "Comrades": {
+        "add": "Add comrade",
+        "signIn": "Sign in to add as a comrade",
+        "sent": "Request sent",
+        "cancel": "Cancel request",
+        "received": "{name} wants to be your comrade.",
+        "accept": "Accept",
+        "decline": "Decline",
+        "comrades": "Comrades",
+        "remove": "Remove comrade",
+        "removeConfirm": "They aren't told. To be comrades again, one of you sends a new request.",
+        "removeYes": "Remove",
+        "removeNo": "Keep",
+        "loadFailed": "Couldn't check whether you're comrades right now. Try again later.",
+        "done": {
+            "request": "Request sent.",
+            "cancel": "Request cancelled.",
+            "accept": "You're comrades now.",
+            "decline": "Request declined. They aren't told.",
+            "remove": "Comrade removed."
+        },
+        "errors": {
+            "notFound": "This person can't be added right now.",
+            "closed": "{name} isn't taking comrade requests.",
+            "limit": "You have 50 requests waiting for an answer. Cancel some, or wait for answers, before sending more.",
+            "generic": "Something went wrong. Try again."
+        },
+        "requestsTitle": "Comrade requests",
+        "requestsCount": "{count, plural, one {# request waiting} other {# requests waiting}}",
+        "requestsFailed": "Couldn't load comrade requests right now. Try again later.",
+        "requestedAt": "Sent {when}",
+        "listTitle": "{name}'s comrades",
+        "listMetaTitle": "Comrades of {name}",
+        "listEmpty": "No comrades to show.",
+        "listPrivate": "{name}'s comrades are private.",
+        "backToProfile": "Back to {name}'s profile",
+        "removeTitle": "Remove {name} as a comrade?"
+    },
+    "Notifications": {
+        "metaTitle": "Notifications",
+        "title": "Notifications",
+        "bell": "{count, plural, =0 {Notifications} one {Notifications, # new} other {Notifications, # new}}",
+        "empty": "Nothing here yet. Comrade requests and news from your groups will show up here.",
+        "loadFailed": "Couldn't load your notifications right now. Try again later.",
+        "new": "New",
+        "kinds": {
+            "comradeRequest": "<person>{name}</person> wants to be your comrade.",
+            "comradeAccepted": "<person>{name}</person> accepted your comrade request."
+        },
+        "someone": "Someone",
+        "olderHidden": "Only your 50 newest notifications are shown."
     }
 }

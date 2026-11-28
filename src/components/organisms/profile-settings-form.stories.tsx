@@ -18,6 +18,8 @@ const empty: ProfileFormValue = {
     groupsShow: true,
     shownGroups: ['sbma', 'auto', 'tenants'],
     endorsementsShow: true,
+    comradesShow: true,
+    comradeRequests: 'anyone',
 };
 const filled: ProfileFormValue = {
     ...empty,

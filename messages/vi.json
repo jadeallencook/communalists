@@ -669,12 +669,12 @@
                 "description": "Bất kỳ ai, kể cả người chưa đăng nhập"
             },
             "groups": {
-                "label": "Người trong các nhóm của tôi",
-                "description": "Người đã đăng nhập và cùng ít nhất một nhóm với bạn"
+                "label": "Nhóm của tôi và bạn đồng hành",
+                "description": "Người đã đăng nhập và cùng ít nhất một nhóm với bạn, cùng các bạn đồng hành của bạn"
             },
             "name": {
-                "label": "Chỉ tên của tôi",
-                "description": "Người khác chỉ thấy tên của bạn"
+                "label": "Chỉ bạn đồng hành của tôi",
+                "description": "Bạn đồng hành của bạn thấy hồ sơ của bạn. Người khác chỉ thấy tên của bạn"
             }
         },
         "form": {
@@ -701,7 +701,12 @@
             "endorsementsHint": "Tán thành bất kỳ nhóm công khai nào từ trang của nhóm để giới thiệu nhóm ở đây. Bạn không cần là thành viên. Danh sách này theo chế độ hiển thị hồ sơ của bạn. Để rút lại, hãy mở trang của nhóm.",
             "endorsementsShow": "Hiện các tổ chức tôi tán thành trên hồ sơ",
             "endorsementsNone": "Bạn chưa tán thành tổ chức nào.",
-            "endorsementsList": "Các tổ chức bạn tán thành"
+            "endorsementsList": "Các tổ chức bạn tán thành",
+            "comradesTitle": "Bạn đồng hành",
+            "comradesHint": "Bạn đồng hành luôn thấy toàn bộ hồ sơ của bạn. Trên hồ sơ của bạn, mỗi bạn đồng hành chỉ hiện với những người vốn đã xem được hồ sơ của họ.",
+            "comradesShow": "Hiện các bạn đồng hành trên hồ sơ của tôi",
+            "comradeRequests": "Ai có thể gửi lời mời kết bạn đồng hành cho bạn",
+            "comradeRequestsHint": "Nếu bạn từ chối lời mời, người gửi sẽ không được báo."
         },
         "preview": {
             "title": "Xem trước",
@@ -709,12 +714,14 @@
             "audiences": {
                 "public": "Bất kỳ ai",
                 "groupmate": "Người trong nhóm của bạn",
-                "signedIn": "Thành viên khác"
+                "signedIn": "Thành viên khác",
+                "comrade": "Một bạn đồng hành"
             },
             "notes": {
                 "public": "Người chưa đăng nhập.",
-                "groupmate": "Người cùng nhóm với bạn. Họ cũng sẽ thấy các nhóm bạn chung với họ.",
-                "signedIn": "Thành viên đã đăng nhập nhưng không cùng nhóm nào với bạn."
+                "groupmate": "Người cùng nhóm với bạn. Họ cũng sẽ thấy các nhóm bạn chung với họ. Bạn đồng hành được liệt kê nếu hồ sơ của chính họ là công khai.",
+                "signedIn": "Thành viên đã đăng nhập nhưng không cùng nhóm nào với bạn.",
+                "comrade": "Một bạn đồng hành của bạn. Họ thấy toàn bộ hồ sơ của bạn, dù bạn chọn gì ở trên."
             }
         },
         "errors": {
@@ -730,7 +737,25 @@
         "metaDescription": "{name} có mặt trên Communalists, nền tảng miễn phí cho các mạng lưới tương trợ.",
         "cardAlt": "Thẻ hồ sơ của {name}",
         "endorsements": "Tán thành",
-        "endorsementsFailed": "Hiện không tải được danh sách tán thành. Hãy thử lại sau."
+        "endorsementsFailed": "Hiện không tải được danh sách tán thành. Hãy thử lại sau.",
+        "comradeRequestOptions": {
+            "anyone": {
+                "label": "Bất kỳ ai đã đăng nhập",
+                "description": "Ai có tài khoản cũng có thể mời"
+            },
+            "groups": {
+                "label": "Người trong các nhóm của tôi",
+                "description": "Chỉ những người cùng ít nhất một nhóm với bạn"
+            },
+            "nobody": {
+                "label": "Không ai",
+                "description": "Không ai có thể gửi lời mời cho bạn. Bạn vẫn có thể gửi cho người khác"
+            }
+        },
+        "comrades": "Bạn đồng hành",
+        "comradesCount": "{count, plural, other {# bạn đồng hành}}",
+        "comradesSeeAll": "Xem tất cả bạn đồng hành",
+        "comradesFailed": "Hiện không tải được danh sách bạn đồng hành. Vui lòng thử lại sau."
     },
     "Endorsements": {
         "title": "Tán thành",
@@ -1658,5 +1683,57 @@
             "reasonHint": "Bắt buộc. Được lưu trong nhật ký quản trị, chỉ siêu người dùng xem được.",
             "done": "{kind, select, users {Đã xóa ảnh.} other {Đã xóa logo.}}"
         }
+    },
+    "Comrades": {
+        "add": "Thêm bạn đồng hành",
+        "signIn": "Đăng nhập để thêm làm bạn đồng hành",
+        "sent": "Đã gửi lời mời",
+        "cancel": "Hủy lời mời",
+        "received": "{name} muốn làm bạn đồng hành với bạn.",
+        "accept": "Chấp nhận",
+        "decline": "Từ chối",
+        "comrades": "Bạn đồng hành",
+        "remove": "Xóa bạn đồng hành",
+        "removeConfirm": "Họ sẽ không được báo. Để làm bạn đồng hành lại, một trong hai người gửi lời mời mới.",
+        "removeYes": "Xóa",
+        "removeNo": "Giữ lại",
+        "loadFailed": "Hiện không kiểm tra được hai bạn có phải bạn đồng hành không. Vui lòng thử lại sau.",
+        "done": {
+            "request": "Đã gửi lời mời.",
+            "cancel": "Đã hủy lời mời.",
+            "accept": "Giờ hai bạn là bạn đồng hành.",
+            "decline": "Đã từ chối lời mời. Họ sẽ không được báo.",
+            "remove": "Đã xóa bạn đồng hành."
+        },
+        "errors": {
+            "notFound": "Hiện không thể thêm người này.",
+            "closed": "{name} không nhận lời mời kết bạn đồng hành.",
+            "limit": "Bạn có 50 lời mời đang chờ trả lời. Hãy hủy bớt hoặc chờ trả lời trước khi gửi thêm.",
+            "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+        },
+        "requestsTitle": "Lời mời kết bạn đồng hành",
+        "requestsCount": "{count, plural, other {# lời mời đang chờ}}",
+        "requestsFailed": "Hiện không tải được lời mời kết bạn đồng hành. Vui lòng thử lại sau.",
+        "requestedAt": "Gửi ngày {when}",
+        "listTitle": "Bạn đồng hành của {name}",
+        "listMetaTitle": "Bạn đồng hành của {name}",
+        "listEmpty": "Không có bạn đồng hành nào để hiển thị.",
+        "listPrivate": "Danh sách bạn đồng hành của {name} là riêng tư.",
+        "backToProfile": "Quay lại hồ sơ của {name}",
+        "removeTitle": "Xóa {name} khỏi bạn đồng hành?"
+    },
+    "Notifications": {
+        "metaTitle": "Thông báo",
+        "title": "Thông báo",
+        "bell": "{count, plural, =0 {Thông báo} other {Thông báo, # mới}}",
+        "empty": "Chưa có gì. Lời mời kết bạn đồng hành và tin tức từ các nhóm của bạn sẽ hiện ở đây.",
+        "loadFailed": "Hiện không tải được thông báo của bạn. Vui lòng thử lại sau.",
+        "new": "Mới",
+        "kinds": {
+            "comradeRequest": "<person>{name}</person> muốn làm bạn đồng hành với bạn.",
+            "comradeAccepted": "<person>{name}</person> đã chấp nhận lời mời kết bạn đồng hành của bạn."
+        },
+        "someone": "Một người",
+        "olderHidden": "Chỉ hiển thị 50 thông báo mới nhất của bạn."
     }
 }

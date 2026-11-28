@@ -1,5 +1,6 @@
 import { ArrowRightIcon, PlusIcon, ShieldIcon, UsersIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
 import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
@@ -25,6 +26,8 @@ export interface DashboardPageProps {
     nearbyRadiusMiles: number;
     /** Super users: a link to /admin with the number of requests waiting. */
     admin?: { pendingClaims: number };
+    /** Comrade requests waiting for an answer (ComradeRequestList); it hides itself when empty. */
+    comradeRequests?: ReactNode;
 }
 
 /**
@@ -40,6 +43,7 @@ export function DashboardPage({
     nearby,
     nearbyRadiusMiles,
     admin,
+    comradeRequests,
 }: DashboardPageProps) {
     const t = useTranslations('Dashboard');
     const createButton = canCreate ? (
@@ -66,6 +70,8 @@ export function DashboardPage({
                     </p>
                 )}
             </header>
+
+            {comradeRequests}
 
             {admin && (
                 <div className="flex flex-col items-start gap-2 rounded-lg border p-4">

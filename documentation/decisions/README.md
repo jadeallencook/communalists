@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                                       | Decision                                                                                           | Date       |
 | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [074](074-comrades-and-a-shared-notifications-inbox.md)                                 | Comrades, and a shared notifications inbox                                                         | 2026-11-28 |
 | [073](073-endorsements-on-profiles-count-on-organization-pages.md)                      | Endorsements: organizations on a person's profile, a count on the organization's page              | 2026-11-28 |
 | [072](072-share-cards-for-profiles-and-organizations-bundled-fonts.md)                  | Share cards for profiles and organizations, with bundled fonts                                     | 2026-11-28 |
 | [071](071-profile-photos-and-organization-logos-cropped-in-browser-firebase-storage.md) | Profile photos and organization logos: cropped in the browser, stored in Firebase Storage          | 2026-11-27 |

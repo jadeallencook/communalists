@@ -669,12 +669,12 @@
                 "description": "任何人，包括未登录的人"
             },
             "groups": {
-                "label": "我所在团体的成员",
-                "description": "与你至少同属一个团体的已登录用户"
+                "label": "我的团体成员和伙伴",
+                "description": "与你至少同属一个团体的已登录用户，以及你的伙伴"
             },
             "name": {
-                "label": "仅显示我的名字",
-                "description": "其他人只能看到你的名字"
+                "label": "仅我的伙伴",
+                "description": "你的伙伴可以看到你的个人资料。其他人只能看到你的名字"
             }
         },
         "form": {
@@ -701,7 +701,12 @@
             "endorsementsHint": "在任何公开组织的页面上点“认可”，它就会显示在这里。你不需要是成员。它们遵循你的个人资料可见范围。要取消认可，请打开该组织的页面。",
             "endorsementsShow": "在我的个人资料上显示我认可的组织",
             "endorsementsNone": "你还没有认可任何组织。",
-            "endorsementsList": "你认可的组织"
+            "endorsementsList": "你认可的组织",
+            "comradesTitle": "伙伴",
+            "comradesHint": "你的伙伴始终能看到你完整的个人资料。在你的个人资料上，每位伙伴只会显示给本来就能看到其个人资料的人。",
+            "comradesShow": "在我的个人资料上显示我的伙伴",
+            "comradeRequests": "谁可以向你发送伙伴请求",
+            "comradeRequestsHint": "如果你拒绝请求，发送者不会收到通知。"
         },
         "preview": {
             "title": "预览",
@@ -709,12 +714,14 @@
             "audiences": {
                 "public": "任何人",
                 "groupmate": "你团体中的人",
-                "signedIn": "其他成员"
+                "signedIn": "其他成员",
+                "comrade": "一位伙伴"
             },
             "notes": {
                 "public": "未登录的人。",
-                "groupmate": "与你同属一个团体的人。他们还会看到你们共同所在的团体。",
-                "signedIn": "与你不属于任何共同团体的已登录成员。"
+                "groupmate": "与你同属一个团体的人。他们还会看到你们共同所在的团体。伙伴的个人资料公开时才会列出。",
+                "signedIn": "与你不属于任何共同团体的已登录成员。",
+                "comrade": "你的一位伙伴。无论你在上面如何选择，他们都能看到你完整的个人资料。"
             }
         },
         "errors": {
@@ -730,7 +737,25 @@
         "metaDescription": "{name} 在 Communalists 上，这是一个面向互助网络的免费平台。",
         "cardAlt": "{name} 的个人资料卡片",
         "endorsements": "认可的组织",
-        "endorsementsFailed": "暂时无法加载认可的组织，请稍后再试。"
+        "endorsementsFailed": "暂时无法加载认可的组织，请稍后再试。",
+        "comradeRequestOptions": {
+            "anyone": {
+                "label": "任何已登录的人",
+                "description": "任何有账户的人都可以发送请求"
+            },
+            "groups": {
+                "label": "我所在团体的成员",
+                "description": "仅限与你至少同属一个团体的人"
+            },
+            "nobody": {
+                "label": "任何人都不可以",
+                "description": "没有人能向你发送请求。你仍然可以向别人发送"
+            }
+        },
+        "comrades": "伙伴",
+        "comradesCount": "{count, plural, other {# 位伙伴}}",
+        "comradesSeeAll": "查看所有伙伴",
+        "comradesFailed": "暂时无法加载伙伴。请稍后再试。"
     },
     "Endorsements": {
         "title": "认可",
@@ -1658,5 +1683,57 @@
             "reasonHint": "必填。会保存在管理日志中，只有超级用户能看到。",
             "done": "{kind, select, users {照片已移除。} other {标志已移除。}}"
         }
+    },
+    "Comrades": {
+        "add": "添加伙伴",
+        "signIn": "登录以添加为伙伴",
+        "sent": "请求已发送",
+        "cancel": "取消请求",
+        "received": "{name} 想成为你的伙伴。",
+        "accept": "接受",
+        "decline": "拒绝",
+        "comrades": "伙伴",
+        "remove": "移除伙伴",
+        "removeConfirm": "对方不会收到通知。如需再次成为伙伴，你们中的一人需要重新发送请求。",
+        "removeYes": "移除",
+        "removeNo": "保留",
+        "loadFailed": "暂时无法确认你们是否是伙伴。请稍后再试。",
+        "done": {
+            "request": "请求已发送。",
+            "cancel": "请求已取消。",
+            "accept": "你们现在是伙伴了。",
+            "decline": "已拒绝请求。对方不会收到通知。",
+            "remove": "已移除伙伴。"
+        },
+        "errors": {
+            "notFound": "暂时无法添加此人。",
+            "closed": "{name} 不接受伙伴请求。",
+            "limit": "你有 50 个请求正在等待回复。请先取消一些或等待回复，再发送更多。",
+            "generic": "出了点问题。请重试。"
+        },
+        "requestsTitle": "伙伴请求",
+        "requestsCount": "{count, plural, other {# 个请求等待回复}}",
+        "requestsFailed": "暂时无法加载伙伴请求。请稍后再试。",
+        "requestedAt": "发送于 {when}",
+        "listTitle": "{name} 的伙伴",
+        "listMetaTitle": "{name} 的伙伴",
+        "listEmpty": "没有可显示的伙伴。",
+        "listPrivate": "{name} 的伙伴不公开。",
+        "backToProfile": "返回 {name} 的个人资料",
+        "removeTitle": "要将 {name} 从伙伴中移除吗？"
+    },
+    "Notifications": {
+        "metaTitle": "通知",
+        "title": "通知",
+        "bell": "{count, plural, =0 {通知} other {通知，# 条新通知}}",
+        "empty": "这里还没有内容。伙伴请求和你所在团体的消息会显示在这里。",
+        "loadFailed": "暂时无法加载你的通知。请稍后再试。",
+        "new": "新",
+        "kinds": {
+            "comradeRequest": "<person>{name}</person> 想成为你的伙伴。",
+            "comradeAccepted": "<person>{name}</person> 接受了你的伙伴请求。"
+        },
+        "someone": "某人",
+        "olderHidden": "仅显示你最新的 50 条通知。"
     }
 }

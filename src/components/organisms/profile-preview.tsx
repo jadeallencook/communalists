@@ -4,9 +4,10 @@ import type { ProfileView } from '@/lib/profiles';
 
 import { ProfileCard } from './profile-card';
 
-export type PreviewAudience = 'public' | 'groupmate' | 'signedIn';
+export type PreviewAudience = 'public' | 'comrade' | 'groupmate' | 'signedIn';
 export const PREVIEW_AUDIENCES: PreviewAudience[] = [
     'public',
+    'comrade',
     'groupmate',
     'signedIn',
 ];

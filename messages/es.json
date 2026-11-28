@@ -669,12 +669,12 @@
                 "description": "Cualquiera, incluso sin iniciar sesión"
             },
             "groups": {
-                "label": "Gente de mis grupos",
-                "description": "Personas con sesión iniciada que comparten al menos un grupo contigo"
+                "label": "Mis grupos y camaradas",
+                "description": "Personas con sesión iniciada que comparten al menos un grupo contigo, y tus camaradas"
             },
             "name": {
-                "label": "Solo mi nombre",
-                "description": "Los demás solo ven tu nombre"
+                "label": "Solo mis camaradas",
+                "description": "Tus camaradas ven tu perfil. Los demás solo ven tu nombre"
             }
         },
         "form": {
@@ -701,7 +701,12 @@
             "endorsementsHint": "Respalda cualquier grupo visible desde su página para mostrarlo aquí. No necesitas ser miembro. Siguen la visibilidad de tu perfil. Para retirar un respaldo, abre la página del grupo.",
             "endorsementsShow": "Mostrar en mi perfil las organizaciones que respaldo",
             "endorsementsNone": "Todavía no has respaldado ninguna organización.",
-            "endorsementsList": "Organizaciones que respaldas"
+            "endorsementsList": "Organizaciones que respaldas",
+            "comradesTitle": "Camaradas",
+            "comradesHint": "Tus camaradas siempre ven tu perfil completo. En tu perfil, cada camarada solo aparece para quienes ya podían ver su perfil.",
+            "comradesShow": "Mostrar mis camaradas en mi perfil",
+            "comradeRequests": "Quién puede enviarte solicitudes de camarada",
+            "comradeRequestsHint": "Si rechazas una solicitud, no se le avisa a quien la envió."
         },
         "preview": {
             "title": "Vista previa",
@@ -709,12 +714,14 @@
             "audiences": {
                 "public": "Cualquiera",
                 "groupmate": "Alguien de tus grupos",
-                "signedIn": "Otros miembros"
+                "signedIn": "Otros miembros",
+                "comrade": "Un camarada"
             },
             "notes": {
                 "public": "Alguien sin sesión iniciada.",
-                "groupmate": "Alguien que comparte un grupo contigo. También vería los grupos que compartes con esa persona.",
-                "signedIn": "Un miembro con sesión iniciada que no comparte ningún grupo contigo."
+                "groupmate": "Alguien que comparte un grupo contigo. También vería los grupos que compartes con esa persona. Los camaradas aparecen si su propio perfil es público.",
+                "signedIn": "Un miembro con sesión iniciada que no comparte ningún grupo contigo.",
+                "comrade": "Uno de tus camaradas. Ve tu perfil completo, elijas lo que elijas arriba."
             }
         },
         "errors": {
@@ -730,7 +737,25 @@
         "metaDescription": "{name} está en Communalists, una plataforma gratuita para redes de ayuda mutua.",
         "cardAlt": "Tarjeta del perfil de {name}",
         "endorsements": "Respalda a",
-        "endorsementsFailed": "No se pudieron cargar los respaldos. Inténtalo más tarde."
+        "endorsementsFailed": "No se pudieron cargar los respaldos. Inténtalo más tarde.",
+        "comradeRequestOptions": {
+            "anyone": {
+                "label": "Cualquiera con sesión iniciada",
+                "description": "Cualquier persona con una cuenta puede pedírtelo"
+            },
+            "groups": {
+                "label": "Gente de mis grupos",
+                "description": "Solo personas que comparten al menos un grupo contigo"
+            },
+            "nobody": {
+                "label": "Nadie",
+                "description": "Nadie puede enviarte solicitudes. Tú sí puedes enviarlas"
+            }
+        },
+        "comrades": "Camaradas",
+        "comradesCount": "{count, plural, one {# camarada} other {# camaradas}}",
+        "comradesSeeAll": "Ver todos los camaradas",
+        "comradesFailed": "No se pudieron cargar los camaradas. Inténtalo más tarde."
     },
     "Endorsements": {
         "title": "Respaldos",
@@ -1658,5 +1683,57 @@
             "reasonHint": "Obligatorio. Queda en el registro de administración, que solo ven los superusuarios.",
             "done": "{kind, select, users {Foto quitada.} other {Logotipo quitado.}}"
         }
+    },
+    "Comrades": {
+        "add": "Agregar camarada",
+        "signIn": "Inicia sesión para agregar como camarada",
+        "sent": "Solicitud enviada",
+        "cancel": "Cancelar solicitud",
+        "received": "{name} quiere ser tu camarada.",
+        "accept": "Aceptar",
+        "decline": "Rechazar",
+        "comrades": "Camaradas",
+        "remove": "Quitar camarada",
+        "removeConfirm": "No se le avisa. Para volver a ser camaradas, uno de los dos envía una nueva solicitud.",
+        "removeYes": "Quitar",
+        "removeNo": "Mantener",
+        "loadFailed": "No se pudo comprobar si son camaradas. Inténtalo más tarde.",
+        "done": {
+            "request": "Solicitud enviada.",
+            "cancel": "Solicitud cancelada.",
+            "accept": "Ahora son camaradas.",
+            "decline": "Solicitud rechazada. No se le avisa.",
+            "remove": "Camarada quitado."
+        },
+        "errors": {
+            "notFound": "No se puede agregar a esta persona ahora.",
+            "closed": "{name} no acepta solicitudes de camarada.",
+            "limit": "Tienes 50 solicitudes esperando respuesta. Cancela algunas o espera respuestas antes de enviar más.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        },
+        "requestsTitle": "Solicitudes de camarada",
+        "requestsCount": "{count, plural, one {# solicitud esperando} other {# solicitudes esperando}}",
+        "requestsFailed": "No se pudieron cargar las solicitudes de camarada. Inténtalo más tarde.",
+        "requestedAt": "Enviada el {when}",
+        "listTitle": "Camaradas de {name}",
+        "listMetaTitle": "Camaradas de {name}",
+        "listEmpty": "No hay camaradas para mostrar.",
+        "listPrivate": "Los camaradas de {name} son privados.",
+        "backToProfile": "Volver al perfil de {name}",
+        "removeTitle": "¿Quitar a {name} como camarada?"
+    },
+    "Notifications": {
+        "metaTitle": "Notificaciones",
+        "title": "Notificaciones",
+        "bell": "{count, plural, =0 {Notificaciones} one {Notificaciones, # nueva} other {Notificaciones, # nuevas}}",
+        "empty": "Todavía no hay nada. Aquí aparecerán las solicitudes de camarada y las novedades de tus grupos.",
+        "loadFailed": "No se pudieron cargar tus notificaciones. Inténtalo más tarde.",
+        "new": "Nueva",
+        "kinds": {
+            "comradeRequest": "<person>{name}</person> quiere ser tu camarada.",
+            "comradeAccepted": "<person>{name}</person> aceptó tu solicitud de camarada."
+        },
+        "someone": "Alguien",
+        "olderHidden": "Solo se muestran tus 50 notificaciones más recientes."
     }
 }

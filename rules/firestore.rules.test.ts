@@ -69,6 +69,10 @@ const PATHS = [
     'commentReports/organization~org1~c1~reply',
     // Endorsements (decision #73): one per person per organization.
     'endorsements/org1_someone',
+    // Comrades and notifications (decision #74): one per pair, one per
+    // thing per person.
+    'comradeships/other_someone',
+    'notifications/comradeRequest~other_someone~someone',
 ];
 
 // The test contexts are typed as the compat SDK, but work with the modular
@@ -102,6 +106,8 @@ describe.each(clients)('a %s client', (_who, db) => {
         'definitions/mutual-aid/comments',
         'organizations/org1/comments',
         'commentReports',
+        'comradeships',
+        'notifications',
     ])('can’t list %s', async (name) => {
         await assertFails(getDocs(collection(db(), name)));
     });

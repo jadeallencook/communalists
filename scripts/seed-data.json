@@ -584,5 +584,49 @@
                 "text": "Thanks for asking. We've contacted the organizers and will update this page when we hear back."
             }
         }
+    ],
+    "comradeships": [
+        {
+            "from": "seed-maya",
+            "to": "seed-luis",
+            "status": "accepted",
+            "daysAgo": 20
+        },
+        {
+            "from": "seed-wei",
+            "to": "seed-maya",
+            "status": "accepted",
+            "daysAgo": 12
+        },
+        {
+            "from": "seed-luis",
+            "to": "seed-thanh",
+            "status": "accepted",
+            "daysAgo": 8
+        },
+        {
+            "from": "seed-aisha",
+            "to": "seed-maya",
+            "status": "accepted",
+            "daysAgo": 3
+        },
+        {
+            "from": "seed-thanh",
+            "to": "seed-maya",
+            "status": "pending",
+            "daysAgo": 1
+        },
+        {
+            "from": "seed-priya",
+            "to": "seed-maya",
+            "status": "pending",
+            "daysAgo": 0
+        },
+        {
+            "from": "seed-maya",
+            "to": "seed-rosa",
+            "status": "pending",
+            "daysAgo": 2
+        }
     ]
 }

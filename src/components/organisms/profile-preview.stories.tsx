@@ -13,6 +13,7 @@ const groupsOnly = {
 };
 const views = (person: typeof samplePerson) => ({
     public: profileView(person, 'public', none),
+    comrade: profileView(person, 'comrade', none),
     groupmate: profileView(person, 'groupmate', none),
     signedIn: profileView(person, 'signedIn', none),
 });

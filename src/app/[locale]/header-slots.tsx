@@ -1,10 +1,12 @@
 import { getLocale } from 'next-intl/server';
 
 import { AccountMenu } from '@/components/molecules/account-menu';
+import { NotificationsBell } from '@/components/molecules/notifications-bell';
 import { signOut } from '@/app/actions/sign-out';
 import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
 import { MENU_ORGANIZATION_LIMIT } from '@/lib/navigation';
+import { getNotifications } from '@/lib/notifications/store';
 import { getMemberships } from '@/lib/organizations';
 import { getUserProfile } from '@/lib/users';
 
@@ -39,11 +41,17 @@ export async function HeaderAccount() {
         );
     }
 
-    const [profile, memberships] = await Promise.all([
+    const [profile, memberships, notifications] = await Promise.all([
         getUserProfile(user.uid),
         // A shortcut, not the page: if it can't load, the menu goes without.
         getMemberships(user.uid).catch(() => []),
+        // The bell still links to the inbox, without a count (decision #68).
+        getNotifications(user.uid).catch((error: Error) => {
+            console.error('[notifications] bell read failed', error.message);
+            return [];
+        }),
     ]);
+    const unread = notifications.filter((n) => !n.read).length;
     // Accounts that haven't finished setup have no profile name yet.
     const name = profile?.displayName ?? user.name ?? user.email ?? '';
     const account = {
@@ -63,6 +71,8 @@ export async function HeaderAccount() {
     };
     return (
         <>
+            {/* On every screen size: new notifications shouldn't hide in the menu. */}
+            <NotificationsBell unread={unread} />
             <div className="hidden lg:block">
                 <AccountMenu {...account} />
             </div>

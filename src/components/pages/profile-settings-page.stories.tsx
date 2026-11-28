@@ -45,6 +45,7 @@ const meta = {
             <ProfilePreview
                 views={{
                     public: publicView,
+                    comrade: publicView,
                     groupmate: publicView,
                     signedIn: publicView,
                 }}

@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+
+import { ComradeButton } from '@/components/molecules/comrade-button';
 import { fn } from 'storybook/test';
 
 import { ReasonDialog } from '@/components/molecules/reason-dialog';
@@ -38,6 +40,37 @@ export const Public: Story = {};
 /** Their own profile: everything, plus Edit profile. */
 export const Self: Story = { args: { view: selfView, isSelf: true } };
 export const Private: Story = { args: { view: privateView } };
+/** Someone else's profile, signed in: Add comrade under the name. */
+export const WithComradeButton: Story = {
+    args: {
+        comrade: (
+            <ComradeButton
+                state="none"
+                uid="seed-maya"
+                name="Maya Thompson"
+                next="/comrade/maya-thompson"
+                locale="en"
+                formAction={fn()}
+            />
+        ),
+    },
+};
+/** They asked to be the viewer's comrade. */
+export const RequestReceived: Story = {
+    args: {
+        view: privateView,
+        comrade: (
+            <ComradeButton
+                state="received"
+                uid="seed-maya"
+                name="Maya Thompson"
+                next="/comrade/maya-thompson"
+                locale="en"
+                formAction={fn()}
+            />
+        ),
+    },
+};
 export const Loading: Story = { render: () => <ProfilePageLoading /> };
 
 /** A super user sees Remove photo, with a required reason (decision #71). */

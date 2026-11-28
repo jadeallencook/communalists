@@ -4,60 +4,128 @@
             "collectionGroup": "adminLog",
             "queryScope": "COLLECTION",
             "fields": [
-                { "fieldPath": "action", "order": "ASCENDING" },
-                { "fieldPath": "createdAt", "order": "DESCENDING" }
+                {
+                    "fieldPath": "action",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
             ]
         },
         {
             "collectionGroup": "adminLog",
             "queryScope": "COLLECTION",
             "fields": [
-                { "fieldPath": "action", "order": "ASCENDING" },
-                { "fieldPath": "createdAt", "order": "ASCENDING" }
+                {
+                    "fieldPath": "action",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "ASCENDING"
+                }
             ]
         },
         {
             "collectionGroup": "organizations",
             "queryScope": "COLLECTION",
             "fields": [
-                { "fieldPath": "claimStatus", "order": "ASCENDING" },
-                { "fieldPath": "status", "order": "ASCENDING" },
-                { "fieldPath": "missingDetails", "arrayConfig": "CONTAINS" },
-                { "fieldPath": "createdAt", "order": "ASCENDING" }
+                {
+                    "fieldPath": "claimStatus",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "status",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "missingDetails",
+                    "arrayConfig": "CONTAINS"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "ASCENDING"
+                }
             ]
         },
         {
             "collectionGroup": "organizations",
             "queryScope": "COLLECTION",
             "fields": [
-                { "fieldPath": "claimStatus", "order": "ASCENDING" },
-                { "fieldPath": "status", "order": "ASCENDING" },
-                { "fieldPath": "missingDetails", "arrayConfig": "CONTAINS" }
+                {
+                    "fieldPath": "claimStatus",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "status",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "missingDetails",
+                    "arrayConfig": "CONTAINS"
+                }
             ]
         },
         {
             "collectionGroup": "comments",
             "queryScope": "COLLECTION",
             "fields": [
-                { "fieldPath": "votes", "order": "DESCENDING" },
-                { "fieldPath": "createdAt", "order": "DESCENDING" }
+                {
+                    "fieldPath": "votes",
+                    "order": "DESCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
             ]
         },
         {
             "collectionGroup": "comments",
             "queryScope": "COLLECTION",
             "fields": [
-                { "fieldPath": "lang", "order": "ASCENDING" },
-                { "fieldPath": "votes", "order": "DESCENDING" },
-                { "fieldPath": "createdAt", "order": "DESCENDING" }
+                {
+                    "fieldPath": "lang",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "votes",
+                    "order": "DESCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
             ]
         },
         {
             "collectionGroup": "comments",
             "queryScope": "COLLECTION",
             "fields": [
-                { "fieldPath": "lang", "order": "ASCENDING" },
-                { "fieldPath": "createdAt", "order": "DESCENDING" }
+                {
+                    "fieldPath": "lang",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "notifications",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "uid",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
             ]
         }
     ],

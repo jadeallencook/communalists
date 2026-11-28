@@ -39,6 +39,7 @@ import { getPlace } from '@/lib/places';
 import { isSupportedCountry } from '@/lib/places/types';
 import { makeUnclaimedProblem } from '@/lib/organizations/lifecycle';
 import { phoneForDisplay } from '@/lib/phone';
+import { getComradeUids } from '@/lib/comrades/store';
 import { profileViewer, visiblePhoto } from '@/lib/profiles';
 import { redirect } from '@/i18n/navigation';
 import { organizationPath } from '@/lib/paths';
@@ -266,9 +267,13 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
     }
 
     // Members-only content is an access decision: always a fresh read.
-    const [membership, people] = await Promise.all([
+    const [membership, people, comrades] = await Promise.all([
         user ? getMembershipFresh(org.id, user.uid) : null,
         getOrgPeople(org.id),
+        // Only for photos: if it fails, comrades just see initials.
+        user
+            ? getComradeUids(user.uid).catch(() => new Set<string>())
+            : new Set<string>(),
     ]);
     const role = membership?.status === 'active' ? membership.role : null;
 
@@ -319,6 +324,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                                     isSelf: uid === user?.uid,
                                     signedIn: !!user,
                                     sharesGroup: !!role,
+                                    isComrade: comrades.has(uid),
                                 })
                             ),
                         })

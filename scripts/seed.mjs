@@ -59,6 +59,7 @@ const {
     users,
     organizations,
     comments = [],
+    comradeships = [],
 } = readJson('./seed-data.json');
 
 // --- Dictionary words: every CSV in research/definitions/, in the import's
@@ -608,8 +609,59 @@ for (const { uid } of users)
     commentBatch.delete(db.collection('commentLimits').doc(uid));
 await commentBatch.commit();
 
+// --- Comrades (src/lib/comrades/store.ts) and their notifications
+// (src/lib/notifications/store.ts): every pair and notification of a seeded
+// person is reset. Pending requests notify whoever was asked; accepted ones
+// notify whoever asked (already read, except the newest).
+const seededUids = users.map((u) => u.uid);
+const comradeBatch = db.batch();
+for (const uid of seededUids) {
+    const [pairs, inbox] = await Promise.all([
+        db
+            .collection('comradeships')
+            .where('uids', 'array-contains', uid)
+            .get(),
+        db.collection('notifications').where('uid', '==', uid).get(),
+    ]);
+    for (const doc of [...pairs.docs, ...inbox.docs])
+        comradeBatch.delete(doc.ref);
+}
+await comradeBatch.commit();
+const DAY = 24 * 60 * 60 * 1000;
+const pairBatch = db.batch();
+const newest = Math.min(
+    ...comradeships.filter((c) => c.status === 'accepted').map((c) => c.daysAgo)
+);
+for (const { from, to, status, daysAgo } of comradeships) {
+    const [low, high] = [from, to].sort();
+    const id = `${low}_${high}`;
+    const at = Date.now() - daysAgo * DAY;
+    pairBatch.set(db.collection('comradeships').doc(id), {
+        uids: [low, high],
+        from,
+        to,
+        status,
+        createdAt: at - (status === 'accepted' ? DAY : 0),
+        ...(status === 'accepted' ? { respondedAt: at } : {}),
+    });
+    const kind = status === 'pending' ? 'comradeRequest' : 'comradeAccepted';
+    const owner = status === 'pending' ? to : from;
+    pairBatch.set(
+        db.collection('notifications').doc(`${kind}~${id}~${owner}`),
+        {
+            uid: owner,
+            kind,
+            ref: id,
+            actor: status === 'pending' ? from : to,
+            read: status === 'accepted' && daysAgo !== newest,
+            createdAt: Timestamp.fromMillis(at),
+        }
+    );
+}
+await pairBatch.commit();
+
 say(
-    `Seeded ${users.length} accounts, ${organizations.length - skipped} organizations, ${definitions.length} dictionary words and ${seededComments.length} comments. Password for all: ${password}. Main accounts:`
+    `Seeded ${users.length} accounts, ${organizations.length - skipped} organizations, ${definitions.length} dictionary words, ${seededComments.length} comments and ${comradeships.length} comradeships. Password for all: ${password}. Main accounts:`
 );
 for (const { email, profile, platformAdmin } of users.filter(
     (u) => u.featured
