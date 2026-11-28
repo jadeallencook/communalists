@@ -14,7 +14,7 @@ const meta = {
         imageAlt: 'A volunteer hands a plate of hot food to a neighbor',
         title: 'This is what community looks like',
         subtitle:
-            'Find your community, discover meaningful causes, and connect with the people working to make a difference.',
+            'Find your community and discover meaningful causes. Connect with the people and organizations working to make a difference. Share resources, get involved, and create lasting change together.',
     },
 } satisfies Meta<typeof HeroBanner>;
 
