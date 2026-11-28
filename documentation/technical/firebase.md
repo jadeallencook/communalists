@@ -78,7 +78,18 @@ What follows from that:
 - **The server is the only gate.** Every server action and container must check authorization itself, for example taking the uid from the verified session cookie, never from the request.
 - **`FIREBASE_SERVICE_ACCOUNT_KEY` is the master key.** Whoever holds it can read and write all data. Keep it only in Vercel's environment variables (marked sensitive). If it leaks, delete it under Project settings → Service accounts and generate a new one.
 - **Opening client access later** (e.g. live updates on a kanban board) means writing real rules for just those collections, scoped by organization membership and role, with emulator tests. Everything else stays denied.
-- **The deny-all rules are tested.** `rules/firestore.rules.test.ts` (`pnpm test:rules`, run in CI) checks that signed-out and signed-in clients can't read, write, delete or list any collection we store. Add each new collection to its list; opening one means changing its tests on purpose ([decision #54](../decisions/054-security-rules-tests-against-the-emulator.md)).
+- **The deny-all rules are tested.** `rules/firestore.rules.test.ts` (`pnpm test:rules`, run in CI) checks that signed-out and signed-in clients can't read, write, delete or list any collection we store. Add each new collection to its list; opening one means changing its tests on purpose ([decision #54](../decisions/054-security-rules-tests-against-the-emulator.md)). `rules/storage.rules.test.ts` does the same for Storage.
+
+## Storage (photos)
+
+Profile photos and organization logos ([decision #71](../decisions/071-profile-photos-and-organization-logos-cropped-in-browser-firebase-storage.md)) live in Firebase Storage under `photos/{users|organizations}/{ownerId}/{id}-{500|128}.webp` (`src/lib/photos/`).
+
+- **`storage.rules` denies every client**, like Firestore. Only server actions write, through the Admin SDK (`getAdminBucket()`), after checking who's acting and re-encoding the file with `sharp`.
+- **Reading uses download-token links** (`…/o/{path}?alt=media&token=…`). Firebase serves these **without checking the rules**: the token is the secret. So a link is only sent to viewers allowed to see the photo, and to take access away the file must move. **Changing the token in place isn't enough:** setting `firebaseStorageDownloadTokens` through the Admin SDK added a second token instead of replacing the first (seen in the emulator, 2026-11-27), so the old link kept working. Rotation (`rotatePhoto`) saves a copy under a new id and token, points the profile at it, then deletes the old files.
+- **Files are cached by browsers for a year** (`private, max-age=31536000, immutable`): every new photo or rotation is a new link. `private` keeps them out of shared caches.
+- **Delete after the record moves.** Actions save new files, point the document at them, then delete the old files. A failed delete is only logged: it leaves an orphan file (and, until it's gone, a working old link), never a broken photo.
+- **Locally**, the Storage emulator runs on port 9199 with the others (`pnpm dev`). `admin.ts` defaults `FIREBASE_STORAGE_EMULATOR_HOST` to it when the other emulators are set, for `.env.local` files made before Storage. The bucket name defaults to `{projectId}.firebasestorage.app` when `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` is empty, and is passed to `bucket()` explicitly, because an Admin app created earlier in the process (a dev server reload) may not have it.
+- **Cost:** a photo is about 5–40 KB at 500 px and 1–5 KB at 128 px; lists use the small one. Egress is Storage download bandwidth, not Vercel.
 
 ## Security in the prototype: the big unknown
 
@@ -103,4 +114,4 @@ What follows from that:
 - Mixing `getDatabase()` / `getAuth()` without `app` and with `app` only works with a single default app.
 - **Prototype:** the `communalists-test` project was the default for development. The production config came from the `FIREBASE_CONFIG` env var at build time. That variable is still on the `communalists` Vercel project but **unused by the rebuild**; it can be removed.
 - **Rebuild (2026-11-21):** only `communalists` (production) is used. Local development and tests use the emulators under the fake project ID `demo-communalists`. The `demo-` prefix keeps the emulators from reaching any real Google service. `communalists-test` and `communalists-demo` still exist in the Firebase account but nothing uses them. There's no `.firebaserc`, so CLI commands pass `--project` explicitly. `communalists-test` is a candidate for a separate preview-deployment project (see `deployment.md`).
-- `storageBucket` changed from `*.appspot.com` to `*.firebasestorage.app` (Firebase's newer default). Storage isn't used.
+- `storageBucket` changed from `*.appspot.com` to `*.firebasestorage.app` (Firebase's newer default). Storage is used for photos since 2026-11-27 (see "Storage (photos)").

@@ -13,6 +13,7 @@ import {
     handleHeldUntil,
     nextHandleChangeAt,
 } from '@/lib/organizations/handle';
+import { photoOf, type Photo } from '@/lib/photos';
 import { profileSettingsOf, type ProfileSettings } from '@/lib/profiles';
 
 // users/{uid}: the public-safe profile for an account. Email and password
@@ -39,6 +40,8 @@ export interface UserProfile {
     usernameChangedAt?: number;
     /** What they share on their profile, and with whom (src/lib/profiles.ts). */
     profile: ProfileSettings;
+    /** Their profile photo, if any. Shown as their visibility allows. */
+    photo?: Photo;
 }
 
 /** A profile that has passed account setup. */
@@ -73,6 +76,7 @@ async function readProfile(uid: string): Promise<UserProfile | null> {
         username: d.username,
         usernameChangedAt: millis(d.usernameChangedAt),
         profile: profileSettingsOf(d.profile),
+        photo: photoOf(d.photo),
     };
 }
 
@@ -89,6 +93,13 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
 
 /** Straight from Firestore (once per request), for decisions like "is setup done?". */
 export const getUserProfileFresh = cache(readProfile);
+
+/**
+ * Straight from Firestore every call, not once per request: for reading
+ * back what an action just wrote (getUserProfileFresh may hold the copy
+ * from before the write).
+ */
+export const getUserProfileAfterWrite = readProfile;
 
 export type SaveProfileResult =
     | { ok: true; usernameChanged: boolean; previousUsername?: string }
@@ -184,6 +195,60 @@ export async function saveProfileSettings(
             },
             { merge: true }
         );
+}
+
+/**
+ * Points the profile at a new photo, or none, in a transaction, and returns
+ * the one it replaced so the caller can delete its files.
+ */
+export async function setUserPhoto(
+    uid: string,
+    photo: Photo | null
+): Promise<Photo | undefined> {
+    const ref = users().doc(uid);
+    return getAdminDb().runTransaction(async (tx) => {
+        logRead('users (photo)');
+        const previous = photoOf((await tx.get(ref)).data()?.photo);
+        tx.set(
+            ref,
+            {
+                photo: photo ?? FieldValue.delete(),
+                updatedAt: FieldValue.serverTimestamp(),
+            },
+            { merge: true }
+        );
+        return previous;
+    });
+}
+
+/**
+ * A super user removes someone's photo as moderation (decision #71): the
+ * profile stops pointing at it, and adminLog records who, why and whose.
+ * Returns the removed photo so the caller can delete its files, or
+ * undefined if there was none.
+ */
+export async function removeUserPhotoAsModerator(
+    uid: string,
+    actorUid: string,
+    reason: string
+): Promise<Photo | undefined> {
+    const ref = users().doc(uid);
+    return getAdminDb().runTransaction(async (tx) => {
+        logRead('users (photo)');
+        const data = (await tx.get(ref)).data();
+        const previous = photoOf(data?.photo);
+        if (!previous) return undefined;
+        const stamp = FieldValue.serverTimestamp();
+        tx.update(ref, { photo: FieldValue.delete(), updatedAt: stamp });
+        tx.create(getAdminDb().collection('adminLog').doc(), {
+            action: 'removePhoto',
+            target: { uid, displayName: data?.displayName ?? '' },
+            reason,
+            actorUid,
+            createdAt: stamp,
+        });
+        return previous;
+    });
 }
 
 /** Whether a username is taken by someone else (or held). Always fresh. */

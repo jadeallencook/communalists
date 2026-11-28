@@ -326,7 +326,8 @@ export interface CommentView {
     votes: number;
     hidden: boolean;
     /** Null when the account is gone. */
-    author: { name: string; username?: string } | null;
+    /** `photo`: their small photo link, only if this viewer may see it. */
+    author: { name: string; username?: string; photo?: string } | null;
     /** Written by the viewer. */
     mine: boolean;
     /** The viewer up voted it. */

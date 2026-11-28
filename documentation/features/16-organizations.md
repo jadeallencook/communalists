@@ -2,7 +2,7 @@
 
 The heart of the platform: people create, find and join **organizations**, and an organization's tools only work for its members. This is the rebuild's design, agreed with the user on 2026-11-22 ([decision #22](../decisions/022-organizations-design-handles-roles-limits.md)). It replaces the prototype's single hard-coded organization ([08](08-organizations-and-membership.md)). Read 08's "Gaps" for what went wrong there.
 
-**Status:** phase 1 built 2026-11-22, except the logo upload. Phase 2 (finding, joining, moderating members) and editing built 2026-11-23. See "Built" at the end. **Unclaimed organizations** (added by super users, with no owner until a group claims them) are in [18](18-unclaimed-organizations.md).
+**Status:** phase 1 built 2026-11-22; the logo upload 2026-11-27 ([decision #71](../decisions/071-profile-photos-and-organization-logos-cropped-in-browser-firebase-storage.md)). Phase 2 (finding, joining, moderating members) and editing built 2026-11-23. See "Built" at the end. **Unclaimed organizations** (added by super users, with no owner until a group claims them) are in [18](18-unclaimed-organizations.md).
 
 ## What an organization has
 
@@ -21,7 +21,7 @@ The heart of the platform: people create, find and join **organizations**, and a
 | Socials          | Optional list of `{ platform, handle }`: Instagram, Facebook (page), Facebook group, X, Bluesky, TikTok, YouTube, Telegram. People type just the username; a pasted profile link is cut down to it. We build the link, so it's always that platform's profile page ([decision #32](../decisions/032-social-links-as-handles-not-urls.md)).                                                                                                                                                                                   |
 | Contact email    | Optional, **public** on the organization's page.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Phone            | Optional, **public**, with a tap-to-call link. Typed any way ("408.293.6111", "(408) 293-6111 ext 2"), read in the group's country, and stored as one value: E.164 plus `;ext=N` (`src/lib/phone.ts`, using `libphonenumber-js`). Shown in local format to visitors in the same country, international otherwise. The hint asks for the organization's line, not a personal cell ([decision #36](../decisions/036-organization-phone-number-and-year-founded.md)).                                                           |
-| Logo             | Optional image upload (Firebase Storage). Type and size checked on the server.                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Logo             | Optional. Uploaded and cropped to a square on the edit page, saved at 500×500 (Firebase Storage). Public wherever the organization shows. See "Logo".                                                                                                                                                                                                                                                                                                                                                                        |
 | Join policy      | `request` (default): people ask, owners or moderators approve. `open`: join instantly. `invite`: invited people only.                                                                                                                                                                                                                                                                                                                                                                                                        |
 | Visibility       | `listed` (default): shows up when browsing. `unlisted`: reachable by link only (for groups that don't want to be found, like a tenant union organizing against a landlord).                                                                                                                                                                                                                                                                                                                                                  |
 | Member list      | Who sees every member's name on the group's page: `public` (anyone, signed out too), `members` (default: members see everyone), or `hidden` (just the count). Owners and moderators are always named, and everyone sees the count. Staff always see everyone on the members page.                                                                                                                                                                                                                                            |
@@ -45,7 +45,7 @@ General · Food · Housing · Transportation · Technology · Health · Childcar
 | Member    | Use the members-only side of the tools                                                                                                                                                              |
 
 - **One membership record per person per organization:** `role` (`owner` / `moderator` / `member`) and `status` (`active` / `pending` / `invited` / `banned`). This is not an array on the organization; that was the prototype's mistake ([08 → Gaps](08-organizations-and-membership.md#gaps)). It makes deny, leave, promote, remove and audit possible, and keeps member lists off every client.
-- The record also carries a small copy of the organization (name, handle, focus areas, logo), so the dashboard lists all of a person's organizations in **one query**, and a copy of the person's name, so a member list is one query too. Renaming an organization updates its copies; saving a profile updates the name copies.
+- The record also carries a small copy of the organization (name, handle, focus areas, the logo's small link), so the dashboard lists all of a person's organizations in **one query**, and a copy of the person (name, username, photo link and profile visibility), so a member list is one query too. Renaming an organization or changing its logo updates its copies; saving a profile or photo updates the person's copies.
 - **An organization always has at least one owner.** The last owner can't leave or step down without handing ownership to someone.
 - **A person can own at most 5 organizations** (abuse limit; open sign-up means open creation). Unclaimed organizations don't count: nobody owns them ([18](18-unclaimed-organizations.md)).
 - Creating requires a finished account (name and city), which `requireAccount` guarantees.
@@ -124,7 +124,7 @@ Owners and moderators get **Manage members** (with the number of open requests) 
 
 ## Editing
 
-Owners and moderators get **Edit organization** in the members' space, leading to `/organization/{handle}/edit`: the create form, filled in, with **Save changes**. Every field can be edited, including the member list setting. The logo isn't built yet.
+Owners and moderators get **Edit organization** in the members' space, leading to `/organization/{handle}/edit`: the create form, filled in, with **Save changes**. Every field can be edited, including the member list setting. The logo has its own section above the form (see "Logo").
 
 - **The handle is owners only,** at most once every 30 days ("Renaming" above). Moderators see it read-only ("Only owners can change the handle."), and so do owners within 30 days of a change ("You can change the handle again on {date}"). Keeping the current handle reads "This is your current handle", not "taken".
 - **Saving** checks the editor's role, the 30-day limit and the new handle's claim on fresh data in one transaction. The old handle becomes a **hold** (`heldUntil` 30 days out): it no longer resolves (not found, no redirect; the organization not-found page explains that addresses can change, [decision #69](../decisions/069-not-found-pages-general-and-per-kind.md)), and nobody else can take it until the hold ends. After that, anyone can claim it.
@@ -164,16 +164,25 @@ Bare `communalists.com/organization/{handle}` redirects to the visitor's languag
 
 1. **Create and list:** the data model, create form with handle check, dashboard "Your organizations" plus "Create organization", the `/organization/{handle}` page (public profile plus a member view), and the logo upload last.
 2. **Find and join:** "near you" browsing, joining by each policy, approving and denying requests, removing and banning (all built 2026-11-23).
-3. **Manage:** invite, archive, logo. (Promoting, handing over ownership, editing the profile and changing the handle were built 2026-11-23.)
+3. **Manage:** invite, archive. (The logo was built 2026-11-27. Promoting, handing over ownership, editing the profile and changing the handle were built 2026-11-23.)
 4. **Then:** subdomains (after the domain move) and the first tool, Requests.
 
 **Discussion on an organization's page** (built 2026-11-27, [decision #70](../decisions/070-organization-discussions-platform-moderated-with-official-replies.md)), after the member list and before nearby groups. Public comments with up votes on listed organizations, claimed or unclaimed (never unlisted), no ratings, moderated by super users through reports, and one official reply per comment from owners or moderators, logged in Recent actions. See [features/20 → On organizations](20-comments.md#on-organizations).
+
+## Logo
+
+Built 2026-11-27 ([decision #71](../decisions/071-profile-photos-and-organization-logos-cropped-in-browser-firebase-storage.md)), the same way as profile photos ([features/17 → Photo](17-profiles.md#photo)):
+
+- **Owners and moderators** (super users on unclaimed organizations) upload, change or remove it on `/organization/{handle}/edit`, in its own section above the form, saved on its own. The crop dialog has a **square** guide, since logos often have text a circle would clip. Logos show as rounded squares.
+- **Shown** on the organization's page, search results, nearby groups, the dashboard and members' menus, to everyone: the organization is public wherever it shows.
+- Each change is logged in Recent actions as an edit of "the logo" (and in `adminLog` when a super user does it for the team). **Super users can remove a logo** from any organization, with a required reason (`removeLogo` in `adminLog`); the group sees "The Communalists team changed the logo".
+- Stored as `organizations/{id}.photo { id, large, small }`; memberships and the directory carry the small link.
 
 ## Data and security notes
 
 - All reads and writes go through server actions and the Admin SDK (deny-all rules stay); every action checks the caller's membership and role on the server.
 - Reads are cached with tags (`org:{id}`, the user's membership list) and cleared by the actions that write ([firebase.md → Caching reads](../technical/firebase.md#caching-reads-in-the-rebuild)).
-- Logos need Storage rules, the Storage emulator locally, and type and size limits enforced on the server.
+- Logos are written only by server actions (Storage rules deny clients), checked and re-encoded on the server; see "Logo".
 - Contact email is the only personal-ish field and it's opt-in and public by design. Member names are shown only as the group's member list setting allows (members only by default); requests, bans and reasons are staff-only and never leave the server for anyone else.
 
 ## Built (phase 1, 2026-11-22)

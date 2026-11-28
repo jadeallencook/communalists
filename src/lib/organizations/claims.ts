@@ -123,4 +123,7 @@ export type AdminAction =
     | 'hideReply'
     | 'unhideReply'
     | 'deleteReply'
-    | 'replyComment';
+    | 'replyComment'
+    // Removing a member's photo or an organization's logo (decision #71).
+    | 'removePhoto'
+    | 'removeLogo';

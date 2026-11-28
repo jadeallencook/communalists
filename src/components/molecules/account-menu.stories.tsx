@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { SAMPLE_PHOTO } from './photo-fixtures';
 import { fn } from 'storybook/test';
 
 import { AccountMenu } from './account-menu';
@@ -68,4 +69,8 @@ export const ManyOrganizations: Story = {
 /** Super users also get Admin. */
 export const SuperUser: Story = {
     args: { username: 'ada-lovelace', isAdmin: true },
+};
+
+export const WithPhoto: Story = {
+    args: { username: 'ada-lovelace', photo: SAMPLE_PHOTO },
 };

@@ -32,6 +32,7 @@
 **Moving and touching**
 
 - Targets at least **24×24px** (44px for main actions on phones where we can).
+- **Anything done by dragging has another way** (WCAG 2.5.7). The photo cropper: focus the picture and use the arrow keys (Shift for small steps), and zoom with a labelled slider or − and + buttons ([features/17 → Photo](../features/17-profiles.md#photo)).
 - Respect **reduced motion**: pulsing skeletons and spinners use `motion-safe:` (or stop) when the person asks for less motion.
 - Nothing times out without warning.
 - **Content that appears on hover** (tooltips, like marked dictionary words) also appears on keyboard focus, can be hovered without disappearing, and closes with Escape (WCAG 1.4.13). Never put the only way to reach something in a hover: a marked word is also a link to its page ([features/19](../features/19-dictionary.md#marked-words-definition)).

@@ -26,6 +26,7 @@ import {
     SheetTrigger,
 } from '@/components/atoms/sheet';
 import type { MenuOrganization } from '@/components/molecules/account-menu';
+import { Avatar } from '@/components/molecules/avatar';
 import type { NavLinkData } from '@/components/molecules/header-links';
 import { ThemeOptions } from '@/components/molecules/theme-toggle';
 import { Link } from '@/i18n/navigation';
@@ -45,6 +46,8 @@ export interface MobileNavAccount {
     email?: string;
     locale: string;
     username?: string;
+    /** Their own photo's small link. */
+    photo?: string;
     organizations?: MenuOrganization[];
     moreOrganizations?: boolean;
     isAdmin?: boolean;
@@ -107,16 +110,24 @@ export function MobileNav({
                 <SheetHeader className="border-b pe-12">
                     <SheetTitle className="text-lg">{t('menu')}</SheetTitle>
                     {account && (
-                        <p className="flex min-w-0 flex-col text-sm">
-                            <span className="truncate font-medium">
-                                {account.name}
-                            </span>
-                            {account.email && (
-                                <span className="truncate text-muted-foreground">
-                                    {account.email}
+                        <div className="flex min-w-0 items-center gap-3">
+                            <Avatar
+                                name={account.name}
+                                photo={account.photo}
+                                size={40}
+                                tone="primary"
+                            />
+                            <p className="flex min-w-0 flex-col text-sm">
+                                <span className="truncate font-medium">
+                                    {account.name}
                                 </span>
-                            )}
-                        </p>
+                                {account.email && (
+                                    <span className="truncate text-muted-foreground">
+                                        {account.email}
+                                    </span>
+                                )}
+                            </p>
+                        </div>
                     )}
                 </SheetHeader>
 

@@ -10,6 +10,7 @@ People get a page of their own: a name always, and whatever else they choose to 
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Name         | The account's display name. **Always shown** to anyone who reaches the page, whatever the visibility.                                                                                                                           |
 | Username     | The address: `communalists.com/comrade/{username}` (`/@{username}` forwards there). Required; see "Usernames".                                                                                                                  |
+| Photo        | Optional, cropped to a square on upload and saved at 500×500. Follows the profile visibility; see "Photo".                                                                                                                      |
 | Pronouns     | Optional, short free text ("she/her", "elle"). Shown next to the name, in previews too.                                                                                                                                         |
 | Bio          | Optional plain text, about 300 characters. Not translated (user content).                                                                                                                                                       |
 | Languages    | Optional, from the same list as groups.                                                                                                                                                                                         |
@@ -34,6 +35,17 @@ One setting, **Profile visibility**:
 - **Preview as…** in settings shows the profile as the public, as a member of one of their groups, and as a signed-in stranger.
 - Profiles are `noindex` (kept out of search engines), even public ones, for now. Being searchable would be its own opt-in later.
 - All checks run on the server; the page and the preview only ever receive what the viewer may see.
+
+## Photo
+
+Built 2026-11-27 ([decision #71](../decisions/071-profile-photos-and-organization-logos-cropped-in-browser-firebase-storage.md)). Organization logos work the same way ([features/16](16-organizations.md)).
+
+- **Who sees it follows Profile visibility**, like the bio: "Just my name" hides it, and "People in my groups" hides it from anyone outside their groups. That holds everywhere the person appears: their profile, member lists and the members page, comments, and the header (their own photo is always theirs). Anyone who can't see it gets initials.
+- **Upload and crop** on `/account/profile`, saved on its own (not with the form). They pick a picture (JPEG, PNG, WebP, or anything the browser can open, up to 25 MB). A dialog shows it under a round guide. They drag it, or focus it and use the arrow keys (Shift for small steps), and zoom with the slider or the − and + buttons. **Save** sends a 500×500 JPEG drawn in the browser, so the original and its location data never leave the device. **Change photo** and **Remove photo** sit beside it. Results are announced, and focus returns to the upload button.
+- **On the server** the upload is checked again (JPEG, PNG or WebP, at most 900 KB, a square of 100–2000 px) and re-encoded with `sharp` to WebP at 500 and 128 px with all metadata removed. Replaced files are deleted.
+- **Links:** files are read through unguessable download links, and only viewers allowed to see the photo are sent one. **Sharing with fewer people moves the photo** to a new link and deletes the old files, so copies of the old link stop working. Someone who could see it and kept the link can still open it until then, the same as saving the image.
+- **Moderation:** super users can remove a photo they can see, with a required reason, logged in `adminLog` ([features/18](18-unclaimed-organizations.md)).
+- In member lists and comments the person is copied or cached with their photo link and visibility, so changing either updates the copies on their memberships (like the name).
 
 ## Groups on a profile
 
@@ -70,7 +82,7 @@ Listing someone's groups could undo the groups' own privacy (an unlisted tenants
 
 ## Data (planned)
 
-- `users/{uid}` (server-only) gains `username`, `usernameChangedAt`, and `profile { visibility, pronouns, bio, languages[], showArea, socials[], website?, groups { show, hidden[] }, skills[], findableBySkills }`.
+- `users/{uid}` (server-only) gains `username`, `usernameChangedAt`, `photo { id, large, small }` (built) and `profile { visibility, pronouns, bio, languages[], showArea, socials[], website?, groups { show, hidden[] }, skills[], findableBySkills }`. Memberships copy `member { displayName, username, photo, visibility }`.
 - `usernames/{username}` → `{ uid, heldUntil? }`, claimed like `handles/{handle}`.
 - A small `skillListings/{uid}` document only for people who opted in (skills, coarse location, geohash), so skill search never reads private profiles. Its query (skill + area) needs a composite index, kept in `firestore.indexes.json`.
 - Visibility is decided per request on the server: the viewer's and the person's active memberships (cached) decide "shares a group" and which groups to list.

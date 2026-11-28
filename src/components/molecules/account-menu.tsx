@@ -8,6 +8,7 @@ import {
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/atoms/button';
+import { Avatar } from '@/components/molecules/avatar';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -18,7 +19,6 @@ import {
     DropdownMenuTrigger,
 } from '@/components/atoms/dropdown-menu';
 import { Link } from '@/i18n/navigation';
-import { initials } from '@/lib/initials';
 import { organizationPath } from '@/lib/paths';
 
 /** An organization the person belongs to, as the menus list it. */
@@ -34,6 +34,8 @@ export interface AccountMenuProps {
     locale: string;
     /** Their profile address; adds "Your profile". Missing mid-setup. */
     username?: string;
+    /** Their own photo's small link (initials without one). */
+    photo?: string;
     /** Their organizations, already cut to the few the menu shows. */
     organizations?: MenuOrganization[];
     /** They belong to more than `organizations` lists: adds "See all" (the dashboard). */
@@ -45,7 +47,7 @@ export interface AccountMenuProps {
 }
 
 /**
- * The signed-in user's menu on wide screens: initials button → name, their
+ * The signed-in user's menu on wide screens: photo (or initials) button → name, their
  * organizations, profile, settings, Admin (super users), Sign out. Phones get
  * the same things in the menu drawer (MobileNav).
  */
@@ -55,6 +57,7 @@ export function AccountMenu({
     locale,
     signOutAction,
     username,
+    photo,
     organizations = [],
     moreOrganizations = false,
     isAdmin = false,
@@ -71,12 +74,12 @@ export function AccountMenu({
                     className="rounded-full"
                     aria-label={t('open', { name })}
                 >
-                    <span
-                        aria-hidden
-                        className="flex size-7 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground"
-                    >
-                        {initials(name)}
-                    </span>
+                    <Avatar
+                        name={name}
+                        photo={photo}
+                        size={28}
+                        tone="primary"
+                    />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-64">

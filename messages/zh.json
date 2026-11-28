@@ -631,7 +631,8 @@
             "memberListVisibility": "成员名单设置",
             "streetAddress": "街道地址",
             "phone": "电话",
-            "foundedYear": "成立年份"
+            "foundedYear": "成立年份",
+            "logo": "标志"
         },
         "teamActor": "Communalists 团队"
     },
@@ -850,7 +851,9 @@
             "replyComment": "{actor}代表团队回复了{word}上的一条评论",
             "hideReply": "{actor}隐藏了{word}上的一条回复",
             "unhideReply": "{actor}重新显示了{word}上一条被隐藏的回复",
-            "deleteReply": "{actor}删除了{word}上的一条回复"
+            "deleteReply": "{actor}删除了{word}上的一条回复",
+            "removePhoto": "{actor} 移除了 {target} 的照片",
+            "removeLogo": "{actor} 移除了 {org} 的标志"
         },
         "unknownActor": "一位超级用户",
         "errors": {
@@ -1114,7 +1117,8 @@
             "lifecycle": "删除、恢复或设为未认领",
             "words": "添加、编辑或删除的词条",
             "exports": "组织列表的下载",
-            "comments": "隐藏或删除的评论、驳回的举报"
+            "comments": "隐藏或删除的评论、驳回的举报",
+            "photos": "已移除的照片和标志"
         },
         "gapNames": {
             "phone": "电话",
@@ -1578,6 +1582,52 @@
             "title": "找不到用户名为“{username}”的人",
             "body": "用户可以更改用户名，旧用户名会失效。请检查拼写，或通过他们所在的组织找到他们。",
             "find": "查找组织"
+        }
+    },
+    "Photo": {
+        "title": "{kind, select, users {头像} other {标志}}",
+        "hint": "{kind, select, users {选填。只有能看到你个人资料的人才能看到，所以“仅显示我的名字”也会隐藏头像。} other {选填。会显示在你的组织出现的地方：组织页面、搜索结果和成员的控制面板。}}",
+        "upload": "{kind, select, users {上传照片} other {上传标志}}",
+        "change": "{kind, select, users {更换照片} other {更换标志}}",
+        "remove": "{kind, select, users {移除照片} other {移除标志}}",
+        "removing": "正在移除…",
+        "formats": "支持 JPEG、PNG 或 WebP。保存前你会把它裁剪成正方形，保存尺寸为 500 × 500 像素。",
+        "done": {
+            "uploaded": "{kind, select, users {照片已保存。} other {标志已保存。}}",
+            "removed": "{kind, select, users {照片已移除。} other {标志已移除。}}"
+        },
+        "crop": {
+            "title": "{kind, select, users {裁剪你的照片} other {裁剪标志}}",
+            "description": "拖动图片选择要显示的部分，或选中图片后使用方向键（按住 Shift 可小步移动）。使用滑块或 − 和 + 按钮缩放。",
+            "area": "图片位置",
+            "zoom": "缩放",
+            "zoomValue": "{percent}%",
+            "zoomIn": "放大",
+            "zoomOut": "缩小",
+            "save": "保存",
+            "saving": "正在保存…",
+            "cancel": "取消"
+        },
+        "errors": {
+            "notImage": "该文件不是图片。请选择 JPEG、PNG 或 WebP 图片。",
+            "tooLarge": "图片太大。请选择小于 25 MB 的图片。",
+            "decodeFailed": "无法打开该图片。请试试 JPEG 或 PNG 图片。",
+            "missing": "请先选择一张图片。",
+            "wrongType": "只能保存 JPEG、PNG 或 WebP 图片。",
+            "unreadable": "无法读取该图片。请换一张试试。",
+            "notSquare": "图片没有裁剪。请重试。",
+            "notAllowed": "你不能更改这张图片。",
+            "reasonRequired": "请填写原因。",
+            "generic": "出了点问题。请重试。"
+        },
+        "moderation": {
+            "trigger": "{kind, select, users {移除照片} other {移除标志}}",
+            "triggerFor": "{kind, select, users {移除 {name} 的照片} other {移除 {name} 的标志}}",
+            "title": "{kind, select, users {移除这张照片？} other {移除这个标志？}}",
+            "description": "将对所有人删除，且无法撤销。原因会记录在管理日志中。",
+            "confirm": "移除",
+            "reasonHint": "必填。会保存在管理日志中，只有超级用户能看到。",
+            "done": "{kind, select, users {照片已移除。} other {标志已移除。}}"
         }
     }
 }

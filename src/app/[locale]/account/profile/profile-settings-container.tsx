@@ -21,6 +21,7 @@ import {
 } from '@/lib/profiles';
 import type { ProfileSettingsState } from '@/lib/validation/profile';
 
+import { PhotoEditorContainer } from '../../_photos/photo-editor-container';
 import { saveProfileSettingsAction } from './actions';
 
 /**
@@ -31,12 +32,15 @@ export function ProfileSettingsContainer({
     name,
     username,
     areaLabel,
+    photo,
     settings,
     groups,
 }: {
     name: string;
     username: string;
     areaLabel: string;
+    /** The current photo's large link. */
+    photo?: string;
     settings: ProfileSettings;
     groups: ProfileGroup[];
 }) {
@@ -76,12 +80,20 @@ export function ProfileSettingsContainer({
                 .filter((id) => !value.shownGroups.includes(id)),
         },
     };
-    const person = { name, username, areaLabel, settings: draft, groups };
+    const person = {
+        name,
+        username,
+        areaLabel,
+        photo,
+        settings: draft,
+        groups,
+    };
     const none = new Set<string>();
 
     return (
         <ProfileSettingsPage
             username={username}
+            photo={<PhotoEditorContainer name={name} photo={photo} />}
             form={
                 <ProfileSettingsForm
                     value={value}

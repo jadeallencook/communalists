@@ -28,7 +28,8 @@
                         "hidden": []
                     }
                 }
-            }
+            },
+            "photo": ["#f4a261", "#e76f51"]
         },
         {
             "uid": "seed-luis",
@@ -51,7 +52,8 @@
                         "hidden": []
                     }
                 }
-            }
+            },
+            "photo": ["#8ecae6", "#219ebc"]
         },
         {
             "uid": "seed-sam",
@@ -90,7 +92,8 @@
                         "hidden": []
                     }
                 }
-            }
+            },
+            "photo": ["#cdb4db", "#9d4edd"]
         },
         {
             "uid": "seed-wei",
@@ -111,7 +114,8 @@
                         "hidden": []
                     }
                 }
-            }
+            },
+            "photo": ["#b5e48c", "#52b69a"]
         },
         {
             "uid": "seed-aisha",
@@ -221,7 +225,8 @@
                 ["seed-aisha", "member"]
             ],
             "requests": ["seed-marcus", "seed-priya"],
-            "banned": []
+            "banned": [],
+            "photo": ["#264653", "#e9c46a"]
         },
         {
             "id": "seed-oakland-auto",
@@ -252,7 +257,8 @@
                     "seed-thanh",
                     "Kept posting ads for a paid repair shop after two warnings."
                 ]
-            ]
+            ],
+            "photo": ["#3d405b", "#f2cc8f"]
         },
         {
             "id": "seed-alum-rock",

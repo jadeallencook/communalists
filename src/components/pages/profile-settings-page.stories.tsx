@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
 import { publicView } from '@/components/organisms/profile-fixtures';
+import { SAMPLE_PHOTO } from '@/components/molecules/photo-fixtures';
+import { PhotoEditor } from '@/components/organisms/photo-editor';
 import { ProfilePreview } from '@/components/organisms/profile-preview';
 import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
@@ -21,6 +23,23 @@ const meta = {
             <p className="rounded-lg border border-dashed p-6 text-sm text-muted-foreground">
                 The form (see Components/Organisms/Profile Settings Form).
             </p>
+        ),
+        photo: (
+            <PhotoEditor
+                kind="users"
+                name="Maya Thompson"
+                photo={SAMPLE_PHOTO}
+                source={null}
+                crop={{ x: 0, y: 0 }}
+                zoom={1}
+                onCropChange={fn()}
+                onZoomChange={fn()}
+                onCropComplete={fn()}
+                onPick={fn()}
+                onCancel={fn()}
+                onSave={fn()}
+                onRemove={fn()}
+            />
         ),
         preview: (
             <ProfilePreview

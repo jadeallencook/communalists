@@ -19,6 +19,9 @@ export const ORG_EDIT_FIELDS = [
     'joinPolicy',
     'visibility',
     'memberListVisibility',
+    // Changed on its own (the logo section of the edit page), never by the
+    // form, so changedFields never reports it. Only in the moderation log.
+    'logo',
 ] as const;
 export type OrgEditField = (typeof ORG_EDIT_FIELDS)[number];
 

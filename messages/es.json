@@ -631,7 +631,8 @@
             "memberListVisibility": "la lista de miembros",
             "streetAddress": "la dirección",
             "phone": "el teléfono",
-            "foundedYear": "el año de fundación"
+            "foundedYear": "el año de fundación",
+            "logo": "el logotipo"
         },
         "teamActor": "El equipo de Communalists"
     },
@@ -850,7 +851,9 @@
             "replyComment": "{actor} respondió a un comentario en {word} en nombre del equipo",
             "hideReply": "{actor} ocultó una respuesta en {word}",
             "unhideReply": "{actor} volvió a mostrar una respuesta oculta en {word}",
-            "deleteReply": "{actor} borró una respuesta en {word}"
+            "deleteReply": "{actor} borró una respuesta en {word}",
+            "removePhoto": "{actor} quitó la foto de {target}",
+            "removeLogo": "{actor} quitó el logotipo de {org}"
         },
         "unknownActor": "Un superusuario",
         "errors": {
@@ -1114,7 +1117,8 @@
             "lifecycle": "Eliminadas, restauradas o dejadas sin reclamar",
             "words": "Palabras agregadas, editadas o quitadas",
             "exports": "Descargas de la lista de organizaciones",
-            "comments": "Comentarios ocultados, borrados o reportes descartados"
+            "comments": "Comentarios ocultados, borrados o reportes descartados",
+            "photos": "Fotos y logotipos quitados"
         },
         "gapNames": {
             "phone": "teléfono",
@@ -1578,6 +1582,52 @@
             "title": "No encontramos a nadie con el nombre de usuario “{username}”",
             "body": "Las personas pueden cambiar su nombre de usuario, y el anterior deja de funcionar. Revisa cómo está escrito o búscala a través de una organización a la que pertenezca.",
             "find": "Buscar organizaciones"
+        }
+    },
+    "Photo": {
+        "title": "{kind, select, users {Foto de perfil} other {Logotipo}}",
+        "hint": "{kind, select, users {Opcional. Solo la ven quienes pueden ver tu perfil, así que «Solo mi nombre» también la oculta.} other {Opcional. Se muestra dondequiera que aparezca tu organización: su página, los resultados de búsqueda y los paneles de sus miembros.}}",
+        "upload": "{kind, select, users {Subir una foto} other {Subir un logotipo}}",
+        "change": "{kind, select, users {Cambiar foto} other {Cambiar logotipo}}",
+        "remove": "{kind, select, users {Quitar foto} other {Quitar logotipo}}",
+        "removing": "Quitando…",
+        "formats": "JPEG, PNG o WebP. La recortarás en un cuadrado antes de guardarla, a 500 × 500 píxeles.",
+        "done": {
+            "uploaded": "{kind, select, users {Foto guardada.} other {Logotipo guardado.}}",
+            "removed": "{kind, select, users {Foto quitada.} other {Logotipo quitado.}}"
+        },
+        "crop": {
+            "title": "{kind, select, users {Recorta tu foto} other {Recorta el logotipo}}",
+            "description": "Arrastra la imagen para elegir qué se ve, o enfócala y usa las flechas del teclado (mantén Mayús para pasos pequeños). Acerca o aleja con el control deslizante o los botones − y +.",
+            "area": "Posición de la imagen",
+            "zoom": "Zoom",
+            "zoomValue": "{percent} %",
+            "zoomIn": "Acercar",
+            "zoomOut": "Alejar",
+            "save": "Guardar",
+            "saving": "Guardando…",
+            "cancel": "Cancelar"
+        },
+        "errors": {
+            "notImage": "Ese archivo no es una imagen. Elige una imagen JPEG, PNG o WebP.",
+            "tooLarge": "Esa imagen es demasiado grande. Elige una de menos de 25 MB.",
+            "decodeFailed": "No pudimos abrir esa imagen. Prueba con una JPEG o PNG.",
+            "missing": "Primero elige una imagen.",
+            "wrongType": "Solo se pueden guardar imágenes JPEG, PNG o WebP.",
+            "unreadable": "No pudimos leer esa imagen. Prueba con otra.",
+            "notSquare": "La imagen no se recortó. Inténtalo de nuevo.",
+            "notAllowed": "No puedes cambiar esta imagen.",
+            "reasonRequired": "Escribe un motivo.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        },
+        "moderation": {
+            "trigger": "{kind, select, users {Quitar foto} other {Quitar logotipo}}",
+            "triggerFor": "{kind, select, users {Quitar la foto de {name}} other {Quitar el logotipo de {name}}}",
+            "title": "{kind, select, users {¿Quitar esta foto?} other {¿Quitar este logotipo?}}",
+            "description": "Se borra para todos y no se puede deshacer. El motivo queda en el registro de administración.",
+            "confirm": "Quitar",
+            "reasonHint": "Obligatorio. Queda en el registro de administración, que solo ven los superusuarios.",
+            "done": "{kind, select, users {Foto quitada.} other {Logotipo quitado.}}"
         }
     }
 }

@@ -4,7 +4,15 @@ import { updateTag } from 'next/cache';
 
 import { getSessionUser } from '@/lib/auth/session';
 import { getProfileGroups } from '@/lib/organizations';
-import { saveProfileSettings, userTag } from '@/lib/users';
+import { syncMemberCopies } from '@/app/actions/sync-member-copies';
+import { deletePhotoFiles, rotatePhoto } from '@/lib/photos/store';
+import { isStricter } from '@/lib/profiles';
+import {
+    getUserProfileFresh,
+    saveProfileSettings,
+    setUserPhoto,
+    userTag,
+} from '@/lib/users';
 import {
     profileFormValues,
     profileSettingsSchema,
@@ -33,11 +41,34 @@ export async function saveProfileSettingsAction(
         return { fieldErrors, at };
     }
     try {
-        const myGroups = (await getProfileGroups(user.uid)).map((g) => g.orgId);
-        await saveProfileSettings(
-            user.uid,
-            toProfileSettings(parsed.data, myGroups)
+        const [myGroups, before] = await Promise.all([
+            getProfileGroups(user.uid),
+            getUserProfileFresh(user.uid),
+        ]);
+        const settings = toProfileSettings(
+            parsed.data,
+            myGroups.map((g) => g.orgId)
         );
+        // Sharing with fewer people: move the photo to a new link first and
+        // delete the old files, so copies of the old link (saved while they
+        // could see it) stop working. If this fails nothing is saved, and
+        // saving again retries.
+        if (
+            before?.photo &&
+            isStricter(before.profile.visibility, settings.visibility)
+        ) {
+            const moved = await rotatePhoto('users', user.uid, before.photo);
+            const old = await setUserPhoto(user.uid, moved);
+            if (old)
+                await deletePhotoFiles('users', user.uid, old.id).catch(
+                    (error: Error) =>
+                        console.error(
+                            '[photos] old photo delete failed',
+                            error.message
+                        )
+                );
+        }
+        await saveProfileSettings(user.uid, settings);
     } catch (error) {
         console.error(
             '[profile] settings save failed',
@@ -47,5 +78,7 @@ export async function saveProfileSettingsAction(
     }
     // The profile page, previews and anything else showing this person.
     updateTag(userTag(user.uid));
+    // Member lists decide who sees the photo from the copied visibility.
+    await syncMemberCopies(user.uid);
     return { saved: true, at };
 }

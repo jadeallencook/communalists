@@ -30,6 +30,7 @@ async function ProfileSettingsServerContainer() {
             name={profile.displayName}
             username={profile.username}
             areaLabel={profile.location.label}
+            photo={profile.photo?.large}
             settings={profile.profile}
             groups={groups}
         />

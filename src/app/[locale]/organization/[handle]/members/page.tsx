@@ -21,6 +21,7 @@ import {
 } from '@/lib/organizations/membership';
 import { redirect } from '@/i18n/navigation';
 import { organizationPath } from '@/lib/paths';
+import { visiblePhoto } from '@/lib/profiles';
 
 import { MembersContainer } from './members-container';
 
@@ -71,23 +72,45 @@ async function MembersServerContainer({ params }: Pick<Props, 'params'>) {
             requests={people
                 .filter((p) => p.status === 'pending')
                 .sort(oldestFirst)
-                .map(({ uid, displayName, since }) => ({
+                .map(({ uid, displayName, since, photo, visibility }) => ({
                     uid,
                     displayName,
                     since,
+                    // Not in the group yet: shown only if their profile is public.
+                    photo: visiblePhoto(
+                        photo,
+                        visibility ?? 'name',
+                        'signedIn'
+                    ),
                 }))}
             members={sortMembers(
                 people.filter((p) => p.status === 'active'),
                 locale
-            ).map(({ uid, displayName, since, role: theirs }) => ({
-                uid,
-                displayName,
-                since,
-                role: theirs,
-                canAct: uid !== user.uid && canActOn(role, theirs),
-                roleChanges:
-                    uid === user.uid ? [] : allowedRoleChanges(role, theirs),
-            }))}
+            ).map(
+                ({
+                    uid,
+                    displayName,
+                    since,
+                    role: theirs,
+                    photo,
+                    visibility,
+                }) => ({
+                    uid,
+                    displayName,
+                    since,
+                    photo: visiblePhoto(
+                        photo,
+                        visibility ?? 'name',
+                        uid === user.uid ? 'self' : 'groupmate'
+                    ),
+                    role: theirs,
+                    canAct: uid !== user.uid && canActOn(role, theirs),
+                    roleChanges:
+                        uid === user.uid
+                            ? []
+                            : allowedRoleChanges(role, theirs),
+                })
+            )}
             banned={people
                 .filter((p) => p.status === 'banned')
                 .sort(oldestFirst)

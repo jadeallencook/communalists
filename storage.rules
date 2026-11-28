@@ -1,0 +1,14 @@
+rules_version = '2';
+
+// Default deny, like Firestore. Photos (profile photos and organization
+// logos, decision #71) are written only by the server through the Admin SDK,
+// which skips these rules, and read through download-token links, which
+// Firebase serves without checking them. So no client ever needs these
+// rules to allow anything. Tests: rules/storage.rules.test.ts.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

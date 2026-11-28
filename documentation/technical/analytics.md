@@ -57,6 +57,8 @@ Events are named with stable kebab-case keys, never UI text, so reports read the
 | `discussion-join`                  | `on` (`definition`), `id` (slug), `to` (`sign-up`, `sign-in`) | Signed out, Create an account or Sign in chosen in a discussion ([features/20](../features/20-comments.md)) |
 | `comment-post`                     | `on`, `id`                                                    | Post comment pressed (never the text)                                                                       |
 | `comment-reply`                    | `on`, `id`                                                    | An organization's owner or moderator pressed Post reply on its page (never the text)                        |
+| `photo-save`                       | `kind` (`users`, `organizations`)                             | Save pressed in the photo crop dialog: never whose photo ([features/17](../features/17-profiles.md#photo))  |
+| `photo-remove`                     | `kind` (`users`, `organizations`)                             | Remove photo or Remove logo pressed by the person or the organization's staff                               |
 
 **Clicks are attempts, not outcomes.** A `*-submit` or `org-join` event means the button was pressed. The form may still fail validation or the server may refuse. Count real outcomes (members, organizations) from Firestore.
 

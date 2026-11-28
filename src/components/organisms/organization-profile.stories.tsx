@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { SAMPLE_LOGO } from '@/components/molecules/photo-fixtures';
 
 import type { FocusArea } from '@/lib/organizations/options';
 
@@ -87,3 +88,5 @@ export const FullContact: Story = {
         foundedYear: 1983,
     },
 };
+
+export const WithLogo: Story = { args: { photo: SAMPLE_LOGO } };

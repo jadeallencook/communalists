@@ -51,6 +51,8 @@ export async function HeaderAccount() {
         email: user.email,
         locale,
         username: profile?.username,
+        // Their own photo: always theirs to see.
+        photo: profile?.photo?.small,
         // Only what the menu shows leaves the server: names and handles.
         organizations: memberships
             .slice(0, MENU_ORGANIZATION_LIMIT)

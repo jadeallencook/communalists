@@ -2,7 +2,7 @@ import { GlobeIcon, LanguagesIcon, LockIcon, MapPinIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
-import { initials } from '@/lib/initials';
+import { Avatar } from '@/components/molecules/avatar';
 import { languageName } from '@/lib/organizations/client';
 import type { ProfileView } from '@/lib/profiles';
 import { SOCIAL_PLATFORMS, socialLabel, socialUrl } from '@/lib/socials';
@@ -50,12 +50,11 @@ export function ProfileCard({ view, headingLevel = 1 }: ProfileCardProps) {
     return (
         <article className="flex flex-col gap-6">
             <header className="flex items-center gap-4">
-                <span
-                    aria-hidden
-                    className="flex size-16 shrink-0 items-center justify-center rounded-full bg-muted text-xl font-medium"
-                >
-                    {initials(view.name)}
-                </span>
+                <Avatar
+                    name={view.name}
+                    photo={view.photo}
+                    size={headingLevel === 1 ? 96 : 64}
+                />
                 <div className="flex min-w-0 flex-col">
                     <Heading className="font-heading text-2xl font-semibold tracking-tight break-words sm:text-3xl">
                         {view.name}

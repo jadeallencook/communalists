@@ -53,6 +53,8 @@ export interface OrganizationPageProps {
      * and before nearby groups. Streams in on its own.
      */
     discussion?: ReactNode;
+    /** Super users on a claimed organization: remove the logo (moderation). */
+    moderation?: ReactNode;
     makeUnclaimed?: {
         orgId: string;
         locale: string;
@@ -77,6 +79,7 @@ export function OrganizationPage({
     makeUnclaimed,
     nearby,
     discussion,
+    moderation,
 }: OrganizationPageProps) {
     const t = useTranslations('Organizations');
     const tm = useTranslations('Membership');
@@ -240,6 +243,7 @@ export function OrganizationPage({
                     </section>
                 )}
                 <MemberList {...members} />
+                {moderation}
                 {discussion}
                 {nearby}
             </OrganizationProfile>

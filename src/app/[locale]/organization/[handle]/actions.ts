@@ -18,6 +18,7 @@ import {
     orgMembersTag,
     orgTag,
     handleTag,
+    memberCopyOf,
 } from '@/lib/organizations';
 import {
     moderationSchema,
@@ -101,10 +102,11 @@ export async function membershipAction(
                     locale,
                 });
             }
-            const result = await joinOrganization(orgId, user.uid, {
-                displayName: profile?.displayName ?? '',
-                username: profile?.username,
-            });
+            const result = await joinOrganization(
+                orgId,
+                user.uid,
+                memberCopyOf(profile!)
+            );
             if (!result.ok) return { error: result.error, at };
             clearOrganization(orgId, [user.uid]);
             return {

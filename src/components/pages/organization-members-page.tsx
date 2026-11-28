@@ -6,7 +6,7 @@ import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
 import { ReasonDialog } from '@/components/molecules/reason-dialog';
 import { Link } from '@/i18n/navigation';
-import { initials } from '@/lib/initials';
+import { Avatar } from '@/components/molecules/avatar';
 import { ORG_EDIT_FIELDS, type OrgEditField } from '@/lib/organizations/edit';
 import {
     REASON_MAX_LENGTH,
@@ -20,6 +20,8 @@ import { organizationPath } from '@/lib/paths';
 interface Person {
     uid: string;
     displayName: string;
+    /** Their photo's small link, only if this viewer may see it. */
+    photo?: string;
     /** Epoch ms: asked, joined or banned. */
     since?: number;
 }
@@ -352,12 +354,11 @@ function Row({
     return (
         <div className="flex flex-col gap-3 rounded-lg border p-3 md:flex-row md:items-center">
             <div className="flex min-w-0 flex-1 items-center gap-3">
-                <span
-                    aria-hidden
-                    className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium"
-                >
-                    {initials(person.displayName)}
-                </span>
+                <Avatar
+                    name={person.displayName}
+                    photo={person.photo}
+                    size={36}
+                />
                 <span className="flex min-w-0 flex-col">
                     <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                         <span className="font-medium break-words">

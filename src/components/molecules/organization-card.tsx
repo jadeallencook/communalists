@@ -2,7 +2,7 @@ import { ChevronRightIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
-import { initials } from '@/lib/initials';
+import { Avatar } from '@/components/molecules/avatar';
 import type { FocusArea } from '@/lib/organizations/options';
 import { track } from '@/lib/analytics';
 import { organizationPath } from '@/lib/paths';
@@ -10,6 +10,8 @@ import { organizationPath } from '@/lib/paths';
 export interface OrganizationCardProps {
     name: string;
     handle: string;
+    /** The logo's small link, if it has one. */
+    photo?: string;
     focusAreas: FocusArea[];
     /** The viewer's role, when they're a member. */
     role?: 'owner' | 'moderator' | 'member';
@@ -19,10 +21,11 @@ export interface OrganizationCardProps {
     unclaimed?: boolean;
 }
 
-/** What an organization card shows: initials, name, label, and what it works on. */
+/** What an organization card shows: logo or initials, name, label, and what it works on. */
 export function OrganizationCardSummary({
     name,
     handle,
+    photo,
     focusAreas,
     role,
     detail,
@@ -44,12 +47,7 @@ export function OrganizationCardSummary({
     ];
     return (
         <>
-            <span
-                aria-hidden
-                className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-muted font-medium"
-            >
-                {initials(name)}
-            </span>
+            <Avatar name={name} photo={photo} shape="square" size={44} />
             {/* Names and details wrap rather than being cut off; the label
                 sits beside the name when there's room, under it when not. */}
             <span className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -85,7 +83,7 @@ export function OrganizationCardSummary({
     );
 }
 
-/** A link to one organization: initials, name, what it works on, and your role. */
+/** A link to one organization: logo, name, what it works on, and your role. */
 export function OrganizationCard(props: OrganizationCardProps) {
     return (
         <Link

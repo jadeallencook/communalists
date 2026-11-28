@@ -11,6 +11,8 @@ export interface ProfileSettingsPageProps {
     username: string;
     /** The app passes a container wired to the action. */
     form: ReactNode;
+    /** Upload, crop and remove the profile photo (saved on its own). */
+    photo: ReactNode;
     preview: ReactNode;
 }
 
@@ -18,6 +20,7 @@ export interface ProfileSettingsPageProps {
 export function ProfileSettingsPage({
     username,
     form,
+    photo,
     preview,
 }: ProfileSettingsPageProps) {
     const t = useTranslations('Profile');
@@ -43,7 +46,10 @@ export function ProfileSettingsPage({
                 </Button>
             </header>
             <div className="grid gap-10 lg:grid-cols-[1fr_24rem]">
-                <div className="min-w-0">{form}</div>
+                <div className="flex min-w-0 flex-col gap-10">
+                    {photo}
+                    {form}
+                </div>
                 <aside className="lg:sticky lg:top-20 lg:self-start">
                     {preview}
                 </aside>
