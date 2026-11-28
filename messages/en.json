@@ -1093,6 +1093,7 @@
         "editFor": "Edit {name}",
         "addWord": "Add a word",
         "importWords": "Import words from a CSV",
+        "uploadDefinition": "Upload a definition",
         "wordCount": "{count, plural, one {# word} other {# words}}",
         "activityHint": "What super users did in the last 30 days. Only super users see this.",
         "activity": {
@@ -1280,6 +1281,50 @@
             "addErrors": {
                 "nothingReady": "No rows were ready, so nothing was added.",
                 "changed": "The dictionary changed while you were reviewing, so nothing was added. Check the file again.",
+                "notAllowed": "Only super users can do this.",
+                "generic": "Something went wrong. Try again."
+            }
+        },
+        "upload": {
+            "title": "Upload a definition",
+            "intro": "Replace one word’s text, in every language, with the text in a file. You’ll see every change before anything is saved. Related words stay as they are.",
+            "formatTitle": "The file",
+            "formatOneRow": "A CSV with one word: the same columns as the import (slug, then en_word, en_definition and en_details, and the same for es, vi and zh), and one row.",
+            "formatSlug": "slug must be a word already in the dictionary. To add a new word, import it instead.",
+            "formatRelated": "A related column is ignored. Change related words in the edit form.",
+            "file": "CSV file",
+            "fileHint": "Checking changes nothing.",
+            "check": "Check file",
+            "checking": "Checking…",
+            "status": {
+                "ready": "{file}: {count, plural, one {# change} other {# changes}} to {word}.",
+                "unchanged": "{file} matches {word} as it is now. There’s nothing to change.",
+                "notFound": "No word has the address {slug}. To add it, import the file instead.",
+                "problems": "{file}: {count, plural, one {# problem} other {# problems}} to fix before it can be used."
+            },
+            "relatedIgnored": "The file lists related words. They’re ignored: the word keeps the related words it has.",
+            "ignored": "These columns aren’t used and were left out: {columns}",
+            "goToImport": "Import words from a CSV",
+            "changesTitle": "What changes",
+            "now": "Now",
+            "new": "New",
+            "empty": "(empty)",
+            "update": "Update {word}",
+            "confirmTitle": "Update {word}?",
+            "confirmBody": "{count, plural, one {# field changes} other {# fields change}} right away, on the word’s page and wherever it’s marked. There’s no undo, but you can edit the word afterward.",
+            "notYet": "Not yet",
+            "updating": "Updating…",
+            "fileProblems": {
+                "empty": "The file has no rows.",
+                "missingColumns": "The file is missing these columns: {columns}. Use the import’s template.",
+                "notOneRow": "The file must have exactly one word: a header and one row. To add many words, import them instead.",
+                "tooBig": "The file is too big. Keep it under 500 KB.",
+                "noFile": "Choose a CSV file.",
+                "notAllowed": "Only super users can do this.",
+                "generic": "Something went wrong. Try again."
+            },
+            "saveErrors": {
+                "changed": "The word changed after you checked the file, so nothing was saved. Check the file again to see the latest.",
                 "notAllowed": "Only super users can do this.",
                 "generic": "Something went wrong. Try again."
             }

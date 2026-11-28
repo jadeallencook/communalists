@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [065](065-brainstorm-definitions-and-upload-one-word.md)                        | Brainstorm definitions with a skill; upload one word's text from a file                            | 2026-11-27 |
 | [064](064-seo-titles-share-image-sitemap-and-structured-data.md)                | SEO: Title Case titles, one share image, sitemap and structured data                               | 2026-11-27 |
 | [063](063-url-scheme-find-kinds-and-organization-addresses.md)                  | URL scheme: `/find/{kind}`, `/organization/{handle}`, tools under the organization                 | 2026-11-27 |
 | [062](062-pr-screenshots-branch-before-and-after.md)                            | PR screenshots: before and after, hosted on a `pr-screenshots` branch                              | 2026-11-27 |

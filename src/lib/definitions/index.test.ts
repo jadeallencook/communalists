@@ -61,6 +61,7 @@ describe('slugProblem', () => {
         ['a'.repeat(61), 'slugFormat'],
         ['new', 'slugReserved'],
         ['import', 'slugReserved'],
+        ['upload', 'slugReserved'],
     ])('rejects %j (%s)', (slug, problem) =>
         expect(slugProblem(slug)).toBe(problem)
     );
