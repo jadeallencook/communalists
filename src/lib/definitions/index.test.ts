@@ -11,6 +11,7 @@ import {
     definitionInputSchema,
     fieldForIssue,
     isLetter,
+    neighborLetters,
     knownResources,
     letterOf,
     localize,
@@ -368,6 +369,36 @@ describe('isLetter', () => {
     it('is true for one lowercase letter only', () => {
         expect(['a', 'z'].every(isLetter)).toBe(true);
         expect(['A', 'ab', '1', '', 'mutual-aid'].some(isLetter)).toBe(false);
+    });
+});
+
+describe('neighborLetters', () => {
+    const letters = ['a', 'b', 'c', 'd', 'e'].map((letter, i) => ({
+        letter,
+        count: [2, 0, 1, 0, 3][i],
+    }));
+    it('skips letters with no words', () => {
+        expect(neighborLetters(letters, 'c')).toEqual({
+            previous: 'a',
+            next: 'e',
+        });
+        expect(neighborLetters(letters, 'b')).toEqual({
+            previous: 'a',
+            next: 'c',
+        });
+    });
+    it("doesn't wrap at either end", () => {
+        expect(neighborLetters(letters, 'a')).toEqual({
+            previous: undefined,
+            next: 'c',
+        });
+        expect(neighborLetters(letters, 'e')).toEqual({
+            previous: 'c',
+            next: undefined,
+        });
+    });
+    it('has nothing for an unknown letter', () => {
+        expect(neighborLetters(letters, 'z')).toEqual({});
     });
 });
 

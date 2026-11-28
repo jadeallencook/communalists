@@ -57,6 +57,6 @@ If it prints problems, fix the text (ask the user if a cut changes the meaning) 
 
 Tell the user the file's path and how to use it:
 
-- **Production:** `/admin` → **Upload a definition**, choose the file, **Check file**. It shows each field that changes, now and new, and nothing is saved until **Update {word}**. Related words stay as they are.
+- **Production:** `/admin` → **Upload a definition** (or **Replace from a file** on the word's edit page, `/admin/definitions/{slug}`), choose the file, **Check file**. It shows each field that changes, now and new, and nothing is saved until **Update {word}**. Related words stay as they are.
 - **Locally:** the same page works (sign in as Jordan Lee from the dev toolbar). `pnpm seed` also applies every file in `research/definitions/updates/` over the starter words, so a reset keeps the new text.
 - **A word that isn't in the dictionary yet:** the upload refuses it. The same file works with **Import words from a CSV** (related words can be added there in a `related` column, or later in the edit form).

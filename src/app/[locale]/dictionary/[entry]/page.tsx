@@ -17,6 +17,7 @@ import {
     LETTERS,
     letterOf,
     localize,
+    neighborLetters,
     slugProblem,
     sortByWord,
 } from '@/lib/definitions';
@@ -126,13 +127,15 @@ async function LetterContainer({
     const counts = new Map<string, number>();
     for (const w of words)
         counts.set(w.letter, (counts.get(w.letter) ?? 0) + 1);
+    const letters = LETTERS.map((l) => ({
+        letter: l,
+        count: counts.get(l) ?? 0,
+    }));
     return (
         <DictionaryPage
             letter={letter}
-            letters={LETTERS.map((l) => ({
-                letter: l,
-                count: counts.get(l) ?? 0,
-            }))}
+            letters={letters}
+            {...neighborLetters(letters, letter)}
             words={sortByWord(
                 words.filter((w) => w.letter === letter),
                 locale

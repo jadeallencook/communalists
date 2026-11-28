@@ -10,6 +10,8 @@ import { localize, slugProblem, sortByWord } from '@/lib/definitions';
 import { getDefinitionFresh, getDefinitions } from '@/lib/definitions/store';
 
 import { DefinitionFormContainer } from '../definition-form-container';
+import { DefinitionRemoveContainer } from '../remove-container';
+import { WordUploadContainer } from '../upload/upload-container';
 
 type Props = PageProps<'/[locale]/admin/definitions/[slug]'>;
 
@@ -46,12 +48,15 @@ async function EditDefinitionContainer({ params, searchParams }: Props) {
         all.filter((d) => d.slug !== slug).map((d) => localize(d, locale)),
         locale
     ).map(({ slug, word }) => ({ slug, word }));
+    const word = localize(definition, locale).word;
     return (
         <AdminDefinitionEditPage
             mode="edit"
             slug={slug}
-            word={localize(definition, locale).word}
+            word={word}
             returnTo={returnTo}
+            upload={<WordUploadContainer slug={slug} />}
+            remove={<DefinitionRemoveContainer slug={slug} word={word} />}
             form={
                 <DefinitionFormContainer
                     mode="edit"

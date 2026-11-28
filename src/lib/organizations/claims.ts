@@ -111,4 +111,5 @@ export type AdminAction =
     | 'backfillDetails'
     // Dictionary words (documentation/features/19-dictionary.md).
     | 'createDefinition'
-    | 'editDefinition';
+    | 'editDefinition'
+    | 'deleteDefinition';

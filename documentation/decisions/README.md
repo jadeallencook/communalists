@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [066](066-remove-words-upload-on-edit-page-letter-links.md)                     | Remove dictionary words; upload a word's file on its edit page; previous and next letter links     | 2026-11-27 |
 | [065](065-brainstorm-definitions-and-upload-one-word.md)                        | Brainstorm definitions with a skill; upload one word's text from a file                            | 2026-11-27 |
 | [064](064-seo-titles-share-image-sitemap-and-structured-data.md)                | SEO: Title Case titles, one share image, sitemap and structured data                               | 2026-11-27 |
 | [063](063-url-scheme-find-kinds-and-organization-addresses.md)                  | URL scheme: `/find/{kind}`, `/organization/{handle}`, tools under the organization                 | 2026-11-27 |

@@ -25,6 +25,8 @@ export interface AdminDefinitionsPageProps {
     saved?: { slug: string; word: string };
     /** How many words a CSV import just added: announced, with focus moved to it. */
     imported?: number;
+    /** The address of a word just removed: announced, with focus moved to it. */
+    removed?: string;
 }
 
 /** /admin/definitions, for super users: every dictionary word, to add or edit. */
@@ -32,12 +34,14 @@ export function AdminDefinitionsPage({
     words,
     saved,
     imported,
+    removed,
 }: AdminDefinitionsPageProps) {
     const t = useTranslations('AdminDefinitions');
     const savedRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        if (saved || imported !== undefined) savedRef.current?.focus();
-    }, [saved, imported]);
+        if (saved || imported !== undefined || removed)
+            savedRef.current?.focus();
+    }, [saved, imported, removed]);
 
     return (
         <section className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-12">
@@ -78,6 +82,11 @@ export function AdminDefinitionsPage({
                 {imported !== undefined && (
                     <p role="status" className="text-sm">
                         {t('imported', { count: imported })}
+                    </p>
+                )}
+                {removed && (
+                    <p role="status" className="text-sm">
+                        {t('removed', { slug: removed })}
                     </p>
                 )}
                 {saved && (

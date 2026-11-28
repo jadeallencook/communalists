@@ -49,6 +49,8 @@ export const Saved: Story = {
 };
 /** Back from a CSV import. */
 export const Imported: Story = { args: { imported: 10 } };
+/** Back from removing a word. */
+export const Removed: Story = { args: { removed: 'owner' } };
 export const Loading: Story = {
     render: () => <AdminDefinitionsPageLoading />,
 };

@@ -58,16 +58,55 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Letter: Story = {};
+/** Under the list, the nearest letters with words before and after (H and T). */
+export const Letter: Story = { args: { previous: 'h', next: 't' } };
+
+/** The first letter with words: Next only, no wrapping around. */
+export const FirstLetter: Story = {
+    args: {
+        letter: 'a',
+        next: 'b',
+        words: [
+            {
+                slug: 'autonomy',
+                word: 'Autonomy',
+                definition:
+                    'A group or person making their own decisions, without being controlled by a government, company or outside leader.',
+                lang: 'en',
+            },
+        ],
+    },
+};
+
+/** The last letter with words: Previous only. */
+export const LastLetter: Story = {
+    args: {
+        letter: 't',
+        previous: 'm',
+        words: [
+            {
+                slug: 'tenant-union',
+                word: 'Tenant Union',
+                definition:
+                    'Renters who join together to deal with their landlord as a group, so they have more power than one tenant alone.',
+                lang: 'en',
+            },
+        ],
+    },
+};
 
 /** A letter with no words says so; its button in the bar is dashed. */
-export const EmptyLetter: Story = { args: { letter: 'q', words: [] } };
+export const EmptyLetter: Story = {
+    args: { letter: 'q', words: [], previous: 'm', next: 't' },
+};
 
 /** Chinese: words are grouped by pinyin, so 互助 (hùzhù) is under H. */
 export const Chinese: Story = {
     globals: { locale: 'zh' },
     args: {
         letter: 'h',
+        previous: 'f',
+        next: 'm',
         words: [
             {
                 slug: 'mutual-aid',

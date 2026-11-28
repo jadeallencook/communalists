@@ -1,3 +1,4 @@
+import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Skeleton } from '@/components/atoms/skeleton';
@@ -19,16 +20,22 @@ export interface DictionaryPageProps {
     letters: { letter: string; count: number }[];
     /** This letter's words, already sorted for the UI language. */
     words: DictionaryWord[];
+    /** The nearest letters before and after this one that have words. */
+    previous?: string;
+    next?: string;
 }
 
 /**
  * /dictionary/{letter}: an A–Z bar, then the words under one letter with
- * their short definitions. A letter with no words says so.
+ * their short definitions. A letter with no words says so. Under the list,
+ * links to the nearest letters before and after that have words.
  */
 export function DictionaryPage({
     letter,
     letters,
     words,
+    previous,
+    next,
 }: DictionaryPageProps) {
     const t = useTranslations('Dictionary');
     const shown = letter.toUpperCase();
@@ -117,6 +124,36 @@ export function DictionaryPage({
                     </ul>
                 )}
             </section>
+
+            {(previous || next) && (
+                <nav
+                    aria-label={t('otherLetters')}
+                    className="flex flex-wrap justify-between gap-4 border-t pt-6"
+                >
+                    {previous && (
+                        <Link
+                            href={`/dictionary/${previous}`}
+                            rel="prev"
+                            className="inline-flex min-h-10 items-center gap-1 font-medium underline underline-offset-4"
+                        >
+                            <ArrowLeftIcon aria-hidden className="size-4" />
+                            {t('previousLetter', {
+                                letter: previous.toUpperCase(),
+                            })}
+                        </Link>
+                    )}
+                    {next && (
+                        <Link
+                            href={`/dictionary/${next}`}
+                            rel="next"
+                            className="ml-auto inline-flex min-h-10 items-center gap-1 font-medium underline underline-offset-4"
+                        >
+                            {t('nextLetter', { letter: next.toUpperCase() })}
+                            <ArrowRightIcon aria-hidden className="size-4" />
+                        </Link>
+                    )}
+                </nav>
+            )}
         </section>
     );
 }

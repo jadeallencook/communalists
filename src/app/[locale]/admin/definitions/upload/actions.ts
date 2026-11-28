@@ -6,7 +6,7 @@ import { hasLocale } from 'next-intl';
 import type {
     CheckDefinitionUpdateState,
     SaveDefinitionUpdateState,
-} from '@/components/pages/admin-definition-upload-page';
+} from '@/components/organisms/definition-upload';
 import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
 import { DEFINITIONS_IMPORT_MAX_BYTES } from '@/lib/definitions/import';
@@ -70,6 +70,15 @@ export async function checkDefinitionUpdateAction(
             fileName: file.name,
             at,
         };
+    // Sent from a word's edit page: only that word's file is accepted.
+    const expected = text(formData, 'slug');
+    if (expected && read.slug !== expected)
+        return {
+            fileProblem: 'otherWord',
+            fileSlug: read.slug,
+            fileName: file.name,
+            at,
+        };
     try {
         const current = read.slug ? await getDefinitionFresh(read.slug) : null;
         // The checked text stays on the server; Update checks again anyway.
@@ -104,6 +113,8 @@ export async function saveDefinitionUpdateAction(
     if (!uid) return { error: 'notAllowed', at };
     const read = readDefinitionUpdateFile(text(formData, 'text'));
     if (!read.ok) return { error: 'generic', at };
+    const page = text(formData, 'slug');
+    if (page && read.slug !== page) return { error: 'generic', at };
     const sent = text(formData, 'updatedAt');
     const expected = sent ? Number(sent) : null;
 

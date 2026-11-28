@@ -196,6 +196,61 @@ export async function updateDefinitionText(
     });
 }
 
+export type DeleteDefinitionResult =
+    | {
+          ok: true;
+          /** English word, for the message afterward. */
+          word: string;
+          /** Words whose related list it was taken off. */
+          unlinked: string[];
+      }
+    | { ok: false; error: 'notFound' };
+
+/**
+ * A super user removes a word for good, and takes it off every other word's
+ * related list in the same transaction. The adminLog entry keeps a copy of
+ * its text, related words and resources, so it could be put back by hand.
+ */
+export async function deleteDefinition(
+    adminUid: string,
+    slug: string
+): Promise<DeleteDefinitionResult> {
+    const ref = definitions().doc(slug);
+    return db().runTransaction(async (tx) => {
+        const before = toDefinition(await tx.get(ref));
+        logRead('definitions');
+        if (!before) return { ok: false, error: 'notFound' } as const;
+        const linking = await tx.get(
+            definitions().where('related', 'array-contains', slug)
+        );
+        logRead('definitions', Math.max(linking.size, 1));
+
+        const unlinked = linking.docs
+            .map((doc) => doc.id)
+            .filter((id) => id !== slug);
+        for (const id of unlinked)
+            tx.update(definitions().doc(id), {
+                related: FieldValue.arrayRemove(slug),
+            });
+        tx.delete(ref);
+        tx.create(db().collection('adminLog').doc(), {
+            action: 'deleteDefinition',
+            definition: { slug, word: before.text.en.word },
+            actorUid: adminUid,
+            removed: JSON.parse(
+                JSON.stringify({
+                    text: before.text,
+                    related: before.related,
+                    resources: before.resources,
+                })
+            ),
+            unlinkedFrom: unlinked,
+            createdAt: FieldValue.serverTimestamp(),
+        });
+        return { ok: true, word: before.text.en.word, unlinked } as const;
+    });
+}
+
 export interface ImportDefinitionsResult {
     added: string[];
     /** Already in the dictionary by the time they were added. */
