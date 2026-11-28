@@ -11,11 +11,15 @@ import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
 import { getMemberships, getProfileGroups } from '@/lib/organizations';
 import { handleProblem } from '@/lib/organizations/handle';
-import { profileView, profileViewer } from '@/lib/profiles';
+import { profilePath } from '@/lib/paths';
+import { profileSummary, profileView, profileViewer } from '@/lib/profiles';
+import { snippet } from '@/lib/seo';
+import { shareCardPath, shareCardVersion } from '@/lib/share-cards';
 import { getUidByUsername, getUserProfile } from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
 
 import { RemovePhotoContainer } from '../../_photos/remove-photo-container';
+import { pageMetadata } from '../../page-metadata';
 
 type Props = PageProps<'/[locale]/comrade/[username]'>;
 
@@ -33,14 +37,47 @@ async function findPerson(raw: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { person } = await findPerson((await params).username);
+    const { username, uid, person } = await findPerson((await params).username);
     // Kept out of search engines, even public profiles (decision #31).
-    return {
-        title:
-            person?.displayName ??
-            (await getTranslations('NotFound.person'))('metaTitle'),
-        robots: { index: false, follow: false },
-    };
+    const robots = { index: false, follow: false };
+    if (!uid || !person)
+        return {
+            title: (await getTranslations('NotFound.person'))('metaTitle'),
+            robots,
+        };
+    // Link previews are fetched signed out and kept by the apps that fetch
+    // them, so they show only what a signed-out visitor sees, whoever is
+    // looking at the page (decision #72).
+    const name = person.displayName!;
+    const view = profileView(
+        {
+            name,
+            username,
+            areaLabel: person.location?.label,
+            photo: person.photo?.large,
+            settings: person.profile,
+            groups: [],
+        },
+        'public',
+        new Set()
+    );
+    const t = await getTranslations('Profile');
+    const metadata = await pageMetadata({
+        path: profilePath(username),
+        title: `${name} (@${username})`,
+        description:
+            snippet(profileSummary(view)) || t('metaDescription', { name }),
+        type: 'profile',
+        image: {
+            url: shareCardPath(
+                'person',
+                username,
+                shareCardVersion(name, view.photo ? person.photo?.id : '')
+            ),
+            alt: t('cardAlt', { name }),
+        },
+    });
+    return { ...metadata, robots };
 }
 
 // The viewer decides what's shown, so it streams behind <Suspense>. Every

@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import shareImage from '@/assets/share-image.jpg';
 import type { Locale } from '@/i18n/routing';
 import { keywordList, localizedAlternates, OG_LOCALES } from '@/lib/seo';
+import { SHARE_CARD_SIZE } from '@/lib/share-cards';
 import { routing } from '@/i18n/routing';
 
 // Every public page's metadata goes through here, so titles, descriptions,
@@ -52,7 +53,12 @@ interface PageMetadataInput {
     keywords?: readonly string[];
     /** Skip the "| Communalists" suffix (the home page already names it). */
     absoluteTitle?: boolean;
-    type?: 'website' | 'article';
+    type?: 'website' | 'article' | 'profile';
+    /**
+     * This page's own preview image instead of the site's (a share card,
+     * decision #72), 1200×630, with alt text in the page's language.
+     */
+    image?: { url: string; alt: string };
 }
 
 export async function pageMetadata({
@@ -62,10 +68,14 @@ export async function pageMetadata({
     keywords,
     absoluteTitle,
     type = 'website',
+    image,
 }: PageMetadataInput): Promise<Metadata> {
     const locale = (await getLocale()) as Locale;
     const t = await getTranslations('Metadata');
     const social = await socialDefaults(locale);
+    const images = image
+        ? [{ ...image, ...SHARE_CARD_SIZE }]
+        : social.openGraph.images;
     const alternates = localizedAlternates(path, locale);
     return {
         title: absoluteTitle ? { absolute: title } : title,
@@ -78,7 +88,8 @@ export async function pageMetadata({
             title,
             description,
             url: alternates.canonical,
+            images,
         },
-        twitter: { ...social.twitter, title, description },
+        twitter: { ...social.twitter, title, description, images },
     };
 }

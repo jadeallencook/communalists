@@ -502,7 +502,8 @@
         },
         "metaTitle": "{name} en {place}",
         "metaDescription": "{name} es un grupo con sede en {place}. Descubre en qué trabaja y cómo participar en Communalists.",
-        "metaKeywords": "ayuda mutua {city}, organizaciones comunitarias {city}"
+        "metaKeywords": "ayuda mutua {city}, organizaciones comunitarias {city}",
+        "cardAlt": "Tarjeta de {name}, {place}"
     },
     "Membership": {
         "signInToJoin": "Inicia sesión para unirte",
@@ -720,7 +721,9 @@
             "socialMismatch": "Uno de los enlaces no es un perfil de la plataforma elegida. Escribe solo el nombre de usuario.",
             "socialDuplicate": "Añade cada plataforma solo una vez.",
             "generic": "Algo salió mal. Inténtalo de nuevo."
-        }
+        },
+        "metaDescription": "{name} está en Communalists, una plataforma gratuita para redes de ayuda mutua.",
+        "cardAlt": "Tarjeta del perfil de {name}"
     },
     "LocationField": {
         "country": "País",

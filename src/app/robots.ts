@@ -11,7 +11,10 @@ export default function robots(): MetadataRoute.Robots {
     return {
         rules: {
             userAgent: '*',
-            allow: '/',
+            // Share cards are link-preview images (decision #72): preview
+            // crawlers that honour robots.txt (Twitterbot, Slackbot) must be
+            // able to fetch them. The longer path wins over `/api/`.
+            allow: ['/', '/api/share-cards/'],
             disallow: [
                 '/api/',
                 '/*/account/',

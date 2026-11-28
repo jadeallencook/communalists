@@ -502,7 +502,8 @@
         },
         "metaTitle": "{name} tại {place}",
         "metaDescription": "{name} là một nhóm ở {place}. Xem họ làm gì và cách tham gia trên Communalists.",
-        "metaKeywords": "tương trợ {city}, tổ chức cộng đồng {city}"
+        "metaKeywords": "tương trợ {city}, tổ chức cộng đồng {city}",
+        "cardAlt": "Thẻ của {name}, {place}"
     },
     "Membership": {
         "signInToJoin": "Đăng nhập để tham gia",
@@ -720,7 +721,9 @@
             "socialMismatch": "Một liên kết không phải là trang cá nhân trên nền tảng đã chọn. Hãy chỉ nhập tên người dùng.",
             "socialDuplicate": "Mỗi nền tảng chỉ thêm một lần.",
             "generic": "Đã xảy ra lỗi. Hãy thử lại."
-        }
+        },
+        "metaDescription": "{name} có mặt trên Communalists, nền tảng miễn phí cho các mạng lưới tương trợ.",
+        "cardAlt": "Thẻ hồ sơ của {name}"
     },
     "LocationField": {
         "country": "Quốc gia",

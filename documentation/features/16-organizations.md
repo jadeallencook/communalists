@@ -177,6 +177,7 @@ Built 2026-11-27 ([decision #71](../decisions/071-profile-photos-and-organizatio
 - **Shown** on the organization's page, search results, nearby groups, the dashboard and members' menus, to everyone: the organization is public wherever it shows.
 - Each change is logged in Recent actions as an edit of "the logo" (and in `adminLog` when a super user does it for the team). **Super users can remove a logo** from any organization, with a required reason (`removeLogo` in `adminLog`); the group sees "The Communalists team changed the logo".
 - Stored as `organizations/{id}.photo { id, large, small }`; memberships and the directory carry the small link.
+- **Link previews** of the organization's page use a generated card with the logo (or initials), name and city ([decision #72](../decisions/072-share-cards-for-profiles-and-organizations-bundled-fonts.md)).
 
 ## Data and security notes
 

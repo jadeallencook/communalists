@@ -7,31 +7,43 @@ How public pages describe themselves to search engines and to apps that preview 
 - **A title in Title Case (English only)**, ending "| Communalists" except on the home page. Spanish and Vietnamese capitalize only the first word, and Chinese has no capitals, as with dictionary words ([decision #56](../decisions/056-dictionary-words-title-case-in-english.md)). Names people wrote themselves (organization names, places) are never re-capitalized.
 - **A description** under 160 characters. User-written text (an organization's description, a word's definition) is cut at a word with `snippet()` (`src/lib/seo.ts`).
 - **A canonical URL and `hreflang` links** to the same page in all four languages, plus `x-default`: the address with no locale, which the proxy sends to the visitor's language.
-- **The share image**: `src/assets/share-image.jpg`, the homepage photo cropped to 1200×630, with the banner's alt text in the page's language. It's the same on every page.
+- **The share image**: `src/assets/share-image.jpg`, the homepage photo cropped to 1200×630, with the banner's alt text in the page's language. Profiles and organization pages use their own **share card** instead (see "Share cards").
 - **Keywords**: page-specific ones first, then the site's (`Metadata.keywords`). Google ignores the keywords tag, so the words people search for also need to be in the title and description, which is where ranking comes from.
 
 All of this goes through `pageMetadata()` in `src/app/[locale]/page-metadata.ts`. **Next.js replaces a parent's `openGraph` and `twitter` objects instead of merging them**, so a page that sets `openGraph` by hand loses the share image. Use `pageMetadata()` for any new public page. The layout sets the same defaults for pages that only set a title (sign-in forms, private pages), and never sets a canonical, which children would inherit.
 
 ## Per page
 
-| Page                                    | Title (English)                                   | Description                                         | Structured data                               |
-| --------------------------------------- | ------------------------------------------------- | --------------------------------------------------- | --------------------------------------------- |
-| `/`                                     | Communalists: Tools for Mutual Aid Networks       | `Metadata.description`                              | `WebSite` and `Organization`                  |
-| `/find/organizations/{country}/{r}/{c}` | Mutual Aid Organizations Near Concord, California | `Find.metaDescriptionNear`                          | none                                          |
-| `/organization/{handle}`                | {name} in {place}                                 | Its description, or `Organizations.metaDescription` | `Organization`, listed and active groups only |
-| `/dictionary/{slug}`                    | {Word}: Meaning and Definition                    | The word's short definition                         | `DefinedTerm`                                 |
-| `/dictionary/{letter}`                  | Mutual Aid Dictionary: M                          | `Dictionary.intro`                                  | none                                          |
-| `/sign-up`, `/sign-in`                  | Create Account, Sign In                           | `metaDescription` in their namespace                | none                                          |
+| Page                                    | Title (English)                                   | Description                                                                    | Structured data                               |
+| --------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------- |
+| `/`                                     | Communalists: Tools for Mutual Aid Networks       | `Metadata.description`                                                         | `WebSite` and `Organization`                  |
+| `/find/organizations/{country}/{r}/{c}` | Mutual Aid Organizations Near Concord, California | `Find.metaDescriptionNear`                                                     | none                                          |
+| `/organization/{handle}`                | {name} in {place}                                 | Its description, or `Organizations.metaDescription`                            | `Organization`, listed and active groups only |
+| `/comrade/{username}` (`noindex`)       | {name} (@{username})                              | Pronouns, city and bio a signed-out visitor sees, or `Profile.metaDescription` | none                                          |
+| `/dictionary/{slug}`                    | {Word}: Meaning and Definition                    | The word's short definition                                                    | `DefinedTerm`                                 |
+| `/dictionary/{letter}`                  | Mutual Aid Dictionary: M                          | `Dictionary.intro`                                                             | none                                          |
+| `/sign-up`, `/sign-in`                  | Create Account, Sign In                           | `metaDescription` in their namespace                                           | none                                          |
 
 A search's canonical is the city's path alone: `?radius=` and other filters are the same page to a search engine, so they don't compete with it. Keyword strings use the city's name without its state (`{name}`), because a label's comma would split a keyword in two.
 
 The organization's structured data names only its general area (`location.label`), its website and social links, and its founding year. It leaves out the street address, email and phone even though the page shows them, so nothing beyond what's needed is copied into another format.
 
+## Share cards
+
+Built 2026-11-28 ([decision #72](../decisions/072-share-cards-for-profiles-and-organizations-bundled-fonts.md)). A profile's or organization's link preview is a generated 1200×630 card: the photo or logo (round for people, rounded square for organizations), or initials, then the name, a line under it (`@username`, or the organization's city) and "Communalists", on a dark background in the site's dark-theme colours (text at least 7.7:1). It replaced the homepage photo on those pages.
+
+- **Served by** `/api/share-cards/person/{username}` and `/api/share-cards/organization/{handle}` (`src/app/api/share-cards/`), drawn with `next/og`. The page links to it through `pageMetadata({ image })` with `?v=`, a hash of everything the card shows (`shareCardVersion`), so a changed name, photo or visibility gets a new link and apps fetch a fresh card. Cached an hour.
+- **Profiles show only what a signed-out visitor sees**, whoever is looking at the page: apps fetch previews signed out and keep them. The photo, pronouns, city and bio appear in the card and description only when the profile is shared with **Everyone**. Otherwise it's the name, `@username`, initials and a generic line.
+- **Fonts are bundled.** `next/og`'s built-in font lacks Chinese and some Vietnamese, and it fetches missing characters from Google Fonts, sending the characters in the request. To keep names on our server, the cards load Noto Sans and Noto Sans SC (weight 600, `.woff`) from the `@fontsource` packages: only the files whose `unicode-range` covers the text (`src/lib/share-cards/fonts.ts`). `next.config.ts` traces those files into the card routes (`outputFileTracingIncludes`). Characters neither font covers (emoji, other scripts) are left out of the card rather than fetched.
+- **Photos are read from Storage directly**, not through their links, and turned into PNG for the drawing library (it can't read WebP).
+- **If drawing fails** (Firebase or fonts), the route redirects to the site's share image, so a preview still shows something.
+- **`robots.txt` allows `/api/share-cards/`** while disallowing the rest of `/api/`: Twitterbot and Slackbot honour it, and wouldn't fetch the card otherwise.
+
 ## Kept out of search
 
 - **Not found** ([decision #69](../decisions/069-not-found-pages-general-and-per-kind.md)): unmatched addresses answer **404**. Missing words, organizations and profiles show their own not-found pages but answer **200 with `noindex`** (they find out inside streamed content, after the status is sent). Each has a "… not found" title.
 - **`noindex`**: profiles (`/comrade/…`, decision #31), unlisted or archived organizations, and every signed-in, admin, setup, password and organization-management page.
-- **`robots.txt`** (`src/app/robots.ts`): production allows everything except `/api/`, `/*/account/`, `/*/admin`, `/*/dashboard` and `/*/auth/` (they redirect signed-out visitors anyway). **Previews and local builds disallow everything**, so a preview URL never competes with communalists.com.
+- **`robots.txt`** (`src/app/robots.ts`): production allows everything except `/api/` (share cards excepted), `/*/account/`, `/*/admin`, `/*/dashboard` and `/*/auth/` (they redirect signed-out visitors anyway). **Previews and local builds disallow everything**, so a preview URL never competes with communalists.com.
 
 ## Sitemap
 
@@ -52,6 +64,5 @@ It's read per request (`connection()`), never at build, because the build has no
 
 ## Not done yet
 
-- **A share card per page** (the photo with the page's title written over it) was considered and left for later. It needs bundled fonts for Vietnamese, Chinese and whatever organizations name themselves, and a server render for each card.
-- **Organization logos** as their own share image once logos are shown on pages.
+- **Share cards for other pages** (dictionary words, city searches). Profiles and organizations have them (see "Share cards"); the same route pattern would work.
 - **`BreadcrumbList`** for the dictionary and organization tools.

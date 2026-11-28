@@ -2,6 +2,24 @@ import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
+    // Share cards (decision #72) read their fonts from these packages at
+    // run time, so the files must ship with the card routes: only weight
+    // 600 in .woff (about 5 MB), not the packages' other weights and woff2.
+    outputFileTracingIncludes: {
+        '/api/share-cards/**': [
+            './node_modules/@fontsource/noto-sans/600.css',
+            './node_modules/@fontsource/noto-sans/files/*-600-normal.woff',
+            './node_modules/@fontsource/noto-sans-sc/600.css',
+            './node_modules/@fontsource/noto-sans-sc/files/*-600-normal.woff',
+        ],
+    },
+    outputFileTracingExcludes: {
+        '/api/share-cards/**': [
+            './node_modules/@fontsource/*/files/*.woff2',
+            './node_modules/@fontsource/*/files/*-{100,200,300,400,500,700,800,900}-*',
+            './node_modules/@fontsource/*/files/*-italic.woff',
+        ],
+    },
     // Shown in the footer (src/lib/build-info.ts). VERCEL_GIT_COMMIT_SHA is
     // set on Vercel builds only.
     env: {
