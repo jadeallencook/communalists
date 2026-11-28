@@ -2,6 +2,8 @@
 import {
     profileSettingsOf,
     profileView,
+    type ComradeView,
+    type ProfileComrade,
     type ProfileEndorsement,
     type ProfileGroup,
 } from '@/lib/profiles';
@@ -50,6 +52,48 @@ export const sampleEndorsements: ProfileEndorsement[] = [
     },
 ];
 
+export const sampleComrades: ProfileComrade[] = [
+    {
+        uid: 'seed-luis',
+        name: 'Luis Hernández',
+        username: 'luis-hernandez',
+        photo: SAMPLE_PHOTO,
+        visibility: 'groups',
+    },
+    {
+        uid: 'seed-aisha',
+        name: 'Aisha Mohamed',
+        username: 'aisha-mohamed',
+        visibility: 'public',
+    },
+    {
+        uid: 'seed-wei',
+        name: 'Wei Chen',
+        username: 'wei-chen',
+        visibility: 'name',
+    },
+];
+
+/** More comrades than a profile shows, for "See all comrades". */
+export const manyComrades: ComradeView[] = Array.from(
+    { length: 9 },
+    (_, i) => ({
+        uid: `c${i}`,
+        name: [
+            'Rosa Díaz',
+            'Thanh Nguyen',
+            'Priya Patel',
+            'Marcus Lee',
+            'Linh Tran',
+            'Daniel Park',
+            'Sam Rivera',
+            'Jordan Kim',
+            'A very long name that wraps onto two lines on small screens',
+        ][i]!,
+        username: `comrade-${i}`,
+    })
+);
+
 export const sampleSettings = profileSettingsOf({
     visibility: 'public',
     pronouns: 'she/her',
@@ -68,13 +112,14 @@ export const samplePerson = {
     settings: sampleSettings,
     groups: sampleGroups,
     endorsements: sampleEndorsements,
+    comrades: sampleComrades,
 };
 
 /** As someone signed out sees it: the unlisted tenants union never shows. */
 export const publicView = profileView(samplePerson, 'public', new Set());
 /** As she sees it herself: everything. */
 export const selfView = profileView(samplePerson, 'self', new Set());
-/** "Just my name". */
+/** "Only my comrades" (stored as `name`), seen by someone who isn't one. */
 export const privateView = profileView(
     { ...samplePerson, settings: { ...sampleSettings, visibility: 'name' } },
     'public',

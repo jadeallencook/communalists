@@ -4,15 +4,10 @@ import { updateTag } from 'next/cache';
 
 import { getSessionUser } from '@/lib/auth/session';
 import { getProfileGroups } from '@/lib/organizations';
+import { rotateUserPhoto } from '@/app/actions/rotate-user-photo';
 import { syncMemberCopies } from '@/app/actions/sync-member-copies';
-import { deletePhotoFiles, rotatePhoto } from '@/lib/photos/store';
 import { isStricter } from '@/lib/profiles';
-import {
-    getUserProfileFresh,
-    saveProfileSettings,
-    setUserPhoto,
-    userTag,
-} from '@/lib/users';
+import { getUserProfileFresh, saveProfileSettings, userTag } from '@/lib/users';
 import {
     profileFormValues,
     profileSettingsSchema,
@@ -56,18 +51,8 @@ export async function saveProfileSettingsAction(
         if (
             before?.photo &&
             isStricter(before.profile.visibility, settings.visibility)
-        ) {
-            const moved = await rotatePhoto('users', user.uid, before.photo);
-            const old = await setUserPhoto(user.uid, moved);
-            if (old)
-                await deletePhotoFiles('users', user.uid, old.id).catch(
-                    (error: Error) =>
-                        console.error(
-                            '[photos] old photo delete failed',
-                            error.message
-                        )
-                );
-        }
+        )
+            await rotateUserPhoto(user.uid, before.photo);
         await saveProfileSettings(user.uid, settings);
     } catch (error) {
         console.error(

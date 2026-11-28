@@ -9,6 +9,8 @@
 //   /organization/{handle}/{page}           its pages and, later, its tools
 //                                           (/organization/{handle}/events/{slug})
 //   /comrade/{username}                     one person
+//   /comrade/{username}/comrades            their comrades
+//   /notifications                          the signed-in person's inbox
 //
 // Old addresses (/org/…, /find/us/…) redirect here (next.config.ts).
 
@@ -24,6 +26,13 @@ export const NEW_ORGANIZATION_PATH = '/organization/new';
 
 /** A person's profile. */
 export const profilePath = (username: string) => `/comrade/${username}`;
+
+/** A person's comrades, in full (decision #74). */
+export const comradesPath = (username: string) =>
+    `/comrade/${username}/comrades`;
+
+/** The signed-in person's notifications. */
+export const NOTIFICATIONS_PATH = '/notifications';
 
 /** An organization's pages that live under its address. */
 export type OrganizationPage = 'edit' | 'members' | 'claim';

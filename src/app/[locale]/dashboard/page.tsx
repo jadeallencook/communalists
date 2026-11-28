@@ -8,6 +8,7 @@ import {
 } from '@/components/pages/dashboard-page';
 import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { requireAccount } from '@/lib/auth/require-account';
+import { getReceivedRequests } from '@/lib/comrades/requests';
 import { getPendingClaims } from '@/lib/organizations/claim-store';
 import { getDirectoryLocal, getMemberships } from '@/lib/organizations';
 import {
@@ -15,6 +16,8 @@ import {
     filterDirectory,
 } from '@/lib/organizations/directory';
 import { MAX_OWNED_ORGANIZATIONS } from '@/lib/organizations/options';
+
+import { ComradeRequestsContainer } from './comrade-requests-container';
 
 const NEARBY_COUNT = 3;
 
@@ -37,7 +40,7 @@ async function DashboardContainer() {
     const { user, profile } = await requireAccount('/dashboard');
     const home = profile.location;
     const admin = isPlatformAdmin(user.uid);
-    const [memberships, candidates, t, claims] = await Promise.all([
+    const [memberships, candidates, t, claims, requests] = await Promise.all([
         getMemberships(user.uid),
         getDirectoryLocal({
             placeId: home.placeId,
@@ -46,6 +49,11 @@ async function DashboardContainer() {
         }),
         getTranslations('Find'),
         admin ? getPendingClaims() : null,
+        // A section: if it fails, it says so and the rest shows (decision #68).
+        getReceivedRequests(user.uid).catch((error: Error) => {
+            console.error('[comrades] requests read failed', error.message);
+            return null;
+        }),
     ]);
     const owned = memberships.filter((m) => m.role === 'owner').length;
     // The closest few local groups the user isn't in; /find/organizations has the rest.
@@ -88,6 +96,7 @@ async function DashboardContainer() {
             }))}
             nearbyRadiusMiles={DEFAULT_RADIUS_MILES}
             admin={claims ? { pendingClaims: claims.length } : undefined}
+            comradeRequests={<ComradeRequestsContainer requests={requests} />}
         />
     );
 }

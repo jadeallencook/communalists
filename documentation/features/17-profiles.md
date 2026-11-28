@@ -18,6 +18,7 @@ People get a page of their own: a name always, and whatever else they choose to 
 | Social links | Optional, the same platforms and username rules as groups (just the username, [decision #32](../decisions/032-social-links-as-handles-not-urls.md)), plus one personal website. The way to get in touch until messaging exists. |
 | Skills       | Optional, from a fixed, translated list; see "Skills".                                                                                                                                                                          |
 | Groups       | The groups they're in, filtered; see "Groups on a profile".                                                                                                                                                                     |
+| Comrades     | People who accepted a comrade request, filtered by both people's privacy; see [features/21](21-comrades.md).                                                                                                                    |
 | Endorses     | Organizations they endorse, member or not; see "Endorsements".                                                                                                                                                                  |
 
 **Never shown:** email, the exact saved city (unless "General area" is on, and then only its name), pending requests, bans, moderation reasons, or anything from a group's members-only space.
@@ -26,14 +27,16 @@ People get a page of their own: a name always, and whatever else they choose to 
 
 One setting, **Profile visibility**:
 
-| Level                         | Name | Everything else (that they've filled in)             |
-| ----------------------------- | ---- | ---------------------------------------------------- |
-| Everyone                      | ✓    | Anyone, signed out too                               |
-| People in my groups (default) | ✓    | Signed-in people who share at least one active group |
-| Just my name                  | ✓    | Nobody else                                          |
+| Level (stored key)                         | Name | Everything else (that they've filled in)                           |
+| ------------------------------------------ | ---- | ------------------------------------------------------------------ |
+| Everyone (`public`)                        | ✓    | Anyone, signed out too                                             |
+| My groups and comrades (`groups`, default) | ✓    | Signed-in people who share at least one active group, and comrades |
+| Only my comrades (`name`)                  | ✓    | Their comrades only                                                |
+
+**Comrades see the details at every level** ([decision #74](../decisions/074-comrades-and-a-shared-notifications-inbox.md), [features/21](21-comrades.md)). The last two levels were "People in my groups" and "Just my name" until 2026-11-28; with no comrades, "Only my comrades" still shows just the name.
 
 - The default is "People in my groups": it matches how mutual aid works, and it shares nothing until they add something.
-- **Preview as…** in settings shows the profile as the public, as a member of one of their groups, and as a signed-in stranger.
+- **Preview as…** in settings shows the profile as the public, as a comrade, as a member of one of their groups, and as a signed-in stranger.
 - Profiles are `noindex` (kept out of search engines), even public ones, for now. Being searchable would be its own opt-in later.
 - **Link previews** show what a signed-out visitor sees, whoever shares the link: the title "{name} (@{username})", and a generated card with the photo (public profiles) or initials. The description is pronouns, city and bio for public profiles, and a generic line otherwise ([decision #72](../decisions/072-share-cards-for-profiles-and-organizations-bundled-fonts.md), [seo → Share cards](../technical/seo.md#share-cards)).
 - All checks run on the server; the page and the preview only ever receive what the viewer may see.
@@ -42,7 +45,7 @@ One setting, **Profile visibility**:
 
 Built 2026-11-27 ([decision #71](../decisions/071-profile-photos-and-organization-logos-cropped-in-browser-firebase-storage.md)). Organization logos work the same way ([features/16](16-organizations.md)).
 
-- **Who sees it follows Profile visibility**, like the bio: "Just my name" hides it, and "People in my groups" hides it from anyone outside their groups. That holds everywhere the person appears: their profile, member lists and the members page, comments, and the header (their own photo is always theirs). Anyone who can't see it gets initials.
+- **Who sees it follows Profile visibility**, like the bio: "Only my comrades" hides it from everyone but comrades, and "My groups and comrades" from anyone outside their groups who isn't a comrade. Removing a comrade moves the photo to a new link unless the profile is public ([features/21](21-comrades.md)). That holds everywhere the person appears: their profile, member lists and the members page, comments, and the header (their own photo is always theirs). Anyone who can't see it gets initials.
 - **Upload and crop** on `/account/profile`, saved on its own (not with the form). They pick a picture (JPEG, PNG, WebP, or anything the browser can open, up to 25 MB). A dialog shows it under a round guide. They drag it, or focus it and use the arrow keys (Shift for small steps), and zoom with the slider or the − and + buttons. **Save** sends a 500×500 JPEG drawn in the browser, so the original and its location data never leave the device. **Change photo** and **Remove photo** sit beside it. Results are announced, and focus returns to the upload button.
 - **On the server** the upload is checked again (JPEG, PNG or WebP, at most 900 KB, a square of 100–2000 px) and re-encoded with `sharp` to WebP at 500 and 128 px with all metadata removed. Replaced files are deleted.
 - **Links:** files are read through unguessable download links, and only viewers allowed to see the photo are sent one. **Sharing with fewer people moves the photo** to a new link and deletes the old files, so copies of the old link stop working. Someone who could see it and kept the link can still open it until then, the same as saving the image.
@@ -93,7 +96,7 @@ Built 2026-11-28 ([decision #73](../decisions/073-endorsements-on-profiles-count
 1. **Profiles:** usernames (setup question for new and existing accounts), the profile page, profile settings with visibility and "Preview as…", member rows linking to profiles.
 2. **Previews:** the accessible hover and focus card on group pages.
 3. **Skills:** the list (drafted, then reviewed by the user), skills on profiles, the opt-in, and skill search near you.
-4. **Messaging:** its own design (who can message you, blocking, reporting, notifications).
+4. **Messaging:** its own design (who can message you, blocking, reporting), using the notifications inbox ([features/22](22-notifications.md)).
 
 ## Data (planned)
 

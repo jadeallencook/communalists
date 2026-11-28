@@ -21,6 +21,7 @@ import {
 } from '@/lib/organizations/membership';
 import { redirect } from '@/i18n/navigation';
 import { organizationPath } from '@/lib/paths';
+import { getComradeUids } from '@/lib/comrades/store';
 import { visiblePhoto } from '@/lib/profiles';
 
 import { MembersContainer } from './members-container';
@@ -57,9 +58,11 @@ async function MembersServerContainer({ params }: Pick<Props, 'params'>) {
     if (!isStaff(role))
         return redirect({ href: organizationPath(handle), locale });
 
-    const [people, log] = await Promise.all([
+    const [people, log, comrades] = await Promise.all([
         getOrgPeople(org.id),
         getModerationLog(org.id),
+        // Only for photos: if it fails, comrades just see initials.
+        getComradeUids(user.uid).catch(() => new Set<string>()),
     ]);
     const oldestFirst = (a: { since?: number }, b: { since?: number }) =>
         (a.since ?? 0) - (b.since ?? 0);
@@ -76,11 +79,12 @@ async function MembersServerContainer({ params }: Pick<Props, 'params'>) {
                     uid,
                     displayName,
                     since,
-                    // Not in the group yet: shown only if their profile is public.
+                    // Not in the group yet: shown only if their profile is
+                    // public, or they're the viewer's comrade.
                     photo: visiblePhoto(
                         photo,
                         visibility ?? 'name',
-                        'signedIn'
+                        comrades.has(uid) ? 'comrade' : 'signedIn'
                     ),
                 }))}
             members={sortMembers(
@@ -101,7 +105,11 @@ async function MembersServerContainer({ params }: Pick<Props, 'params'>) {
                     photo: visiblePhoto(
                         photo,
                         visibility ?? 'name',
-                        uid === user.uid ? 'self' : 'groupmate'
+                        uid === user.uid
+                            ? 'self'
+                            : comrades.has(uid)
+                              ? 'comrade'
+                              : 'groupmate'
                     ),
                     role: theirs,
                     canAct: uid !== user.uid && canActOn(role, theirs),

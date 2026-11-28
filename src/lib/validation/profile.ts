@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { normalizeWebUrl, ORG_LANGUAGES } from '@/lib/organizations/options';
 import {
     BIO_MAX,
+    COMRADE_REQUEST_SETTINGS,
     PRONOUNS_MAX,
     PROFILE_VISIBILITIES,
     type ProfileSettings,
@@ -53,6 +54,8 @@ export const profileSettingsSchema = z.object({
     /** Groups ticked "show on my profile". The server works out the hidden ones. */
     shownGroups: z.array(z.string().max(128)).max(500),
     endorsementsShow: z.boolean(),
+    comradesShow: z.boolean(),
+    comradeRequests: z.enum(COMRADE_REQUEST_SETTINGS, { error: 'required' }),
 });
 
 export type ProfileSettingsInput = z.infer<typeof profileSettingsSchema>;
@@ -83,6 +86,8 @@ export function profileFormValues(formData: FormData) {
         groupsShow: formData.get('groupsShow') === 'on',
         shownGroups: formData.getAll('shownGroups').map(String),
         endorsementsShow: formData.get('endorsementsShow') === 'on',
+        comradesShow: formData.get('comradesShow') === 'on',
+        comradeRequests: text('comradeRequests'),
     };
 }
 
@@ -104,5 +109,6 @@ export function toProfileSettings(
             hidden: myGroups.filter((id) => !input.shownGroups.includes(id)),
         },
         endorsements: { show: input.endorsementsShow },
+        comrades: { show: input.comradesShow, requests: input.comradeRequests },
     };
 }

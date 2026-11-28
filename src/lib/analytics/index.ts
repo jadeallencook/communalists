@@ -42,6 +42,18 @@ export interface AnalyticsEvents {
     'org-unendorse': { org: string };
     /** Signed out, "Sign in to endorse" was pressed. */
     'org-endorse-sign-in': { org: string };
+    /**
+     * The comrade buttons (decision #74): pressed (an attempt; the server
+     * may refuse). Only where, never who.
+     */
+    'comrade-request': { from: 'profile' };
+    'comrade-cancel': { from: 'profile' };
+    'comrade-accept': { from: 'profile' | 'dashboard' | 'notifications' };
+    'comrade-decline': { from: 'profile' | 'dashboard' | 'notifications' };
+    /** "Yes, remove" after Remove comrade. */
+    'comrade-remove': { from: 'profile' };
+    /** Signed out, "Sign in to add as a comrade" was pressed. */
+    'comrade-sign-in': { from: 'profile' };
     /** "Claim this organization" on an unclaimed one. */
     'org-claim': { org: string };
     'org-claim-submit': { org: string };

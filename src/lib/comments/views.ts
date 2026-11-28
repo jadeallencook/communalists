@@ -1,7 +1,7 @@
 import 'server-only';
 
-import { getMemberships } from '@/lib/organizations';
-import { profileViewer, visiblePhoto } from '@/lib/profiles';
+import { relationResolver } from '@/lib/comrades/relations';
+import { visiblePhoto } from '@/lib/profiles';
 import { getUserProfile } from '@/lib/users';
 
 import {
@@ -43,41 +43,25 @@ export async function viewsFor(
 
 async function authorsOf(uids: string[], viewerUid: string | null) {
     const authors = new Map<string, CommentView['author']>();
-    // The viewer's groups, read only if an author shares with groups only.
-    let viewerGroups: Promise<Set<string>> | null = null;
-    const sharesGroup = async (uid: string) => {
-        if (!viewerUid) return false;
-        viewerGroups ??= getMemberships(viewerUid).then(
-            (list) => new Set(list.map((m) => m.orgId))
-        );
-        const [mine, theirs] = await Promise.all([
-            viewerGroups,
-            getMemberships(uid),
-        ]);
-        return theirs.some((m) => mine.has(m.orgId));
-    };
+    // Reads the viewer's groups and comrades only when an author's photo
+    // depends on them (src/lib/comrades/relations.ts).
+    const relationTo = relationResolver(viewerUid);
     await Promise.all(
         [...new Set(uids)].map(async (uid) => {
             const profile = await getUserProfile(uid);
             if (!profile?.displayName) return;
             const visibility = profile.profile.visibility;
-            let photo: string | undefined;
-            if (profile.photo) {
-                // A photo is extra: if groups can't be read, leave it out.
-                const shares =
-                    visibility === 'groups' && uid !== viewerUid
-                        ? await sharesGroup(uid).catch(() => false)
-                        : false;
-                photo = visiblePhoto(
-                    profile.photo.small,
-                    visibility,
-                    profileViewer({
-                        isSelf: uid === viewerUid,
-                        signedIn: !!viewerUid,
-                        sharesGroup: shares,
-                    })
-                );
-            }
+            // A photo is extra: if the relation can't be read, leave it out.
+            const photo =
+                profile.photo && visibility !== 'public'
+                    ? visiblePhoto(
+                          profile.photo.small,
+                          visibility,
+                          await relationTo(uid, visibility).catch(
+                              () => 'signedIn' as const
+                          )
+                      )
+                    : profile.photo?.small;
             authors.set(uid, {
                 name: profile.displayName,
                 ...(profile.username ? { username: profile.username } : {}),

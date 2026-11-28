@@ -7,11 +7,14 @@ import {
     profileView,
     profileViewer,
     seesDetails,
+    visibleComrades,
     visibleEndorsements,
     visibleGroups,
     visiblePhoto,
+    type ProfileComrade,
     type ProfileEndorsement,
     type ProfileGroup,
+    type ProfileViewer,
 } from './profiles';
 
 const group = (
@@ -39,7 +42,18 @@ describe('profileSettingsOf', () => {
             website: undefined,
             groups: { show: true, hidden: [] },
             endorsements: { show: true },
+            comrades: { show: true, requests: 'anyone' },
         });
+    });
+
+    it('reads the comrades settings, defaulting unknown values', () => {
+        expect(
+            profileSettingsOf({ comrades: { show: false, requests: 'groups' } })
+                .comrades
+        ).toEqual({ show: false, requests: 'groups' });
+        expect(
+            profileSettingsOf({ comrades: { requests: 'everyone!' } }).comrades
+        ).toEqual({ show: true, requests: 'anyone' });
     });
 
     it('drops unknown values', () => {
@@ -327,5 +341,133 @@ describe('profileSummary', () => {
             new Set()
         );
         expect(profileSummary(view)).toBe('');
+    });
+});
+
+describe('comrades (decision #74)', () => {
+    it('makes comrades a viewer of their own, ahead of sharing a group', () => {
+        expect(
+            profileViewer({
+                isSelf: false,
+                signedIn: true,
+                sharesGroup: true,
+                isComrade: true,
+            })
+        ).toBe('comrade');
+        expect(
+            profileViewer({
+                isSelf: false,
+                signedIn: false,
+                sharesGroup: false,
+                isComrade: true,
+            })
+        ).toBe('public');
+    });
+
+    it('shows comrades the details at every level, "Only my comrades" too', () => {
+        for (const level of ['public', 'groups', 'name'] as const)
+            expect(seesDetails(level, 'comrade')).toBe(true);
+        expect(seesDetails('name', 'groupmate')).toBe(false);
+        expect(visiblePhoto('p.webp', 'name', 'comrade')).toBe('p.webp');
+    });
+
+    const settings = profileSettingsOf({ visibility: 'public' });
+    const comrades: ProfileComrade[] = [
+        {
+            uid: 'pub',
+            name: 'Pub',
+            username: 'pub',
+            photo: 'a',
+            visibility: 'public',
+        },
+        {
+            uid: 'grp',
+            name: 'Grp',
+            username: 'grp',
+            photo: 'b',
+            visibility: 'groups',
+        },
+        {
+            uid: 'priv',
+            name: 'Priv',
+            username: 'priv',
+            photo: 'c',
+            visibility: 'name',
+        },
+    ];
+    const none = new Map<string, ProfileViewer>();
+
+    it('lists each comrade only if their own visibility shows this viewer their details', () => {
+        expect(
+            visibleComrades(comrades, settings, 'public', none).map(
+                (c) => c.uid
+            )
+        ).toEqual(['pub']);
+        expect(
+            visibleComrades(comrades, settings, 'signedIn', none).map(
+                (c) => c.uid
+            )
+        ).toEqual(['pub']);
+        const related = new Map<string, ProfileViewer>([
+            ['grp', 'groupmate'],
+            ['priv', 'comrade'],
+        ]);
+        expect(
+            visibleComrades(comrades, settings, 'signedIn', related).map(
+                (c) => c.uid
+            )
+        ).toEqual(['pub', 'grp', 'priv']);
+    });
+
+    it('lists someone to themself, though their own profile is private', () => {
+        const related = new Map<string, ProfileViewer>([['priv', 'self']]);
+        expect(
+            visibleComrades(comrades, settings, 'signedIn', related).map(
+                (c) => c.uid
+            )
+        ).toEqual(['pub', 'priv']);
+    });
+
+    it("follows the owner's visibility and their show setting", () => {
+        const privateOwner = profileSettingsOf({ visibility: 'name' });
+        expect(
+            visibleComrades(comrades, privateOwner, 'signedIn', none)
+        ).toEqual([]);
+        expect(
+            visibleComrades(comrades, privateOwner, 'comrade', none).map(
+                (c) => c.uid
+            )
+        ).toEqual(['pub']);
+        const hidden = profileSettingsOf({
+            visibility: 'public',
+            comrades: { show: false },
+        });
+        expect(visibleComrades(comrades, hidden, 'public', none)).toEqual([]);
+    });
+
+    it('shows the owner all of them, with photos', () => {
+        const all = visibleComrades(comrades, settings, 'self', none);
+        expect(all.map((c) => c.photo)).toEqual(['a', 'b', 'c']);
+    });
+
+    it("gives photos only where the comrade's visibility allows", () => {
+        const related = new Map<string, ProfileViewer>([['grp', 'groupmate']]);
+        const shown = visibleComrades(comrades, settings, 'signedIn', related);
+        expect(shown.map((c) => c.photo)).toEqual(['a', 'b']);
+    });
+
+    it('puts comrades on the profile view', () => {
+        const view = profileView(
+            {
+                name: 'Maya',
+                username: 'maya',
+                settings,
+                groups: [],
+                comrades,
+            },
+            'public',
+            new Set()
+        );
+        expect(view.details?.comrades.map((c) => c.uid)).toEqual(['pub']);
     });
 });

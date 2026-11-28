@@ -10,11 +10,13 @@ import { DEFAULT_NEXT_PATH } from '@/lib/account-setup';
 import { signInWithPassword } from '@/lib/auth/password-sign-in';
 import { startSession } from '@/lib/auth/session';
 import { COMMENT_REPORTS_TAG, commentsTag } from '@/lib/comments/store';
+import { comradesTag } from '@/lib/comrades/store';
 import {
     DEFINITIONS_TAG,
     definitionTag,
     getDefinitionSlugsFresh,
 } from '@/lib/definitions/store';
+import { notificationsTag } from '@/lib/notifications/store';
 import { isLocalDev, isTestAccount, SEEDED, TEST_PASSWORD } from '@/lib/dev';
 import {
     DIRECTORY_TAG,
@@ -85,6 +87,8 @@ export async function resetTestData(): Promise<ResetTestDataState> {
     for (const uid of SEEDED.uids) {
         updateTag(userTag(uid));
         updateTag(membershipsTag(uid));
+        updateTag(comradesTag(uid));
+        updateTag(notificationsTag(uid));
     }
     for (const { id, handle } of SEEDED.organizations) {
         updateTag(orgTag(id));

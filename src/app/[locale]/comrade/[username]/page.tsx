@@ -9,33 +9,23 @@ import {
 } from '@/components/pages/profile-page';
 import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
+import { acceptsRequestsFrom, comradeStateWith } from '@/lib/comrades';
+import { relationsTo } from '@/lib/comrades/relations';
+import { getComradeships, getProfileComrades } from '@/lib/comrades/store';
 import { getProfileEndorsements } from '@/lib/endorsements/store';
 import { getMemberships, getProfileGroups } from '@/lib/organizations';
-import { handleProblem } from '@/lib/organizations/handle';
 import { profilePath } from '@/lib/paths';
 import { profileSummary, profileView, profileViewer } from '@/lib/profiles';
 import { snippet } from '@/lib/seo';
 import { shareCardPath, shareCardVersion } from '@/lib/share-cards';
-import { getUidByUsername, getUserProfile } from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
 
+import { findPerson } from './find-person';
 import { RemovePhotoContainer } from '../../_photos/remove-photo-container';
+import { ComradeButtonContainer } from './comrade-button-container';
 import { pageMetadata } from '../../page-metadata';
 
 type Props = PageProps<'/[locale]/comrade/[username]'>;
-
-async function findPerson(raw: string) {
-    const username = decodeURIComponent(raw).toLowerCase();
-    if (handleProblem(username)) return { username, uid: null, person: null };
-    const uid = await getUidByUsername(username);
-    const person = uid ? await getUserProfile(uid) : null;
-    return {
-        username,
-        uid,
-        person:
-            person?.displayName && person.username === username ? person : null,
-    };
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { username, uid, person } = await findPerson((await params).username);
@@ -104,17 +94,47 @@ async function ProfileServerContainer({ params }: Pick<Props, 'params'>) {
 
     const viewer = await getSessionUser();
     const isSelf = viewer?.uid === uid;
-    const [groups, viewerMemberships, endorsements] = await Promise.all([
-        getProfileGroups(uid),
-        viewer && !isSelf ? getMemberships(viewer.uid) : Promise.resolve([]),
-        // A section of the page: if it fails, it says so and the rest shows
-        // (decision #68).
-        getProfileEndorsements(uid).catch((error: Error) => {
-            console.error('[endorsements] profile read failed', error.message);
+    // Sections of the page: if one fails, it says so and the rest shows
+    // (decision #68).
+    const quietly =
+        (area: string) =>
+        (error: Error): null => {
+            console.error(`[${area}] profile read failed`, error.message);
             return null;
-        }),
-    ]);
+        };
+    const [groups, viewerMemberships, endorsements, comrades, viewerPairs] =
+        await Promise.all([
+            getProfileGroups(uid),
+            viewer && !isSelf
+                ? getMemberships(viewer.uid)
+                : Promise.resolve([]),
+            getProfileEndorsements(uid).catch(quietly('endorsements')),
+            getProfileComrades(uid).catch(quietly('comrades')),
+            viewer && !isSelf
+                ? getComradeships(viewer.uid).catch(quietly('comrades'))
+                : Promise.resolve([]),
+        ]);
     const viewerOrgIds = new Set(viewerMemberships.map((m) => m.orgId));
+    const state = viewer
+        ? comradeStateWith(viewer.uid, uid, viewerPairs ?? [])
+        : null;
+    // If the viewer's comradeships can't be read, they're treated as not
+    // comrades: the page shows less, never more.
+    const sharesGroup = groups.some((g) => viewerOrgIds.has(g.orgId));
+    const relation = profileViewer({
+        isSelf,
+        signedIn: !!viewer,
+        sharesGroup,
+        isComrade: state === 'comrades',
+    });
+    // No "Add comrade" when their setting wouldn't take a request from this
+    // viewer (or from anyone, when signed out). The server checks again.
+    const requests = person.profile.comrades.requests;
+    const canAsk = viewer
+        ? acceptsRequestsFrom(requests, sharesGroup)
+        : requests !== 'nobody';
+    const showButton =
+        !isSelf && (canAsk || (state !== null && state !== 'none'));
     const view = profileView(
         {
             name: person.displayName!,
@@ -124,23 +144,37 @@ async function ProfileServerContainer({ params }: Pick<Props, 'params'>) {
             settings: person.profile,
             groups,
             endorsements: endorsements ?? [],
+            comrades: comrades ?? [],
         },
-        profileViewer({
-            isSelf,
-            signedIn: !!viewer,
-            sharesGroup: groups.some((g) => viewerOrgIds.has(g.orgId)),
-        }),
-        viewerOrgIds
+        relation,
+        viewerOrgIds,
+        // How the viewer relates to each comrade, for whose details (and so
+        // whose place on the list) they may see.
+        await relationsTo(viewer?.uid ?? null, comrades ?? [])
     );
+    // Only when this viewer would see the section: a hidden list stays hidden.
+    const wouldSee = (show: boolean) => !!view.details && (isSelf || show);
     return (
         <ProfilePage
             view={view}
             isSelf={isSelf}
-            // Only when this viewer would see them: a hidden list stays hidden.
             endorsementsFailed={
                 endorsements === null &&
-                !!view.details &&
-                (isSelf || person.profile.endorsements.show)
+                wouldSee(person.profile.endorsements.show)
+            }
+            comradesFailed={
+                comrades === null && wouldSee(person.profile.comrades.show)
+            }
+            comrade={
+                showButton ? (
+                    <ComradeButtonContainer
+                        state={state ?? 'signedOut'}
+                        uid={uid}
+                        name={view.name}
+                        next={profilePath(username)}
+                        loadFailed={!!viewer && viewerPairs === null}
+                    />
+                ) : undefined
             }
             moderation={
                 // Super users can remove a photo they can see (decision #71).

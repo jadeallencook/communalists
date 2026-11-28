@@ -16,6 +16,7 @@ import { languageName } from '@/lib/organizations/client';
 import { ORG_LANGUAGES, type OrgLanguage } from '@/lib/organizations/options';
 import {
     profileView,
+    type ProfileComrade,
     type ProfileEndorsement,
     type ProfileGroup,
     type ProfileSettings,
@@ -37,6 +38,7 @@ export function ProfileSettingsContainer({
     settings,
     groups,
     endorsements,
+    comrades,
 }: {
     name: string;
     username: string;
@@ -47,6 +49,8 @@ export function ProfileSettingsContainer({
     groups: ProfileGroup[];
     /** Organizations they endorse, newest first; null if they couldn't be loaded. */
     endorsements: ProfileEndorsement[] | null;
+    /** Their comrades, for the preview; empty if they couldn't be loaded. */
+    comrades: ProfileComrade[];
 }) {
     const locale = useLocale();
     const [state, formAction, pending] = useActionState<
@@ -66,6 +70,8 @@ export function ProfileSettingsContainer({
             .map((g) => g.orgId)
             .filter((id) => !settings.groups.hidden.includes(id)),
         endorsementsShow: settings.endorsements.show,
+        comradesShow: settings.comrades.show,
+        comradeRequests: settings.comrades.requests,
     });
     const [audience, setAudience] = useState<PreviewAudience>('groupmate');
 
@@ -85,6 +91,7 @@ export function ProfileSettingsContainer({
                 .filter((id) => !value.shownGroups.includes(id)),
         },
         endorsements: { show: value.endorsementsShow },
+        comrades: { show: value.comradesShow, requests: value.comradeRequests },
     };
     const person = {
         name,
@@ -94,8 +101,12 @@ export function ProfileSettingsContainer({
         settings: draft,
         groups,
         endorsements: endorsements ?? [],
+        comrades,
     };
     const none = new Set<string>();
+    // How each comrade relates to an imagined viewer isn't known, so the
+    // preview lists only comrades with public profiles (the page may list
+    // more, to people who can see them).
 
     return (
         <ProfileSettingsPage
@@ -134,6 +145,7 @@ export function ProfileSettingsContainer({
                     onAudienceChange={setAudience}
                     views={{
                         public: profileView(person, 'public', none),
+                        comrade: profileView(person, 'comrade', none),
                         groupmate: profileView(person, 'groupmate', none),
                         signedIn: profileView(person, 'signedIn', none),
                     }}

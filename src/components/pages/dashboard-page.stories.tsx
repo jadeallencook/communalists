@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
+import { ComradeRequestList } from '@/components/molecules/comrade-request-list';
+
 import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
 import { AccountMenu } from '@/components/molecules/account-menu';
@@ -123,4 +125,25 @@ export const LongName: Story = {
     },
 };
 
+/** Someone asked to be their comrade: answer here. */
+export const WithComradeRequests: Story = {
+    args: {
+        comradeRequests: (
+            <ComradeRequestList
+                requests={[
+                    {
+                        uid: 'seed-luis',
+                        name: 'Luis Hernández',
+                        username: 'luis-hernandez',
+                        at: Date.now() - 3 * 60 * 60 * 1000,
+                    },
+                ]}
+                next="/dashboard"
+                locale="en"
+                formAction={fn()}
+                from="dashboard"
+            />
+        ),
+    },
+};
 export const Loading: Story = { render: () => <DashboardPageLoading /> };

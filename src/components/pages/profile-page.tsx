@@ -16,6 +16,10 @@ export interface ProfilePageProps {
     moderation?: ReactNode;
     /** Their endorsements couldn't be loaded (and this viewer would see them). */
     endorsementsFailed?: boolean;
+    /** Their comrades couldn't be loaded (and this viewer would see them). */
+    comradesFailed?: boolean;
+    /** The comrade button (ComradeButton), for anyone but themself. */
+    comrade?: ReactNode;
 }
 
 /** /comrade/{username}: a person's profile, as this viewer may see it. */
@@ -24,6 +28,8 @@ export function ProfilePage({
     isSelf = false,
     moderation,
     endorsementsFailed = false,
+    comradesFailed = false,
+    comrade,
 }: ProfilePageProps) {
     const t = useTranslations('Profile');
     return (
@@ -41,7 +47,12 @@ export function ProfilePage({
                     </Button>
                 </div>
             )}
-            <ProfileCard view={view} endorsementsFailed={endorsementsFailed} />
+            <ProfileCard
+                view={view}
+                endorsementsFailed={endorsementsFailed}
+                comradesFailed={comradesFailed}
+                action={comrade}
+            />
             {moderation}
         </section>
     );

@@ -21,8 +21,10 @@ import {
 } from '@/components/molecules/social-links-field';
 import {
     BIO_MAX,
+    COMRADE_REQUEST_SETTINGS,
     PRONOUNS_MAX,
     PROFILE_VISIBILITIES,
+    type ComradeRequestSetting,
     type ProfileVisibility,
 } from '@/lib/profiles';
 import type {
@@ -44,6 +46,10 @@ export interface ProfileFormValue {
     shownGroups: string[];
     /** Show the organizations they endorse. */
     endorsementsShow: boolean;
+    /** Show their comrades. */
+    comradesShow: boolean;
+    /** Who may send them comrade requests. */
+    comradeRequests: ComradeRequestSetting;
 }
 
 export interface ProfileSettingsFormProps {
@@ -308,6 +314,42 @@ export function ProfileSettingsForm({
                         ))}
                     </ul>
                 )}
+            </FieldSet>
+
+            <FieldSet>
+                <FieldLegend className="font-heading text-lg font-semibold">
+                    {t('form.comradesTitle')}
+                </FieldLegend>
+                <FieldDescription>{t('form.comradesHint')}</FieldDescription>
+                <label className={checkboxRow}>
+                    <input
+                        type="checkbox"
+                        name="comradesShow"
+                        checked={value.comradesShow}
+                        onChange={(e) =>
+                            set({ comradesShow: e.target.checked })
+                        }
+                        className="mt-0.5 accent-primary"
+                    />
+                    <span>{t('form.comradesShow')}</span>
+                </label>
+                <ChoiceGroup
+                    kind="radio"
+                    name="comradeRequests"
+                    legend={t('form.comradeRequests')}
+                    value={value.comradeRequests}
+                    onChange={(v) =>
+                        set({ comradeRequests: v as ComradeRequestSetting })
+                    }
+                    options={COMRADE_REQUEST_SETTINGS.map((option) => ({
+                        value: option,
+                        label: t(`comradeRequestOptions.${option}.label`),
+                        description: t(
+                            `comradeRequestOptions.${option}.description`
+                        ),
+                    }))}
+                    hint={t('form.comradeRequestsHint')}
+                />
             </FieldSet>
 
             {state.formError && (

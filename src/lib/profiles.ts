@@ -10,6 +10,13 @@ export const PROFILE_VISIBILITIES = ['public', 'groups', 'name'] as const;
 export type ProfileVisibility = (typeof PROFILE_VISIBILITIES)[number];
 export const DEFAULT_PROFILE_VISIBILITY: ProfileVisibility = 'groups';
 
+/**
+ * Who may send a comrade request (decision #74). Stored keys; never rename.
+ * `anyone` (signed in) is the default.
+ */
+export const COMRADE_REQUEST_SETTINGS = ['anyone', 'groups', 'nobody'] as const;
+export type ComradeRequestSetting = (typeof COMRADE_REQUEST_SETTINGS)[number];
+
 export const BIO_MAX = 300;
 export const PRONOUNS_MAX = 40;
 
@@ -27,6 +34,8 @@ export interface ProfileSettings {
     groups: { show: boolean; hidden: string[] };
     /** The organizations they endorse: on or off (decision #73). */
     endorsements: { show: boolean };
+    /** Their comrades list (on or off), and who may send them requests (decision #74). */
+    comrades: { show: boolean; requests: ComradeRequestSetting };
 }
 
 /** Reads stored settings leniently: anything missing gets the private-by-default value. */
@@ -51,26 +60,40 @@ export function profileSettingsOf(data: unknown): ProfileSettings {
             hidden: Array.isArray(d.groups?.hidden) ? d.groups!.hidden : [],
         },
         endorsements: { show: d.endorsements?.show !== false },
+        comrades: {
+            show: d.comrades?.show !== false,
+            requests: (COMRADE_REQUEST_SETTINGS as readonly unknown[]).includes(
+                d.comrades?.requests
+            )
+                ? d.comrades!.requests
+                : 'anyone',
+        },
     };
 }
 
 /**
- * Who is looking: the person themself, someone sharing an active group with
- * them, another signed-in person, or someone signed out.
+ * Who is looking: the person themself, one of their comrades, someone
+ * sharing an active group with them, another signed-in person, or someone
+ * signed out.
  */
-export type ProfileViewer = 'self' | 'groupmate' | 'signedIn' | 'public';
+export type ProfileViewer =
+    'self' | 'comrade' | 'groupmate' | 'signedIn' | 'public';
 
 export function profileViewer({
     isSelf,
     signedIn,
     sharesGroup,
+    isComrade = false,
 }: {
     isSelf: boolean;
     signedIn: boolean;
     sharesGroup: boolean;
+    /** They're comrades (an accepted request, decision #74). */
+    isComrade?: boolean;
 }): ProfileViewer {
     if (isSelf) return 'self';
     if (!signedIn) return 'public';
+    if (isComrade) return 'comrade';
     return sharesGroup ? 'groupmate' : 'signedIn';
 }
 
@@ -92,12 +115,16 @@ export function isStricter(
     return PRIVACY_RANK[after] > PRIVACY_RANK[before];
 }
 
-/** Whether this viewer sees more than the name. */
+/**
+ * Whether this viewer sees more than the name. Comrades see the details at
+ * every level (decision #74): "Only my comrades" is stored as `name`.
+ */
 export function seesDetails(
     visibility: ProfileVisibility,
     viewer: ProfileViewer
 ): boolean {
-    if (viewer === 'self' || visibility === 'public') return true;
+    if (viewer === 'self' || viewer === 'comrade' || visibility === 'public')
+        return true;
     if (visibility === 'groups') return viewer === 'groupmate';
     return false;
 }
@@ -171,6 +198,62 @@ export function visibleEndorsements(
     return endorsements.filter((e) => e.listed || viewerOrgIds.has(e.orgId));
 }
 
+/** One of the person's comrades, with what decides whether they may be listed. */
+export interface ProfileComrade {
+    uid: string;
+    name: string;
+    username: string;
+    /** Their small photo link, if they've added one. */
+    photo?: string;
+    /** Their own profile visibility. */
+    visibility: ProfileVisibility;
+}
+
+/** A comrade as one viewer sees them in a list: the photo only if they may. */
+export interface ComradeView {
+    uid: string;
+    name: string;
+    username: string;
+    photo?: string;
+}
+
+/**
+ * The comrades a viewer may see on a profile (decision #74). A comrades list
+ * shows who knows whom, so both people's privacy counts: the list follows
+ * the owner's visibility and their "show my comrades" choice, and each
+ * comrade is listed only if their own visibility would show this viewer
+ * their details. `relationOf` is how the viewer relates to each comrade
+ * (missing means a signed-in stranger, or `public` when signed out). The
+ * person themself sees everyone.
+ */
+export function visibleComrades(
+    comrades: ProfileComrade[],
+    settings: ProfileSettings,
+    viewer: ProfileViewer,
+    relationOf: ReadonlyMap<string, ProfileViewer>
+): ComradeView[] {
+    const fallback: ProfileViewer = viewer === 'public' ? 'public' : 'signedIn';
+    const shown =
+        viewer === 'self'
+            ? comrades
+            : !seesDetails(settings.visibility, viewer) ||
+                !settings.comrades.show
+              ? []
+              : comrades.filter((c) =>
+                    seesDetails(c.visibility, relationOf.get(c.uid) ?? fallback)
+                );
+    return shown.map((c) => ({
+        uid: c.uid,
+        name: c.name,
+        username: c.username,
+        photo: visiblePhoto(
+            c.photo,
+            c.visibility,
+            relationOf.get(c.uid) ?? (viewer === 'self' ? 'comrade' : fallback)
+        ),
+    }));
+}
+
 /**
  * A person's photo link for one viewer: it follows their profile visibility,
  * like the bio, so "Just my name" means no photo either. Used wherever a
@@ -200,6 +283,7 @@ export interface ProfileView {
         website?: string;
         groups: ProfileGroup[];
         endorsements: ProfileEndorsement[];
+        comrades: ComradeView[];
     };
 }
 
@@ -214,9 +298,13 @@ export function profileView(
         groups: ProfileGroup[];
         /** Organizations they endorse, newest first. */
         endorsements?: ProfileEndorsement[];
+        /** Their comrades, newest first. */
+        comrades?: ProfileComrade[];
     },
     viewer: ProfileViewer,
-    viewerOrgIds: ReadonlySet<string>
+    viewerOrgIds: ReadonlySet<string>,
+    /** How the viewer relates to each comrade (see visibleComrades). */
+    comradeRelations: ReadonlyMap<string, ProfileViewer> = new Map()
 ): ProfileView {
     const { settings } = person;
     const details = seesDetails(settings.visibility, viewer);
@@ -245,6 +333,12 @@ export function profileView(
                       settings,
                       viewer,
                       viewerOrgIds
+                  ),
+                  comrades: visibleComrades(
+                      person.comrades ?? [],
+                      settings,
+                      viewer,
+                      comradeRelations
                   ),
               }
             : null,
