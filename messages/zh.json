@@ -1251,7 +1251,9 @@
             "unhidden": "评论已重新显示。",
             "sortedTop": "正在优先显示点赞最多的评论。",
             "sortedNewest": "正在优先显示最新的评论。",
-            "loaded": "{count, plural, =0 {没有更多评论了。} other {又显示了 # 条评论。}}"
+            "loaded": "{count, plural, =0 {没有更多评论了。} other {又显示了 # 条评论。}}",
+            "languageOne": "正在显示{language}评论：{count, plural, =0 {还没有} other {# 条}}。",
+            "languageAll": "正在显示所有语言的评论：{count} 条。"
         },
         "errors": {
             "textRequired": "请先写下你的评论。",
@@ -1267,7 +1269,15 @@
             "invalid": "这个请求有问题。请刷新页面后重试。",
             "generic": "出了点问题。请重试。",
             "loadFailed": "无法加载评论。请检查网络连接后重试。"
-        }
+        },
+        "languageLabel": "显示评论的语言",
+        "languageOne": "{language}（{count}）",
+        "languageAll": "所有语言（{count}）",
+        "emptyLanguage": "还没有{language}评论。",
+        "seeOtherLanguages": "{count, plural, other {查看其他语言的 # 条评论}}",
+        "writtenIn": "使用{language}撰写",
+        "changeLanguage": "更改",
+        "changeLanguageLabel": "更改评论所用的语言"
     },
     "AdminComments": {
         "metaTitle": "被举报的评论",

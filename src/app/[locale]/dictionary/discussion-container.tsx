@@ -4,13 +4,14 @@ import { isSetupComplete } from '@/lib/account-setup';
 import { getSessionUser } from '@/lib/auth/session';
 import {
     cursorOf,
+    defaultLanguageFilter,
     DISCUSSION_ANCHOR,
     encodeCursor,
     targetHref,
     type CommentTarget,
 } from '@/lib/comments';
 import { canModerate } from '@/lib/comments/access';
-import { getCommentCount, getComments } from '@/lib/comments/store';
+import { getCommentCounts, getComments } from '@/lib/comments/store';
 import { viewsFor } from '@/lib/comments/views';
 import { getUserProfile, getUserProfileFresh } from '@/lib/users';
 import type { DiscussionViewer } from '@/components/organisms/discussion';
@@ -31,13 +32,15 @@ export async function DiscussionContainer({
     locale: Locale;
 }) {
     const target: CommentTarget = { kind: 'definition', id: slug };
-    const [user, page, count] = await Promise.all([
-        getSessionUser(),
-        getComments(target, 'top', null),
-        getCommentCount(target),
-    ]);
+    const user = await getSessionUser();
     const uid = user?.uid ?? null;
     const moderator = canModerate(target, uid);
+    // Readers start with comments in their language; moderators with all.
+    const language = defaultLanguageFilter(locale, moderator);
+    const [page, counts] = await Promise.all([
+        getComments(target, 'top', null, language),
+        getCommentCounts(target),
+    ]);
     const comments = await viewsFor(target, page.comments, { uid, moderator });
     const last = page.comments.at(-1);
     const viewer = await viewerOf(target, uid, moderator);
@@ -54,7 +57,8 @@ export async function DiscussionContainer({
                 comments,
                 next: page.more && last ? encodeCursor(cursorOf(last)) : null,
             }}
-            count={count}
+            counts={counts}
+            language={language}
             defaultLang={locale}
         />
     );

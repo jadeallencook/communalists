@@ -42,6 +42,23 @@
                 { "fieldPath": "votes", "order": "DESCENDING" },
                 { "fieldPath": "createdAt", "order": "DESCENDING" }
             ]
+        },
+        {
+            "collectionGroup": "comments",
+            "queryScope": "COLLECTION",
+            "fields": [
+                { "fieldPath": "lang", "order": "ASCENDING" },
+                { "fieldPath": "votes", "order": "DESCENDING" },
+                { "fieldPath": "createdAt", "order": "DESCENDING" }
+            ]
+        },
+        {
+            "collectionGroup": "comments",
+            "queryScope": "COLLECTION",
+            "fields": [
+                { "fieldPath": "lang", "order": "ASCENDING" },
+                { "fieldPath": "createdAt", "order": "DESCENDING" }
+            ]
         }
     ],
     "fieldOverrides": []

@@ -29,10 +29,13 @@ const meta = {
     component: Discussion,
     args: {
         viewer: { status: 'ready', moderator: false },
-        count: 4,
+        counts: { all: 4, en: 3, es: 1, vi: 0, zh: 0 },
         comments: sampleComments,
         sort: 'top',
         onSortChange: fn(),
+        readerLanguage: 'en',
+        language: 'all',
+        onLanguageChange: fn(),
         hasMore: false,
         onLoadMore: fn(),
         form,
@@ -53,8 +56,22 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Signed in, with the form. */
+/** Signed in, with the form, showing all languages (comments not in English are marked). */
 export const SignedIn: Story = {};
+
+/** The default for readers: comments in their language, with All languages beside it. */
+export const ReaderLanguage: Story = {
+    args: {
+        language: 'en',
+        comments: sampleComments.filter((c) => c.lang === 'en'),
+    },
+};
+
+/** None in the reader's language yet, some in others: says so, with a way to see them. */
+export const NoneInReaderLanguage: Story = {
+    globals: { locale: 'vi' },
+    args: { readerLanguage: 'vi', language: 'vi', comments: [] },
+};
 
 /** Signed out: the invitation to create an account, then the comments. */
 export const SignedOut: Story = { args: { viewer: signedOut } };
@@ -71,20 +88,25 @@ export const SetupNeeded: Story = {
 
 /** No comments yet. */
 export const Empty: Story = {
-    args: { viewer: signedOut, count: 0, comments: [] },
+    args: {
+        viewer: signedOut,
+        counts: { all: 0, en: 0, es: 0, vi: 0, zh: 0 },
+        comments: [],
+    },
 };
 
 /** More than one page: Show more. */
-export const MoreToLoad: Story = { args: { count: 42, hasMore: true } };
+const many = { all: 42, en: 30, es: 8, vi: 3, zh: 1 };
+export const MoreToLoad: Story = { args: { counts: many, hasMore: true } };
 
 export const LoadingMore: Story = {
-    args: { count: 42, hasMore: true, loading: 'more' },
+    args: { counts: many, hasMore: true, loading: 'more' },
 };
 
 /** Loading more failed: the error is announced and the button offers to try again. */
 export const LoadFailed: Story = {
     args: {
-        count: 42,
+        counts: many,
         hasMore: true,
         loadFailed: true,
         notice: {
@@ -121,12 +143,12 @@ export const LongText: Story = {
 
 export const Spanish: Story = {
     globals: { locale: 'es' },
-    args: { viewer: signedOut },
+    args: { viewer: signedOut, readerLanguage: 'es' },
 };
 
 export const Chinese: Story = {
     globals: { locale: 'zh' },
-    args: { viewer: signedOut },
+    args: { viewer: signedOut, readerLanguage: 'zh' },
 };
 
 /** The skeleton while the first page streams in. */

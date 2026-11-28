@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { CommentForm } from '@/components/molecules/comment-form';
 import { sampleComments } from '@/components/molecules/comment-fixtures';
 import { Discussion } from '@/components/organisms/discussion';
+import { localeNames, type Locale } from '@/i18n/routing';
 import type { CommentView } from '@/lib/comments';
 
 import {
@@ -23,11 +24,13 @@ function fakeActions(fails: boolean): DiscussionActions {
         mine: false,
     }));
     return {
-        load: async (sort, after) => {
+        load: async (sort, language, after) => {
             await wait();
             if (fails) throw new Error('offline');
-            if (after) return { comments: more, next: null };
-            const list = [...sampleComments];
+            const inLanguage = (c: CommentView) =>
+                language === 'all' || c.lang === language;
+            if (after) return { comments: more.filter(inLanguage), next: null };
+            const list = sampleComments.filter(inLanguage);
             if (sort === 'newest') list.sort((a, b) => b.at - a.at);
             return { comments: list, next: 'more' };
         },
@@ -80,8 +83,12 @@ function fakeActions(fails: boolean): DiscussionActions {
 function Demo({ fails, moderator }: { fails: boolean; moderator: boolean }) {
     const t = useTranslations('Discussion');
     const state = useDiscussion({
-        initial: { comments: sampleComments, next: 'more' },
-        count: 8,
+        initial: {
+            comments: sampleComments.filter((c) => c.lang === 'en'),
+            next: 'more',
+        },
+        counts: { all: 8, en: 6, es: 2, vi: 0, zh: 0 },
+        language: 'en',
         defaultLang: 'en',
         actions: fakeActions(fails),
     });
@@ -94,7 +101,10 @@ function Demo({ fails, moderator }: { fails: boolean; moderator: boolean }) {
         <div className="mx-auto max-w-3xl px-4">
             <Discussion
                 viewer={{ status: 'ready', moderator }}
-                count={state.count}
+                counts={state.counts}
+                readerLanguage="en"
+                language={state.language}
+                onLanguageChange={state.setLanguage}
                 comments={state.comments}
                 sort={state.sort}
                 onSortChange={state.setSort}
@@ -115,10 +125,14 @@ function Demo({ fails, moderator }: { fails: boolean; moderator: boolean }) {
                         text:
                             state.notice.tone === 'alert'
                                 ? errorText(state.notice.key)
-                                : t(
-                                      `announce.${state.notice.key}`,
-                                      state.notice.values ?? {}
-                                  ),
+                                : t(`announce.${state.notice.key}`, {
+                                      ...state.notice.values,
+                                      language:
+                                          localeNames[
+                                              state.notice.values
+                                                  ?.language as Locale
+                                          ] ?? '',
+                                  }),
                     }
                 }
                 form={

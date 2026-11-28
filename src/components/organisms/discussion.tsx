@@ -8,9 +8,13 @@ import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
 import { CommentItem } from '@/components/molecules/comment-item';
 import { Link } from '@/i18n/navigation';
+import { localeNames, type Locale } from '@/i18n/routing';
 import {
     commentAbilities,
     DISCUSSION_ANCHOR,
+    type CommentCounts,
+    type CommentLang,
+    type CommentLanguageFilter,
     type CommentSort,
     type CommentView,
     type ReportReason,
@@ -25,10 +29,20 @@ export type DiscussionViewer =
 
 export interface DiscussionProps {
     viewer: DiscussionViewer;
-    count: number;
+    /** How many comments, in all and per language. */
+    counts: CommentCounts;
     comments: CommentView[];
     sort: CommentSort;
     onSortChange: (sort: CommentSort) => void;
+    /** The reader's language (the UI's): offered beside "All languages". */
+    readerLanguage: CommentLang;
+    /** Which comments are shown: the reader's language, or all. */
+    language: CommentLanguageFilter;
+    /** `focusFirst`: the button pressed goes away, so focus the first comment shown. */
+    onLanguageChange: (
+        language: CommentLanguageFilter,
+        focusFirst?: boolean
+    ) => void;
     hasMore: boolean;
     onLoadMore: () => void;
     loading?: 'sort' | 'more' | null;
@@ -56,14 +70,17 @@ export interface DiscussionProps {
 /**
  * The discussion on a word's page: anyone can read it; signed-in people
  * comment, up vote and report; super users hide and delete. One flat list,
- * Top or Newest. Results are announced, and focus follows what was acted on.
+ * Top or Newest, in the reader's language (with "All languages"). Results are announced, and focus follows what was acted on.
  */
 export function Discussion({
     viewer,
-    count,
+    counts,
     comments,
     sort,
     onSortChange,
+    readerLanguage,
+    language,
+    onLanguageChange,
     hasMore,
     onLoadMore,
     loading = null,
@@ -99,7 +116,7 @@ export function Discussion({
                 >
                     {t('title')}{' '}
                     <span className="ml-1 text-base font-normal text-muted-foreground">
-                        {t('count', { count })}
+                        {t('count', { count: counts.all })}
                     </span>
                 </h2>
                 <p className="text-pretty text-muted-foreground">
@@ -164,39 +181,67 @@ export function Discussion({
                 </p>
             </div>
 
-            {(count > 0 || comments.length > 0) && (
-                <div
-                    role="group"
-                    aria-label={t('sortLabel')}
-                    className="flex flex-wrap items-center gap-2"
-                >
-                    <span aria-hidden className="text-sm text-muted-foreground">
-                        {t('sortLabel')}
-                    </span>
-                    {(['top', 'newest'] as const).map((option) => (
-                        <Button
-                            key={option}
-                            type="button"
-                            size="sm"
-                            variant={sort === option ? 'default' : 'outline'}
-                            aria-pressed={sort === option}
-                            // Not `disabled`, which would drop focus; the
-                            // hook ignores presses while loading.
-                            aria-disabled={loading !== null || undefined}
-                            onClick={() => onSortChange(option)}
-                        >
-                            {t(option === 'top' ? 'sortTop' : 'sortNewest')}
-                        </Button>
-                    ))}
+            {counts.all > 0 && (
+                <div className="flex flex-col gap-2">
+                    <ChoiceRow
+                        label={t('languageLabel')}
+                        options={(
+                            [readerLanguage, 'all'] as CommentLanguageFilter[]
+                        ).map((option) => ({
+                            value: option,
+                            text:
+                                option === 'all'
+                                    ? t('languageAll', { count: counts.all })
+                                    : t('languageOne', {
+                                          language: localeNames[option],
+                                          count: counts[option],
+                                      }),
+                            lang: option === 'all' ? undefined : option,
+                        }))}
+                        value={language}
+                        loading={loading !== null}
+                        onChange={onLanguageChange}
+                    />
+                    <ChoiceRow
+                        label={t('sortLabel')}
+                        options={(['top', 'newest'] as const).map((option) => ({
+                            value: option,
+                            text: t(
+                                option === 'top' ? 'sortTop' : 'sortNewest'
+                            ),
+                        }))}
+                        value={sort}
+                        loading={loading !== null}
+                        onChange={onSortChange}
+                    />
                 </div>
             )}
 
             {loading === 'sort' ? (
                 <DiscussionListLoading />
             ) : comments.length === 0 ? (
-                <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-                    {t('empty')}
-                </p>
+                language !== 'all' && counts.all > 0 ? (
+                    // None in their language, but some in others: say so.
+                    <div className="flex flex-col items-start gap-3 rounded-lg border border-dashed p-4 text-sm">
+                        <p className="text-muted-foreground">
+                            {t('emptyLanguage', {
+                                language: localeNames[language as Locale],
+                            })}
+                        </p>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => onLanguageChange('all', true)}
+                        >
+                            {t('seeOtherLanguages', { count: counts.all })}
+                        </Button>
+                    </div>
+                ) : (
+                    <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+                        {t('empty')}
+                    </p>
+                )
             ) : (
                 <ol
                     aria-labelledby="discussion-title"
@@ -206,6 +251,11 @@ export function Discussion({
                         <li key={comment.id}>
                             <CommentItem
                                 comment={comment}
+                                languageName={
+                                    comment.lang === readerLanguage
+                                        ? undefined
+                                        : localeNames[comment.lang]
+                                }
                                 can={commentAbilities(comment, {
                                     signedIn: viewer.status === 'ready',
                                     moderator,
@@ -244,6 +294,51 @@ export function Discussion({
                 </Button>
             )}
         </section>
+    );
+}
+
+/**
+ * A labelled row of toggle buttons, one pressed (the language, the order).
+ * Buttons aren't `disabled` while loading, which would drop focus; the hook
+ * ignores presses then.
+ */
+function ChoiceRow<T extends string>({
+    label,
+    options,
+    value,
+    loading,
+    onChange,
+}: {
+    label: string;
+    options: { value: T; text: string; lang?: string }[];
+    value: T;
+    loading: boolean;
+    onChange: (value: T) => void;
+}) {
+    return (
+        <div
+            role="group"
+            aria-label={label}
+            className="flex flex-wrap items-center gap-2"
+        >
+            <span aria-hidden className="text-sm text-muted-foreground">
+                {label}
+            </span>
+            {options.map((option) => (
+                <Button
+                    key={option.value}
+                    type="button"
+                    size="sm"
+                    lang={option.lang}
+                    variant={value === option.value ? 'default' : 'outline'}
+                    aria-pressed={value === option.value}
+                    aria-disabled={loading || undefined}
+                    onClick={() => onChange(option.value)}
+                >
+                    {option.text}
+                </Button>
+            ))}
+        </div>
     );
 }
 

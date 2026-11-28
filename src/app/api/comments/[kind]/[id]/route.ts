@@ -5,15 +5,16 @@ import {
     encodeCursor,
     cursorOf,
     isCommentSort,
+    isLanguageFilter,
     type CommentView,
 } from '@/lib/comments';
 import { canModerate } from '@/lib/comments/access';
 import { getComments } from '@/lib/comments/store';
 import { viewsFor } from '@/lib/comments/views';
 
-// GET /api/comments/{kind}/{id}?sort=top|newest&after={cursor}
+// GET /api/comments/{kind}/{id}?sort=top|newest&lang=all|en|es|vi|zh&after={cursor}
 //   → { comments: CommentView[], next: string | null }
-// The next page of a discussion, or the first page in another order
+// The next page of a discussion, or the first page in another order or language
 // (documentation/features/20-comments.md). Comments are public; what the
 // viewer voted for and may do depends on their session, so the answer is
 // private and never stored by the CDN. The page reads are cached on the server.
@@ -31,13 +32,20 @@ export async function GET(
     const query = new URL(request.url).searchParams;
     const sort = query.get('sort');
     const after = query.get('after');
+    // Missing means all languages (older clients).
+    const language = query.get('lang') ?? 'all';
     const cursor = after ? decodeCursor(after) : null;
-    if (!target.success || !isCommentSort(sort) || (after && !cursor))
+    if (
+        !target.success ||
+        !isCommentSort(sort) ||
+        !isLanguageFilter(language) ||
+        (after && !cursor)
+    )
         return Response.json({ error: 'invalid' }, { status: 400 });
 
     const [user, page] = await Promise.all([
         getSessionUser(),
-        getComments(target.data, sort, cursor),
+        getComments(target.data, sort, cursor, language),
     ]);
     const uid = user?.uid ?? null;
     const comments = await viewsFor(target.data, page.comments, {

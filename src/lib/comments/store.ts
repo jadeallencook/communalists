@@ -13,8 +13,11 @@ import {
     reportId,
     targetKey,
     targetPath,
+    COMMENT_LANGS,
+    type CommentCounts,
     type CommentCursor,
     type CommentInput,
+    type CommentLanguageFilter,
     type CommentSort,
     type CommentTarget,
     type ReportReason,
@@ -64,25 +67,29 @@ function toComment(
 }
 
 /**
- * One page of comments, cached until someone posts, votes or moderates.
- * Top: most up votes, then newest (composite index). Newest: by date.
+ * One page of comments, in one language or all, cached until someone posts,
+ * votes or moderates. Top: most up votes, then newest. Newest: by date.
+ * Each order, with and without the language, has a composite index.
  * Hidden comments stay in place (shown as hidden), so counts and pages
  * don't shift.
  */
 export async function getComments(
     target: CommentTarget,
     sort: CommentSort,
-    after: CommentCursor | null
+    after: CommentCursor | null,
+    language: CommentLanguageFilter = 'all'
 ): Promise<{ comments: StoredComment[]; more: boolean }> {
     'use cache';
     cacheTag(commentsTag(target));
     cacheLife('days');
+    const base =
+        language === 'all'
+            ? comments(target)
+            : comments(target).where('lang', '==', language);
     let query =
         sort === 'top'
-            ? comments(target)
-                  .orderBy('votes', 'desc')
-                  .orderBy('createdAt', 'desc')
-            : comments(target).orderBy('createdAt', 'desc');
+            ? base.orderBy('votes', 'desc').orderBy('createdAt', 'desc')
+            : base.orderBy('createdAt', 'desc');
     if (after) {
         const at = Timestamp.fromMillis(after.at);
         query =
@@ -100,14 +107,29 @@ export async function getComments(
     };
 }
 
-/** How many comments a target has (one aggregation read), cached. */
-export async function getCommentCount(target: CommentTarget): Promise<number> {
+/**
+ * How many comments a target has, in all and per language (five
+ * aggregation reads), cached.
+ */
+export async function getCommentCounts(
+    target: CommentTarget
+): Promise<CommentCounts> {
     'use cache';
     cacheTag(commentsTag(target));
     cacheLife('days');
-    const snapshot = await comments(target).count().get();
-    logRead('comments (count)');
-    return snapshot.data().count;
+    const [all, ...each] = await Promise.all([
+        comments(target).count().get(),
+        ...COMMENT_LANGS.map((lang) =>
+            comments(target).where('lang', '==', lang).count().get()
+        ),
+    ]);
+    logRead('comments (counts)', 1 + COMMENT_LANGS.length);
+    return {
+        all: all.data().count,
+        ...Object.fromEntries(
+            COMMENT_LANGS.map((lang, i) => [lang, each[i].data().count])
+        ),
+    } as CommentCounts;
 }
 
 /** Which comments on this target the person up voted. Fresh: it's theirs alone. */

@@ -132,10 +132,13 @@ export const WithDiscussion: Story = {
                     signUpHref: '/sign-up',
                     signInHref: '/sign-in',
                 }}
-                count={sampleComments.length}
-                comments={sampleComments}
+                counts={{ all: 4, en: 3, es: 1, vi: 0, zh: 0 }}
+                comments={sampleComments.filter((c) => c.lang === 'en')}
                 sort="top"
                 onSortChange={fn()}
+                readerLanguage="en"
+                language="en"
+                onLanguageChange={fn()}
                 hasMore={false}
                 onLoadMore={fn()}
                 onVote={fn()}

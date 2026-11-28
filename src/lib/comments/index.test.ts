@@ -3,7 +3,11 @@ import { describe, expect, it } from 'vitest';
 import { routing } from '@/i18n/routing';
 
 import {
+    adjustCounts,
     charactersLeft,
+    defaultLanguageFilter,
+    emptyCounts,
+    isLanguageFilter,
     COMMENT_LANGS,
     COMMENT_MAX,
     commentAbilities,
@@ -328,5 +332,28 @@ describe('reports', () => {
             { reason: 'spam', count: 1 },
         ]);
         expect(tallyReasons(undefined)).toEqual([]);
+    });
+});
+
+describe('languages', () => {
+    it('start readers in their UI language, and moderators in all', () => {
+        expect(defaultLanguageFilter('vi', false)).toBe('vi');
+        expect(defaultLanguageFilter('vi', true)).toBe('all');
+        expect(defaultLanguageFilter('fr', false)).toBe('all');
+    });
+
+    it('only accept known filters', () => {
+        for (const ok of ['all', 'en', 'es', 'vi', 'zh'])
+            expect(isLanguageFilter(ok)).toBe(true);
+        for (const bad of ['fr', '', null, 'ALL'])
+            expect(isLanguageFilter(bad)).toBe(false);
+    });
+
+    it('count a new or removed comment in all and in its language', () => {
+        const added = adjustCounts(emptyCounts(), 'es', 1);
+        expect(added).toEqual({ all: 1, en: 0, es: 1, vi: 0, zh: 0 });
+        expect(adjustCounts(added, 'es', -1)).toEqual(emptyCounts());
+        // Never below zero.
+        expect(adjustCounts(emptyCounts(), 'zh', -1).zh).toBe(0);
     });
 });

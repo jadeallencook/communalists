@@ -3,16 +3,19 @@
 import { useState } from 'react';
 
 import {
+    adjustCounts,
     charactersLeft,
     mergePages,
+    type CommentCounts,
     type CommentErrorKey,
+    type CommentLanguageFilter,
     type CommentSort,
     type CommentView,
     type ReportReason,
 } from '@/lib/comments';
 
 // The discussion under a word (and, later, an organization): the list, its
-// order, loading more, posting, voting, reporting and moderating. The server
+// order and language, loading more, posting, voting, reporting and moderating. The server
 // actions and the page loader come in as functions, so the hook (and the
 // components) never import server code. Design:
 // documentation/features/20-comments.md.
@@ -32,9 +35,13 @@ export type DiscussionError =
 type Failure = { ok: false; error: DiscussionError };
 
 export interface DiscussionActions {
-    /** A page of comments: the first one in `sort` order, or the one after `after`. */
+    /**
+     * A page of comments in `sort` order, in one language or all: the first
+     * page, or the one after `after`.
+     */
     load: (
         sort: CommentSort,
+        language: CommentLanguageFilter,
         after: string | null
     ) => Promise<{ comments: CommentView[]; next: string | null }>;
     post: (input: {
@@ -68,6 +75,8 @@ export type DiscussionAnnouncement =
     | 'unhidden'
     | 'sortedTop'
     | 'sortedNewest'
+    | 'languageOne'
+    | 'languageAll'
     | 'loaded';
 
 /** Problems, under Discussion.errors. */
@@ -85,7 +94,10 @@ export type DiscussionNotice = (
 
 export interface UseDiscussionOptions {
     initial: { comments: CommentView[]; next: string | null };
-    count: number;
+    /** How many comments, in all and per language. */
+    counts: CommentCounts;
+    /** Which language the first page is in (the reader's, or all). */
+    language: CommentLanguageFilter;
     /** The form's language to start with: the UI language. */
     defaultLang: string;
     actions: DiscussionActions;
@@ -93,14 +105,17 @@ export interface UseDiscussionOptions {
 
 export function useDiscussion({
     initial,
-    count: initialCount,
+    counts: initialCounts,
+    language: initialLanguage,
     defaultLang,
     actions,
 }: UseDiscussionOptions) {
     const [comments, setComments] = useState(initial.comments);
     const [next, setNext] = useState(initial.next);
-    const [count, setCount] = useState(initialCount);
+    const [counts, setCounts] = useState(initialCounts);
     const [sort, setSortState] = useState<CommentSort>('top');
+    const [language, setLanguageState] = useState(initialLanguage);
+    /** `sort` covers any reload of the first page (order or language). */
     const [loading, setLoading] = useState<'sort' | 'more' | null>(null);
     const [loadFailed, setLoadFailed] = useState(false);
 
@@ -148,22 +163,54 @@ export function useDiscussion({
             list.map((c) => (c.id === id ? { ...c, ...change } : c))
         );
 
-    const setSort = async (to: CommentSort) => {
-        if (to === sort || loading) return;
+    /** Loads the first page again in another order or language. */
+    const reload = async (
+        to: { sort: CommentSort; language: CommentLanguageFilter },
+        announce: () => void,
+        focusFirst = false
+    ) => {
+        if (loading) return;
         setLoading('sort');
         try {
-            const page = await actions.load(to, null);
-            setSortState(to);
+            const page = await actions.load(to.sort, to.language, null);
+            setSortState(to.sort);
+            setLanguageState(to.language);
             setComments(page.comments);
             setNext(page.next);
             setLoadFailed(false);
-            say(to === 'top' ? 'sortedTop' : 'sortedNewest');
+            announce();
+            if (focusFirst && page.comments[0])
+                setFocus({ id: page.comments[0].id, at: Date.now() });
         } catch {
-            // The list and its order stay as they were.
+            // The list stays as it was.
             failed('loadFailed');
         } finally {
             setLoading(null);
         }
+    };
+
+    const setSort = (to: CommentSort) => {
+        if (to === sort) return;
+        return reload({ sort: to, language }, () =>
+            say(to === 'top' ? 'sortedTop' : 'sortedNewest')
+        );
+    };
+
+    /**
+     * Shows comments in one language, or in all. `focusFirst` moves focus
+     * to the first comment, for buttons that disappear once pressed (the
+     * empty language's "See N comments in other languages").
+     */
+    const setLanguage = (to: CommentLanguageFilter, focusFirst = false) => {
+        if (to === language) return;
+        return reload(
+            { sort, language: to },
+            () =>
+                to === 'all'
+                    ? say('languageAll', { count: counts.all })
+                    : say('languageOne', { language: to, count: counts[to] }),
+            focusFirst
+        );
     };
 
     const loadMore = async () => {
@@ -171,7 +218,7 @@ export function useDiscussion({
         setLoading('more');
         setLoadFailed(false);
         try {
-            const page = await actions.load(sort, next);
+            const page = await actions.load(sort, language, next);
             // What's new compared with the list as it was when asked.
             const merged = mergePages(comments, page.comments);
             const first = merged[comments.length];
@@ -217,7 +264,7 @@ export function useDiscussion({
                 result.comment,
                 ...list.filter((c) => c.id !== result.comment.id),
             ]);
-            setCount((n) => n + 1);
+            setCounts((c) => adjustCounts(c, result.comment.lang, 1));
             setDraft('');
             say('posted');
             setFocus({ id: result.comment.id, at: Date.now() });
@@ -269,6 +316,7 @@ export function useDiscussion({
 
     const remove = (id: string) =>
         withBusy(id, async () => {
+            const gone = comments.find((c) => c.id === id);
             try {
                 const result = await actions.remove(id);
                 if (!result.ok && result.error !== 'notFound')
@@ -276,7 +324,7 @@ export function useDiscussion({
                 // Gone either way. Focus goes to the announcement (the
                 // comment it was on no longer exists).
                 setComments((list) => list.filter((c) => c.id !== id));
-                setCount((n) => Math.max(0, n - 1));
+                if (gone) setCounts((c) => adjustCounts(c, gone.lang, -1));
                 say('deleted');
                 setFocus({ id: null, at: Date.now() });
             } catch {
@@ -299,9 +347,11 @@ export function useDiscussion({
 
     return {
         comments,
-        count,
+        counts,
         sort,
         setSort,
+        language,
+        setLanguage,
         hasMore: next !== null,
         loadMore,
         loading,

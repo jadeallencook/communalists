@@ -1251,7 +1251,9 @@
             "unhidden": "Comentario visible de nuevo.",
             "sortedTop": "Se muestran primero los comentarios más votados.",
             "sortedNewest": "Se muestran primero los comentarios más recientes.",
-            "loaded": "{count, plural, =0 {No hay más comentarios.} one {Se muestra # comentario más.} other {Se muestran # comentarios más.}}"
+            "loaded": "{count, plural, =0 {No hay más comentarios.} one {Se muestra # comentario más.} other {Se muestran # comentarios más.}}",
+            "languageOne": "Se muestran comentarios en {language}: {count, plural, =0 {aún ninguno} one {#} other {#}}.",
+            "languageAll": "Se muestran comentarios en todos los idiomas: {count}."
         },
         "errors": {
             "textRequired": "Escribe tu comentario primero.",
@@ -1267,7 +1269,15 @@
             "invalid": "Algo estaba mal en esa solicitud. Recarga la página e inténtalo de nuevo.",
             "generic": "Algo salió mal. Inténtalo de nuevo.",
             "loadFailed": "No se pudieron cargar los comentarios. Revisa tu conexión e inténtalo de nuevo."
-        }
+        },
+        "languageLabel": "Ver comentarios en",
+        "languageOne": "{language} ({count})",
+        "languageAll": "Todos los idiomas ({count})",
+        "emptyLanguage": "Aún no hay comentarios en {language}.",
+        "seeOtherLanguages": "{count, plural, one {Ver # comentario en otros idiomas} other {Ver # comentarios en otros idiomas}}",
+        "writtenIn": "Escrito en {language}",
+        "changeLanguage": "Cambiar",
+        "changeLanguageLabel": "Cambiar el idioma de tu comentario"
     },
     "AdminComments": {
         "metaTitle": "Comentarios reportados",

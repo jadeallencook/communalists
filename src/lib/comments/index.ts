@@ -136,6 +136,52 @@ export const PAGE_SIZE = 20;
 export const isCommentSort = (value: unknown): value is CommentSort =>
     COMMENT_SORTS.includes(value as CommentSort);
 
+/**
+ * Which comments to show: one language, or all of them. Readers start with
+ * their UI language (moderators with all), and can switch to all.
+ */
+export type CommentLanguageFilter = CommentLang | 'all';
+
+export const isLanguageFilter = (
+    value: unknown
+): value is CommentLanguageFilter =>
+    value === 'all' || COMMENT_LANGS.includes(value as CommentLang);
+
+/** Where a viewer starts: their UI language, or all languages for moderators. */
+export function defaultLanguageFilter(
+    locale: string,
+    moderator: boolean
+): CommentLanguageFilter {
+    if (moderator) return 'all';
+    return COMMENT_LANGS.includes(locale as CommentLang)
+        ? (locale as CommentLang)
+        : 'all';
+}
+
+/** How many comments there are, in all and in each language. */
+export type CommentCounts = Record<CommentLanguageFilter, number>;
+
+export const emptyCounts = (): CommentCounts => ({
+    all: 0,
+    en: 0,
+    es: 0,
+    vi: 0,
+    zh: 0,
+});
+
+/** The counts after a comment in `lang` is added (+1) or removed (-1). */
+export function adjustCounts(
+    counts: CommentCounts,
+    lang: CommentLang,
+    by: 1 | -1
+): CommentCounts {
+    return {
+        ...counts,
+        all: Math.max(0, counts.all + by),
+        [lang]: Math.max(0, counts[lang] + by),
+    };
+}
+
 /** Where the next page starts: after the last comment shown. */
 export interface CommentCursor {
     votes: number;

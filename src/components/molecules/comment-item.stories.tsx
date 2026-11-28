@@ -43,8 +43,13 @@ export const SignedOut: Story = { args: { can: allowed.reader } };
 /** The viewer's own comment: Delete (asks first), no voting or reporting. */
 export const Mine: Story = { args: { comment: mine, can: allowed.author } };
 
-/** Written in Spanish: the text has `lang="es"`, so screen readers switch voice. */
-export const OtherLanguage: Story = { args: { comment: spanish } };
+/**
+ * Written in Spanish, read by an English reader: marked "Español", and the
+ * text has `lang="es"` so screen readers switch voice.
+ */
+export const OtherLanguage: Story = {
+    args: { comment: spanish, languageName: 'Español' },
+};
 
 /** Hidden by a moderator, as everyone else sees it. */
 export const Hidden: Story = { args: { comment: hidden, can: allowed.reader } };

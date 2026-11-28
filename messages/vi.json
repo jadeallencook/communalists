@@ -1251,7 +1251,9 @@
             "unhidden": "Đã hiện lại bình luận.",
             "sortedTop": "Đang hiện bình luận có nhiều bình chọn nhất trước.",
             "sortedNewest": "Đang hiện bình luận mới nhất trước.",
-            "loaded": "{count, plural, =0 {Không còn bình luận nào.} other {Đã hiện thêm # bình luận.}}"
+            "loaded": "{count, plural, =0 {Không còn bình luận nào.} other {Đã hiện thêm # bình luận.}}",
+            "languageOne": "Đang hiện bình luận bằng {language}: {count, plural, =0 {chưa có} other {#}}.",
+            "languageAll": "Đang hiện bình luận bằng mọi ngôn ngữ: {count}."
         },
         "errors": {
             "textRequired": "Hãy viết bình luận trước.",
@@ -1267,7 +1269,15 @@
             "invalid": "Yêu cầu đó có lỗi. Hãy tải lại trang và thử lại.",
             "generic": "Đã xảy ra lỗi. Hãy thử lại.",
             "loadFailed": "Không tải được bình luận. Hãy kiểm tra kết nối và thử lại."
-        }
+        },
+        "languageLabel": "Xem bình luận bằng",
+        "languageOne": "{language} ({count})",
+        "languageAll": "Mọi ngôn ngữ ({count})",
+        "emptyLanguage": "Chưa có bình luận bằng {language}.",
+        "seeOtherLanguages": "{count, plural, other {Xem # bình luận bằng ngôn ngữ khác}}",
+        "writtenIn": "Viết bằng {language}",
+        "changeLanguage": "Đổi",
+        "changeLanguageLabel": "Đổi ngôn ngữ của bình luận"
     },
     "AdminComments": {
         "metaTitle": "Bình luận bị báo cáo",

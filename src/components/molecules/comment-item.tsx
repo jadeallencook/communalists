@@ -33,6 +33,11 @@ import { cn } from '@/lib/utils';
 
 export interface CommentItemProps {
     comment: CommentView;
+    /**
+     * The comment's language, named in that language ("Español"), when it
+     * isn't the reader's: shown beside the date.
+     */
+    languageName?: string;
     /** What the viewer may do (`commentAbilities`); the server checks again. */
     can: {
         vote: boolean;
@@ -57,6 +62,7 @@ export interface CommentItemProps {
  */
 export function CommentItem({
     comment,
+    languageName,
     can,
     busy = false,
     focusKey,
@@ -109,6 +115,14 @@ export function CommentItem({
                 >
                     {format.dateTime(date, { dateStyle: 'medium' })}
                 </time>
+                {languageName && (
+                    <span
+                        lang={comment.lang}
+                        className="rounded-md bg-muted px-1.5 py-0.5 text-xs text-foreground"
+                    >
+                        {languageName}
+                    </span>
+                )}
             </header>
 
             {comment.hidden && (

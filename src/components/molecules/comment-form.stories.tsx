@@ -75,6 +75,11 @@ export const RateLimited: Story = {
     },
 };
 
+/** Someone writing in another language pressed Change: the picker shows. */
+export const ChangingLanguage: Story = {
+    args: { defaultChoosingLanguage: true, lang: 'vi' },
+};
+
 /** The language defaults to the UI language. */
 export const Spanish: Story = {
     globals: { locale: 'es' },

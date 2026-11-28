@@ -13,8 +13,12 @@ import {
     type DiscussionProblem,
 } from '@/hooks/use-discussion';
 import { track } from '@/lib/analytics';
+import { localeNames, type Locale } from '@/i18n/routing';
 import {
     COMMENT_MAX,
+    type CommentCounts,
+    type CommentLang,
+    type CommentLanguageFilter,
     type CommentTarget,
     type CommentView,
 } from '@/lib/comments';
@@ -33,20 +37,24 @@ export function DiscussionClient({
     target,
     viewer,
     initial,
-    count,
+    counts,
+    language,
     defaultLang,
 }: {
     target: CommentTarget;
     viewer: DiscussionViewer;
     initial: { comments: CommentView[]; next: string | null };
-    count: number;
-    defaultLang: string;
+    counts: CommentCounts;
+    /** The first page's language: the reader's, or all (moderators). */
+    language: CommentLanguageFilter;
+    /** The UI language: the reader's language and the form's default. */
+    defaultLang: CommentLang;
 }) {
     const t = useTranslations('Discussion');
     const format = useFormatter();
     const actions: DiscussionActions = {
-        load: async (sort, after) => {
-            const query = new URLSearchParams({ sort });
+        load: async (sort, lang, after) => {
+            const query = new URLSearchParams({ sort, lang });
             if (after) query.set('after', after);
             const response = await fetch(
                 `/api/comments/${target.kind}/${target.id}?${query}`
@@ -62,7 +70,8 @@ export function DiscussionClient({
     };
     const state = useDiscussion({
         initial,
-        count,
+        counts,
+        language,
         defaultLang,
         actions,
     });
@@ -77,14 +86,24 @@ export function DiscussionClient({
         text:
             state.notice.tone === 'alert'
                 ? errorText(state.notice.key)
-                : t(`announce.${state.notice.key}`, state.notice.values ?? {}),
+                : t(`announce.${state.notice.key}`, {
+                      ...state.notice.values,
+                      // A language code in an announcement reads as its name.
+                      language:
+                          localeNames[
+                              state.notice.values?.language as Locale
+                          ] ?? '',
+                  }),
     };
     const data = { on: target.kind, id: target.id };
 
     return (
         <Discussion
             viewer={viewer}
-            count={state.count}
+            counts={state.counts}
+            readerLanguage={defaultLang}
+            language={state.language}
+            onLanguageChange={state.setLanguage}
             comments={state.comments}
             sort={state.sort}
             onSortChange={state.setSort}
