@@ -1,6 +1,8 @@
 {
     "Metadata": {
-        "description": "Tools and resources for communities to build and sustain mutual aid networks."
+        "description": "A free platform where neighbors organize. Start or find a mutual aid group near you and run it with tools for requests, lending and events.",
+        "homeTitle": "Communalists: Tools for Mutual Aid Networks",
+        "keywords": "mutual aid, mutual aid network, mutual aid groups, community organizing, community care, neighbors helping neighbors, volunteer, tool library"
     },
     "Header": {
         "skipToContent": "Skip to content",
@@ -85,7 +87,7 @@
         "dictionary": "Dictionary"
     },
     "SignUp": {
-        "metaTitle": "Create account",
+        "metaTitle": "Create Account",
         "title": "Create your account",
         "description": "Join Communalists to find and start mutual aid networks near you.",
         "email": "Email",
@@ -104,10 +106,11 @@
             "passwordMismatch": "Passwords don't match."
         },
         "haveAccount": "Already have an account?",
-        "signIn": "Sign in"
+        "signIn": "Sign in",
+        "metaDescription": "Create a free Communalists account to start a mutual aid group or join one near you."
     },
     "SignIn": {
-        "metaTitle": "Sign in",
+        "metaTitle": "Sign In",
         "title": "Sign in",
         "description": "Welcome back. Sign in to your Communalists account.",
         "email": "Email",
@@ -123,10 +126,11 @@
             "invalidCredentials": "That email and password don't match an account.",
             "tooManyAttempts": "Too many attempts. Wait a few minutes and try again.",
             "generic": "Something went wrong. Please try again."
-        }
+        },
+        "metaDescription": "Sign in to Communalists to organize with your mutual aid groups."
     },
     "ForgotPassword": {
-        "metaTitle": "Forgot password",
+        "metaTitle": "Forgot Password",
         "title": "Reset your password",
         "description": "Enter the email you signed up with and we'll send you a link to choose a new password.",
         "email": "Email",
@@ -145,7 +149,7 @@
         }
     },
     "ResetPassword": {
-        "metaTitle": "Choose a new password",
+        "metaTitle": "Choose a New Password",
         "title": "Choose a new password",
         "description": "For {email}.",
         "checking": "Checking your link…",
@@ -178,7 +182,7 @@
         }
     },
     "AccountSetup": {
-        "metaTitle": "Set up your account",
+        "metaTitle": "Set Up Your Account",
         "loading": "Loading your account…",
         "new": {
             "title": "Tell us about yourself",
@@ -214,7 +218,7 @@
         }
     },
     "AccountSettings": {
-        "metaTitle": "Account settings",
+        "metaTitle": "Account Settings",
         "loading": "Loading your settings…",
         "title": "Account settings",
         "description": "Your name, language and city.",
@@ -242,7 +246,7 @@
         "adminLink": "Open super user tools"
     },
     "Find": {
-        "metaTitle": "Find organizations",
+        "metaTitle": "Find Organizations",
         "title": "Find organizations",
         "intro": "Mutual aid groups, clubs and networks near you. Anyone can look; joining takes a free account.",
         "filtersTitle": "Filters",
@@ -266,7 +270,7 @@
         "focusAreas": "Focus areas",
         "languages": "Languages spoken",
         "create": "Create organization",
-        "metaTitleNear": "Mutual aid organizations near {city}",
+        "metaTitleNear": "Mutual Aid Organizations Near {city}",
         "metaDescriptionNear": "Discover mutual aid groups, clubs and networks near {city}. Anyone can look; joining takes a free account.",
         "members": "Members",
         "moreFocusAreas": "{count} more",
@@ -275,7 +279,8 @@
         "showDetails": "Show details",
         "hideDetails": "Hide details",
         "readMore": "Read more",
-        "showLess": "Show less"
+        "showLess": "Show less",
+        "metaKeywordsNear": "mutual aid {name}, mutual aid near {name}, mutual aid groups in {name}, community organizations {name}, volunteer in {name}"
     },
     "Organizations": {
         "focusAreas": {
@@ -399,7 +404,7 @@
             "phoneHint": "Shown publicly, so people can call. Use the organization's line, not a personal cell."
         },
         "new": {
-            "metaTitle": "Create an organization",
+            "metaTitle": "Create an Organization",
             "title": "Create an organization",
             "description": "Set up a home for your group. You'll be its owner."
         },
@@ -472,7 +477,7 @@
             }
         },
         "edit": {
-            "metaTitle": "Edit organization",
+            "metaTitle": "Edit Organization",
             "title": "Edit organization",
             "description": "Changes show on your page right away. Changing the handle changes your address: old links stop working, and the old handle is held for 30 days so nobody else can take it.",
             "handleOwnersOnly": "Only owners can change the handle.",
@@ -494,7 +499,10 @@
                 "notConfirmed": "The name you typed doesn't match.",
                 "generic": "Something went wrong. Try again."
             }
-        }
+        },
+        "metaTitle": "{name} in {place}",
+        "metaDescription": "{name} is a group based in {place}. See what they work on and how to get involved on Communalists.",
+        "metaKeywords": "mutual aid {city}, community organizations {city}"
     },
     "Membership": {
         "signInToJoin": "Sign in to join",
@@ -738,7 +746,7 @@
         "makeUnclaimedConfirm": "Make unclaimed"
     },
     "Claim": {
-        "metaTitle": "Claim an organization",
+        "metaTitle": "Claim an Organization",
         "back": "Back to {name}",
         "title": "Claim {name}",
         "intro": "If you're part of {name}, you can take over this page, or ask us to take it down.",
@@ -782,7 +790,7 @@
         "denied": "We couldn't confirm your last request. You can send a new one with more detail on how to check."
     },
     "Admin": {
-        "metaTitle": "Super user tools",
+        "metaTitle": "Super User Tools",
         "title": "Super user tools",
         "intro": "What needs your attention, how Communalists is growing, and the tools for adding organizations and words. Only super users see this page.",
         "claimsTitle": "Claim requests",
@@ -863,7 +871,7 @@
         },
         "importUnclaimed": "Import from a CSV",
         "import": {
-            "metaTitle": "Import organizations",
+            "metaTitle": "Import Organizations",
             "back": "Super user tools",
             "title": "Import organizations",
             "intro": "Add many unclaimed organizations at once from a CSV. Review each one as its page will look, fix or remove rows, then add the ready ones.",
@@ -1153,10 +1161,13 @@
         },
         "letters": "Letters",
         "lettersHint": "Choose a letter to see the words that start with it.",
-        "letterTitle": "Dictionary: {letter}",
+        "letterTitle": "Mutual Aid Dictionary: {letter}",
         "count": "{count, plural, =0 {No words} one {# word} other {# words}}",
         "emptyLetter": "No words start with {letter} yet.",
-        "noWordsShort": "(no words)"
+        "noWordsShort": "(no words)",
+        "metaTitleWord": "{word}: Meaning and Definition",
+        "metaKeywordsWord": "{word}, {word} meaning, {word} definition, what is {word}",
+        "setName": "Communalists Mutual Aid Dictionary"
     },
     "AdminDefinitions": {
         "metaTitle": "Dictionary",

@@ -1,6 +1,8 @@
 {
     "Metadata": {
-        "description": "帮助社区建立和维持互助网络的工具和资源。"
+        "description": "邻里一起组织的免费平台。创建或找到你附近的互助小组，并用请求、借用和活动工具来运作。",
+        "homeTitle": "Communalists：互助网络的工具",
+        "keywords": "互助, 互助网络, 互助小组, 社区组织, 社区关怀, 邻里互助, 志愿者, 工具图书馆"
     },
     "Header": {
         "skipToContent": "跳到主要内容",
@@ -104,7 +106,8 @@
             "passwordMismatch": "两次输入的密码不一致。"
         },
         "haveAccount": "已有账户？",
-        "signIn": "登录"
+        "signIn": "登录",
+        "metaDescription": "创建免费的 Communalists 账户，发起互助小组或加入你附近的小组。"
     },
     "SignIn": {
         "metaTitle": "登录",
@@ -123,7 +126,8 @@
             "invalidCredentials": "电子邮件或密码不正确。",
             "tooManyAttempts": "尝试次数过多。请等几分钟后再试。",
             "generic": "出了点问题，请重试。"
-        }
+        },
+        "metaDescription": "登录 Communalists，与你的互助小组一起组织。"
     },
     "ForgotPassword": {
         "metaTitle": "忘记密码",
@@ -275,7 +279,8 @@
         "showDetails": "查看详情",
         "hideDetails": "收起详情",
         "readMore": "阅读全文",
-        "showLess": "收起"
+        "showLess": "收起",
+        "metaKeywordsNear": "{name}互助, {name}附近的互助, {name}互助小组, {name}社区组织, {name}志愿者"
     },
     "Organizations": {
         "focusAreas": {
@@ -494,7 +499,10 @@
                 "notConfirmed": "你输入的名称不一致。",
                 "generic": "出了点问题，请重试。"
             }
-        }
+        },
+        "metaTitle": "{name}（{place}）",
+        "metaDescription": "{name}是位于{place}的小组。在 Communalists 上了解他们的工作以及如何参与。",
+        "metaKeywords": "{city}互助, {city}社区组织"
     },
     "Membership": {
         "signInToJoin": "登录后加入",
@@ -1153,10 +1161,13 @@
         },
         "letters": "字母",
         "lettersHint": "选择一个字母，查看以它开头的词语。中文词语按拼音首字母排列。",
-        "letterTitle": "词典：{letter}",
+        "letterTitle": "互助词典：{letter}",
         "count": "{count, plural, =0 {没有词语} other {# 个词语}}",
         "emptyLetter": "还没有以 {letter} 开头的词语。",
-        "noWordsShort": "（没有词语）"
+        "noWordsShort": "（没有词语）",
+        "metaTitleWord": "{word}：含义和定义",
+        "metaKeywordsWord": "{word}, {word}的意思, {word}的定义, 什么是{word}",
+        "setName": "Communalists 互助词典"
     },
     "AdminDefinitions": {
         "metaTitle": "词典",

@@ -16,6 +16,7 @@ import {
     getOrganizationByHandle,
     getOrganizationByHandleFresh,
     getOrgPeople,
+    type Organization,
 } from '@/lib/organizations';
 import {
     isStaff,
@@ -36,8 +37,13 @@ import { makeUnclaimedProblem } from '@/lib/organizations/lifecycle';
 import { phoneForDisplay } from '@/lib/phone';
 import { redirect } from '@/i18n/navigation';
 import { organizationPath } from '@/lib/paths';
+import { keywordList, snippet } from '@/lib/seo';
+import { getSiteUrl } from '@/lib/site';
+import { socialUrl } from '@/lib/socials';
 
 import { makeUnclaimedAction } from './actions';
+import { JsonLd } from '../../json-ld';
+import { pageMetadata } from '../../page-metadata';
 import { TrackEvent } from '../../track-event';
 import { JoinPanelContainer } from './join-panel-container';
 
@@ -56,14 +62,50 @@ async function findOrganization(raw: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { org } = await findOrganization((await params).handle);
     if (!org) return {};
+    const t = await getTranslations('Organizations');
+    const names = { name: org.name, place: org.location.label };
+    const areas = org.focusAreas.map((area) => t(`focusAreas.${area}`));
+    const metadata = await pageMetadata({
+        path: organizationPath(org.handle),
+        // The name stays as the group wrote it; never re-capitalized.
+        title: t('metaTitle', names),
+        description: org.description.trim()
+            ? snippet(org.description)
+            : t('metaDescription', names),
+        keywords: keywordList(
+            [org.name],
+            areas,
+            // The city's name alone: a label's comma would split a keyword.
+            t('metaKeywords', { city: org.location.label.split(',')[0] })
+        ),
+    });
+    // Unlisted groups don't want to be found, and archived ones are gone:
+    // keep both out of search engines.
+    return org.visibility === 'unlisted' || org.status === 'archived'
+        ? { ...metadata, robots: { index: false, follow: false } }
+        : metadata;
+}
+
+/** What search engines read about a listed group (technical/seo.md). */
+function organizationJsonLd(org: Organization, url: string) {
+    const sameAs = [
+        ...(org.website ? [org.website] : []),
+        ...org.socials.map(({ platform, handle }) =>
+            socialUrl(platform, handle)
+        ),
+    ];
     return {
-        title: org.name,
-        description: org.description.slice(0, 160) || undefined,
-        // Unlisted groups don't want to be found; keep them out of search engines too.
-        robots:
-            org.visibility === 'unlisted'
-                ? { index: false, follow: false }
-                : undefined,
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: org.name,
+        url,
+        ...(org.description.trim()
+            ? { description: snippet(org.description, 500) }
+            : {}),
+        ...(org.foundedYear ? { foundingDate: String(org.foundedYear) } : {}),
+        // The general area only, as on the page's header.
+        areaServed: { '@type': 'Place', name: org.location.label },
+        ...(sameAs.length ? { sameAs } : {}),
     };
 }
 
@@ -109,7 +151,20 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
         nearbySection(org),
     ]);
 
-    const view = <TrackEvent event="org-view" data={{ org: org.handle }} />;
+    const locale = await getLocale();
+    const view = (
+        <>
+            <TrackEvent event="org-view" data={{ org: org.handle }} />
+            {org.visibility === 'listed' && org.status === 'active' && (
+                <JsonLd
+                    data={organizationJsonLd(
+                        org,
+                        `${getSiteUrl()}/${locale}${organizationPath(org.handle)}`
+                    )}
+                />
+            )}
+        </>
+    );
 
     // Unclaimed: no members, no joining. Super users manage it as owners.
     if (org.unclaimed) {
@@ -134,10 +189,9 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
     }
 
     // Members-only content is an access decision: always a fresh read.
-    const [membership, people, locale] = await Promise.all([
+    const [membership, people] = await Promise.all([
         user ? getMembershipFresh(org.id, user.uid) : null,
         getOrgPeople(org.id),
-        getLocale(),
     ]);
     const role = membership?.status === 'active' ? membership.role : null;
 

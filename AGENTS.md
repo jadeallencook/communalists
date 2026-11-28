@@ -41,6 +41,7 @@ Docs describe _what_ and _why_. Leave the line-by-line _how_ to the code, and do
 | How the rebuild is put together    | `documentation/technical/architecture.md`, `tooling-and-ci.md`, `design-system.md` |
 | Vercel projects, domains, DNS      | `documentation/technical/deployment.md`                                            |
 | Analytics events and privacy       | `documentation/technical/analytics.md`                                             |
+| Page titles, previews, sitemap     | `documentation/technical/seo.md` (public pages use `pageMetadata()`)               |
 | Framework choice and build order   | `documentation/technical/rebuild-plan.md`                                          |
 | Seed data                          | `documentation/data/events.json`, `documentation/data/translations.json`           |
 | Choices already made, and why      | `documentation/decisions/` (one file each; `ls` it to find related ones)           |

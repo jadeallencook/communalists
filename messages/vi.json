@@ -1,6 +1,8 @@
 {
     "Metadata": {
-        "description": "Công cụ và tài nguyên giúp cộng đồng xây dựng và duy trì mạng lưới tương trợ."
+        "description": "Nền tảng miễn phí để hàng xóm cùng tổ chức. Thành lập hoặc tìm nhóm tương trợ gần bạn, với công cụ cho yêu cầu, cho mượn đồ và sự kiện.",
+        "homeTitle": "Communalists: công cụ cho mạng lưới tương trợ",
+        "keywords": "tương trợ, mạng lưới tương trợ, nhóm tương trợ, tổ chức cộng đồng, chăm sóc cộng đồng, hàng xóm giúp đỡ nhau, tình nguyện, thư viện dụng cụ"
     },
     "Header": {
         "skipToContent": "Chuyển đến nội dung",
@@ -104,7 +106,8 @@
             "passwordMismatch": "Mật khẩu không khớp."
         },
         "haveAccount": "Đã có tài khoản?",
-        "signIn": "Đăng nhập"
+        "signIn": "Đăng nhập",
+        "metaDescription": "Tạo tài khoản Communalists miễn phí để thành lập nhóm tương trợ hoặc tham gia một nhóm gần bạn."
     },
     "SignIn": {
         "metaTitle": "Đăng nhập",
@@ -123,7 +126,8 @@
             "invalidCredentials": "Email và mật khẩu không khớp với tài khoản nào.",
             "tooManyAttempts": "Quá nhiều lần thử. Vui lòng đợi vài phút rồi thử lại.",
             "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
-        }
+        },
+        "metaDescription": "Đăng nhập Communalists để cùng tổ chức với các nhóm tương trợ của bạn."
     },
     "ForgotPassword": {
         "metaTitle": "Quên mật khẩu",
@@ -275,7 +279,8 @@
         "showDetails": "Xem chi tiết",
         "hideDetails": "Ẩn chi tiết",
         "readMore": "Đọc thêm",
-        "showLess": "Thu gọn"
+        "showLess": "Thu gọn",
+        "metaKeywordsNear": "tương trợ {name}, tương trợ gần {name}, nhóm tương trợ ở {name}, tổ chức cộng đồng {name}, tình nguyện ở {name}"
     },
     "Organizations": {
         "focusAreas": {
@@ -494,7 +499,10 @@
                 "notConfirmed": "Tên bạn nhập không khớp.",
                 "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
             }
-        }
+        },
+        "metaTitle": "{name} tại {place}",
+        "metaDescription": "{name} là một nhóm ở {place}. Xem họ làm gì và cách tham gia trên Communalists.",
+        "metaKeywords": "tương trợ {city}, tổ chức cộng đồng {city}"
     },
     "Membership": {
         "signInToJoin": "Đăng nhập để tham gia",
@@ -1153,10 +1161,13 @@
         },
         "letters": "Chữ cái",
         "lettersHint": "Chọn một chữ cái để xem các từ bắt đầu bằng chữ đó. Chữ có dấu được xếp theo chữ gốc (Đ theo D).",
-        "letterTitle": "Từ điển: {letter}",
+        "letterTitle": "Từ điển tương trợ: {letter}",
         "count": "{count, plural, =0 {Chưa có từ} other {# từ}}",
         "emptyLetter": "Chưa có từ nào bắt đầu bằng {letter}.",
-        "noWordsShort": "(chưa có từ)"
+        "noWordsShort": "(chưa có từ)",
+        "metaTitleWord": "{word}: ý nghĩa và định nghĩa",
+        "metaKeywordsWord": "{word}, {word} là gì, nghĩa của {word}, định nghĩa {word}",
+        "setName": "Từ điển tương trợ Communalists"
     },
     "AdminDefinitions": {
         "metaTitle": "Từ điển",

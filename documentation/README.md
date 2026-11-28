@@ -54,6 +54,7 @@ The feature docs describe the prototype unless they have a "Rebuild" section. Re
 | [Tooling and CI](technical/tooling-and-ci.md)                         | Setup, scripts, hooks, CI, pnpm 12 settings, setup gotchas        |
 | [Design system](technical/design-system.md)                           | shadcn/ui setup, tokens, fonts per language, Storybook            |
 | [Deployment](technical/deployment.md)                                 | Vercel projects, domains, Squarespace DNS records, deploy paths   |
+| [Search and link previews](technical/seo.md)                          | Titles, descriptions, share image, sitemap, structured data       |
 | [Analytics](technical/analytics.md)                                   | Umami: page views, named events, what never leaves the browser    |
 | [Data model](technical/data-model.md)                                 | Prototype collections, fields and enums; relational sketch        |
 | [Firebase: cost, security and gotchas](technical/firebase.md)         | Read-cost optimizations, query limits, config, and security rules |

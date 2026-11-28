@@ -12,6 +12,7 @@ import {
     getDirectoryNational,
 } from '@/lib/organizations';
 import {
+    DEFAULT_FILTERS,
     DEFAULT_PLACE,
     directoryHref,
     filterDirectory,
@@ -21,7 +22,10 @@ import {
 import { getPlace, getPlaceBySlug } from '@/lib/places';
 import { startingCitySlug } from '@/lib/organizations/starting-city';
 import { isSupportedCountry, type Place } from '@/lib/places/types';
+import { findPath } from '@/lib/paths';
+import { keywordList } from '@/lib/seo';
 
+import { pageMetadata } from '../../../page-metadata';
 import { TrackEvent } from '../../../track-event';
 import { FindContainer } from '../find-container';
 
@@ -81,13 +85,22 @@ export async function generateMetadata({
         DEFAULT_PLACE.slug
     );
     const place = city.kind === 'city' ? city.place : null;
-    const title = place
-        ? t('metaTitleNear', { city: place.label })
-        : t('metaTitle');
-    const description = place
-        ? t('metaDescriptionNear', { city: place.label })
-        : t('intro');
-    return { title, description, openGraph: { title, description } };
+    if (!place)
+        return pageMetadata({
+            path: findPath('organizations'),
+            title: t('metaTitle'),
+            description: t('intro'),
+        });
+    // `name` is the city alone, for keywords: a label's comma would split one.
+    const names = { city: place.label, name: place.name };
+    // Canonical is the city's path alone: filters in the query are the same
+    // page to a search engine, so they don't compete with it.
+    return pageMetadata({
+        path: directoryHref(DEFAULT_FILTERS, place.slug),
+        title: t('metaTitleNear', names),
+        description: t('metaDescriptionNear', names),
+        keywords: keywordList(t('metaKeywordsNear', names)),
+    });
 }
 
 // Public. The search lives in the URL (shareable): the city in the path,

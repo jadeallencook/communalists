@@ -507,6 +507,44 @@ export async function getDirectoryInternational(): Promise<
     );
 }
 
+/** A listed group's address and city, for the sitemap. */
+export interface SitemapOrganization {
+    handle: string;
+    country: string;
+    placeId: string;
+    reach: ReachScope;
+}
+
+/**
+ * Every listed, active group, for the sitemap (technical/seo.md). Cached a
+ * day and cleared with the directory; only the fields a URL needs are read.
+ */
+export async function getSitemapOrganizations(): Promise<
+    SitemapOrganization[]
+> {
+    'use cache';
+    cacheTag(DIRECTORY_TAG);
+    cacheLife('days');
+    const snapshot = await organizations()
+        .where('status', '==', 'active')
+        .where('visibility', '==', 'listed')
+        .select('handle', 'location.country', 'location.placeId', 'reach.scope')
+        .get();
+    logRead('organizations', Math.max(snapshot.size, 1));
+    return snapshot.docs.flatMap((doc) => {
+        const data = doc.data();
+        if (!data.handle) return [];
+        return [
+            {
+                handle: data.handle,
+                country: data.location?.country ?? '',
+                placeId: data.location?.placeId ?? '',
+                reach: data.reach?.scope ?? 'local',
+            },
+        ];
+    });
+}
+
 // --- People: joining, leaving, moderating. Every write is a transaction that
 // re-reads what it decides on, keeps memberCount right, and (for moderation)
 // appends to organizations/{orgId}/moderationLog.

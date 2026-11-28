@@ -13,16 +13,18 @@ import {
 import { SiteFooter } from '@/components/organisms/site-footer';
 import { SiteHeader } from '@/components/organisms/site-header';
 import { ThemeProvider } from '@/components/providers/theme-provider';
-import { routing } from '@/i18n/routing';
+import { routing, type Locale } from '@/i18n/routing';
 import { currentBuild } from '@/lib/build-info';
 import { isLocalDev, TEST_ACCOUNTS } from '@/lib/dev';
 import { navItemsFor } from '@/lib/navigation';
+import { keywordList } from '@/lib/seo';
 import { getSiteUrl } from '@/lib/site';
 
 import { Analytics } from './analytics';
 import { DefinitionsContainer } from './definitions-container';
 import { DevToolbarContainer } from './dev-toolbar-container';
 import { HeaderAccount, HeaderNav } from './header-slots';
+import { SITE_NAME, socialDefaults } from './page-metadata';
 
 import '../globals.css';
 
@@ -41,12 +43,29 @@ export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
 }
 
+// Defaults for every page; public pages add their own through pageMetadata()
+// (documentation/technical/seo.md). No canonical here: children would
+// inherit the wrong one.
 export async function generateMetadata(): Promise<Metadata> {
+    const locale = (await rootLocale()) as Locale;
     const t = await getTranslations('Metadata');
+    const social = await socialDefaults(locale);
     return {
         metadataBase: new URL(getSiteUrl()),
-        title: { default: 'Communalists', template: '%s | Communalists' },
+        title: {
+            default: t('homeTitle'),
+            template: `%s | ${SITE_NAME}`,
+        },
         description: t('description'),
+        applicationName: SITE_NAME,
+        keywords: keywordList(t('keywords')),
+        openGraph: {
+            ...social.openGraph,
+            type: 'website',
+            title: t('homeTitle'),
+            description: t('description'),
+        },
+        twitter: social.twitter,
     };
 }
 
