@@ -12,6 +12,7 @@
     "Nav": {
         "organizations": "Organizations",
         "dictionary": "Dictionary",
+        "graphics": "Graphics",
         "dashboard": "Dashboard",
         "menu": "Menu",
         "closeMenu": "Close menu",
@@ -1735,5 +1736,242 @@
         },
         "someone": "Someone",
         "olderHidden": "Only your 50 newest notifications are shown."
+    },
+    "Graphics": {
+        "metaTitle": "Free Flyer Maker for Protests and Mutual Aid",
+        "metaDescription": "Make a free flyer or social post for a free store, clothing swap, protest, ICE watch or community event. No account needed. Nothing leaves your device.",
+        "title": "Make some propaganda",
+        "intro": "Pick a template, fill in your event and save a graphic for social media or to print. It's free, and you don't need an account.",
+        "privacy": "Everything happens on your device. Nothing you type or add is sent to us.",
+        "templates": {
+            "free-store": {
+                "label": "Free store",
+                "description": "Free clothes, books and things for the home"
+            },
+            "clothing-swap": {
+                "label": "Clothing swap",
+                "description": "Bring clothes, take clothes"
+            },
+            "protest": {
+                "label": "Protest or rally",
+                "description": "Get people to show up"
+            },
+            "ice-watch": {
+                "label": "ICE watch",
+                "description": "Rapid response and know-your-rights trainings"
+            },
+            "garden": {
+                "label": "Garden day",
+                "description": "Grow food together"
+            },
+            "event": {
+                "label": "Any event",
+                "description": "Meetings, potlucks, skill shares and more"
+            }
+        },
+        "detailsHint": "Fill in what you need and leave the rest empty. Text shrinks to fit by itself.",
+        "fields": {
+            "title": "Headline",
+            "tagline": "Short line above the headline",
+            "date": "Date",
+            "startTime": "Starts",
+            "endTime": "Ends",
+            "place": "Where",
+            "placeHint": "An address or a place people know. Don't put anyone's home address on a public graphic.",
+            "details": "More details",
+            "host": "Hosted by",
+            "hostHint": "Your organization's or group's name.",
+            "link": "Link for a QR code",
+            "linkHint": "People scan the code to open it, and it's printed under the code too. Leave it empty for no code.",
+            "linkError": "That doesn't look like a web address. Try something like example.org/event."
+        },
+        "overflowFields": {
+            "tagline": "short line",
+            "title": "headline",
+            "when": "date and time",
+            "place": "where",
+            "details": "more details",
+            "host": "hosted by",
+            "link": "link"
+        },
+        "photo": {
+            "legend": "Photo",
+            "pick": "Add a photo",
+            "change": "Change photo",
+            "remove": "Remove photo",
+            "hint": "Shown with the layouts that have a photo. It stays on your device.",
+            "notShown": "This layout doesn't show photos.",
+            "error": "We couldn't open that picture. Try a JPEG or PNG.",
+            "focus": "Which part of the photo to keep",
+            "focusOptions": {
+                "top": "Top",
+                "center": "Middle",
+                "bottom": "Bottom"
+            },
+            "added": "Photo added.",
+            "removed": "Photo removed.",
+            "useLayout": "Use a layout with a photo"
+        },
+        "logo": {
+            "legend": "Logo",
+            "pick": "Add a logo",
+            "change": "Change logo",
+            "remove": "Remove logo",
+            "hint": "Shown next to “Hosted by”.",
+            "added": "Logo added.",
+            "removed": "Logo removed."
+        },
+        "fill": {
+            "label": "Fill in from your organization",
+            "button": "Fill in",
+            "hint": "Adds its name, logo, address and a QR code to its page. You can change them after.",
+            "done": "Filled in from {name}.",
+            "error": "We couldn't load that organization. Try again, or fill it in yourself.",
+            "signIn": "Sign in",
+            "signInHint": "to fill this in from an organization you belong to."
+        },
+        "format": {
+            "legend": "Size",
+            "options": {
+                "square": {
+                    "label": "Square post",
+                    "description": "1080 × 1080, for Instagram and Facebook posts"
+                },
+                "portrait": {
+                    "label": "Tall post",
+                    "description": "1080 × 1350, fills more of the feed"
+                },
+                "story": {
+                    "label": "Story",
+                    "description": "1080 × 1920, for stories and status updates"
+                },
+                "letter": {
+                    "label": "Print: Letter",
+                    "description": "8.5 × 11 in, used in the US and Canada"
+                },
+                "a4": {
+                    "label": "Print: A4",
+                    "description": "210 × 297 mm, used in most other countries"
+                }
+            }
+        },
+        "layout": {
+            "legend": "Layout",
+            "options": {
+                "bold": "Big words",
+                "stripe": "Stripe",
+                "centered": "Centered",
+                "frame": "Framed",
+                "reverse": "Reverse",
+                "block": "Picture on top",
+                "photo-below": "Picture below"
+            },
+            "groups": {
+                "suggested": "Suggested for {template}",
+                "type": "Words only",
+                "photo": "With a photo"
+            }
+        },
+        "palette": {
+            "legend": "Colors",
+            "hint": "Every set is easy to read, including for people with low vision.",
+            "options": {
+                "paper": "Paper and red",
+                "night": "Black and yellow",
+                "garden": "Green and gold",
+                "sky": "Sky blue",
+                "rose": "Rose",
+                "sun": "Sunshine",
+                "mint": "Mint",
+                "clay": "Clay",
+                "grape": "Grape and orange",
+                "ocean": "Ocean",
+                "forest": "Forest and lime",
+                "punk": "Hot pink"
+            },
+            "groups": {
+                "suggested": "Suggested for {template}",
+                "more": "More colors"
+            }
+        },
+        "language": {
+            "label": "Language on the graphic",
+            "hint": "Changes the words the template filled in for you, and how the date is written."
+        },
+        "previewHeading": "Preview",
+        "previewLabel": "Preview of your graphic",
+        "loading": "Getting the preview ready…",
+        "overflow": "Some text didn't fit and was cut short: {fields}. Shorten it, or pick a bigger size.",
+        "save": "Save image",
+        "share": "Share",
+        "saved": "Saved {file}.",
+        "shared": "Shared.",
+        "saveError": "We couldn't save the image. Try again.",
+        "altHeading": "Alt text",
+        "altHint": "Paste this in as the image description when you post, so people using screen readers know what it says.",
+        "copyAlt": "Copy alt text",
+        "copied": "Alt text copied.",
+        "copyFailed": "Couldn't copy. Select the text and copy it yourself.",
+        "copy": {
+            "hostedBy": "Hosted by {name}",
+            "qr": "QR code to {link}",
+            "alt": "{template} graphic",
+            "templates": {
+                "free-store": {
+                    "name": "Free store",
+                    "title": "Free Store",
+                    "tagline": "Take what you need. Leave what you can.",
+                    "details": "Clothes, books, kitchen things and more. Everything is free."
+                },
+                "clothing-swap": {
+                    "name": "Clothing swap",
+                    "title": "Clothing Swap",
+                    "tagline": "Bring what you don't wear. Take what you love.",
+                    "details": "All sizes and styles welcome. What's left over is donated."
+                },
+                "protest": {
+                    "name": "Protest",
+                    "title": "Show Up",
+                    "tagline": "Stand with our neighbors",
+                    "details": "Bring water, a sign and a friend. Wear comfortable shoes."
+                },
+                "ice-watch": {
+                    "name": "ICE watch",
+                    "title": "ICE Watch",
+                    "tagline": "Know your rights. Protect your neighbors.",
+                    "details": "Learn how to observe, record and report safely. Free training, and everyone is welcome."
+                },
+                "garden": {
+                    "name": "Garden day",
+                    "title": "Garden Day",
+                    "tagline": "Grow food together",
+                    "details": "No experience needed. Seeds and tools provided. Bring gloves if you have them."
+                },
+                "event": {
+                    "name": "Event",
+                    "title": "Community Event",
+                    "tagline": "Everyone is welcome",
+                    "details": "Food, music and good company."
+                }
+            }
+        },
+        "steps": {
+            "label": "Steps",
+            "template": "What's it for",
+            "words": "Words",
+            "pictures": "Photo and logo",
+            "look": "Look",
+            "back": "Back",
+            "next": "Next: {step}",
+            "current": "Step {number} of {total}: {step}"
+        },
+        "more": "More: details, host and QR code",
+        "picturesHint": "Optional. Pictures stay on your device.",
+        "lookHint": "Pick a size, layout and colors. Suggestions for your template come first.",
+        "doneHint": "Happy with it? Save it, then paste the alt text with your post.",
+        "altSummary": "Alt text for your post",
+        "shareSubtitle": "Free flyers and social posts for your next event",
+        "shareImageAlt": "Three sample flyers made with Communalists: a free store, a rally and an ICE watch",
+        "metaKeywords": "free flyer maker, flyer template, protest flyer, mutual aid flyer, free store flyer, social media post maker"
     }
 }

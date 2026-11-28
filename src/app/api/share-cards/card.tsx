@@ -200,3 +200,219 @@ export function fallbackCard(error: unknown) {
     console.error('[share-cards] card failed', (error as Error).message);
     return Response.redirect(`${getSiteUrl()}${shareImage.src}`, 302);
 }
+
+/** One sample flyer on the graphics card, in a colour set from src/lib/graphics. */
+interface SampleFlyer {
+    title: string;
+    tagline: string;
+    background: string;
+    text: string;
+    accent: string;
+    onAccent: string;
+    /** `band`: the title on an accent band (Stripe); else big words (Big words). */
+    style: 'band' | 'bold' | 'block';
+}
+
+const FLYER = { width: 200, height: 260, pad: 16 };
+
+function Flyer({ flyer }: { flyer: SampleFlyer }) {
+    const title = flyer.title.toLocaleUpperCase();
+    const titleSize = title.length > 9 ? 34 : 40;
+    const text = (content: string, style: Record<string, string | number>) => (
+        <div
+            style={{
+                display: 'flex',
+                flexShrink: 0,
+                width: '100%',
+                padding: `0 ${FLYER.pad}px`,
+                ...style,
+            }}
+        >
+            {content}
+        </div>
+    );
+    const tagline = (color: string) =>
+        text(flyer.tagline, { fontSize: 13, lineHeight: 1.25, color });
+    const big = (color: string) =>
+        text(title, { fontSize: titleSize, lineHeight: 1.05, color });
+    return (
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexShrink: 0,
+                width: FLYER.width,
+                height: FLYER.height,
+                background: flyer.background,
+                boxShadow: '0 12px 30px rgba(0,0,0,0.45)',
+                overflow: 'hidden',
+            }}
+        >
+            {flyer.style === 'block' ? (
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-end',
+                        flexShrink: 0,
+                        gap: 8,
+                        height: 140,
+                        paddingBottom: FLYER.pad,
+                        background: flyer.accent,
+                    }}
+                >
+                    {tagline(flyer.onAccent)}
+                    {big(flyer.onAccent)}
+                </div>
+            ) : (
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexShrink: 0,
+                        gap: 10,
+                        paddingTop: FLYER.pad + 4,
+                    }}
+                >
+                    {tagline(flyer.accent)}
+                    {flyer.style === 'band' ? (
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexShrink: 0,
+                                padding: '12px 0',
+                                background: flyer.accent,
+                            }}
+                        >
+                            {big(flyer.onAccent)}
+                        </div>
+                    ) : (
+                        big(flyer.text)
+                    )}
+                </div>
+            )}
+            <div style={{ display: 'flex', flexGrow: 1 }} />
+            <Lines color={flyer.text} />
+        </div>
+    );
+}
+
+/** Bars standing in for the date, place and details. */
+function Lines({ color }: { color: string }) {
+    return (
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexShrink: 0,
+                gap: 8,
+                padding: FLYER.pad,
+            }}
+        >
+            {[130, 100, 150].map((width) => (
+                <div
+                    key={width}
+                    style={{
+                        display: 'flex',
+                        width,
+                        height: 10,
+                        borderRadius: 5,
+                        background: color,
+                        opacity: 0.55,
+                    }}
+                />
+            ))}
+        </div>
+    );
+}
+
+/**
+ * The link preview for /graphics (decision #75): the page's headline and
+ * three sample flyers, with words in the page's language.
+ */
+export async function graphicsCard({
+    headline,
+    subtitle,
+    flyers,
+}: {
+    headline: string;
+    subtitle: string;
+    flyers: SampleFlyer[];
+}) {
+    const words = [
+        headline,
+        subtitle,
+        'Communalists',
+        ...flyers.flatMap((f) => [f.title.toLocaleUpperCase(), f.tagline]),
+    ].join('');
+    const fonts = await fontsFor(words.normalize('NFC'));
+    return new ImageResponse(
+        <div
+            style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                padding: 64,
+                gap: 48,
+                background: '#0a0a0a',
+                color: '#fafafa',
+                fontFamily: fonts.map((f) => f.name).join(', '),
+            }}
+        >
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    width: 360,
+                    flexShrink: 0,
+                }}
+            >
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 20,
+                    }}
+                >
+                    <div style={{ fontSize: 64, lineHeight: 1.05 }}>
+                        {headline}
+                    </div>
+                    <div
+                        style={{
+                            fontSize: 30,
+                            color: '#a1a1a1',
+                            lineHeight: 1.3,
+                        }}
+                    >
+                        {subtitle}
+                    </div>
+                </div>
+                <div style={{ fontSize: 36 }}>Communalists</div>
+            </div>
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 16,
+                    flexGrow: 1,
+                }}
+            >
+                {flyers.map((flyer, i) => (
+                    <div
+                        key={i}
+                        style={{
+                            display: 'flex',
+                            transform: `rotate(${[-4, 2, -1][i] ?? 0}deg)`,
+                            marginTop: [40, -30, 20][i] ?? 0,
+                        }}
+                    >
+                        <Flyer flyer={flyer} />
+                    </div>
+                ))}
+            </div>
+        </div>,
+        { ...SHARE_CARD_SIZE, fonts, headers: HEADERS }
+    );
+}

@@ -4,6 +4,7 @@
 // src/app/[locale]/analytics.tsx. Design: documentation/technical/analytics.md.
 
 import type { CommentTargetKind } from '../comments';
+import type { FormatKey, LayoutKey, TemplateKey } from '../graphics';
 import type { NavKey } from '../navigation';
 import type { PhotoKind } from '../photos';
 
@@ -100,6 +101,20 @@ export interface AnalyticsEvents {
     'photo-save': { kind: PhotoKind };
     /** Remove photo or Remove logo, by the person or an organization's staff. */
     'photo-remove': { kind: PhotoKind };
+    /**
+     * Graphics (decision #75): which template was picked, and how a graphic
+     * left the page. Never what it says, who made it or for which organization.
+     */
+    'graphic-template': { template: TemplateKey };
+    'graphic-save': {
+        template: TemplateKey;
+        format: FormatKey;
+        layout: LayoutKey;
+        via: 'download' | 'share';
+    };
+    /** "Fill in" from an organization was pressed (not which one). */
+    'graphic-fill': Record<string, never>;
+    'graphic-copy-alt': Record<string, never>;
 }
 
 export type AnalyticsEvent = keyof AnalyticsEvents;

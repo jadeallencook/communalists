@@ -9,6 +9,7 @@ describe('navItemsFor', () => {
         expect(navItemsFor(false).map((i) => i.key)).toEqual([
             'organizations',
             'dictionary',
+            'graphics',
         ]);
     });
 
@@ -16,6 +17,7 @@ describe('navItemsFor', () => {
         expect(navItemsFor(true).map((i) => i.key)).toEqual([
             'organizations',
             'dictionary',
+            'graphics',
             'dashboard',
         ]);
     });

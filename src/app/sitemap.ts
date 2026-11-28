@@ -6,7 +6,7 @@ import { letterOf, localize } from '@/lib/definitions';
 import { getDefinitions } from '@/lib/definitions/store';
 import { getSitemapOrganizations } from '@/lib/organizations';
 import { DEFAULT_FILTERS, directoryHref } from '@/lib/organizations/directory';
-import { organizationPath } from '@/lib/paths';
+import { GRAPHICS_PATH, organizationPath } from '@/lib/paths';
 import { getPlace } from '@/lib/places';
 import { isSupportedCountry } from '@/lib/places/types';
 import { localizedSitemapEntries } from '@/lib/seo';
@@ -48,6 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         if (place) add(directoryHref(DEFAULT_FILTERS, place.slug));
     }
 
+    add(GRAPHICS_PATH);
     add('/sign-up');
 
     return [...paths].flatMap(([path, lastModified]) =>

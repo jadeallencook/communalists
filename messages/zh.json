@@ -12,6 +12,7 @@
     "Nav": {
         "organizations": "组织",
         "dictionary": "词典",
+        "graphics": "设计",
         "dashboard": "控制台",
         "menu": "菜单",
         "closeMenu": "关闭菜单",
@@ -1735,5 +1736,242 @@
         },
         "someone": "某人",
         "olderHidden": "仅显示你最新的 50 条通知。"
+    },
+    "Graphics": {
+        "metaTitle": "免费传单制作：抗议与互助",
+        "metaDescription": "免费为免费商店、换衣活动、抗议、ICE 监察或社区活动制作传单或社交帖子。不需要账户，所有内容都不会离开你的设备。",
+        "title": "来做点宣传",
+        "intro": "选一个模板，填上活动信息，然后保存图片，发到社交媒体或打印出来。免费，不需要账户。",
+        "privacy": "一切都在你的设备上完成。你输入或添加的内容不会发送给我们。",
+        "templates": {
+            "free-store": {
+                "label": "免费商店",
+                "description": "免费的衣服、书和家居用品"
+            },
+            "clothing-swap": {
+                "label": "换衣活动",
+                "description": "带来衣服，带走衣服"
+            },
+            "protest": {
+                "label": "抗议或集会",
+                "description": "号召大家到场"
+            },
+            "ice-watch": {
+                "label": "ICE 监察",
+                "description": "快速响应和权利培训"
+            },
+            "garden": {
+                "label": "园艺日",
+                "description": "一起种植食物"
+            },
+            "event": {
+                "label": "其他活动",
+                "description": "会议、聚餐、技能分享等"
+            }
+        },
+        "detailsHint": "填你需要的，其他留空。文字会自动缩放到合适大小。",
+        "fields": {
+            "title": "标题",
+            "tagline": "标题上方的短句",
+            "date": "日期",
+            "startTime": "开始",
+            "endTime": "结束",
+            "place": "地点",
+            "placeHint": "一个地址或大家熟悉的地方。不要把任何人的住址放在公开图片上。",
+            "details": "更多详情",
+            "host": "主办",
+            "hostHint": "你的组织或团体名称。",
+            "link": "二维码链接",
+            "linkHint": "大家扫码就能打开，链接也会印在二维码下方。不需要二维码就留空。",
+            "linkError": "这看起来不像网址。试试 example.org/event 这样的格式。"
+        },
+        "overflowFields": {
+            "tagline": "短句",
+            "title": "标题",
+            "when": "日期和时间",
+            "place": "地点",
+            "details": "更多详情",
+            "host": "主办",
+            "link": "链接"
+        },
+        "photo": {
+            "legend": "照片",
+            "pick": "添加照片",
+            "change": "更换照片",
+            "remove": "移除照片",
+            "hint": "在带照片的布局中显示。照片只留在你的设备上。",
+            "notShown": "这个布局不显示照片。",
+            "error": "无法打开这张图片。请试试 JPEG 或 PNG。",
+            "focus": "保留照片的哪个部分",
+            "focusOptions": {
+                "top": "上部",
+                "center": "中间",
+                "bottom": "下部"
+            },
+            "added": "已添加照片。",
+            "removed": "已移除照片。",
+            "useLayout": "使用带照片的布局"
+        },
+        "logo": {
+            "legend": "标志",
+            "pick": "添加标志",
+            "change": "更换标志",
+            "remove": "移除标志",
+            "hint": "显示在“主办”旁边。",
+            "added": "已添加标志。",
+            "removed": "已移除标志。"
+        },
+        "fill": {
+            "label": "用你的组织信息填写",
+            "button": "填写",
+            "hint": "加入它的名称、标志、地址，以及指向它页面的二维码。之后可以修改。",
+            "done": "已用 {name} 的信息填写。",
+            "error": "无法加载这个组织。请重试，或自己填写。",
+            "signIn": "登录",
+            "signInHint": "后可以用你所在组织的信息填写。"
+        },
+        "format": {
+            "legend": "尺寸",
+            "options": {
+                "square": {
+                    "label": "方形帖子",
+                    "description": "1080 × 1080，适合 Instagram 和 Facebook 帖子"
+                },
+                "portrait": {
+                    "label": "竖版帖子",
+                    "description": "1080 × 1350，在信息流中更显眼"
+                },
+                "story": {
+                    "label": "快拍",
+                    "description": "1080 × 1920，适合快拍和状态"
+                },
+                "letter": {
+                    "label": "打印：Letter",
+                    "description": "8.5 × 11 英寸，美国和加拿大使用"
+                },
+                "a4": {
+                    "label": "打印：A4",
+                    "description": "210 × 297 毫米，大多数其他国家使用"
+                }
+            }
+        },
+        "layout": {
+            "legend": "布局",
+            "options": {
+                "bold": "大字",
+                "stripe": "色带",
+                "centered": "居中",
+                "frame": "边框",
+                "reverse": "反色",
+                "block": "图片在上",
+                "photo-below": "图片在下"
+            },
+            "groups": {
+                "suggested": "推荐给{template}",
+                "type": "纯文字",
+                "photo": "带照片"
+            }
+        },
+        "palette": {
+            "legend": "颜色",
+            "hint": "每一组都清晰易读，视力不好的人也能看清。",
+            "options": {
+                "paper": "纸白和红",
+                "night": "黑和黄",
+                "garden": "绿和金",
+                "sky": "天蓝",
+                "rose": "玫瑰",
+                "sun": "阳光",
+                "mint": "薄荷",
+                "clay": "陶土",
+                "grape": "葡萄紫和橙",
+                "ocean": "海洋",
+                "forest": "森林和青柠",
+                "punk": "亮粉"
+            },
+            "groups": {
+                "suggested": "推荐给{template}",
+                "more": "更多颜色"
+            }
+        },
+        "language": {
+            "label": "图片上的语言",
+            "hint": "会改变模板替你填的文字和日期的写法。"
+        },
+        "previewHeading": "预览",
+        "previewLabel": "你的图片预览",
+        "loading": "正在准备预览…",
+        "overflow": "有些文字放不下，已被截短：{fields}。请缩短文字，或选择更大的尺寸。",
+        "save": "保存图片",
+        "share": "分享",
+        "saved": "已保存 {file}。",
+        "shared": "已分享。",
+        "saveError": "无法保存图片，请重试。",
+        "altHeading": "替代文字",
+        "altHint": "发帖时把这段文字粘贴为图片描述，让使用读屏软件的人知道图片上写了什么。",
+        "copyAlt": "复制替代文字",
+        "copied": "已复制替代文字。",
+        "copyFailed": "无法复制。请选中文字自己复制。",
+        "copy": {
+            "hostedBy": "主办：{name}",
+            "qr": "指向 {link} 的二维码",
+            "alt": "{template}图片",
+            "templates": {
+                "free-store": {
+                    "name": "免费商店",
+                    "title": "免费商店",
+                    "tagline": "需要什么就拿什么，能留什么就留什么。",
+                    "details": "衣服、书、厨房用品等等。全部免费。"
+                },
+                "clothing-swap": {
+                    "name": "换衣活动",
+                    "title": "换衣活动",
+                    "tagline": "带来不穿的，带走喜欢的。",
+                    "details": "欢迎所有尺码和款式。剩下的衣服会捐出去。"
+                },
+                "protest": {
+                    "name": "抗议",
+                    "title": "站出来",
+                    "tagline": "与我们的邻居站在一起",
+                    "details": "带上水、标语和一位朋友。穿舒适的鞋。"
+                },
+                "ice-watch": {
+                    "name": "ICE 监察",
+                    "title": "ICE 监察",
+                    "tagline": "了解你的权利，保护你的邻居。",
+                    "details": "学习如何安全地观察、记录和报告。免费培训，欢迎所有人。"
+                },
+                "garden": {
+                    "name": "园艺日",
+                    "title": "园艺日",
+                    "tagline": "一起种植食物",
+                    "details": "不需要经验。提供种子和工具。有手套的话请带上。"
+                },
+                "event": {
+                    "name": "活动",
+                    "title": "社区活动",
+                    "tagline": "欢迎所有人",
+                    "details": "有美食、音乐和好伙伴。"
+                }
+            }
+        },
+        "steps": {
+            "label": "步骤",
+            "template": "用途",
+            "words": "文字",
+            "pictures": "照片和标志",
+            "look": "样式",
+            "back": "上一步",
+            "next": "下一步：{step}",
+            "current": "第 {number} 步，共 {total} 步：{step}"
+        },
+        "more": "更多：详情、主办和二维码",
+        "picturesHint": "可选。图片只留在你的设备上。",
+        "lookHint": "选择尺寸、布局和颜色。适合你模板的建议排在前面。",
+        "doneHint": "满意了吗？保存图片，发帖时粘贴替代文字。",
+        "altSummary": "帖子的替代文字",
+        "shareSubtitle": "为你的下一个活动免费制作传单和帖子",
+        "shareImageAlt": "用 Communalists 制作的三张示例传单：免费商店、集会和 ICE 监察",
+        "metaKeywords": "免费传单制作, 传单模板, 抗议传单, 互助传单, 免费商店, 社交媒体帖子"
     }
 }

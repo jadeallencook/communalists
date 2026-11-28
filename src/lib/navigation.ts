@@ -5,9 +5,9 @@
 // one organization (requests, lending library…) don't go here: they get the
 // organization's own navigation. See documentation/features/13-navigation-and-layout.md.
 
-import { NEW_ORGANIZATION_PATH, findPath } from './paths';
+import { GRAPHICS_PATH, NEW_ORGANIZATION_PATH, findPath } from './paths';
 
-export type NavKey = 'organizations' | 'dictionary' | 'dashboard';
+export type NavKey = 'organizations' | 'dictionary' | 'graphics' | 'dashboard';
 
 export interface NavItem {
     key: NavKey;
@@ -30,6 +30,12 @@ export const NAV_ITEMS: readonly NavItem[] = [
         href: '/dictionary',
         audience: 'everyone',
         sections: ['/dictionary'],
+    },
+    {
+        key: 'graphics',
+        href: GRAPHICS_PATH,
+        audience: 'everyone',
+        sections: [GRAPHICS_PATH],
     },
     // Last, so it only adds to the end of the row when the session arrives.
     {

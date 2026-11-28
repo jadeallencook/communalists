@@ -11,8 +11,12 @@
 //   /comrade/{username}                     one person
 //   /comrade/{username}/comrades            their comrades
 //   /notifications                          the signed-in person's inbox
+//   /graphics                               making a flyer or social post
 //
 // Old addresses (/org/…, /find/us/…) redirect here (next.config.ts).
+
+/** Making graphics ("Make some propaganda", decision #75). */
+export const GRAPHICS_PATH = '/graphics';
 
 /** What /find can search. Each has its own route under /find/{kind}. */
 export const FIND_KINDS = ['organizations'] as const;

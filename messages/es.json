@@ -12,6 +12,7 @@
     "Nav": {
         "organizations": "Organizaciones",
         "dictionary": "Diccionario",
+        "graphics": "Diseños",
         "dashboard": "Panel",
         "menu": "Menú",
         "closeMenu": "Cerrar menú",
@@ -1735,5 +1736,242 @@
         },
         "someone": "Alguien",
         "olderHidden": "Solo se muestran tus 50 notificaciones más recientes."
+    },
+    "Graphics": {
+        "metaTitle": "Crea volantes gratis para protestas y ayuda mutua",
+        "metaDescription": "Haz gratis volantes y publicaciones para tiendas gratis, intercambios de ropa, protestas o vigilancias de ICE. Sin cuenta, y nada sale de tu dispositivo.",
+        "title": "Haz un poco de propaganda",
+        "intro": "Elige una plantilla, escribe los datos de tu evento y guarda una imagen para redes sociales o para imprimir. Es gratis y no necesitas cuenta.",
+        "privacy": "Todo pasa en tu dispositivo. Nada de lo que escribes o agregas nos llega.",
+        "templates": {
+            "free-store": {
+                "label": "Tienda gratis",
+                "description": "Ropa, libros y cosas para la casa, gratis"
+            },
+            "clothing-swap": {
+                "label": "Intercambio de ropa",
+                "description": "Trae ropa, llévate ropa"
+            },
+            "protest": {
+                "label": "Protesta o marcha",
+                "description": "Para que la gente llegue"
+            },
+            "ice-watch": {
+                "label": "Vigilancia de ICE",
+                "description": "Respuesta rápida y talleres sobre tus derechos"
+            },
+            "garden": {
+                "label": "Día de huerto",
+                "description": "Cultivar comida juntos"
+            },
+            "event": {
+                "label": "Cualquier evento",
+                "description": "Reuniones, comidas compartidas, talleres y más"
+            }
+        },
+        "detailsHint": "Llena lo que necesites y deja vacío lo demás. El texto se ajusta solo.",
+        "fields": {
+            "title": "Título",
+            "tagline": "Frase corta sobre el título",
+            "date": "Fecha",
+            "startTime": "Empieza",
+            "endTime": "Termina",
+            "place": "Dónde",
+            "placeHint": "Una dirección o un lugar conocido. No pongas la dirección de la casa de nadie en una imagen pública.",
+            "details": "Más detalles",
+            "host": "Organiza",
+            "hostHint": "El nombre de tu organización o grupo.",
+            "link": "Enlace para un código QR",
+            "linkHint": "La gente escanea el código para abrirlo, y también se imprime debajo. Déjalo vacío si no quieres código.",
+            "linkError": "Eso no parece una dirección web. Prueba algo como ejemplo.org/evento."
+        },
+        "overflowFields": {
+            "tagline": "frase corta",
+            "title": "título",
+            "when": "fecha y hora",
+            "place": "dónde",
+            "details": "más detalles",
+            "host": "organiza",
+            "link": "enlace"
+        },
+        "photo": {
+            "legend": "Foto",
+            "pick": "Agregar una foto",
+            "change": "Cambiar foto",
+            "remove": "Quitar foto",
+            "hint": "Se ve con los diseños que tienen foto. Se queda en tu dispositivo.",
+            "notShown": "Este diseño no muestra fotos.",
+            "error": "No pudimos abrir esa imagen. Prueba con una JPEG o PNG.",
+            "focus": "Qué parte de la foto conservar",
+            "focusOptions": {
+                "top": "Arriba",
+                "center": "Centro",
+                "bottom": "Abajo"
+            },
+            "added": "Foto agregada.",
+            "removed": "Foto quitada.",
+            "useLayout": "Usar un diseño con foto"
+        },
+        "logo": {
+            "legend": "Logo",
+            "pick": "Agregar un logo",
+            "change": "Cambiar logo",
+            "remove": "Quitar logo",
+            "hint": "Se ve junto a “Organiza”.",
+            "added": "Logo agregado.",
+            "removed": "Logo quitado."
+        },
+        "fill": {
+            "label": "Llenar con tu organización",
+            "button": "Llenar",
+            "hint": "Agrega su nombre, logo, dirección y un código QR a su página. Puedes cambiarlos después.",
+            "done": "Datos de {name} agregados.",
+            "error": "No pudimos cargar esa organización. Inténtalo de nuevo o llénalo tú.",
+            "signIn": "Inicia sesión",
+            "signInHint": "para llenar esto con una organización a la que perteneces."
+        },
+        "format": {
+            "legend": "Tamaño",
+            "options": {
+                "square": {
+                    "label": "Publicación cuadrada",
+                    "description": "1080 × 1080, para Instagram y Facebook"
+                },
+                "portrait": {
+                    "label": "Publicación alta",
+                    "description": "1080 × 1350, ocupa más espacio en el feed"
+                },
+                "story": {
+                    "label": "Historia",
+                    "description": "1080 × 1920, para historias y estados"
+                },
+                "letter": {
+                    "label": "Imprimir: Carta",
+                    "description": "8.5 × 11 in, se usa en EE. UU. y Canadá"
+                },
+                "a4": {
+                    "label": "Imprimir: A4",
+                    "description": "210 × 297 mm, se usa en casi todos los demás países"
+                }
+            }
+        },
+        "layout": {
+            "legend": "Diseño",
+            "options": {
+                "bold": "Letras grandes",
+                "stripe": "Franja",
+                "centered": "Centrado",
+                "frame": "Con marco",
+                "reverse": "Invertido",
+                "block": "Imagen arriba",
+                "photo-below": "Imagen abajo"
+            },
+            "groups": {
+                "suggested": "Sugeridos para {template}",
+                "type": "Solo texto",
+                "photo": "Con foto"
+            }
+        },
+        "palette": {
+            "legend": "Colores",
+            "hint": "Todos se leen fácilmente, también para personas con baja visión.",
+            "options": {
+                "paper": "Papel y rojo",
+                "night": "Negro y amarillo",
+                "garden": "Verde y dorado",
+                "sky": "Azul cielo",
+                "rose": "Rosa",
+                "sun": "Sol",
+                "mint": "Menta",
+                "clay": "Barro",
+                "grape": "Uva y naranja",
+                "ocean": "Océano",
+                "forest": "Bosque y lima",
+                "punk": "Rosa fuerte"
+            },
+            "groups": {
+                "suggested": "Sugeridos para {template}",
+                "more": "Más colores"
+            }
+        },
+        "language": {
+            "label": "Idioma de la imagen",
+            "hint": "Cambia el texto que puso la plantilla y cómo se escribe la fecha."
+        },
+        "previewHeading": "Vista previa",
+        "previewLabel": "Vista previa de tu imagen",
+        "loading": "Preparando la vista previa…",
+        "overflow": "Parte del texto no cupo y se cortó: {fields}. Acórtalo o elige un tamaño más grande.",
+        "save": "Guardar imagen",
+        "share": "Compartir",
+        "saved": "Se guardó {file}.",
+        "shared": "Compartido.",
+        "saveError": "No pudimos guardar la imagen. Inténtalo de nuevo.",
+        "altHeading": "Texto alternativo",
+        "altHint": "Pégalo como descripción de la imagen al publicar, para que quienes usan lectores de pantalla sepan lo que dice.",
+        "copyAlt": "Copiar texto alternativo",
+        "copied": "Texto alternativo copiado.",
+        "copyFailed": "No se pudo copiar. Selecciona el texto y cópialo tú.",
+        "copy": {
+            "hostedBy": "Organiza {name}",
+            "qr": "Código QR a {link}",
+            "alt": "Imagen de {template}",
+            "templates": {
+                "free-store": {
+                    "name": "tienda gratis",
+                    "title": "Tienda Gratis",
+                    "tagline": "Toma lo que necesites. Deja lo que puedas.",
+                    "details": "Ropa, libros, cosas de cocina y más. Todo es gratis."
+                },
+                "clothing-swap": {
+                    "name": "intercambio de ropa",
+                    "title": "Intercambio de Ropa",
+                    "tagline": "Trae lo que no usas. Llévate lo que te encante.",
+                    "details": "Todas las tallas y estilos. Lo que sobre se dona."
+                },
+                "protest": {
+                    "name": "protesta",
+                    "title": "Presente",
+                    "tagline": "Con nuestros vecinos",
+                    "details": "Trae agua, un cartel y a alguien más. Usa zapatos cómodos."
+                },
+                "ice-watch": {
+                    "name": "vigilancia de ICE",
+                    "title": "Vigilancia de ICE",
+                    "tagline": "Conoce tus derechos. Protege a tus vecinos.",
+                    "details": "Aprende a observar, grabar y reportar con seguridad. Taller gratis, todos son bienvenidos."
+                },
+                "garden": {
+                    "name": "día de huerto",
+                    "title": "Día de Huerto",
+                    "tagline": "Cultivemos comida juntos",
+                    "details": "No necesitas experiencia. Hay semillas y herramientas. Trae guantes si tienes."
+                },
+                "event": {
+                    "name": "evento",
+                    "title": "Evento Comunitario",
+                    "tagline": "Todos son bienvenidos",
+                    "details": "Comida, música y buena compañía."
+                }
+            }
+        },
+        "steps": {
+            "label": "Pasos",
+            "template": "Para qué es",
+            "words": "Texto",
+            "pictures": "Foto y logo",
+            "look": "Estilo",
+            "back": "Atrás",
+            "next": "Siguiente: {step}",
+            "current": "Paso {number} de {total}: {step}"
+        },
+        "more": "Más: detalles, organiza y código QR",
+        "picturesHint": "Opcional. Las imágenes se quedan en tu dispositivo.",
+        "lookHint": "Elige tamaño, diseño y colores. Primero van las sugerencias para tu plantilla.",
+        "doneHint": "¿Te gusta? Guárdala y pega el texto alternativo en tu publicación.",
+        "altSummary": "Texto alternativo para tu publicación",
+        "shareSubtitle": "Volantes y publicaciones gratis para tu próximo evento",
+        "shareImageAlt": "Tres volantes de ejemplo hechos con Communalists: una tienda gratis, una marcha y una vigilancia de ICE",
+        "metaKeywords": "crear volantes gratis, plantilla de volante, volante de protesta, volante de ayuda mutua, tienda gratis"
     }
 }

@@ -5,6 +5,7 @@ import {
     LayoutDashboardIcon,
     LogOutIcon,
     MenuIcon,
+    MegaphoneIcon,
     SearchIcon,
     SettingsIcon,
     ShieldIcon,
@@ -37,6 +38,7 @@ import { organizationPath } from '@/lib/paths';
 const ICONS: Record<NavKey, LucideIcon> = {
     organizations: SearchIcon,
     dictionary: BookOpenIcon,
+    graphics: MegaphoneIcon,
     dashboard: LayoutDashboardIcon,
 };
 

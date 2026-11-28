@@ -7,6 +7,7 @@ import type { MobileNavAccount } from './mobile-nav';
 export const publicLinks: NavLinkData[] = [
     { key: 'organizations', href: '/find/organizations' },
     { key: 'dictionary', href: '/dictionary' },
+    { key: 'graphics', href: '/graphics' },
 ];
 
 export const signedInLinks: NavLinkData[] = [
