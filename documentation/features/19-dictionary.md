@@ -19,6 +19,7 @@ Many visitors don't know words like "mutual aid", "solidarity" or "tenant union"
 | `/dictionary/{slug}`        | Everyone    | The word, its short definition, the longer explanation (if any), **Copy link**, related words, and resources (once there are any). Page title is "{Word}: Meaning and Definition", with the short definition as its description and `DefinedTerm` structured data ([technical/seo.md](../technical/seo.md)). "Dictionary: M" links back to its letter. An address typed with capitals redirects to the lowercase one. **Super users** also see **Edit {word}** at the top (below) |
 | `/admin/definitions`        | Super users | Every word with Edit and View, and **Add a word**. Linked from `/admin` (Dictionary section). After saving, "Saved {word}" is announced and takes focus                                                                                                                                                                                                                                                                                                                           |
 | `/admin/definitions/import` | Super users | Add many words from a CSV (below)                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `/admin/definitions/upload` | Super users | Replace one word's text from a file (below). **Upload a definition** on `/admin`                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `/admin/definitions/new`    | Super users | The form, with the address (slug)                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `/admin/definitions/{slug}` | Super users | The same form, filled in. The address is shown but can't change. Opened from the word's page (`?from=page`), the back link and saving both return there                                                                                                                                                                                                                                                                                                                           |
 
@@ -38,7 +39,7 @@ The bar is a `nav` with each letter as a link (at least 40px square), the curren
 
 ## A word
 
-- **Address (slug):** lowercase letters, numbers and single hyphens, 2 to 60 characters (`mutual-aid`). `new` and `import` are reserved (they're routes). **Permanent:** the edit form doesn't offer to change it, so shared links keep working. If a word ever needs a new slug, add a redirect from the old one rather than renaming.
+- **Address (slug):** lowercase letters, numbers and single hyphens, 2 to 60 characters (`mutual-aid`). `new`, `import` and `upload` are reserved (they're routes). **Permanent:** the edit form doesn't offer to change it, so shared links keep working. If a word ever needs a new slug, add a redirect from the old one rather than renaming.
 - **Text in all four languages**, each with:
   - **Capitalization:** English words are in title case ("Democratic Socialism", "Repair Café"). Spanish and Vietnamese capitalize only the first word, as those languages do ("Socialismo democrático"); Chinese has no capitals ([decision #56](../decisions/056-dictionary-words-title-case-in-english.md)).
   - **Word** (up to 80 characters).
@@ -62,6 +63,18 @@ The way to add many words at once, in production or locally, like the organizati
 **Words already in the dictionary are skipped, never overwritten** (the user's choice), so re-uploading an old file can't undo edits made in the form. To change a word, edit it on its own page.
 
 Code: `src/lib/definitions/import.ts` (reading and checking rows; pure, tested), `importDefinitions` and `getDefinitionSlugsFresh` in `store.ts`, and the CSV reader shared with the organization import (`src/lib/csv.ts`).
+
+## Updating a word from a file
+
+Added 2026-11-27 at the user's request ([decision #65](../decisions/065-brainstorm-definitions-and-upload-one-word.md)), so a definition worked out with an agent can go live without retyping four languages into the form.
+
+1. **Brainstorm** with the `brainstorm-definition` skill (`.claude/skills/brainstorm-definition/`): the agent and the user rewrite one word until they agree, the agent writes the other three languages, and its writer (`write.ts`, which checks the text with the form's schema) saves `research/definitions/updates/{slug}.csv`. Git ignores it, like the starter words.
+2. **Upload** it: `/admin` → **Upload a definition** (`/admin/definitions/upload`) → **Check file**. The file has the import's columns and **exactly one row**; the word must already exist (otherwise it points to the import, which takes the same file). The check saves nothing. It lists each field that changes with its text **now** and **new** side by side (each marked with its `lang`), says if the file matched already, or lists problems by field and column, like the import. Focus moves to the result, which is a live region.
+3. **Update {word}** asks for confirmation, then checks the file again on fresh data and replaces the word's text in every language. **Related words and resources are never changed** (the user's choice); a `related` column is ignored, and the page says so. If anyone saved the word after the check (its `updatedAt` differs), nothing is saved and it says to check again, so an upload can't quietly undo someone else's edit. It goes to the word's page, where "Saved {word}." is announced, as after the edit form.
+
+The admin log gets an `editDefinition` entry with the changed `fields` and `via: 'upload'`. Locally, `pnpm seed` applies every file in `research/definitions/updates/` over the starter words (text only), so a reset keeps agreed rewrites.
+
+Code: `src/lib/definitions/update.ts` (reading the one row and comparing it with the stored word; pure, tested), `updateDefinitionText` in `store.ts`, `AdminDefinitionUploadPage` (with stories).
 
 ## Starter words
 
@@ -88,7 +101,7 @@ Room to grow, without migrations:
 - **`resources`** holds `{ id, type: 'book' | 'video' | 'article' | 'link', title, url, by?, language? }`. A page leaves out any type it doesn't know and any item that doesn't parse (including a non-http link), so adding a type never breaks older code. Only super users will add them; links get `rel="noopener noreferrer"`. The page already shows them under "Learn more".
 - **Comments (phase 3)** go in a subcollection, `definitions/{slug}/comments/{id}`, not an array on the word: votes would mean constant writes to one shared document, and the 1 MiB limit would cap a busy thread (the prototype's comment threads lived in one document to save reads: [11](11-comment-threads.md)). Each comment keeps an up-vote count, and votes are one record per person (`…/comments/{id}/votes/{uid}`), so nobody can vote twice. Pages load 20 comments at a time.
 
-`adminLog` gets `createDefinition` and `editDefinition` entries with `definition { slug, word }` (the English word), `actorUid`, `fields[]` (for edits, like `es.word` or `related`) and `createdAt`. An edit that changes nothing isn't saved or logged.
+`adminLog` gets `createDefinition` and `editDefinition` entries with `definition { slug, word }` (the English word), `actorUid`, `fields[]` (for edits, like `es.word` or `related`), `via: 'upload'` (for edits from an uploaded file) and `createdAt`. An edit that changes nothing isn't saved or logged.
 
 All writes go through the Admin SDK (`saveDefinition` in `src/lib/definitions/store.ts`), in a transaction that checks a new slug is free or an edited word exists. The security rules deny clients, and `rules/firestore.rules.test.ts` proves it for `definitions` and the planned comments and votes ([decision #54](../decisions/054-security-rules-tests-against-the-emulator.md)).
 
@@ -124,14 +137,15 @@ Signed-in users only, which may encourage sign-ups. Up votes only, one per perso
 
 ## Built (2026-11-26)
 
-| Piece                                                                       | Where                                                                                                                                                                |
-| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Slug rules, form schema, reading stored words, resources, language fallback | `src/lib/definitions/index.ts` (pure, tested)                                                                                                                        |
-| Firestore: cached reads, saves with admin log                               | `src/lib/definitions/store.ts`                                                                                                                                       |
-| Pages and action                                                            | `/dictionary/{letter}`, `/dictionary/{slug}`, `/admin/definitions` (+ `new`, `{slug}`), `saveDefinitionAction`                                                       |
-| UI                                                                          | `DictionaryPage`, `DefinitionPage`, `AdminDefinitionsPage`, `AdminDefinitionEditPage`, `DefinitionForm`, `CopyLinkButton`, `useCopyLink` (all in Storybook)          |
-| CSV import                                                                  | `src/lib/definitions/import.ts`, `src/lib/csv.ts`, `/admin/definitions/import`, `AdminDefinitionsImportPage`; local words in `research/definitions/` via `pnpm seed` |
-| Rules tests                                                                 | `rules/firestore.rules.test.ts` (`pnpm test:rules`)                                                                                                                  |
+| Piece                                                                       | Where                                                                                                                                                                                                |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Slug rules, form schema, reading stored words, resources, language fallback | `src/lib/definitions/index.ts` (pure, tested)                                                                                                                                                        |
+| Firestore: cached reads, saves with admin log                               | `src/lib/definitions/store.ts`                                                                                                                                                                       |
+| Pages and action                                                            | `/dictionary/{letter}`, `/dictionary/{slug}`, `/admin/definitions` (+ `new`, `{slug}`), `saveDefinitionAction`                                                                                       |
+| UI                                                                          | `DictionaryPage`, `DefinitionPage`, `AdminDefinitionsPage`, `AdminDefinitionEditPage`, `DefinitionForm`, `CopyLinkButton`, `useCopyLink` (all in Storybook)                                          |
+| CSV import                                                                  | `src/lib/definitions/import.ts`, `src/lib/csv.ts`, `/admin/definitions/import`, `AdminDefinitionsImportPage`; local words in `research/definitions/` via `pnpm seed`                                 |
+| One-word upload and the brainstorm skill                                    | `src/lib/definitions/update.ts`, `updateDefinitionText`, `/admin/definitions/upload`, `AdminDefinitionUploadPage`, `.claude/skills/brainstorm-definition/`; files in `research/definitions/updates/` |
+| Rules tests                                                                 | `rules/firestore.rules.test.ts` (`pnpm test:rules`)                                                                                                                                                  |
 
 **Verified 2026-11-26** in a real browser (about 500 px wide) against the seeded emulators:
 

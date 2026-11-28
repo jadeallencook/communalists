@@ -1093,6 +1093,7 @@
         "editFor": "Sửa {name}",
         "addWord": "Thêm một từ",
         "importWords": "Nhập từ ngữ từ tệp CSV",
+        "uploadDefinition": "Tải lên định nghĩa",
         "wordCount": "{count} từ",
         "activityHint": "Những gì siêu người dùng đã làm trong 30 ngày qua. Chỉ siêu người dùng thấy phần này.",
         "activity": {
@@ -1280,6 +1281,50 @@
             "addErrors": {
                 "nothingReady": "Không có dòng nào sẵn sàng, nên không có gì được thêm.",
                 "changed": "Từ điển đã thay đổi trong lúc bạn xem lại, nên không có gì được thêm. Hãy kiểm tra lại tệp.",
+                "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+                "generic": "Đã xảy ra lỗi. Hãy thử lại."
+            }
+        },
+        "upload": {
+            "title": "Tải lên định nghĩa",
+            "intro": "Thay nội dung của một từ, bằng mọi ngôn ngữ, bằng nội dung trong một tệp. Bạn sẽ thấy mọi thay đổi trước khi lưu. Các từ liên quan được giữ nguyên.",
+            "formatTitle": "Tệp",
+            "formatOneRow": "Một tệp CSV có một từ: cùng các cột như khi nhập (slug, rồi en_word, en_definition và en_details, và tương tự cho es, vi và zh), và một hàng.",
+            "formatSlug": "slug phải là một từ đã có trong từ điển. Để thêm từ mới, hãy nhập nó.",
+            "formatRelated": "Cột related bị bỏ qua. Hãy đổi các từ liên quan trong biểu mẫu chỉnh sửa.",
+            "file": "Tệp CSV",
+            "fileHint": "Kiểm tra không thay đổi gì.",
+            "check": "Kiểm tra tệp",
+            "checking": "Đang kiểm tra…",
+            "status": {
+                "ready": "{file}: {count, plural, other {# thay đổi}} cho {word}.",
+                "unchanged": "{file} giống với {word} hiện tại. Không có gì để thay đổi.",
+                "notFound": "Không có từ nào có địa chỉ {slug}. Để thêm từ này, hãy nhập tệp.",
+                "problems": "{file}: {count, plural, other {# vấn đề}} cần sửa trước khi dùng được."
+            },
+            "relatedIgnored": "Tệp có liệt kê từ liên quan. Chúng bị bỏ qua: từ này giữ các từ liên quan hiện có.",
+            "ignored": "Các cột này không được dùng và đã bị bỏ qua: {columns}",
+            "goToImport": "Nhập từ từ tệp CSV",
+            "changesTitle": "Những gì thay đổi",
+            "now": "Hiện tại",
+            "new": "Mới",
+            "empty": "(trống)",
+            "update": "Cập nhật {word}",
+            "confirmTitle": "Cập nhật {word}?",
+            "confirmBody": "{count, plural, other {# mục thay đổi}} ngay lập tức, trên trang của từ và ở mọi nơi từ được đánh dấu. Không thể hoàn tác, nhưng bạn có thể chỉnh sửa từ sau đó.",
+            "notYet": "Chưa",
+            "updating": "Đang cập nhật…",
+            "fileProblems": {
+                "empty": "Tệp không có hàng nào.",
+                "missingColumns": "Tệp thiếu các cột này: {columns}. Hãy dùng mẫu của phần nhập.",
+                "notOneRow": "Tệp phải có đúng một từ: một hàng tiêu đề và một hàng. Để thêm nhiều từ, hãy nhập chúng.",
+                "tooBig": "Tệp quá lớn. Hãy giữ dưới 500 KB.",
+                "noFile": "Hãy chọn một tệp CSV.",
+                "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+                "generic": "Đã xảy ra lỗi. Hãy thử lại."
+            },
+            "saveErrors": {
+                "changed": "Từ này đã thay đổi sau khi bạn kiểm tra tệp, nên chưa có gì được lưu. Hãy kiểm tra tệp lại để xem bản mới nhất.",
                 "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
                 "generic": "Đã xảy ra lỗi. Hãy thử lại."
             }

@@ -49,35 +49,44 @@ const { password, users, organizations } = readJson('./seed-data.json');
 
 // --- Dictionary words: every CSV in research/definitions/, in the import's
 // columns (src/lib/definitions/import.ts). Unchecked here; check a file with
-// /admin/definitions/import first. Missing folder: no words.
+// /admin/definitions/import first. Missing folder: no words. Agreed rewrites
+// of single words (research/definitions/updates/, from the brainstorm-definition
+// skill) replace those words' text, but not their related words, like the
+// upload at /admin/definitions/upload.
 const WORDS_DIR = new URL('../research/definitions/', import.meta.url);
+const UPDATES_DIR = new URL('updates/', WORDS_DIR);
 const LOCALES = ['en', 'es', 'vi', 'zh'];
-const definitions = (existsSync(WORDS_DIR) ? readdirSync(WORDS_DIR) : [])
-    .filter((name) => name.endsWith('.csv'))
-    .flatMap((name) => {
-        const [header, ...rows] = parseCsv(
-            readFileSync(new URL(name, WORDS_DIR), 'utf8')
-        );
-        const col = (row, name) => (row[header.indexOf(name)] ?? '').trim();
-        return rows.map((row) => ({
-            slug: col(row, 'slug').toLowerCase(),
-            related: col(row, 'related')
-                .split(';')
-                .map((s) => s.trim().toLowerCase())
-                .filter(Boolean),
-            text: Object.fromEntries(
-                LOCALES.map((l) => [
-                    l,
-                    {
-                        word: col(row, `${l}_word`),
-                        definition: col(row, `${l}_definition`),
-                        details: col(row, `${l}_details`),
-                    },
-                ])
-            ),
-        }));
-    })
-    .filter((d) => d.slug);
+const readWords = (dir) =>
+    (existsSync(dir) ? readdirSync(dir) : [])
+        .filter((name) => name.endsWith('.csv'))
+        .flatMap((name) => {
+            const [header, ...rows] = parseCsv(
+                readFileSync(new URL(name, dir), 'utf8')
+            );
+            const col = (row, name) => (row[header.indexOf(name)] ?? '').trim();
+            return rows.map((row) => ({
+                slug: col(row, 'slug').toLowerCase(),
+                related: col(row, 'related')
+                    .split(';')
+                    .map((s) => s.trim().toLowerCase())
+                    .filter(Boolean),
+                text: Object.fromEntries(
+                    LOCALES.map((l) => [
+                        l,
+                        {
+                            word: col(row, `${l}_word`),
+                            definition: col(row, `${l}_definition`),
+                            details: col(row, `${l}_details`),
+                        },
+                    ])
+                ),
+            }));
+        })
+        .filter((d) => d.slug);
+const updates = new Map(readWords(UPDATES_DIR).map((d) => [d.slug, d.text]));
+const definitions = readWords(WORDS_DIR).map((d) =>
+    updates.has(d.slug) ? { ...d, text: updates.get(d.slug) } : d
+);
 
 // --- Places, from the same data file the app uses.
 const us = readJson('../src/lib/places/data/us.json');

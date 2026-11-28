@@ -1093,6 +1093,7 @@
         "editFor": "编辑 {name}",
         "addWord": "添加词条",
         "importWords": "从 CSV 导入词条",
+        "uploadDefinition": "上传定义",
         "wordCount": "{count} 个词条",
         "activityHint": "超级用户最近 30 天做了什么。只有超级用户能看到。",
         "activity": {
@@ -1281,6 +1282,50 @@
                 "nothingReady": "没有可添加的行，因此没有添加任何内容。",
                 "changed": "在你检查期间词典有了变化，因此没有添加任何内容。请重新检查文件。",
                 "notAllowed": "只有超级用户可以执行此操作。",
+                "generic": "出了点问题。请重试。"
+            }
+        },
+        "upload": {
+            "title": "上传定义",
+            "intro": "用文件中的内容替换一个词在所有语言中的内容。保存前你会看到每一处更改。相关词保持不变。",
+            "formatTitle": "文件",
+            "formatOneRow": "包含一个词的 CSV：列与导入相同（slug，然后是 en_word、en_definition 和 en_details，es、vi 和 zh 也一样），只有一行。",
+            "formatSlug": "slug 必须是词典中已有的词。要添加新词，请改用导入。",
+            "formatRelated": "related 列会被忽略。请在编辑表单中更改相关词。",
+            "file": "CSV 文件",
+            "fileHint": "检查不会更改任何内容。",
+            "check": "检查文件",
+            "checking": "正在检查…",
+            "status": {
+                "ready": "{file}：{word} 有 {count, plural, other {# 处更改}}。",
+                "unchanged": "{file} 与 {word} 现在的内容相同，没有需要更改的。",
+                "notFound": "没有地址为 {slug} 的词。要添加它，请改用导入。",
+                "problems": "{file}：使用前需要修正 {count, plural, other {# 个问题}}。"
+            },
+            "relatedIgnored": "文件列出了相关词。这些会被忽略：该词保留现有的相关词。",
+            "ignored": "这些列未被使用，已略过：{columns}",
+            "goToImport": "从 CSV 导入词语",
+            "changesTitle": "更改内容",
+            "now": "现在",
+            "new": "新的",
+            "empty": "（空）",
+            "update": "更新{word}",
+            "confirmTitle": "更新{word}？",
+            "confirmBody": "{count, plural, other {# 个字段}}会立即更改，包括该词的页面和所有标记它的地方。无法撤销，但之后可以编辑该词。",
+            "notYet": "暂不",
+            "updating": "正在更新…",
+            "fileProblems": {
+                "empty": "文件没有任何行。",
+                "missingColumns": "文件缺少这些列：{columns}。请使用导入的模板。",
+                "notOneRow": "文件必须只有一个词：一行标题和一行内容。要添加多个词，请改用导入。",
+                "tooBig": "文件太大。请保持在 500 KB 以下。",
+                "noFile": "请选择一个 CSV 文件。",
+                "notAllowed": "只有超级用户可以这样做。",
+                "generic": "出了点问题。请重试。"
+            },
+            "saveErrors": {
+                "changed": "检查文件后该词已被更改，因此没有保存任何内容。请重新检查文件以查看最新内容。",
+                "notAllowed": "只有超级用户可以这样做。",
                 "generic": "出了点问题。请重试。"
             }
         }

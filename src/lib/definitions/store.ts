@@ -146,6 +146,56 @@ export async function saveDefinition(
     });
 }
 
+export type UpdateDefinitionTextResult =
+    | { ok: true; fields: string[] }
+    | { ok: false; error: 'notFound' | 'changed' };
+
+/**
+ * A super user replaces one word's text from an uploaded file
+ * (/admin/definitions/upload). Related words and resources stay as they are.
+ * `expectedUpdatedAt` is when the word was last saved as the super user
+ * reviewed it: if it was saved since, nothing changes (`changed`), so an
+ * upload never quietly undoes someone else's edit. Logged in adminLog as an
+ * edit made by upload.
+ */
+export async function updateDefinitionText(
+    adminUid: string,
+    slug: string,
+    text: DefinitionInput['text'],
+    expectedUpdatedAt: number | null
+): Promise<UpdateDefinitionTextResult> {
+    const ref = definitions().doc(slug);
+    return db().runTransaction(async (tx) => {
+        const before = toDefinition(await tx.get(ref));
+        logRead('definitions');
+        if (!before) return { ok: false, error: 'notFound' } as const;
+        if ((before.updatedAt ?? null) !== expectedUpdatedAt)
+            return { ok: false, error: 'changed' } as const;
+        const fields = changedFields(before, {
+            slug,
+            text,
+            related: before.related,
+        });
+        if (fields.length === 0) return { ok: true, fields } as const;
+
+        const now = FieldValue.serverTimestamp();
+        tx.update(ref, {
+            text: JSON.parse(JSON.stringify(text)),
+            updatedBy: adminUid,
+            updatedAt: now,
+        });
+        tx.create(db().collection('adminLog').doc(), {
+            action: 'editDefinition',
+            definition: { slug, word: text.en.word },
+            actorUid: adminUid,
+            fields,
+            via: 'upload',
+            createdAt: now,
+        });
+        return { ok: true, fields } as const;
+    });
+}
+
 export interface ImportDefinitionsResult {
     added: string[];
     /** Already in the dictionary by the time they were added. */

@@ -21,7 +21,7 @@ export const RELATED_MAX = 10;
 /** Lowercase words joined by single hyphens: `mutual-aid`. */
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 /** Taken by routes beside `/admin/definitions/{slug}`. */
-const RESERVED_SLUGS = new Set(['new', 'import']);
+const RESERVED_SLUGS = new Set(['new', 'import', 'upload']);
 
 export type SlugProblem = 'slugRequired' | 'slugFormat' | 'slugReserved';
 

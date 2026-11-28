@@ -1093,6 +1093,7 @@
         "editFor": "Editar {name}",
         "addWord": "Agregar una palabra",
         "importWords": "Importar palabras desde un CSV",
+        "uploadDefinition": "Subir una definición",
         "wordCount": "{count, plural, one {# palabra} other {# palabras}}",
         "activityHint": "Lo que hicieron los superusuarios en los últimos 30 días. Solo los superusuarios ven esto.",
         "activity": {
@@ -1280,6 +1281,50 @@
             "addErrors": {
                 "nothingReady": "Ninguna fila estaba lista, así que no se agregó nada.",
                 "changed": "El diccionario cambió mientras revisabas, así que no se agregó nada. Revisa el archivo de nuevo.",
+                "notAllowed": "Solo los superusuarios pueden hacer esto.",
+                "generic": "Algo salió mal. Inténtalo de nuevo."
+            }
+        },
+        "upload": {
+            "title": "Subir una definición",
+            "intro": "Reemplaza el texto de una palabra, en todos los idiomas, con el texto de un archivo. Verás cada cambio antes de guardar nada. Las palabras relacionadas no cambian.",
+            "formatTitle": "El archivo",
+            "formatOneRow": "Un CSV con una palabra: las mismas columnas que la importación (slug, luego en_word, en_definition y en_details, y lo mismo para es, vi y zh) y una fila.",
+            "formatSlug": "slug debe ser una palabra que ya está en el diccionario. Para agregar una palabra nueva, impórtala.",
+            "formatRelated": "La columna related se ignora. Cambia las palabras relacionadas en el formulario de edición.",
+            "file": "Archivo CSV",
+            "fileHint": "Revisar no cambia nada.",
+            "check": "Revisar archivo",
+            "checking": "Revisando…",
+            "status": {
+                "ready": "{file}: {count, plural, one {# cambio} other {# cambios}} en {word}.",
+                "unchanged": "{file} coincide con {word} tal como está. No hay nada que cambiar.",
+                "notFound": "Ninguna palabra tiene la dirección {slug}. Para agregarla, importa el archivo.",
+                "problems": "{file}: {count, plural, one {# problema} other {# problemas}} que corregir antes de usarlo."
+            },
+            "relatedIgnored": "El archivo incluye palabras relacionadas. Se ignoran: la palabra conserva las que ya tiene.",
+            "ignored": "Estas columnas no se usan y se dejaron fuera: {columns}",
+            "goToImport": "Importar palabras desde un CSV",
+            "changesTitle": "Qué cambia",
+            "now": "Ahora",
+            "new": "Nuevo",
+            "empty": "(vacío)",
+            "update": "Actualizar {word}",
+            "confirmTitle": "¿Actualizar {word}?",
+            "confirmBody": "{count, plural, one {# campo cambia} other {# campos cambian}} de inmediato, en la página de la palabra y donde esté marcada. No se puede deshacer, pero puedes editar la palabra después.",
+            "notYet": "Todavía no",
+            "updating": "Actualizando…",
+            "fileProblems": {
+                "empty": "El archivo no tiene filas.",
+                "missingColumns": "Al archivo le faltan estas columnas: {columns}. Usa la plantilla de la importación.",
+                "notOneRow": "El archivo debe tener exactamente una palabra: un encabezado y una fila. Para agregar muchas palabras, impórtalas.",
+                "tooBig": "El archivo es demasiado grande. Debe pesar menos de 500 KB.",
+                "noFile": "Elige un archivo CSV.",
+                "notAllowed": "Solo los superusuarios pueden hacer esto.",
+                "generic": "Algo salió mal. Inténtalo de nuevo."
+            },
+            "saveErrors": {
+                "changed": "La palabra cambió después de revisar el archivo, así que no se guardó nada. Revisa el archivo de nuevo para ver lo más reciente.",
                 "notAllowed": "Solo los superusuarios pueden hacer esto.",
                 "generic": "Algo salió mal. Inténtalo de nuevo."
             }

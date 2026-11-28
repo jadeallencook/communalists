@@ -1,6 +1,12 @@
 'use client';
 
-import { BookOpenIcon, ClockIcon, PlusIcon, UploadIcon } from 'lucide-react';
+import {
+    BookOpenIcon,
+    ClockIcon,
+    FileUpIcon,
+    PlusIcon,
+    UploadIcon,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 
@@ -509,6 +515,12 @@ export function AdminPage({
                         <Link href="/admin/definitions/import">
                             <UploadIcon aria-hidden />
                             {t('importWords')}
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <Link href="/admin/definitions/upload">
+                            <FileUpIcon aria-hidden />
+                            {t('uploadDefinition')}
                         </Link>
                     </Button>
                     <Button asChild variant="outline">
