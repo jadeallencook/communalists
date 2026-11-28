@@ -48,6 +48,11 @@ export interface OrganizationPageProps {
      */
     /** Other organizations nearby (NearbyOrganizations), at the end of the page. */
     nearby?: ReactNode;
+    /**
+     * The public discussion (listed organizations only), after the members
+     * and before nearby groups. Streams in on its own.
+     */
+    discussion?: ReactNode;
     makeUnclaimed?: {
         orgId: string;
         locale: string;
@@ -71,6 +76,7 @@ export function OrganizationPage({
     unclaimed,
     makeUnclaimed,
     nearby,
+    discussion,
 }: OrganizationPageProps) {
     const t = useTranslations('Organizations');
     const tm = useTranslations('Membership');
@@ -111,6 +117,7 @@ export function OrganizationPage({
                             </div>
                         </section>
                     )}
+                    {discussion}
                     {nearby}
                 </OrganizationProfile>
             </section>
@@ -233,6 +240,7 @@ export function OrganizationPage({
                     </section>
                 )}
                 <MemberList {...members} />
+                {discussion}
                 {nearby}
             </OrganizationProfile>
         </section>

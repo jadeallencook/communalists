@@ -7,7 +7,6 @@ import {
     defaultLanguageFilter,
     DISCUSSION_ANCHOR,
     encodeCursor,
-    targetHref,
     type CommentTarget,
 } from '@/lib/comments';
 import { canModerate } from '@/lib/comments/access';
@@ -22,26 +21,38 @@ import type { Locale } from '@/i18n/routing';
 
 import { DiscussionClient } from './discussion-client';
 
-// The discussion under a word (documentation/features/20-comments.md). Reads
-// the session, so it streams in its own <Suspense> and the word never waits
-// on it. The first page and the count are cached; what the viewer voted for
-// is read fresh.
+// The discussion under a word or an organization
+// (documentation/features/20-comments.md). Reads the session, so it streams
+// in its own <Suspense> and the page never waits on it. The first page and
+// the count are cached; what the viewer voted for is read fresh. The page
+// decides whether there's a discussion at all (organizations: listed and
+// active only); the API and actions check again.
 
 export async function DiscussionContainer({
-    slug,
+    target,
+    href,
     locale,
+    organization,
 }: {
-    slug: string;
+    target: CommentTarget;
+    /** The page it's on (no locale): sign-in and sign-up come back here. */
+    href: string;
     locale: Locale;
+    /**
+     * On an organization's page: its name, for its replies, and whether the
+     * viewer writes them (owners and moderators; super users on an unclaimed
+     * page). Only shows the buttons: the server checks the role fresh.
+     */
+    organization?: { name: string; replier: boolean; unclaimed: boolean };
 }) {
-    const target: CommentTarget = { kind: 'definition', id: slug };
     const user = await getSessionUser();
     const uid = user?.uid ?? null;
     const moderator = canModerate(target, uid);
-    // Readers start with comments in their language; moderators with all.
-    const language = defaultLanguageFilter(locale, moderator);
+    // Words: readers start in their language, moderators with all.
+    // Organizations: all.
+    const language = defaultLanguageFilter(locale, moderator, target.kind);
     // The discussion fails on its own: a read that fails (say, an index
-    // still building after a deploy) never takes the word's page with it.
+    // still building after a deploy) never takes the page with it.
     let loaded;
     try {
         const [page, counts] = await Promise.all([
@@ -62,7 +73,12 @@ export async function DiscussionContainer({
     }
     const { page, counts, comments } = loaded;
     const last = page.comments.at(-1);
-    const viewer = await viewerOf(target, uid, moderator);
+    const viewer = await viewerOf(
+        href,
+        uid,
+        moderator,
+        organization?.replier ?? false
+    );
     return (
         <DiscussionClient
             // Next keeps recently visited pages alive with their state. A new
@@ -79,19 +95,20 @@ export async function DiscussionContainer({
             counts={counts}
             language={language}
             defaultLang={locale}
+            organizationName={organization?.name}
+            replyAsTeam={organization?.unclaimed}
         />
     );
 }
 
 async function viewerOf(
-    target: CommentTarget,
+    href: string,
     uid: string | null,
-    moderator: boolean
+    moderator: boolean,
+    replier: boolean
 ): Promise<DiscussionViewer> {
     // Sign-up, sign-in and setup all come back to the discussion.
-    const next = encodeURIComponent(
-        `${targetHref(target)}#${DISCUSSION_ANCHOR}`
-    );
+    const next = encodeURIComponent(`${href}#${DISCUSSION_ANCHOR}`);
     if (!uid)
         return {
             status: 'signedOut',
@@ -105,5 +122,5 @@ async function viewerOf(
             status: 'setupNeeded',
             setupHref: `/account/setup?next=${next}`,
         };
-    return { status: 'ready', moderator };
+    return { status: 'ready', moderator, replier };
 }

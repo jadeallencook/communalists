@@ -25,10 +25,19 @@ export type DiscussionViewer =
     | { status: 'signedOut'; signUpHref: string; signInHref: string }
     /** Signed in, but account setup isn't finished (no name or username yet). */
     | { status: 'setupNeeded'; setupHref: string }
-    | { status: 'ready'; moderator: boolean };
+    | {
+          status: 'ready';
+          moderator: boolean;
+          /** Writes the organization's replies: its owners and moderators (super users on an unclaimed page). */
+          replier?: boolean;
+      };
 
 export interface DiscussionProps {
     viewer: DiscussionViewer;
+    /** What it's under, which changes the intro and the empty message. */
+    about?: 'definition' | 'organization';
+    /** The organization's name, for its replies ("Reply from …"). */
+    organizationName?: string;
     /** How many comments, in all and per language. */
     counts: CommentCounts;
     comments: CommentView[];
@@ -58,8 +67,19 @@ export interface DiscussionProps {
     onHide: (id: string, hidden: boolean) => void;
     /** Already translated: the latest result or problem. */
     notice?: { tone: 'status' | 'alert'; text: string; at: number } | null;
-    /** Move focus to this comment, or (with no id) to the notice. */
-    focus?: { id: string | null; at: number } | null;
+    /** Move focus to this comment (or its reply, or its Reply button), or (with no id) to the notice. */
+    focus?: {
+        id: string | null;
+        at: number;
+        part?: 'reply' | 'replyButton';
+    } | null;
+    /** The comment whose reply form is open, and the form (`CommentForm` with `reply`). */
+    replyingTo?: string | null;
+    replyForm?: ReactNode;
+    onReplyOpen?: (id: string) => void;
+    onReplyReport?: (id: string, reason: ReportReason) => void;
+    onReplyDelete?: (id: string) => void;
+    onReplyHide?: (id: string, hidden: boolean) => void;
     /** Extra attributes for the sign-up and sign-in links (analytics). */
     joinProps?: {
         signUp?: Record<string, string>;
@@ -68,12 +88,16 @@ export interface DiscussionProps {
 }
 
 /**
- * The discussion on a word's page: anyone can read it; signed-in people
- * comment, up vote and report; super users hide and delete. One flat list,
- * Top or Newest, in the reader's language (with "All languages"). Results are announced, and focus follows what was acted on.
+ * The discussion on a word's or an organization's page: anyone can read it;
+ * signed-in people comment, up vote and report; super users hide and
+ * delete. On organizations, its owners and moderators add one reply per
+ * comment. One flat list, Top or Newest, in one language or all. Results
+ * are announced, and focus follows what was acted on.
  */
 export function Discussion({
     viewer,
+    about = 'definition',
+    organizationName,
     counts,
     comments,
     sort,
@@ -94,6 +118,12 @@ export function Discussion({
     notice,
     focus,
     joinProps,
+    replyingTo = null,
+    replyForm,
+    onReplyOpen,
+    onReplyReport,
+    onReplyDelete,
+    onReplyHide,
 }: DiscussionProps) {
     const t = useTranslations('Discussion');
     const noticeRef = useRef<HTMLDivElement>(null);
@@ -102,6 +132,10 @@ export function Discussion({
     }, [focus]);
 
     const moderator = viewer.status === 'ready' && viewer.moderator;
+    const replier = viewer.status === 'ready' && viewer.replier === true;
+    const copy = about === 'organization' ? 'organization.' : '';
+    const focusOn = (id: string, part?: 'reply' | 'replyButton') =>
+        focus?.id === id && focus.part === part ? focus.at : undefined;
 
     return (
         <section
@@ -120,7 +154,7 @@ export function Discussion({
                     </span>
                 </h2>
                 <p className="text-pretty text-muted-foreground">
-                    {t('intro')}
+                    {t(`${copy}intro`)}
                 </p>
             </div>
 
@@ -239,7 +273,7 @@ export function Discussion({
                     </div>
                 ) : (
                     <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-                        {t('empty')}
+                        {t(`${copy}empty`)}
                     </p>
                 )
             ) : (
@@ -259,12 +293,31 @@ export function Discussion({
                                 can={commentAbilities(comment, {
                                     signedIn: viewer.status === 'ready',
                                     moderator,
+                                    replier,
                                 })}
                                 busy={busy.has(comment.id)}
-                                focusKey={
-                                    focus?.id === comment.id
-                                        ? focus.at
+                                focusKey={focusOn(comment.id)}
+                                replyFocusKey={focusOn(comment.id, 'reply')}
+                                replyButtonFocusKey={focusOn(
+                                    comment.id,
+                                    'replyButton'
+                                )}
+                                organizationName={organizationName}
+                                replier={replier}
+                                replyForm={
+                                    replyingTo === comment.id
+                                        ? replyForm
                                         : undefined
+                                }
+                                onReplyOpen={() => onReplyOpen?.(comment.id)}
+                                onReplyReport={(reason) =>
+                                    onReplyReport?.(comment.id, reason)
+                                }
+                                onReplyDelete={() =>
+                                    onReplyDelete?.(comment.id)
+                                }
+                                onReplyHide={(hidden) =>
+                                    onReplyHide?.(comment.id, hidden)
                                 }
                                 onVote={() => onVote(comment.id)}
                                 onReport={(reason) =>

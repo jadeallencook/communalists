@@ -13,6 +13,12 @@ import { paragraphsOf, type ReportReason } from '@/lib/comments';
 export interface AdminReportedComment {
     /** The report's id. */
     key: string;
+    /**
+     * An organization's reply rather than a comment: who it's shown as from
+     * ("South Bay Mutual Aid", or the Communalists team), and whose comment
+     * it answers. `author` and `votes` are left out for a reply.
+     */
+    reply?: { from: string; to: string };
     /** What the comment is on, in the UI language, and its page. */
     on: { label: string; href: string; lang: string };
     /** Null when the comment was deleted meanwhile (only Dismiss is offered). */
@@ -112,6 +118,21 @@ export function AdminCommentsPage({
                         {items.map((item) => {
                             const author = item.author ?? t('formerMember');
                             const pending = busy.has(item.key);
+                            const { reply } = item;
+                            // What the buttons name: the reply's sender, or the comment's author.
+                            const label = (
+                                comment:
+                                    | 'hideLabel'
+                                    | 'deleteLabel'
+                                    | 'deleteTitle'
+                                    | 'dismissLabel'
+                            ) =>
+                                reply
+                                    ? t(`${comment}Reply`, {
+                                          from: reply.from,
+                                          name: reply.to,
+                                      })
+                                    : t(comment, { name: author });
                             return (
                                 <li
                                     key={item.key}
@@ -123,7 +144,10 @@ export function AdminCommentsPage({
                                                 word: () => (
                                                     <Link
                                                         href={item.on.href}
-                                                        lang={item.on.lang}
+                                                        lang={
+                                                            item.on.lang ||
+                                                            undefined
+                                                        }
                                                         className="font-medium underline underline-offset-4"
                                                     >
                                                         {item.on.label}
@@ -131,18 +155,30 @@ export function AdminCommentsPage({
                                                 ),
                                             })}
                                         </p>
-                                        <p className="text-muted-foreground">
-                                            {t('byOn', {
-                                                name: author,
-                                                date: item.postedOn ?? '',
-                                            })}{' '}
-                                            ·{' '}
-                                            {t('votes', { count: item.votes })}
-                                        </p>
+                                        {reply ? (
+                                            <p className="text-muted-foreground">
+                                                {t('replyByOn', {
+                                                    from: reply.from,
+                                                    name: reply.to,
+                                                    date: item.postedOn ?? '',
+                                                })}
+                                            </p>
+                                        ) : (
+                                            <p className="text-muted-foreground">
+                                                {t('byOn', {
+                                                    name: author,
+                                                    date: item.postedOn ?? '',
+                                                })}{' '}
+                                                ·{' '}
+                                                {t('votes', {
+                                                    count: item.votes,
+                                                })}
+                                            </p>
+                                        )}
                                     </div>
                                     {item.text === null ? (
                                         <p className="rounded-md bg-muted p-2 text-sm text-foreground">
-                                            {t('gone')}
+                                            {t(reply ? 'goneReply' : 'gone')}
                                         </p>
                                     ) : (
                                         <blockquote
@@ -190,9 +226,9 @@ export function AdminCommentsPage({
                                                     variant="outline"
                                                     size="sm"
                                                     disabled={pending}
-                                                    aria-label={t('hideLabel', {
-                                                        name: author,
-                                                    })}
+                                                    aria-label={label(
+                                                        'hideLabel'
+                                                    )}
                                                     onClick={() =>
                                                         onHide(item.key)
                                                     }
@@ -203,15 +239,14 @@ export function AdminCommentsPage({
                                                 <ReasonDialog
                                                     withReason={false}
                                                     triggerLabel={t('delete')}
-                                                    triggerAriaLabel={t(
-                                                        'deleteLabel',
-                                                        { name: author }
+                                                    triggerAriaLabel={label(
+                                                        'deleteLabel'
                                                     )}
-                                                    title={t('deleteTitle', {
-                                                        name: author,
-                                                    })}
+                                                    title={label('deleteTitle')}
                                                     description={t(
-                                                        'deleteBody'
+                                                        reply
+                                                            ? 'deleteBodyReply'
+                                                            : 'deleteBody'
                                                     )}
                                                     confirmLabel={t('delete')}
                                                     fields={{ key: item.key }}
@@ -228,9 +263,7 @@ export function AdminCommentsPage({
                                             variant="outline"
                                             size="sm"
                                             disabled={pending}
-                                            aria-label={t('dismissLabel', {
-                                                name: author,
-                                            })}
+                                            aria-label={label('dismissLabel')}
                                             onClick={() => onDismiss(item.key)}
                                         >
                                             <CheckIcon aria-hidden />

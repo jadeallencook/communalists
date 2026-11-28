@@ -2,9 +2,9 @@
 
 A public discussion under something people can talk about, with up votes. It's built first for **dictionary words** (the **Discussion** section on `/dictionary/{slug}`, phase 3 of [features/19](19-dictionary.md)), so readers can suggest better definitions and point out what one leaves out, and we can improve the words over time. It's also a reason to create an account: anyone can read, but commenting and voting need one. Agreed with the user on 2026-11-27 ([decision #67](../decisions/067-word-discussions-public-flat-comments-with-up-votes.md)).
 
-**Later: organization pages.** The user wants comments on organizations too. The code is written for any **target** (`{ kind, id }`), so that means a new kind, its own page and its own access rules (who may read, write and moderate, scoped by organization and role). Nothing about it is decided yet; see "Adding a target" below.
+**Also on organizations' pages** (built 2026-11-27, [decision #70](../decisions/070-organization-discussions-platform-moderated-with-official-replies.md)): reviews, criticism, praise and questions about a group, with one official reply per comment from the organization. See "On organizations" below.
 
-**Status:** built 2026-11-27 for dictionary words.
+**Status:** built 2026-11-27 for dictionary words, and the same day for organizations.
 
 ## What people see
 
@@ -74,13 +74,28 @@ All four were chosen for the first version (the user's choice, since comments ar
 
 ## Analytics
 
-`discussion-join` (`on`, `id`, `to: sign-up | sign-in`) when a signed-out reader chooses Create an account or Sign in, and `comment-post` (`on`, `id`) when Post comment is pressed. Never the text. Votes and reports aren't sent: they're already in Firestore. See [analytics](../technical/analytics.md).
+`discussion-join` (`on`, `id`, `to: sign-up | sign-in`) when a signed-out reader chooses Create an account or Sign in, `comment-post` (`on`, `id`) when Post comment is pressed, and `comment-reply` (`on`, `id`) when an organization presses Post reply. Never the text. Votes and reports aren't sent: they're already in Firestore. See [analytics](../technical/analytics.md).
 
-## Adding a target (organizations, later)
+## On organizations
+
+The same discussion on `/organization/{handle}`, after the member list and before nearby groups (the user's choice: the member list stays short and close to the top, nearby groups are a "see also"). It's for reviews, criticism, praise and questions. The differences ([decision #70](../decisions/070-organization-discussions-platform-moderated-with-official-replies.md)):
+
+- **Only on listed organizations**, claimed or unclaimed. Never on unlisted ones. Switching to unlisted or deleting the organization hides the discussion (kept, not deleted); listing or restoring brings it back. Claiming keeps it. `discussionOpen` (pure, tested) decides from the stored organization: the page checks it before rendering, the API answers 404 otherwise (`discussionReadable`, cached), and posting, voting and reporting check it again on fresh data in their transactions.
+- **The target is the organization's id**, not its handle, which can change. Its page link is built from the current handle (`organizationPath`).
+- **No ratings.** Comments and up votes only.
+- **Super users moderate**, through reports, on claimed organizations too. The group's owners and moderators can report like anyone, but can't hide or delete others' comments. This is the one place super users act on a claimed organization, and only on its public comments. The admin log names the organization ("Jordan Lee hid a comment on South Bay Mutual Aid").
+- **One official reply per comment**, from owners or moderators, shown under the comment as "Reply from South Bay Mutual Aid" (a heading inside the comment's `article`, on a tinted block with a left border). **Reply** on a comment opens the form in place, with focus in the box ("Your reply as South Bay Mutual Aid", "It's public and shown as from South Bay Mutual Aid, not from you…"); Cancel goes back to Reply; posting announces "Reply posted." and puts focus on the reply. The language is the UI language with **Change**, as for comments. The person who wrote it is stored (`reply.uid`), never sent to the page, and named in the organization's **Recent actions** ("Maya Thompson replied to a comment"). To change a reply, delete it (owners and moderators: "You can write a new one afterward") and write again: there's no editing. Others can **report** a reply (`commentReports/…~reply`); super users can **hide**, **show again** or **delete** it, on the page or on `/admin/comments`, where a reported reply shows "Reply from South Bay Mutual Aid to Marcus Johnson's comment" (`hideReply`, `unhideReply`, `deleteReply` in `adminLog`, with a copy of a deleted reply). Nobody else replies: the list stays flat.
+- **Unclaimed pages:** super users write the reply, shown as **"Reply from the Communalists team"** (`byTeam`), never in the group's name, since the group doesn't run the page. The label stays after a claim. It goes in the organization's log as the team, and in `adminLog` (`replyComment`, `deleteReply`).
+- **A hidden comment hides its reply** for everyone but super users (it could repeat what was hidden). Deleting a comment deletes its reply and any report on it.
+- **All languages first**, since organizations aren't translated. Comments keep their language tag and marker.
+- **No member or role badges** on comments: a member list can be private, and a badge would reveal membership. Owners and moderators comment, vote and report like anyone.
+- The intro says what the discussion is for ("Tell others what this group is like…"), and the empty state invites the first comment.
+
+## Adding a target
 
 1. Add the kind to `COMMENT_TARGET_KINDS`, and its document path and page in `targetPath` and `targetHref` (`src/lib/comments/index.ts`).
-2. Decide who reads, comments and moderates, in `src/lib/comments/access.ts` (`canModerate`) and in the actions, scoped by organization and membership role (AGENTS.md: super users don't moderate claimed organizations). The API route and actions check `commentTargetSchema` and the rules on the server; the UI only hides buttons.
-3. Render a `DiscussionContainer` for it, and add its paths to the rules tests.
+2. Decide who reads, comments and moderates, in `src/lib/comments/access.ts` (`canModerate`) and in the actions, scoped by organization and membership role. For organizations, super users moderate and owners and moderators write the official reply (above). The API route and actions check `commentTargetSchema` and the rules on the server; the UI only hides buttons.
+3. Render a `DiscussionContainer` (`src/app/[locale]/_discussion/`) for it with its page's `href`, and add its paths to the rules tests.
 
 ## Code
 
@@ -92,12 +107,24 @@ All four were chosen for the first version (the user's choice, since comments ar
 | What one viewer sees (authors, their votes)                                      | `src/lib/comments/views.ts`                                                                                    |
 | Server actions                                                                   | `src/app/actions/comments.ts`                                                                                  |
 | Next page / other order                                                          | `src/app/api/comments/[kind]/[id]/route.ts`                                                                    |
-| On a word's page                                                                 | `src/app/[locale]/dictionary/discussion-container.tsx`, `discussion-client.tsx`                                |
+| On a word's or an organization's page (shared)                                   | `src/app/[locale]/_discussion/discussion-container.tsx`, `discussion-client.tsx`                               |
 | Reported comments                                                                | `/admin/comments` (`src/app/[locale]/admin/comments/`)                                                         |
 | UI (all in Storybook)                                                            | `CommentItem`, `CommentForm` (molecules), `Discussion` (organism), `AdminCommentsPage`, `useDiscussion` (hook) |
 | Test comments                                                                    | `comments` in `scripts/seed-data.json` (on words that exist locally, with votes and one report)                |
 
 **Verified 2026-11-27** in a real browser against the seeded emulators.
+
+On organizations (the same day):
+
+- **As Luis (a member of South Bay Mutual Aid):** the discussion came after the member list and before nearby groups, opened on "All languages (3)", and showed Maya's seeded reply under Marcus's comment as "Reply from South Bay Mutual Aid" with Report (named "Report the reply to the comment by Marcus Johnson").
+- **As Maya (owner):** Reply on the two unanswered comments, Delete (no Report) on the organization's reply. Reply put focus in "Your reply as South Bay Mutual Aid"; posting it empty said "Write your reply first." on the focused, invalid box; posting announced "Reply posted." and put focus on the reply. The members page's Recent actions had "Maya Thompson replied to a comment".
+- **Unlisted (Alum Rock Tenants):** no discussion on the page, and `/api/comments/organization/seed-alum-rock` answered 404. **Unclaimed (Eastside Shower Day):** the discussion, with "Reply from the Communalists team".
+- **As Jordan (super user):** `/admin/comments` listed the reported reply ("Reply from South Bay Mutual Aid to Marcus Johnson's comment"); Hide announced "Reply hidden. Its report is closed." and `/admin` logged "Jordan Lee hid a reply on South Bay Mutual Aid". On the page, deleting Maya's new reply asked first (the super-user wording), announced "Reply deleted.", put focus back on Wei's comment, and was logged.
+- **Found and fixed:** the reply form's label first read "Your reply as Reply from South Bay Mutual Aid", and its empty error, Change button and the admin notice spoke of a "comment". Each now says "reply".
+
+Not checked yet on organizations: a screen reader pass, the Storybook a11y panel in both themes, phone width in the real app, and Spanish, Vietnamese and Chinese in the browser (the strings are in all four files).
+
+Words:
 
 Languages (added the same day):
 

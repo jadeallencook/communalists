@@ -4,6 +4,7 @@ import { connection } from 'next/server';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
+import { DiscussionListLoading } from '@/components/organisms/discussion';
 import { NearbyOrganizations } from '@/components/organisms/nearby-organizations';
 import {
     OrganizationPage,
@@ -44,6 +45,9 @@ import { socialUrl } from '@/lib/socials';
 
 import { makeUnclaimedAction } from './actions';
 import { JsonLd } from '../../json-ld';
+import type { Locale } from '@/i18n/routing';
+
+import { DiscussionContainer } from '../../_discussion/discussion-container';
 import { pageMetadata } from '../../page-metadata';
 import { TrackEvent } from '../../track-event';
 import { JoinPanelContainer } from './join-panel-container';
@@ -176,6 +180,25 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
         </>
     );
 
+    // Listed, active organizations only: unlisted groups don't want to be
+    // found (decision #70). `replier` only shows the Reply buttons; the
+    // server checks the role fresh.
+    const discussion = (replier: boolean) =>
+        org.visibility === 'listed' && org.status === 'active' ? (
+            <Suspense fallback={<DiscussionListLoading />}>
+                <DiscussionContainer
+                    target={{ kind: 'organization', id: org.id }}
+                    href={organizationPath(org.handle)}
+                    locale={locale as Locale}
+                    organization={{
+                        name: org.name,
+                        replier,
+                        unclaimed: org.unclaimed,
+                    }}
+                />
+            </Suspense>
+        ) : null;
+
     // Unclaimed: no members, no joining. Super users manage it as owners.
     if (org.unclaimed) {
         return (
@@ -193,6 +216,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                     profile={profile}
                     unclaimed={{ canManage: isPlatformAdmin(user?.uid) }}
                     nearby={nearby}
+                    discussion={discussion(isPlatformAdmin(user?.uid))}
                 />
             </>
         );
@@ -242,6 +266,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                     viewerIsMember: !!role,
                 }}
                 nearby={nearby}
+                discussion={discussion(isStaff(role))}
                 makeUnclaimed={
                     // Shown only when it would work; the action checks again.
                     makeUnclaimedProblem({

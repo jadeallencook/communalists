@@ -47,7 +47,9 @@ export interface OrganizationMembersPageProps {
             | 'editProfile'
             | 'claim'
             | 'deleteOrganization'
-            | 'restoreOrganization';
+            | 'restoreOrganization'
+            | 'replyComment'
+            | 'deleteReply';
         /** editProfile only: which fields changed. */
         fields?: string[];
         actorName: string;

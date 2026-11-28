@@ -431,49 +431,78 @@ for (let i = 0; i < definitions.length; i += 400) {
     await wordBatch.commit();
 }
 
-// --- Comments on words (src/lib/comments/store.ts), on words that exist:
-// reset each time, with their votes and reports. A report on seed-c4 gives
-// /admin/comments something to review. Rate limits of seeded people are cleared.
+// --- Comments (src/lib/comments/store.ts) on words that exist (`slug`) and
+// on seeded organizations (`org`, with the organization's `reply`): reset
+// each time, with their votes and reports. Reports on seed-c4 and on one
+// reply give /admin/comments something to review. Rate limits of seeded
+// people are cleared.
 const wordSlugs = new Set(definitions.map((d) => d.slug));
-const seededComments = comments.filter((c) => wordSlugs.has(c.slug));
+const seededComments = comments.filter((c) =>
+    c.slug ? wordSlugs.has(c.slug) : orgIds.has(c.org)
+);
 const commentBatch = db.batch();
 for (const c of seededComments) {
-    const word = db.collection('definitions').doc(c.slug);
-    const oldVotes = await word
+    const target = c.slug
+        ? { kind: 'definition', id: c.slug }
+        : { kind: 'organization', id: c.org };
+    const parent = db
+        .collection(c.slug ? 'definitions' : 'organizations')
+        .doc(target.id);
+    const oldVotes = await parent
         .collection('commentVotes')
         .where('commentId', '==', c.id)
         .get();
     for (const doc of oldVotes.docs) commentBatch.delete(doc.ref);
-    commentBatch.set(word.collection('comments').doc(c.id), {
+    commentBatch.set(parent.collection('comments').doc(c.id), {
         uid: c.uid,
         text: c.text,
         lang: c.lang,
         votes: c.voters.length,
         hidden: false,
         createdAt: Timestamp.fromMillis(Date.now() - c.daysAgo * 86_400_000),
+        ...(c.reply
+            ? {
+                  reply: {
+                      uid: c.reply.uid,
+                      text: c.reply.text,
+                      lang: c.reply.lang,
+                      byTeam: c.reply.byTeam === true,
+                      hidden: false,
+                      createdAt: Timestamp.fromMillis(
+                          Date.now() - c.reply.daysAgo * 86_400_000
+                      ),
+                  },
+              }
+            : {}),
     });
     for (const voter of c.voters)
         commentBatch.set(
-            word.collection('commentVotes').doc(`${c.id}_${voter}`),
+            parent.collection('commentVotes').doc(`${c.id}_${voter}`),
             { commentId: c.id, uid: voter, createdAt: now }
         );
-    const report = db
-        .collection('commentReports')
-        .doc(`definition~${c.slug}~${c.id}`);
-    if (c.reports?.length) {
-        const reasons = {};
-        for (const r of c.reports)
-            reasons[r.reason] = (reasons[r.reason] ?? 0) + 1;
-        commentBatch.set(report, {
-            target: { kind: 'definition', id: c.slug },
-            commentId: c.id,
-            reporters: c.reports.map((r) => r.uid),
-            reasons,
-            count: c.reports.length,
-            firstAt: now,
-            lastAt: now,
-        });
-    } else commentBatch.delete(report);
+    for (const part of ['comment', 'reply']) {
+        const list = part === 'reply' ? c.reply?.reports : c.reports;
+        const report = db
+            .collection('commentReports')
+            .doc(
+                `${target.kind}~${target.id}~${c.id}${part === 'reply' ? '~reply' : ''}`
+            );
+        if (list?.length) {
+            const reasons = {};
+            for (const r of list)
+                reasons[r.reason] = (reasons[r.reason] ?? 0) + 1;
+            commentBatch.set(report, {
+                target,
+                commentId: c.id,
+                part,
+                reporters: list.map((r) => r.uid),
+                reasons,
+                count: list.length,
+                firstAt: now,
+                lastAt: now,
+            });
+        } else commentBatch.delete(report);
+    }
 }
 for (const { uid } of users)
     commentBatch.delete(db.collection('commentLimits').doc(uid));

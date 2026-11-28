@@ -429,7 +429,9 @@ export async function getAdminFeed(limit = 20): Promise<AdminLogEntry[]> {
             orgName: d.orgName ?? '',
             actorUid: d.actorUid,
             targetName: d.target?.displayName,
-            word: d.definition?.word,
+            // What a comment action was on: a word, or (on organizations'
+            // pages) the organization.
+            word: d.definition?.word ?? d.orgName,
             count: typeof d.count === 'number' ? d.count : undefined,
             at: millis(d.createdAt),
         };

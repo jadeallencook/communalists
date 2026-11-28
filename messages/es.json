@@ -562,7 +562,9 @@
             "editProfile": "{actor} cambió {fields}",
             "claim": "{target} reclamó esta organización",
             "deleteOrganization": "{actor} eliminó esta organización",
-            "restoreOrganization": "{actor} recuperó esta organización"
+            "restoreOrganization": "{actor} recuperó esta organización",
+            "replyComment": "{actor} respondió a un comentario",
+            "deleteReply": "{actor} borró una respuesta a un comentario"
         },
         "reasonQuoted": "«{reason}»",
         "reason": "Motivo",
@@ -844,7 +846,11 @@
             "hideComment": "{actor} ocultó un comentario en {word}",
             "unhideComment": "{actor} volvió a mostrar un comentario oculto en {word}",
             "deleteComment": "{actor} borró un comentario en {word}",
-            "dismissCommentReport": "{actor} descartó un reporte de un comentario en {word}"
+            "dismissCommentReport": "{actor} descartó un reporte de un comentario en {word}",
+            "replyComment": "{actor} respondió a un comentario en {word} en nombre del equipo",
+            "hideReply": "{actor} ocultó una respuesta en {word}",
+            "unhideReply": "{actor} volvió a mostrar una respuesta oculta en {word}",
+            "deleteReply": "{actor} borró una respuesta en {word}"
         },
         "unknownActor": "Un superusuario",
         "errors": {
@@ -1253,7 +1259,11 @@
             "sortedNewest": "Se muestran primero los comentarios más recientes.",
             "loaded": "{count, plural, =0 {No hay más comentarios.} one {Se muestra # comentario más.} other {Se muestran # comentarios más.}}",
             "languageOne": "Se muestran comentarios en {language}: {count, plural, =0 {aún ninguno} one {#} other {#}}.",
-            "languageAll": "Se muestran comentarios en todos los idiomas: {count}."
+            "languageAll": "Se muestran comentarios en todos los idiomas: {count}.",
+            "replied": "Respuesta publicada.",
+            "replyDeleted": "Respuesta borrada.",
+            "replyHidden": "Respuesta ocultada.",
+            "replyUnhidden": "Respuesta visible de nuevo."
         },
         "errors": {
             "textRequired": "Escribe tu comentario primero.",
@@ -1268,7 +1278,10 @@
             "hidden": "Un moderador ocultó ese comentario.",
             "invalid": "Algo estaba mal en esa solicitud. Recarga la página e inténtalo de nuevo.",
             "generic": "Algo salió mal. Inténtalo de nuevo.",
-            "loadFailed": "No se pudieron cargar los comentarios. Revisa tu conexión e inténtalo de nuevo."
+            "loadFailed": "No se pudieron cargar los comentarios. Revisa tu conexión e inténtalo de nuevo.",
+            "alreadyReplied": "Este comentario ya tiene una respuesta. Bórrala primero para escribir otra.",
+            "replyTextRequired": "Escribe tu respuesta primero.",
+            "replyTextTooLong": "Acorta tu respuesta a {max} caracteres o menos."
         },
         "languageLabel": "Ver comentarios en",
         "languageOne": "{language} ({count})",
@@ -1278,7 +1291,31 @@
         "writtenIn": "Escrito en {language}",
         "changeLanguage": "Cambiar",
         "changeLanguageLabel": "Cambiar el idioma de tu comentario",
-        "unavailable": "Los comentarios no se pudieron cargar ahora. Inténtalo de nuevo en unos minutos."
+        "unavailable": "Los comentarios no se pudieron cargar ahora. Inténtalo de nuevo en unos minutos.",
+        "organization": {
+            "intro": "Cuéntales a otras personas cómo es este grupo: la ayuda que recibiste, el voluntariado que hiciste, elogios, preocupaciones o preguntas. Vota a favor de los comentarios con los que estás de acuerdo. La organización puede responder a cada comentario.",
+            "empty": "Todavía no hay comentarios. ¿Has trabajado con este grupo? Sé la primera persona en contar cómo fue."
+        },
+        "reply": "Responder",
+        "replyLabel": "Responder al comentario de {name} como {organization}",
+        "replyFrom": "Respuesta de {name}",
+        "replyFromTeam": "Respuesta del equipo de Communalists",
+        "teamName": "el equipo de Communalists",
+        "replyFormLabel": "Tu respuesta como {from}",
+        "replyFormHint": "Es pública y aparece como de {from}, no de ti. Solo texto. Una respuesta por comentario: para cambiarla, bórrala y escribe otra.",
+        "replyLanguage": "Idioma de tu respuesta",
+        "replyPost": "Publicar respuesta",
+        "replyHiddenText": "Respuesta ocultada por un moderador.",
+        "replyHiddenModerator": "Respuesta ocultada por un moderador. Solo los superusuarios ven el texto de abajo.",
+        "reportReplyLabel": "Denunciar la respuesta al comentario de {name}",
+        "reportReplyTitle": "¿Denunciar esta respuesta?",
+        "hideReplyLabel": "Ocultar la respuesta al comentario de {name}",
+        "unhideReplyLabel": "Volver a mostrar la respuesta al comentario de {name}",
+        "deleteReplyLabel": "Borrar la respuesta al comentario de {name}",
+        "deleteReplyTitle": "¿Borrar esta respuesta?",
+        "deleteReplyBody": "Se quita para todos. Después puedes escribir otra.",
+        "deleteReplyBodyModerator": "Se quita para todos. No se puede deshacer, pero el registro de superusuarios guarda una copia.",
+        "replyChangeLanguageLabel": "Cambiar el idioma de tu respuesta"
     },
     "AdminComments": {
         "metaTitle": "Comentarios reportados",
@@ -1311,7 +1348,17 @@
         "dismissLabel": "Descartar el reporte del comentario de {name}",
         "hidden": "Comentario ocultado. Su reporte está cerrado.",
         "deleted": "Comentario borrado. Su reporte está cerrado.",
-        "dismissed": "Reporte descartado. El comentario sigue igual."
+        "dismissed": "Reporte descartado. El comentario sigue igual.",
+        "replyByOn": "Respuesta de {from} al comentario de {name}, {date}",
+        "hideLabelReply": "Ocultar la respuesta de {from} a {name}",
+        "deleteLabelReply": "Borrar la respuesta de {from} a {name}",
+        "deleteTitleReply": "¿Borrar la respuesta de {from}?",
+        "deleteBodyReply": "Se quita para todos; el comentario se queda. No se puede deshacer, pero el registro de superusuarios guarda una copia.",
+        "dismissLabelReply": "Descartar la denuncia sobre la respuesta de {from} a {name}",
+        "goneReply": "Esta respuesta ya se borró. Descarta la denuncia para quitarla.",
+        "hiddenReply": "Respuesta ocultada. Su denuncia está cerrada.",
+        "deletedReply": "Respuesta borrada. Su denuncia está cerrada.",
+        "dismissedReply": "Denuncia descartada. La respuesta se queda como está."
     },
     "AdminDefinitions": {
         "metaTitle": "Diccionario",

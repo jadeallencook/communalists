@@ -4,7 +4,9 @@ import { fn } from 'storybook/test';
 import { CommentForm } from '@/components/molecules/comment-form';
 import {
     longComment,
+    repliedComment,
     sampleComments,
+    teamRepliedComment,
 } from '@/components/molecules/comment-fixtures';
 
 import {
@@ -163,4 +165,56 @@ export const Loading: Story = {
 /** The comments couldn't load (say, an index still building): the rest of the page is fine. */
 export const Unavailable: Story = {
     render: () => <DiscussionUnavailable />,
+};
+
+// On an organization's page (decision #70): all languages first, its own
+// intro, and the organization's replies.
+
+const orgComments = [repliedComment, ...sampleComments.slice(0, 3)];
+
+/** Signed out, on an organization's page: the reply sits under its comment. */
+export const Organization: Story = {
+    args: {
+        about: 'organization',
+        organizationName: 'South Bay Mutual Aid',
+        viewer: {
+            status: 'signedOut',
+            signUpHref: '/sign-up?next=%2Forganization%2Fsbma%23discussion',
+            signInHref: '/sign-in?next=%2Forganization%2Fsbma%23discussion',
+        },
+        comments: orgComments,
+        counts: { all: 4, en: 3, es: 1, vi: 0, zh: 0 },
+    },
+};
+
+/** One of its owners or moderators: Reply on the comments it hasn't answered, Delete on its reply. */
+export const OrganizationReplier: Story = {
+    args: {
+        about: 'organization',
+        organizationName: 'South Bay Mutual Aid',
+        viewer: { status: 'ready', moderator: false, replier: true },
+        comments: orgComments,
+        onReplyOpen: fn(),
+        onReplyDelete: fn(),
+    },
+};
+
+/** An unclaimed page: replies from the Communalists team. */
+export const OrganizationUnclaimed: Story = {
+    args: {
+        about: 'organization',
+        organizationName: 'Alum Rock Food Pantry',
+        comments: [teamRepliedComment],
+        counts: { all: 1, en: 1, es: 0, vi: 0, zh: 0 },
+    },
+};
+
+/** No comments yet on an organization. */
+export const OrganizationEmpty: Story = {
+    args: {
+        about: 'organization',
+        organizationName: 'South Bay Mutual Aid',
+        comments: [],
+        counts: { all: 0, en: 0, es: 0, vi: 0, zh: 0 },
+    },
 };

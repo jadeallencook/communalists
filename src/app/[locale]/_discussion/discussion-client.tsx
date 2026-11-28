@@ -27,10 +27,19 @@ import {
     deleteCommentAction,
     hideCommentAction,
     postCommentAction,
+    replyCommentAction,
     reportCommentAction,
     voteCommentAction,
 } from '../../actions/comments';
 import type { CommentsPage } from '../../api/comments/[kind]/[id]/route';
+
+/** The reply form's own wording for an empty or too-long reply. */
+const replyProblem = (key: DiscussionProblem): DiscussionProblem =>
+    key === 'textRequired'
+        ? 'replyTextRequired'
+        : key === 'textTooLong'
+          ? 'replyTextTooLong'
+          : key;
 
 /** Connects the Discussion to the comment actions and the page loader. */
 export function DiscussionClient({
@@ -40,6 +49,8 @@ export function DiscussionClient({
     counts,
     language,
     defaultLang,
+    organizationName,
+    replyAsTeam = false,
 }: {
     target: CommentTarget;
     viewer: DiscussionViewer;
@@ -49,6 +60,10 @@ export function DiscussionClient({
     language: CommentLanguageFilter;
     /** The UI language: the reader's language and the form's default. */
     defaultLang: CommentLang;
+    /** On an organization's page: its name, for its replies. */
+    organizationName?: string;
+    /** Replies written now are from the Communalists team (an unclaimed page). */
+    replyAsTeam?: boolean;
 }) {
     const t = useTranslations('Discussion');
     const format = useFormatter();
@@ -64,9 +79,11 @@ export function DiscussionClient({
         },
         post: (input) => postCommentAction(target, input),
         vote: (id, up) => voteCommentAction(target, id, up),
-        report: (id, reason) => reportCommentAction(target, id, reason),
-        remove: (id) => deleteCommentAction(target, id),
-        hide: (id, hidden) => hideCommentAction(target, id, hidden),
+        report: (id, reason, part) =>
+            reportCommentAction(target, id, reason, part),
+        remove: (id, part) => deleteCommentAction(target, id, part),
+        hide: (id, hidden, part) => hideCommentAction(target, id, hidden, part),
+        reply: (id, input) => replyCommentAction(target, id, input),
     };
     const state = useDiscussion({
         initial,
@@ -96,10 +113,42 @@ export function DiscussionClient({
                   }),
     };
     const data = { on: target.kind, id: target.id };
+    const replyingTo = state.comments.find((c) => c.id === state.replyingTo);
+    // Who the reply is shown as from. On an unclaimed page, super users
+    // reply as the team.
+    const replyFrom = replyAsTeam ? t('teamName') : (organizationName ?? '');
 
     return (
         <Discussion
             viewer={viewer}
+            about={target.kind}
+            organizationName={organizationName}
+            replyingTo={state.replyingTo}
+            onReplyOpen={state.openReply}
+            onReplyReport={(id, reason) => state.report(id, reason, 'reply')}
+            onReplyDelete={(id) => state.remove(id, 'reply')}
+            onReplyHide={(id, hidden) => state.hide(id, hidden, 'reply')}
+            replyForm={
+                replyingTo && (
+                    <CommentForm
+                        idPrefix="reply"
+                        reply={{ from: replyFrom, onCancel: state.cancelReply }}
+                        value={state.replyDraft}
+                        onChange={state.setReplyDraft}
+                        lang={state.replyLang}
+                        onLangChange={state.setReplyLang}
+                        onSubmit={state.submitReply}
+                        posting={state.replyPosting}
+                        error={
+                            state.replyError
+                                ? errorText(replyProblem(state.replyError.key))
+                                : undefined
+                        }
+                        errorKey={state.replyError?.at}
+                        submitProps={track('comment-reply', data)}
+                    />
+                )
+            }
             counts={state.counts}
             readerLanguage={defaultLang}
             language={state.language}

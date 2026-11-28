@@ -33,10 +33,18 @@ export interface CommentFormProps {
     errorKey?: number;
     /** Extra attributes for the submit button (analytics). */
     submitProps?: Record<string, string>;
+    /**
+     * Writing the organization's reply instead of a comment: who it's shown
+     * as from ("South Bay Mutual Aid", or the Communalists team), and
+     * Cancel. Focus starts in the text box.
+     */
+    reply?: { from: string; onCancel: () => void };
+    /** Prefix for the form's element ids, so a reply form and the comment form can share a page. */
+    idPrefix?: string;
 }
 
 /**
- * Write a comment and Post. Says the comment is public. Its language is the
+ * Write a comment (or the organization's reply) and Post. Says the comment is public. Its language is the
  * UI language, shown as "Written in English · Change"; Change opens a picker
  * for people writing in another language (it sets the screen reader voice
  * and which readers see the comment first).
@@ -52,6 +60,8 @@ export function CommentForm({
     error,
     errorKey,
     submitProps,
+    reply,
+    idPrefix = 'comment',
 }: CommentFormProps) {
     const t = useTranslations('Discussion');
     const format = useFormatter();
@@ -61,12 +71,14 @@ export function CommentForm({
     useEffect(() => {
         if (errorKey) textRef.current?.focus();
     }, [errorKey]);
+    // A reply form opens where its button was: start typing there.
+    const replying = !!reply;
+    useEffect(() => {
+        if (replying) textRef.current?.focus();
+    }, [replying]);
+    const id = (name: string) => `${idPrefix}-${name}`;
     const left = charactersLeft(value);
-    const describedBy = [
-        'comment-hint',
-        'comment-count',
-        error && 'comment-error',
-    ]
+    const describedBy = [id('hint'), id('count'), error && id('error')]
         .filter(Boolean)
         .join(' ');
 
@@ -80,13 +92,19 @@ export function CommentForm({
             }}
         >
             <Field data-invalid={!!error}>
-                <FieldLabel htmlFor="comment-text">{t('formLabel')}</FieldLabel>
-                <FieldDescription id="comment-hint">
-                    {t('formHint')}
+                <FieldLabel htmlFor={id('text')}>
+                    {reply
+                        ? t('replyFormLabel', { from: reply.from })
+                        : t('formLabel')}
+                </FieldLabel>
+                <FieldDescription id={id('hint')}>
+                    {reply
+                        ? t('replyFormHint', { from: reply.from })
+                        : t('formHint')}
                 </FieldDescription>
                 <Textarea
                     ref={textRef}
-                    id="comment-text"
+                    id={id('text')}
                     name="text"
                     lang={lang}
                     rows={4}
@@ -97,7 +115,7 @@ export function CommentForm({
                 />
                 {/* Not a live region: it would talk over every keystroke. */}
                 <p
-                    id="comment-count"
+                    id={id('count')}
                     className={cn(
                         'text-sm',
                         left < 0 ? 'text-destructive' : 'text-muted-foreground'
@@ -110,7 +128,7 @@ export function CommentForm({
                               max: format.number(COMMENT_MAX),
                           })}
                 </p>
-                <FieldError id="comment-error">{error}</FieldError>
+                <FieldError id={id('error')}>{error}</FieldError>
             </Field>
             <div className="flex flex-col items-start gap-2 text-sm">
                 <p>
@@ -121,7 +139,11 @@ export function CommentForm({
                             <button
                                 type="button"
                                 // Starts with the visible word, so voice control still finds it.
-                                aria-label={t('changeLanguageLabel')}
+                                aria-label={t(
+                                    reply
+                                        ? 'replyChangeLanguageLabel'
+                                        : 'changeLanguageLabel'
+                                )}
                                 className="min-h-6 underline underline-offset-4 outline-none focus-visible:ring-3 focus-visible:ring-ring"
                                 onClick={() => {
                                     setChoosing(true);
@@ -138,12 +160,12 @@ export function CommentForm({
                 </p>
                 {choosing && (
                     <div className="flex flex-col gap-1">
-                        <label htmlFor="comment-lang" className="font-medium">
-                            {t('language')}
+                        <label htmlFor={id('lang')} className="font-medium">
+                            {reply ? t('replyLanguage') : t('language')}
                         </label>
                         <select
                             ref={selectRef}
-                            id="comment-lang"
+                            id={id('lang')}
                             name="lang"
                             value={lang}
                             onChange={(event) =>
@@ -160,15 +182,28 @@ export function CommentForm({
                     </div>
                 )}
             </div>
-            <div>
+            <div className="flex flex-wrap gap-2">
                 <Button
                     type="submit"
                     // Not `disabled`, which would drop focus; posting twice is ignored.
                     aria-disabled={posting || undefined}
                     {...submitProps}
                 >
-                    {posting ? t('posting') : t('post')}
+                    {posting
+                        ? t('posting')
+                        : reply
+                          ? t('replyPost')
+                          : t('post')}
                 </Button>
+                {reply && (
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={reply.onCancel}
+                    >
+                        {t('cancel')}
+                    </Button>
+                )}
             </div>
         </form>
     );

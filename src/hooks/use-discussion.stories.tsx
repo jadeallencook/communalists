@@ -54,6 +54,7 @@ function fakeActions(fails: boolean): DiscussionActions {
                     author: { name: 'Sam Rivera', username: 'sam-rivera' },
                     mine: true,
                     voted: false,
+                    reply: null,
                 },
             };
         },
@@ -77,10 +78,37 @@ function fakeActions(fails: boolean): DiscussionActions {
             await wait();
             return fails ? { ok: false, error: 'notAllowed' } : { ok: true };
         },
+        reply: async (id, { text, lang }) => {
+            await wait();
+            if (fails) return { ok: false, error: 'alreadyReplied' };
+            const comment = sampleComments.find((c) => c.id === id)!;
+            return {
+                ok: true,
+                comment: {
+                    ...comment,
+                    reply: {
+                        text,
+                        lang: lang as CommentView['lang'],
+                        at: Date.now(),
+                        from: 'organization',
+                        hidden: false,
+                    },
+                },
+            };
+        },
     };
 }
 
-function Demo({ fails, moderator }: { fails: boolean; moderator: boolean }) {
+function Demo({
+    fails,
+    moderator,
+    organization = false,
+}: {
+    fails: boolean;
+    moderator: boolean;
+    /** On an organization's page, as one of its owners or moderators: Reply. */
+    organization?: boolean;
+}) {
     const t = useTranslations('Discussion');
     const state = useDiscussion({
         initial: {
@@ -88,7 +116,7 @@ function Demo({ fails, moderator }: { fails: boolean; moderator: boolean }) {
             next: 'more',
         },
         counts: { all: 8, en: 6, es: 2, vi: 0, zh: 0 },
-        language: 'en',
+        language: organization ? 'all' : 'en',
         defaultLang: 'en',
         actions: fakeActions(fails),
     });
@@ -100,7 +128,37 @@ function Demo({ fails, moderator }: { fails: boolean; moderator: boolean }) {
     return (
         <div className="mx-auto max-w-3xl px-4">
             <Discussion
-                viewer={{ status: 'ready', moderator }}
+                viewer={{ status: 'ready', moderator, replier: organization }}
+                about={organization ? 'organization' : 'definition'}
+                organizationName="South Bay Mutual Aid"
+                replyingTo={state.replyingTo}
+                onReplyOpen={state.openReply}
+                onReplyReport={(id, reason) =>
+                    state.report(id, reason, 'reply')
+                }
+                onReplyDelete={(id) => state.remove(id, 'reply')}
+                onReplyHide={(id, hidden) => state.hide(id, hidden, 'reply')}
+                replyForm={
+                    <CommentForm
+                        idPrefix="reply"
+                        reply={{
+                            from: 'South Bay Mutual Aid',
+                            onCancel: state.cancelReply,
+                        }}
+                        value={state.replyDraft}
+                        onChange={state.setReplyDraft}
+                        lang={state.replyLang}
+                        onLangChange={state.setReplyLang}
+                        onSubmit={state.submitReply}
+                        posting={state.replyPosting}
+                        error={
+                            state.replyError
+                                ? errorText(state.replyError.key)
+                                : undefined
+                        }
+                        errorKey={state.replyError?.at}
+                    />
+                }
                 counts={state.counts}
                 readerLanguage="en"
                 language={state.language}
@@ -114,9 +172,9 @@ function Demo({ fails, moderator }: { fails: boolean; moderator: boolean }) {
                 loadFailed={state.loadFailed}
                 busy={state.busy}
                 onVote={state.vote}
-                onReport={state.report}
-                onDelete={state.remove}
-                onHide={state.hide}
+                onReport={(id, reason) => state.report(id, reason)}
+                onDelete={(id) => state.remove(id)}
+                onHide={(id, hidden) => state.hide(id, hidden)}
                 focus={state.focus}
                 notice={
                     state.notice && {
@@ -185,3 +243,15 @@ export const ServerRefuses: Story = { args: { fails: true } };
 
 /** As a super user: Hide, Show again and Delete. */
 export const Moderator: Story = { args: { moderator: true } };
+
+/**
+ * On an organization's page, as one of its owners or moderators: Reply opens
+ * the form under the comment (focus in the text box); Post reply shows it as
+ * from the organization and moves focus to it; Cancel goes back to Reply.
+ */
+export const OrganizationReplies: Story = { args: { organization: true } };
+
+/** Replying fails: "This comment already has a reply." in the form. */
+export const OrganizationReplyRefused: Story = {
+    args: { organization: true, fails: true },
+};

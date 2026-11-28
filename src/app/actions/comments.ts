@@ -4,12 +4,15 @@ import { updateTag } from 'next/cache';
 
 import { isSetupComplete } from '@/lib/account-setup';
 import { getSessionUser } from '@/lib/auth/session';
+import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import {
     commentIdSchema,
     commentInputSchema,
+    commentPartSchema,
     commentTargetSchema,
     reportReasonSchema,
     type CommentErrorKey,
+    type CommentPart,
     type CommentTarget,
     type CommentView,
 } from '@/lib/comments';
@@ -18,13 +21,16 @@ import {
     COMMENT_REPORTS_TAG,
     commentsTag,
     deleteComment,
+    deleteReply,
     dismissReport,
     postComment,
+    postReply,
     reportComment,
     setHidden,
     setVote,
 } from '@/lib/comments/store';
 import { viewsFor } from '@/lib/comments/views';
+import { orgMembersTag } from '@/lib/organizations';
 import { ADMIN_LOG_TAG } from '@/lib/organizations/claim-store';
 import { getUserProfile, getUserProfileFresh } from '@/lib/users';
 
@@ -42,6 +48,7 @@ export type CommentActionError =
     | 'rateLimited'
     | 'ownComment'
     | 'hidden'
+    | 'alreadyReplied'
     | 'invalid'
     | 'generic';
 
@@ -56,14 +63,22 @@ function changed(target: CommentTarget, moderation = false) {
 }
 
 /** A signed-in person with a finished account (the name shown on comments). */
-async function participant(): Promise<{ ok: true; uid: string } | Failure> {
+async function participant(): Promise<
+    { ok: true; uid: string; displayName: string } | Failure
+> {
     const user = await getSessionUser();
     if (!user) return { ok: false, error: 'signedOut' };
     let profile = await getUserProfile(user.uid);
     if (!isSetupComplete(profile))
         profile = await getUserProfileFresh(user.uid);
     if (!isSetupComplete(profile)) return { ok: false, error: 'setupNeeded' };
-    return { ok: true, uid: user.uid };
+    return { ok: true, uid: user.uid, displayName: profile!.displayName ?? '' };
+}
+
+/** Which part an action is on: the comment (default), or the organization's reply to it. */
+function partOf(raw: unknown): CommentPart | null {
+    const part = commentPartSchema.safeParse(raw ?? 'comment');
+    return part.success ? part.data : null;
 }
 
 const fail = (where: string, error: unknown): Failure => {
@@ -146,12 +161,14 @@ export type ReportState = { ok: true; already: boolean } | Failure;
 export async function reportCommentAction(
     rawTarget: CommentTarget,
     rawId: string,
-    rawReason: string
+    rawReason: string,
+    rawPart?: CommentPart
 ): Promise<ReportState> {
     const target = commentTargetSchema.safeParse(rawTarget);
     const id = commentIdSchema.safeParse(rawId);
     const reason = reportReasonSchema.safeParse(rawReason);
-    if (!target.success || !id.success || !reason.success)
+    const part = partOf(rawPart);
+    if (!target.success || !id.success || !reason.success || !part)
         return { ok: false, error: 'invalid' };
     const who = await participant();
     if (!who.ok) return who;
@@ -160,7 +177,8 @@ export async function reportCommentAction(
             target.data,
             id.data,
             who.uid,
-            reason.data
+            reason.data,
+            part
         );
         if (!result.ok) return result;
         if (!result.already) updateTag(COMMENT_REPORTS_TAG);
@@ -172,17 +190,25 @@ export async function reportCommentAction(
 
 export type ModerationState = { ok: true } | Failure;
 
-/** The author deletes their own comment, or a super user deletes anyone's (logged). */
+/**
+ * The author deletes their own comment, or a super user deletes anyone's
+ * (logged). On `reply`: the organization's owners or moderators remove its
+ * reply (in its log), or a super user does (in adminLog).
+ */
 export async function deleteCommentAction(
     rawTarget: CommentTarget,
-    rawId: string
+    rawId: string,
+    rawPart?: CommentPart
 ): Promise<ModerationState> {
     const target = commentTargetSchema.safeParse(rawTarget);
     const id = commentIdSchema.safeParse(rawId);
-    if (!target.success || !id.success) return { ok: false, error: 'invalid' };
+    const part = partOf(rawPart);
+    if (!target.success || !id.success || !part)
+        return { ok: false, error: 'invalid' };
     const user = await getSessionUser();
     if (!user) return { ok: false, error: 'signedOut' };
     const moderator = canModerate(target.data, user.uid);
+    if (part === 'reply') return removeReply(target.data, id.data, moderator);
     try {
         const result = await deleteComment(
             target.data,
@@ -201,15 +227,93 @@ export async function deleteCommentAction(
     }
 }
 
-/** A super user hides a comment, or shows it again (logged). */
+async function removeReply(
+    target: CommentTarget,
+    commentId: string,
+    moderator: boolean
+): Promise<ModerationState> {
+    const who = await participant();
+    if (!who.ok) return who;
+    try {
+        const result = await deleteReply(
+            target,
+            commentId,
+            { ...who, platformAdmin: isPlatformAdmin(who.uid) },
+            moderator,
+            moderator ? await targetName(target) : ''
+        );
+        if (!result.ok) return result;
+        replied(target);
+        updateTag(COMMENT_REPORTS_TAG);
+        return { ok: true };
+    } catch (error) {
+        return fail('delete reply', error);
+    }
+}
+
+/** After a reply is written or removed: the discussion, the organization's log and the team's. */
+function replied(target: CommentTarget) {
+    changed(target);
+    updateTag(orgMembersTag(target.id));
+    updateTag(ADMIN_LOG_TAG);
+}
+
+export type ReplyState =
+    | { ok: true; comment: CommentView }
+    | { ok: false; error: CommentActionError; field?: CommentErrorKey };
+
+/**
+ * The organization's reply to a comment on its page, by its owners or
+ * moderators (super users on an unclaimed page, as the Communalists team).
+ * One per comment. The role is checked on fresh data.
+ */
+export async function replyCommentAction(
+    rawTarget: CommentTarget,
+    rawId: string,
+    raw: { text: string; lang: string }
+): Promise<ReplyState> {
+    const target = commentTargetSchema.safeParse(rawTarget);
+    const id = commentIdSchema.safeParse(rawId);
+    if (!target.success || !id.success) return { ok: false, error: 'invalid' };
+    const who = await participant();
+    if (!who.ok) return who;
+    const input = commentInputSchema.safeParse(raw);
+    if (!input.success)
+        return {
+            ok: false,
+            error: 'invalid',
+            field: input.error.issues[0]?.message as CommentErrorKey,
+        };
+    try {
+        const result = await postReply(
+            target.data,
+            id.data,
+            { ...who, platformAdmin: isPlatformAdmin(who.uid) },
+            input.data
+        );
+        if (!result.ok) return result;
+        replied(target.data);
+        const [comment] = await viewsFor(target.data, [result.comment], {
+            uid: who.uid,
+            moderator: canModerate(target.data, who.uid),
+        });
+        return { ok: true, comment };
+    } catch (error) {
+        return fail('reply', error);
+    }
+}
+
+/** A super user hides a comment or a reply, or shows it again (logged). */
 export async function hideCommentAction(
     rawTarget: CommentTarget,
     rawId: string,
-    hidden: boolean
+    hidden: boolean,
+    rawPart?: CommentPart
 ): Promise<ModerationState> {
     const target = commentTargetSchema.safeParse(rawTarget);
     const id = commentIdSchema.safeParse(rawId);
-    if (!target.success || !id.success || typeof hidden !== 'boolean')
+    const part = partOf(rawPart);
+    if (!target.success || !id.success || typeof hidden !== 'boolean' || !part)
         return { ok: false, error: 'invalid' };
     const user = await getSessionUser();
     if (!user) return { ok: false, error: 'signedOut' };
@@ -221,7 +325,8 @@ export async function hideCommentAction(
             id.data,
             user.uid,
             hidden,
-            await targetName(target.data)
+            await targetName(target.data),
+            part
         );
         if (!result.ok) return result;
         changed(target.data, true);
@@ -231,14 +336,17 @@ export async function hideCommentAction(
     }
 }
 
-/** A super user closes a report without changing the comment (logged). */
+/** A super user closes a report without changing the comment or reply (logged). */
 export async function dismissReportAction(
     rawTarget: CommentTarget,
-    rawId: string
+    rawId: string,
+    rawPart?: CommentPart
 ): Promise<ModerationState> {
     const target = commentTargetSchema.safeParse(rawTarget);
     const id = commentIdSchema.safeParse(rawId);
-    if (!target.success || !id.success) return { ok: false, error: 'invalid' };
+    const part = partOf(rawPart);
+    if (!target.success || !id.success || !part)
+        return { ok: false, error: 'invalid' };
     const user = await getSessionUser();
     if (!user) return { ok: false, error: 'signedOut' };
     if (!canModerate(target.data, user.uid))
@@ -248,7 +356,8 @@ export async function dismissReportAction(
             target.data,
             id.data,
             user.uid,
-            await targetName(target.data)
+            await targetName(target.data),
+            part
         );
         if (!result.ok) return { ok: false, error: 'notFound' };
         updateTag(COMMENT_REPORTS_TAG);

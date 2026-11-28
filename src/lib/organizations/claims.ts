@@ -117,4 +117,10 @@ export type AdminAction =
     | 'hideComment'
     | 'unhideComment'
     | 'deleteComment'
-    | 'dismissCommentReport';
+    | 'dismissCommentReport'
+    // Organizations' replies to comments (decision #70): super users hiding
+    // or deleting one, or writing one for the team on an unclaimed page.
+    | 'hideReply'
+    | 'unhideReply'
+    | 'deleteReply'
+    | 'replyComment';

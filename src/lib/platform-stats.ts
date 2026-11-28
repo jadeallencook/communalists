@@ -80,6 +80,10 @@ export const ACTIVITY_GROUPS = {
         'unhideComment',
         'deleteComment',
         'dismissCommentReport',
+        'hideReply',
+        'unhideReply',
+        'deleteReply',
+        'replyComment',
     ],
     exports: ['exportOrganizations'],
 } as const satisfies Record<string, readonly AdminAction[]>;
@@ -105,6 +109,10 @@ export const FEED_ACTIONS = [
     'unhideComment',
     'deleteComment',
     'dismissCommentReport',
+    'hideReply',
+    'unhideReply',
+    'deleteReply',
+    'replyComment',
     'backfillDetails',
 ] as const satisfies readonly AdminAction[];
 

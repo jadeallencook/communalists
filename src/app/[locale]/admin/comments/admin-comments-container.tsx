@@ -7,7 +7,7 @@ import {
     AdminCommentsPage,
     type AdminReportedComment,
 } from '@/components/pages/admin-comments-page';
-import type { CommentTarget } from '@/lib/comments';
+import type { CommentPart, CommentTarget } from '@/lib/comments';
 
 import {
     deleteCommentAction,
@@ -16,7 +16,11 @@ import {
     type ModerationState,
 } from '../../../actions/comments';
 
-type Item = AdminReportedComment & { target: CommentTarget; commentId: string };
+type Item = AdminReportedComment & {
+    target: CommentTarget;
+    commentId: string;
+    part: CommentPart;
+};
 
 /** Hide, delete or dismiss from /admin/comments; the row goes once it's handled. */
 export function AdminCommentsContainer({ items: initial }: { items: Item[] }) {
@@ -53,7 +57,11 @@ export function AdminCommentsContainer({ items: initial }: { items: Item[] }) {
             // A comment or report that's already gone is handled too.
             if (result.ok || result.error === 'notFound') {
                 setItems((list) => list.filter((i) => i.key !== key));
-                setNotice({ tone: 'status', text: t(done), at: Date.now() });
+                setNotice({
+                    tone: 'status',
+                    text: t(item.part === 'reply' ? `${done}Reply` : done),
+                    at: Date.now(),
+                });
             } else {
                 setNotice({
                     tone: 'alert',
@@ -69,15 +77,23 @@ export function AdminCommentsContainer({ items: initial }: { items: Item[] }) {
             busy={busy}
             notice={notice}
             onHide={act(
-                (item) => hideCommentAction(item.target, item.commentId, true),
+                (item) =>
+                    hideCommentAction(
+                        item.target,
+                        item.commentId,
+                        true,
+                        item.part
+                    ),
                 'hidden'
             )}
             onDelete={act(
-                (item) => deleteCommentAction(item.target, item.commentId),
+                (item) =>
+                    deleteCommentAction(item.target, item.commentId, item.part),
                 'deleted'
             )}
             onDismiss={act(
-                (item) => dismissReportAction(item.target, item.commentId),
+                (item) =>
+                    dismissReportAction(item.target, item.commentId, item.part),
                 'dismissed'
             )}
         />
