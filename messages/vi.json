@@ -1193,7 +1193,7 @@
         "setupBody": "Hãy hoàn tất thiết lập tài khoản để tham gia thảo luận. Chúng tôi cần tên của bạn để hiện trên bình luận.",
         "setup": "Hoàn tất thiết lập",
         "formLabel": "Bình luận của bạn",
-        "formHint": "Tên và bình luận của bạn là công khai. Chỉ dùng chữ thường. Một dòng trống bắt đầu đoạn mới.",
+        "formHint": "Tên và bình luận của bạn là công khai. Chỉ dùng văn bản thuần, không định dạng. Một dòng trống bắt đầu đoạn mới.",
         "charactersLeft": "{count, plural, other {Còn # ký tự}}",
         "tooLongBy": "{count, plural, other {Dư # ký tự}}",
         "language": "Ngôn ngữ của bình luận",
