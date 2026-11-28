@@ -116,8 +116,10 @@ export async function shareCard({
                 display: 'flex',
                 flexDirection: 'column',
                 padding: 80,
-                background: '#fafafa',
-                color: '#171717',
+                // The site's dark theme (globals.css .dark): background,
+                // foreground, muted and muted-foreground.
+                background: '#0a0a0a',
+                color: '#fafafa',
                 fontFamily: fonts.map((f) => f.name).join(', '),
             }}
         >
@@ -148,7 +150,7 @@ export async function shareCard({
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            background: '#e5e5e5',
+                            background: '#262626',
                             fontSize: 120,
                         }}
                     >
@@ -171,7 +173,7 @@ export async function shareCard({
                     >
                         {cleanName}
                     </div>
-                    <div style={{ fontSize: 40, color: '#525252' }}>
+                    <div style={{ fontSize: 40, color: '#a1a1a1' }}>
                         {cleanDetail}
                     </div>
                 </div>

@@ -30,7 +30,7 @@ The organization's structured data names only its general area (`location.label`
 
 ## Share cards
 
-Built 2026-11-28 ([decision #72](../decisions/072-share-cards-for-profiles-and-organizations-bundled-fonts.md)). A profile's or organization's link preview is a generated 1200×630 card: the photo or logo (round for people, rounded square for organizations), or initials, then the name, a line under it (`@username`, or the organization's city) and "Communalists". It replaced the homepage photo on those pages.
+Built 2026-11-28 ([decision #72](../decisions/072-share-cards-for-profiles-and-organizations-bundled-fonts.md)). A profile's or organization's link preview is a generated 1200×630 card: the photo or logo (round for people, rounded square for organizations), or initials, then the name, a line under it (`@username`, or the organization's city) and "Communalists", on a dark background in the site's dark-theme colours (text at least 7.7:1). It replaced the homepage photo on those pages.
 
 - **Served by** `/api/share-cards/person/{username}` and `/api/share-cards/organization/{handle}` (`src/app/api/share-cards/`), drawn with `next/og`. The page links to it through `pageMetadata({ image })` with `?v=`, a hash of everything the card shows (`shareCardVersion`), so a changed name, photo or visibility gets a new link and apps fetch a fresh card. Cached an hour.
 - **Profiles show only what a signed-out visitor sees**, whoever is looking at the page: apps fetch previews signed out and keep them. The photo, pronouns, city and bio appear in the card and description only when the profile is shared with **Everyone**. Otherwise it's the name, `@username`, initials and a generic line.
