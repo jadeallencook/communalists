@@ -16,6 +16,7 @@ import { languageName } from '@/lib/organizations/client';
 import { ORG_LANGUAGES, type OrgLanguage } from '@/lib/organizations/options';
 import {
     profileView,
+    type ProfileEndorsement,
     type ProfileGroup,
     type ProfileSettings,
 } from '@/lib/profiles';
@@ -35,6 +36,7 @@ export function ProfileSettingsContainer({
     photo,
     settings,
     groups,
+    endorsements,
 }: {
     name: string;
     username: string;
@@ -43,6 +45,8 @@ export function ProfileSettingsContainer({
     photo?: string;
     settings: ProfileSettings;
     groups: ProfileGroup[];
+    /** Organizations they endorse, newest first; null if they couldn't be loaded. */
+    endorsements: ProfileEndorsement[] | null;
 }) {
     const locale = useLocale();
     const [state, formAction, pending] = useActionState<
@@ -61,6 +65,7 @@ export function ProfileSettingsContainer({
         shownGroups: groups
             .map((g) => g.orgId)
             .filter((id) => !settings.groups.hidden.includes(id)),
+        endorsementsShow: settings.endorsements.show,
     });
     const [audience, setAudience] = useState<PreviewAudience>('groupmate');
 
@@ -79,6 +84,7 @@ export function ProfileSettingsContainer({
                 .map((g) => g.orgId)
                 .filter((id) => !value.shownGroups.includes(id)),
         },
+        endorsements: { show: value.endorsementsShow },
     };
     const person = {
         name,
@@ -87,6 +93,7 @@ export function ProfileSettingsContainer({
         photo,
         settings: draft,
         groups,
+        endorsements: endorsements ?? [],
     };
     const none = new Set<string>();
 
@@ -106,6 +113,15 @@ export function ProfileSettingsContainer({
                         orgId,
                         name: groupName,
                     }))}
+                    endorsements={
+                        endorsements?.map(
+                            ({ orgId, name: orgName, handle }) => ({
+                                orgId,
+                                name: orgName,
+                                handle,
+                            })
+                        ) ?? null
+                    }
                     languageOptions={ORG_LANGUAGES.map((code) => ({
                         value: code,
                         label: languageName(code, locale),

@@ -12,6 +12,8 @@ import {
 } from '@/components/pages/organization-page';
 import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
+import { canBeEndorsed, endorseState } from '@/lib/endorsements';
+import { getEndorsedOrgIds } from '@/lib/endorsements/store';
 import {
     getDirectoryLocal,
     getMembershipFresh,
@@ -53,6 +55,7 @@ import { DiscussionContainer } from '../../_discussion/discussion-container';
 import { pageMetadata } from '../../page-metadata';
 import { TrackEvent } from '../../track-event';
 import { RemovePhotoContainer } from '../../_photos/remove-photo-container';
+import { EndorsePanelContainer } from './endorse-panel-container';
 import { JoinPanelContainer } from './join-panel-container';
 
 type Props = PageProps<'/[locale]/organization/[handle]'>;
@@ -178,6 +181,32 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
         nearbySection(org),
     ]);
 
+    // Endorsing (decision #73): anyone, member or not, on listed groups.
+    let endorsed = false;
+    let endorseLoadFailed = false;
+    if (user) {
+        try {
+            endorsed = (await getEndorsedOrgIds(user.uid)).includes(org.id);
+        } catch (error) {
+            console.error(
+                '[endorsements] viewer read failed',
+                (error as Error).message
+            );
+            endorseLoadFailed = true;
+        }
+    }
+    const endorsable = canBeEndorsed(org);
+    const state = endorseState({ signedIn: !!user, endorsed, endorsable });
+    const endorse = state ? (
+        <EndorsePanelContainer
+            state={state}
+            count={org.endorsementCount}
+            orgId={org.id}
+            handle={org.handle}
+            loadFailed={endorseLoadFailed}
+        />
+    ) : null;
+
     const locale = await getLocale();
     const view = (
         <>
@@ -220,6 +249,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                 <OrganizationPage
                     role={null}
                     join={null}
+                    endorse={endorse}
                     members={{
                         people: [],
                         total: 0,
@@ -257,6 +287,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
             {view}
             <OrganizationPage
                 role={role}
+                endorse={endorse}
                 join={
                     <JoinPanelContainer
                         state={joinState(!!user, org.joinPolicy, membership)}

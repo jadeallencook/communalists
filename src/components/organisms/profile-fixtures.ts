@@ -2,6 +2,7 @@
 import {
     profileSettingsOf,
     profileView,
+    type ProfileEndorsement,
     type ProfileGroup,
 } from '@/lib/profiles';
 import { SAMPLE_PHOTO } from '@/components/molecules/photo-fixtures';
@@ -33,6 +34,22 @@ export const sampleGroups: ProfileGroup[] = [
     },
 ];
 
+export const sampleEndorsements: ProfileEndorsement[] = [
+    {
+        orgId: 'garden',
+        name: 'Eastside Community Garden',
+        handle: 'eastside-garden',
+        listed: true,
+    },
+    {
+        orgId: 'tools',
+        name: 'San José Tool Library',
+        handle: 'sj-tool-library',
+        photo: SAMPLE_PHOTO,
+        listed: true,
+    },
+];
+
 export const sampleSettings = profileSettingsOf({
     visibility: 'public',
     pronouns: 'she/her',
@@ -50,6 +67,7 @@ export const samplePerson = {
     photo: SAMPLE_PHOTO,
     settings: sampleSettings,
     groups: sampleGroups,
+    endorsements: sampleEndorsements,
 };
 
 /** As someone signed out sees it: the unlisted tenants union never shows. */

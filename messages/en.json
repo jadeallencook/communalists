@@ -696,7 +696,12 @@
             "groupsShow": "Show my groups on my profile",
             "save": "Save profile",
             "saving": "Saving…",
-            "saved": "Saved."
+            "saved": "Saved.",
+            "endorsementsTitle": "Organizations you endorse",
+            "endorsementsHint": "Endorse any listed group from its page to show it off here. You don't need to be a member. They follow your profile visibility. To take one back, open the group's page.",
+            "endorsementsShow": "Show the organizations I endorse on my profile",
+            "endorsementsNone": "You haven't endorsed any organizations yet.",
+            "endorsementsList": "Organizations you endorse"
         },
         "preview": {
             "title": "Preview",
@@ -723,7 +728,28 @@
             "generic": "Something went wrong. Please try again."
         },
         "metaDescription": "{name} is on Communalists, a free platform for mutual aid networks.",
-        "cardAlt": "Profile card for {name}"
+        "cardAlt": "Profile card for {name}",
+        "endorsements": "Endorses",
+        "endorsementsFailed": "Couldn't load endorsements right now. Try again later."
+    },
+    "Endorsements": {
+        "title": "Endorsements",
+        "count": "{count, plural, one {Endorsed by # person} other {Endorsed by # people}}",
+        "none": "No endorsements yet.",
+        "hint": "Show this group on your profile. You don't need to be a member.",
+        "youEndorse": "You endorse this group. It's on your profile.",
+        "endorse": "Endorse",
+        "remove": "Remove endorsement",
+        "signIn": "Sign in to endorse",
+        "loadFailed": "Couldn't check your endorsement right now. Try again later.",
+        "done": {
+            "endorsed": "Endorsed. It's on your profile now.",
+            "removed": "Endorsement removed."
+        },
+        "errors": {
+            "notFound": "This group can no longer be endorsed.",
+            "generic": "Something went wrong. Try again."
+        }
     },
     "LocationField": {
         "country": "Country",

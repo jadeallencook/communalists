@@ -696,7 +696,12 @@
             "groupsShow": "Hiện các nhóm của tôi trên hồ sơ",
             "save": "Lưu hồ sơ",
             "saving": "Đang lưu…",
-            "saved": "Đã lưu."
+            "saved": "Đã lưu.",
+            "endorsementsTitle": "Các tổ chức bạn tán thành",
+            "endorsementsHint": "Tán thành bất kỳ nhóm công khai nào từ trang của nhóm để giới thiệu nhóm ở đây. Bạn không cần là thành viên. Danh sách này theo chế độ hiển thị hồ sơ của bạn. Để rút lại, hãy mở trang của nhóm.",
+            "endorsementsShow": "Hiện các tổ chức tôi tán thành trên hồ sơ",
+            "endorsementsNone": "Bạn chưa tán thành tổ chức nào.",
+            "endorsementsList": "Các tổ chức bạn tán thành"
         },
         "preview": {
             "title": "Xem trước",
@@ -723,7 +728,28 @@
             "generic": "Đã xảy ra lỗi. Hãy thử lại."
         },
         "metaDescription": "{name} có mặt trên Communalists, nền tảng miễn phí cho các mạng lưới tương trợ.",
-        "cardAlt": "Thẻ hồ sơ của {name}"
+        "cardAlt": "Thẻ hồ sơ của {name}",
+        "endorsements": "Tán thành",
+        "endorsementsFailed": "Hiện không tải được danh sách tán thành. Hãy thử lại sau."
+    },
+    "Endorsements": {
+        "title": "Tán thành",
+        "count": "{count, plural, other {# người tán thành}}",
+        "none": "Chưa có ai tán thành.",
+        "hint": "Hiện nhóm này trên hồ sơ của bạn. Bạn không cần là thành viên.",
+        "youEndorse": "Bạn tán thành nhóm này. Nhóm đang hiện trên hồ sơ của bạn.",
+        "endorse": "Tán thành",
+        "remove": "Rút lại tán thành",
+        "signIn": "Đăng nhập để tán thành",
+        "loadFailed": "Hiện không kiểm tra được việc tán thành của bạn. Hãy thử lại sau.",
+        "done": {
+            "endorsed": "Đã tán thành. Nhóm đã hiện trên hồ sơ của bạn.",
+            "removed": "Đã rút lại tán thành."
+        },
+        "errors": {
+            "notFound": "Nhóm này không còn nhận tán thành.",
+            "generic": "Đã xảy ra lỗi. Hãy thử lại."
+        }
     },
     "LocationField": {
         "country": "Quốc gia",

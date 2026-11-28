@@ -37,6 +37,11 @@ export interface AnalyticsEvents {
     'org-join-sign-in': { org: string };
     'org-cancel-request': { org: string };
     'org-leave': { org: string };
+    /** Endorse or Remove endorsement was pressed (decision #73). */
+    'org-endorse': { org: string };
+    'org-unendorse': { org: string };
+    /** Signed out, "Sign in to endorse" was pressed. */
+    'org-endorse-sign-in': { org: string };
     /** "Claim this organization" on an unclaimed one. */
     'org-claim': { org: string };
     'org-claim-submit': { org: string };

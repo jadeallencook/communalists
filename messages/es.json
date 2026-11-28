@@ -696,7 +696,12 @@
             "groupsShow": "Mostrar mis grupos en mi perfil",
             "save": "Guardar perfil",
             "saving": "Guardando…",
-            "saved": "Guardado."
+            "saved": "Guardado.",
+            "endorsementsTitle": "Organizaciones que respaldas",
+            "endorsementsHint": "Respalda cualquier grupo visible desde su página para mostrarlo aquí. No necesitas ser miembro. Siguen la visibilidad de tu perfil. Para retirar un respaldo, abre la página del grupo.",
+            "endorsementsShow": "Mostrar en mi perfil las organizaciones que respaldo",
+            "endorsementsNone": "Todavía no has respaldado ninguna organización.",
+            "endorsementsList": "Organizaciones que respaldas"
         },
         "preview": {
             "title": "Vista previa",
@@ -723,7 +728,28 @@
             "generic": "Algo salió mal. Inténtalo de nuevo."
         },
         "metaDescription": "{name} está en Communalists, una plataforma gratuita para redes de ayuda mutua.",
-        "cardAlt": "Tarjeta del perfil de {name}"
+        "cardAlt": "Tarjeta del perfil de {name}",
+        "endorsements": "Respalda a",
+        "endorsementsFailed": "No se pudieron cargar los respaldos. Inténtalo más tarde."
+    },
+    "Endorsements": {
+        "title": "Respaldos",
+        "count": "{count, plural, one {Respaldado por # persona} other {Respaldado por # personas}}",
+        "none": "Todavía no tiene respaldos.",
+        "hint": "Muestra este grupo en tu perfil. No necesitas ser miembro.",
+        "youEndorse": "Respaldas a este grupo. Aparece en tu perfil.",
+        "endorse": "Respaldar",
+        "remove": "Retirar respaldo",
+        "signIn": "Inicia sesión para respaldar",
+        "loadFailed": "No se pudo comprobar tu respaldo ahora. Inténtalo más tarde.",
+        "done": {
+            "endorsed": "Respaldado. Ya aparece en tu perfil.",
+            "removed": "Respaldo retirado."
+        },
+        "errors": {
+            "notFound": "Ya no se puede respaldar a este grupo.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        }
     },
     "LocationField": {
         "country": "País",

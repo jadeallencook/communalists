@@ -1,0 +1,15 @@
+# 073 · Endorsements: organizations on a person's profile, a count on the organization's page
+
+**Date:** 2026-11-28
+**Status:** Accepted, built the same day
+**Context:** The user wanted an endorsement section on profiles: people show off the organizations they like without having to join them. A profile already lists the groups someone is in, filtered so it never undoes a group's privacy ([decision #31](031-profiles-visibility-groups-skill-search.md)). Endorsing a group can say as much about a person as joining it (a tenants union, a health group), so the same care applies.
+**Decision** (each point the user's choice from options we laid out):
+
+- **Anyone signed in with a finished account can endorse a listed, active organization**, member or not, claimed or unclaimed, from an **Endorse** card on the organization's page. **Remove endorsement** takes it back. Unlisted groups can't be endorsed: they don't want to be found, and an endorsement would point people at them. If a group becomes unlisted later, its endorsers still see the card so they can take theirs back.
+- **Endorsements follow the profile visibility**, like the bio, and a switch in profile settings turns the section off (on by default). A group that has become unlisted shows only to its own members, the same rule as the groups list.
+- **The organization's page shows a count only** ("Endorsed by 24 people"), never names. Names stay on each person's profile, under their own visibility.
+- **No note**, just the endorsement. It adds no new public text to moderate; the page's discussion already covers "why".
+- **The word is "Endorse"**: the button, and "Endorses" as the profile heading. Spanish "Respaldar", Vietnamese "Tán thành" (not "Ủng hộ", which also means donating), Chinese "认可".
+
+**Alternatives:** endorsements always public, or with a visibility setting of their own (simpler, or more control, but both can expose more than someone chose for the rest of their profile); listing endorsers on the organization's page (each filtered by their visibility: more privacy logic and a page that grows long), or nothing there for now; an optional short note (nicer, but new public text that needs reports and moderation); "Support" (could read as donating) or "Recommend" (suggests personal experience).
+**Consequences:** A new `endorsements/{orgId}_{uid}` collection (server only, in the deny-all rules tests) and `endorsementCount` on organizations, kept in the same transaction. No copy of the organization is stored on an endorsement: profiles read each organization through the cached `getOrganizationById`, so renames and logos need no syncing. `profile.endorsements.show` in user settings. New analytics events `org-endorse`, `org-unendorse`, `org-endorse-sign-in`. No cap on how many groups one person endorses yet; revisit if profiles get long. Managing them happens on each organization's page; settings list them with links. Docs updated: [features/17](../features/17-profiles.md#endorsements), [features/16](../features/16-organizations.md), [data model](../technical/data-model.md), [analytics](../technical/analytics.md), `AGENTS.md`, the decisions index.

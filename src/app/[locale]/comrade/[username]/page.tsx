@@ -9,6 +9,7 @@ import {
 } from '@/components/pages/profile-page';
 import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
+import { getProfileEndorsements } from '@/lib/endorsements/store';
 import { getMemberships, getProfileGroups } from '@/lib/organizations';
 import { handleProblem } from '@/lib/organizations/handle';
 import { profilePath } from '@/lib/paths';
@@ -103,9 +104,15 @@ async function ProfileServerContainer({ params }: Pick<Props, 'params'>) {
 
     const viewer = await getSessionUser();
     const isSelf = viewer?.uid === uid;
-    const [groups, viewerMemberships] = await Promise.all([
+    const [groups, viewerMemberships, endorsements] = await Promise.all([
         getProfileGroups(uid),
         viewer && !isSelf ? getMemberships(viewer.uid) : Promise.resolve([]),
+        // A section of the page: if it fails, it says so and the rest shows
+        // (decision #68).
+        getProfileEndorsements(uid).catch((error: Error) => {
+            console.error('[endorsements] profile read failed', error.message);
+            return null;
+        }),
     ]);
     const viewerOrgIds = new Set(viewerMemberships.map((m) => m.orgId));
     const view = profileView(
@@ -116,6 +123,7 @@ async function ProfileServerContainer({ params }: Pick<Props, 'params'>) {
             photo: person.photo?.large,
             settings: person.profile,
             groups,
+            endorsements: endorsements ?? [],
         },
         profileViewer({
             isSelf,
@@ -128,6 +136,12 @@ async function ProfileServerContainer({ params }: Pick<Props, 'params'>) {
         <ProfilePage
             view={view}
             isSelf={isSelf}
+            // Only when this viewer would see them: a hidden list stays hidden.
+            endorsementsFailed={
+                endorsements === null &&
+                !!view.details &&
+                (isSelf || person.profile.endorsements.show)
+            }
             moderation={
                 // Super users can remove a photo they can see (decision #71).
                 !isSelf && isPlatformAdmin(viewer?.uid) ? (

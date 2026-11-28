@@ -13,6 +13,8 @@ export interface ProfileCardProps {
     view: ProfileView;
     /** Heading level for the name: 1 on the profile page, 2 in a preview. */
     headingLevel?: 1 | 2;
+    /** Their endorsements couldn't be loaded (and this viewer would see them). */
+    endorsementsFailed?: boolean;
 }
 
 const host = (url: string) => {
@@ -28,7 +30,11 @@ const host = (url: string) => {
  * viewer (bio, city, languages, links, groups), or a note that the rest is
  * private. No logic: `view` is already filtered on the server.
  */
-export function ProfileCard({ view, headingLevel = 1 }: ProfileCardProps) {
+export function ProfileCard({
+    view,
+    headingLevel = 1,
+    endorsementsFailed = false,
+}: ProfileCardProps) {
     const t = useTranslations('Profile');
     const tOrg = useTranslations('Organizations');
     const locale = useLocale();
@@ -170,11 +176,49 @@ export function ProfileCard({ view, headingLevel = 1 }: ProfileCardProps) {
                             </ul>
                         </section>
                     )}
+                    {(details.endorsements.length > 0 ||
+                        endorsementsFailed) && (
+                        <section className="flex flex-col gap-2">
+                            <Sub className="text-sm font-medium">
+                                {t('endorsements')}
+                            </Sub>
+                            {endorsementsFailed ? (
+                                <p className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+                                    {t('endorsementsFailed')}
+                                </p>
+                            ) : (
+                                <ul className="flex flex-col gap-2">
+                                    {details.endorsements.map((org) => (
+                                        <li key={org.orgId}>
+                                            <Link
+                                                href={organizationPath(
+                                                    org.handle
+                                                )}
+                                                className="flex items-center gap-3 rounded-lg border p-3 text-sm hover:bg-muted/50"
+                                            >
+                                                <Avatar
+                                                    name={org.name}
+                                                    photo={org.photo}
+                                                    shape="square"
+                                                    size={32}
+                                                />
+                                                <span className="font-medium break-words">
+                                                    {org.name}
+                                                </span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </section>
+                    )}
                     {!details.bio &&
                         !details.area &&
                         details.languages.length === 0 &&
                         links.length === 0 &&
-                        details.groups.length === 0 && (
+                        details.groups.length === 0 &&
+                        details.endorsements.length === 0 &&
+                        !endorsementsFailed && (
                             <p className="text-sm text-muted-foreground">
                                 {t('empty')}
                             </p>

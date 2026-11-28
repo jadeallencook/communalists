@@ -25,6 +25,8 @@ export interface ProfileSettings {
     website?: string;
     /** The groups list: on or off, and groups they've hidden (organization ids). */
     groups: { show: boolean; hidden: string[] };
+    /** The organizations they endorse: on or off (decision #73). */
+    endorsements: { show: boolean };
 }
 
 /** Reads stored settings leniently: anything missing gets the private-by-default value. */
@@ -48,6 +50,7 @@ export function profileSettingsOf(data: unknown): ProfileSettings {
             show: d.groups?.show !== false,
             hidden: Array.isArray(d.groups?.hidden) ? d.groups!.hidden : [],
         },
+        endorsements: { show: d.endorsements?.show !== false },
     };
 }
 
@@ -137,6 +140,38 @@ export function visibleGroups(
 }
 
 /**
+ * An organization the person endorses (decision #73): anyone can endorse a
+ * listed group, member or not, to show it off on their profile.
+ */
+export interface ProfileEndorsement {
+    orgId: string;
+    name: string;
+    handle: string;
+    /** The logo's small link. */
+    photo?: string;
+    /** Whether the group is listed now (it may have become unlisted since). */
+    listed: boolean;
+}
+
+/**
+ * The endorsements a viewer may see. They follow the profile visibility like
+ * the bio, and the person can turn the list off. A group that has become
+ * unlisted since shows only to its own members, so a profile never makes an
+ * unlisted group findable. The person themself sees everything.
+ */
+export function visibleEndorsements(
+    endorsements: ProfileEndorsement[],
+    settings: ProfileSettings,
+    viewer: ProfileViewer,
+    viewerOrgIds: ReadonlySet<string>
+): ProfileEndorsement[] {
+    if (viewer === 'self') return endorsements;
+    if (!seesDetails(settings.visibility, viewer)) return [];
+    if (!settings.endorsements.show) return [];
+    return endorsements.filter((e) => e.listed || viewerOrgIds.has(e.orgId));
+}
+
+/**
  * A person's photo link for one viewer: it follows their profile visibility,
  * like the bio, so "Just my name" means no photo either. Used wherever a
  * person appears (member lists, comments, the header).
@@ -164,6 +199,7 @@ export interface ProfileView {
         socials: SocialLink[];
         website?: string;
         groups: ProfileGroup[];
+        endorsements: ProfileEndorsement[];
     };
 }
 
@@ -176,6 +212,8 @@ export function profileView(
         photo?: string;
         settings: ProfileSettings;
         groups: ProfileGroup[];
+        /** Organizations they endorse, newest first. */
+        endorsements?: ProfileEndorsement[];
     },
     viewer: ProfileViewer,
     viewerOrgIds: ReadonlySet<string>
@@ -198,6 +236,12 @@ export function profileView(
                   website: settings.website,
                   groups: visibleGroups(
                       person.groups,
+                      settings,
+                      viewer,
+                      viewerOrgIds
+                  ),
+                  endorsements: visibleEndorsements(
+                      person.endorsements ?? [],
                       settings,
                       viewer,
                       viewerOrgIds

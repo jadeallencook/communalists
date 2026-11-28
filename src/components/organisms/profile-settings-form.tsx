@@ -13,6 +13,8 @@ import {
 import { Input } from '@/components/atoms/input';
 import { Textarea } from '@/components/atoms/textarea';
 import { ChoiceGroup } from '@/components/molecules/choice-group';
+import { Link } from '@/i18n/navigation';
+import { organizationPath } from '@/lib/paths';
 import {
     SocialLinksField,
     type SocialLink,
@@ -40,6 +42,8 @@ export interface ProfileFormValue {
     groupsShow: boolean;
     /** Organization ids ticked "show on my profile". */
     shownGroups: string[];
+    /** Show the organizations they endorse. */
+    endorsementsShow: boolean;
 }
 
 export interface ProfileSettingsFormProps {
@@ -53,6 +57,11 @@ export interface ProfileSettingsFormProps {
     areaLabel: string;
     /** Groups they're in, for choosing which to show. */
     groups: { orgId: string; name: string }[];
+    /**
+     * Organizations they endorse, linked to each page (where they can take
+     * it back). Null when they couldn't be loaded.
+     */
+    endorsements: { orgId: string; name: string; handle: string }[] | null;
     /** Languages, already named in the UI language. */
     languageOptions: { value: string; label: string }[];
 }
@@ -72,6 +81,7 @@ export function ProfileSettingsForm({
     pending = false,
     areaLabel,
     groups,
+    endorsements,
     languageOptions,
 }: ProfileSettingsFormProps) {
     const t = useTranslations('Profile');
@@ -251,6 +261,52 @@ export function ProfileSettingsForm({
                             </label>
                         ))}
                     </div>
+                )}
+            </FieldSet>
+
+            <FieldSet>
+                <FieldLegend className="font-heading text-lg font-semibold">
+                    {t('form.endorsementsTitle')}
+                </FieldLegend>
+                <FieldDescription>
+                    {t('form.endorsementsHint')}
+                </FieldDescription>
+                <label className={checkboxRow}>
+                    <input
+                        type="checkbox"
+                        name="endorsementsShow"
+                        checked={value.endorsementsShow}
+                        onChange={(e) =>
+                            set({ endorsementsShow: e.target.checked })
+                        }
+                        className="mt-0.5 accent-primary"
+                    />
+                    <span>{t('form.endorsementsShow')}</span>
+                </label>
+                {endorsements === null ? (
+                    <p role="alert" className="text-sm text-destructive">
+                        {t('endorsementsFailed')}
+                    </p>
+                ) : endorsements.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                        {t('form.endorsementsNone')}
+                    </p>
+                ) : (
+                    <ul
+                        aria-label={t('form.endorsementsList')}
+                        className="flex flex-col gap-1 ps-6 text-sm"
+                    >
+                        {endorsements.map((org) => (
+                            <li key={org.orgId}>
+                                <Link
+                                    href={organizationPath(org.handle)}
+                                    className="break-words underline underline-offset-4 hover:decoration-2"
+                                >
+                                    {org.name}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
                 )}
             </FieldSet>
 

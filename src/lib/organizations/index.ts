@@ -86,6 +86,8 @@ export interface Organization {
     /** Added by a super user and not claimed yet: no members, every super user acts as owner. */
     unclaimed: boolean;
     memberCount: number;
+    /** How many people endorse it (src/lib/endorsements, decision #73). */
+    endorsementCount: number;
     /** The logo, if any (src/lib/photos). Public wherever the organization is shown. */
     photo?: Photo;
     /** When the handle last changed (epoch ms), for the 30-day limit. */
@@ -165,6 +167,7 @@ function toOrganization(
         status: data.status,
         unclaimed: data.claimStatus === 'unclaimed',
         memberCount: data.memberCount ?? 0,
+        endorsementCount: data.endorsementCount ?? 0,
         photo: photoOf(data.photo),
         handleChangedAt: millis(data.handleChangedAt),
     };

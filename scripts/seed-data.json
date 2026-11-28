@@ -226,7 +226,8 @@
             ],
             "requests": ["seed-marcus", "seed-priya"],
             "banned": [],
-            "photo": ["#264653", "#e9c46a"]
+            "photo": ["#264653", "#e9c46a"],
+            "endorsedBy": ["seed-aisha", "seed-priya"]
         },
         {
             "id": "seed-oakland-auto",
@@ -258,7 +259,8 @@
                     "Kept posting ads for a paid repair shop after two warnings."
                 ]
             ],
-            "photo": ["#3d405b", "#f2cc8f"]
+            "photo": ["#3d405b", "#f2cc8f"],
+            "endorsedBy": ["seed-maya", "seed-aisha"]
         },
         {
             "id": "seed-alum-rock",
@@ -334,7 +336,8 @@
                 ["seed-luis", "member"]
             ],
             "requests": [],
-            "banned": []
+            "banned": [],
+            "endorsedBy": ["seed-maya", "seed-luis", "seed-thanh"]
         },
         {
             "id": "seed-childcare",
@@ -383,7 +386,8 @@
                 ["seed-linh", "member"]
             ],
             "requests": [],
-            "banned": []
+            "banned": [],
+            "endorsedBy": ["seed-maya"]
         },
         {
             "id": "seed-pantry",
