@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 
 import { OrganizationFilters } from '@/components/organisms/organization-filters';
 import { FindOrganizationsPage } from '@/components/pages/find-organizations-page';
@@ -43,6 +43,28 @@ export function FindContainer({
         country: search.country,
         selected: place,
     });
+
+    // Next keeps this page alive (hidden) between visits, DOM included, and
+    // the filter checkboxes are uncontrolled. So when the search changes from
+    // outside the form (the homepage search, back/forward, a link), remount
+    // the form and reset the city so they match the URL again. Searches the
+    // form made itself (`ownSearches`, newest last) are left alone, so
+    // focus stays put while people click.
+    const searchKey = keyOf(search);
+    const [shownKey, setShownKey] = useState(searchKey);
+    const [ownSearches, setOwnSearches] = useState<string[]>([]);
+    const [formKey, setFormKey] = useState(0);
+    if (searchKey !== shownKey) {
+        setShownKey(searchKey);
+        const own = ownSearches.indexOf(searchKey);
+        if (own === -1) {
+            setOwnSearches([]);
+            setFormKey((key) => key + 1);
+            if (place) picker.onSelect(place);
+        } else {
+            setOwnSearches(ownSearches.slice(own + 1));
+        }
+    }
     // The path for a city id: the one just chosen, or the one on the page.
     const slugFor = (id?: string) =>
         id === picker.selected?.id
@@ -55,6 +77,7 @@ export function FindContainer({
     // hasn't updated yet). Without a known path, the old ?placeId= form
     // lets the server redirect to it.
     const go = (next: DirectorySearch, slug = slugFor(next.placeId)) => {
+        setOwnSearches((keys) => [...keys.slice(-9), keyOf(next)]);
         let href: string;
         if (!next.placeId) {
             href = directoryHref(next);
@@ -86,6 +109,7 @@ export function FindContainer({
         <FindOrganizationsPage
             filters={
                 <OrganizationFilters
+                    key={formKey}
                     action={`/${locale}${findPath('organizations')}`}
                     search={search}
                     activeFilters={activeFilterCount(search)}
@@ -131,3 +155,7 @@ const sameSearch = (a: DirectorySearch, b: DirectorySearch) =>
     a.country === b.country &&
     a.placeId === b.placeId &&
     directoryFilterParams(a).toString() === directoryFilterParams(b).toString();
+
+/** One string per search: city and filters, as in the URL. */
+const keyOf = (search: DirectorySearch) =>
+    `${search.country}/${search.placeId ?? ''}?${directoryFilterParams(search)}`;

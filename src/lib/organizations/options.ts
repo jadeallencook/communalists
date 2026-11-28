@@ -79,6 +79,13 @@ export const FOCUS_AREAS_BY_USE: readonly FocusArea[] = [
 /** How many of FOCUS_AREAS_BY_USE /find/organizations shows before "More focus areas". */
 export const FEATURED_FOCUS_AREAS = 8;
 
+/**
+ * The homepage search offers only the broadest, most common focus areas,
+ * all shown as pills: the first HOME_FOCUS_AREAS of FOCUS_AREAS_BY_USE.
+ * The rest are on /find. Decision #71.
+ */
+export const HOME_FOCUS_AREAS = FEATURED_FOCUS_AREAS;
+
 /** Offered focus areas, most common first. */
 export const focusAreasByUse = (): FocusArea[] => {
     const rank = (area: FocusArea) => {

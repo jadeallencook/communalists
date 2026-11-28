@@ -2,14 +2,10 @@ import type { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
-import {
-    HeroActions,
-    HeroActionsPlaceholder,
-} from '@/components/molecules/hero-actions';
+import { HeroSearchPlaceholder } from '@/components/organisms/hero-search';
 import { HomeJoinBand, HomePage } from '@/components/pages/home-page';
 import { getSessionUser } from '@/lib/auth/session';
-import { startingCitySlug } from '@/lib/organizations/starting-city';
-import { findPath } from '@/lib/paths';
+import { startingCity } from '@/lib/organizations/starting-city';
 import { getSiteUrl } from '@/lib/site';
 
 import { JsonLd } from './json-ld';
@@ -25,8 +21,11 @@ export async function generateMetadata(): Promise<Metadata> {
     });
 }
 
-// The page is static; only the buttons depend on the session, so they stream
-// in behind <Suspense> (no flash of sign-up buttons for signed-in users).
+import { HomeSearchContainer } from './home-search-container';
+
+// The page is static; only the banner's search (which starts on the
+// profile's city, or San Francisco) and the sign-up band depend on the session, so they
+// stream in behind <Suspense>.
 export default function Page() {
     return (
         <>
@@ -34,9 +33,9 @@ export default function Page() {
                 <HomeStructuredData />
             </Suspense>
             <HomePage
-                heroActions={
-                    <Suspense fallback={<HeroActionsPlaceholder />}>
-                        <HomeHeroActions />
+                heroSearch={
+                    <Suspense fallback={<HeroSearchPlaceholder />}>
+                        <HomeHeroSearch />
                     </Suspense>
                 }
                 join={
@@ -83,16 +82,9 @@ async function HomeStructuredData() {
     );
 }
 
-async function HomeHeroActions() {
+async function HomeHeroSearch() {
     const user = await getSessionUser();
-    // Browse goes straight to the visitor's city (their profile's, or the default).
-    const city = await startingCitySlug(user?.uid);
-    return (
-        <HeroActions
-            signedIn={!!user}
-            findHref={`${findPath('organizations')}/${city}`}
-        />
-    );
+    return <HomeSearchContainer startingCity={await startingCity(user?.uid)} />;
 }
 
 async function HomeJoin() {

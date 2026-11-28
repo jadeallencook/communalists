@@ -45,8 +45,10 @@ export interface LocationFieldProps {
     defaultOpen?: boolean;
     /** Minimum characters before searching; shown as a hint until reached. */
     minQueryLength?: number;
-    /** Replaces the default hint (which talks about the user's own city). */
-    hint?: string;
+    /** Replaces the default hint (which talks about the user's own city); null shows only the GeoNames credit. */
+    hint?: string | null;
+    /** Replaces "Choose your city" on the button while no city is chosen. */
+    placeholder?: string;
 }
 
 /**
@@ -68,6 +70,7 @@ export function LocationField({
     defaultOpen = false,
     minQueryLength = 2,
     hint,
+    placeholder,
 }: LocationFieldProps) {
     const t = useTranslations('LocationField');
     const [open, setOpen] = useState(defaultOpen);
@@ -123,7 +126,7 @@ export function LocationField({
                                 !selected && 'text-muted-foreground'
                             )}
                         >
-                            {selected?.label ?? t('choose')}
+                            {selected?.label ?? placeholder ?? t('choose')}
                             <ChevronsUpDownIcon
                                 aria-hidden
                                 className="opacity-50"
@@ -179,7 +182,7 @@ export function LocationField({
                     <FieldError id="placeId-error">{error}</FieldError>
                 ) : (
                     <FieldDescription>
-                        {hint ?? t('hint')}{' '}
+                        {hint !== null && <>{hint ?? t('hint')} </>}
                         <a
                             href="https://www.geonames.org/"
                             target="_blank"

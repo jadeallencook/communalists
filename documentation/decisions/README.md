@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [071](071-homepage-search-focus-area-and-city.md)                               | Homepage search: a city, focus-area pills and "Find organizations"                                 | 2026-11-26 |
 | [070](070-organization-discussions-platform-moderated-with-official-replies.md) | Discussions on organizations: platform-moderated, with one official reply                          | 2026-11-27 |
 | [069](069-not-found-pages-general-and-per-kind.md)                              | Not-found pages: one general, one per kind of shared page                                          | 2026-11-27 |
 | [068](068-firebase-failures-show-an-error-never-break-the-app.md)               | If Firebase fails, show an error; never break the app                                              | 2026-11-27 |

@@ -122,7 +122,7 @@ See [decision #14](../decisions/014-location-city-picker-not-geocoder.md). The g
 - **After a save, the action calls `refresh()`** (`next/cache`). A server action that only returns state doesn't re-render the layout, so the header kept the old name until the next navigation. Use `refresh()` in any action whose change shows outside its own form.
 - **The header's account area reads the session on every page.** `HeaderNav` and `HeaderAccount` (`src/app/[locale]/header-slots.tsx`) run inside `<Suspense>` in the layout, so the rest of the header stays static and the right links stream in with no flash. Signed out, no cookie means no work. Signed in, each page view verifies the session (a Firebase Auth revocation lookup, which isn't a Firestore read). The profile comes from the server cache (`getUserProfile`: `'use cache'`, tag `user:{uid}`, up to an hour, cleared when it's saved), so browsing costs no Firestore reads after the first. Setup decisions use `getUserProfileFresh` instead; see [firebase.md → Caching reads](firebase.md#caching-reads-in-the-rebuild).
 - **Before setup is finished,** the menu shows the email instead of a name, and Dashboard leads to setup (the `requireAccount` gate).
-- **The homepage reads the session too,** only for its banner buttons and the closing sign-up band (`src/app/[locale]/page.tsx`). The banner always leads with Browse organizations; its second button is Create account (signed out) or "Go to your dashboard" (signed in), and signed in the band is left out. Two button-sized skeletons hold the banner steady while the session is checked.
+- **The homepage reads the session too,** only for its banner search and the closing sign-up band (`src/app/[locale]/page.tsx`). The search's city box starts on the profile's city, otherwise San Francisco (`startingCity` in `src/lib/organizations/starting-city.ts`), and signed in the band is left out. A panel-sized skeleton holds the banner steady while the session is checked.
 
 ## Sessions
 
@@ -174,7 +174,7 @@ Verified again on 2026-11-21 after account setup:
 Verified again on 2026-11-22 after the navigation work, with a production build against the emulators:
 
 - **Header, signed out:** Sign in + Create account on every page; on `/sign-in` and `/sign-up` the matching link is marked current (re-checked after the change from hiding it).
-- **Homepage:** signed out, banner Create account + Sign in and the join band; signed in, only "Go to your dashboard" (also in Spanish) and no join band.
+- **Homepage:** signed out, the city box on San Francisco, California, Sign in in the header and the join band; signed in, the profile's city filled in (also in Spanish) and no join band.
 - **`/en/welcome`:** 308 to `/en/dashboard`. Settings signed out → sign-in.
 - **Before setup:** the menu shows the email.
 - **Dashboard:** greeting, area, empty state; the Dashboard link is marked current there and not on other pages.

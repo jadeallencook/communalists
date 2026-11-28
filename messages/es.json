@@ -47,7 +47,6 @@
             "imageAlt": "Una voluntaria entrega un plato de comida caliente a un vecino en una comida comunitaria"
         },
         "cta": "Crear cuenta",
-        "dashboard": "Ir a tu panel",
         "about": {
             "title": "Hecho para la ayuda mutua",
             "body": "Communalists es una plataforma gratuita donde los vecinos se organizan. Crea una <org>organización</org> para tu grupo de <mutualAid>ayuda mutua</mutualAid>, <toolLibrary>biblioteca de herramientas</toolLibrary> o club comunitario, encuentra grupos cerca de ti y gestiónalos con herramientas hechas para cómo funciona realmente la ayuda mutua.",
@@ -76,7 +75,10 @@
             "title": "¿Listo para organizarte?",
             "body": "Es gratis y solo toma un minuto."
         },
-        "browse": "Explorar organizaciones"
+        "search": {
+            "label": "Buscar organizaciones",
+            "submit": "Buscar organizaciones"
+        }
     },
     "Footer": {
         "developedBy": "Desarrollado por voluntarios",
@@ -732,6 +734,9 @@
         "failed": "No se pudo buscar ahora. Inténtalo de nuevo.",
         "hint": "Se usa para mostrarte organizaciones cercanas. Guardamos tu ciudad, nunca tu dirección.",
         "attribution": "Lugares de GeoNames."
+    },
+    "FocusAreaPills": {
+        "label": "Área de trabajo"
     },
     "Unclaimed": {
         "title": "Nadie ha reclamado esta página todavía",

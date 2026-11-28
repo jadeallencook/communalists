@@ -47,7 +47,6 @@
             "imageAlt": "一位志愿者在社区聚餐中将一盘热饭递给邻居"
         },
         "cta": "创建账户",
-        "dashboard": "前往控制台",
         "about": {
             "title": "为互助而建",
             "body": "Communalists 是一个免费平台，让邻里组织起来。为你的<mutualAid>互助</mutualAid>小组、<toolLibrary>工具图书馆</toolLibrary>或社区俱乐部创建<org>组织</org>，寻找附近的团体，并用专为互助实际运作方式打造的工具来管理它们。",
@@ -76,7 +75,10 @@
             "title": "准备好组织起来了吗？",
             "body": "完全免费，只需一分钟。"
         },
-        "browse": "浏览组织"
+        "search": {
+            "label": "查找组织",
+            "submit": "查找组织"
+        }
     },
     "Footer": {
         "developedBy": "由志愿者开发",
@@ -732,6 +734,9 @@
         "failed": "暂时无法搜索，请重试。",
         "hint": "用于显示你附近的组织。我们只保存你的城市，绝不保存你的地址。",
         "attribution": "地点数据来自 GeoNames。"
+    },
+    "FocusAreaPills": {
+        "label": "工作领域"
     },
     "Unclaimed": {
         "title": "这个页面还没有人认领",
