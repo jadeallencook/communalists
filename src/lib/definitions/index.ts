@@ -265,6 +265,46 @@ export function sortByWord<T extends { word: string }>(
     return [...items].sort((a, b) => collator.compare(a.word, b.word));
 }
 
+/** Lowercase, without accents (Đ → d), for matching what someone types. */
+const foldText = (text: string) =>
+    text
+        .replace(/[đĐ]/g, 'd')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+
+/**
+ * Words matching what was typed, for the related-words search: by word or by
+ * address, ignoring case and accents ("cafe" finds "Repair Café"). Words that
+ * start with it come first, then words with a later word starting with it,
+ * then any other match; each group keeps the order given. Empty text finds
+ * nothing (the list is long).
+ */
+export function searchWords<T extends { slug: string; word: string }>(
+    items: readonly T[],
+    query: string,
+    limit = 8
+): T[] {
+    const q = foldText(query);
+    if (!q) return [];
+    const qSlug = q.replace(/\s+/g, '-');
+    const rank = (item: T) => {
+        const word = foldText(item.word);
+        if (word.startsWith(q) || item.slug.startsWith(qSlug)) return 0;
+        if (word.split(/[\s\-–—/]+/).some((part) => part.startsWith(q)))
+            return 1;
+        if (word.includes(q) || item.slug.includes(qSlug)) return 2;
+        return -1;
+    };
+    return items
+        .map((item, index) => ({ item, index, rank: rank(item) }))
+        .filter((r) => r.rank >= 0)
+        .sort((a, b) => a.rank - b.rank || a.index - b.index)
+        .slice(0, limit)
+        .map((r) => r.item);
+}
+
 /** The fields a save changes (`es.word`, `related`), for the admin log. */
 export function changedFields(
     before: Definition,

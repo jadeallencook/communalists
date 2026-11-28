@@ -24,6 +24,8 @@ export interface DefinitionPageProps {
     resources: DefinitionResource[];
     /** The copy-link button, wired by its container. */
     share?: ReactNode;
+    /** Super users only: the edit link (`DefinitionEditBar`), streamed in by its container. */
+    edit?: ReactNode;
 }
 
 const RESOURCE_ORDER: ResourceType[] = ['book', 'video', 'article', 'link'];
@@ -39,6 +41,7 @@ export function DefinitionPage({
     related,
     resources,
     share,
+    edit,
 }: DefinitionPageProps) {
     const t = useTranslations('Dictionary');
     const sorted = [...resources].sort(
@@ -47,6 +50,7 @@ export function DefinitionPage({
     );
     return (
         <article className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-12">
+            {edit}
             <header className="flex flex-col gap-3">
                 <Link
                     href={`/dictionary/${letter}`}

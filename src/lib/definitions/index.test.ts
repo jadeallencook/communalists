@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { routing } from '@/i18n/routing';
 
 import {
+    searchWords,
     changedFields,
     cleanRelated,
     DEFINITION_LOCALES,
@@ -366,5 +367,43 @@ describe('isLetter', () => {
     it('is true for one lowercase letter only', () => {
         expect(['a', 'z'].every(isLetter)).toBe(true);
         expect(['A', 'ab', '1', '', 'mutual-aid'].some(isLetter)).toBe(false);
+    });
+});
+
+describe('searchWords', () => {
+    const words = [
+        { slug: 'food-pantry', word: 'Food Pantry' },
+        { slug: 'free-fridge', word: 'Free Fridge' },
+        { slug: 'mutual-aid', word: 'Mutual Aid' },
+        { slug: 'mutual-aid-network', word: 'Mutual Aid Network' },
+        { slug: 'repair-cafe', word: 'Repair Café' },
+        { slug: 'tuong-tro', word: 'Đoàn kết' },
+        { slug: 'aid-station', word: 'Aid Station' },
+    ];
+    const slugs = (query: string, limit?: number) =>
+        searchWords(words, query, limit).map((w) => w.slug);
+
+    it('finds nothing for empty text', () => {
+        expect(slugs('')).toEqual([]);
+        expect(slugs('   ')).toEqual([]);
+    });
+    it('ignores case and accents', () => {
+        expect(slugs('CAFE')).toEqual(['repair-cafe']);
+        expect(slugs('doan')).toEqual(['tuong-tro']);
+    });
+    it('puts words that start with the text first, then later words, then anywhere', () => {
+        expect(slugs('aid')).toEqual([
+            'aid-station',
+            'mutual-aid',
+            'mutual-aid-network',
+        ]);
+        expect(slugs('ridge')).toEqual(['free-fridge']);
+    });
+    it('matches the address, with spaces as hyphens', () => {
+        expect(slugs('mutual aid n')).toEqual(['mutual-aid-network']);
+        expect(slugs('food-p')).toEqual(['food-pantry']);
+    });
+    it('stops at the limit', () => {
+        expect(slugs('f', 1)).toEqual(['food-pantry']);
     });
 });

@@ -4,11 +4,14 @@ import { connection } from 'next/server';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
+import { DefinitionEditBar } from '@/components/molecules/definition-edit-bar';
 import { DefinitionPage } from '@/components/pages/definition-page';
 import {
     DictionaryPage,
     DictionaryPageLoading,
 } from '@/components/pages/dictionary-page';
+import { isPlatformAdmin } from '@/lib/auth/platform-admin';
+import { getSessionUser } from '@/lib/auth/session';
 import {
     isLetter,
     LETTERS,
@@ -69,15 +72,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-export default function Page({ params }: Props) {
+export default function Page({ params, searchParams }: Props) {
     return (
         <Suspense fallback={<DictionaryPageLoading />}>
-            <EntryContainer params={params} />
+            <EntryContainer params={params} searchParams={searchParams} />
         </Suspense>
     );
 }
 
-async function EntryContainer({ params }: Pick<Props, 'params'>) {
+async function EntryContainer({ params, searchParams }: Props) {
     // Render per request (from the cache), never at build time: the build
     // has no database credentials, and new words should show without a deploy.
     await connection();
@@ -90,7 +93,11 @@ async function EntryContainer({ params }: Pick<Props, 'params'>) {
     return isLetter(entry) ? (
         <LetterContainer letter={entry} locale={locale} />
     ) : (
-        <WordContainer slug={entry} locale={locale} />
+        <WordContainer
+            slug={entry}
+            locale={locale}
+            saved={(await searchParams).saved === '1'}
+        />
     );
 }
 
@@ -139,9 +146,12 @@ async function LetterContainer({
 async function WordContainer({
     slug,
     locale,
+    saved,
 }: {
     slug: string;
     locale: Locale;
+    /** `?saved=1`: back from the edit form (shown to super users only). */
+    saved: boolean;
 }) {
     const { definition } = await findDefinition(slug);
     if (!definition) notFound();
@@ -170,7 +180,32 @@ async function WordContainer({
                 related={related}
                 resources={definition.resources}
                 share={<ShareContainer url={url} slug={slug} />}
+                edit={
+                    // Streams in on its own, so the word never waits on the session.
+                    <Suspense>
+                        <EditContainer
+                            slug={slug}
+                            word={text.word}
+                            saved={saved}
+                        />
+                    </Suspense>
+                }
             />
         </>
     );
+}
+
+/** Super users get a link to edit the word; everyone else, nothing. */
+async function EditContainer({
+    slug,
+    word,
+    saved,
+}: {
+    slug: string;
+    word: string;
+    saved: boolean;
+}) {
+    const user = await getSessionUser();
+    if (!isPlatformAdmin(user?.uid)) return null;
+    return <DefinitionEditBar slug={slug} word={word} saved={saved} />;
 }

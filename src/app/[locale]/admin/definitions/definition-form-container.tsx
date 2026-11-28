@@ -3,6 +3,8 @@
 import { useLocale } from 'next-intl';
 import { useActionState } from 'react';
 
+import { useRelatedWords } from '@/hooks/use-related-words';
+
 import {
     DefinitionForm,
     type DefinitionFormProps,
@@ -11,11 +13,19 @@ import {
 
 import { saveDefinitionAction } from './actions';
 
-/** Wires the dictionary word form to saveDefinitionAction. */
-export function DefinitionFormContainer(
-    props: Pick<DefinitionFormProps, 'mode' | 'initial' | 'relatedOptions'>
-) {
+/** Wires the dictionary word form to saveDefinitionAction and the related-words search. */
+export function DefinitionFormContainer({
+    relatedOptions,
+    ...props
+}: Pick<DefinitionFormProps, 'mode' | 'initial' | 'returnTo'> & {
+    /** Other words that can be linked, already in the UI language. */
+    relatedOptions: { slug: string; word: string }[];
+}) {
     const locale = useLocale();
+    const related = useRelatedWords({
+        options: relatedOptions,
+        initial: props.initial?.related,
+    });
     const [state, formAction, pending] = useActionState<
         DefinitionFormState,
         FormData
@@ -23,6 +33,7 @@ export function DefinitionFormContainer(
     return (
         <DefinitionForm
             {...props}
+            related={related}
             locale={locale}
             state={state}
             formAction={formAction}

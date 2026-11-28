@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
 import { CopyLinkButton } from '@/components/molecules/copy-link-button';
+import { DefinitionEditBar } from '@/components/molecules/definition-edit-bar';
 
 import { DefinitionPage, DefinitionPageLoading } from './definition-page';
 
@@ -51,6 +52,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Word: Story = {};
+
+/** What a super user sees: a link to edit the word. */
+export const SuperUser: Story = {
+    args: { edit: <DefinitionEditBar slug="mutual-aid" word="Mutual aid" /> },
+};
+
+/** A super user back from the edit form: "Saved" takes focus. */
+export const SuperUserSaved: Story = {
+    args: {
+        edit: <DefinitionEditBar slug="mutual-aid" word="Mutual aid" saved />,
+    },
+};
 
 /** Only the short definition, nothing related. */
 export const ShortOnly: Story = {

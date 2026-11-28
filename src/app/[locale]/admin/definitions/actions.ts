@@ -81,6 +81,12 @@ export async function saveDefinitionAction(
     updateTag(definitionTag(slug));
     updateTag(ADMIN_LOG_TAG);
     refresh();
+    // Opened from the word's page: go back there, where "Saved" is shown.
+    if (mode === 'edit' && text(formData, 'returnTo') === 'page')
+        return redirect({
+            href: { pathname: `/dictionary/${slug}`, query: { saved: '1' } },
+            locale,
+        });
     return redirect({
         href: { pathname: '/admin/definitions', query: { saved: slug } },
         locale,
