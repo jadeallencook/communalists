@@ -5,6 +5,8 @@ import { cacheLife, cacheTag } from 'next/cache';
 
 import { getAdminDb } from '@/lib/firebase/admin';
 import { logRead } from '@/lib/firebase/read-log';
+import { photoOf } from '@/lib/photos';
+import { profileSettingsOf } from '@/lib/profiles';
 
 import {
     claimDecisionProblem,
@@ -15,7 +17,7 @@ import {
     type ClaimRequestInput,
     type ClaimStatus,
 } from './claims';
-import type { MemberCopy } from './index';
+import { memberCopyOf, type MemberCopy } from './index';
 import { MAX_OWNED_ORGANIZATIONS, type FocusArea } from './options';
 
 // Unclaimed organizations and requests to claim them, in Firestore
@@ -242,6 +244,23 @@ export async function decideClaim(
         });
         if (problem) return { ok: false, error: problem } as const;
 
+        // The new owner's copy comes from their profile now (it may have a
+        // photo since they asked); the request's copy if that can't be read.
+        let claimantCopy: MemberCopy = request!.claimant;
+        if (decision === 'approve' && request!.intent === 'claim') {
+            logRead('users (claimant)');
+            const p = (await tx.get(db().collection('users').doc(uid))).data();
+            if (p?.displayName)
+                claimantCopy = memberCopyOf({
+                    displayName: p.displayName,
+                    username: p.username,
+                    photo: photoOf(p.photo),
+                    profile: {
+                        visibility: profileSettingsOf(p.profile).visibility,
+                    },
+                });
+        }
+
         const now = FieldValue.serverTimestamp();
         const target = {
             uid,
@@ -266,8 +285,11 @@ export async function decideClaim(
                     name: orgData!.name,
                     handle: orgData!.handle,
                     focusAreas: (orgData!.focusAreas ?? []) as FocusArea[],
+                    ...(photoOf(orgData!.photo)
+                        ? { photo: photoOf(orgData!.photo)!.small }
+                        : {}),
                 },
-                member: JSON.parse(JSON.stringify(request!.claimant)),
+                member: JSON.parse(JSON.stringify(claimantCopy)),
                 joinedAt: now,
             });
             tx.create(orgRef.collection('moderationLog').doc(), {

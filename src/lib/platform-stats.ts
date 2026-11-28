@@ -85,6 +85,7 @@ export const ACTIVITY_GROUPS = {
         'deleteReply',
         'replyComment',
     ],
+    photos: ['removePhoto', 'removeLogo'],
     exports: ['exportOrganizations'],
 } as const satisfies Record<string, readonly AdminAction[]>;
 
@@ -113,6 +114,8 @@ export const FEED_ACTIONS = [
     'unhideReply',
     'deleteReply',
     'replyComment',
+    'removePhoto',
+    'removeLogo',
     'backfillDetails',
 ] as const satisfies readonly AdminAction[];
 

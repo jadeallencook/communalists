@@ -13,7 +13,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 
 import { DirectionsMenu } from '@/components/molecules/directions-menu';
-import { initials } from '@/lib/initials';
+import { Avatar } from '@/components/molecules/avatar';
 import { languageName } from '@/lib/organizations/client';
 import { type FocusArea, type ReachScope } from '@/lib/organizations/options';
 import {
@@ -27,6 +27,8 @@ import { track } from '@/lib/analytics';
 export interface OrganizationProfileProps {
     name: string;
     handle: string;
+    /** The logo's large link, if it has one. */
+    photo?: string;
     /** What the group works on, 1 to 3. */
     focusAreas: FocusArea[];
     description: string;
@@ -73,6 +75,7 @@ const host = (url: string) => {
 export function OrganizationProfile({
     name,
     handle,
+    photo,
     focusAreas,
     description,
     place,
@@ -145,12 +148,12 @@ export function OrganizationProfile({
             <div className="grid gap-8 @3xl:grid-cols-[minmax(0,1fr)_18rem] @3xl:gap-x-12 @3xl:gap-y-10">
                 <div className="flex min-w-0 flex-col gap-8 @3xl:col-start-1 @3xl:row-start-1">
                     <header className="flex min-w-0 items-start gap-4">
-                        <span
-                            aria-hidden
-                            className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-muted text-xl font-semibold"
-                        >
-                            {initials(name)}
-                        </span>
+                        <Avatar
+                            name={name}
+                            photo={photo}
+                            shape="square"
+                            size={80}
+                        />
                         <div className="flex min-w-0 flex-col gap-1.5">
                             <Name className="font-heading text-3xl font-semibold tracking-tight text-balance break-words">
                                 {name}

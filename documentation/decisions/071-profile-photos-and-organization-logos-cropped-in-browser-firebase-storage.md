@@ -1,0 +1,24 @@
+# 071 · Profile photos and organization logos: cropped in the browser, stored in Firebase Storage
+
+**Date:** 2026-11-27
+**Status:** Accepted, built the same day
+**Context:** The user wants people to upload a profile photo, and organizations a logo, using Firebase Storage. Photos shouldn't be too big: cropped and sized to 500×500, with the person doing the crop on upload. Profiles already decide who sees what ([#31](031-profiles-visibility-groups-skill-search.md)), and a face identifies someone more than a bio does (undocumented members, people leaving abuse), so who sees a photo matters as much as its size.
+**Decision:**
+
+- **Who sees a person's photo follows their profile visibility**, like the bio. "Just my name" hides it, and so does "People in my groups" from anyone outside their groups. The same rule applies everywhere a person appears: the profile, member lists, the members page, comments and the header (your own photo is always yours to see). An organization's logo is public wherever the organization shows.
+- **Unguessable links, not an access-checked route.** Files are served straight from Firebase Storage through download-token links. The token is the secret, and the server only puts a link in pages for viewers allowed to see the photo. **Sharing with fewer people moves the photo**: tightening visibility saves it under a new random name and deletes the old files, so links copied while someone could see it stop working. The gap, accepted by the user: someone who could see the photo and copied the link keeps it until the next tightening. That's the same as saving the image.
+- **Cropped in the browser, checked again on the server.** The person picks a picture, then drags it or uses the arrow keys and zooms (slider, or − and +) to choose the square. Round guide for people, square for logos. The browser draws the square to a 500×500 JPEG, so the original (often several MB, with GPS in its EXIF data) never leaves the device. The server accepts JPEG, PNG or WebP up to 900 KB that decodes as a square 100–2000 px. It re-encodes with `sharp` to two WebP files, 500 and 128 px, dropping all metadata. Storage rules deny every client; only server actions write.
+- **People round, organizations square.** Stored square either way. Logos show as rounded squares, because logos often have text a circle would clip.
+- **Super users can remove any photo or logo** they can see, with a required reason, logged in `adminLog` (`removePhoto`, `removeLogo`). A removed logo also shows in the organization's Recent actions as the team changing "the logo". No reporting yet.
+- **Libraries:** `react-easy-crop` for the cropper (keyboard support on the crop area, small), and `sharp` (already installed through Next) as a direct dependency.
+
+**Alternatives:**
+
+- **Photos always shown, like the name:** simpler, but makes a face as public as a name, even on "Just my name" profiles.
+- **An access-checked route for every image:** strictest, but a member list of 30 would mean 30 server calls per view, with no shared caching.
+- **Rotating only the token:** setting `firebaseStorageDownloadTokens` added a second token instead of replacing the first (seen in the emulator), so the old link kept working. Saving a new copy and deleting the old one works however tokens behave.
+- **Uploading the original and resizing on the server:** larger uploads (phone photos over Next's 1 MB action limit), and the original with its GPS data reaches our server.
+- **Writing our own cropper:** full control, but pinch-zoom and touch handling are a lot to get right. `react-easy-crop` covers them, and its crop area takes arrow keys.
+- **Vercel Blob instead of Firebase Storage:** the user chose Firebase Storage, which keeps every user-data store in one project and one set of rules.
+
+**Consequences:** `users/{uid}.photo` and `organizations/{id}.photo` (`{ id, large, small }`), replacing the unused `logoPath`. Memberships copy the person's small photo link and visibility (`member.photo`, `member.visibility`), and the organization's small logo link (`org.photo`), kept in step like names. The directory has `photo` for search results. New: `storage.rules` with tests (`rules/storage.rules.test.ts`), the Storage emulator on port 9199 in `pnpm dev` and `pnpm test:rules`, and seeded photos in `pnpm seed`. Production needs the Storage bucket created and rules deployed before release (see deployment). Docs updated: [features/17](../features/17-profiles.md), [features/16](../features/16-organizations.md), [features/18](../features/18-unclaimed-organizations.md), [features/20](../features/20-comments.md), [data model](../technical/data-model.md), [firebase](../technical/firebase.md), [accessibility](../technical/accessibility.md), [tooling and CI](../technical/tooling-and-ci.md), [deployment](../technical/deployment.md), [getting started](../getting-started.md), `AGENTS.md`, the decisions index.

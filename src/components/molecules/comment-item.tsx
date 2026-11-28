@@ -12,6 +12,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { Button } from '@/components/atoms/button';
+import { Avatar } from '@/components/molecules/avatar';
 import {
     Dialog,
     DialogClose,
@@ -121,7 +122,8 @@ export function CommentItem({
             aria-labelledby={headingId}
             className="flex flex-col gap-2 rounded-lg border p-4 outline-none focus-visible:ring-3 focus-visible:ring-ring"
         >
-            <header className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-sm">
+            <header className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm">
+                <Avatar name={name} photo={comment.author?.photo} size={28} />
                 <h3 id={headingId} className="font-medium break-words">
                     {comment.author?.username ? (
                         <Link

@@ -631,7 +631,8 @@
             "memberListVisibility": "the member list setting",
             "streetAddress": "the street address",
             "phone": "the phone number",
-            "foundedYear": "the year founded"
+            "foundedYear": "the year founded",
+            "logo": "the logo"
         },
         "teamActor": "The Communalists team"
     },
@@ -850,7 +851,9 @@
             "replyComment": "{actor} replied to a comment on {word} for the team",
             "hideReply": "{actor} hid a reply on {word}",
             "unhideReply": "{actor} showed a hidden reply on {word} again",
-            "deleteReply": "{actor} deleted a reply on {word}"
+            "deleteReply": "{actor} deleted a reply on {word}",
+            "removePhoto": "{actor} removed {target}’s photo",
+            "removeLogo": "{actor} removed the logo of {org}"
         },
         "unknownActor": "A super user",
         "errors": {
@@ -1114,7 +1117,8 @@
             "lifecycle": "Deleted, restored or made unclaimed",
             "words": "Words added, edited or removed",
             "exports": "Downloads of the organization list",
-            "comments": "Comments hidden, deleted or reports dismissed"
+            "comments": "Comments hidden, deleted or reports dismissed",
+            "photos": "Photos and logos removed"
         },
         "gapNames": {
             "phone": "phone",
@@ -1578,6 +1582,52 @@
             "title": "We couldn’t find anyone with the username “{username}”",
             "body": "People can change their username, and the old one stops working. Check the spelling, or find them through an organization they’re in.",
             "find": "Find organizations"
+        }
+    },
+    "Photo": {
+        "title": "{kind, select, users {Profile photo} other {Logo}}",
+        "hint": "{kind, select, users {Optional. Only people who can see your profile see it, so “Just my name” hides it too.} other {Optional. Shown wherever your organization appears: its page, search results and members’ dashboards.}}",
+        "upload": "{kind, select, users {Upload a photo} other {Upload a logo}}",
+        "change": "{kind, select, users {Change photo} other {Change logo}}",
+        "remove": "{kind, select, users {Remove photo} other {Remove logo}}",
+        "removing": "Removing…",
+        "formats": "JPEG, PNG or WebP. You’ll crop it to a square before it’s saved, at 500 × 500 pixels.",
+        "done": {
+            "uploaded": "{kind, select, users {Photo saved.} other {Logo saved.}}",
+            "removed": "{kind, select, users {Photo removed.} other {Logo removed.}}"
+        },
+        "crop": {
+            "title": "{kind, select, users {Crop your photo} other {Crop the logo}}",
+            "description": "Drag the picture to choose what’s shown, or focus it and use the arrow keys (hold Shift for small steps). Zoom with the slider or the − and + buttons.",
+            "area": "Picture position",
+            "zoom": "Zoom",
+            "zoomValue": "{percent}%",
+            "zoomIn": "Zoom in",
+            "zoomOut": "Zoom out",
+            "save": "Save",
+            "saving": "Saving…",
+            "cancel": "Cancel"
+        },
+        "errors": {
+            "notImage": "That file isn’t a picture. Choose a JPEG, PNG or WebP image.",
+            "tooLarge": "That picture is too large. Choose one under 25 MB.",
+            "decodeFailed": "We couldn’t open that picture. Try a JPEG or PNG.",
+            "missing": "Choose a picture first.",
+            "wrongType": "Only JPEG, PNG or WebP pictures can be saved.",
+            "unreadable": "We couldn’t read that picture. Try another one.",
+            "notSquare": "The picture wasn’t cropped. Try again.",
+            "notAllowed": "You can’t change this picture.",
+            "reasonRequired": "Write a reason.",
+            "generic": "Something went wrong. Try again."
+        },
+        "moderation": {
+            "trigger": "{kind, select, users {Remove photo} other {Remove logo}}",
+            "triggerFor": "{kind, select, users {Remove {name}’s photo} other {Remove the logo of {name}}}",
+            "title": "{kind, select, users {Remove this photo?} other {Remove this logo?}}",
+            "description": "It’s deleted for everyone and can’t be undone. The reason goes in the admin log.",
+            "confirm": "Remove",
+            "reasonHint": "Required. Kept in the admin log, which only super users see.",
+            "done": "{kind, select, users {Photo removed.} other {Logo removed.}}"
         }
     }
 }

@@ -7,12 +7,15 @@ import {
     ProfilePage,
     ProfilePageLoading,
 } from '@/components/pages/profile-page';
+import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
 import { getMemberships, getProfileGroups } from '@/lib/organizations';
 import { handleProblem } from '@/lib/organizations/handle';
 import { profileView, profileViewer } from '@/lib/profiles';
 import { getUidByUsername, getUserProfile } from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
+
+import { RemovePhotoContainer } from '../../_photos/remove-photo-container';
 
 type Props = PageProps<'/[locale]/comrade/[username]'>;
 
@@ -73,6 +76,7 @@ async function ProfileServerContainer({ params }: Pick<Props, 'params'>) {
             name: person.displayName!,
             username,
             areaLabel: person.location?.label,
+            photo: person.photo?.large,
             settings: person.profile,
             groups,
         },
@@ -83,5 +87,21 @@ async function ProfileServerContainer({ params }: Pick<Props, 'params'>) {
         }),
         viewerOrgIds
     );
-    return <ProfilePage view={view} isSelf={isSelf} />;
+    return (
+        <ProfilePage
+            view={view}
+            isSelf={isSelf}
+            moderation={
+                // Super users can remove a photo they can see (decision #71).
+                !isSelf && isPlatformAdmin(viewer?.uid) ? (
+                    <RemovePhotoContainer
+                        kind="users"
+                        id={uid}
+                        name={view.name}
+                        hasPhoto={!!view.photo}
+                    />
+                ) : undefined
+            }
+        />
+    );
 }

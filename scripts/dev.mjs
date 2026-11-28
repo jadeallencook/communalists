@@ -3,7 +3,7 @@
 // `pnpm emulators` runs the same thing without Next (--emulators-only).
 //
 // 1. Creates .env.local from .env.example if it's missing (emulator settings).
-// 2. Starts the Firebase emulators (Auth + Firestore; unless they're already
+// 2. Starts the Firebase emulators (Auth, Firestore and Storage; unless they're already
 //    running) and waits until Auth answers. Data is kept in .emulator-data/.
 //    Then adds the test accounts and organizations (scripts/seed.mjs) if any
 //    are missing, so the dev toolbar's one-click sign-in always works.
@@ -32,7 +32,7 @@ const PROJECT = 'demo-communalists';
 const DATA_DIR = '.emulator-data';
 const AUTH_URL = 'http://127.0.0.1:9099/';
 // Every port the emulators need (firebase.json + the CLI's reserved ones).
-const EMULATOR_PORTS = [9099, 8080, 4000, 4400, 4500, 9150];
+const EMULATOR_PORTS = [9099, 8080, 9199, 4000, 4400, 4500, 9150];
 const READY_TIMEOUT_MS = 90_000;
 const SAVE_TIMEOUT_MS = 60_000;
 
@@ -126,7 +126,7 @@ if (await authUp()) {
     }
 
     say(
-        'Starting Firebase emulators (Auth, Firestore; UI at http://127.0.0.1:4000)…'
+        'Starting Firebase emulators (Auth, Firestore, Storage; UI at http://127.0.0.1:4000)…'
     );
     emulators = spawn(
         'firebase',
@@ -135,7 +135,7 @@ if (await authUp()) {
             '--project',
             PROJECT,
             '--only',
-            'auth,firestore',
+            'auth,firestore,storage',
             `--import=${DATA_DIR}`,
             '--export-on-exit',
         ],

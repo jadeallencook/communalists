@@ -3,7 +3,7 @@ import 'server-only';
 import { updateTag } from 'next/cache';
 import { hasLocale } from 'next-intl';
 
-import { orgMembersTag, syncMemberCopy } from '@/lib/organizations';
+import { syncMemberCopies } from '@/app/actions/sync-member-copies';
 import { getPlace, toGeneralArea } from '@/lib/places';
 import { saveUserProfile, userTag, usernameTag } from '@/lib/users';
 import {
@@ -82,20 +82,9 @@ export async function saveProfileForm(
     // Clear this user's cached profile everywhere it's shown. Only valid in
     // server actions, which is where this runs.
     updateTag(userTag(uid));
-    // Member lists show a copy of the name and username; bring those up to
-    // date. A failure here leaves an old copy on a list, so it doesn't fail
-    // the save (lists also repair missing copies themselves).
-    try {
-        const orgIds = await syncMemberCopy(uid, {
-            displayName: input.name,
-            username: input.username,
-        });
-        for (const orgId of orgIds) updateTag(orgMembersTag(orgId));
-    } catch (error) {
-        console.error(
-            '[profile] member name sync failed',
-            (error as Error).message
-        );
-    }
+    // Member lists show a copy of the name, username and photo; bring those
+    // up to date. A failure leaves an old copy on a list, so it doesn't fail
+    // the save (lists also repair missing names themselves).
+    await syncMemberCopies(uid);
     return null;
 }

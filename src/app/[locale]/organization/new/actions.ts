@@ -13,6 +13,7 @@ import {
     DIRECTORY_TAG,
     handleTag,
     membershipsTag,
+    memberCopyOf,
 } from '@/lib/organizations';
 import { getPlace, toGeneralArea } from '@/lib/places';
 import { getUserProfileFresh } from '@/lib/users';
@@ -106,10 +107,7 @@ export async function createOrganizationAction(
         result = await createOrganization(
             user.uid,
             // Both set: isSetupComplete checked them.
-            {
-                displayName: profile?.displayName ?? '',
-                username: profile?.username,
-            },
+            memberCopyOf(profile!),
             input,
             toGeneralArea(place)
         );

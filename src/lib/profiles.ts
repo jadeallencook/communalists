@@ -71,6 +71,24 @@ export function profileViewer({
     return sharesGroup ? 'groupmate' : 'signedIn';
 }
 
+/** How private each level is: higher shares with fewer people. */
+const PRIVACY_RANK: Record<ProfileVisibility, number> = {
+    public: 0,
+    groups: 1,
+    name: 2,
+};
+
+/**
+ * Whether a change shares with fewer people. Then a photo's link is changed
+ * (rotated), so a copy someone saved while they could see it stops working.
+ */
+export function isStricter(
+    before: ProfileVisibility,
+    after: ProfileVisibility
+): boolean {
+    return PRIVACY_RANK[after] > PRIVACY_RANK[before];
+}
+
 /** Whether this viewer sees more than the name. */
 export function seesDetails(
     visibility: ProfileVisibility,
@@ -118,11 +136,26 @@ export function visibleGroups(
     });
 }
 
+/**
+ * A person's photo link for one viewer: it follows their profile visibility,
+ * like the bio, so "Just my name" means no photo either. Used wherever a
+ * person appears (member lists, comments, the header).
+ */
+export function visiblePhoto(
+    photo: string | undefined,
+    visibility: ProfileVisibility,
+    viewer: ProfileViewer
+): string | undefined {
+    return photo && seesDetails(visibility, viewer) ? photo : undefined;
+}
+
 /** Exactly what a viewer is shown. `details` is null when they see only the name. */
 export interface ProfileView {
     name: string;
     username: string;
     pronouns?: string;
+    /** The large photo link, only when the viewer sees details. */
+    photo?: string;
     details: null | {
         bio?: string;
         languages: OrgLanguage[];
@@ -139,6 +172,8 @@ export function profileView(
         name: string;
         username: string;
         areaLabel?: string;
+        /** The large photo link, if they've added one. */
+        photo?: string;
         settings: ProfileSettings;
         groups: ProfileGroup[];
     },
@@ -153,6 +188,7 @@ export function profileView(
         // Pronouns go with the name only when details are visible; they're
         // personal, so "Just my name" means just the name.
         pronouns: details ? settings.pronouns : undefined,
+        photo: visiblePhoto(person.photo, settings.visibility, viewer),
         details: details
             ? {
                   bio: settings.bio,

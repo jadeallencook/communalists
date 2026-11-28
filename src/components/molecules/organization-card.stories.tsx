@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { SAMPLE_LOGO } from './photo-fixtures';
 
 import { OrganizationCard } from './organization-card';
 
@@ -58,3 +59,5 @@ export const Unclaimed: Story = {
         unclaimed: true,
     },
 };
+
+export const WithLogo: Story = { args: { photo: SAMPLE_LOGO } };

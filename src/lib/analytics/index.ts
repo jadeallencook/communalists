@@ -5,6 +5,7 @@
 
 import type { CommentTargetKind } from '../comments';
 import type { NavKey } from '../navigation';
+import type { PhotoKind } from '../photos';
 
 /** Umami Cloud website id for communalists.com. Public: it's in the page source. */
 export const UMAMI_WEBSITE_ID = 'a1687831-6fc3-4e0b-9c0c-7448fad2d67d';
@@ -78,6 +79,10 @@ export interface AnalyticsEvents {
     'comment-post': { on: CommentTargetKind; id: string };
     /** An organization's owner or moderator pressed Post reply (never the text). */
     'comment-reply': { on: CommentTargetKind; id: string };
+    /** Save in the photo crop dialog (an attempt). Only whose kind of photo, never whose. */
+    'photo-save': { kind: PhotoKind };
+    /** Remove photo or Remove logo, by the person or an organization's staff. */
+    'photo-remove': { kind: PhotoKind };
 }
 
 export type AnalyticsEvent = keyof AnalyticsEvents;

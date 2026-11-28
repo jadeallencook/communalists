@@ -37,6 +37,7 @@ import { getPlace } from '@/lib/places';
 import { isSupportedCountry } from '@/lib/places/types';
 import { makeUnclaimedProblem } from '@/lib/organizations/lifecycle';
 import { phoneForDisplay } from '@/lib/phone';
+import { profileViewer, visiblePhoto } from '@/lib/profiles';
 import { redirect } from '@/i18n/navigation';
 import { organizationPath } from '@/lib/paths';
 import { keywordList, snippet } from '@/lib/seo';
@@ -50,6 +51,7 @@ import type { Locale } from '@/i18n/routing';
 import { DiscussionContainer } from '../../_discussion/discussion-container';
 import { pageMetadata } from '../../page-metadata';
 import { TrackEvent } from '../../track-event';
+import { RemovePhotoContainer } from '../../_photos/remove-photo-container';
 import { JoinPanelContainer } from './join-panel-container';
 
 type Props = PageProps<'/[locale]/organization/[handle]'>;
@@ -152,6 +154,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
         reach: org.reach,
         languages: org.languages,
         memberCount: org.memberCount,
+        photo: org.photo?.large,
         streetAddress: org.streetAddress,
         website: org.website,
         contactEmail: org.contactEmail,
@@ -254,11 +257,29 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                 }
                 members={{
                     people: named.map(
-                        ({ uid, displayName, username, role }) => ({
+                        ({
                             uid,
                             displayName,
                             username,
                             role,
+                            photo,
+                            visibility,
+                        }) => ({
+                            uid,
+                            displayName,
+                            username,
+                            role,
+                            // Each person's photo follows their own profile
+                            // visibility; old copies without one show none.
+                            photo: visiblePhoto(
+                                photo,
+                                visibility ?? 'name',
+                                profileViewer({
+                                    isSelf: uid === user?.uid,
+                                    signedIn: !!user,
+                                    sharesGroup: !!role,
+                                })
+                            ),
                         })
                     ),
                     total: active.length,
@@ -267,6 +288,16 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
                 }}
                 nearby={nearby}
                 discussion={discussion(isStaff(role))}
+                moderation={
+                    isPlatformAdmin(user?.uid) ? (
+                        <RemovePhotoContainer
+                            kind="organizations"
+                            id={org.id}
+                            name={org.name}
+                            hasPhoto={!!org.photo}
+                        />
+                    ) : undefined
+                }
                 makeUnclaimed={
                     // Shown only when it would work; the action checks again.
                     makeUnclaimedProblem({
@@ -329,6 +360,7 @@ async function nearbySection(org: {
             organizations={nearby.map(({ org: other, distanceMiles }) => ({
                 name: other.name,
                 handle: other.handle,
+                photo: other.photo,
                 focusAreas: other.focusAreas,
                 unclaimed: other.unclaimed,
                 detail:

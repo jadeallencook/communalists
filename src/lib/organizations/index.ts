@@ -6,10 +6,15 @@ import { cacheLife, cacheTag } from 'next/cache';
 import { cache } from 'react';
 
 import { getAdminDb } from '@/lib/firebase/admin';
+import { photoOf, type Photo } from '@/lib/photos';
 import { logRead } from '@/lib/firebase/read-log';
 import type { GeneralArea } from '@/lib/places';
 import type { CountryCode } from '@/lib/places/types';
-import type { ProfileGroup } from '@/lib/profiles';
+import {
+    profileSettingsOf,
+    type ProfileGroup,
+    type ProfileVisibility,
+} from '@/lib/profiles';
 import type { OrganizationInput } from '@/lib/validation/organization';
 
 import { effectiveRole } from '@/lib/platform-admin';
@@ -81,8 +86,8 @@ export interface Organization {
     /** Added by a super user and not claimed yet: no members, every super user acts as owner. */
     unclaimed: boolean;
     memberCount: number;
-    /** Storage path of the logo, if any. */
-    logoPath?: string;
+    /** The logo, if any (src/lib/photos). Public wherever the organization is shown. */
+    photo?: Photo;
     /** When the handle last changed (epoch ms), for the 30-day limit. */
     handleChangedAt?: number;
 }
@@ -93,7 +98,8 @@ export interface Membership {
     role: OrgRole;
     status: MembershipStatus;
     org: Pick<Organization, 'name' | 'handle' | 'focusAreas'> & {
-        logoPath?: string;
+        /** The logo's small link. */
+        photo?: string;
     };
 }
 
@@ -120,7 +126,16 @@ export const orgMembersTag = (orgId: string) => `orgMembers:${orgId}`;
 export interface MemberCopy {
     displayName: string;
     username?: string;
+    /** Their photo's small link, and the profile visibility that decides who sees it. */
+    photo?: string;
+    visibility?: ProfileVisibility;
 }
+const MEMBER_COPY_FIELDS = [
+    'displayName',
+    'username',
+    'photo',
+    'visibility',
+] as const satisfies readonly (keyof MemberCopy)[];
 const memberCopy = (member: MemberCopy) =>
     JSON.parse(JSON.stringify(member)) as MemberCopy; // drops undefined
 
@@ -150,7 +165,7 @@ function toOrganization(
         status: data.status,
         unclaimed: data.claimStatus === 'unclaimed',
         memberCount: data.memberCount ?? 0,
-        logoPath: data.logoPath,
+        photo: photoOf(data.photo),
         handleChangedAt: millis(data.handleChangedAt),
     };
 }
@@ -243,7 +258,7 @@ export async function getMemberships(uid: string): Promise<Membership[]> {
                     name: d.org.name,
                     handle: d.org.handle,
                     focusAreas: d.org.focusAreas ?? [],
-                    logoPath: d.org.logoPath,
+                    photo: d.org.photo,
                 },
             } satisfies Membership;
         })
@@ -268,6 +283,7 @@ export const getMembershipFresh = cache(
                 name: d.org.name,
                 handle: d.org.handle,
                 focusAreas: d.org.focusAreas ?? [],
+                photo: d.org.photo,
             },
         };
     }
@@ -445,6 +461,7 @@ function toDirectoryOrganization(
         ...(data.website ? { website: data.website } : {}),
         socials: socialLinksOf(data.socials),
         unclaimed: data.claimStatus === 'unclaimed',
+        ...(photoOf(data.photo) ? { photo: photoOf(data.photo)!.small } : {}),
     };
 }
 
@@ -572,6 +589,10 @@ export interface OrgPerson {
     displayName: string;
     /** For linking to /comrade/{username}. Missing only for accounts mid-setup. */
     username?: string;
+    /** Their photo's small link: decide who sees it with visiblePhoto (src/lib/profiles.ts). */
+    photo?: string;
+    /** Missing on old copies; treat as "name" (no photo shown). */
+    visibility?: ProfileVisibility;
     role: OrgRole;
     status: MembershipStatus;
     /** When they asked (pending), joined (active) or were banned. Epoch ms. */
@@ -609,10 +630,16 @@ export async function getOrgPeople(orgId: string): Promise<OrgPerson[]> {
         missing.forEach((doc, i) => {
             const p = profiles[i].data();
             if (!p?.displayName) return;
-            const copy = memberCopy({
-                displayName: p.displayName,
-                username: p.username,
-            });
+            const copy = memberCopy(
+                memberCopyOf({
+                    displayName: p.displayName,
+                    username: p.username,
+                    photo: photoOf(p.photo),
+                    profile: {
+                        visibility: profileSettingsOf(p.profile).visibility,
+                    },
+                })
+            );
             repaired.set(doc.id, copy);
             batch.update(doc.ref, { member: copy });
         });
@@ -634,6 +661,8 @@ export async function getOrgPeople(orgId: string): Promise<OrgPerson[]> {
             uid: d.uid,
             displayName: member.displayName ?? '',
             username: member.username,
+            photo: member.photo,
+            visibility: member.visibility,
             role: d.role,
             status: d.status,
             since: millis(
@@ -746,6 +775,7 @@ export async function joinOrganization(
                 name: org.name,
                 handle: org.handle,
                 focusAreas: org.focusAreas,
+                ...(org.photo ? { photo: org.photo.small } : {}),
             },
             member: memberCopy(member),
             ...(open ? { joinedAt: now } : { requestedAt: now }),
@@ -920,32 +950,44 @@ export async function moderateMember(
 }
 
 /**
- * Keeps the name and username copied onto a person's memberships in step
- * with their profile. Returns the organizations touched, so their caches can
- * be cleared.
+ * Keeps the person copied onto their memberships (name, username, photo
+ * link and visibility) in step with their profile. Pass the whole copy:
+ * fields left out are removed. Returns the organizations touched, so their
+ * caches can be cleared.
  */
 export async function syncMemberCopy(
     uid: string,
-    member: { displayName: string; username?: string }
+    member: MemberCopy
 ): Promise<string[]> {
+    const copy = memberCopy(member);
     const snapshot = await memberships().where('uid', '==', uid).get();
     logRead('memberships', Math.max(snapshot.size, 1));
     const stale = snapshot.docs.filter((doc) => {
-        const copy = doc.data().member ?? {};
-        return (
-            copy.displayName !== member.displayName ||
-            copy.username !== member.username
-        );
+        const current: Partial<MemberCopy> = doc.data().member ?? {};
+        return MEMBER_COPY_FIELDS.some((key) => current[key] !== copy[key]);
     });
     for (let i = 0; i < stale.length; i += 400) {
         const batch = db().batch();
         for (const doc of stale.slice(i, i + 400))
-            batch.update(doc.ref, {
-                member: JSON.parse(JSON.stringify(member)),
-            });
+            batch.update(doc.ref, { member: copy });
         await batch.commit();
     }
     return stale.map((doc) => doc.data().orgId as string);
+}
+
+/** What a person's membership copy should hold, from their profile. */
+export function memberCopyOf(profile: {
+    displayName?: string;
+    username?: string;
+    photo?: Photo;
+    profile: { visibility: ProfileVisibility };
+}): MemberCopy {
+    return {
+        displayName: profile.displayName ?? '',
+        username: profile.username,
+        photo: profile.photo?.small,
+        visibility: profile.profile.visibility,
+    };
 }
 
 // --- Editing (owners and moderators; the handle owners only).
@@ -1123,6 +1165,113 @@ export async function updateOrganization(
         copyHolders = snapshot.docs.map((doc) => doc.data().uid as string);
     }
     return { ...result, copyHolders };
+}
+
+// --- The logo (src/lib/photos). Owners and moderators change it; super users
+// can also remove one from any organization as moderation (decision #71).
+
+export type SetOrganizationPhotoResult =
+    | {
+          ok: true;
+          handle: string;
+          name: string;
+          /** The logo it replaced: delete its files. */
+          previous?: Photo;
+          /** Everyone with a membership (their copy of the logo changed). */
+          copyHolders: string[];
+      }
+    | { ok: false; error: 'notAllowed' | 'notFound' };
+
+/**
+ * Sets or removes the logo in a transaction that checks the editor: an
+ * active owner or moderator (super users on unclaimed organizations), or,
+ * with `moderation`, any super user removing it, which goes in adminLog with
+ * the reason. Logged in the organization's moderation log as an edit of
+ * "logo". Membership copies are updated afterwards in batches.
+ */
+export async function setOrganizationPhoto(
+    orgId: string,
+    editor: OrgEditor,
+    photo: Photo | null,
+    moderation?: { reason: string }
+): Promise<SetOrganizationPhotoResult> {
+    const orgRef = organizations().doc(orgId);
+    const actorRef = memberships().doc(membershipId(orgId, editor.uid));
+    const result = await db().runTransaction(async (tx) => {
+        logRead('organizations');
+        logRead('memberships');
+        const [orgSnap, actorSnap] = await Promise.all([
+            tx.get(orgRef),
+            tx.get(actorRef),
+        ]);
+        if (!orgSnap.exists) return { ok: false, error: 'notFound' } as const;
+        const org = toOrganization(orgSnap.id, orgSnap.data()!);
+        if (org.status !== 'active')
+            return { ok: false, error: 'notFound' } as const;
+        const moderating = !!moderation && photo === null;
+        if (moderating) {
+            if (!editor.platformAdmin)
+                return { ok: false, error: 'notAllowed' } as const;
+        } else {
+            const actor = actorSnap.data();
+            const role = effectiveRole(
+                actor?.status === 'active' ? actor.role : null,
+                org,
+                editor.platformAdmin
+            );
+            if (role !== 'owner' && role !== 'moderator')
+                return { ok: false, error: 'notAllowed' } as const;
+        }
+        // Super users act for the team, on unclaimed organizations or as moderators.
+        const byTeam = moderating || org.unclaimed;
+
+        const stamp = FieldValue.serverTimestamp();
+        tx.update(orgRef, {
+            photo: photo ?? FieldValue.delete(),
+            updatedAt: stamp,
+        });
+        tx.create(orgRef.collection('moderationLog').doc(), {
+            action: 'editProfile',
+            fields: ['logo'],
+            actor: byTeam
+                ? { uid: editor.uid, team: true }
+                : { uid: editor.uid, displayName: editor.displayName },
+            createdAt: stamp,
+        });
+        if (byTeam)
+            tx.create(db().collection('adminLog').doc(), {
+                action: moderating ? 'removeLogo' : 'editUnclaimed',
+                orgId,
+                orgName: org.name,
+                actorUid: editor.uid,
+                ...(moderating
+                    ? { reason: moderation!.reason }
+                    : { fields: ['logo'] }),
+                createdAt: stamp,
+            });
+        return {
+            ok: true,
+            handle: org.handle,
+            name: org.name,
+            previous: org.photo,
+        } as const;
+    });
+    if (!result.ok) return result;
+
+    const snapshot = await memberships().where('orgId', '==', orgId).get();
+    logRead('memberships', Math.max(snapshot.size, 1));
+    for (let i = 0; i < snapshot.docs.length; i += 400) {
+        const batch = db().batch();
+        for (const doc of snapshot.docs.slice(i, i + 400))
+            batch.update(doc.ref, {
+                'org.photo': photo?.small ?? FieldValue.delete(),
+            });
+        await batch.commit();
+    }
+    return {
+        ...result,
+        copyHolders: snapshot.docs.map((doc) => doc.data().uid as string),
+    };
 }
 
 // --- A person's groups, for their profile (src/lib/profiles.ts decides which

@@ -42,11 +42,21 @@ Status 2026-11-21: the six `NEXT_PUBLIC_FIREBASE_*` values are set on Production
 
 **Super users:** `PLATFORM_ADMIN_UIDS` was set on Production on 2026-11-24 with one UID (the project owner's). It's read on the server at request time, so the first deploy that includes the super-user code picks it up. To change the list: `vercel env rm PLATFORM_ADMIN_UIDS production`, then `vercel env add PLATFORM_ADMIN_UIDS production --project communalists --scope jadeallencook` with the full comma-separated list, then redeploy (a running deployment keeps the values it started with).
 
-**Which build is live:** the footer shows `v{version} ({short commit})`, linked to the commit on GitHub. If it doesn't match `git log -1 --format=%h` on `main`, the latest push hasn't deployed yet (or failed; check `vercel ls communalists --scope jadeallencook`). Local builds show `(dev)`. See decision #19.
+**Which build is live:** the footer shows the short commit (no version number since [decision #46](../decisions/046-footer-shows-commit-only-no-version-number.md)), linked to the commit on GitHub. If it doesn't match `git log -1 --format=%h` on `main`, the latest push hasn't deployed yet (or failed; check `vercel ls communalists --scope jadeallencook`). Local builds show `(dev)`. See decision #19.
 
 **Node version:** production runs the major allowed by `package.json` `engines` (now Node 24), not the project's dashboard setting; see `tooling-and-ci.md` for the Node 26 incident.
 
 `NEXT_PUBLIC_*` values are inlined at build time, so redeploy after changing them. Vercel's CLI pauses on a `NEXT_PUBLIC_` name containing `KEY`, because it looks like a secret; the Firebase web API key is public by design, so add it with `--type config`. Add the service-account key straight from its file, so it's never pasted anywhere: `vercel env add FIREBASE_SERVICE_ACCOUNT_KEY production --sensitive < key.json`, then delete the file. Also enable **Authentication → Sign-in method → Email/Password** in the Firebase console, add `communalists.com` under **Authentication → Settings → Authorized domains** (password-reset links return there), set the sender name under **Authentication → Templates**, and set the templates' **action URL** to `https://communalists.com/auth/action` (our reset-password page; see `accounts-and-sessions.md`).
+
+## Firebase Storage (photos)
+
+Profile photos and organization logos ([decision #71](../decisions/071-profile-photos-and-organization-logos-cropped-in-browser-firebase-storage.md)) need, **before the first deploy that includes them**:
+
+1. **A Storage bucket** in the `communalists` project (Firebase console → Storage). `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` is set to `communalists.appspot.com`, the project's legacy default bucket. Check that bucket exists and that the project's plan can still use it (Firebase changed Storage for new and no-cost projects in 2024), or create the `communalists.firebasestorage.app` bucket and update the variable, then redeploy (it's inlined at build time). The server uses the variable as the bucket name.
+2. **The deny-all rules deployed:** `firebase deploy --only storage --project communalists`.
+3. The service account behind `FIREBASE_SERVICE_ACCOUNT_KEY` needs write access to the bucket (the Firebase Admin SDK service account has it by default).
+
+Without a bucket, uploads fail with "Something went wrong" and nothing else breaks: no page reads Storage, they only show links.
 
 ## Analytics
 

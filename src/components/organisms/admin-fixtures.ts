@@ -146,8 +146,17 @@ export const activity: AdminActivityProps = {
         words: 9,
         exports: 3,
         comments: 2,
+        photos: 1,
     },
     log: [
+        {
+            id: '1',
+            action: 'removePhoto',
+            orgName: '',
+            actorName: 'Jordan Lee',
+            targetName: 'Sam Rivera',
+            on: 'Nov 21, 2026',
+        },
         {
             id: '2',
             action: 'approveClaim',

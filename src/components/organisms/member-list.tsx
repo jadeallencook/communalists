@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/i18n/navigation';
-import { initials } from '@/lib/initials';
+import { Avatar } from '@/components/molecules/avatar';
 import type { OrgRole } from '@/lib/organizations/membership';
 import type { MemberListVisibility } from '@/lib/organizations/options';
 
@@ -12,6 +12,8 @@ export interface MemberListProps {
         displayName: string;
         /** Links the row to /comrade/{username}. */
         username?: string;
+        /** Their photo's small link, only if this viewer may see it. */
+        photo?: string;
         role: OrgRole;
     }[];
     /** All active members, including those not named. */
@@ -50,12 +52,11 @@ export function MemberList({
                 {people.map((person) => {
                     const row = (
                         <>
-                            <span
-                                aria-hidden
-                                className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium"
-                            >
-                                {initials(person.displayName)}
-                            </span>
+                            <Avatar
+                                name={person.displayName}
+                                photo={person.photo}
+                                size={36}
+                            />
                             <span className="min-w-0 flex-1 text-sm break-words">
                                 {person.displayName}
                             </span>

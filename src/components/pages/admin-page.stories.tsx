@@ -99,6 +99,7 @@ export const Empty: Story = {
                 words: 0,
                 exports: 0,
                 comments: 2,
+                photos: 0,
             },
             log: [],
         },

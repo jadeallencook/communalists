@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+    isStricter,
     profileSettingsOf,
     profileView,
     profileViewer,
     seesDetails,
     visibleGroups,
+    visiblePhoto,
     type ProfileGroup,
 } from './profiles';
 
@@ -170,5 +172,42 @@ describe('profileView', () => {
             ).details?.area;
         expect(view(false)).toBeUndefined();
         expect(view(true)).toBe('San Jose, California');
+    });
+});
+
+describe('photos follow profile visibility', () => {
+    const photo = 'https://example.test/large.webp';
+
+    it('shows the photo only to viewers who see details', () => {
+        expect(visiblePhoto(photo, 'public', 'public')).toBe(photo);
+        expect(visiblePhoto(photo, 'groups', 'groupmate')).toBe(photo);
+        expect(visiblePhoto(photo, 'groups', 'signedIn')).toBeUndefined();
+        expect(visiblePhoto(photo, 'groups', 'public')).toBeUndefined();
+        expect(visiblePhoto(photo, 'name', 'groupmate')).toBeUndefined();
+        expect(visiblePhoto(photo, 'name', 'self')).toBe(photo);
+        expect(visiblePhoto(undefined, 'public', 'public')).toBeUndefined();
+    });
+
+    it('leaves the photo off a "Just my name" profile', () => {
+        const view = profileView(
+            {
+                name: 'Wei Chen',
+                username: 'wei-chen',
+                photo,
+                settings: profileSettingsOf({ visibility: 'name' }),
+                groups: [],
+            },
+            'groupmate',
+            new Set()
+        );
+        expect(view.photo).toBeUndefined();
+    });
+
+    it('counts only changes that share with fewer people as stricter', () => {
+        expect(isStricter('public', 'groups')).toBe(true);
+        expect(isStricter('groups', 'name')).toBe(true);
+        expect(isStricter('public', 'name')).toBe(true);
+        expect(isStricter('name', 'public')).toBe(false);
+        expect(isStricter('groups', 'groups')).toBe(false);
     });
 });

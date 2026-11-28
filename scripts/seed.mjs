@@ -22,15 +22,24 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
 import { geohashForLocation } from 'geofire-common';
+import sharp from 'sharp';
 
 // Plain TypeScript with no imports: Node strips the types.
 import { parseCsv } from '../src/lib/csv.ts';
 import { missingDetails } from '../src/lib/organizations/details.ts';
+import {
+    downloadUrl,
+    PHOTO_SIZES,
+    photoPath,
+} from '../src/lib/photos/index.ts';
 
 const PROJECT = 'demo-communalists';
 process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
 process.env.FIREBASE_AUTH_EMULATOR_HOST = '127.0.0.1:9099';
+process.env.FIREBASE_STORAGE_EMULATOR_HOST = '127.0.0.1:9199';
+const BUCKET = `${PROJECT}.firebasestorage.app`;
 // Off the cloud there's no metadata server; don't wait seconds looking for one.
 process.env.METADATA_SERVER_DETECTION = 'none';
 
@@ -138,10 +147,71 @@ setTimeout(
     30_000
 ).unref();
 
-const app = initializeApp({ projectId: PROJECT });
+const app = initializeApp({ projectId: PROJECT, storageBucket: BUCKET });
 const auth = getAuth(app);
 const db = getFirestore(app);
 const now = FieldValue.serverTimestamp();
+
+// --- Photos: abstract pictures (two colours, never real people) saved like
+// the app saves uploads (src/lib/photos/store.ts), in the Storage emulator.
+// If Storage isn't running (emulators started before it was added), the
+// seed goes on without photos.
+let photosSkipped = false;
+// Asked once, quickly: the Storage client retries for a long time otherwise.
+const storageUp = fetch(
+    `http://${process.env.FIREBASE_STORAGE_EMULATOR_HOST}/`,
+    {
+        signal: AbortSignal.timeout(2000),
+    }
+).then(
+    () => true,
+    () => false
+);
+async function seedPhoto(kind, ownerId, [from, to]) {
+    if (!photosSkipped && !(await storageUp)) {
+        photosSkipped = true;
+        say(
+            "Skipped photos: the Storage emulator isn't running. Restart `pnpm dev` to start it, then run `pnpm seed`."
+        );
+    }
+    if (photosSkipped) return undefined;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient></defs><rect width="500" height="500" fill="url(#g)"/><circle cx="250" cy="210" r="90" fill="#ffffff" fill-opacity="0.55"/><ellipse cx="250" cy="480" rx="170" ry="140" fill="#ffffff" fill-opacity="0.35"/></svg>`;
+    const id = 'seed';
+    const token = `seed-${ownerId}`;
+    try {
+        const links = {};
+        for (const [size, side] of Object.entries(PHOTO_SIZES)) {
+            const path = photoPath(kind, ownerId, id, size);
+            const file = await sharp(Buffer.from(svg))
+                .resize(side, side)
+                .webp({ quality: 80 })
+                .toBuffer();
+            await getStorage(app)
+                .bucket()
+                .file(path)
+                .save(file, {
+                    resumable: false,
+                    contentType: 'image/webp',
+                    metadata: {
+                        metadata: { firebaseStorageDownloadTokens: token },
+                    },
+                });
+            links[size] = downloadUrl(
+                `http://${process.env.FIREBASE_STORAGE_EMULATOR_HOST}`,
+                BUCKET,
+                path,
+                token
+            );
+        }
+        return { id, ...links };
+    } catch (error) {
+        photosSkipped = true;
+        say(
+            `Skipped photos: the Storage emulator didn't answer (${error.message}). Restart \`pnpm dev\` to start it, then run \`pnpm seed\`.`
+        );
+        return undefined;
+    }
+}
 
 if (ifMissing) {
     const checks = await Promise.all([
@@ -197,7 +267,8 @@ async function hasSeedPassword(email) {
 }
 
 // --- Accounts. Existing ones are updated in place, so their sessions survive.
-for (const { uid, email, profile } of users) {
+const photoOf = {};
+for (const { uid, email, profile, photo } of users) {
     // Someone may have signed up with this email by hand.
     const byEmail = await auth.getUserByEmail(email).catch(() => null);
     if (byEmail && byEmail.uid !== uid) await auth.deleteUser(byEmail.uid);
@@ -223,11 +294,13 @@ for (const { uid, email, profile } of users) {
     );
     if (profile) {
         const { placeId, publicProfile, ...rest } = profile;
+        photoOf[uid] = photo ? await seedPhoto('users', uid, photo) : undefined;
         await ref.set({
             ...rest,
             location: area(placeId),
             // What they share on their profile (src/lib/profiles.ts).
             ...(publicProfile ? { profile: publicProfile } : {}),
+            ...(photoOf[uid] ? { photo: photoOf[uid] } : {}),
             createdAt: now,
             updatedAt: now,
         });
@@ -293,6 +366,9 @@ const nameOf = Object.fromEntries(
 const usernameOf = Object.fromEntries(
     users.map((u) => [u.uid, u.profile?.username])
 );
+const visibilityOf = Object.fromEntries(
+    users.map((u) => [u.uid, u.profile?.publicProfile?.visibility ?? 'groups'])
+);
 for (const {
     members,
     requests = [],
@@ -302,6 +378,7 @@ for (const {
     createdBy,
     placeId,
     reach,
+    photo: logoColors,
     ...org
 } of organizations) {
     const handleRef = db.collection('handles').doc(org.handle);
@@ -333,7 +410,11 @@ for (const {
 
     // Unclaimed organizations (added by a super user) have no members.
     const owner = members.find(([, role]) => role === 'owner')?.[0];
+    const logo = logoColors
+        ? await seedPhoto('organizations', org.id, logoColors)
+        : undefined;
     batch.set(orgRef, {
+        ...(logo ? { photo: logo } : {}),
         ...org,
         location: area(placeId),
         reach: reachFor(reach),
@@ -350,16 +431,20 @@ for (const {
         name: org.name,
         handle: org.handle,
         focusAreas: org.focusAreas,
+        ...(logo ? { photo: logo.small } : {}),
     };
     const membership = (uid, fields) =>
         batch.set(db.collection('memberships').doc(`${org.id}_${uid}`), {
             orgId: org.id,
             uid,
             org: copy,
+            // Like memberCopyOf (src/lib/organizations/index.ts).
             member: JSON.parse(
                 JSON.stringify({
                     displayName: nameOf[uid],
                     username: usernameOf[uid],
+                    photo: photoOf[uid]?.small,
+                    visibility: visibilityOf[uid],
                 })
             ),
             ...fields,

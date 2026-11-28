@@ -631,7 +631,8 @@
             "memberListVisibility": "cài đặt danh sách thành viên",
             "streetAddress": "địa chỉ",
             "phone": "số điện thoại",
-            "foundedYear": "năm thành lập"
+            "foundedYear": "năm thành lập",
+            "logo": "logo"
         },
         "teamActor": "Nhóm Communalists"
     },
@@ -850,7 +851,9 @@
             "replyComment": "{actor} đã trả lời một bình luận trên {word} thay mặt nhóm",
             "hideReply": "{actor} đã ẩn một câu trả lời trên {word}",
             "unhideReply": "{actor} đã hiện lại một câu trả lời bị ẩn trên {word}",
-            "deleteReply": "{actor} đã xóa một câu trả lời trên {word}"
+            "deleteReply": "{actor} đã xóa một câu trả lời trên {word}",
+            "removePhoto": "{actor} đã xóa ảnh của {target}",
+            "removeLogo": "{actor} đã xóa logo của {org}"
         },
         "unknownActor": "Một siêu người dùng",
         "errors": {
@@ -1114,7 +1117,8 @@
             "lifecycle": "Đã xóa, khôi phục hoặc chuyển thành chưa được nhận",
             "words": "Từ được thêm, sửa hoặc xóa",
             "exports": "Lần tải danh sách tổ chức",
-            "comments": "Bình luận bị ẩn, bị xóa hoặc báo cáo được bỏ qua"
+            "comments": "Bình luận bị ẩn, bị xóa hoặc báo cáo được bỏ qua",
+            "photos": "Ảnh và logo đã bị xóa"
         },
         "gapNames": {
             "phone": "số điện thoại",
@@ -1578,6 +1582,52 @@
             "title": "Không tìm thấy ai có tên người dùng “{username}”",
             "body": "Mọi người có thể đổi tên người dùng, và tên cũ sẽ ngừng hoạt động. Hãy kiểm tra chính tả, hoặc tìm họ qua một tổ chức họ tham gia.",
             "find": "Tìm tổ chức"
+        }
+    },
+    "Photo": {
+        "title": "{kind, select, users {Ảnh đại diện} other {Logo}}",
+        "hint": "{kind, select, users {Không bắt buộc. Chỉ những người xem được hồ sơ của bạn mới thấy ảnh, nên “Chỉ tên của tôi” cũng ẩn ảnh.} other {Không bắt buộc. Hiển thị ở mọi nơi tổ chức của bạn xuất hiện: trang của tổ chức, kết quả tìm kiếm và bảng điều khiển của thành viên.}}",
+        "upload": "{kind, select, users {Tải ảnh lên} other {Tải logo lên}}",
+        "change": "{kind, select, users {Đổi ảnh} other {Đổi logo}}",
+        "remove": "{kind, select, users {Xóa ảnh} other {Xóa logo}}",
+        "removing": "Đang xóa…",
+        "formats": "JPEG, PNG hoặc WebP. Bạn sẽ cắt ảnh thành hình vuông trước khi lưu, ở kích thước 500 × 500 điểm ảnh.",
+        "done": {
+            "uploaded": "{kind, select, users {Đã lưu ảnh.} other {Đã lưu logo.}}",
+            "removed": "{kind, select, users {Đã xóa ảnh.} other {Đã xóa logo.}}"
+        },
+        "crop": {
+            "title": "{kind, select, users {Cắt ảnh của bạn} other {Cắt logo}}",
+            "description": "Kéo ảnh để chọn phần hiển thị, hoặc chọn ảnh rồi dùng các phím mũi tên (giữ Shift để di chuyển từng chút). Phóng to, thu nhỏ bằng thanh trượt hoặc nút − và +.",
+            "area": "Vị trí ảnh",
+            "zoom": "Thu phóng",
+            "zoomValue": "{percent}%",
+            "zoomIn": "Phóng to",
+            "zoomOut": "Thu nhỏ",
+            "save": "Lưu",
+            "saving": "Đang lưu…",
+            "cancel": "Hủy"
+        },
+        "errors": {
+            "notImage": "Tệp đó không phải là hình ảnh. Hãy chọn ảnh JPEG, PNG hoặc WebP.",
+            "tooLarge": "Ảnh đó quá lớn. Hãy chọn ảnh dưới 25 MB.",
+            "decodeFailed": "Không mở được ảnh đó. Hãy thử ảnh JPEG hoặc PNG.",
+            "missing": "Hãy chọn một ảnh trước.",
+            "wrongType": "Chỉ lưu được ảnh JPEG, PNG hoặc WebP.",
+            "unreadable": "Không đọc được ảnh đó. Hãy thử ảnh khác.",
+            "notSquare": "Ảnh chưa được cắt. Hãy thử lại.",
+            "notAllowed": "Bạn không thể thay đổi ảnh này.",
+            "reasonRequired": "Hãy ghi lý do.",
+            "generic": "Đã xảy ra lỗi. Hãy thử lại."
+        },
+        "moderation": {
+            "trigger": "{kind, select, users {Xóa ảnh} other {Xóa logo}}",
+            "triggerFor": "{kind, select, users {Xóa ảnh của {name}} other {Xóa logo của {name}}}",
+            "title": "{kind, select, users {Xóa ảnh này?} other {Xóa logo này?}}",
+            "description": "Ảnh sẽ bị xóa với mọi người và không thể hoàn tác. Lý do được ghi vào nhật ký quản trị.",
+            "confirm": "Xóa",
+            "reasonHint": "Bắt buộc. Được lưu trong nhật ký quản trị, chỉ siêu người dùng xem được.",
+            "done": "{kind, select, users {Đã xóa ảnh.} other {Đã xóa logo.}}"
         }
     }
 }

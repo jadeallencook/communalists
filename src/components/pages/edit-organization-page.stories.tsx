@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { SAMPLE_LOGO } from '@/components/molecules/photo-fixtures';
+import { PhotoEditor } from '@/components/organisms/photo-editor';
 import { fn } from 'storybook/test';
 
 import { CreateOrganizationForm } from '@/components/organisms/create-organization-form';
@@ -98,4 +100,27 @@ export const AsOwner: Story = {
 };
 export const Loading: Story = {
     render: () => <EditOrganizationPageLoading />,
+};
+
+/** The logo section, saved on its own, above the form. */
+export const WithLogo: Story = {
+    args: {
+        logo: (
+            <PhotoEditor
+                kind="organizations"
+                name="South Bay Mutual Aid"
+                photo={SAMPLE_LOGO}
+                source={null}
+                crop={{ x: 0, y: 0 }}
+                zoom={1}
+                onCropChange={fn()}
+                onZoomChange={fn()}
+                onCropComplete={fn()}
+                onPick={fn()}
+                onCancel={fn()}
+                onSave={fn()}
+                onRemove={fn()}
+            />
+        ),
+    },
 };

@@ -4,6 +4,7 @@ import {
     profileView,
     type ProfileGroup,
 } from '@/lib/profiles';
+import { SAMPLE_PHOTO } from '@/components/molecules/photo-fixtures';
 
 export const sampleGroups: ProfileGroup[] = [
     {
@@ -46,6 +47,7 @@ export const samplePerson = {
     name: 'Maya Thompson',
     username: 'maya-thompson',
     areaLabel: 'San Jose, California',
+    photo: SAMPLE_PHOTO,
     settings: sampleSettings,
     groups: sampleGroups,
 };

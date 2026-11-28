@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { SAMPLE_PHOTO } from '@/components/molecules/photo-fixtures';
 
 import { MemberList } from './member-list';
 
@@ -53,4 +54,13 @@ export const CountOnly: Story = {
 /** A new group: just the owner. */
 export const OnlyOwner: Story = {
     args: { people: leaders.slice(0, 1), total: 1 },
+};
+
+/** Photos show only for people whose visibility lets this viewer see them; the rest keep initials. */
+export const WithPhotos: Story = {
+    args: {
+        people: everyone.map((person, i) =>
+            i % 2 === 0 ? { ...person, photo: SAMPLE_PHOTO } : person
+        ),
+    },
 };

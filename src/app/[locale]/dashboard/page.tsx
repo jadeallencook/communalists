@@ -67,6 +67,7 @@ async function DashboardContainer() {
             organizations={memberships.map(({ org, role }) => ({
                 name: org.name,
                 handle: org.handle,
+                photo: org.photo,
                 focusAreas: org.focusAreas,
                 role,
             }))}
@@ -74,6 +75,7 @@ async function DashboardContainer() {
             nearby={nearby.map(({ org, distanceMiles }) => ({
                 name: org.name,
                 handle: org.handle,
+                photo: org.photo,
                 focusAreas: org.focusAreas,
                 unclaimed: org.unclaimed,
                 detail:

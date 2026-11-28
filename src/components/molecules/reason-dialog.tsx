@@ -38,6 +38,8 @@ export interface ReasonDialogProps {
     withReason?: boolean;
     /** Red confirm button (default), for removing and banning. */
     destructive?: boolean;
+    /** Replaces the hint under the reason (who sees it), e.g. for super users' admin log. */
+    reasonHint?: string;
 }
 
 /**
@@ -59,6 +61,7 @@ export function ReasonDialog({
     defaultOpen,
     withReason = true,
     destructive = true,
+    reasonHint,
 }: ReasonDialogProps) {
     const t = useTranslations('Membership');
     const [open, setOpen] = useState(defaultOpen ?? false);
@@ -111,7 +114,7 @@ export function ReasonDialog({
                                 rows={3}
                             />
                             <FieldDescription>
-                                {t('reasonHint')}
+                                {reasonHint ?? t('reasonHint')}
                             </FieldDescription>
                         </Field>
                     )}

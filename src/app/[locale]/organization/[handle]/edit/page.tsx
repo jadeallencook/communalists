@@ -22,6 +22,7 @@ import { isSupportedCountry } from '@/lib/places/types';
 import { redirect } from '@/i18n/navigation';
 import { organizationPath } from '@/lib/paths';
 
+import { PhotoEditorContainer } from '../../../_photos/photo-editor-container';
 import { DeleteOrganizationContainer } from './delete-organization-container';
 import { EditOrganizationFormContainer } from './edit-organization-form-container';
 
@@ -80,6 +81,13 @@ async function EditServerContainer({ params }: Pick<Props, 'params'>) {
         <EditOrganizationPage
             name={org.name}
             handle={org.handle}
+            logo={
+                <PhotoEditorContainer
+                    name={org.name}
+                    photo={org.photo?.large}
+                    orgId={org.id}
+                />
+            }
             deleteSection={
                 // canDelete: owners (and super users on unclaimed ones).
                 canDelete(role) ? (

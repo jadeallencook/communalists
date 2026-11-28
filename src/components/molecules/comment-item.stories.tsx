@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { SAMPLE_PHOTO } from './photo-fixtures';
 import { fn } from 'storybook/test';
 
 import { CommentForm } from './comment-form';
@@ -174,5 +175,15 @@ export const ReplyHidden: Story = {
         },
         organizationName: 'South Bay Mutual Aid',
         can: allowed.member,
+    },
+};
+
+/** The author's photo, when their visibility lets this viewer see it. */
+export const WithPhoto: Story = {
+    args: {
+        comment: {
+            ...voted,
+            author: voted.author && { ...voted.author, photo: SAMPLE_PHOTO },
+        },
     },
 };

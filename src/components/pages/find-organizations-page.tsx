@@ -150,6 +150,7 @@ function Section({
                             <OrganizationListing
                                 name={org.name}
                                 handle={org.handle}
+                                photo={org.photo}
                                 focusAreas={org.focusAreas}
                                 unclaimed={org.unclaimed}
                                 description={org.description}

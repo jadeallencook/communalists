@@ -40,6 +40,8 @@ export interface DirectoryOrganization {
     socials: SocialLink[];
     /** Added by a super user and not claimed yet. */
     unclaimed?: boolean;
+    /** The logo's small link. */
+    photo?: string;
 }
 
 export interface DirectoryFilters {
