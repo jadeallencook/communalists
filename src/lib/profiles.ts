@@ -206,3 +206,18 @@ export function profileView(
             : null,
     };
 }
+
+/**
+ * A short line about the person for link previews: pronouns, city and bio,
+ * as far as `view` shows them. Build `view` for a signed-out viewer: link
+ * previews are fetched signed out and kept by the apps that fetch them.
+ * Empty when nothing is shared (use a generic line then).
+ */
+export function profileSummary(view: ProfileView): string {
+    if (!view.details) return '';
+    const facts = [view.pronouns, view.details.area]
+        .filter(Boolean)
+        .join(' · ');
+    const bio = view.details.bio?.replace(/\s+/g, ' ').trim();
+    return [facts, bio].filter(Boolean).join('. ');
+}

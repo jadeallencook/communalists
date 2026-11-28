@@ -34,6 +34,7 @@ One setting, **Profile visibility**:
 - The default is "People in my groups": it matches how mutual aid works, and it shares nothing until they add something.
 - **Preview as…** in settings shows the profile as the public, as a member of one of their groups, and as a signed-in stranger.
 - Profiles are `noindex` (kept out of search engines), even public ones, for now. Being searchable would be its own opt-in later.
+- **Link previews** show what a signed-out visitor sees, whoever shares the link: the title "{name} (@{username})", and a generated card with the photo (public profiles) or initials. The description is pronouns, city and bio for public profiles, and a generic line otherwise ([decision #72](../decisions/072-share-cards-for-profiles-and-organizations-bundled-fonts.md), [seo → Share cards](../technical/seo.md#share-cards)).
 - All checks run on the server; the page and the preview only ever receive what the viewer may see.
 
 ## Photo

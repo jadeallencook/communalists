@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                                       | Decision                                                                                           | Date       |
 | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [072](072-share-cards-for-profiles-and-organizations-bundled-fonts.md)                  | Share cards for profiles and organizations, with bundled fonts                                     | 2026-11-28 |
 | [071](071-profile-photos-and-organization-logos-cropped-in-browser-firebase-storage.md) | Profile photos and organization logos: cropped in the browser, stored in Firebase Storage          | 2026-11-27 |
 | [070](070-organization-discussions-platform-moderated-with-official-replies.md)         | Discussions on organizations: platform-moderated, with one official reply                          | 2026-11-27 |
 | [069](069-not-found-pages-general-and-per-kind.md)                                      | Not-found pages: one general, one per kind of shared page                                          | 2026-11-27 |

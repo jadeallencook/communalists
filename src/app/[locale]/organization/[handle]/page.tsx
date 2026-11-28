@@ -41,6 +41,7 @@ import { profileViewer, visiblePhoto } from '@/lib/profiles';
 import { redirect } from '@/i18n/navigation';
 import { organizationPath } from '@/lib/paths';
 import { keywordList, snippet } from '@/lib/seo';
+import { shareCardPath, shareCardVersion } from '@/lib/share-cards';
 import { getSiteUrl } from '@/lib/site';
 import { socialUrl } from '@/lib/socials';
 
@@ -94,6 +95,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             // The city's name alone: a label's comma would split a keyword.
             t('metaKeywords', { city: org.location.label.split(',')[0] })
         ),
+        // Its logo or initials, name and city (decision #72).
+        image: {
+            url: shareCardPath(
+                'organization',
+                org.handle,
+                shareCardVersion(org.name, org.location.label, org.photo?.id)
+            ),
+            alt: t('cardAlt', names),
+        },
     });
     // Unlisted groups don't want to be found, and archived ones are gone:
     // keep both out of search engines.

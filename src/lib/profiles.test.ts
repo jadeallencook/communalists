@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
     isStricter,
     profileSettingsOf,
+    profileSummary,
     profileView,
     profileViewer,
     seesDetails,
@@ -209,5 +210,48 @@ describe('photos follow profile visibility', () => {
         expect(isStricter('public', 'name')).toBe(true);
         expect(isStricter('name', 'public')).toBe(false);
         expect(isStricter('groups', 'groups')).toBe(false);
+    });
+});
+
+describe('profileSummary', () => {
+    const person = {
+        name: 'Maya Thompson',
+        username: 'maya-thompson',
+        areaLabel: 'San Jose, California',
+        groups: [],
+    };
+
+    it('joins pronouns, city and bio from what the viewer sees', () => {
+        const view = profileView(
+            {
+                ...person,
+                settings: profileSettingsOf({
+                    visibility: 'public',
+                    pronouns: 'she/her',
+                    showArea: true,
+                    bio: 'Organizer.\n\nI drive the  grocery route.',
+                }),
+            },
+            'public',
+            new Set()
+        );
+        expect(profileSummary(view)).toBe(
+            'she/her · San Jose, California. Organizer. I drive the grocery route.'
+        );
+    });
+
+    it('is empty when a signed-out visitor sees only the name', () => {
+        const view = profileView(
+            {
+                ...person,
+                settings: profileSettingsOf({
+                    visibility: 'groups',
+                    bio: 'Private bio',
+                }),
+            },
+            'public',
+            new Set()
+        );
+        expect(profileSummary(view)).toBe('');
     });
 });

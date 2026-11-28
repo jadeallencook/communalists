@@ -502,7 +502,8 @@
         },
         "metaTitle": "{name} in {place}",
         "metaDescription": "{name} is a group based in {place}. See what they work on and how to get involved on Communalists.",
-        "metaKeywords": "mutual aid {city}, community organizations {city}"
+        "metaKeywords": "mutual aid {city}, community organizations {city}",
+        "cardAlt": "Card for {name}, {place}"
     },
     "Membership": {
         "signInToJoin": "Sign in to join",
@@ -720,7 +721,9 @@
             "socialMismatch": "One of the links isn't a profile on the platform chosen for it. Type just the username instead.",
             "socialDuplicate": "Add each platform only once.",
             "generic": "Something went wrong. Please try again."
-        }
+        },
+        "metaDescription": "{name} is on Communalists, a free platform for mutual aid networks.",
+        "cardAlt": "Profile card for {name}"
     },
     "LocationField": {
         "country": "Country",

@@ -22,6 +22,9 @@ export const findPath = (kind: FindKind) => `/find/${kind}`;
 /** Creating an organization. */
 export const NEW_ORGANIZATION_PATH = '/organization/new';
 
+/** A person's profile. */
+export const profilePath = (username: string) => `/comrade/${username}`;
+
 /** An organization's pages that live under its address. */
 export type OrganizationPage = 'edit' | 'members' | 'claim';
 

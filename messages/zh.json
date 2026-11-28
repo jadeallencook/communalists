@@ -502,7 +502,8 @@
         },
         "metaTitle": "{name}（{place}）",
         "metaDescription": "{name}是位于{place}的小组。在 Communalists 上了解他们的工作以及如何参与。",
-        "metaKeywords": "{city}互助, {city}社区组织"
+        "metaKeywords": "{city}互助, {city}社区组织",
+        "cardAlt": "{name}（{place}）的卡片"
     },
     "Membership": {
         "signInToJoin": "登录后加入",
@@ -720,7 +721,9 @@
             "socialMismatch": "有一个链接不是所选平台上的主页。请只输入用户名。",
             "socialDuplicate": "每个平台只能添加一次。",
             "generic": "出了点问题，请重试。"
-        }
+        },
+        "metaDescription": "{name} 在 Communalists 上，这是一个面向互助网络的免费平台。",
+        "cardAlt": "{name} 的个人资料卡片"
     },
     "LocationField": {
         "country": "国家",
