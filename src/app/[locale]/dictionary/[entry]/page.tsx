@@ -25,10 +25,13 @@ import {
     getDefinitionFresh,
     getDefinitions,
 } from '@/lib/definitions/store';
+import { keywordList, snippet } from '@/lib/seo';
 import { getSiteUrl } from '@/lib/site';
 import { redirect } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 
+import { JsonLd } from '../../json-ld';
+import { pageMetadata } from '../../page-metadata';
 import { TrackEvent } from '../../track-event';
 import { ShareContainer } from '../share-container';
 
@@ -53,23 +56,24 @@ async function findDefinition(raw: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const entry = (await entryOf(params)).toLowerCase();
     const locale = await getLocale();
+    const t = await getTranslations('Dictionary');
     if (isLetter(entry)) {
-        const t = await getTranslations('Dictionary');
-        const title = t('letterTitle', { letter: entry.toUpperCase() });
-        return {
-            title,
+        return pageMetadata({
+            path: `/dictionary/${entry}`,
+            title: t('letterTitle', { letter: entry.toUpperCase() }),
             description: t('intro'),
-            openGraph: { title, description: t('intro') },
-        };
+        });
     }
     const { definition } = await findDefinition(entry);
     if (!definition) return {};
-    const { word, definition: description } = localize(definition, locale);
-    return {
-        title: word,
-        description,
-        openGraph: { title: word, description, type: 'article' },
-    };
+    const { slug, word, definition: meaning } = localize(definition, locale);
+    return pageMetadata({
+        path: `/dictionary/${slug}`,
+        title: t('metaTitleWord', { word }),
+        description: snippet(meaning),
+        keywords: keywordList(t('metaKeywordsWord', { word })),
+        type: 'article',
+    });
 }
 
 export default function Page({ params, searchParams }: Props) {
@@ -157,6 +161,7 @@ async function WordContainer({
     if (!definition) notFound();
 
     const text = localize(definition, locale);
+    const dictionaryName = (await getTranslations('Dictionary'))('setName');
     const all = definition.related.length ? await getDefinitions() : [];
     const related = definition.related.flatMap((other) => {
         const found = all.find((d) => d.slug === other);
@@ -164,11 +169,27 @@ async function WordContainer({
         const { word, lang } = localize(found, locale);
         return [{ slug: other, word, lang }];
     });
-    const url = `${getSiteUrl()}/${locale}/dictionary/${slug}`;
+    const site = getSiteUrl();
+    const url = `${site}/${locale}/dictionary/${slug}`;
 
     return (
         <>
             <TrackEvent event="definition-view" data={{ slug }} />
+            <JsonLd
+                data={{
+                    '@context': 'https://schema.org',
+                    '@type': 'DefinedTerm',
+                    name: text.word,
+                    description: text.definition,
+                    url,
+                    inLanguage: text.lang,
+                    inDefinedTermSet: {
+                        '@type': 'DefinedTermSet',
+                        name: dictionaryName,
+                        url: `${site}/${locale}/dictionary/a`,
+                    },
+                }}
+            />
             <DefinitionPage
                 slug={slug}
                 word={text.word}

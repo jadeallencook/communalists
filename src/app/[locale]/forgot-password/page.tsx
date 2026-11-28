@@ -7,7 +7,7 @@ import { ForgotPasswordFormContainer } from './forgot-password-form-container';
 
 export async function generateMetadata(): Promise<Metadata> {
     const t = await getTranslations('ForgotPassword');
-    return { title: t('metaTitle') };
+    return { title: t('metaTitle'), robots: { index: false } };
 }
 
 export default function Page() {

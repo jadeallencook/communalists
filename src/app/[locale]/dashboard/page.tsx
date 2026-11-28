@@ -20,7 +20,7 @@ const NEARBY_COUNT = 3;
 
 export async function generateMetadata(): Promise<Metadata> {
     const t = await getTranslations('Dashboard');
-    return { title: t('metaTitle') };
+    return { title: t('metaTitle'), robots: { index: false } };
 }
 
 // requireAccount sends signed-out visitors to sign-in and incomplete accounts

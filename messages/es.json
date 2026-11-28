@@ -1,6 +1,8 @@
 {
     "Metadata": {
-        "description": "Herramientas y recursos para que las comunidades construyan y sostengan redes de ayuda mutua."
+        "description": "Plataforma gratuita donde los vecinos se organizan. Crea o encuentra un grupo de ayuda mutua cerca de ti, con herramientas para solicitudes, préstamos y eventos.",
+        "homeTitle": "Communalists: herramientas para redes de ayuda mutua",
+        "keywords": "ayuda mutua, red de ayuda mutua, grupos de ayuda mutua, organización comunitaria, cuidado comunitario, vecinos ayudando a vecinos, voluntariado, biblioteca de herramientas"
     },
     "Header": {
         "skipToContent": "Saltar al contenido",
@@ -104,7 +106,8 @@
             "passwordMismatch": "Las contraseñas no coinciden."
         },
         "haveAccount": "¿Ya tienes una cuenta?",
-        "signIn": "Iniciar sesión"
+        "signIn": "Iniciar sesión",
+        "metaDescription": "Crea una cuenta gratuita de Communalists para iniciar un grupo de ayuda mutua o unirte a uno cerca de ti."
     },
     "SignIn": {
         "metaTitle": "Iniciar sesión",
@@ -123,7 +126,8 @@
             "invalidCredentials": "Ese correo y contraseña no coinciden con ninguna cuenta.",
             "tooManyAttempts": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
             "generic": "Algo salió mal. Inténtalo de nuevo."
-        }
+        },
+        "metaDescription": "Inicia sesión en Communalists para organizarte con tus grupos de ayuda mutua."
     },
     "ForgotPassword": {
         "metaTitle": "Olvidé mi contraseña",
@@ -275,7 +279,8 @@
         "showDetails": "Ver detalles",
         "hideDetails": "Ocultar detalles",
         "readMore": "Leer más",
-        "showLess": "Mostrar menos"
+        "showLess": "Mostrar menos",
+        "metaKeywordsNear": "ayuda mutua {name}, ayuda mutua cerca de {name}, grupos de ayuda mutua en {name}, organizaciones comunitarias {name}, voluntariado en {name}"
     },
     "Organizations": {
         "focusAreas": {
@@ -494,7 +499,10 @@
                 "notConfirmed": "El nombre que escribiste no coincide.",
                 "generic": "Algo salió mal. Inténtalo de nuevo."
             }
-        }
+        },
+        "metaTitle": "{name} en {place}",
+        "metaDescription": "{name} es un grupo con sede en {place}. Descubre en qué trabaja y cómo participar en Communalists.",
+        "metaKeywords": "ayuda mutua {city}, organizaciones comunitarias {city}"
     },
     "Membership": {
         "signInToJoin": "Inicia sesión para unirte",
@@ -1153,10 +1161,13 @@
         },
         "letters": "Letras",
         "lettersHint": "Elige una letra para ver las palabras que empiezan con ella.",
-        "letterTitle": "Diccionario: {letter}",
+        "letterTitle": "Diccionario de ayuda mutua: {letter}",
         "count": "{count, plural, =0 {Sin palabras} one {# palabra} other {# palabras}}",
         "emptyLetter": "Todavía no hay palabras que empiecen con {letter}.",
-        "noWordsShort": "(sin palabras)"
+        "noWordsShort": "(sin palabras)",
+        "metaTitleWord": "{word}: significado y definición",
+        "metaKeywordsWord": "{word}, significado de {word}, definición de {word}, qué es {word}",
+        "setName": "Diccionario de ayuda mutua de Communalists"
     },
     "AdminDefinitions": {
         "metaTitle": "Diccionario",
