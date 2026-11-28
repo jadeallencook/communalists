@@ -23,6 +23,7 @@ All of this goes through `pageMetadata()` in `src/app/[locale]/page-metadata.ts`
 | `/dictionary/{slug}`                    | {Word}: Meaning and Definition                    | The word's short definition                                                    | `DefinedTerm`                                 |
 | `/dictionary/{letter}`                  | Mutual Aid Dictionary: M                          | `Dictionary.intro`                                                             | none                                          |
 | `/sign-up`, `/sign-in`                  | Create Account, Sign In                           | `metaDescription` in their namespace                                           | none                                          |
+| `/graphics`                             | Free Flyer Maker for Protests and Mutual Aid      | `Graphics.metaDescription` (keywords `Graphics.metaKeywords`, per language)    | `WebApplication` (free, runs in the browser)  |
 
 A search's canonical is the city's path alone: `?radius=` and other filters are the same page to a search engine, so they don't compete with it. Keyword strings use the city's name without its state (`{name}`), because a label's comma would split a keyword in two.
 
@@ -30,7 +31,7 @@ The organization's structured data names only its general area (`location.label`
 
 ## Share cards
 
-Built 2026-11-28 ([decision #72](../decisions/072-share-cards-for-profiles-and-organizations-bundled-fonts.md)). A profile's or organization's link preview is a generated 1200×630 card: the photo or logo (round for people, rounded square for organizations), or initials, then the name, a line under it (`@username`, or the organization's city) and "Communalists", on a dark background in the site's dark-theme colours (text at least 7.7:1). It replaced the homepage photo on those pages.
+Built 2026-11-28 ([decision #72](../decisions/072-share-cards-for-profiles-and-organizations-bundled-fonts.md)). **`/graphics` has its own card** (`/api/share-cards/graphics/{locale}`): "Make some propaganda", a line under it, and three sample flyers (free store, rally, ICE watch) drawn in their colour sets with the templates' words in the page's language. Nothing personal, so it has no version. A profile's or organization's link preview is a generated 1200×630 card: the photo or logo (round for people, rounded square for organizations), or initials, then the name, a line under it (`@username`, or the organization's city) and "Communalists", on a dark background in the site's dark-theme colours (text at least 7.7:1). It replaced the homepage photo on those pages.
 
 - **Served by** `/api/share-cards/person/{username}` and `/api/share-cards/organization/{handle}` (`src/app/api/share-cards/`), drawn with `next/og`. The page links to it through `pageMetadata({ image })` with `?v=`, a hash of everything the card shows (`shareCardVersion`), so a changed name, photo or visibility gets a new link and apps fetch a fresh card. Cached an hour.
 - **Profiles show only what a signed-out visitor sees**, whoever is looking at the page: apps fetch previews signed out and keep them. The photo, pronouns, city and bio appear in the card and description only when the profile is shared with **Everyone**. Otherwise it's the name, `@username`, initials and a generic line.
@@ -49,7 +50,7 @@ Built 2026-11-28 ([decision #72](../decisions/072-share-cards-for-profiles-and-o
 
 `/sitemap.xml` (`src/app/sitemap.ts`) lists each address once per language, each with its `hreflang` alternates:
 
-- the home page and `/sign-up`
+- the home page, `/graphics` and `/sign-up`
 - every dictionary word (with its `updatedAt`) and every letter that has words in any language
 - every **listed, active** organization (`getSitemapOrganizations()`, unclaimed ones included)
 - the city search for each city where a listed **local** group is based. There are about 20,000 US cities, and an empty city page is thin content that can hurt the whole site, so we list only cities with groups. Other cities are still reachable by links.

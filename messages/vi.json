@@ -12,6 +12,7 @@
     "Nav": {
         "organizations": "Tổ chức",
         "dictionary": "Từ điển",
+        "graphics": "Đồ họa",
         "dashboard": "Bảng điều khiển",
         "menu": "Menu",
         "closeMenu": "Đóng menu",
@@ -1735,5 +1736,242 @@
         },
         "someone": "Một người",
         "olderHidden": "Chỉ hiển thị 50 thông báo mới nhất của bạn."
+    },
+    "Graphics": {
+        "metaTitle": "Tạo tờ rơi miễn phí cho biểu tình và tương trợ",
+        "metaDescription": "Làm tờ rơi và bài đăng miễn phí cho cửa hàng miễn phí, đổi quần áo, biểu tình hay theo dõi ICE. Không cần tài khoản, không gì rời khỏi thiết bị.",
+        "title": "Làm chút tuyên truyền",
+        "intro": "Chọn một mẫu, điền thông tin sự kiện và lưu hình để đăng mạng xã hội hoặc in ra. Miễn phí, không cần tài khoản.",
+        "privacy": "Mọi thứ diễn ra trên thiết bị của bạn. Những gì bạn nhập hoặc thêm vào không được gửi cho chúng tôi.",
+        "templates": {
+            "free-store": {
+                "label": "Cửa hàng miễn phí",
+                "description": "Quần áo, sách và đồ dùng trong nhà, miễn phí"
+            },
+            "clothing-swap": {
+                "label": "Đổi quần áo",
+                "description": "Mang quần áo đến, lấy quần áo về"
+            },
+            "protest": {
+                "label": "Biểu tình hoặc tuần hành",
+                "description": "Kêu gọi mọi người đến"
+            },
+            "ice-watch": {
+                "label": "Theo dõi ICE",
+                "description": "Phản ứng nhanh và lớp học về quyền của bạn"
+            },
+            "garden": {
+                "label": "Ngày làm vườn",
+                "description": "Cùng nhau trồng thực phẩm"
+            },
+            "event": {
+                "label": "Sự kiện khác",
+                "description": "Họp mặt, ăn chung, chia sẻ kỹ năng và hơn nữa"
+            }
+        },
+        "detailsHint": "Điền những gì bạn cần, để trống phần còn lại. Chữ tự co lại cho vừa.",
+        "fields": {
+            "title": "Tiêu đề",
+            "tagline": "Dòng ngắn phía trên tiêu đề",
+            "date": "Ngày",
+            "startTime": "Bắt đầu",
+            "endTime": "Kết thúc",
+            "place": "Ở đâu",
+            "placeHint": "Một địa chỉ hoặc nơi mọi người biết. Đừng ghi địa chỉ nhà của ai lên hình công khai.",
+            "details": "Thêm chi tiết",
+            "host": "Tổ chức bởi",
+            "hostHint": "Tên tổ chức hoặc nhóm của bạn.",
+            "link": "Liên kết cho mã QR",
+            "linkHint": "Mọi người quét mã để mở, và liên kết cũng được in dưới mã. Để trống nếu không cần mã.",
+            "linkError": "Đó có vẻ không phải là địa chỉ web. Thử kiểu như example.org/su-kien."
+        },
+        "overflowFields": {
+            "tagline": "dòng ngắn",
+            "title": "tiêu đề",
+            "when": "ngày giờ",
+            "place": "ở đâu",
+            "details": "thêm chi tiết",
+            "host": "tổ chức bởi",
+            "link": "liên kết"
+        },
+        "photo": {
+            "legend": "Ảnh",
+            "pick": "Thêm ảnh",
+            "change": "Đổi ảnh",
+            "remove": "Bỏ ảnh",
+            "hint": "Hiện với các bố cục có ảnh. Ảnh vẫn ở trên thiết bị của bạn.",
+            "notShown": "Bố cục này không hiện ảnh.",
+            "error": "Chúng tôi không mở được ảnh đó. Thử ảnh JPEG hoặc PNG.",
+            "focus": "Giữ phần nào của ảnh",
+            "focusOptions": {
+                "top": "Trên",
+                "center": "Giữa",
+                "bottom": "Dưới"
+            },
+            "added": "Đã thêm ảnh.",
+            "removed": "Đã bỏ ảnh.",
+            "useLayout": "Dùng bố cục có ảnh"
+        },
+        "logo": {
+            "legend": "Logo",
+            "pick": "Thêm logo",
+            "change": "Đổi logo",
+            "remove": "Bỏ logo",
+            "hint": "Hiện cạnh “Tổ chức bởi”.",
+            "added": "Đã thêm logo.",
+            "removed": "Đã bỏ logo."
+        },
+        "fill": {
+            "label": "Điền từ tổ chức của bạn",
+            "button": "Điền",
+            "hint": "Thêm tên, logo, địa chỉ và mã QR đến trang của tổ chức. Bạn có thể sửa sau.",
+            "done": "Đã điền từ {name}.",
+            "error": "Chúng tôi không tải được tổ chức đó. Thử lại, hoặc tự điền.",
+            "signIn": "Đăng nhập",
+            "signInHint": "để điền từ một tổ chức bạn là thành viên."
+        },
+        "format": {
+            "legend": "Kích thước",
+            "options": {
+                "square": {
+                    "label": "Bài đăng vuông",
+                    "description": "1080 × 1080, cho bài đăng Instagram và Facebook"
+                },
+                "portrait": {
+                    "label": "Bài đăng dọc",
+                    "description": "1080 × 1350, chiếm nhiều chỗ hơn trên bảng tin"
+                },
+                "story": {
+                    "label": "Tin (story)",
+                    "description": "1080 × 1920, cho tin và trạng thái"
+                },
+                "letter": {
+                    "label": "In: Letter",
+                    "description": "8.5 × 11 in, dùng ở Mỹ và Canada"
+                },
+                "a4": {
+                    "label": "In: A4",
+                    "description": "210 × 297 mm, dùng ở hầu hết các nước khác"
+                }
+            }
+        },
+        "layout": {
+            "legend": "Bố cục",
+            "options": {
+                "bold": "Chữ lớn",
+                "stripe": "Dải màu",
+                "centered": "Căn giữa",
+                "frame": "Có khung",
+                "reverse": "Đảo màu",
+                "block": "Hình ở trên",
+                "photo-below": "Hình ở dưới"
+            },
+            "groups": {
+                "suggested": "Gợi ý cho {template}",
+                "type": "Chỉ có chữ",
+                "photo": "Có ảnh"
+            }
+        },
+        "palette": {
+            "legend": "Màu sắc",
+            "hint": "Bộ màu nào cũng dễ đọc, kể cả với người có thị lực kém.",
+            "options": {
+                "paper": "Giấy và đỏ",
+                "night": "Đen và vàng",
+                "garden": "Xanh lá và vàng kim",
+                "sky": "Xanh da trời",
+                "rose": "Hồng",
+                "sun": "Nắng",
+                "mint": "Bạc hà",
+                "clay": "Đất nung",
+                "grape": "Tím và cam",
+                "ocean": "Đại dương",
+                "forest": "Rừng và chanh",
+                "punk": "Hồng đậm"
+            },
+            "groups": {
+                "suggested": "Gợi ý cho {template}",
+                "more": "Thêm màu"
+            }
+        },
+        "language": {
+            "label": "Ngôn ngữ trên hình",
+            "hint": "Đổi chữ mà mẫu đã điền sẵn và cách viết ngày."
+        },
+        "previewHeading": "Xem trước",
+        "previewLabel": "Bản xem trước hình của bạn",
+        "loading": "Đang chuẩn bị bản xem trước…",
+        "overflow": "Có chữ không vừa nên bị cắt bớt: {fields}. Hãy viết ngắn lại, hoặc chọn kích thước lớn hơn.",
+        "save": "Lưu hình",
+        "share": "Chia sẻ",
+        "saved": "Đã lưu {file}.",
+        "shared": "Đã chia sẻ.",
+        "saveError": "Chúng tôi không lưu được hình. Hãy thử lại.",
+        "altHeading": "Văn bản thay thế",
+        "altHint": "Dán phần này làm mô tả hình khi đăng, để người dùng trình đọc màn hình biết hình viết gì.",
+        "copyAlt": "Sao chép văn bản thay thế",
+        "copied": "Đã sao chép văn bản thay thế.",
+        "copyFailed": "Không sao chép được. Hãy chọn chữ và tự sao chép.",
+        "copy": {
+            "hostedBy": "Tổ chức bởi {name}",
+            "qr": "Mã QR đến {link}",
+            "alt": "Hình {template}",
+            "templates": {
+                "free-store": {
+                    "name": "cửa hàng miễn phí",
+                    "title": "Cửa Hàng Miễn Phí",
+                    "tagline": "Lấy những gì bạn cần. Để lại những gì bạn có thể.",
+                    "details": "Quần áo, sách, đồ bếp và nhiều thứ khác. Tất cả đều miễn phí."
+                },
+                "clothing-swap": {
+                    "name": "đổi quần áo",
+                    "title": "Đổi Quần Áo",
+                    "tagline": "Mang đồ bạn không mặc. Lấy đồ bạn thích.",
+                    "details": "Mọi cỡ, mọi kiểu đều được. Đồ còn lại sẽ được quyên góp."
+                },
+                "protest": {
+                    "name": "biểu tình",
+                    "title": "Hãy Có Mặt",
+                    "tagline": "Đứng cùng hàng xóm của chúng ta",
+                    "details": "Mang theo nước, biểu ngữ và một người bạn. Mang giày thoải mái."
+                },
+                "ice-watch": {
+                    "name": "theo dõi ICE",
+                    "title": "Theo Dõi ICE",
+                    "tagline": "Biết quyền của bạn. Bảo vệ hàng xóm.",
+                    "details": "Học cách quan sát, ghi hình và báo cáo an toàn. Lớp miễn phí, mọi người đều được chào đón."
+                },
+                "garden": {
+                    "name": "ngày làm vườn",
+                    "title": "Ngày Làm Vườn",
+                    "tagline": "Cùng nhau trồng thực phẩm",
+                    "details": "Không cần kinh nghiệm. Có sẵn hạt giống và dụng cụ. Mang găng tay nếu có."
+                },
+                "event": {
+                    "name": "sự kiện",
+                    "title": "Sự Kiện Cộng Đồng",
+                    "tagline": "Mọi người đều được chào đón",
+                    "details": "Có đồ ăn, âm nhạc và bạn bè vui vẻ."
+                }
+            }
+        },
+        "steps": {
+            "label": "Các bước",
+            "template": "Dùng cho việc gì",
+            "words": "Chữ",
+            "pictures": "Ảnh và logo",
+            "look": "Kiểu dáng",
+            "back": "Quay lại",
+            "next": "Tiếp: {step}",
+            "current": "Bước {number}/{total}: {step}"
+        },
+        "more": "Thêm: chi tiết, người tổ chức và mã QR",
+        "picturesHint": "Không bắt buộc. Ảnh vẫn ở trên thiết bị của bạn.",
+        "lookHint": "Chọn kích thước, bố cục và màu sắc. Gợi ý cho mẫu của bạn được xếp trước.",
+        "doneHint": "Ưng ý chưa? Lưu hình, rồi dán văn bản thay thế khi đăng.",
+        "altSummary": "Văn bản thay thế cho bài đăng",
+        "shareSubtitle": "Tờ rơi và bài đăng miễn phí cho sự kiện sắp tới",
+        "shareImageAlt": "Ba tờ rơi mẫu làm bằng Communalists: cửa hàng miễn phí, tuần hành và theo dõi ICE",
+        "metaKeywords": "tạo tờ rơi miễn phí, mẫu tờ rơi, tờ rơi biểu tình, tờ rơi tương trợ, cửa hàng miễn phí"
     }
 }

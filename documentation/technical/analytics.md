@@ -63,6 +63,10 @@ Events are named with stable kebab-case keys, never UI text, so reports read the
 | `comment-reply`                                                          | `on`, `id`                                                    | An organization's owner or moderator pressed Post reply on its page (never the text)                        |
 | `photo-save`                                                             | `kind` (`users`, `organizations`)                             | Save pressed in the photo crop dialog: never whose photo ([features/17](../features/17-profiles.md#photo))  |
 | `photo-remove`                                                           | `kind` (`users`, `organizations`)                             | Remove photo or Remove logo pressed by the person or the organization's staff                               |
+| `graphic-template`                                                       | `template`                                                    | A template picked on /graphics ([features/23](../features/23-graphics.md))                                  |
+| `graphic-save`                                                           | `template`, `format`, `layout`, `via` (`download`, `share`)   | Save image or Share pressed. Never what the graphic says or who made it                                     |
+| `graphic-fill`                                                           | none                                                          | Fill in from your organization pressed (not which organization)                                             |
+| `graphic-copy-alt`                                                       | none                                                          | Copy alt text pressed                                                                                       |
 
 **Clicks are attempts, not outcomes.** A `*-submit` or `org-join` event means the button was pressed. The form may still fail validation or the server may refuse. Count real outcomes (members, organizations) from Firestore.
 

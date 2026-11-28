@@ -30,6 +30,8 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                                       | Decision                                                                                           | Date       |
 | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [076](076-graphics-steps-and-layout-specs.md)                                           | Graphics: an editor in steps, layouts as specs, pickers with pictures                              | 2026-11-28 |
+| [075](075-graphics-tool-templates-drawn-in-the-browser.md)                              | Graphics: templates drawn in the browser, at /graphics ("Make some propaganda")                    | 2026-11-28 |
 | [074](074-comrades-and-a-shared-notifications-inbox.md)                                 | Comrades, and a shared notifications inbox                                                         | 2026-11-28 |
 | [073](073-endorsements-on-profiles-count-on-organization-pages.md)                      | Endorsements: organizations on a person's profile, a count on the organization's page              | 2026-11-28 |
 | [072](072-share-cards-for-profiles-and-organizations-bundled-fonts.md)                  | Share cards for profiles and organizations, with bundled fonts                                     | 2026-11-28 |
