@@ -30,6 +30,7 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [063](063-url-scheme-find-kinds-and-organization-addresses.md)                  | URL scheme: `/find/{kind}`, `/organization/{handle}`, tools under the organization                 | 2026-11-27 |
 | [062](062-pr-screenshots-branch-before-and-after.md)                            | PR screenshots: before and after, hosted on a `pr-screenshots` branch                              | 2026-11-27 |
 | [061](061-site-navigation-sections-and-phone-menu-drawer.md)                    | Site navigation: sections from one list, and a phone menu drawer                                   | 2026-11-27 |
 | [060](060-admin-sections-fail-alone-and-backfill-from-the-app.md)               | Admin dashboard sections fail on their own; backfill runs from the app                             | 2026-11-27 |

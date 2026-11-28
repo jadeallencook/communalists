@@ -33,6 +33,43 @@ const nextConfig: NextConfig = {
                 permanent: true,
             },
             { source: '/define', destination: '/dictionary', permanent: true },
+            // Organizations moved from /org to /organization, and /find
+            // became /find/{kind} (decision #63). Shared and printed links
+            // keep working, so these stay. Next keeps the query string.
+            {
+                source: '/:locale(en|es|vi|zh)/org/:path*',
+                destination: '/:locale/organization/:path*',
+                permanent: true,
+            },
+            {
+                source: '/org/:path*',
+                destination: '/organization/:path*',
+                permanent: true,
+            },
+            // An old search: the country code (two letters) right after
+            // /find. No kind is two letters, so the two can't be confused.
+            {
+                source: '/:locale(en|es|vi|zh)/find/:country([a-zA-Z]{2})/:path*',
+                destination: '/:locale/find/organizations/:country/:path*',
+                permanent: true,
+            },
+            {
+                source: '/find/:country([a-zA-Z]{2})/:path*',
+                destination: '/find/organizations/:country/:path*',
+                permanent: true,
+            },
+            // Plain /find searches organizations, the only kind so far. Not
+            // permanent: it may become a page for choosing what to find.
+            {
+                source: '/:locale(en|es|vi|zh)/find',
+                destination: '/:locale/find/organizations',
+                permanent: false,
+            },
+            {
+                source: '/find',
+                destination: '/find/organizations',
+                permanent: false,
+            },
             // The list starts at A. Not permanent, in case that changes.
             {
                 source: '/:locale(en|es|vi|zh)/dictionary',

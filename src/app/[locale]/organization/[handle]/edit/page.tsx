@@ -20,11 +20,12 @@ import { phoneForDisplay } from '@/lib/phone';
 import { effectiveRole } from '@/lib/platform-admin';
 import { isSupportedCountry } from '@/lib/places/types';
 import { redirect } from '@/i18n/navigation';
+import { organizationPath } from '@/lib/paths';
 
 import { DeleteOrganizationContainer } from './delete-organization-container';
 import { EditOrganizationFormContainer } from './edit-organization-form-container';
 
-type Props = PageProps<'/[locale]/org/[handle]/edit'>;
+type Props = PageProps<'/[locale]/organization/[handle]/edit'>;
 
 export async function generateMetadata(): Promise<Metadata> {
     const t = await getTranslations('Organizations');
@@ -43,7 +44,7 @@ export default function Page({ params }: Props) {
 async function EditServerContainer({ params }: Pick<Props, 'params'>) {
     const handle = decodeURIComponent((await params).handle).toLowerCase();
     if (handleProblem(handle)) notFound();
-    const { user } = await requireAccount(`/org/${handle}/edit`);
+    const { user } = await requireAccount(organizationPath(handle, 'edit'));
     // Fresh: the form must start from what's saved now, not a cached copy.
     const org = await getOrganizationByHandleFresh(handle);
     if (!org) notFound();
@@ -60,7 +61,8 @@ async function EditServerContainer({ params }: Pick<Props, 'params'>) {
         org,
         isPlatformAdmin(user.uid)
     );
-    if (!isStaff(role)) return redirect({ href: `/org/${handle}`, locale });
+    if (!isStaff(role))
+        return redirect({ href: organizationPath(handle), locale });
 
     const nextChange = nextHandleChangeAt(org.handleChangedAt);
     const handleLockedReason =

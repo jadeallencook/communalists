@@ -18,9 +18,10 @@ import {
 } from '@/lib/organizations/directory';
 import { ORG_LANGUAGES } from '@/lib/organizations/options';
 import type { PlaceOption } from '@/lib/places/types';
+import { findPath } from '@/lib/paths';
 
 /**
- * Wires /find: every filter change replaces the URL (so a search can be
+ * Wires /find/organizations: every filter change replaces the URL (so a search can be
  * shared), the server re-renders the results, and the old ones dim meanwhile.
  */
 export function FindContainer({
@@ -49,7 +50,7 @@ export function FindContainer({
             : id === place?.id
               ? place?.slug
               : undefined;
-    // The city goes in the path (/find/us/ca/oakland), filters in the query.
+    // The city goes in the path (/find/organizations/us/ca/oakland), filters in the query.
     // `slug` is passed when the city was just chosen (the picker's state
     // hasn't updated yet). Without a known path, the old ?placeId= form
     // lets the server redirect to it.
@@ -66,7 +67,7 @@ export function FindContainer({
             });
             for (const [key, value] of directoryFilterParams(next))
                 query.append(key, value);
-            href = `/find?${query}`;
+            href = `${findPath('organizations')}?${query}`;
         }
         startTransition(() => router.replace(href, { scroll: false }));
     };
@@ -85,7 +86,7 @@ export function FindContainer({
         <FindOrganizationsPage
             filters={
                 <OrganizationFilters
-                    action={`/${locale}/find`}
+                    action={`/${locale}${findPath('organizations')}`}
                     search={search}
                     activeFilters={activeFilterCount(search)}
                     location={location}

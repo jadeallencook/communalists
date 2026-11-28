@@ -3,7 +3,7 @@
 // documentation/technical/analytics.md → "Reports on /admin".
 //
 // Umami's metrics endpoint returns [{ x, y }]: a dimension value (here a page
-// path) and its count. Paths keep their locale prefix (/es/org/sbma), so the
+// path) and its count. Paths keep their locale prefix (/es/organization/sbma), so the
 // same page in four languages is four rows; these helpers add them up.
 
 import { z } from 'zod';
@@ -54,10 +54,14 @@ export function parseSiteStats(json: unknown): SiteStats | null {
 }
 
 const LOCALE = '(?:/(?:en|es|vi|zh))?';
-/** An organization's own page: /org/{handle}, not its edit or claim pages. */
-const ORG_PAGE = new RegExp(`^${LOCALE}/org/([a-z0-9-]+)/?$`);
-/** A /find search: /find/{country}/{region}/{city}. */
-const FIND_PAGE = new RegExp(`^${LOCALE}/find/([a-z]{2})/([^/]+)/([^/]+)/?$`);
+// Both the current paths and the ones before decision #63 (/org/…,
+// /find/{country}/…), so counts from before the move still add up.
+/** An organization's own page: /organization/{handle}, not its edit or claim pages. */
+const ORG_PAGE = new RegExp(`^${LOCALE}/(?:organization|org)/([a-z0-9-]+)/?$`);
+/** An organization search: /find/organizations/{country}/{region}/{city}. */
+const FIND_PAGE = new RegExp(
+    `^${LOCALE}/find/(?:organizations/)?([a-z]{2})/([^/]+)/([^/]+)/?$`
+);
 
 export interface Ranked {
     key: string;
@@ -86,7 +90,7 @@ export function topOrganizations(rows: MetricRow[], limit = 10): Ranked[] {
 }
 
 /**
- * The most-searched cities, by their /find path ("us/ca/oakland"). Each
+ * The most-searched cities, by their /find/organizations path ("us/ca/oakland"). Each
  * filter change is a page view too, so this counts searches shown, not
  * people.
  */

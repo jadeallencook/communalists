@@ -26,7 +26,7 @@ export const SignedOutOnSignIn: Story = { args: { current: 'sign-in' } };
 export const SignedOutOnSignUp: Story = { args: { current: 'sign-up' } };
 
 const sections = [
-    { key: 'organizations', href: '/find' },
+    { key: 'organizations', href: '/find/organizations' },
     { key: 'dictionary', href: '/dictionary' },
 ] as const;
 

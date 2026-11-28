@@ -5,7 +5,7 @@ import type { NavLinkData } from '@/components/molecules/header-links';
 import type { MobileNavAccount } from './mobile-nav';
 
 export const publicLinks: NavLinkData[] = [
-    { key: 'organizations', href: '/find' },
+    { key: 'organizations', href: '/find/organizations' },
     { key: 'dictionary', href: '/dictionary' },
 ];
 

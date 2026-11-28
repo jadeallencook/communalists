@@ -13,7 +13,7 @@ export const isSupportedCountry = (value: unknown): value is CountryCode =>
 export interface PlaceOption {
     id: string; // GeoNames id
     label: string; // "San Jose, California"
-    /** Readable path, "us/ca/san-jose" (slug.ts): /find/us/ca/san-jose. */
+    /** Readable path, "us/ca/san-jose" (slug.ts): /find/organizations/us/ca/san-jose. */
     slug?: string;
 }
 

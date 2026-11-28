@@ -22,16 +22,16 @@ import { getPlace, getPlaceBySlug } from '@/lib/places';
 import { startingCitySlug } from '@/lib/organizations/starting-city';
 import { isSupportedCountry, type Place } from '@/lib/places/types';
 
-import { TrackEvent } from '../../track-event';
+import { TrackEvent } from '../../../track-event';
 import { FindContainer } from '../find-container';
 
-type Props = PageProps<'/[locale]/find/[[...place]]'>;
+type Props = PageProps<'/[locale]/find/organizations/[[...place]]'>;
 
 /**
- * The city in the URL: /find/us/ca/oakland (decision #49). Anything that
- * isn't that exact path is sent to it: plain /find (to the visitor's
+ * The city in the URL: /find/organizations/us/ca/oakland (decision #49). Anything that
+ * isn't that exact path is sent to it: plain /find/organizations (to the visitor's
  * starting city, decision #52), older ?country=&placeId= links, the filter
- * form without JavaScript, other casing, and partial paths (/find/us). An
+ * form without JavaScript, other casing, and partial paths (/find/organizations/us). An
  * unknown city is a 404.
  */
 type CityInUrl =
@@ -42,7 +42,7 @@ type CityInUrl =
 function cityInUrl(
     segments: string[] | undefined,
     search: DirectorySearch,
-    /** For plain /find: the visitor's starting city (startingCitySlug). */
+    /** For plain /find/organizations: the visitor's starting city (startingCitySlug). */
     startingSlug: string
 ): CityInUrl {
     if (!segments?.length) {
@@ -69,7 +69,7 @@ function cityInUrl(
 }
 
 // A search link names its city, e.g. "Mutual aid organizations near Oakland,
-// California". Plain /find redirects, so it never gets this far.
+// California". Plain /find/organizations redirects, so it never gets this far.
 export async function generateMetadata({
     params,
     searchParams,
@@ -91,7 +91,7 @@ export async function generateMetadata({
 }
 
 // Public. The search lives in the URL (shareable): the city in the path,
-// filters in the query. Plain /find redirects to the visitor's starting city:
+// filters in the query. Plain /find/organizations redirects to the visitor's starting city:
 // their profile's, or DEFAULT_PLACE (decision #52). Reads the URL and the
 // session, so it streams behind <Suspense>. Design: features/16 →
 // "Finding organizations".

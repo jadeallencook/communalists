@@ -21,6 +21,7 @@ import {
     type ImportRowCardProps,
 } from '@/components/organisms/import-row-card';
 import { Link } from '@/i18n/navigation';
+import { organizationPath } from '@/lib/paths';
 
 export type AdminImportRow = Omit<
     ImportRowCardProps,
@@ -229,12 +230,16 @@ export function AdminImportPage({
                         <ul className="flex flex-col gap-1 text-sm">
                             {created.map((o) => (
                                 <li key={o.line}>
-                                    <Link
-                                        href={`/org/${o.handle}`}
-                                        className="break-words underline underline-offset-4"
-                                    >
-                                        {o.name}
-                                    </Link>
+                                    {o.handle ? (
+                                        <Link
+                                            href={organizationPath(o.handle)}
+                                            className="break-words underline underline-offset-4"
+                                        >
+                                            {o.name}
+                                        </Link>
+                                    ) : (
+                                        o.name
+                                    )}
                                 </li>
                             ))}
                         </ul>

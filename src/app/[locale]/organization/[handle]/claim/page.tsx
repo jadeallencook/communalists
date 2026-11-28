@@ -13,11 +13,12 @@ import { getClaimRequestFresh } from '@/lib/organizations/claim-store';
 import { claimPageState } from '@/lib/organizations/claims';
 import { handleProblem } from '@/lib/organizations/handle';
 import { redirect } from '@/i18n/navigation';
+import { organizationPath } from '@/lib/paths';
 
 import { cancelClaimAction } from './actions';
 import { ClaimFormContainer } from './claim-form-container';
 
-type Props = PageProps<'/[locale]/org/[handle]/claim'>;
+type Props = PageProps<'/[locale]/organization/[handle]/claim'>;
 
 export async function generateMetadata(): Promise<Metadata> {
     const t = await getTranslations('Claim');
@@ -36,12 +37,13 @@ export default function Page({ params }: Props) {
 async function ClaimContainer({ params }: Pick<Props, 'params'>) {
     const handle = decodeURIComponent((await params).handle).toLowerCase();
     if (handleProblem(handle)) notFound();
-    const { user } = await requireAccount(`/org/${handle}/claim`);
+    const { user } = await requireAccount(organizationPath(handle, 'claim'));
     const locale = await getLocale();
     const org = await getOrganizationByHandleFresh(handle);
     if (!org) notFound();
     // Claimed already: nothing to ask for here.
-    if (!org.unclaimed) return redirect({ href: `/org/${handle}`, locale });
+    if (!org.unclaimed)
+        return redirect({ href: organizationPath(handle), locale });
 
     const [request, format] = await Promise.all([
         getClaimRequestFresh(org.id, user.uid),

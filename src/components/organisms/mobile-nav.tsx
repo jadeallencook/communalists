@@ -31,6 +31,7 @@ import { ThemeOptions } from '@/components/molecules/theme-toggle';
 import { Link } from '@/i18n/navigation';
 import { track } from '@/lib/analytics';
 import type { NavKey } from '@/lib/navigation';
+import { organizationPath } from '@/lib/paths';
 
 const ICONS: Record<NavKey, LucideIcon> = {
     organizations: SearchIcon,
@@ -191,7 +192,7 @@ export function MobileNav({
                                 <li key={org.handle}>
                                     <SheetClose asChild>
                                         <Link
-                                            href={`/org/${org.handle}`}
+                                            href={organizationPath(org.handle)}
                                             className={rowClass}
                                         >
                                             <UsersRoundIcon aria-hidden />

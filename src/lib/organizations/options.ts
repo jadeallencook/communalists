@@ -45,7 +45,7 @@ export const OFFERED_FOCUS_AREAS = FOCUS_AREAS.filter(
 );
 
 /**
- * The order /find lists focus areas in: most common first, from 285
+ * The order /find/organizations lists focus areas in: most common first, from 285
  * researched groups (food 144, housing 98, health 94, general 47, education
  * 44, legal 39, then the rest; 2026-11-25). Clothing and hygiene are moved up
  * into the first eight (the user's call: basic needs people look for, even
@@ -76,7 +76,7 @@ export const FOCUS_AREAS_BY_USE: readonly FocusArea[] = [
     'other',
 ];
 
-/** How many of FOCUS_AREAS_BY_USE /find shows before "More focus areas". */
+/** How many of FOCUS_AREAS_BY_USE /find/organizations shows before "More focus areas". */
 export const FEATURED_FOCUS_AREAS = 8;
 
 /** Offered focus areas, most common first. */

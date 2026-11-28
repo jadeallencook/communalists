@@ -10,6 +10,7 @@ import { Input } from '@/components/atoms/input';
 import { Link } from '@/i18n/navigation';
 import { DETAIL_GAPS, type DetailGap } from '@/lib/organizations/details';
 import { cn } from '@/lib/utils';
+import { NEW_ORGANIZATION_PATH, organizationPath } from '@/lib/paths';
 
 export interface AdminOrganizationItem {
     id: string;
@@ -98,7 +99,7 @@ export function AdminOrganizations({
                     <Button asChild>
                         <Link
                             href={{
-                                pathname: '/org/new',
+                                pathname: NEW_ORGANIZATION_PATH,
                                 query: { unclaimed: '1' },
                             }}
                         >
@@ -363,7 +364,7 @@ function OrganizationList({ items }: { items: AdminOrganizationItem[] }) {
                                     </span>
                                 ) : (
                                     <Link
-                                        href={`/org/${org.handle}`}
+                                        href={organizationPath(org.handle)}
                                         className="font-medium break-words underline underline-offset-2"
                                     >
                                         {org.name}
@@ -383,7 +384,7 @@ function OrganizationList({ items }: { items: AdminOrganizationItem[] }) {
                             <span className="text-sm break-words text-muted-foreground">
                                 {[
                                     org.place,
-                                    `/org/${org.handle}`,
+                                    organizationPath(org.handle),
                                     org.addedOn &&
                                         t('addedOn', { date: org.addedOn }),
                                 ]
@@ -408,7 +409,7 @@ function OrganizationList({ items }: { items: AdminOrganizationItem[] }) {
                                 className="w-fit shrink-0"
                             >
                                 <Link
-                                    href={`/org/${org.handle}/edit`}
+                                    href={organizationPath(org.handle, 'edit')}
                                     aria-label={t('editFor', {
                                         name: org.name,
                                     })}

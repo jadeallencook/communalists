@@ -35,12 +35,13 @@ import { isSupportedCountry } from '@/lib/places/types';
 import { makeUnclaimedProblem } from '@/lib/organizations/lifecycle';
 import { phoneForDisplay } from '@/lib/phone';
 import { redirect } from '@/i18n/navigation';
+import { organizationPath } from '@/lib/paths';
 
 import { makeUnclaimedAction } from './actions';
 import { TrackEvent } from '../../track-event';
 import { JoinPanelContainer } from './join-panel-container';
 
-type Props = PageProps<'/[locale]/org/[handle]'>;
+type Props = PageProps<'/[locale]/organization/[handle]'>;
 
 /** Cached lookup; a miss is confirmed fresh (it may have just been created on another instance). */
 async function findOrganization(raw: string) {
@@ -80,7 +81,10 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
     const { handle, org } = await findOrganization(raw);
     if (!org) notFound();
     if (raw !== handle) {
-        return redirect({ href: `/org/${handle}`, locale: await getLocale() });
+        return redirect({
+            href: organizationPath(handle),
+            locale: await getLocale(),
+        });
     }
 
     const profile = {
@@ -202,7 +206,7 @@ async function OrganizationContainer({ params }: Pick<Props, 'params'>) {
 
 /**
  * Up to 4 other local organizations within 50 mi of this one's city, closest
- * first. One cached read per city (shared with /find and the dashboard).
+ * first. One cached read per city (shared with /find/organizations and the dashboard).
  */
 async function nearbySection(org: {
     id: string;

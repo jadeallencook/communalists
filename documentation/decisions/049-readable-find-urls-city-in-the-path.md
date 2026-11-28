@@ -1,7 +1,7 @@
 # 049 · Readable /find URLs: the city in the path
 
 **Date:** 2026-11-26
-**Status:** Accepted
+**Status:** Accepted. The path gained the kind of search, `/find/organizations/us/ca/oakland`, in [#63](063-url-scheme-find-kinds-and-organization-addresses.md)
 **Context:** A `/find` search lived in query parameters, like `/find?country=US&placeId=5378538&radius=50` ([026](026-find-organizations-page-distance-filters-in-url.md)). The user asked for readable links such as `/find/oakland/ca`, both for sharing and so analytics shows which cities people search ([050](050-umami-analytics-page-views-and-named-click-events.md)).
 **Decision:** The city is in the path as **country, region, city**: `/en/find/us/ca/oakland`. Filters stay in the query (`?radius=10&focusAreas=food`).
 

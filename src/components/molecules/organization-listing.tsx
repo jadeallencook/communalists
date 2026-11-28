@@ -23,6 +23,7 @@ import {
     type OrganizationCardProps,
 } from './organization-card';
 import { track } from '@/lib/analytics';
+import { organizationPath } from '@/lib/paths';
 
 export interface OrganizationListingProps extends Omit<
     OrganizationCardProps,
@@ -149,7 +150,7 @@ export function OrganizationListing({
             {/* The card's top opens the page. The name is always underlined so
                 it reads as a link; hover thickens the line. */}
             <Link
-                href={`/org/${card.handle}`}
+                href={organizationPath(card.handle)}
                 data-card
                 {...track('org-open', { org: card.handle, from: 'find' })}
                 className="group/card flex items-center gap-4 p-4 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset [&_[data-name]]:underline [&_[data-name]]:underline-offset-4 hover:[&_[data-name]]:decoration-2"

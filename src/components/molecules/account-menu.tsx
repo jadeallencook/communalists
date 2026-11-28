@@ -19,6 +19,7 @@ import {
 } from '@/components/atoms/dropdown-menu';
 import { Link } from '@/i18n/navigation';
 import { initials } from '@/lib/initials';
+import { organizationPath } from '@/lib/paths';
 
 /** An organization the person belongs to, as the menus list it. */
 export interface MenuOrganization {
@@ -96,7 +97,7 @@ export function AccountMenu({
                             </DropdownMenuLabel>
                             {organizations.map((org) => (
                                 <DropdownMenuItem key={org.handle} asChild>
-                                    <Link href={`/org/${org.handle}`}>
+                                    <Link href={organizationPath(org.handle)}>
                                         <UsersRoundIcon aria-hidden />
                                         <span className="truncate">
                                             {org.name}

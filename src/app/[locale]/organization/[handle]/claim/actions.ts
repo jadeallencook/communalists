@@ -20,6 +20,7 @@ import { handleProblem } from '@/lib/organizations/handle';
 import { getUserProfileFresh } from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
+import { organizationPath } from '@/lib/paths';
 
 // Asking to claim (or take down) an unclaimed organization. Super users
 // decide on /admin. Design: documentation/features/18-unclaimed-organizations.md.
@@ -82,7 +83,9 @@ export async function submitClaimAction(
     // The page reads the request fresh, so it now shows it as sent.
     const handle = text(formData, 'handle');
     redirect({
-        href: handleProblem(handle) ? '/dashboard' : `/org/${handle}/claim`,
+        href: handleProblem(handle)
+            ? '/dashboard'
+            : organizationPath(handle, 'claim'),
         locale,
     });
     return {};
@@ -104,7 +107,9 @@ export async function cancelClaimAction(formData: FormData) {
         }
     }
     redirect({
-        href: handleProblem(handle) ? '/dashboard' : `/org/${handle}/claim`,
+        href: handleProblem(handle)
+            ? '/dashboard'
+            : organizationPath(handle, 'claim'),
         locale,
     });
 }

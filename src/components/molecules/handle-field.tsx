@@ -27,7 +27,7 @@ export interface HandleFieldProps {
      * the field is read-only and this explains why. Already translated.
      */
     lockedReason?: string;
-    /** `handle` (a group's /org/ address, default) or `username` (a person's /comrade/ address). */
+    /** `handle` (a group's /organization/ address, default) or `username` (a person's /comrade/ address). */
     kind?: 'handle' | 'username';
 }
 
@@ -51,7 +51,9 @@ export function HandleField({
     const t = useTranslations('Organizations');
     const tu = useTranslations('Profile.username');
     const user = kind === 'username';
-    const prefix = user ? 'communalists.com/comrade/' : 'communalists.com/org/';
+    const prefix = user
+        ? 'communalists.com/comrade/'
+        : 'communalists.com/organization/';
     const id = user ? 'username' : 'handle';
     const live =
         status.state === 'unavailable'

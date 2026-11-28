@@ -56,7 +56,7 @@
 Still to fix:
 
 - **Members page and join panel:** after an action, the row (or button) disappears and focus falls to the top of the page.
-- **/find:** after filters change, the new result counts aren't announced.
+- **/find/organizations:** after filters change, the new result counts aren't announced.
 - **Skeletons and spinners** pulse regardless of reduced-motion settings.
 - **Contrast** measured on the members page only; other pages use the same tokens but haven't been measured one by one.
 - **Header:** the section links (Organizations, Dictionary, Dashboard) are borderless `ghost` buttons, as is common for navigation; the current one has a fill and an underline. Sign in is outlined. The phone menu drawer (2026-11-27) is a Radix dialog: focus moves in, Esc closes it, focus returns to the Menu button, rows are at least 44px tall, and it doesn't slide with reduced motion. Its Menu button shows a word as well as the icon. The language switcher stays in the header on phones so it can be found without reading the current language.

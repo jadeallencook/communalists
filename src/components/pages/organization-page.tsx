@@ -25,6 +25,7 @@ import {
 } from '@/components/atoms/dialog';
 import { Skeleton } from '@/components/atoms/skeleton';
 import { UnclaimedNotice } from '@/components/organisms/unclaimed-notice';
+import { organizationPath } from '@/lib/paths';
 
 export interface OrganizationPageProps {
     profile: OrganizationProfileProps;
@@ -60,7 +61,7 @@ const roleKey = {
     member: 'roleMember',
 } as const;
 
-/** /org/{handle}: the public profile, plus a members' space for members. */
+/** /organization/{handle}: the public profile, plus a members' space for members. */
 export function OrganizationPage({
     profile,
     role,
@@ -94,7 +95,12 @@ export function OrganizationPage({
                             </p>
                             <div className="mt-2 flex flex-wrap gap-2">
                                 <Button asChild variant="outline">
-                                    <Link href={`/org/${profile.handle}/edit`}>
+                                    <Link
+                                        href={organizationPath(
+                                            profile.handle,
+                                            'edit'
+                                        )}
+                                    >
                                         <PencilIcon aria-hidden />
                                         {tm('editOrganization')}
                                     </Link>
@@ -129,14 +135,22 @@ export function OrganizationPage({
                         {staff && (
                             <div className="mt-2 flex flex-wrap gap-2">
                                 <Button asChild variant="outline">
-                                    <Link href={`/org/${profile.handle}/edit`}>
+                                    <Link
+                                        href={organizationPath(
+                                            profile.handle,
+                                            'edit'
+                                        )}
+                                    >
                                         <PencilIcon aria-hidden />
                                         {tm('editOrganization')}
                                     </Link>
                                 </Button>
                                 <Button asChild variant="outline">
                                     <Link
-                                        href={`/org/${profile.handle}/members`}
+                                        href={organizationPath(
+                                            profile.handle,
+                                            'members'
+                                        )}
                                     >
                                         <UsersIcon aria-hidden />
                                         {tm('manage')}

@@ -1,4 +1,4 @@
-// Finding organizations: what the /find filters mean, read from the URL, and
+// Finding organizations: what the /find/organizations filters mean, read from the URL, and
 // how a list of listed organizations is narrowed and sorted for one visitor.
 // Pure: no React, Next or Firebase, so it's tested directly and a future
 // mobile app can reuse it. Reads live in ./index.ts (getDirectory*).
@@ -6,6 +6,7 @@
 
 import { distanceBetween } from 'geofire-common';
 
+import { findPath } from '../paths';
 import { isSupportedCountry, type CountryCode } from '../places/types';
 import type { SocialLink } from '../socials';
 
@@ -67,8 +68,8 @@ export const DEFAULT_FILTERS: DirectoryFilters = {
     reach: [...REACH_SCOPES],
 };
 /**
- * Where /find starts for visitors who are signed out or have no city on
- * their profile: San Francisco (GeoNames 5391959). Plain /find redirects to
+ * Where /find/organizations starts for visitors who are signed out or have no city on
+ * their profile: San Francisco (GeoNames 5391959). Plain /find/organizations redirects to
  * its path, and so does the homepage's Browse button. Change it here only
  * (a test checks the slug matches the place). Decision #52.
  */
@@ -89,8 +90,8 @@ const known = <T extends string>(values: readonly T[], input: string[]) =>
     values.filter((value) => input.includes(value));
 
 /**
- * The search in a /find URL's parameters. The city is normally in the path
- * (/find/us/ca/oakland); `country` and `placeId` are read for older links
+ * The search in a /find/organizations URL's parameters. The city is normally in the path
+ * (/find/organizations/us/ca/oakland); `country` and `placeId` are read for older links
  * and the filter form without JavaScript, which the page redirects to the
  * path. Lenient: unknown or malformed values are dropped
  * (it's a URL anyone can edit), never an error.
@@ -129,16 +130,17 @@ export function directoryFilterParams(filters: DirectoryFilters) {
 }
 
 /**
- * A /find link: the city as a readable path ("us/ca/oakland", from
- * places/slug.ts), then the filters, e.g. /find/us/ca/oakland?radius=10.
- * No city: plain /find (the visitor's own city or the default one).
+ * A /find/organizations link: the city as a readable path ("us/ca/oakland", from
+ * places/slug.ts), then the filters, e.g. /find/organizations/us/ca/oakland?radius=10.
+ * No city: plain /find/organizations (the visitor's own city or the default one).
  * Decision #49.
  */
 export function directoryHref(
     filters: DirectoryFilters,
     placeSlug?: string
 ): string {
-    const path = placeSlug ? `/find/${placeSlug}` : '/find';
+    const start = findPath('organizations');
+    const path = placeSlug ? `${start}/${placeSlug}` : start;
     const query = directoryFilterParams(filters).toString();
     return query ? `${path}?${query}` : path;
 }

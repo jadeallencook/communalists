@@ -27,12 +27,12 @@ src/
     [locale]/sign-in/     Container: wires the signIn action into SignInPage
     [locale]/forgot-password/  Container: wires requestPasswordReset into ForgotPasswordPage
     [locale]/account/setup/ Container: required profile questions (name, language, city); returns to ?next=
-    [locale]/org/new/     Create an organization (form container + action)
-    [locale]/org/[handle]/ An organization's page (public profile + members' space)
+    [locale]/organization/new/     Create an organization (form container + action)
+    [locale]/organization/[handle]/ An organization's page (public profile + members' space)
     [locale]/auth/action/ Firebase email links (Action URL): verifies the code, renders ResetPasswordPage
     [locale]/dashboard/   Container: requireAccount, renders DashboardPage (streamed); /welcome redirects here
     [locale]/account/settings/ Container: edit profile (setup form in settings mode)
-    [locale]/find/[[...place]]/ Find organizations; the city in the path (/find/us/ca/oakland)
+    [locale]/find/organizations/[[...place]]/ Find organizations; the city in the path (/find/organizations/us/ca/oakland)
     [locale]/header-slots.tsx  Header's signed-in parts (session + profile), streamed in <Suspense>
     [locale]/analytics.tsx     Umami loader (production) + click listener; track-event.tsx sends on render
     actions/sign-out.ts   Shared sign-out server action (account menu)

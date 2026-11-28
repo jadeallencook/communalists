@@ -1,7 +1,7 @@
 # 022 · Organizations: design, addresses, roles and limits
 
 **Date:** 2026-11-22
-**Status:** Accepted. Changes [#10](010-domains-communalists-com-and-storybook.md)/#11's subdomain plan to path-based addresses first. The "type" field was replaced by focus areas in [#23](023-organization-focus-areas-as-permanent-keys.md).
+**Status:** Accepted. Addresses moved to `/organization/{handle}` in [#63](063-url-scheme-find-kinds-and-organization-addresses.md). Changes [#10](010-domains-communalists-com-and-storybook.md)/#11's subdomain plan to path-based addresses first. The "type" field was replaced by focus areas in [#23](023-organization-focus-areas-as-permanent-keys.md).
 **Context:** Organizations are the next feature and the core of the product. The prototype stored members as arrays on one organization ([features/08](../features/08-organizations-and-membership.md)).
 **Decision:** Full design in [features/16](../features/16-organizations.md):
 

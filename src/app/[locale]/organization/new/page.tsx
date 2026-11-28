@@ -9,6 +9,7 @@ import {
 import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { requireAccount } from '@/lib/auth/require-account';
 import { isSupportedCountry } from '@/lib/places/types';
+import { NEW_ORGANIZATION_PATH } from '@/lib/paths';
 
 import { CreateOrganizationFormContainer } from './create-organization-form-container';
 
@@ -17,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     return { title: t('new.metaTitle'), robots: { index: false } };
 }
 
-type Props = PageProps<'/[locale]/org/new'>;
+type Props = PageProps<'/[locale]/organization/new'>;
 
 export default function Page({ searchParams }: Props) {
     return (
@@ -30,7 +31,7 @@ export default function Page({ searchParams }: Props) {
 async function CreateOrganizationContainer({
     searchParams,
 }: Pick<Props, 'searchParams'>) {
-    const { user, profile } = await requireAccount('/org/new');
+    const { user, profile } = await requireAccount(NEW_ORGANIZATION_PATH);
     const { location } = profile;
     // Super users can add unclaimed organizations; /admin links here with ?unclaimed=1.
     const unclaimedOption = isPlatformAdmin(user.uid)

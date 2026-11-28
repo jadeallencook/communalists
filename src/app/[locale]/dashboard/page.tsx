@@ -48,7 +48,7 @@ async function DashboardContainer() {
         admin ? getPendingClaims() : null,
     ]);
     const owned = memberships.filter((m) => m.role === 'owner').length;
-    // The closest few local groups the user isn't in; /find has the rest.
+    // The closest few local groups the user isn't in; /find/organizations has the rest.
     const mine = new Set(memberships.map((m) => m.orgId));
     const nearby = filterDirectory(
         candidates.filter((org) => !mine.has(org.id)),

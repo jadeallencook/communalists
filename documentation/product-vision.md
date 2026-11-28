@@ -45,7 +45,7 @@ The prototype's feature docs now describe **one possible configuration** of the 
 
 | Question                | Decision                                                                                                                                                                                          |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Organization addresses  | **`communalists.com/org/{handle}`** (decided 2026-11-22, #22). Subdomains (`{handle}.communalists.com`) are optional and later; they'd need the wildcard and DNS move below.                      |
+| Organization addresses  | **`communalists.com/organization/{handle}`** (decided 2026-11-22, #22). Subdomains (`{handle}.communalists.com`) are optional and later; they'd need the wildcard and DNS move below.             |
 | Organization subdomains | (Later, optional.) Wildcard `*.communalists.com` on Vercel. **DNS moves from Squarespace to Vercel nameservers** (wildcards need Vercel DNS); email, DKIM and Google records are recreated there. |
 | "In their area"         | **Distance from a point.** Organizations set a location; users browse within a radius of themselves or a place they search. Needs geo queries (e.g. geohash) in Firestore.                        |
 | Joining                 | **Each organization chooses:** open, request-to-join (moderators approve), or invite-only.                                                                                                        |

@@ -892,7 +892,7 @@
             "noName": "Không có tên",
             "ready": "Sẵn sàng để thêm",
             "needsAttention": "{count} điều cần sửa",
-            "rowDetail": "Dòng {line} · {place} · /org/{handle}",
+            "rowDetail": "Dòng {line} · {place} · /organization/{handle}",
             "edited": "đã sửa ở đây",
             "verification": "nguồn: {verification}",
             "problemsFor": "Những điều cần sửa ở {name}",

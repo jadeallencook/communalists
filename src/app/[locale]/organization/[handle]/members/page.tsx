@@ -20,10 +20,11 @@ import {
     sortMembers,
 } from '@/lib/organizations/membership';
 import { redirect } from '@/i18n/navigation';
+import { organizationPath } from '@/lib/paths';
 
 import { MembersContainer } from './members-container';
 
-type Props = PageProps<'/[locale]/org/[handle]/members'>;
+type Props = PageProps<'/[locale]/organization/[handle]/members'>;
 
 export async function generateMetadata(): Promise<Metadata> {
     const t = await getTranslations('Membership');
@@ -42,7 +43,7 @@ export default function Page({ params }: Props) {
 async function MembersServerContainer({ params }: Pick<Props, 'params'>) {
     const handle = decodeURIComponent((await params).handle).toLowerCase();
     if (handleProblem(handle)) notFound();
-    const { user } = await requireAccount(`/org/${handle}/members`);
+    const { user } = await requireAccount(organizationPath(handle, 'members'));
     const org =
         (await getOrganizationByHandle(handle)) ??
         (await getOrganizationByHandleFresh(handle));
@@ -52,7 +53,8 @@ async function MembersServerContainer({ params }: Pick<Props, 'params'>) {
     const membership = await getMembershipFresh(org.id, user.uid);
     const role = membership?.status === 'active' ? membership.role : null;
     const locale = await getLocale();
-    if (!isStaff(role)) return redirect({ href: `/org/${handle}`, locale });
+    if (!isStaff(role))
+        return redirect({ href: organizationPath(handle), locale });
 
     const [people, log] = await Promise.all([
         getOrgPeople(org.id),
