@@ -30,6 +30,8 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| [069](069-not-found-pages-general-and-per-kind.md)                              | Not-found pages: one general, one per kind of shared page                                          | 2026-11-27 |
+| [068](068-firebase-failures-show-an-error-never-break-the-app.md)               | If Firebase fails, show an error; never break the app                                              | 2026-11-27 |
 | [067](067-word-discussions-public-flat-comments-with-up-votes.md)               | Discussions on words: public, flat comments with up votes                                          | 2026-11-27 |
 | [066](066-remove-words-upload-on-edit-page-letter-links.md)                     | Remove dictionary words; upload a word's file on its edit page; previous and next letter links     | 2026-11-27 |
 | [065](065-brainstorm-definitions-and-upload-one-word.md)                        | Brainstorm definitions with a skill; upload one word's text from a file                            | 2026-11-27 |

@@ -305,6 +305,56 @@ export function searchWords<T extends { slug: string; word: string }>(
         .map((r) => r.item);
 }
 
+/**
+ * Words that might be what someone meant by an address that isn't a word
+ * (`/dictionary/mutal-aid`): first the ones `searchWords` finds, then close
+ * spellings of the address or the word (a few letters off, allowing more
+ * for longer words). For "Did you mean" on the word's not-found page.
+ */
+export function closestWords<T extends { slug: string; word: string }>(
+    items: readonly T[],
+    address: string,
+    limit = 5
+): T[] {
+    const query = foldText(address.replace(/-+/g, ' '));
+    if (!query) return [];
+    const found = searchWords(items, query, limit);
+    if (found.length >= limit) return found;
+    const slug = query.replace(/\s+/g, '-');
+    const allowed = Math.max(2, Math.floor(slug.length * 0.3));
+    const close = items
+        .filter((item) => !found.includes(item))
+        .map((item, index) => ({
+            item,
+            index,
+            distance: Math.min(
+                editDistance(slug, item.slug),
+                editDistance(slug, foldText(item.word).replace(/\s+/g, '-'))
+            ),
+        }))
+        .filter((r) => r.distance <= allowed)
+        .sort((a, b) => a.distance - b.distance || a.index - b.index)
+        .map((r) => r.item);
+    return [...found, ...close].slice(0, limit);
+}
+
+/** How many single-letter edits turn one text into the other (Levenshtein). */
+export function editDistance(a: string, b: string): number {
+    if (a === b) return 0;
+    let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
+    for (let i = 1; i <= a.length; i++) {
+        const current = [i];
+        for (let j = 1; j <= b.length; j++)
+            current[j] = Math.min(
+                previous[j] + 1,
+                current[j - 1] + 1,
+                previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+            );
+        previous = current;
+    }
+    return previous[b.length];
+}
+
 /** The fields a save changes (`es.word`, `related`), for the admin log. */
 export function changedFields(
     before: Definition,

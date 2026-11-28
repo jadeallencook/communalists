@@ -28,3 +28,17 @@ export type OrganizationPage = 'edit' | 'members' | 'claim';
 /** An organization's page: /organization/{handle}, or one of its own pages under it. */
 export const organizationPath = (handle: string, page?: OrganizationPage) =>
     page ? `/organization/${handle}/${page}` : `/organization/${handle}`;
+
+/**
+ * The part of an address that names what wasn't found, for 404 pages:
+ * `/dictionary/mutal-aid`, index 1 → `mutal-aid`. Counts segments after the
+ * locale (index 0 is `dictionary`). A bad escape is shown as typed.
+ */
+export function addressSegment(pathname: string, index: number): string {
+    const raw = pathname.split('/').filter(Boolean)[index] ?? '';
+    try {
+        return decodeURIComponent(raw);
+    } catch {
+        return raw;
+    }
+}

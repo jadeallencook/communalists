@@ -1493,5 +1493,44 @@
                 "generic": "Something went wrong. Try again."
             }
         }
+    },
+    "Errors": {
+        "title": "Something went wrong",
+        "body": "This page couldn't load. It may be a problem on our end. Try again, or come back in a few minutes.",
+        "retry": "Try again",
+        "home": "Go to the homepage",
+        "reference": "Reference: {digest}"
+    },
+    "NotFound": {
+        "eyebrow": "Page not found",
+        "tried": "You tried:",
+        "general": {
+            "metaTitle": "Page not found",
+            "title": "We couldn't find that page",
+            "body": "The address may have a typo, or the page may have moved or been removed.",
+            "home": "Go to the homepage",
+            "organizations": "Find organizations",
+            "dictionary": "Browse the dictionary"
+        },
+        "word": {
+            "metaTitle": "Word not found",
+            "title": "There’s no word “{word}” in the dictionary yet",
+            "body": "Check the spelling, or browse the dictionary. New words are added over time.",
+            "suggestions": "Did you mean:",
+            "browse": "Browse the dictionary"
+        },
+        "organization": {
+            "metaTitle": "Organization not found",
+            "title": "We couldn’t find an organization at “{handle}”",
+            "body": "Organizations can change their address, and an old address stops working after a while. It may also have been taken down. Try finding it by name or place.",
+            "find": "Find organizations",
+            "create": "Start an organization"
+        },
+        "person": {
+            "metaTitle": "Profile not found",
+            "title": "We couldn’t find anyone with the username “{username}”",
+            "body": "People can change their username, and the old one stops working. Check the spelling, or find them through an organization they’re in.",
+            "find": "Find organizations"
+        }
     }
 }
