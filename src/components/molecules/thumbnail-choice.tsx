@@ -24,6 +24,8 @@ export interface ThumbnailChoiceProps {
     onChange: (value: string) => void;
     /** Width ÷ height of the pictures. */
     aspect?: number;
+    /** Hide the legend visually (still read out), when a heading above says the same. */
+    legendHidden?: boolean;
     /** `wide` fits more per row (for swatches). */
     size?: 'normal' | 'wide';
 }
@@ -42,6 +44,7 @@ export function ThumbnailChoice({
     onChange,
     aspect = 1,
     size = 'normal',
+    legendHidden = false,
 }: ThumbnailChoiceProps) {
     const hintId = `${name}-hint`;
     return (
@@ -49,7 +52,14 @@ export function ThumbnailChoice({
             className="flex min-w-0 flex-col gap-3"
             aria-describedby={hint ? hintId : undefined}
         >
-            <legend className="mb-1.5 text-base font-medium">{legend}</legend>
+            <legend
+                className={cn(
+                    'mb-1.5 text-base font-medium',
+                    legendHidden && 'sr-only'
+                )}
+            >
+                {legend}
+            </legend>
             {hint && (
                 <p id={hintId} className="text-sm text-muted-foreground">
                     {hint}

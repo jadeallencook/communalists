@@ -216,6 +216,8 @@ function TemplateStep({
         <ThumbnailChoice
             name="template"
             legend={t('steps.template')}
+            // The step's heading already says it.
+            legendHidden
             groups={[
                 {
                     options: TEMPLATE_KEYS.map((key) => ({
