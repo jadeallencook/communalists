@@ -562,7 +562,9 @@
             "editProfile": "{actor} changed {fields}",
             "claim": "{target} claimed this organization",
             "deleteOrganization": "{actor} deleted this organization",
-            "restoreOrganization": "{actor} restored this organization"
+            "restoreOrganization": "{actor} restored this organization",
+            "replyComment": "{actor} replied to a comment",
+            "deleteReply": "{actor} deleted a reply to a comment"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Reason",
@@ -844,7 +846,11 @@
             "hideComment": "{actor} hid a comment on {word}",
             "unhideComment": "{actor} showed a hidden comment on {word} again",
             "deleteComment": "{actor} deleted a comment on {word}",
-            "dismissCommentReport": "{actor} dismissed a report on a comment on {word}"
+            "dismissCommentReport": "{actor} dismissed a report on a comment on {word}",
+            "replyComment": "{actor} replied to a comment on {word} for the team",
+            "hideReply": "{actor} hid a reply on {word}",
+            "unhideReply": "{actor} showed a hidden reply on {word} again",
+            "deleteReply": "{actor} deleted a reply on {word}"
         },
         "unknownActor": "A super user",
         "errors": {
@@ -1253,7 +1259,11 @@
             "sortedNewest": "Showing the newest comments first.",
             "loaded": "{count, plural, =0 {No more comments.} one {# more comment shown.} other {# more comments shown.}}",
             "languageOne": "Showing comments in {language}: {count, plural, =0 {none yet} one {#} other {#}}.",
-            "languageAll": "Showing comments in all languages: {count}."
+            "languageAll": "Showing comments in all languages: {count}.",
+            "replied": "Reply posted.",
+            "replyDeleted": "Reply deleted.",
+            "replyHidden": "Reply hidden.",
+            "replyUnhidden": "Reply shown again."
         },
         "errors": {
             "textRequired": "Write your comment first.",
@@ -1268,7 +1278,10 @@
             "hidden": "That comment was hidden by a moderator.",
             "invalid": "Something was wrong with that request. Reload the page and try again.",
             "generic": "Something went wrong. Try again.",
-            "loadFailed": "Couldn't load comments. Check your connection and try again."
+            "loadFailed": "Couldn't load comments. Check your connection and try again.",
+            "alreadyReplied": "This comment already has a reply. Delete it first to write a new one.",
+            "replyTextRequired": "Write your reply first.",
+            "replyTextTooLong": "Shorten your reply to {max} characters or fewer."
         },
         "languageLabel": "Show comments in",
         "languageOne": "{language} ({count})",
@@ -1278,7 +1291,31 @@
         "writtenIn": "Written in {language}",
         "changeLanguage": "Change",
         "changeLanguageLabel": "Change the language of your comment",
-        "unavailable": "Comments couldn't load right now. Try again in a few minutes."
+        "unavailable": "Comments couldn't load right now. Try again in a few minutes.",
+        "organization": {
+            "intro": "Tell others what this group is like: help you got, time you volunteered, praise, concerns or questions. Up vote the comments you agree with. The organization can reply to each comment.",
+            "empty": "No comments yet. Have you worked with this group? Be the first to say what it was like."
+        },
+        "reply": "Reply",
+        "replyLabel": "Reply to the comment by {name} as {organization}",
+        "replyFrom": "Reply from {name}",
+        "replyFromTeam": "Reply from the Communalists team",
+        "teamName": "the Communalists team",
+        "replyFormLabel": "Your reply as {from}",
+        "replyFormHint": "It's public and shown as from {from}, not from you. Plain text only. One reply per comment: to change it, delete it and write a new one.",
+        "replyLanguage": "Language of your reply",
+        "replyPost": "Post reply",
+        "replyHiddenText": "Reply hidden by a moderator.",
+        "replyHiddenModerator": "Reply hidden by a moderator. Only super users see the text below.",
+        "reportReplyLabel": "Report the reply to the comment by {name}",
+        "reportReplyTitle": "Report this reply?",
+        "hideReplyLabel": "Hide the reply to the comment by {name}",
+        "unhideReplyLabel": "Show the reply to the comment by {name} again",
+        "deleteReplyLabel": "Delete the reply to the comment by {name}",
+        "deleteReplyTitle": "Delete this reply?",
+        "deleteReplyBody": "It's removed for everyone. You can write a new one afterward.",
+        "deleteReplyBodyModerator": "It's removed for everyone. This can't be undone, but the super user log keeps a copy.",
+        "replyChangeLanguageLabel": "Change the language of your reply"
     },
     "AdminComments": {
         "metaTitle": "Reported comments",
@@ -1311,7 +1348,17 @@
         "dismissLabel": "Dismiss the report on the comment by {name}",
         "hidden": "Comment hidden. Its report is closed.",
         "deleted": "Comment deleted. Its report is closed.",
-        "dismissed": "Report dismissed. The comment stays as it is."
+        "dismissed": "Report dismissed. The comment stays as it is.",
+        "replyByOn": "Reply from {from} to {name}'s comment, {date}",
+        "hideLabelReply": "Hide the reply from {from} to {name}",
+        "deleteLabelReply": "Delete the reply from {from} to {name}",
+        "deleteTitleReply": "Delete the reply from {from}?",
+        "deleteBodyReply": "It's removed for everyone; the comment stays. This can't be undone, but the super user log keeps a copy.",
+        "dismissLabelReply": "Dismiss the report on the reply from {from} to {name}",
+        "goneReply": "This reply was already deleted. Dismiss the report to clear it.",
+        "hiddenReply": "Reply hidden. Its report is closed.",
+        "deletedReply": "Reply deleted. Its report is closed.",
+        "dismissedReply": "Report dismissed. The reply stays as it is."
     },
     "AdminDefinitions": {
         "metaTitle": "Dictionary",

@@ -8,7 +8,7 @@ import {
     isLanguageFilter,
     type CommentView,
 } from '@/lib/comments';
-import { canModerate } from '@/lib/comments/access';
+import { canModerate, discussionReadable } from '@/lib/comments/access';
 import { getComments } from '@/lib/comments/store';
 import { viewsFor } from '@/lib/comments/views';
 
@@ -42,6 +42,9 @@ export async function GET(
         (after && !cursor)
     )
         return Response.json({ error: 'invalid' }, { status: 400 });
+    // An unlisted or deleted organization's discussion isn't public.
+    if (!(await discussionReadable(target.data)))
+        return Response.json({ error: 'notFound' }, { status: 404 });
 
     const [user, page] = await Promise.all([
         getSessionUser(),

@@ -562,7 +562,9 @@
             "editProfile": "{actor} 更改了{fields}",
             "claim": "{target} 认领了这个组织",
             "deleteOrganization": "{actor} 删除了这个组织",
-            "restoreOrganization": "{actor} 恢复了这个组织"
+            "restoreOrganization": "{actor} 恢复了这个组织",
+            "replyComment": "{actor}回复了一条评论",
+            "deleteReply": "{actor}删除了对一条评论的回复"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "原因",
@@ -844,7 +846,11 @@
             "hideComment": "{actor} 隐藏了 {word} 下的一条评论",
             "unhideComment": "{actor} 重新显示了 {word} 下一条被隐藏的评论",
             "deleteComment": "{actor} 删除了 {word} 下的一条评论",
-            "dismissCommentReport": "{actor} 驳回了对 {word} 下一条评论的举报"
+            "dismissCommentReport": "{actor} 驳回了对 {word} 下一条评论的举报",
+            "replyComment": "{actor}代表团队回复了{word}上的一条评论",
+            "hideReply": "{actor}隐藏了{word}上的一条回复",
+            "unhideReply": "{actor}重新显示了{word}上一条被隐藏的回复",
+            "deleteReply": "{actor}删除了{word}上的一条回复"
         },
         "unknownActor": "一位超级用户",
         "errors": {
@@ -1253,7 +1259,11 @@
             "sortedNewest": "正在优先显示最新的评论。",
             "loaded": "{count, plural, =0 {没有更多评论了。} other {又显示了 # 条评论。}}",
             "languageOne": "正在显示{language}评论：{count, plural, =0 {还没有} other {# 条}}。",
-            "languageAll": "正在显示所有语言的评论：{count} 条。"
+            "languageAll": "正在显示所有语言的评论：{count} 条。",
+            "replied": "回复已发布。",
+            "replyDeleted": "回复已删除。",
+            "replyHidden": "回复已隐藏。",
+            "replyUnhidden": "回复已重新显示。"
         },
         "errors": {
             "textRequired": "请先写下你的评论。",
@@ -1268,7 +1278,10 @@
             "hidden": "这条评论已被管理员隐藏。",
             "invalid": "这个请求有问题。请刷新页面后重试。",
             "generic": "出了点问题。请重试。",
-            "loadFailed": "无法加载评论。请检查网络连接后重试。"
+            "loadFailed": "无法加载评论。请检查网络连接后重试。",
+            "alreadyReplied": "这条评论已经有回复了。请先删除它再写新的。",
+            "replyTextRequired": "请先写下你的回复。",
+            "replyTextTooLong": "请把回复缩短到 {max} 个字符以内。"
         },
         "languageLabel": "显示评论的语言",
         "languageOne": "{language}（{count}）",
@@ -1278,7 +1291,31 @@
         "writtenIn": "使用{language}撰写",
         "changeLanguage": "更改",
         "changeLanguageLabel": "更改评论所用的语言",
-        "unavailable": "暂时无法加载评论。请过几分钟再试。"
+        "unavailable": "暂时无法加载评论。请过几分钟再试。",
+        "organization": {
+            "intro": "告诉大家这个团体是什么样的：你得到的帮助、你做志愿者的经历、称赞、担忧或问题。为你认同的评论点赞。这个组织可以回复每条评论。",
+            "empty": "还没有评论。你和这个团体合作过吗？来第一个分享你的经历吧。"
+        },
+        "reply": "回复",
+        "replyLabel": "以{organization}的名义回复{name}的评论",
+        "replyFrom": "来自{name}的回复",
+        "replyFromTeam": "来自 Communalists 团队的回复",
+        "teamName": "Communalists 团队",
+        "replyFormLabel": "你以{from}名义的回复",
+        "replyFormHint": "回复是公开的，显示为来自{from}，而不是你个人。只限纯文本。每条评论只能有一条回复：要修改，请删除后重写。",
+        "replyLanguage": "回复的语言",
+        "replyPost": "发布回复",
+        "replyHiddenText": "回复已被管理员隐藏。",
+        "replyHiddenModerator": "回复已被管理员隐藏。只有超级用户能看到下面的内容。",
+        "reportReplyLabel": "举报对{name}评论的回复",
+        "reportReplyTitle": "举报这条回复？",
+        "hideReplyLabel": "隐藏对{name}评论的回复",
+        "unhideReplyLabel": "重新显示对{name}评论的回复",
+        "deleteReplyLabel": "删除对{name}评论的回复",
+        "deleteReplyTitle": "删除这条回复？",
+        "deleteReplyBody": "回复会对所有人删除。之后你可以写一条新的。",
+        "deleteReplyBodyModerator": "回复会对所有人删除。此操作无法撤销，但超级用户日志会保留一份副本。",
+        "replyChangeLanguageLabel": "更改回复的语言"
     },
     "AdminComments": {
         "metaTitle": "被举报的评论",
@@ -1311,7 +1348,17 @@
         "dismissLabel": "驳回对 {name} 的评论的举报",
         "hidden": "评论已隐藏，举报已关闭。",
         "deleted": "评论已删除，举报已关闭。",
-        "dismissed": "举报已驳回，评论保持不变。"
+        "dismissed": "举报已驳回，评论保持不变。",
+        "replyByOn": "{from}对{name}评论的回复，{date}",
+        "hideLabelReply": "隐藏{from}对{name}的回复",
+        "deleteLabelReply": "删除{from}对{name}的回复",
+        "deleteTitleReply": "删除{from}的回复？",
+        "deleteBodyReply": "回复会对所有人删除，评论保留。此操作无法撤销，但超级用户日志会保留一份副本。",
+        "dismissLabelReply": "驳回对{from}给{name}的回复的举报",
+        "goneReply": "这条回复已被删除。驳回举报即可清除。",
+        "hiddenReply": "回复已隐藏。举报已关闭。",
+        "deletedReply": "回复已删除。举报已关闭。",
+        "dismissedReply": "举报已驳回。回复保持不变。"
     },
     "AdminDefinitions": {
         "metaTitle": "词典",

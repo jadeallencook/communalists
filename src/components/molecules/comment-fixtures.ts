@@ -16,6 +16,7 @@ export const sampleComments: CommentView[] = [
         author: { name: 'Maya Thompson', username: 'maya-thompson' },
         mine: false,
         voted: true,
+        reply: null,
     },
     {
         id: 'c2',
@@ -27,6 +28,7 @@ export const sampleComments: CommentView[] = [
         author: { name: 'Luis Hernández', username: 'luis-hernandez' },
         mine: false,
         voted: false,
+        reply: null,
     },
     {
         id: 'c3',
@@ -38,6 +40,7 @@ export const sampleComments: CommentView[] = [
         author: { name: 'Sam Rivera', username: 'sam-rivera' },
         mine: true,
         voted: false,
+        reply: null,
     },
     {
         id: 'c4',
@@ -49,6 +52,7 @@ export const sampleComments: CommentView[] = [
         author: { name: 'Someone', username: 'someone' },
         mine: false,
         voted: false,
+        reply: null,
     },
 ];
 
@@ -62,6 +66,7 @@ export const formerMemberComment: CommentView = {
     author: null,
     mine: false,
     voted: false,
+    reply: null,
 };
 
 export const longComment: CommentView = {
@@ -77,6 +82,51 @@ export const longComment: CommentView = {
     },
     mine: false,
     voted: false,
+    reply: null,
+};
+
+const noReply = {
+    reply: false,
+    replyReport: false,
+    replyDelete: false,
+    replyHide: false,
+    replyUnhide: false,
+};
+
+/** On an organization's page: a comment the organization answered. */
+export const repliedComment: CommentView = {
+    id: 'c7',
+    text: 'They helped me move my mom’s things in one afternoon. But the sign-up form only works in English, and my mom only reads Vietnamese.',
+    lang: 'en',
+    at: base - 4 * day,
+    votes: 7,
+    hidden: false,
+    author: { name: 'Thanh Nguyen', username: 'thanh' },
+    mine: false,
+    voted: false,
+    reply: {
+        text: 'Thank you, and you’re right. We’re translating the form into Vietnamese and Spanish this month. Until then, call us and we’ll fill it in with you.',
+        lang: 'en',
+        at: base - 3 * day,
+        from: 'organization',
+        hidden: false,
+    },
+};
+
+/** Answered by the Communalists team while the page was unclaimed. */
+export const teamRepliedComment: CommentView = {
+    ...repliedComment,
+    id: 'c8',
+    text: 'Does this group still meet? The last post I can find is from last year.',
+    votes: 2,
+    author: { name: 'Marcus Lee', username: 'marcus' },
+    reply: {
+        text: 'Thanks. We’ve asked them and will update the page when they answer.',
+        lang: 'en',
+        at: base - day,
+        from: 'team',
+        hidden: false,
+    },
 };
 
 export const allowed = {
@@ -86,6 +136,7 @@ export const allowed = {
         delete: false,
         hide: false,
         unhide: false,
+        ...noReply,
     },
     member: {
         vote: true,
@@ -93,6 +144,7 @@ export const allowed = {
         delete: false,
         hide: false,
         unhide: false,
+        ...noReply,
     },
     author: {
         vote: false,
@@ -100,6 +152,7 @@ export const allowed = {
         delete: true,
         hide: false,
         unhide: false,
+        ...noReply,
     },
     moderator: {
         vote: true,
@@ -107,6 +160,7 @@ export const allowed = {
         delete: true,
         hide: true,
         unhide: false,
+        ...noReply,
     },
     moderatorHidden: {
         vote: false,
@@ -114,5 +168,26 @@ export const allowed = {
         delete: true,
         hide: false,
         unhide: true,
+        ...noReply,
+    },
+};
+
+/** On an organization's page: what owners and moderators, and others, can do with its replies. */
+export const allowedOnOrganization = {
+    /** Owners and moderators: Reply on unanswered comments, Delete their reply. */
+    replier: { ...allowed.member, reply: true },
+    replierAnswered: { ...allowed.member, replyDelete: true },
+    /** Anyone else signed in: Report a reply. */
+    memberAnswered: { ...allowed.member, replyReport: true },
+    /** Super users: Hide and Delete on replies too. */
+    moderatorAnswered: {
+        ...allowed.moderator,
+        replyDelete: true,
+        replyHide: true,
+    },
+    moderatorReplyHidden: {
+        ...allowed.moderator,
+        replyDelete: true,
+        replyUnhide: true,
     },
 };

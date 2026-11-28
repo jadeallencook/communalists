@@ -42,7 +42,7 @@ While `pnpm dev` runs, every Firestore read is printed as `[firestore read #N] c
 
 ### Test data
 
-`pnpm dev` adds these whenever any are missing, along with dictionary words from any CSVs in `research/definitions/` (git-ignored, so only if you have the file; otherwise import one at `/admin/definitions/import`, see [features/19](features/19-dictionary.md#starter-words)). To put them back the way they started, use **Reset test data** in the dev toolbar, or run `pnpm seed` with the emulators running. The password for all of them is `password123`. A few test comments go on words that exist locally (mostly **Mutual Aid**), with up votes and one reported comment for `/admin/comments` ([features/20](features/20-comments.md)).
+`pnpm dev` adds these whenever any are missing, along with dictionary words from any CSVs in `research/definitions/` (git-ignored, so only if you have the file; otherwise import one at `/admin/definitions/import`, see [features/19](features/19-dictionary.md#starter-words)). To put them back the way they started, use **Reset test data** in the dev toolbar, or run `pnpm seed` with the emulators running. The password for all of them is `password123`. A few test comments go on words that exist locally (mostly **Mutual Aid**), with up votes and one reported comment for `/admin/comments`, and on organizations: three on **South Bay Mutual Aid** (one answered by Maya for the organization, and that reply reported) and one on the unclaimed **Eastside Shower Day**, answered by Jordan as the Communalists team ([features/20](features/20-comments.md)).
 
 The toolbar lists these four first:
 

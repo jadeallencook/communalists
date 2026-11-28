@@ -62,6 +62,11 @@ const PATHS = [
     'definitions/mutual-aid/commentVotes/c1_someone',
     'commentReports/definition~mutual-aid~c1',
     'commentLimits/someone',
+    // Comments on an organization's page (decision #70), the reply on the
+    // comment itself, and a report on a reply.
+    'organizations/org1/comments/c1',
+    'organizations/org1/commentVotes/c1_someone',
+    'commentReports/organization~org1~c1~reply',
 ];
 
 // The test contexts are typed as the compat SDK, but work with the modular
@@ -93,6 +98,7 @@ describe.each(clients)('a %s client', (_who, db) => {
         'organizations',
         'adminLog',
         'definitions/mutual-aid/comments',
+        'organizations/org1/comments',
         'commentReports',
     ])('can’t list %s', async (name) => {
         await assertFails(getDocs(collection(db(), name)));

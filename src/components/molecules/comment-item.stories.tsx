@@ -1,12 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
+import { CommentForm } from './comment-form';
 import { CommentItem } from './comment-item';
 import {
     allowed,
+    allowedOnOrganization,
     formerMemberComment,
     longComment,
+    repliedComment,
     sampleComments,
+    teamRepliedComment,
 } from './comment-fixtures';
 
 const [voted, spanish, mine, hidden] = sampleComments;
@@ -75,3 +79,100 @@ export const Busy: Story = { args: { busy: true } };
 export const LongText: Story = { args: { comment: longComment } };
 
 export const Vietnamese: Story = { globals: { locale: 'vi' } };
+
+// On an organization's page (decision #70).
+
+/** The organization's reply, under the comment: "Reply from South Bay Mutual Aid". Others can report it. */
+export const WithReply: Story = {
+    args: {
+        comment: repliedComment,
+        organizationName: 'South Bay Mutual Aid',
+        can: allowedOnOrganization.memberAnswered,
+        onReplyReport: fn(),
+    },
+};
+
+/** Written by a super user while the page was unclaimed: from the Communalists team. */
+export const TeamReply: Story = {
+    args: {
+        comment: teamRepliedComment,
+        organizationName: 'Alum Rock Food Pantry',
+        can: allowed.reader,
+    },
+};
+
+/** An owner or moderator: Reply on a comment the organization hasn't answered. */
+export const CanReply: Story = {
+    args: {
+        organizationName: 'South Bay Mutual Aid',
+        can: allowedOnOrganization.replier,
+        replier: true,
+        onReplyOpen: fn(),
+    },
+};
+
+/** The reply form open under the comment, where the Reply button was. */
+export const Replying: Story = {
+    args: {
+        organizationName: 'South Bay Mutual Aid',
+        can: allowedOnOrganization.replier,
+        replier: true,
+        replyForm: (
+            <CommentForm
+                idPrefix="reply"
+                reply={{ from: 'South Bay Mutual Aid', onCancel: fn() }}
+                value=""
+                onChange={fn()}
+                lang="en"
+                onLangChange={fn()}
+                onSubmit={fn()}
+            />
+        ),
+    },
+};
+
+/** An owner or moderator looking at their organization's reply: Delete (asks first). */
+export const OwnReply: Story = {
+    args: {
+        comment: repliedComment,
+        organizationName: 'South Bay Mutual Aid',
+        can: allowedOnOrganization.replierAnswered,
+        replier: true,
+        onReplyDelete: fn(),
+    },
+};
+
+/** A super user: Hide and Delete on the reply as well as the comment. */
+export const ModeratorReply: Story = {
+    args: {
+        comment: repliedComment,
+        organizationName: 'South Bay Mutual Aid',
+        can: allowedOnOrganization.moderatorAnswered,
+        onReplyHide: fn(),
+        onReplyDelete: fn(),
+    },
+};
+
+/** A hidden reply, as a super user sees it: its text, and Show again. */
+export const ModeratorReplyHidden: Story = {
+    args: {
+        comment: {
+            ...repliedComment,
+            reply: { ...repliedComment.reply!, hidden: true },
+        },
+        organizationName: 'South Bay Mutual Aid',
+        can: allowedOnOrganization.moderatorReplyHidden,
+    },
+};
+
+/** A hidden reply, as everyone else sees it. */
+export const ReplyHidden: Story = {
+    args: {
+        comment: {
+            ...repliedComment,
+            reply: { ...repliedComment.reply!, hidden: true, text: null },
+        },
+        organizationName: 'South Bay Mutual Aid',
+        can: allowed.member,
+    },
+};

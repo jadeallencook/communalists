@@ -5,8 +5,10 @@ import { cacheLife, cacheTag } from 'next/cache';
 
 import { getAdminDb } from '@/lib/firebase/admin';
 import { logRead } from '@/lib/firebase/read-log';
+import { effectiveRole } from '@/lib/platform-admin';
 
 import {
+    discussionOpen,
     PAGE_SIZE,
     rateCheck,
     readComment,
@@ -18,6 +20,7 @@ import {
     type CommentCursor,
     type CommentInput,
     type CommentLanguageFilter,
+    type CommentPart,
     type CommentSort,
     type CommentTarget,
     type ReportReason,
@@ -27,15 +30,21 @@ import {
 // Comments in Firestore (design: documentation/features/20-comments.md).
 //
 //   {parent}/comments/{id}               one comment: uid, text, lang,
-//                                        createdAt, votes (a count), hidden
+//                                        createdAt, votes (a count), hidden,
+//                                        and on organizations the reply
+//                                        { uid, text, lang, createdAt,
+//                                        byTeam, hidden }
 //   {parent}/commentVotes/{id}_{uid}     one up vote per person per comment
-//   commentReports/{kind}~{id}~{comment} open reports on one comment: who
+//   commentReports/{kind}~{id}~{comment} open reports on one comment (and
+//                                        `…~reply` on its reply): who
 //                                        reported, and how many per reason
 //   commentLimits/{uid}                  when the person last commented, for
 //                                        the rate limit
 //
-// {parent} is the target's document (definitions/{slug}). Admin SDK only;
-// rules deny clients. Super users' moderation goes in adminLog.
+// {parent} is the target's document (definitions/{slug} or
+// organizations/{id}). Admin SDK only; rules deny clients. Super users'
+// moderation goes in adminLog; an organization's replies go in its own
+// moderationLog (and adminLog when the Communalists team wrote them).
 
 const db = () => getAdminDb();
 const parent = (target: CommentTarget) => db().doc(targetPath(target));
@@ -63,7 +72,12 @@ function toComment(
 ): StoredComment | null {
     if (!doc.exists) return null;
     const data = doc.data()!;
-    return readComment(doc.id, data, millis(data.createdAt));
+    return readComment(
+        doc.id,
+        data,
+        millis(data.createdAt),
+        millis(data.reply?.createdAt)
+    );
 }
 
 /**
@@ -165,7 +179,7 @@ export async function postComment(
             tx.get(limitRef),
         ]);
         logRead('comments (parent, limit)', 2);
-        if (!parentSnap.exists)
+        if (!discussionOpen(target.kind, parentSnap.data()))
             return { ok: false, error: 'notFound' } as const;
         const now = Date.now();
         const check = rateCheck(
@@ -197,6 +211,7 @@ export async function postComment(
                 at: now,
                 votes: 0,
                 hidden: false,
+                reply: null,
             },
         } as const;
     });
@@ -219,13 +234,15 @@ export async function setVote(
     const commentRef = comments(target).doc(commentId);
     const voteRef = votes(target).doc(voteId(commentId, uid));
     return db().runTransaction(async (tx) => {
-        const [commentSnap, voteSnap] = await Promise.all([
+        const [parentSnap, commentSnap, voteSnap] = await Promise.all([
+            tx.get(parent(target)),
             tx.get(commentRef),
             tx.get(voteRef),
         ]);
-        logRead('comments (vote)', 2);
+        logRead('comments (vote)', 3);
         const comment = toComment(commentSnap);
-        if (!comment) return { ok: false, error: 'notFound' } as const;
+        if (!comment || !discussionOpen(target.kind, parentSnap.data()))
+            return { ok: false, error: 'notFound' } as const;
         if (comment.uid === uid)
             return { ok: false, error: 'ownComment' } as const;
         if (comment.hidden) return { ok: false, error: 'hidden' } as const;
@@ -248,26 +265,35 @@ export type ReportResult =
     | { ok: true; already: boolean }
     | { ok: false; error: 'notFound' | 'ownComment' | 'hidden' };
 
-/** Someone reports a comment. Once per person; reports pile up on one document. */
+/**
+ * Someone reports a comment, or the organization's reply to it. Once per
+ * person; reports pile up on one document per comment or reply.
+ */
 export async function reportComment(
     target: CommentTarget,
     commentId: string,
     uid: string,
-    reason: ReportReason
+    reason: ReportReason,
+    part: CommentPart = 'comment'
 ): Promise<ReportResult> {
     const commentRef = comments(target).doc(commentId);
-    const reportRef = reports().doc(reportId(target, commentId));
+    const reportRef = reports().doc(reportId(target, commentId, part));
     return db().runTransaction(async (tx) => {
-        const [commentSnap, reportSnap] = await Promise.all([
+        const [parentSnap, commentSnap, reportSnap] = await Promise.all([
+            tx.get(parent(target)),
             tx.get(commentRef),
             tx.get(reportRef),
         ]);
-        logRead('comments (report)', 2);
+        logRead('comments (report)', 3);
         const comment = toComment(commentSnap);
-        if (!comment) return { ok: false, error: 'notFound' } as const;
-        if (comment.uid === uid)
+        if (!comment || !discussionOpen(target.kind, parentSnap.data()))
+            return { ok: false, error: 'notFound' } as const;
+        if (part === 'reply' && !comment.reply)
+            return { ok: false, error: 'notFound' } as const;
+        if ((part === 'reply' ? comment.reply!.uid : comment.uid) === uid)
             return { ok: false, error: 'ownComment' } as const;
-        if (comment.hidden) return { ok: false, error: 'hidden' } as const;
+        if (comment.hidden || (part === 'reply' && comment.reply!.hidden))
+            return { ok: false, error: 'hidden' } as const;
         const reporters = (reportSnap.data()?.reporters as string[]) ?? [];
         if (reporters.includes(uid))
             return { ok: true, already: true } as const;
@@ -283,6 +309,7 @@ export async function reportComment(
             tx.create(reportRef, {
                 target: { kind: target.kind, id: target.id },
                 commentId,
+                part,
                 reporters: [uid],
                 reasons: { [reason]: 1 },
                 count: 1,
@@ -322,14 +349,17 @@ export async function deleteComment(
 ): Promise<DeleteCommentResult> {
     const commentRef = comments(target).doc(commentId);
     const reportRef = reports().doc(reportId(target, commentId));
+    const replyReportRef = reports().doc(reportId(target, commentId, 'reply'));
     const result = await db().runTransaction(async (tx) => {
         const comment = toComment(await tx.get(commentRef));
         logRead('comments');
         if (!comment) return { ok: false, error: 'notFound' } as const;
         if (comment.uid !== actorUid && !asModerator)
             return { ok: false, error: 'notAllowed' } as const;
+        // Its reply, and any report on it, go with it.
         tx.delete(commentRef);
         tx.delete(reportRef);
+        tx.delete(replyReportRef);
         if (comment.uid !== actorUid)
             tx.create(db().collection('adminLog').doc(), {
                 action: 'deleteComment',
@@ -341,6 +371,14 @@ export async function deleteComment(
                     text: comment.text,
                     lang: comment.lang,
                     votes: comment.votes,
+                    ...(comment.reply
+                        ? {
+                              reply: {
+                                  uid: comment.reply.uid,
+                                  text: comment.reply.text,
+                              },
+                          }
+                        : {}),
                 },
                 createdAt: FieldValue.serverTimestamp(),
             });
@@ -350,45 +388,60 @@ export async function deleteComment(
     return result;
 }
 
+/** What the admin log says a comment was on: the word, or the organization. */
 const logTarget = (target: CommentTarget, name: string) =>
     target.kind === 'definition'
         ? { definition: { slug: target.id, word: name } }
-        : {};
+        : { orgId: target.id, orgName: name };
 
 export type ModerateResult =
     { ok: true; changed: boolean } | { ok: false; error: 'notFound' };
 
-/** A super user hides a comment (or shows it again). Hiding closes its report. Logged. */
+/**
+ * A super user hides a comment or an organization's reply (or shows it
+ * again). Hiding closes its report. Logged.
+ */
 export async function setHidden(
     target: CommentTarget,
     commentId: string,
     adminUid: string,
     hidden: boolean,
-    targetName: string
+    targetName: string,
+    part: CommentPart = 'comment'
 ): Promise<ModerateResult> {
     const commentRef = comments(target).doc(commentId);
-    const reportRef = reports().doc(reportId(target, commentId));
+    const reportRef = reports().doc(reportId(target, commentId, part));
+    // `reply.hidden` and so on, for the reply.
+    const field = (name: string) => (part === 'reply' ? `reply.${name}` : name);
     return db().runTransaction(async (tx) => {
         const comment = toComment(await tx.get(commentRef));
         logRead('comments');
-        if (!comment) return { ok: false, error: 'notFound' } as const;
-        if (comment.hidden === hidden)
-            return { ok: true, changed: false } as const;
+        if (!comment || (part === 'reply' && !comment.reply))
+            return { ok: false, error: 'notFound' } as const;
+        const now = part === 'reply' ? comment.reply!.hidden : comment.hidden;
+        if (now === hidden) return { ok: true, changed: false } as const;
         tx.update(commentRef, {
-            hidden,
+            [field('hidden')]: hidden,
             ...(hidden
                 ? {
-                      hiddenBy: adminUid,
-                      hiddenAt: FieldValue.serverTimestamp(),
+                      [field('hiddenBy')]: adminUid,
+                      [field('hiddenAt')]: FieldValue.serverTimestamp(),
                   }
                 : {
-                      hiddenBy: FieldValue.delete(),
-                      hiddenAt: FieldValue.delete(),
+                      [field('hiddenBy')]: FieldValue.delete(),
+                      [field('hiddenAt')]: FieldValue.delete(),
                   }),
         });
         if (hidden) tx.delete(reportRef);
         tx.create(db().collection('adminLog').doc(), {
-            action: hidden ? 'hideComment' : 'unhideComment',
+            action:
+                part === 'reply'
+                    ? hidden
+                        ? 'hideReply'
+                        : 'unhideReply'
+                    : hidden
+                      ? 'hideComment'
+                      : 'unhideComment',
             ...logTarget(target, targetName),
             commentId,
             actorUid: adminUid,
@@ -403,9 +456,10 @@ export async function dismissReport(
     target: CommentTarget,
     commentId: string,
     adminUid: string,
-    targetName: string
+    targetName: string,
+    part: CommentPart = 'comment'
 ): Promise<{ ok: boolean }> {
-    const reportRef = reports().doc(reportId(target, commentId));
+    const reportRef = reports().doc(reportId(target, commentId, part));
     return db().runTransaction(async (tx) => {
         const report = await tx.get(reportRef);
         logRead('commentReports');
@@ -415,6 +469,7 @@ export async function dismissReport(
             action: 'dismissCommentReport',
             ...logTarget(target, targetName),
             commentId,
+            ...(part === 'reply' ? { part } : {}),
             actorUid: adminUid,
             count: report.data()?.count ?? 0,
             createdAt: FieldValue.serverTimestamp(),
@@ -426,12 +481,13 @@ export async function dismissReport(
 export interface OpenReport {
     target: CommentTarget;
     commentId: string;
+    part: CommentPart;
     count: number;
     reasons: Record<string, number>;
     lastAt?: number;
 }
 
-/** Every open report, most reported first. Cached; one equality-free read of a small collection. */
+/** Every open report (on comments and replies), most reported first. Cached; one equality-free read of a small collection. */
 export async function getOpenReports(): Promise<OpenReport[]> {
     'use cache';
     cacheTag(COMMENT_REPORTS_TAG);
@@ -446,6 +502,7 @@ export async function getOpenReports(): Promise<OpenReport[]> {
                 {
                     target: { kind: d.target.kind, id: d.target.id },
                     commentId: d.commentId,
+                    part: d.part === 'reply' ? 'reply' : 'comment',
                     count: typeof d.count === 'number' ? d.count : 0,
                     reasons: d.reasons ?? {},
                     lastAt: millis(d.lastAt),
@@ -472,6 +529,194 @@ export async function getCommentFresh(
 ): Promise<StoredComment | null> {
     logRead('comments');
     return toComment(await comments(target).doc(commentId).get());
+}
+
+/** Who's writing or removing an organization's reply. */
+export interface Replier {
+    uid: string;
+    /** Their name, for the organization's log (unless they write for the team). */
+    displayName: string;
+    platformAdmin: boolean;
+}
+
+export type ReplyResult =
+    | { ok: true; comment: StoredComment }
+    | {
+          ok: false;
+          error: 'notFound' | 'notAllowed' | 'hidden' | 'alreadyReplied';
+      };
+
+/**
+ * The organization's reply to a comment: by its owners or moderators (on an
+ * unclaimed page, super users, as the Communalists team). One per comment;
+ * to change it, delete it and write again. Role, comment and listing are
+ * checked fresh in the transaction. Logged in the organization's log (and
+ * adminLog for the team). Organizations only.
+ */
+export async function postReply(
+    target: CommentTarget,
+    commentId: string,
+    replier: Replier,
+    input: CommentInput
+): Promise<ReplyResult> {
+    if (target.kind !== 'organization')
+        return { ok: false, error: 'notAllowed' };
+    const orgRef = parent(target);
+    const commentRef = comments(target).doc(commentId);
+    const memberRef = db()
+        .collection('memberships')
+        .doc(`${target.id}_${replier.uid}`);
+    return db().runTransaction(async (tx) => {
+        const [orgSnap, memberSnap, commentSnap] = await Promise.all([
+            tx.get(orgRef),
+            tx.get(memberRef),
+            tx.get(commentRef),
+        ]);
+        logRead('comments (reply)', 3);
+        const org = orgSnap.data();
+        const comment = toComment(commentSnap);
+        if (!comment || !discussionOpen(target.kind, org))
+            return { ok: false, error: 'notFound' } as const;
+        const byTeam = org!.claimStatus === 'unclaimed';
+        if (!replierRole(org!, memberSnap.data(), replier.platformAdmin))
+            return { ok: false, error: 'notAllowed' } as const;
+        if (comment.hidden) return { ok: false, error: 'hidden' } as const;
+        if (comment.reply)
+            return { ok: false, error: 'alreadyReplied' } as const;
+        const now = Date.now();
+        tx.update(commentRef, {
+            reply: {
+                uid: replier.uid,
+                text: input.text,
+                lang: input.lang,
+                createdAt: Timestamp.fromMillis(now),
+                byTeam,
+                hidden: false,
+            },
+        });
+        logReply(tx, target, org!, replier, byTeam, 'replyComment', commentId);
+        return {
+            ok: true,
+            comment: {
+                ...comment,
+                reply: {
+                    uid: replier.uid,
+                    text: input.text,
+                    lang: input.lang,
+                    at: now,
+                    byTeam,
+                    hidden: false,
+                },
+            },
+        } as const;
+    });
+}
+
+/**
+ * Removes the organization's reply: its owners or moderators (the team on
+ * an unclaimed page), or a super user moderating (`asModerator`, with a copy
+ * in adminLog). Its open report goes too.
+ */
+export async function deleteReply(
+    target: CommentTarget,
+    commentId: string,
+    replier: Replier,
+    asModerator: boolean,
+    targetName: string
+): Promise<{ ok: true } | { ok: false; error: 'notFound' | 'notAllowed' }> {
+    if (target.kind !== 'organization')
+        return { ok: false, error: 'notAllowed' };
+    const orgRef = parent(target);
+    const commentRef = comments(target).doc(commentId);
+    const memberRef = db()
+        .collection('memberships')
+        .doc(`${target.id}_${replier.uid}`);
+    return db().runTransaction(async (tx) => {
+        const [orgSnap, memberSnap, commentSnap] = await Promise.all([
+            tx.get(orgRef),
+            tx.get(memberRef),
+            tx.get(commentRef),
+        ]);
+        logRead('comments (reply)', 3);
+        const org = orgSnap.data();
+        const comment = toComment(commentSnap);
+        if (!org || !comment?.reply)
+            return { ok: false, error: 'notFound' } as const;
+        const staff =
+            org.status === 'active' &&
+            replierRole(org, memberSnap.data(), replier.platformAdmin);
+        if (!staff && !asModerator)
+            return { ok: false, error: 'notAllowed' } as const;
+        tx.update(commentRef, { reply: FieldValue.delete() });
+        tx.delete(reports().doc(reportId(target, commentId, 'reply')));
+        if (staff)
+            logReply(
+                tx,
+                target,
+                org,
+                replier,
+                org.claimStatus === 'unclaimed',
+                'deleteReply',
+                commentId
+            );
+        else
+            tx.create(db().collection('adminLog').doc(), {
+                action: 'deleteReply',
+                ...logTarget(target, targetName),
+                commentId,
+                actorUid: replier.uid,
+                removed: {
+                    uid: comment.reply.uid,
+                    text: comment.reply.text,
+                    lang: comment.reply.lang,
+                },
+                createdAt: FieldValue.serverTimestamp(),
+            });
+        return { ok: true } as const;
+    });
+}
+
+/** Owners and moderators reply for an organization; on an unclaimed one, super users. */
+function replierRole(
+    org: FirebaseFirestore.DocumentData,
+    membership: FirebaseFirestore.DocumentData | undefined,
+    platformAdmin: boolean
+): boolean {
+    const role = effectiveRole(
+        membership?.status === 'active' ? membership.role : null,
+        { unclaimed: org.claimStatus === 'unclaimed' },
+        platformAdmin
+    );
+    return role === 'owner' || role === 'moderator';
+}
+
+/** A reply written or removed: in the organization's log, and adminLog for the team. */
+function logReply(
+    tx: FirebaseFirestore.Transaction,
+    target: CommentTarget,
+    org: FirebaseFirestore.DocumentData,
+    replier: Replier,
+    byTeam: boolean,
+    action: 'replyComment' | 'deleteReply',
+    commentId: string
+) {
+    const stamp = FieldValue.serverTimestamp();
+    tx.create(parent(target).collection('moderationLog').doc(), {
+        action,
+        commentId,
+        actor: byTeam
+            ? { uid: replier.uid, team: true }
+            : { uid: replier.uid, displayName: replier.displayName },
+        createdAt: stamp,
+    });
+    if (byTeam)
+        tx.create(db().collection('adminLog').doc(), {
+            action,
+            ...logTarget(target, org.name ?? ''),
+            commentId,
+            actorUid: replier.uid,
+            createdAt: stamp,
+        });
 }
 
 /**

@@ -9,13 +9,15 @@ import {
     type CommentCounts,
     type CommentErrorKey,
     type CommentLanguageFilter,
+    type CommentPart,
     type CommentSort,
     type CommentView,
     type ReportReason,
 } from '@/lib/comments';
 
-// The discussion under a word (and, later, an organization): the list, its
-// order and language, loading more, posting, voting, reporting and moderating. The server
+// The discussion under a word or an organization: the list, its order and
+// language, loading more, posting, voting, reporting, moderating, and the
+// organization's replies. The server
 // actions and the page loader come in as functions, so the hook (and the
 // components) never import server code. Design:
 // documentation/features/20-comments.md.
@@ -29,6 +31,7 @@ export type DiscussionError =
     | 'rateLimited'
     | 'ownComment'
     | 'hidden'
+    | 'alreadyReplied'
     | 'invalid'
     | 'generic';
 
@@ -57,10 +60,23 @@ export interface DiscussionActions {
     ) => Promise<{ ok: true; votes: number; voted: boolean } | Failure>;
     report: (
         id: string,
-        reason: ReportReason
+        reason: ReportReason,
+        part: CommentPart
     ) => Promise<{ ok: true; already: boolean } | Failure>;
-    remove: (id: string) => Promise<{ ok: true } | Failure>;
-    hide: (id: string, hidden: boolean) => Promise<{ ok: true } | Failure>;
+    remove: (id: string, part: CommentPart) => Promise<{ ok: true } | Failure>;
+    hide: (
+        id: string,
+        hidden: boolean,
+        part: CommentPart
+    ) => Promise<{ ok: true } | Failure>;
+    /** The organization's reply to a comment (organizations only). */
+    reply?: (
+        id: string,
+        input: { text: string; lang: string }
+    ) => Promise<
+        | { ok: true; comment: CommentView }
+        | (Failure & { field?: CommentErrorKey })
+    >;
 }
 
 /** Results, under Discussion.announce. */
@@ -73,6 +89,10 @@ export type DiscussionAnnouncement =
     | 'deleted'
     | 'hidden'
     | 'unhidden'
+    | 'replied'
+    | 'replyDeleted'
+    | 'replyHidden'
+    | 'replyUnhidden'
     | 'sortedTop'
     | 'sortedNewest'
     | 'languageOne'
@@ -81,7 +101,23 @@ export type DiscussionAnnouncement =
 
 /** Problems, under Discussion.errors. */
 export type DiscussionProblem =
-    DiscussionError | CommentErrorKey | 'loadFailed';
+    | DiscussionError
+    | CommentErrorKey
+    | 'loadFailed'
+    // The reply form's wording of textRequired and textTooLong.
+    | 'replyTextRequired'
+    | 'replyTextTooLong';
+
+/**
+ * Where focus goes next: a comment (`part` left out), its reply, or the
+ * Reply button under it (after closing the reply form); with no id, the
+ * announcement.
+ */
+export interface DiscussionFocus {
+    id: string | null;
+    at: number;
+    part?: 'reply' | 'replyButton';
+}
 
 /**
  * Something to say, with its values. `at` changes every time, so the same
@@ -134,8 +170,15 @@ export function useDiscussion({
      * Where focus goes next: a comment (just posted, first of a new page,
      * acted on), or the announcement (`id: null`, after deleting).
      */
-    const [focus, setFocus] = useState<{
-        id: string | null;
+    const [focus, setFocus] = useState<DiscussionFocus | null>(null);
+
+    /** The organization's reply being written: to which comment, and its text. */
+    const [replyingTo, setReplyingTo] = useState<string | null>(null);
+    const [replyDraft, setReplyDraftState] = useState('');
+    const [replyLang, setReplyLang] = useState(defaultLang);
+    const [replyPosting, setReplyPosting] = useState(false);
+    const [replyError, setReplyError] = useState<{
+        key: DiscussionProblem;
         at: number;
     } | null>(null);
     const say = (
@@ -301,10 +344,14 @@ export function useDiscussion({
             }
         });
 
-    const report = (id: string, reason: ReportReason) =>
+    const report = (
+        id: string,
+        reason: ReportReason,
+        part: CommentPart = 'comment'
+    ) =>
         withBusy(id, async () => {
             try {
-                const result = await actions.report(id, reason);
+                const result = await actions.report(id, reason, part);
                 if (!result.ok) return failed(result.error);
                 // Focus stays on Report (the dialog gives it back); the
                 // result is announced.
@@ -314,11 +361,20 @@ export function useDiscussion({
             }
         });
 
-    const remove = (id: string) =>
+    const remove = (id: string, part: CommentPart = 'comment') =>
         withBusy(id, async () => {
             const gone = comments.find((c) => c.id === id);
             try {
-                const result = await actions.remove(id);
+                const result = await actions.remove(id, part);
+                if (part === 'reply') {
+                    if (!result.ok && result.error !== 'notFound')
+                        return failed(result.error);
+                    // The comment stays: focus goes back to it.
+                    update(id, { reply: null });
+                    say('replyDeleted');
+                    setFocus({ id, at: Date.now() });
+                    return;
+                }
                 if (!result.ok && result.error !== 'notFound')
                     return failed(result.error);
                 // Gone either way. Focus goes to the announcement (the
@@ -332,11 +388,23 @@ export function useDiscussion({
             }
         });
 
-    const hide = (id: string, hidden: boolean) =>
+    const hide = (id: string, hidden: boolean, part: CommentPart = 'comment') =>
         withBusy(id, async () => {
             try {
-                const result = await actions.hide(id, hidden);
+                const result = await actions.hide(id, hidden, part);
                 if (!result.ok) return failed(result.error);
+                if (part === 'reply') {
+                    setComments((list) =>
+                        list.map((c) =>
+                            c.id === id && c.reply
+                                ? { ...c, reply: { ...c.reply, hidden } }
+                                : c
+                        )
+                    );
+                    say(hidden ? 'replyHidden' : 'replyUnhidden');
+                    setFocus({ id, at: Date.now(), part: 'reply' });
+                    return;
+                }
                 update(id, { hidden });
                 say(hidden ? 'hidden' : 'unhidden');
                 setFocus({ id, at: Date.now() });
@@ -344,6 +412,62 @@ export function useDiscussion({
                 failed('generic');
             }
         });
+
+    /** Opens the reply form under a comment (one at a time). */
+    const openReply = (id: string) => {
+        setReplyingTo(id);
+        setReplyDraftState('');
+        setReplyLang(defaultLang);
+        setReplyError(null);
+    };
+
+    /** Closes the reply form; focus goes back to its Reply button. */
+    const cancelReply = () => {
+        const id = replyingTo;
+        setReplyingTo(null);
+        setReplyError(null);
+        if (id) setFocus({ id, at: Date.now(), part: 'replyButton' });
+    };
+
+    const submitReply = async () => {
+        const id = replyingTo;
+        if (!id || replyPosting || !actions.reply) return;
+        const left = charactersLeft(replyDraft);
+        if (replyDraft.trim() === '' || left < 0) {
+            setReplyError({
+                key: left < 0 ? 'textTooLong' : 'textRequired',
+                at: Date.now(),
+            });
+            return;
+        }
+        setReplyPosting(true);
+        setReplyError(null);
+        try {
+            const result = await actions.reply(id, {
+                text: replyDraft,
+                lang: replyLang,
+            });
+            if (!result.ok) {
+                setReplyError({
+                    key:
+                        result.error === 'invalid' && result.field
+                            ? result.field
+                            : result.error,
+                    at: Date.now(),
+                });
+                return;
+            }
+            update(id, { reply: result.comment.reply });
+            setReplyingTo(null);
+            setReplyDraftState('');
+            say('replied');
+            setFocus({ id, at: Date.now(), part: 'reply' });
+        } catch {
+            setReplyError({ key: 'generic', at: Date.now() });
+        } finally {
+            setReplyPosting(false);
+        }
+    };
 
     return {
         comments,
@@ -371,6 +495,19 @@ export function useDiscussion({
         report,
         remove,
         hide,
+        replyingTo,
+        openReply,
+        cancelReply,
+        replyDraft,
+        setReplyDraft: (value: string) => {
+            setReplyDraftState(value);
+            if (replyError) setReplyError(null);
+        },
+        replyLang,
+        setReplyLang,
+        replyPosting,
+        replyError,
+        submitReply,
         notice,
         focus,
     };

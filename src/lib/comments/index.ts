@@ -1,49 +1,75 @@
 // Comments: a flat, public discussion under something people can talk about,
-// with up votes. Built for dictionary words first (features/19, "Discussion");
-// written for any target so organization pages can reuse it later (only a new
-// target kind and its own access rules). Pure: no React, Next or Firebase, so
+// with up votes. On dictionary words (features/19, "Discussion") and on
+// listed organizations' pages, where the organization can add one official
+// reply to each comment (decision #70). Pure: no React, Next or Firebase, so
 // it's tested directly and a future mobile app can reuse it. The Firestore
 // layer is ./store.ts. Design: documentation/features/20-comments.md.
 
 import { z } from 'zod';
 
-/** Who comments can be under. Organizations will be the next kind. */
-export const COMMENT_TARGET_KINDS = ['definition'] as const;
+/** What comments can be under: a dictionary word, or an organization. */
+export const COMMENT_TARGET_KINDS = ['definition', 'organization'] as const;
 export type CommentTargetKind = (typeof COMMENT_TARGET_KINDS)[number];
 
 export interface CommentTarget {
     kind: CommentTargetKind;
-    /** The parent's id: a word's slug. */
+    /** The parent's id: a word's slug, or an organization's id (not its handle, which can change). */
     id: string;
 }
 
-/** A target id: lowercase words joined by hyphens (a slug), at most 60. */
-const TARGET_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+/** A word's slug: lowercase words joined by hyphens, at most 60. */
+const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+/** A Firestore document id (auto ids, and seeded ones like `seed-sbma`). */
+const DOC_ID = /^[A-Za-z0-9_-]{1,40}$/;
 
-export const commentTargetSchema = z.object({
-    kind: z.enum(COMMENT_TARGET_KINDS),
-    id: z.string().min(2).max(60).regex(TARGET_ID),
-});
+export const commentTargetSchema = z.discriminatedUnion('kind', [
+    z.object({
+        kind: z.literal('definition'),
+        id: z.string().min(2).max(60).regex(SLUG),
+    }),
+    z.object({ kind: z.literal('organization'), id: z.string().regex(DOC_ID) }),
+]);
 
 /** The parent document's path, which holds `comments` and `commentVotes`. */
 export function targetPath(target: CommentTarget): string {
     switch (target.kind) {
         case 'definition':
             return `definitions/${target.id}`;
+        case 'organization':
+            return `organizations/${target.id}`;
     }
 }
+
+/**
+ * Whether the parent document (as stored) takes part in discussions now.
+ * Words always do. Organizations only while active and listed: never
+ * unlisted ones, which exist for groups that don't want to be found, and a
+ * deleted one's page is gone. Comments stay stored either way, so listing or
+ * restoring brings them back. Checked on every read and write.
+ */
+export function discussionOpen(
+    kind: CommentTargetKind,
+    parent: Record<string, unknown> | undefined
+): boolean {
+    if (!parent) return false;
+    switch (kind) {
+        case 'definition':
+            return true;
+        case 'organization':
+            return parent.status === 'active' && parent.visibility === 'listed';
+    }
+}
+
+/** Organizations reply to comments; words don't. */
+export const takesReplies = (kind: CommentTargetKind) =>
+    kind === 'organization';
 
 /** One key per target, for cache tags and report ids: `definition~mutual-aid`. */
 export const targetKey = (target: CommentTarget) =>
     `${target.kind}~${target.id}`;
 
-/** The page a target's discussion is on (no locale), for links back to it. */
-export function targetHref(target: CommentTarget): string {
-    switch (target.kind) {
-        case 'definition':
-            return `/dictionary/${target.id}`;
-    }
-}
+/** A word's page (no locale), for links back to its discussion. An organization's page is at its handle (`organizationPath`). */
+export const definitionHref = (slug: string) => `/dictionary/${slug}`;
 
 /** Where the discussion starts on its page: sign-in and sign-up come back here. */
 export const DISCUSSION_ANCHOR = 'discussion';
@@ -137,8 +163,8 @@ export const isCommentSort = (value: unknown): value is CommentSort =>
     COMMENT_SORTS.includes(value as CommentSort);
 
 /**
- * Which comments to show: one language, or all of them. Readers start with
- * their UI language (moderators with all), and can switch to all.
+ * Which comments to show: one language, or all of them. On words, readers
+ * start with their UI language (moderators with all), and can switch to all.
  */
 export type CommentLanguageFilter = CommentLang | 'all';
 
@@ -147,12 +173,17 @@ export const isLanguageFilter = (
 ): value is CommentLanguageFilter =>
     value === 'all' || COMMENT_LANGS.includes(value as CommentLang);
 
-/** Where a viewer starts: their UI language, or all languages for moderators. */
+/**
+ * Where a viewer starts. Words: their UI language (each language has its own
+ * definition, so feedback is mostly about that wording), or all for
+ * moderators. Organizations: all, since their pages aren't translated.
+ */
 export function defaultLanguageFilter(
     locale: string,
-    moderator: boolean
+    moderator: boolean,
+    kind: CommentTargetKind = 'definition'
 ): CommentLanguageFilter {
-    if (moderator) return 'all';
+    if (moderator || kind === 'organization') return 'all';
     return COMMENT_LANGS.includes(locale as CommentLang)
         ? (locale as CommentLang)
         : 'all';
@@ -204,6 +235,21 @@ export const cursorOf = (comment: { votes: number; at: number }) => ({
     at: comment.at,
 });
 
+/**
+ * The organization's one reply to a comment, stored on the comment. `uid`
+ * (who wrote it) never leaves the server: the reply is the organization's
+ * voice. `byTeam`: written by a super user while the page was unclaimed, so
+ * it's shown as from the Communalists team, also after a claim.
+ */
+export interface StoredReply {
+    uid: string;
+    text: string;
+    lang: CommentLang;
+    at: number;
+    byTeam: boolean;
+    hidden: boolean;
+}
+
 /** A comment as stored, read safely (older or partial documents still read). */
 export interface StoredComment {
     id: string;
@@ -214,29 +260,60 @@ export interface StoredComment {
     at: number;
     votes: number;
     hidden: boolean;
+    reply: StoredReply | null;
 }
+
+const langOf = (value: unknown): CommentLang =>
+    COMMENT_LANGS.includes(value as CommentLang)
+        ? (value as CommentLang)
+        : 'en';
 
 export function readComment(
     id: string,
     data: Record<string, unknown>,
-    at: number | undefined
+    at: number | undefined,
+    /** The reply's date (epoch ms), converted by the store. */
+    replyAt?: number
 ): StoredComment | null {
     if (typeof data.uid !== 'string' || typeof data.text !== 'string')
         return null;
+    const reply = data.reply as Record<string, unknown> | undefined;
     return {
         id,
         uid: data.uid,
         text: data.text,
-        lang: COMMENT_LANGS.includes(data.lang as CommentLang)
-            ? (data.lang as CommentLang)
-            : 'en',
+        lang: langOf(data.lang),
         at: at ?? 0,
         votes:
             typeof data.votes === 'number' && data.votes > 0
                 ? Math.floor(data.votes)
                 : 0,
         hidden: data.hidden === true,
+        reply:
+            reply &&
+            typeof reply.uid === 'string' &&
+            typeof reply.text === 'string'
+                ? {
+                      uid: reply.uid,
+                      text: reply.text,
+                      lang: langOf(reply.lang),
+                      at: replyAt ?? 0,
+                      byTeam: reply.byTeam === true,
+                      hidden: reply.hidden === true,
+                  }
+                : null,
     };
+}
+
+/** The organization's reply as a viewer sees it. Never who wrote it. */
+export interface ReplyView {
+    /** Null when hidden by a moderator (super users still get it). */
+    text: string | null;
+    lang: CommentLang;
+    at: number;
+    /** From the organization, or from the Communalists team (written while unclaimed). */
+    from: 'organization' | 'team';
+    hidden: boolean;
 }
 
 /** What the page gets for one comment: only what this viewer may see. */
@@ -254,12 +331,27 @@ export interface CommentView {
     mine: boolean;
     /** The viewer up voted it. */
     voted: boolean;
+    /** The organization's reply, if any. Left out under a hidden comment, except for moderators. */
+    reply: ReplyView | null;
 }
 
 export interface Viewer {
     uid: string | null;
     /** Super users see hidden text, and can hide, show and delete. */
     moderator: boolean;
+}
+
+function replyView(comment: StoredComment, viewer: Viewer): ReplyView | null {
+    const { reply } = comment;
+    // A reply under a hidden comment could repeat what was hidden.
+    if (!reply || (comment.hidden && !viewer.moderator)) return null;
+    return {
+        text: reply.hidden && !viewer.moderator ? null : reply.text,
+        lang: reply.lang,
+        at: reply.at,
+        from: reply.byTeam ? 'team' : 'organization',
+        hidden: reply.hidden,
+    };
 }
 
 export function commentView(
@@ -278,14 +370,22 @@ export function commentView(
         author,
         mine: viewer.uid !== null && comment.uid === viewer.uid,
         voted: votedIds.has(comment.id),
+        reply: replyView(comment, viewer),
     };
 }
 
 /** What a viewer can do with one comment. The server checks the same rules. */
 export function commentAbilities(
-    comment: Pick<CommentView, 'mine' | 'hidden'>,
-    viewer: { signedIn: boolean; moderator: boolean }
+    comment: Pick<CommentView, 'mine' | 'hidden' | 'reply'>,
+    viewer: {
+        signedIn: boolean;
+        moderator: boolean;
+        /** The organization's owners and moderators (super users on unclaimed pages): they write its replies. */
+        replier?: boolean;
+    }
 ) {
+    const { reply } = comment;
+    const replier = viewer.replier === true;
     return {
         vote: viewer.signedIn && !comment.mine && !comment.hidden,
         report:
@@ -296,8 +396,21 @@ export function commentAbilities(
         delete: comment.mine || viewer.moderator,
         hide: viewer.moderator && !comment.hidden,
         unhide: viewer.moderator && comment.hidden,
+        /** One reply per comment; to change it, delete it and write again. */
+        reply: replier && !comment.hidden && !reply,
+        replyReport:
+            !!reply &&
+            viewer.signedIn &&
+            !replier &&
+            !viewer.moderator &&
+            !reply.hidden,
+        replyDelete: !!reply && (replier || viewer.moderator),
+        replyHide: !!reply && viewer.moderator && !reply.hidden,
+        replyUnhide: !!reply && viewer.moderator && reply.hidden,
     };
 }
+
+export type CommentAbilities = ReturnType<typeof commentAbilities>;
 
 /** Pages loaded one after another can repeat a comment whose votes changed: keep the first. */
 export function mergePages(
@@ -321,18 +434,34 @@ export type ReportReason = (typeof REPORT_REASONS)[number];
 
 export const reportReasonSchema = z.enum(REPORT_REASONS);
 
-/** One report document per reported comment: `definition~mutual-aid~{commentId}`. */
-export const reportId = (target: CommentTarget, commentId: string) =>
-    `${targetKey(target)}~${commentId}`;
+/** What's reported, hidden or deleted: the comment, or the organization's reply to it. */
+export const COMMENT_PARTS = ['comment', 'reply'] as const;
+export type CommentPart = (typeof COMMENT_PARTS)[number];
+export const commentPartSchema = z.enum(COMMENT_PARTS);
+
+/**
+ * One report document per reported comment or reply:
+ * `definition~mutual-aid~{commentId}`, and `…~reply` for a reply.
+ */
+export const reportId = (
+    target: CommentTarget,
+    commentId: string,
+    part: CommentPart = 'comment'
+) => `${targetKey(target)}~${commentId}${part === 'reply' ? '~reply' : ''}`;
 
 export function parseReportId(
     id: string
-): { target: CommentTarget; commentId: string } | null {
-    const [kind, targetId, commentId, ...rest] = id.split('~');
-    if (rest.length || !commentId) return null;
+): { target: CommentTarget; commentId: string; part: CommentPart } | null {
+    const [kind, targetId, commentId, part, ...rest] = id.split('~');
+    if (rest.length || !commentId || (part !== undefined && part !== 'reply'))
+        return null;
     const target = commentTargetSchema.safeParse({ kind, id: targetId });
     if (!target.success || !COMMENT_ID.test(commentId)) return null;
-    return { target: target.data, commentId };
+    return {
+        target: target.data,
+        commentId,
+        part: part === 'reply' ? 'reply' : 'comment',
+    };
 }
 
 /** Firestore auto ids (and seeded ones like `seed-c1`). */

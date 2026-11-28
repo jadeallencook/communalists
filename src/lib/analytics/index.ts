@@ -76,6 +76,8 @@ export interface AnalyticsEvents {
     };
     /** "Post comment" was pressed (an attempt; the server may refuse). Never the text. */
     'comment-post': { on: CommentTargetKind; id: string };
+    /** An organization's owner or moderator pressed Post reply (never the text). */
+    'comment-reply': { on: CommentTargetKind; id: string };
 }
 
 export type AnalyticsEvent = keyof AnalyticsEvents;

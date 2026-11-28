@@ -13,6 +13,7 @@ import {
 } from '@/components/pages/dictionary-page';
 import { isPlatformAdmin } from '@/lib/auth/platform-admin';
 import { getSessionUser } from '@/lib/auth/session';
+import { definitionHref } from '@/lib/comments';
 import {
     isLetter,
     LETTERS,
@@ -35,7 +36,7 @@ import type { Locale } from '@/i18n/routing';
 import { JsonLd } from '../../json-ld';
 import { pageMetadata } from '../../page-metadata';
 import { TrackEvent } from '../../track-event';
-import { DiscussionContainer } from '../discussion-container';
+import { DiscussionContainer } from '../../_discussion/discussion-container';
 import { ShareContainer } from '../share-container';
 
 // /dictionary/{entry} is either a letter's list (/dictionary/m) or one word's
@@ -225,7 +226,11 @@ async function WordContainer({
                 discussion={
                     // Reads the session too, so it streams in after the word.
                     <Suspense fallback={<DiscussionListLoading />}>
-                        <DiscussionContainer slug={slug} locale={locale} />
+                        <DiscussionContainer
+                            target={{ kind: 'definition', id: slug }}
+                            href={definitionHref(slug)}
+                            locale={locale}
+                        />
                     </Suspense>
                 }
             />

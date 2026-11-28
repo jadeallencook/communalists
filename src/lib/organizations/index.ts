@@ -167,6 +167,24 @@ async function readByHandle(handle: string): Promise<Organization | null> {
     return org.status === 'active' && org.handle === handle ? org : null;
 }
 
+/**
+ * An organization by id (active or archived), cached and tagged with it.
+ * For things that point at an organization by id, like comments; decide
+ * access on fresh data.
+ */
+export async function getOrganizationById(
+    orgId: string
+): Promise<Organization | null> {
+    'use cache';
+    cacheTag(orgTag(orgId));
+    cacheLife('hours');
+    logRead('organizations');
+    const snapshot = await organizations().doc(orgId).get();
+    return snapshot.exists
+        ? toOrganization(snapshot.id, snapshot.data()!)
+        : null;
+}
+
 /** The organization at this handle, cached. A miss may be stale: confirm with getOrganizationByHandleFresh. */
 export async function getOrganizationByHandle(
     handle: string
@@ -636,7 +654,10 @@ export type LogAction =
     | 'editProfile'
     | 'claim'
     | 'deleteOrganization'
-    | 'restoreOrganization';
+    | 'restoreOrganization'
+    // The organization's reply to a comment on its page (features/20).
+    | 'replyComment'
+    | 'deleteReply';
 
 export interface ModerationLogEntry {
     id: string;

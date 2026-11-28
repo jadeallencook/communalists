@@ -15,6 +15,8 @@ import {
     commentTargetSchema,
     commentView,
     decodeCursor,
+    definitionHref,
+    discussionOpen,
     encodeCursor,
     mergePages,
     normalizeText,
@@ -26,7 +28,7 @@ import {
     readComment,
     reportId,
     tallyReasons,
-    targetHref,
+    takesReplies,
     targetKey,
     targetPath,
     type CommentView,
@@ -34,23 +36,75 @@ import {
 } from './index';
 
 const word = { kind: 'definition', id: 'mutual-aid' } as const;
+const org = { kind: 'organization', id: 'Xy7Qp2LmN0aBcDeFgH12' } as const;
 
 describe('targets', () => {
     it('point at the word’s document, page and keys', () => {
         expect(targetPath(word)).toBe('definitions/mutual-aid');
-        expect(targetHref(word)).toBe('/dictionary/mutual-aid');
+        expect(definitionHref(word.id)).toBe('/dictionary/mutual-aid');
         expect(targetKey(word)).toBe('definition~mutual-aid');
     });
 
-    it('only accept known kinds and slug-shaped ids', () => {
+    it('point at the organization’s document by id', () => {
+        expect(targetPath(org)).toBe('organizations/Xy7Qp2LmN0aBcDeFgH12');
+        expect(targetKey(org)).toBe('organization~Xy7Qp2LmN0aBcDeFgH12');
+    });
+
+    it('only accept known kinds and ids of the right shape', () => {
         expect(commentTargetSchema.safeParse(word).success).toBe(true);
+        expect(commentTargetSchema.safeParse(org).success).toBe(true);
+        expect(
+            commentTargetSchema.safeParse({
+                kind: 'organization',
+                id: 'seed-sbma',
+            }).success
+        ).toBe(true);
         for (const bad of [
-            { kind: 'organization', id: 'mutual-aid' },
+            { kind: 'user', id: 'mutual-aid' },
             { kind: 'definition', id: '../users' },
             { kind: 'definition', id: 'Mutual-Aid' },
             { kind: 'definition', id: 'a' },
+            { kind: 'organization', id: '../users' },
+            { kind: 'organization', id: 'a~b' },
+            { kind: 'organization', id: '' },
+            { kind: 'organization', id: 'x'.repeat(41) },
         ])
             expect(commentTargetSchema.safeParse(bad).success).toBe(false);
+    });
+
+    it('take replies on organizations only', () => {
+        expect(takesReplies('organization')).toBe(true);
+        expect(takesReplies('definition')).toBe(false);
+    });
+});
+
+describe('discussionOpen', () => {
+    it('is always open on a word that exists', () => {
+        expect(discussionOpen('definition', {})).toBe(true);
+        expect(discussionOpen('definition', undefined)).toBe(false);
+    });
+
+    it('is open on active, listed organizations only', () => {
+        const listed = { status: 'active', visibility: 'listed' };
+        expect(discussionOpen('organization', listed)).toBe(true);
+        // Unclaimed ones too: claimStatus doesn't matter.
+        expect(
+            discussionOpen('organization', {
+                ...listed,
+                claimStatus: 'unclaimed',
+            })
+        ).toBe(true);
+        expect(
+            discussionOpen('organization', {
+                ...listed,
+                visibility: 'unlisted',
+            })
+        ).toBe(false);
+        expect(
+            discussionOpen('organization', { ...listed, status: 'archived' })
+        ).toBe(false);
+        expect(discussionOpen('organization', undefined)).toBe(false);
+        expect(discussionOpen('organization', {})).toBe(false);
     });
 });
 
@@ -167,7 +221,39 @@ describe('readComment', () => {
             at: 0,
             votes: 0,
             hidden: false,
+            reply: null,
         });
+    });
+
+    it('reads the organization’s reply', () => {
+        expect(
+            readComment(
+                'c1',
+                {
+                    uid: 'u1',
+                    text: 'Hi',
+                    reply: {
+                        uid: 'owner',
+                        text: 'Thanks',
+                        lang: 'es',
+                        byTeam: true,
+                    },
+                },
+                1,
+                7
+            )?.reply
+        ).toEqual({
+            uid: 'owner',
+            text: 'Thanks',
+            lang: 'es',
+            at: 7,
+            byTeam: true,
+            hidden: false,
+        });
+        expect(
+            readComment('c1', { uid: 'u1', text: 'Hi', reply: { uid: 'x' } }, 1)
+                ?.reply
+        ).toBeNull();
     });
 
     it('skips documents without an author or text', () => {
@@ -185,8 +271,80 @@ describe('commentView', () => {
         at: 5,
         votes: 2,
         hidden: true,
+        reply: null,
     };
     const author = { name: 'Maya', username: 'maya' };
+    const reply = {
+        uid: 'owner-uid',
+        text: 'Thanks for telling us.',
+        lang: 'en',
+        at: 9,
+        byTeam: false,
+        hidden: false,
+    } as const;
+    const answered: StoredComment = { ...stored, hidden: false, reply };
+
+    it('shows the reply as from the organization or the team, never who wrote it', () => {
+        const view = commentView(
+            answered,
+            author,
+            { uid: null, moderator: false },
+            new Set()
+        );
+        expect(view.reply).toEqual({
+            text: 'Thanks for telling us.',
+            lang: 'en',
+            at: 9,
+            from: 'organization',
+            hidden: false,
+        });
+        expect(JSON.stringify(view)).not.toContain('owner-uid');
+        expect(
+            commentView(
+                { ...answered, reply: { ...reply, byTeam: true } },
+                author,
+                { uid: null, moderator: false },
+                new Set()
+            ).reply?.from
+        ).toBe('team');
+    });
+
+    it('leaves out a hidden reply’s text, and the reply of a hidden comment', () => {
+        const hiddenReply = { ...answered, reply: { ...reply, hidden: true } };
+        expect(
+            commentView(
+                hiddenReply,
+                author,
+                { uid: 'u2', moderator: false },
+                new Set()
+            ).reply
+        ).toMatchObject({ text: null, hidden: true });
+        expect(
+            commentView(
+                hiddenReply,
+                author,
+                { uid: 'm', moderator: true },
+                new Set()
+            ).reply?.text
+        ).toBe('Thanks for telling us.');
+        const underHidden = { ...answered, hidden: true };
+        expect(
+            commentView(
+                underHidden,
+                author,
+                { uid: 'u2', moderator: false },
+                new Set()
+            ).reply
+        ).toBeNull();
+        expect(
+            commentView(
+                underHidden,
+                author,
+                { uid: 'm', moderator: true },
+                new Set()
+            ).reply
+        ).not.toBeNull();
+    });
 
     it('leaves out a hidden comment’s text for everyone but moderators', () => {
         const reader = commentView(
@@ -236,7 +394,15 @@ describe('commentView', () => {
 });
 
 describe('commentAbilities', () => {
-    const other = { mine: false, hidden: false };
+    const other = { mine: false, hidden: false, reply: null };
+    const replyView = {
+        text: 'Thanks',
+        lang: 'en',
+        at: 1,
+        from: 'organization',
+        hidden: false,
+    } as const;
+    const answered = { ...other, reply: replyView };
 
     it('lets signed-in people vote on and report others’ comments', () => {
         expect(
@@ -247,13 +413,65 @@ describe('commentAbilities', () => {
             delete: false,
             hide: false,
             unhide: false,
+            reply: false,
+            replyReport: false,
+            replyDelete: false,
+            replyHide: false,
+            replyUnhide: false,
         });
+    });
+
+    it('lets the organization reply once to each comment that isn’t hidden', () => {
+        const replier = { signedIn: true, moderator: false, replier: true };
+        expect(commentAbilities(other, replier).reply).toBe(true);
+        expect(commentAbilities(answered, replier)).toMatchObject({
+            reply: false,
+            replyDelete: true,
+            // Its own reply: nothing to report.
+            replyReport: false,
+        });
+        expect(
+            commentAbilities({ ...other, hidden: true }, replier).reply
+        ).toBe(false);
+        // Its owners and moderators still vote and report like anyone.
+        expect(commentAbilities(other, replier)).toMatchObject({
+            vote: true,
+            report: true,
+        });
+    });
+
+    it('lets others report a reply, and moderators hide or delete it', () => {
+        expect(
+            commentAbilities(answered, { signedIn: true, moderator: false })
+        ).toMatchObject({
+            replyReport: true,
+            replyDelete: false,
+            reply: false,
+        });
+        expect(
+            commentAbilities(answered, { signedIn: false, moderator: false })
+                .replyReport
+        ).toBe(false);
+        expect(
+            commentAbilities(answered, { signedIn: true, moderator: true })
+        ).toMatchObject({
+            replyReport: false,
+            replyDelete: true,
+            replyHide: true,
+            replyUnhide: false,
+        });
+        expect(
+            commentAbilities(
+                { ...other, reply: { ...replyView, hidden: true } },
+                { signedIn: true, moderator: true }
+            )
+        ).toMatchObject({ replyHide: false, replyUnhide: true });
     });
 
     it('lets authors delete, but not vote on or report, their own', () => {
         expect(
             commentAbilities(
-                { mine: true, hidden: false },
+                { mine: true, hidden: false, reply: null },
                 { signedIn: true, moderator: false }
             )
         ).toMatchObject({ vote: false, report: false, delete: true });
@@ -264,7 +482,7 @@ describe('commentAbilities', () => {
             Object.values(
                 commentAbilities(other, { signedIn: false, moderator: false })
             )
-        ).toEqual([false, false, false, false, false]);
+        ).toEqual(Array(10).fill(false));
     });
 
     it('lets moderators hide, show and delete, not report', () => {
@@ -278,7 +496,7 @@ describe('commentAbilities', () => {
         });
         expect(
             commentAbilities(
-                { mine: false, hidden: true },
+                { mine: false, hidden: true, reply: null },
                 { signedIn: true, moderator: true }
             )
         ).toMatchObject({ vote: false, hide: false, unhide: true });
@@ -296,6 +514,7 @@ describe('mergePages', () => {
         author: null,
         mine: false,
         voted: false,
+        reply: null,
     });
 
     it('drops comments already shown (votes moved them between pages)', () => {
@@ -314,7 +533,25 @@ describe('reports', () => {
         expect(parseReportId(id)).toEqual({
             target: word,
             commentId: 'AbC123_-x',
+            part: 'comment',
         });
+    });
+
+    it('have their own id for an organization’s reply', () => {
+        const id = reportId(org, 'c1', 'reply');
+        expect(id).toBe('organization~Xy7Qp2LmN0aBcDeFgH12~c1~reply');
+        expect(parseReportId(id)).toEqual({
+            target: org,
+            commentId: 'c1',
+            part: 'reply',
+        });
+        expect(reportId(org, 'c1')).toBe(
+            'organization~Xy7Qp2LmN0aBcDeFgH12~c1'
+        );
+        expect(parseReportId(`${id}~more`)).toBeNull();
+    });
+
+    it('refuse malformed ids', () => {
         for (const bad of [
             'definition~mutual-aid',
             'x~mutual-aid~c1',
@@ -340,6 +577,10 @@ describe('languages', () => {
         expect(defaultLanguageFilter('vi', false)).toBe('vi');
         expect(defaultLanguageFilter('vi', true)).toBe('all');
         expect(defaultLanguageFilter('fr', false)).toBe('all');
+    });
+
+    it('start everyone in all languages on organizations (not translated)', () => {
+        expect(defaultLanguageFilter('vi', false, 'organization')).toBe('all');
     });
 
     it('only accept known filters', () => {

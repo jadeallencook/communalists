@@ -167,7 +167,7 @@ Bare `communalists.com/organization/{handle}` redirects to the visitor's languag
 3. **Manage:** invite, archive, logo. (Promoting, handing over ownership, editing the profile and changing the handle were built 2026-11-23.)
 4. **Then:** subdomains (after the domain move) and the first tool, Requests.
 
-**Idea, not scheduled: comments on an organization's page.** The user wants this later (2026-11-27). The discussion built for dictionary words ([features/20](20-comments.md)) was written for any target, so an organization would be a new target kind. Still to decide: who can read and write (public? members only?), who moderates (the organization's owners and moderators, not super users, once it's claimed), and how it fits the members-only side.
+**Discussion on an organization's page** (built 2026-11-27, [decision #70](../decisions/070-organization-discussions-platform-moderated-with-official-replies.md)), after the member list and before nearby groups. Public comments with up votes on listed organizations, claimed or unclaimed (never unlisted), no ratings, moderated by super users through reports, and one official reply per comment from owners or moderators, logged in Recent actions. See [features/20 → On organizations](20-comments.md#on-organizations).
 
 ## Data and security notes
 

@@ -562,7 +562,9 @@
             "editProfile": "{actor} đã thay đổi {fields}",
             "claim": "{target} đã nhận tổ chức này",
             "deleteOrganization": "{actor} đã xóa tổ chức này",
-            "restoreOrganization": "{actor} đã khôi phục tổ chức này"
+            "restoreOrganization": "{actor} đã khôi phục tổ chức này",
+            "replyComment": "{actor} đã trả lời một bình luận",
+            "deleteReply": "{actor} đã xóa một câu trả lời cho bình luận"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Lý do",
@@ -844,7 +846,11 @@
             "hideComment": "{actor} đã ẩn một bình luận trong {word}",
             "unhideComment": "{actor} đã hiện lại một bình luận bị ẩn trong {word}",
             "deleteComment": "{actor} đã xóa một bình luận trong {word}",
-            "dismissCommentReport": "{actor} đã bỏ qua một báo cáo về bình luận trong {word}"
+            "dismissCommentReport": "{actor} đã bỏ qua một báo cáo về bình luận trong {word}",
+            "replyComment": "{actor} đã trả lời một bình luận trên {word} thay mặt nhóm",
+            "hideReply": "{actor} đã ẩn một câu trả lời trên {word}",
+            "unhideReply": "{actor} đã hiện lại một câu trả lời bị ẩn trên {word}",
+            "deleteReply": "{actor} đã xóa một câu trả lời trên {word}"
         },
         "unknownActor": "Một siêu người dùng",
         "errors": {
@@ -1253,7 +1259,11 @@
             "sortedNewest": "Đang hiện bình luận mới nhất trước.",
             "loaded": "{count, plural, =0 {Không còn bình luận nào.} other {Đã hiện thêm # bình luận.}}",
             "languageOne": "Đang hiện bình luận bằng {language}: {count, plural, =0 {chưa có} other {#}}.",
-            "languageAll": "Đang hiện bình luận bằng mọi ngôn ngữ: {count}."
+            "languageAll": "Đang hiện bình luận bằng mọi ngôn ngữ: {count}.",
+            "replied": "Đã đăng câu trả lời.",
+            "replyDeleted": "Đã xóa câu trả lời.",
+            "replyHidden": "Đã ẩn câu trả lời.",
+            "replyUnhidden": "Đã hiện lại câu trả lời."
         },
         "errors": {
             "textRequired": "Hãy viết bình luận trước.",
@@ -1268,7 +1278,10 @@
             "hidden": "Bình luận đó đã bị người kiểm duyệt ẩn.",
             "invalid": "Yêu cầu đó có lỗi. Hãy tải lại trang và thử lại.",
             "generic": "Đã xảy ra lỗi. Hãy thử lại.",
-            "loadFailed": "Không tải được bình luận. Hãy kiểm tra kết nối và thử lại."
+            "loadFailed": "Không tải được bình luận. Hãy kiểm tra kết nối và thử lại.",
+            "alreadyReplied": "Bình luận này đã có câu trả lời. Hãy xóa nó trước khi viết câu mới.",
+            "replyTextRequired": "Hãy viết câu trả lời trước.",
+            "replyTextTooLong": "Hãy rút ngắn câu trả lời xuống còn {max} ký tự trở xuống."
         },
         "languageLabel": "Xem bình luận bằng",
         "languageOne": "{language} ({count})",
@@ -1278,7 +1291,31 @@
         "writtenIn": "Viết bằng {language}",
         "changeLanguage": "Đổi",
         "changeLanguageLabel": "Đổi ngôn ngữ của bình luận",
-        "unavailable": "Hiện không tải được bình luận. Hãy thử lại sau vài phút."
+        "unavailable": "Hiện không tải được bình luận. Hãy thử lại sau vài phút.",
+        "organization": {
+            "intro": "Hãy cho mọi người biết nhóm này như thế nào: sự giúp đỡ bạn nhận được, thời gian bạn làm tình nguyện, lời khen, mối lo ngại hoặc câu hỏi. Bình chọn cho những bình luận bạn đồng ý. Tổ chức có thể trả lời từng bình luận.",
+            "empty": "Chưa có bình luận nào. Bạn đã từng làm việc với nhóm này chưa? Hãy là người đầu tiên chia sẻ trải nghiệm."
+        },
+        "reply": "Trả lời",
+        "replyLabel": "Trả lời bình luận của {name} với tư cách {organization}",
+        "replyFrom": "Trả lời từ {name}",
+        "replyFromTeam": "Trả lời từ nhóm Communalists",
+        "teamName": "nhóm Communalists",
+        "replyFormLabel": "Câu trả lời của bạn với tư cách {from}",
+        "replyFormHint": "Câu trả lời công khai và hiển thị là từ {from}, không phải từ bạn. Chỉ văn bản thuần. Mỗi bình luận một câu trả lời: muốn đổi thì xóa đi và viết lại.",
+        "replyLanguage": "Ngôn ngữ của câu trả lời",
+        "replyPost": "Đăng câu trả lời",
+        "replyHiddenText": "Câu trả lời đã bị người kiểm duyệt ẩn.",
+        "replyHiddenModerator": "Câu trả lời đã bị người kiểm duyệt ẩn. Chỉ siêu người dùng thấy nội dung bên dưới.",
+        "reportReplyLabel": "Báo cáo câu trả lời cho bình luận của {name}",
+        "reportReplyTitle": "Báo cáo câu trả lời này?",
+        "hideReplyLabel": "Ẩn câu trả lời cho bình luận của {name}",
+        "unhideReplyLabel": "Hiện lại câu trả lời cho bình luận của {name}",
+        "deleteReplyLabel": "Xóa câu trả lời cho bình luận của {name}",
+        "deleteReplyTitle": "Xóa câu trả lời này?",
+        "deleteReplyBody": "Câu trả lời sẽ bị xóa với mọi người. Sau đó bạn có thể viết câu mới.",
+        "deleteReplyBodyModerator": "Câu trả lời sẽ bị xóa với mọi người. Không thể hoàn tác, nhưng nhật ký siêu người dùng giữ một bản sao.",
+        "replyChangeLanguageLabel": "Đổi ngôn ngữ của câu trả lời"
     },
     "AdminComments": {
         "metaTitle": "Bình luận bị báo cáo",
@@ -1311,7 +1348,17 @@
         "dismissLabel": "Bỏ qua báo cáo về bình luận của {name}",
         "hidden": "Đã ẩn bình luận. Báo cáo đã đóng.",
         "deleted": "Đã xóa bình luận. Báo cáo đã đóng.",
-        "dismissed": "Đã bỏ qua báo cáo. Bình luận vẫn giữ nguyên."
+        "dismissed": "Đã bỏ qua báo cáo. Bình luận vẫn giữ nguyên.",
+        "replyByOn": "Trả lời từ {from} cho bình luận của {name}, {date}",
+        "hideLabelReply": "Ẩn câu trả lời từ {from} cho {name}",
+        "deleteLabelReply": "Xóa câu trả lời từ {from} cho {name}",
+        "deleteTitleReply": "Xóa câu trả lời từ {from}?",
+        "deleteBodyReply": "Câu trả lời bị xóa với mọi người; bình luận vẫn giữ nguyên. Không thể hoàn tác, nhưng nhật ký siêu người dùng giữ một bản sao.",
+        "dismissLabelReply": "Bỏ qua báo cáo về câu trả lời từ {from} cho {name}",
+        "goneReply": "Câu trả lời này đã bị xóa. Hãy bỏ qua báo cáo để dọn nó đi.",
+        "hiddenReply": "Đã ẩn câu trả lời. Báo cáo đã được đóng.",
+        "deletedReply": "Đã xóa câu trả lời. Báo cáo đã được đóng.",
+        "dismissedReply": "Đã bỏ qua báo cáo. Câu trả lời được giữ nguyên."
     },
     "AdminDefinitions": {
         "metaTitle": "Từ điển",
