@@ -112,4 +112,9 @@ export type AdminAction =
     // Dictionary words (documentation/features/19-dictionary.md).
     | 'createDefinition'
     | 'editDefinition'
-    | 'deleteDefinition';
+    | 'deleteDefinition'
+    // Moderating comments (documentation/features/20-comments.md).
+    | 'hideComment'
+    | 'unhideComment'
+    | 'deleteComment'
+    | 'dismissCommentReport';

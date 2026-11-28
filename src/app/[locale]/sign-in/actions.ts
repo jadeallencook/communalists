@@ -2,7 +2,7 @@
 
 import { hasLocale } from 'next-intl';
 
-import { DEFAULT_NEXT_PATH } from '@/lib/account-setup';
+import { safeNextPath } from '@/lib/account-setup';
 import { IdentityToolkitError } from '@/lib/auth/identity-toolkit';
 import { signInWithPassword } from '@/lib/auth/password-sign-in';
 import { startSession } from '@/lib/auth/session';
@@ -60,6 +60,10 @@ export async function signIn(
         return { formError, values };
     }
 
-    redirect({ href: DEFAULT_NEXT_PATH, locale });
+    // Back where they came from (`next`, checked to be on this site), or the dashboard.
+    redirect({
+        href: safeNextPath(formData.get('next'), routing.locales),
+        locale,
+    });
     return {};
 }

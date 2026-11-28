@@ -26,6 +26,8 @@ export interface DefinitionPageProps {
     share?: ReactNode;
     /** Super users only: the edit link (`DefinitionEditBar`), streamed in by its container. */
     edit?: ReactNode;
+    /** The comments (`Discussion`), streamed in by its container. */
+    discussion?: ReactNode;
 }
 
 const RESOURCE_ORDER: ResourceType[] = ['book', 'video', 'article', 'link'];
@@ -42,6 +44,7 @@ export function DefinitionPage({
     resources,
     share,
     edit,
+    discussion,
 }: DefinitionPageProps) {
     const t = useTranslations('Dictionary');
     const sorted = [...resources].sort(
@@ -154,6 +157,8 @@ export function DefinitionPage({
                     </ul>
                 </section>
             )}
+
+            {discussion}
         </article>
     );
 }

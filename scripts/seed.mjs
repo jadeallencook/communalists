@@ -21,7 +21,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 
 import { initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
-import { FieldValue, getFirestore } from 'firebase-admin/firestore';
+import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore';
 import { geohashForLocation } from 'geofire-common';
 
 // Plain TypeScript with no imports: Node strips the types.
@@ -45,7 +45,12 @@ const fail = (message) => {
 
 const readJson = (path) =>
     JSON.parse(readFileSync(new URL(path, import.meta.url)));
-const { password, users, organizations } = readJson('./seed-data.json');
+const {
+    password,
+    users,
+    organizations,
+    comments = [],
+} = readJson('./seed-data.json');
 
 // --- Dictionary words: every CSV in research/definitions/, in the import's
 // columns (src/lib/definitions/import.ts). Unchecked here; check a file with
@@ -426,8 +431,56 @@ for (let i = 0; i < definitions.length; i += 400) {
     await wordBatch.commit();
 }
 
+// --- Comments on words (src/lib/comments/store.ts), on words that exist:
+// reset each time, with their votes and reports. A report on seed-c4 gives
+// /admin/comments something to review. Rate limits of seeded people are cleared.
+const wordSlugs = new Set(definitions.map((d) => d.slug));
+const seededComments = comments.filter((c) => wordSlugs.has(c.slug));
+const commentBatch = db.batch();
+for (const c of seededComments) {
+    const word = db.collection('definitions').doc(c.slug);
+    const oldVotes = await word
+        .collection('commentVotes')
+        .where('commentId', '==', c.id)
+        .get();
+    for (const doc of oldVotes.docs) commentBatch.delete(doc.ref);
+    commentBatch.set(word.collection('comments').doc(c.id), {
+        uid: c.uid,
+        text: c.text,
+        lang: c.lang,
+        votes: c.voters.length,
+        hidden: false,
+        createdAt: Timestamp.fromMillis(Date.now() - c.daysAgo * 86_400_000),
+    });
+    for (const voter of c.voters)
+        commentBatch.set(
+            word.collection('commentVotes').doc(`${c.id}_${voter}`),
+            { commentId: c.id, uid: voter, createdAt: now }
+        );
+    const report = db
+        .collection('commentReports')
+        .doc(`definition~${c.slug}~${c.id}`);
+    if (c.reports?.length) {
+        const reasons = {};
+        for (const r of c.reports)
+            reasons[r.reason] = (reasons[r.reason] ?? 0) + 1;
+        commentBatch.set(report, {
+            target: { kind: 'definition', id: c.slug },
+            commentId: c.id,
+            reporters: c.reports.map((r) => r.uid),
+            reasons,
+            count: c.reports.length,
+            firstAt: now,
+            lastAt: now,
+        });
+    } else commentBatch.delete(report);
+}
+for (const { uid } of users)
+    commentBatch.delete(db.collection('commentLimits').doc(uid));
+await commentBatch.commit();
+
 say(
-    `Seeded ${users.length} accounts, ${organizations.length - skipped} organizations and ${definitions.length} dictionary words. Password for all: ${password}. Main accounts:`
+    `Seeded ${users.length} accounts, ${organizations.length - skipped} organizations, ${definitions.length} dictionary words and ${seededComments.length} comments. Password for all: ${password}. Main accounts:`
 );
 for (const { email, profile, platformAdmin } of users.filter(
     (u) => u.featured

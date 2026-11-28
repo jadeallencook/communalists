@@ -23,7 +23,11 @@ export async function requireAccount(next: string): Promise<{
     locale: string;
 }> {
     const [locale, user] = await Promise.all([getLocale(), getSessionUser()]);
-    if (!user) return redirect({ href: '/sign-in', locale });
+    if (!user)
+        return redirect({
+            href: { pathname: '/sign-in', query: { next } },
+            locale,
+        });
 
     let profile = await getUserProfile(user.uid);
     // A cached copy may predate setup (saved on another server instance), so

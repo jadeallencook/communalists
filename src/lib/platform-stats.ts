@@ -75,6 +75,12 @@ export const ACTIVITY_GROUPS = {
     claims: ['approveClaim', 'approveRemoval', 'denyClaim'],
     lifecycle: ['deleteUnclaimed', 'restoreOrganization', 'makeUnclaimed'],
     words: ['createDefinition', 'editDefinition', 'deleteDefinition'],
+    comments: [
+        'hideComment',
+        'unhideComment',
+        'deleteComment',
+        'dismissCommentReport',
+    ],
     exports: ['exportOrganizations'],
 } as const satisfies Record<string, readonly AdminAction[]>;
 
@@ -95,6 +101,10 @@ export const FEED_ACTIONS = [
     'createDefinition',
     'editDefinition',
     'deleteDefinition',
+    'hideComment',
+    'unhideComment',
+    'deleteComment',
+    'dismissCommentReport',
     'backfillDetails',
 ] as const satisfies readonly AdminAction[];
 

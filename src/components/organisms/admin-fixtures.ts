@@ -145,6 +145,7 @@ export const activity: AdminActivityProps = {
         lifecycle: 2,
         words: 9,
         exports: 3,
+        comments: 2,
     },
     log: [
         {

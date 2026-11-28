@@ -12,6 +12,7 @@
 - Dialogs trap focus, close with Escape, and return focus to what opened them (Radix does this; keep using the `dialog` atom).
 - **After an action, put focus somewhere sensible.** If the thing you acted on disappears (an approved request, a removed member), move focus to the result message or the list heading, not the top of the page.
 - No keyboard traps, no hover-only controls.
+- **Don't `disable` a button while its own request runs** if focus should stay on it (Up vote, sort buttons, dialog triggers): a disabled button drops keyboard focus to the page. Use `aria-disabled` (the `Button` atom dims it) and ignore repeat presses in the handler. Found on the discussion's Up vote button, 2026-11-27 ([features/20](../features/20-comments.md)).
 
 **Screen readers**
 
