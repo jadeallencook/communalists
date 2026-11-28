@@ -7,7 +7,8 @@ export interface HeroBannerProps {
     image: StaticImageData;
     imageAlt: string;
     title: string;
-    subtitle?: string;
+    /** Text, or rich text (for example with marked words). */
+    subtitle?: ReactNode;
     /**
      * Shown in a translucent band along the bottom of the banner, full width
      * and at least 1/6 of the screen tall, in the dark theme so it reads on

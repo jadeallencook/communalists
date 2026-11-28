@@ -42,7 +42,7 @@ let withProblems = 0;
 for (const row of result.rows) {
     if (row.problems.length === 0) {
         console.log(
-            `OK    line ${row.line}  ${row.name}  (/org/${row.handle})`
+            `OK    line ${row.line}  ${row.name}  (/organization/${row.handle})`
         );
         continue;
     }

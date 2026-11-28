@@ -42,10 +42,10 @@ Built in the foundation scaffold (decision #8):
 - **No silent blanks.** `messages/messages.test.ts` fails CI if a locale is missing a key or has an empty string.
 - Locale codes are plain `zh` (Simplified Chinese assumed). Switch to `zh-Hans` / `zh-Hant` if Traditional Chinese speakers need support.
 - The brand name "Communalists" is never translated.
+- **`hreflang` and per-locale metadata**: every public page links its four languages plus `x-default`, and titles and descriptions are translated. See [technical/seo.md](../technical/seo.md).
 
 Still to do:
 
-- `hreflang` alternates and per-locale metadata.
 - ICU plurals and variables as features need them (next-intl supports them).
 - Native-speaker review of every es / vi / zh string: the shell copy written during scaffolding, and the `Home`, `SignUp` and `Welcome` namespaces added 2026-11-21.
 - Keep the "form language defaults to UI language" behavior when the request form is rebuilt.

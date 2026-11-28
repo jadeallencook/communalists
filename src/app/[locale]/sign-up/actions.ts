@@ -2,7 +2,7 @@
 
 import { hasLocale } from 'next-intl';
 
-import { DEFAULT_NEXT_PATH } from '@/lib/account-setup';
+import { safeNextPath } from '@/lib/account-setup';
 import { signInWithPassword } from '@/lib/auth/password-sign-in';
 import { startSession } from '@/lib/auth/session';
 import { getAdminAuth } from '@/lib/firebase/admin';
@@ -85,7 +85,11 @@ export async function signUp(
     redirect({
         href: {
             pathname: '/account/setup',
-            query: { next: DEFAULT_NEXT_PATH, from: 'sign-up' },
+            query: {
+                // Then back where they came from, or the dashboard.
+                next: safeNextPath(formData.get('next'), routing.locales),
+                from: 'sign-up',
+            },
         },
         locale,
     });

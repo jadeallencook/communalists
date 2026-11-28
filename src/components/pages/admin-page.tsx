@@ -1,6 +1,13 @@
 'use client';
 
-import { PlusIcon, UploadIcon } from 'lucide-react';
+import {
+    BookOpenIcon,
+    FlagIcon,
+    ClockIcon,
+    FileUpIcon,
+    PlusIcon,
+    UploadIcon,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 
@@ -17,11 +24,29 @@ import {
 } from '@/components/atoms/dialog';
 import { Skeleton } from '@/components/atoms/skeleton';
 import {
-    OrganizationCard,
-    type OrganizationCardProps,
-} from '@/components/molecules/organization-card';
+    AdminActivity,
+    type AdminActivityProps,
+    type AdminLogItem,
+} from '@/components/organisms/admin-activity';
+import {
+    AdminAnalytics,
+    type AdminAnalyticsProps,
+} from '@/components/organisms/admin-analytics';
+import {
+    AdminOrganizations,
+    Unavailable,
+    type AdminOrganizationsProps,
+} from '@/components/organisms/admin-organizations';
+import {
+    AdminOverview,
+    type AdminOverviewProps,
+} from '@/components/organisms/admin-overview';
 import { Link } from '@/i18n/navigation';
-import type { AdminAction, ClaimIntent } from '@/lib/organizations/claims';
+import type { ClaimIntent } from '@/lib/organizations/claims';
+import { CLAIM_OVERDUE_DAYS } from '@/lib/platform-stats';
+import { organizationPath } from '@/lib/paths';
+
+export type { AdminLogItem };
 
 export interface AdminClaim {
     orgId: string;
@@ -38,16 +63,8 @@ export interface AdminClaim {
     claimantEmail?: string;
     /** Already formatted. */
     requestedOn: string;
-}
-
-export interface AdminLogItem {
-    id: string;
-    action: AdminAction;
-    orgName: string;
-    actorName: string;
-    targetName?: string;
-    /** Already formatted. */
-    on: string;
+    /** Whole days since it was sent. */
+    daysWaiting: number;
 }
 
 export interface AdminDeleted {
@@ -59,11 +76,21 @@ export interface AdminDeleted {
 }
 
 export interface AdminPageProps {
+    /** When the numbers were counted, already formatted; missing if they couldn't load. */
+    asOf?: string;
     claims: AdminClaim[];
-    unclaimed: OrganizationCardProps[];
+    /** Null when the counts couldn't load. */
+    overview: AdminOverviewProps | null;
+    /** From Umami. */
+    analytics: AdminAnalyticsProps;
+    organizations: AdminOrganizationsProps;
+    activity: AdminActivityProps;
     /** Deleted in the last 30 days: restorable. */
     deleted: AdminDeleted[];
-    log: AdminLogItem[];
+    /** How many words the dictionary has; missing if the counts couldn't load. */
+    definitionCount?: number;
+    /** Comments with open reports; missing if the count couldn't load. */
+    reportedComments?: number;
     /** UI locale, sent so redirects stay in it. */
     locale: string;
     /** In the app, decideClaimAction via useActionState. */
@@ -83,14 +110,32 @@ export interface AdminPageProps {
     restoreKey?: number;
 }
 
+const SECTIONS = [
+    'attention',
+    'overview',
+    'trends',
+    'analytics',
+    'organizations',
+    'dictionary',
+    'activity',
+    'deleted',
+] as const;
+
 /**
- * /admin, for super users: requests to claim or take down unclaimed
- * organizations, the unclaimed organizations, and what super users did.
+ * /admin, the super-user dashboard: what needs attention (claim requests,
+ * pages nobody can be reached through), the numbers and trends, the
+ * organization and dictionary tools, what super users did, and what can
+ * still be restored.
  */
 export function AdminPage({
+    asOf,
     claims,
-    unclaimed,
-    log,
+    overview,
+    analytics,
+    organizations,
+    activity,
+    definitionCount,
+    reportedComments,
     locale,
     formAction,
     pending = false,
@@ -125,8 +170,10 @@ export function AdminPage({
         </>
     );
 
+    const unreachable = organizations.gapCounts?.contact ?? 0;
+
     return (
-        <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-4 py-12">
+        <section className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-12">
             <header className="flex flex-col gap-2">
                 <h1 className="font-heading text-3xl font-semibold tracking-tight">
                     {t('title')}
@@ -134,258 +181,388 @@ export function AdminPage({
                 <p className="text-pretty text-muted-foreground">
                     {t('intro')}
                 </p>
+                {asOf && (
+                    <p className="text-sm text-muted-foreground">
+                        {t('asOf', { time: asOf })}
+                    </p>
+                )}
+                <nav aria-label={t('onThisPage')} className="mt-2">
+                    <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                        {SECTIONS.map((id) => (
+                            <li key={id}>
+                                <a
+                                    href={`#admin-${id}`}
+                                    className="underline underline-offset-2"
+                                >
+                                    {t(`sections.${id}`)}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
             </header>
 
             <section
-                aria-labelledby="admin-claims"
-                className="flex flex-col gap-3"
+                aria-labelledby="admin-attention"
+                className="flex flex-col gap-6"
             >
                 <h2
-                    id="admin-claims"
+                    id="admin-attention"
                     className="font-heading text-xl font-semibold"
                 >
-                    {t('claimsTitle')}
-                    <span className="ml-2 text-base font-normal text-muted-foreground">
-                        {claims.length}
-                    </span>
+                    {t('sections.attention')}
                 </h2>
-                <p className="-mt-1 text-sm text-muted-foreground">
-                    {t('claimsHint')}
-                </p>
-                <div ref={resultRef} tabIndex={-1} className="outline-none">
-                    {notice && (
-                        <p role="status" className="text-sm">
-                            {notice}
-                        </p>
-                    )}
-                    {error && (
-                        <p role="alert" className="text-sm text-destructive">
-                            {error}
-                        </p>
-                    )}
-                </div>
-                {claims.length === 0 ? (
-                    <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-                        {t('noClaims')}
+                {reportedComments !== undefined && reportedComments > 0 && (
+                    <p className="rounded-lg border p-4 text-sm">
+                        {t('attentionReports', { count: reportedComments })}{' '}
+                        <Link
+                            href="/admin/comments"
+                            className="underline underline-offset-2"
+                        >
+                            {t('attentionReportsLink')}
+                        </Link>
+                    </p>
+                )}
+                {unreachable > 0 ? (
+                    <p className="rounded-lg border p-4 text-sm">
+                        {t('attentionGaps', { count: unreachable })}{' '}
+                        <Link
+                            href={{
+                                pathname: '/admin',
+                                query: { gap: 'contact' },
+                                hash: 'gaps',
+                            }}
+                            className="underline underline-offset-2"
+                        >
+                            {t('attentionGapsLink')}
+                        </Link>
                     </p>
                 ) : (
-                    <ul className="flex flex-col gap-3">
-                        {claims.map((claim) => (
-                            <li
-                                key={`${claim.orgId}_${claim.uid}`}
-                                className="flex flex-col gap-3 rounded-lg border p-4"
+                    claims.length === 0 &&
+                    !reportedComments && (
+                        <p className="text-sm text-muted-foreground">
+                            {t('attentionClear')}
+                        </p>
+                    )
+                )}
+                <section
+                    aria-labelledby="admin-claims"
+                    className="flex flex-col gap-3"
+                >
+                    <h3
+                        id="admin-claims"
+                        className="font-heading text-lg font-semibold"
+                    >
+                        {t('claimsTitle')}{' '}
+                        <span className="ml-1 text-base font-normal text-muted-foreground">
+                            {claims.length}
+                        </span>
+                    </h3>
+                    <p className="-mt-1 text-sm text-muted-foreground">
+                        {t('claimsHint')}
+                    </p>
+                    <div ref={resultRef} tabIndex={-1} className="outline-none">
+                        {notice && (
+                            <p role="status" className="text-sm">
+                                {notice}
+                            </p>
+                        )}
+                        {error && (
+                            <p
+                                role="alert"
+                                className="text-sm text-destructive"
                             >
-                                <div className="flex flex-col gap-1">
-                                    <p className="font-medium">
-                                        {t(`intents.${claim.intent}`, {
-                                            name: claim.claimantName,
-                                            org: claim.orgName,
-                                        })}
-                                    </p>
-                                    <p className="text-sm text-muted-foreground">
-                                        {t('requestedOn', {
-                                            date: claim.requestedOn,
-                                        })}
-                                    </p>
-                                </div>
-                                <dl className="grid gap-x-4 gap-y-1 text-sm md:grid-cols-[auto_1fr]">
-                                    <dt className="text-muted-foreground">
-                                        {t('role')}
-                                    </dt>
-                                    <dd className="break-words">
-                                        {claim.role}
-                                    </dd>
-                                    <dt className="text-muted-foreground">
-                                        {t('howToCheck')}
-                                    </dt>
-                                    <dd className="break-words whitespace-pre-line">
-                                        {claim.message}
-                                    </dd>
-                                    {claim.claimantEmail && (
-                                        <>
-                                            <dt className="text-muted-foreground">
-                                                {t('email')}
-                                            </dt>
-                                            <dd className="break-all">
-                                                <a
-                                                    href={`mailto:${claim.claimantEmail}`}
-                                                    className="underline underline-offset-2"
-                                                >
-                                                    {claim.claimantEmail}
-                                                </a>
-                                            </dd>
-                                        </>
-                                    )}
-                                </dl>
-                                <div className="flex flex-wrap gap-2">
-                                    <Button asChild variant="outline" size="sm">
-                                        <Link href={`/org/${claim.handle}`}>
-                                            {t('viewOrganization', {
+                                {error}
+                            </p>
+                        )}
+                    </div>
+                    {claims.length === 0 ? (
+                        <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+                            {t('noClaims')}
+                        </p>
+                    ) : (
+                        <ul className="flex flex-col gap-3">
+                            {claims.map((claim) => (
+                                <li
+                                    key={`${claim.orgId}_${claim.uid}`}
+                                    className="flex flex-col gap-3 rounded-lg border p-4"
+                                >
+                                    <div className="flex flex-col gap-1">
+                                        <p className="font-medium">
+                                            {t(`intents.${claim.intent}`, {
+                                                name: claim.claimantName,
                                                 org: claim.orgName,
                                             })}
-                                        </Link>
-                                    </Button>
-                                    {claim.claimantUsername && (
+                                        </p>
+                                        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+                                            <span>
+                                                {t('requestedOn', {
+                                                    date: claim.requestedOn,
+                                                })}
+                                                {/* "Sent {date}" already covers today. */}
+                                                {claim.daysWaiting > 0 &&
+                                                    ` · ${t('waiting', {
+                                                        days: claim.daysWaiting,
+                                                    })}`}
+                                            </span>
+                                            {claim.daysWaiting >=
+                                                CLAIM_OVERDUE_DAYS && (
+                                                <span className="inline-flex items-center gap-1 rounded-full border border-foreground px-2 py-0.5 text-xs font-medium text-foreground">
+                                                    <ClockIcon
+                                                        aria-hidden
+                                                        className="size-3.5"
+                                                    />
+                                                    {t('overdue', {
+                                                        days: CLAIM_OVERDUE_DAYS,
+                                                    })}
+                                                </span>
+                                            )}
+                                        </p>
+                                    </div>
+                                    <dl className="grid gap-x-4 gap-y-1 text-sm md:grid-cols-[auto_1fr]">
+                                        <dt className="text-muted-foreground">
+                                            {t('role')}
+                                        </dt>
+                                        <dd className="break-words">
+                                            {claim.role}
+                                        </dd>
+                                        <dt className="text-muted-foreground">
+                                            {t('howToCheck')}
+                                        </dt>
+                                        <dd className="break-words whitespace-pre-line">
+                                            {claim.message}
+                                        </dd>
+                                        {claim.claimantEmail && (
+                                            <>
+                                                <dt className="text-muted-foreground">
+                                                    {t('email')}
+                                                </dt>
+                                                <dd className="break-all">
+                                                    <a
+                                                        href={`mailto:${claim.claimantEmail}`}
+                                                        className="underline underline-offset-2"
+                                                    >
+                                                        {claim.claimantEmail}
+                                                    </a>
+                                                </dd>
+                                            </>
+                                        )}
+                                    </dl>
+                                    <div className="flex flex-wrap gap-2">
                                         <Button
                                             asChild
                                             variant="outline"
                                             size="sm"
                                         >
                                             <Link
-                                                href={`/comrade/${claim.claimantUsername}`}
+                                                href={organizationPath(
+                                                    claim.handle
+                                                )}
                                             >
-                                                {t('viewProfile', {
-                                                    name: claim.claimantName,
+                                                {t('viewOrganization', {
+                                                    org: claim.orgName,
                                                 })}
                                             </Link>
                                         </Button>
-                                    )}
-                                    <Dialog>
-                                        <DialogTrigger asChild>
+                                        {claim.claimantUsername && (
                                             <Button
+                                                asChild
+                                                variant="outline"
                                                 size="sm"
-                                                variant={
-                                                    claim.intent === 'remove'
-                                                        ? 'destructive'
-                                                        : 'default'
-                                                }
-                                                aria-label={t('actionFor', {
-                                                    action: t(
+                                            >
+                                                <Link
+                                                    href={`/comrade/${claim.claimantUsername}`}
+                                                >
+                                                    {t('viewProfile', {
+                                                        name: claim.claimantName,
+                                                    })}
+                                                </Link>
+                                            </Button>
+                                        )}
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button
+                                                    size="sm"
+                                                    variant={
+                                                        claim.intent ===
+                                                        'remove'
+                                                            ? 'destructive'
+                                                            : 'default'
+                                                    }
+                                                    aria-label={t('actionFor', {
+                                                        action: t(
+                                                            `approve.${claim.intent}.button`
+                                                        ),
+                                                        name: claim.claimantName,
+                                                        org: claim.orgName,
+                                                    })}
+                                                >
+                                                    {t(
                                                         `approve.${claim.intent}.button`
-                                                    ),
+                                                    )}
+                                                </Button>
+                                            </DialogTrigger>
+                                            <DialogContent>
+                                                <form
+                                                    action={formAction}
+                                                    className="contents"
+                                                >
+                                                    {hidden(claim, 'approve')}
+                                                    <DialogHeader>
+                                                        <DialogTitle>
+                                                            {t(
+                                                                `approve.${claim.intent}.title`,
+                                                                {
+                                                                    name: claim.claimantName,
+                                                                    org: claim.orgName,
+                                                                }
+                                                            )}
+                                                        </DialogTitle>
+                                                        <DialogDescription>
+                                                            {t(
+                                                                `approve.${claim.intent}.body`,
+                                                                {
+                                                                    name: claim.claimantName,
+                                                                    org: claim.orgName,
+                                                                }
+                                                            )}
+                                                        </DialogDescription>
+                                                    </DialogHeader>
+                                                    <DialogFooter>
+                                                        <DialogClose asChild>
+                                                            <Button
+                                                                type="button"
+                                                                variant="outline"
+                                                            >
+                                                                {t('keep')}
+                                                            </Button>
+                                                        </DialogClose>
+                                                        <Button
+                                                            type="submit"
+                                                            variant={
+                                                                claim.intent ===
+                                                                'remove'
+                                                                    ? 'destructive'
+                                                                    : 'default'
+                                                            }
+                                                            disabled={pending}
+                                                        >
+                                                            {t(
+                                                                `approve.${claim.intent}.confirm`
+                                                            )}
+                                                        </Button>
+                                                    </DialogFooter>
+                                                </form>
+                                            </DialogContent>
+                                        </Dialog>
+                                        <form action={formAction}>
+                                            {hidden(claim, 'deny')}
+                                            <Button
+                                                type="submit"
+                                                size="sm"
+                                                variant="outline"
+                                                disabled={pending}
+                                                aria-label={t('actionFor', {
+                                                    action: t('deny'),
                                                     name: claim.claimantName,
                                                     org: claim.orgName,
                                                 })}
                                             >
-                                                {t(
-                                                    `approve.${claim.intent}.button`
-                                                )}
+                                                {t('deny')}
                                             </Button>
-                                        </DialogTrigger>
-                                        <DialogContent>
-                                            <form
-                                                action={formAction}
-                                                className="contents"
-                                            >
-                                                {hidden(claim, 'approve')}
-                                                <DialogHeader>
-                                                    <DialogTitle>
-                                                        {t(
-                                                            `approve.${claim.intent}.title`,
-                                                            {
-                                                                name: claim.claimantName,
-                                                                org: claim.orgName,
-                                                            }
-                                                        )}
-                                                    </DialogTitle>
-                                                    <DialogDescription>
-                                                        {t(
-                                                            `approve.${claim.intent}.body`,
-                                                            {
-                                                                name: claim.claimantName,
-                                                                org: claim.orgName,
-                                                            }
-                                                        )}
-                                                    </DialogDescription>
-                                                </DialogHeader>
-                                                <DialogFooter>
-                                                    <DialogClose asChild>
-                                                        <Button
-                                                            type="button"
-                                                            variant="outline"
-                                                        >
-                                                            {t('keep')}
-                                                        </Button>
-                                                    </DialogClose>
-                                                    <Button
-                                                        type="submit"
-                                                        variant={
-                                                            claim.intent ===
-                                                            'remove'
-                                                                ? 'destructive'
-                                                                : 'default'
-                                                        }
-                                                        disabled={pending}
-                                                    >
-                                                        {t(
-                                                            `approve.${claim.intent}.confirm`
-                                                        )}
-                                                    </Button>
-                                                </DialogFooter>
-                                            </form>
-                                        </DialogContent>
-                                    </Dialog>
-                                    <form action={formAction}>
-                                        {hidden(claim, 'deny')}
-                                        <Button
-                                            type="submit"
-                                            size="sm"
-                                            variant="outline"
-                                            disabled={pending}
-                                            aria-label={t('actionFor', {
-                                                action: t('deny'),
-                                                name: claim.claimantName,
-                                                org: claim.orgName,
-                                            })}
-                                        >
-                                            {t('deny')}
-                                        </Button>
-                                    </form>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                                        </form>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </section>
             </section>
 
+            {overview ? (
+                <AdminOverview {...overview} />
+            ) : (
+                <section
+                    aria-labelledby="admin-overview"
+                    className="flex flex-col gap-3"
+                >
+                    <h2
+                        id="admin-overview"
+                        className="font-heading text-xl font-semibold"
+                    >
+                        {t('sections.overview')}
+                    </h2>
+                    <Unavailable />
+                </section>
+            )}
+
+            <AdminAnalytics {...analytics} />
+
+            <AdminOrganizations {...organizations} />
+
             <section
-                aria-labelledby="admin-unclaimed"
+                aria-labelledby="admin-dictionary"
                 className="flex flex-col gap-3"
             >
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     <h2
-                        id="admin-unclaimed"
+                        id="admin-dictionary"
                         className="font-heading text-xl font-semibold"
                     >
-                        {t('unclaimedTitle')}
-                        <span className="ml-2 text-base font-normal text-muted-foreground">
-                            {unclaimed.length}
-                        </span>
+                        {t('dictionaryTitle')}
+                        {definitionCount !== undefined && (
+                            <>
+                                {' '}
+                                <span className="ml-1 text-base font-normal text-muted-foreground">
+                                    {t('wordCount', { count: definitionCount })}
+                                </span>
+                            </>
+                        )}
                     </h2>
-                    <div className="flex flex-wrap gap-2">
-                        <Button asChild variant="outline">
-                            <Link href="/admin/import">
-                                <UploadIcon aria-hidden />
-                                {t('importUnclaimed')}
-                            </Link>
-                        </Button>
-                        <Button asChild>
-                            <Link
-                                href={{
-                                    pathname: '/org/new',
-                                    query: { unclaimed: '1' },
-                                }}
-                            >
-                                <PlusIcon aria-hidden />
-                                {t('addUnclaimed')}
-                            </Link>
-                        </Button>
-                    </div>
                 </div>
-                {unclaimed.length === 0 ? (
-                    <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-                        {t('noUnclaimed')}
-                    </p>
-                ) : (
-                    <ul className="flex flex-col gap-2">
-                        {unclaimed.map((org) => (
-                            <li key={org.handle}>
-                                <OrganizationCard {...org} />
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                <div className="flex flex-wrap gap-2">
+                    <Button asChild>
+                        <Link href="/admin/definitions/new">
+                            <PlusIcon aria-hidden />
+                            {t('addWord')}
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <Link href="/admin/definitions/import">
+                            <UploadIcon aria-hidden />
+                            {t('importWords')}
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <Link href="/admin/definitions/upload">
+                            <FileUpIcon aria-hidden />
+                            {t('uploadDefinition')}
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <Link href="/admin/definitions">
+                            <BookOpenIcon aria-hidden />
+                            {t('manageDictionary')}
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <Link href="/admin/comments">
+                            <FlagIcon aria-hidden />
+                            {t('reportedComments')}
+                            {reportedComments !== undefined && (
+                                <span className="tabular-nums">
+                                    ({reportedComments})
+                                </span>
+                            )}
+                        </Link>
+                    </Button>
+                </div>
+                <p className="-mt-1 text-sm text-muted-foreground">
+                    {t('dictionaryHint')}
+                </p>
             </section>
+
+            <AdminActivity {...activity} />
 
             <section
                 aria-labelledby="admin-deleted"
@@ -395,8 +572,8 @@ export function AdminPage({
                     id="admin-deleted"
                     className="font-heading text-xl font-semibold"
                 >
-                    {t('deletedTitle')}
-                    <span className="ml-2 text-base font-normal text-muted-foreground">
+                    {t('deletedTitle')}{' '}
+                    <span className="ml-1 text-base font-normal text-muted-foreground">
                         {deleted.length}
                     </span>
                 </h2>
@@ -465,46 +642,6 @@ export function AdminPage({
                     </ul>
                 )}
             </section>
-
-            <section
-                aria-labelledby="admin-log"
-                className="flex flex-col gap-3"
-            >
-                <h2
-                    id="admin-log"
-                    className="font-heading text-xl font-semibold"
-                >
-                    {t('logTitle')}
-                </h2>
-                <p className="-mt-1 text-sm text-muted-foreground">
-                    {t('logHint')}
-                </p>
-                {log.length === 0 ? (
-                    <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-                        {t('noLog')}
-                    </p>
-                ) : (
-                    <ol className="flex flex-col divide-y rounded-lg border">
-                        {log.map((entry) => (
-                            <li
-                                key={entry.id}
-                                className="flex flex-col gap-0.5 p-3 text-sm"
-                            >
-                                <span>
-                                    {t(`log.${entry.action}`, {
-                                        actor: entry.actorName,
-                                        org: entry.orgName,
-                                        target: entry.targetName ?? '',
-                                    })}
-                                </span>
-                                <span className="text-xs text-muted-foreground">
-                                    {entry.on}
-                                </span>
-                            </li>
-                        ))}
-                    </ol>
-                )}
-            </section>
         </section>
     );
 }
@@ -512,7 +649,7 @@ export function AdminPage({
 /** Shown while the page loads. */
 export function AdminPageLoading() {
     return (
-        <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-4 py-12">
+        <section className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-12">
             <Skeleton className="h-9 w-48" />
             <Skeleton className="h-40 w-full rounded-lg" />
             <Skeleton className="h-28 w-full rounded-lg" />

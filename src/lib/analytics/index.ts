@@ -3,6 +3,9 @@
 // Next or DOM, so it's tested directly. The browser side is ./browser.ts and
 // src/app/[locale]/analytics.tsx. Design: documentation/technical/analytics.md.
 
+import type { CommentTargetKind } from '../comments';
+import type { NavKey } from '../navigation';
+
 /** Umami Cloud website id for communalists.com. Public: it's in the page source. */
 export const UMAMI_WEBSITE_ID = 'a1687831-6fc3-4e0b-9c0c-7448fad2d67d';
 export const UMAMI_SCRIPT_URL = 'https://cloud.umami.is/script.js';
@@ -20,7 +23,7 @@ export interface AnalyticsEvents {
     'org-view': { org: string };
     /** An organization's name was clicked in a list. */
     'org-open': { org: string; from: 'find' | 'card' };
-    /** A /find result was expanded. */
+    /** A /find/organizations result was expanded. */
     'org-details': { org: string };
     'org-website': { org: string; url: string };
     'org-social': { org: string; platform: string };
@@ -36,7 +39,7 @@ export interface AnalyticsEvents {
     /** "Claim this organization" on an unclaimed one. */
     'org-claim': { org: string };
     'org-claim-submit': { org: string };
-    /** A /find search was shown. `city` is its path ("us/ca/oakland"). */
+    /** An organization search (/find/organizations) was shown. `city` is its path ("us/ca/oakland"). */
     'find-search': {
         city: string;
         radius: string;
@@ -52,6 +55,29 @@ export interface AnalyticsEvents {
     'sign-up-submit': Record<string, never>;
     'sign-in-submit': Record<string, never>;
     'language-change': { to: string };
+    /** A site section was chosen in the header (wide screens) or the phone menu. */
+    'nav-link': { to: NavKey; from: 'header' | 'menu' };
+    /** The phone menu was opened. */
+    'menu-open': Record<string, never>;
+    /** A dictionary word's page was opened. `slug` is the word's slug. */
+    'definition-view': { slug: string };
+    /** A word marked in our copy (<Definition>) was chosen, opening its page. */
+    'definition-open': { slug: string };
+    /** "Copy link" was pressed on a word's page. */
+    'definition-share': { slug: string };
+    /**
+     * Signed out, "Create an account" or "Sign in" was pressed in a
+     * discussion. `on` is the target's kind (`definition`), `id` its slug.
+     */
+    'discussion-join': {
+        on: CommentTargetKind;
+        id: string;
+        to: 'sign-up' | 'sign-in';
+    };
+    /** "Post comment" was pressed (an attempt; the server may refuse). Never the text. */
+    'comment-post': { on: CommentTargetKind; id: string };
+    /** An organization's owner or moderator pressed Post reply (never the text). */
+    'comment-reply': { on: CommentTargetKind; id: string };
 }
 
 export type AnalyticsEvent = keyof AnalyticsEvents;
@@ -106,7 +132,7 @@ const camel = (key: string) =>
 const EXCLUDED_PATH = /^\/(?:(?:en|es|vi|zh)\/)?(?:auth|admin)(?:\/|$)/;
 
 /**
- * The only query parameters that leave the browser: /find's filters. Any
+ * The only query parameters that leave the browser: /find/organizations' filters. Any
  * other one (a reset code, ?next=, whatever is added later) is dropped,
  * so a new parameter is private until someone adds it here.
  */

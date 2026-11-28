@@ -29,7 +29,7 @@ const meta = {
     title: 'Components/Organisms/Organization Filters',
     component: OrganizationFilters,
     args: {
-        action: '/en/find',
+        action: '/en/find/organizations',
         search: parseDirectorySearch({ country: 'US', placeId: '5392171' }),
         location,
         languageOptions,

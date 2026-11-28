@@ -1,7 +1,7 @@
 import { normalizePhone } from '@/lib/phone';
 import { socialLinksOf } from '@/lib/socials';
 
-import { parseCsv } from './import';
+import { parseCsv } from '@/lib/csv';
 import { normalizeWebUrl } from './options';
 
 // The organizations already on Communalists, as a CSV a super user downloads

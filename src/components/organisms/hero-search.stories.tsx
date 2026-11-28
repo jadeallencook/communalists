@@ -33,7 +33,7 @@ const meta = {
     title: 'Components/Organisms/Hero Search',
     component: HeroSearch,
     args: {
-        action: '/en/find',
+        action: '/en/find/organizations',
         focusArea,
         location,
         onSubmit: fn((event) => event.preventDefault()),

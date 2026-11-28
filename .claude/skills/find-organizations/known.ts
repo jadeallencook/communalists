@@ -117,7 +117,7 @@ const describe = ({ reason, known: k }: KnownMatch) => {
     ]
         .filter(Boolean)
         .join(', ');
-    return `    ${what}: "${k.name}"${k.handle ? ` (/org/${k.handle})` : ''} in ${k.source}:${k.line}${status ? ` [${status}]` : ''}`;
+    return `    ${what}: "${k.name}"${k.handle ? ` (/organization/${k.handle})` : ''} in ${k.source}:${k.line}${status ? ` [${status}]` : ''}`;
 };
 
 let fresh = 0;

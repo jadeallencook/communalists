@@ -1,6 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
+import {
+    activity,
+    recent,
+    analytics,
+    emptyOverview,
+    organizations,
+    overview,
+} from '@/components/organisms/admin-fixtures';
+
 import { AdminPage, AdminPageLoading } from './admin-page';
 
 const meta = {
@@ -9,6 +18,12 @@ const meta = {
     parameters: { layout: 'fullscreen' },
     args: {
         locale: 'en',
+        asOf: 'Nov 27, 2026, 10:30 AM',
+        overview,
+        analytics,
+        organizations,
+        activity,
+        definitionCount: 12,
         formAction: fn(),
         restoreAction: fn(),
         deleted: [
@@ -33,6 +48,7 @@ const meta = {
                 claimantUsername: 'priya-patel',
                 claimantEmail: 'priya.patel@example.com',
                 requestedOn: 'Nov 22, 2026',
+                daysWaiting: 5,
             },
             {
                 orgId: 'org2',
@@ -47,37 +63,7 @@ const meta = {
                 claimantUsername: 'daniel-park',
                 claimantEmail: 'daniel.park@example.com',
                 requestedOn: 'Nov 23, 2026',
-            },
-        ],
-        unclaimed: [
-            {
-                name: 'Eastside Shower Day',
-                handle: 'eastside-shower-day',
-                focusAreas: ['hygiene', 'health'],
-                detail: 'San Jose, California',
-            },
-            {
-                name: 'Westside Community Meal',
-                handle: 'westside-community-meal',
-                focusAreas: ['food'],
-                detail: 'San Jose, California',
-            },
-        ],
-        log: [
-            {
-                id: '1',
-                action: 'createUnclaimed',
-                orgName: 'Westside Community Meal',
-                actorName: 'Jordan Lee',
-                on: 'Nov 21, 2026',
-            },
-            {
-                id: '2',
-                action: 'approveClaim',
-                orgName: 'Little Saigon Food Pantry',
-                actorName: 'Jordan Lee',
-                targetName: 'Thanh Nguyễn',
-                on: 'Nov 20, 2026',
+                daysWaiting: 0,
             },
         ],
     },
@@ -88,7 +74,37 @@ type Story = StoryObj<typeof meta>;
 
 export const WithRequests: Story = {};
 export const Empty: Story = {
-    args: { claims: [], unclaimed: [], deleted: [], log: [] },
+    args: {
+        claims: [],
+        overview: emptyOverview,
+        analytics: { status: 'notConfigured' },
+        organizations: {
+            ...organizations,
+            gapCounts: {
+                contact: 0,
+                phone: 0,
+                email: 0,
+                website: 0,
+                address: 0,
+            },
+            missing: [],
+            recent: [],
+        },
+        activity: {
+            activity: {
+                added: 0,
+                edited: 0,
+                claims: 0,
+                lifecycle: 0,
+                words: 0,
+                exports: 0,
+                comments: 2,
+            },
+            log: [],
+        },
+        deleted: [],
+        definitionCount: 0,
+    },
 };
 /** After restoring: the organization leaves the list and the result is announced. */
 export const Restored: Story = {
@@ -112,4 +128,25 @@ export const Error: Story = {
         resultKey: 1,
     },
 };
+/** A search for "oak": the results and how many were found are announced. */
+export const Searching: Story = {
+    args: {
+        organizations: {
+            ...organizations,
+            query: 'oak',
+            results: recent.slice(1, 2),
+        },
+    },
+};
 export const Loading: Story = { render: () => <AdminPageLoading /> };
+
+/** The counts failed (an index still building): those sections say so, the rest works. */
+export const CountsUnavailable: Story = {
+    args: {
+        asOf: undefined,
+        overview: null,
+        definitionCount: undefined,
+        organizations: { ...organizations, gapCounts: null, missing: null },
+        activity: { activity: null, log: null },
+    },
+};

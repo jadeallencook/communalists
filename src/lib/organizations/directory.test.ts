@@ -244,17 +244,19 @@ describe('directoryHref', () => {
             languages: ['es'],
         });
         expect(directoryHref(filters, 'us/ca/oakland')).toBe(
-            '/find/us/ca/oakland?radius=10&languages=es'
+            '/find/organizations/us/ca/oakland?radius=10&languages=es'
         );
         expect(directoryHref(parseDirectorySearch({}), 'us/ca/oakland')).toBe(
-            '/find/us/ca/oakland'
+            '/find/organizations/us/ca/oakland'
         );
     });
 
-    it('is plain /find without a city', () => {
-        expect(directoryHref(parseDirectorySearch({}))).toBe('/find');
+    it('is plain /find/organizations without a city', () => {
+        expect(directoryHref(parseDirectorySearch({}))).toBe(
+            '/find/organizations'
+        );
         expect(directoryHref(parseDirectorySearch({ radius: '50' }))).toBe(
-            '/find?radius=50'
+            '/find/organizations?radius=50'
         );
     });
 });
@@ -264,13 +266,13 @@ describe('homeSearchHref', () => {
 
     it('starts from the starting city when nothing is chosen', () => {
         expect(homeSearchHref({ startingSlug })).toBe(
-            '/find/us/ca/san-francisco'
+            '/find/organizations/us/ca/san-francisco'
         );
     });
 
     it('adds the chosen focus area and uses the chosen city', () => {
         expect(homeSearchHref({ focusArea: 'housing', startingSlug })).toBe(
-            '/find/us/ca/san-francisco?focusAreas=housing'
+            '/find/organizations/us/ca/san-francisco?focusAreas=housing'
         );
         expect(
             homeSearchHref({
@@ -278,12 +280,12 @@ describe('homeSearchHref', () => {
                 place: { country: 'US', id: '5378538', slug: 'us/ca/oakland' },
                 startingSlug,
             })
-        ).toBe('/find/us/ca/oakland?focusAreas=food');
+        ).toBe('/find/organizations/us/ca/oakland?focusAreas=food');
     });
 
     it('ignores anything that is not a listed focus area', () => {
         expect(homeSearchHref({ focusArea: 'free text', startingSlug })).toBe(
-            '/find/us/ca/san-francisco'
+            '/find/organizations/us/ca/san-francisco'
         );
     });
 
@@ -294,7 +296,9 @@ describe('homeSearchHref', () => {
                 place: { country: 'US', id: '5378538', slug: '' },
                 startingSlug,
             })
-        ).toBe('/find?country=US&placeId=5378538&focusAreas=legal');
+        ).toBe(
+            '/find/organizations?country=US&placeId=5378538&focusAreas=legal'
+        );
     });
 });
 

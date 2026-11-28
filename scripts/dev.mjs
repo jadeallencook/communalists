@@ -190,9 +190,17 @@ if (await authUp()) {
 }
 
 // Test accounts and organizations, only if any are missing (fast otherwise).
-const seed = spawnSync('node', ['scripts/seed.mjs', '--if-missing'], {
-    stdio: 'inherit',
-});
+const seed = spawnSync(
+    'node',
+    [
+        '--disable-warning=MODULE_TYPELESS_PACKAGE_JSON',
+        'scripts/seed.mjs',
+        '--if-missing',
+    ],
+    {
+        stdio: 'inherit',
+    }
+);
 if (seed.status !== 0) {
     say('Adding test data failed (see above). Try `pnpm seed` once it is up.');
 }

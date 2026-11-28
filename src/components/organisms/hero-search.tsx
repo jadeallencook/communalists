@@ -15,18 +15,18 @@ import {
 import { track } from '@/lib/analytics';
 
 export interface HeroSearchProps {
-    /** Where the form goes without JavaScript: /{locale}/find, which redirects to the city's path. */
+    /** Where the form goes without JavaScript: /{locale}/find/organizations, which redirects to the city's path. */
     action: string;
     focusArea: FocusAreaPillsProps;
     location: Omit<LocationFieldProps, 'error' | 'hint' | 'placeholder'>;
-    /** With JavaScript: go to /find with the chosen tag and city. */
+    /** With JavaScript: go to /find/organizations with the chosen tag and city. */
     onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
 }
 
 /**
  * The homepage banner's search, in one line: the city, focus-area pills,
- * then "Find organizations", which opens /find with them applied. Both
- * are optional: with neither, /find opens on the visitor's starting city.
+ * then "Find organizations", which opens /find/organizations with them applied. Both
+ * are optional: with neither, /find/organizations opens on the visitor's starting city.
  * Sits in the banner's translucent band (dark theme), so it reads on the
  * photo, and lines up with the header's edges. On phones the three stack.
  */

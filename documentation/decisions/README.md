@@ -30,7 +30,25 @@ File names are `NNN-what-it-is-about.md`: a three-digit number (so `ls` lists th
 
 | #                                                                               | Decision                                                                                           | Date       |
 | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---------- |
-| [053](053-homepage-search-focus-area-and-city.md)                               | Homepage search: a city, focus-area pills and "Find organizations"                                 | 2026-11-26 |
+| [071](071-homepage-search-focus-area-and-city.md)                               | Homepage search: a city, focus-area pills and "Find organizations"                                 | 2026-11-26 |
+| [070](070-organization-discussions-platform-moderated-with-official-replies.md) | Discussions on organizations: platform-moderated, with one official reply                          | 2026-11-27 |
+| [069](069-not-found-pages-general-and-per-kind.md)                              | Not-found pages: one general, one per kind of shared page                                          | 2026-11-27 |
+| [068](068-firebase-failures-show-an-error-never-break-the-app.md)               | If Firebase fails, show an error; never break the app                                              | 2026-11-27 |
+| [067](067-word-discussions-public-flat-comments-with-up-votes.md)               | Discussions on words: public, flat comments with up votes                                          | 2026-11-27 |
+| [066](066-remove-words-upload-on-edit-page-letter-links.md)                     | Remove dictionary words; upload a word's file on its edit page; previous and next letter links     | 2026-11-27 |
+| [065](065-brainstorm-definitions-and-upload-one-word.md)                        | Brainstorm definitions with a skill; upload one word's text from a file                            | 2026-11-27 |
+| [064](064-seo-titles-share-image-sitemap-and-structured-data.md)                | SEO: Title Case titles, one share image, sitemap and structured data                               | 2026-11-27 |
+| [063](063-url-scheme-find-kinds-and-organization-addresses.md)                  | URL scheme: `/find/{kind}`, `/organization/{handle}`, tools under the organization                 | 2026-11-27 |
+| [062](062-pr-screenshots-branch-before-and-after.md)                            | PR screenshots: before and after, hosted on a `pr-screenshots` branch                              | 2026-11-27 |
+| [061](061-site-navigation-sections-and-phone-menu-drawer.md)                    | Site navigation: sections from one list, and a phone menu drawer                                   | 2026-11-27 |
+| [060](060-admin-sections-fail-alone-and-backfill-from-the-app.md)               | Admin dashboard sections fail on their own; backfill runs from the app                             | 2026-11-27 |
+| [059](059-umami-reports-on-the-admin-dashboard.md)                              | Umami reports on the admin dashboard                                                               | 2026-11-27 |
+| [058](058-super-user-dashboard-counts-search-and-missing-details.md)            | Super-user dashboard: counts, search, and missing details                                          | 2026-11-27 |
+| [057](057-dictionary-at-slash-dictionary-with-a-to-z-letters.md)                | The dictionary at /dictionary, with A–Z letter pages                                               | 2026-11-26 |
+| [056](056-dictionary-words-title-case-in-english.md)                            | Dictionary words in title case in English                                                          | 2026-11-26 |
+| [055](055-marked-words-hover-tooltip-click-opens-page.md)                       | Marked words: hover shows the definition, a click opens its page                                   | 2026-11-26 |
+| [054](054-security-rules-tests-against-the-emulator.md)                         | Security rules tests against the Firestore emulator, in CI                                         | 2026-11-26 |
+| [053](053-dictionary-shareable-definitions-super-users-manage.md)               | A dictionary: shareable definitions that super users manage                                        | 2026-11-26 |
 | [052](052-find-always-has-a-city-profile-or-default.md)                         | /find always has a city: plain /find redirects to the profile's city or San Francisco              | 2026-11-26 |
 | [051](051-find-defaults-to-oakland-homepage-links-there.md)                     | /find starts from Oakland; the homepage's Browse button links there when signed out                | 2026-11-26 |
 | [050](050-umami-analytics-page-views-and-named-click-events.md)                 | Umami analytics: page views and named click events                                                 | 2026-11-26 |

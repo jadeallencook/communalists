@@ -27,12 +27,12 @@ src/
     [locale]/sign-in/     Container: wires the signIn action into SignInPage
     [locale]/forgot-password/  Container: wires requestPasswordReset into ForgotPasswordPage
     [locale]/account/setup/ Container: required profile questions (name, language, city); returns to ?next=
-    [locale]/org/new/     Create an organization (form container + action)
-    [locale]/org/[handle]/ An organization's page (public profile + members' space)
+    [locale]/organization/new/     Create an organization (form container + action)
+    [locale]/organization/[handle]/ An organization's page (public profile + members' space)
     [locale]/auth/action/ Firebase email links (Action URL): verifies the code, renders ResetPasswordPage
     [locale]/dashboard/   Container: requireAccount, renders DashboardPage (streamed); /welcome redirects here
     [locale]/account/settings/ Container: edit profile (setup form in settings mode)
-    [locale]/find/[[...place]]/ Find organizations; the city in the path (/find/us/ca/oakland)
+    [locale]/find/organizations/[[...place]]/ Find organizations; the city in the path (/find/organizations/us/ca/oakland)
     [locale]/header-slots.tsx  Header's signed-in parts (session + profile), streamed in <Suspense>
     [locale]/analytics.tsx     Umami loader (production) + click listener; track-event.tsx sends on render
     actions/sign-out.ts   Shared sign-out server action (account menu)
@@ -90,7 +90,7 @@ These are newer than most training data and docs online. The bundled docs in `no
 ## Firebase usage rules
 
 - **Server first.** Reads and writes go through the Admin SDK in Server Components, Server Actions and Route Handlers, with authorization checked in code. The client SDK is for auth state and (later) realtime listeners.
-- **Rules deny everything** until a feature opens a path, and each opening ships with emulator tests. Both `firestore.rules` and `database.rules.json` (Realtime Database, unused) are deny-all and were **deployed to production `communalists` on 2026-11-20**, after the data was backed up and deleted. Deploy rule changes with `firebase deploy --only firestore:rules,database --project communalists`. Use `firestore:rules`, not `firestore`, so the empty `firestore.indexes.json` doesn't wipe indexes.
+- **Rules deny everything** until a feature opens a path, and each opening ships with emulator tests. Both `firestore.rules` and `database.rules.json` (Realtime Database, unused) are deny-all and were **deployed to production `communalists` on 2026-11-20**, after the data was backed up and deleted. Deploy rule changes with `firebase deploy --only firestore:rules,database --project communalists`. Use `firestore:rules`, not `firestore`, so rules and indexes deploy separately. Composite indexes live in `firestore.indexes.json` (first ones added 2026-11-27 for the super-user dashboard, decision #58); deploy them with `firebase deploy --only firestore:indexes --project communalists`. The CLI asks before deleting an index that's in the console but not in the file; answer no unless you mean it. A new index takes a few minutes to build, and queries that need it fail until it's ready.
 - Both SDKs initialize lazily (`getClientAuth()`, `getAdminDb()` and so on), so importing them never touches Firebase during the build.
 - Local development uses the emulators with the `demo-communalists` project, which can't reach real Firebase. See [tooling-and-ci.md](tooling-and-ci.md).
 

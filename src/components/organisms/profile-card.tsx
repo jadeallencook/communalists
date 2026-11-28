@@ -6,6 +6,7 @@ import { initials } from '@/lib/initials';
 import { languageName } from '@/lib/organizations/client';
 import type { ProfileView } from '@/lib/profiles';
 import { SOCIAL_PLATFORMS, socialLabel, socialUrl } from '@/lib/socials';
+import { organizationPath } from '@/lib/paths';
 
 export interface ProfileCardProps {
     /** Exactly what this viewer may see (profileView in src/lib/profiles.ts). */
@@ -149,7 +150,9 @@ export function ProfileCard({ view, headingLevel = 1 }: ProfileCardProps) {
                                 {details.groups.map((group) => (
                                     <li key={group.orgId}>
                                         <Link
-                                            href={`/org/${group.handle}`}
+                                            href={organizationPath(
+                                                group.handle
+                                            )}
                                             className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm hover:bg-muted/50"
                                         >
                                             <span className="font-medium break-words">

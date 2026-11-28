@@ -20,6 +20,8 @@ export interface SignInFormProps {
     pending?: boolean;
     /** Sent with the form so the server can answer in the right language. */
     locale: string;
+    /** Where to go afterward (a path, no locale), like back to a discussion. */
+    next?: string;
 }
 
 /** Email and password with inline errors and a forgot-password link. No logic: it renders `state`. */
@@ -28,6 +30,7 @@ export function SignInForm({
     formAction,
     pending = false,
     locale,
+    next,
 }: SignInFormProps) {
     const t = useTranslations('SignIn');
 
@@ -48,6 +51,7 @@ export function SignInForm({
     return (
         <form action={formAction} noValidate>
             <input type="hidden" name="locale" value={locale} />
+            {next && <input type="hidden" name="next" value={next} />}
             <FieldGroup>
                 <Field data-invalid={!!errorFor('email')}>
                     <FieldLabel htmlFor="email">{t('email')}</FieldLabel>

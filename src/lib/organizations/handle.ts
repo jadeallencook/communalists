@@ -1,4 +1,4 @@
-// Organization handles (communalists.com/org/{handle}) and usernames
+// Organization handles (communalists.com/organization/{handle}) and usernames
 // (communalists.com/comrade/{username}) share these rules.
 // Pure rules; uniqueness is enforced on the server with handles/{handle}
 // (see src/lib/organizations/index.ts). Design: features/16-organizations.md.
@@ -17,6 +17,10 @@ export const RESERVED_HANDLES = new Set([
     'account',
     'org',
     'orgs',
+    'organization',
+    'organizations',
+    'event',
+    'events',
     'new',
     'settings',
     'help',

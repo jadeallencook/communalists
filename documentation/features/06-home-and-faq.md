@@ -23,4 +23,6 @@ The landing page at `/`. It explains mutual aid and sends visitors to the two ma
 
 ## In the rebuild
 
-This page is static and the best candidate for SSG. Move the copy into translations or content files, add meta and OG tags, and make the FAQ match what the product actually does.
+This page is static and the best candidate for SSG. Move the copy into translations or content files, and make the FAQ match what the product actually does.
+
+- **Title and preview (2026-11-27):** "Communalists: Tools for Mutual Aid Networks", a translated description, the banner photo as the share image, and `WebSite` / `Organization` structured data ([technical/seo.md](../technical/seo.md), [decision #64](../decisions/064-seo-titles-share-image-sitemap-and-structured-data.md)).

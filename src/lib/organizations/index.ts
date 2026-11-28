@@ -14,6 +14,7 @@ import type { OrganizationInput } from '@/lib/validation/organization';
 
 import { effectiveRole } from '@/lib/platform-admin';
 
+import { missingDetails } from './details';
 import { changedFields, COPIED_FIELDS, type OrgEditField } from './edit';
 import { claimBlocks, handleHeldUntil, nextHandleChangeAt } from './handle';
 import {
@@ -166,6 +167,24 @@ async function readByHandle(handle: string): Promise<Organization | null> {
     return org.status === 'active' && org.handle === handle ? org : null;
 }
 
+/**
+ * An organization by id (active or archived), cached and tagged with it.
+ * For things that point at an organization by id, like comments; decide
+ * access on fresh data.
+ */
+export async function getOrganizationById(
+    orgId: string
+): Promise<Organization | null> {
+    'use cache';
+    cacheTag(orgTag(orgId));
+    cacheLife('hours');
+    logRead('organizations');
+    const snapshot = await organizations().doc(orgId).get();
+    return snapshot.exists
+        ? toOrganization(snapshot.id, snapshot.data()!)
+        : null;
+}
+
 /** The organization at this handle, cached. A miss may be stale: confirm with getOrganizationByHandleFresh. */
 export async function getOrganizationByHandle(
     handle: string
@@ -293,6 +312,8 @@ function newOrganizationFields(
         ...(input.contactEmail ? { contactEmail: input.contactEmail } : {}),
         ...(input.phone ? { phone: input.phone } : {}),
         ...(input.foundedYear ? { foundedYear: input.foundedYear } : {}),
+        // Derived, so super users can count pages that need research.
+        missingDetails: missingDetails(input),
     };
 }
 
@@ -504,6 +525,44 @@ export async function getDirectoryInternational(): Promise<
     );
 }
 
+/** A listed group's address and city, for the sitemap. */
+export interface SitemapOrganization {
+    handle: string;
+    country: string;
+    placeId: string;
+    reach: ReachScope;
+}
+
+/**
+ * Every listed, active group, for the sitemap (technical/seo.md). Cached a
+ * day and cleared with the directory; only the fields a URL needs are read.
+ */
+export async function getSitemapOrganizations(): Promise<
+    SitemapOrganization[]
+> {
+    'use cache';
+    cacheTag(DIRECTORY_TAG);
+    cacheLife('days');
+    const snapshot = await organizations()
+        .where('status', '==', 'active')
+        .where('visibility', '==', 'listed')
+        .select('handle', 'location.country', 'location.placeId', 'reach.scope')
+        .get();
+    logRead('organizations', Math.max(snapshot.size, 1));
+    return snapshot.docs.flatMap((doc) => {
+        const data = doc.data();
+        if (!data.handle) return [];
+        return [
+            {
+                handle: data.handle,
+                country: data.location?.country ?? '',
+                placeId: data.location?.placeId ?? '',
+                reach: data.reach?.scope ?? 'local',
+            },
+        ];
+    });
+}
+
 // --- People: joining, leaving, moderating. Every write is a transaction that
 // re-reads what it decides on, keeps memberCount right, and (for moderation)
 // appends to organizations/{orgId}/moderationLog.
@@ -595,7 +654,10 @@ export type LogAction =
     | 'editProfile'
     | 'claim'
     | 'deleteOrganization'
-    | 'restoreOrganization';
+    | 'restoreOrganization'
+    // The organization's reply to a comment on its page (features/20).
+    | 'replyComment'
+    | 'deleteReply';
 
 export interface ModerationLogEntry {
     id: string;
@@ -1002,6 +1064,7 @@ export async function updateOrganization(
             contactEmail: input.contactEmail ?? FieldValue.delete(),
             phone: input.phone ?? FieldValue.delete(),
             foundedYear: input.foundedYear ?? FieldValue.delete(),
+            missingDetails: missingDetails(input),
             updatedAt: stamp,
             ...(handleChanged ? { handleChangedAt: stamp } : {}),
         });

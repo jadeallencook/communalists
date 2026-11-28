@@ -25,6 +25,7 @@ import {
 } from '@/components/atoms/dialog';
 import { Skeleton } from '@/components/atoms/skeleton';
 import { UnclaimedNotice } from '@/components/organisms/unclaimed-notice';
+import { organizationPath } from '@/lib/paths';
 
 export interface OrganizationPageProps {
     profile: OrganizationProfileProps;
@@ -47,6 +48,11 @@ export interface OrganizationPageProps {
      */
     /** Other organizations nearby (NearbyOrganizations), at the end of the page. */
     nearby?: ReactNode;
+    /**
+     * The public discussion (listed organizations only), after the members
+     * and before nearby groups. Streams in on its own.
+     */
+    discussion?: ReactNode;
     makeUnclaimed?: {
         orgId: string;
         locale: string;
@@ -60,7 +66,7 @@ const roleKey = {
     member: 'roleMember',
 } as const;
 
-/** /org/{handle}: the public profile, plus a members' space for members. */
+/** /organization/{handle}: the public profile, plus a members' space for members. */
 export function OrganizationPage({
     profile,
     role,
@@ -70,6 +76,7 @@ export function OrganizationPage({
     unclaimed,
     makeUnclaimed,
     nearby,
+    discussion,
 }: OrganizationPageProps) {
     const t = useTranslations('Organizations');
     const tm = useTranslations('Membership');
@@ -94,7 +101,12 @@ export function OrganizationPage({
                             </p>
                             <div className="mt-2 flex flex-wrap gap-2">
                                 <Button asChild variant="outline">
-                                    <Link href={`/org/${profile.handle}/edit`}>
+                                    <Link
+                                        href={organizationPath(
+                                            profile.handle,
+                                            'edit'
+                                        )}
+                                    >
                                         <PencilIcon aria-hidden />
                                         {tm('editOrganization')}
                                     </Link>
@@ -105,6 +117,7 @@ export function OrganizationPage({
                             </div>
                         </section>
                     )}
+                    {discussion}
                     {nearby}
                 </OrganizationProfile>
             </section>
@@ -129,14 +142,22 @@ export function OrganizationPage({
                         {staff && (
                             <div className="mt-2 flex flex-wrap gap-2">
                                 <Button asChild variant="outline">
-                                    <Link href={`/org/${profile.handle}/edit`}>
+                                    <Link
+                                        href={organizationPath(
+                                            profile.handle,
+                                            'edit'
+                                        )}
+                                    >
                                         <PencilIcon aria-hidden />
                                         {tm('editOrganization')}
                                     </Link>
                                 </Button>
                                 <Button asChild variant="outline">
                                     <Link
-                                        href={`/org/${profile.handle}/members`}
+                                        href={organizationPath(
+                                            profile.handle,
+                                            'members'
+                                        )}
                                     >
                                         <UsersIcon aria-hidden />
                                         {tm('manage')}
@@ -219,6 +240,7 @@ export function OrganizationPage({
                     </section>
                 )}
                 <MemberList {...members} />
+                {discussion}
                 {nearby}
             </OrganizationProfile>
         </section>

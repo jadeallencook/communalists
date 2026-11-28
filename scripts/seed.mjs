@@ -1,6 +1,8 @@
 #!/usr/bin/env node
-// `pnpm seed`: test accounts and organizations (scripts/seed-data.json) in
-// the local emulators. Running it again resets them.
+// `pnpm seed`: test accounts and organizations (scripts/seed-data.json), and
+// dictionary words from any CSVs in research/definitions/ (git ignores it; the
+// format is the /admin/definitions/import one), in the local emulators.
+// Running it again resets them.
 //
 //   --if-missing  Seed only if any seeded account or organization is missing
 //                 (`pnpm dev` runs this at every start). Otherwise do nothing.
@@ -15,12 +17,16 @@
 // src/lib/organizations/index.ts createOrganization). If you change those
 // shapes, change this too. Data model: documentation/technical/data-model.md.
 
-import { readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 
 import { initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
-import { FieldValue, getFirestore } from 'firebase-admin/firestore';
+import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore';
 import { geohashForLocation } from 'geofire-common';
+
+// Plain TypeScript with no imports: Node strips the types.
+import { parseCsv } from '../src/lib/csv.ts';
+import { missingDetails } from '../src/lib/organizations/details.ts';
 
 const PROJECT = 'demo-communalists';
 process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080';
@@ -39,7 +45,53 @@ const fail = (message) => {
 
 const readJson = (path) =>
     JSON.parse(readFileSync(new URL(path, import.meta.url)));
-const { password, users, organizations } = readJson('./seed-data.json');
+const {
+    password,
+    users,
+    organizations,
+    comments = [],
+} = readJson('./seed-data.json');
+
+// --- Dictionary words: every CSV in research/definitions/, in the import's
+// columns (src/lib/definitions/import.ts). Unchecked here; check a file with
+// /admin/definitions/import first. Missing folder: no words. Agreed rewrites
+// of single words (research/definitions/updates/, from the brainstorm-definition
+// skill) replace those words' text, but not their related words, like the
+// upload at /admin/definitions/upload.
+const WORDS_DIR = new URL('../research/definitions/', import.meta.url);
+const UPDATES_DIR = new URL('updates/', WORDS_DIR);
+const LOCALES = ['en', 'es', 'vi', 'zh'];
+const readWords = (dir) =>
+    (existsSync(dir) ? readdirSync(dir) : [])
+        .filter((name) => name.endsWith('.csv'))
+        .flatMap((name) => {
+            const [header, ...rows] = parseCsv(
+                readFileSync(new URL(name, dir), 'utf8')
+            );
+            const col = (row, name) => (row[header.indexOf(name)] ?? '').trim();
+            return rows.map((row) => ({
+                slug: col(row, 'slug').toLowerCase(),
+                related: col(row, 'related')
+                    .split(';')
+                    .map((s) => s.trim().toLowerCase())
+                    .filter(Boolean),
+                text: Object.fromEntries(
+                    LOCALES.map((l) => [
+                        l,
+                        {
+                            word: col(row, `${l}_word`),
+                            definition: col(row, `${l}_definition`),
+                            details: col(row, `${l}_details`),
+                        },
+                    ])
+                ),
+            }));
+        })
+        .filter((d) => d.slug);
+const updates = new Map(readWords(UPDATES_DIR).map((d) => [d.slug, d.text]));
+const definitions = readWords(WORDS_DIR).map((d) =>
+    updates.has(d.slug) ? { ...d, text: updates.get(d.slug) } : d
+);
 
 // --- Places, from the same data file the app uses.
 const us = readJson('../src/lib/places/data/us.json');
@@ -116,6 +168,13 @@ if (ifMissing) {
             db
                 .collection('organizations')
                 .doc(id)
+                .get()
+                .then((s) => s.exists)
+        ),
+        ...definitions.map(({ slug }) =>
+            db
+                .collection('definitions')
+                .doc(slug)
                 .get()
                 .then((s) => s.exists)
         ),
@@ -281,6 +340,7 @@ for (const {
         status: 'active',
         ...(unclaimed ? { claimStatus: 'unclaimed' } : {}),
         memberCount: members.length,
+        missingDetails: missingDetails(org),
         createdBy: createdBy ?? owner,
         createdAt: now,
         updatedAt: now,
@@ -351,8 +411,105 @@ for (const {
     await batch.commit();
 }
 
+// --- Dictionary words from research/definitions/, added by the seeded super
+// user. Those words are reset; words you added in the app are left alone.
+// The document matches saveDefinition in src/lib/definitions/store.ts.
+const admin = users.find((u) => u.platformAdmin)?.uid ?? 'seed-jordan';
+// Batches hold 500 writes; commit every 400 words.
+for (let i = 0; i < definitions.length; i += 400) {
+    const wordBatch = db.batch();
+    for (const definition of definitions.slice(i, i + 400)) {
+        wordBatch.set(db.collection('definitions').doc(definition.slug), {
+            ...definition,
+            resources: [],
+            createdBy: admin,
+            createdAt: now,
+            updatedBy: admin,
+            updatedAt: now,
+        });
+    }
+    await wordBatch.commit();
+}
+
+// --- Comments (src/lib/comments/store.ts) on words that exist (`slug`) and
+// on seeded organizations (`org`, with the organization's `reply`): reset
+// each time, with their votes and reports. Reports on seed-c4 and on one
+// reply give /admin/comments something to review. Rate limits of seeded
+// people are cleared.
+const wordSlugs = new Set(definitions.map((d) => d.slug));
+const seededComments = comments.filter((c) =>
+    c.slug ? wordSlugs.has(c.slug) : orgIds.has(c.org)
+);
+const commentBatch = db.batch();
+for (const c of seededComments) {
+    const target = c.slug
+        ? { kind: 'definition', id: c.slug }
+        : { kind: 'organization', id: c.org };
+    const parent = db
+        .collection(c.slug ? 'definitions' : 'organizations')
+        .doc(target.id);
+    const oldVotes = await parent
+        .collection('commentVotes')
+        .where('commentId', '==', c.id)
+        .get();
+    for (const doc of oldVotes.docs) commentBatch.delete(doc.ref);
+    commentBatch.set(parent.collection('comments').doc(c.id), {
+        uid: c.uid,
+        text: c.text,
+        lang: c.lang,
+        votes: c.voters.length,
+        hidden: false,
+        createdAt: Timestamp.fromMillis(Date.now() - c.daysAgo * 86_400_000),
+        ...(c.reply
+            ? {
+                  reply: {
+                      uid: c.reply.uid,
+                      text: c.reply.text,
+                      lang: c.reply.lang,
+                      byTeam: c.reply.byTeam === true,
+                      hidden: false,
+                      createdAt: Timestamp.fromMillis(
+                          Date.now() - c.reply.daysAgo * 86_400_000
+                      ),
+                  },
+              }
+            : {}),
+    });
+    for (const voter of c.voters)
+        commentBatch.set(
+            parent.collection('commentVotes').doc(`${c.id}_${voter}`),
+            { commentId: c.id, uid: voter, createdAt: now }
+        );
+    for (const part of ['comment', 'reply']) {
+        const list = part === 'reply' ? c.reply?.reports : c.reports;
+        const report = db
+            .collection('commentReports')
+            .doc(
+                `${target.kind}~${target.id}~${c.id}${part === 'reply' ? '~reply' : ''}`
+            );
+        if (list?.length) {
+            const reasons = {};
+            for (const r of list)
+                reasons[r.reason] = (reasons[r.reason] ?? 0) + 1;
+            commentBatch.set(report, {
+                target,
+                commentId: c.id,
+                part,
+                reporters: list.map((r) => r.uid),
+                reasons,
+                count: list.length,
+                firstAt: now,
+                lastAt: now,
+            });
+        } else commentBatch.delete(report);
+    }
+}
+for (const { uid } of users)
+    commentBatch.delete(db.collection('commentLimits').doc(uid));
+await commentBatch.commit();
+
 say(
-    `Seeded ${users.length} accounts and ${organizations.length - skipped} organizations. Password for all: ${password}. Main accounts:`
+    `Seeded ${users.length} accounts, ${organizations.length - skipped} organizations, ${definitions.length} dictionary words and ${seededComments.length} comments. Password for all: ${password}. Main accounts:`
 );
 for (const { email, profile, platformAdmin } of users.filter(
     (u) => u.featured

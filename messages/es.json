@@ -1,20 +1,31 @@
 {
     "Metadata": {
-        "description": "Herramientas y recursos para que las comunidades construyan y sostengan redes de ayuda mutua."
+        "description": "Plataforma gratuita donde los vecinos se organizan. Crea o encuentra un grupo de ayuda mutua cerca de ti, con herramientas para solicitudes, préstamos y eventos.",
+        "homeTitle": "Communalists: herramientas para redes de ayuda mutua",
+        "keywords": "ayuda mutua, red de ayuda mutua, grupos de ayuda mutua, organización comunitaria, cuidado comunitario, vecinos ayudando a vecinos, voluntariado, biblioteca de herramientas"
     },
     "Header": {
         "skipToContent": "Saltar al contenido",
         "home": "Inicio de Communalists",
         "navigation": "Principal"
     },
+    "Nav": {
+        "organizations": "Organizaciones",
+        "dictionary": "Diccionario",
+        "dashboard": "Panel",
+        "menu": "Menú",
+        "closeMenu": "Cerrar menú",
+        "yourOrganizations": "Tus organizaciones",
+        "seeAllOrganizations": "Ver todas tus organizaciones",
+        "account": "Cuenta",
+        "admin": "Administración"
+    },
     "HeaderLinks": {
         "signIn": "Iniciar sesión",
-        "createAccount": "Crear cuenta",
-        "dashboard": "Panel"
+        "createAccount": "Crear cuenta"
     },
     "AccountMenu": {
         "open": "Menú de la cuenta de {name}",
-        "dashboard": "Panel",
         "settings": "Configuración de la cuenta",
         "signOut": "Cerrar sesión",
         "profile": "Tu perfil"
@@ -26,18 +37,19 @@
         "label": "Cambiar tema",
         "light": "Claro",
         "dark": "Oscuro",
-        "system": "Sistema"
+        "system": "Sistema",
+        "heading": "Tema"
     },
     "Home": {
         "banner": {
             "title": "Así se ve la comunidad",
-            "subtitle": "Communalists da a las redes de ayuda mutua las herramientas para organizarse, compartir y cuidarse entre sí.",
+            "subtitle": "Communalists da a las <network>redes de ayuda mutua</network> las herramientas para organizarse, compartir y cuidarse entre sí.",
             "imageAlt": "Una voluntaria entrega un plato de comida caliente a un vecino en una comida comunitaria"
         },
         "cta": "Crear cuenta",
         "about": {
             "title": "Hecho para la ayuda mutua",
-            "body": "Communalists es una plataforma gratuita donde los vecinos se organizan. Crea una organización para tu grupo de ayuda mutua, biblioteca de herramientas o club comunitario, encuentra grupos cerca de ti y gestiónalos con herramientas hechas para cómo funciona realmente la ayuda mutua.",
+            "body": "Communalists es una plataforma gratuita donde los vecinos se organizan. Crea una <org>organización</org> para tu grupo de <mutualAid>ayuda mutua</mutualAid>, <toolLibrary>biblioteca de herramientas</toolLibrary> o club comunitario, encuentra grupos cerca de ti y gestiónalos con herramientas hechas para cómo funciona realmente la ayuda mutua.",
             "languages": "Disponible en English, Español, Tiếng Việt y 中文."
         },
         "features": {
@@ -73,7 +85,8 @@
         "region": "Área de la Bahía de San Francisco",
         "established": "Fundado en 2022",
         "openSource": "Código abierto",
-        "build": "Compilada desde el commit {commit}"
+        "build": "Compilada desde el commit {commit}",
+        "dictionary": "Diccionario"
     },
     "SignUp": {
         "metaTitle": "Crear cuenta",
@@ -95,7 +108,8 @@
             "passwordMismatch": "Las contraseñas no coinciden."
         },
         "haveAccount": "¿Ya tienes una cuenta?",
-        "signIn": "Iniciar sesión"
+        "signIn": "Iniciar sesión",
+        "metaDescription": "Crea una cuenta gratuita de Communalists para iniciar un grupo de ayuda mutua o unirte a uno cerca de ti."
     },
     "SignIn": {
         "metaTitle": "Iniciar sesión",
@@ -114,7 +128,8 @@
             "invalidCredentials": "Ese correo y contraseña no coinciden con ninguna cuenta.",
             "tooManyAttempts": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
             "generic": "Algo salió mal. Inténtalo de nuevo."
-        }
+        },
+        "metaDescription": "Inicia sesión en Communalists para organizarte con tus grupos de ayuda mutua."
     },
     "ForgotPassword": {
         "metaTitle": "Olvidé mi contraseña",
@@ -266,7 +281,8 @@
         "showDetails": "Ver detalles",
         "hideDetails": "Ocultar detalles",
         "readMore": "Leer más",
-        "showLess": "Mostrar menos"
+        "showLess": "Mostrar menos",
+        "metaKeywordsNear": "ayuda mutua {name}, ayuda mutua cerca de {name}, grupos de ayuda mutua en {name}, organizaciones comunitarias {name}, voluntariado en {name}"
     },
     "Organizations": {
         "focusAreas": {
@@ -485,7 +501,10 @@
                 "notConfirmed": "El nombre que escribiste no coincide.",
                 "generic": "Algo salió mal. Inténtalo de nuevo."
             }
-        }
+        },
+        "metaTitle": "{name} en {place}",
+        "metaDescription": "{name} es un grupo con sede en {place}. Descubre en qué trabaja y cómo participar en Communalists.",
+        "metaKeywords": "ayuda mutua {city}, organizaciones comunitarias {city}"
     },
     "Membership": {
         "signInToJoin": "Inicia sesión para unirte",
@@ -545,7 +564,9 @@
             "editProfile": "{actor} cambió {fields}",
             "claim": "{target} reclamó esta organización",
             "deleteOrganization": "{actor} eliminó esta organización",
-            "restoreOrganization": "{actor} recuperó esta organización"
+            "restoreOrganization": "{actor} recuperó esta organización",
+            "replyComment": "{actor} respondió a un comentario",
+            "deleteReply": "{actor} borró una respuesta a un comentario"
         },
         "reasonQuoted": "«{reason}»",
         "reason": "Motivo",
@@ -778,7 +799,7 @@
     "Admin": {
         "metaTitle": "Herramientas de superusuario",
         "title": "Herramientas de superusuario",
-        "intro": "Solicitudes para reclamar o quitar organizaciones sin reclamar, y las organizaciones agregadas para que los vecinos las encuentren. Solo los superusuarios ven esta página.",
+        "intro": "Lo que necesita tu atención, cómo crece Communalists y las herramientas para agregar organizaciones y palabras. Solo los superusuarios ven esta página.",
         "claimsTitle": "Solicitudes de reclamo",
         "claimsHint": "Verifica cada solicitud fuera de la aplicación antes de aprobarla, por ejemplo llamando a la organización a su número público. Las más antiguas primero.",
         "noClaims": "No hay solicitudes por ahora.",
@@ -809,11 +830,9 @@
         },
         "keep": "Todavía no",
         "deny": "Rechazar",
-        "unclaimedTitle": "Organizaciones sin reclamar",
         "addUnclaimed": "Agregar una organización sin reclamar",
-        "noUnclaimed": "Ninguna todavía.",
-        "logTitle": "Acciones recientes de superusuarios",
-        "logHint": "Solo los superusuarios ven esto.",
+        "logTitle": "Decisiones y cambios",
+        "logHint": "Lo más reciente primero. Agregar, editar y descargar se cuentan arriba, porque una importación agrega cientos a la vez.",
         "noLog": "Nada todavía.",
         "log": {
             "createUnclaimed": "{actor} agregó {org}",
@@ -824,7 +843,19 @@
             "deleteUnclaimed": "{actor} eliminó {org}",
             "restoreOrganization": "{actor} recuperó {org}",
             "makeUnclaimed": "{actor} dejó {org} sin reclamar",
-            "exportOrganizations": "{actor} descargó la lista de organizaciones"
+            "exportOrganizations": "{actor} descargó la lista de organizaciones",
+            "createDefinition": "{actor} agregó la palabra {word}",
+            "editDefinition": "{actor} editó la palabra {word}",
+            "backfillDetails": "{actor} completó los datos faltantes de {count, plural, one {# organización} other {# organizaciones}}",
+            "deleteDefinition": "{actor} quitó la palabra {word}",
+            "hideComment": "{actor} ocultó un comentario en {word}",
+            "unhideComment": "{actor} volvió a mostrar un comentario oculto en {word}",
+            "deleteComment": "{actor} borró un comentario en {word}",
+            "dismissCommentReport": "{actor} descartó un reporte de un comentario en {word}",
+            "replyComment": "{actor} respondió a un comentario en {word} en nombre del equipo",
+            "hideReply": "{actor} ocultó una respuesta en {word}",
+            "unhideReply": "{actor} volvió a mostrar una respuesta oculta en {word}",
+            "deleteReply": "{actor} borró una respuesta en {word}"
         },
         "unknownActor": "Un superusuario",
         "errors": {
@@ -885,7 +916,7 @@
             "noName": "Sin nombre",
             "ready": "Lista para agregar",
             "needsAttention": "{count, plural, one {# cosa por corregir} other {# cosas por corregir}}",
-            "rowDetail": "Línea {line} · {place} · /org/{handle}",
+            "rowDetail": "Línea {line} · {place} · /organization/{handle}",
             "edited": "editada aquí",
             "verification": "fuente: {verification}",
             "problemsFor": "Qué corregir en {name}",
@@ -1003,6 +1034,555 @@
                 "sameWebsite": "Abre la página existente. Si es el mismo grupo, quita esta fila.",
                 "invalid": "Edita la fila para elegir un valor de la lista."
             }
+        },
+        "dictionaryTitle": "Diccionario",
+        "manageDictionary": "Administrar el diccionario",
+        "dictionaryHint": "Palabras explicadas en lenguaje sencillo, cada una con su propia página en /dictionary. Solo los superusuarios las agregan y editan.",
+        "asOf": "Cifras a las {time}. Pueden tener hasta una hora de antigüedad.",
+        "onThisPage": "En esta página",
+        "sections": {
+            "attention": "Necesita atención",
+            "overview": "Resumen",
+            "trends": "Tendencias",
+            "organizations": "Organizaciones",
+            "dictionary": "Diccionario",
+            "activity": "Actividad del equipo",
+            "deleted": "Eliminadas recientemente",
+            "analytics": "Visitantes"
+        },
+        "waiting": "{days, plural, one {esperando # día} other {esperando # días}}",
+        "overdue": "Más de {days, plural, one {# día} other {# días}}",
+        "attentionGaps": "{count, plural, one {# página sin reclamar no tiene} other {# páginas sin reclamar no tienen}} ninguna forma de contactar al grupo.",
+        "attentionGapsLink": "Ver cuáles",
+        "attentionClear": "Nada más necesita atención.",
+        "stats": {
+            "organizations": "Organizaciones activas",
+            "organizationsDetail": "{unclaimed} sin reclamar · {archived} eliminadas",
+            "claimed": "Páginas del equipo reclamadas",
+            "claimedValue": "{percent} %",
+            "claimedDetail": "{claimed} de {total} · {last30} en los últimos 30 días",
+            "added": "Organizaciones agregadas, últimos 30 días",
+            "users": "Cuentas",
+            "usersDetail": "{count} nuevas en los últimos 7 días",
+            "newUsers": "Cuentas nuevas, últimos 30 días",
+            "claims": "Solicitudes de reclamo, últimos 30 días",
+            "claimsDetail": "En total: {approved} aprobadas · {denied} rechazadas",
+            "compare": "{trend, select, up {{change} más} down {{change} menos} other {Igual}} que los 30 días anteriores"
+        },
+        "trendsHint": "Cada barra es una semana que termina hoy; la semana más reciente está a la derecha.",
+        "trends": {
+            "users": "Cuentas nuevas por semana",
+            "organizations": "Organizaciones agregadas por semana",
+            "claims": "Solicitudes de reclamo por semana"
+        },
+        "chartSummary": "{total} en las últimas 12 semanas, {latest} en la semana más reciente.",
+        "showTable": "Ver como tabla",
+        "weekColumn": "Semana que empieza",
+        "countColumn": "Cantidad",
+        "organizationsHint": "Agrega organizaciones una por una o desde un CSV, y encuentra las páginas a las que aún les faltan datos.",
+        "downloadExisting": "Descargar las organizaciones que ya están en Communalists (CSV)",
+        "searchLabel": "Buscar una organización",
+        "searchHint": "Escribe el comienzo de su nombre o de su dirección (identificador). Busca en todas las organizaciones, incluidas las sin reclamar y las eliminadas.",
+        "searchButton": "Buscar",
+        "searchResults": "{count, plural, =0 {Ninguna organización empieza con “{query}”.} one {# organización empieza con “{query}”.} other {# organizaciones empiezan con “{query}”.}}",
+        "searchMore": "Se muestran las primeras {count}. Escribe más para acotar.",
+        "clearSearch": "Borrar búsqueda",
+        "gapsTitle": "Páginas sin reclamar a las que les faltan datos",
+        "gapsHint": "Investígalas y complétalas para que los vecinos puedan contactar al grupo. Las más antiguas primero. Una página sale de la lista cuando tiene el dato.",
+        "gapsFilter": "Falta",
+        "gaps": {
+            "contact": "Sin forma de contacto",
+            "phone": "Sin teléfono",
+            "email": "Sin correo",
+            "website": "Sin sitio web",
+            "address": "Sin dirección"
+        },
+        "gapsShowing": "Se muestran {shown} de {count}",
+        "noGaps": "Ninguna. Todas las páginas sin reclamar tienen este dato.",
+        "missingList": "Falta: {list}",
+        "recentTitle": "Agregadas recientemente",
+        "noRecent": "Todavía no hay organizaciones.",
+        "addedOn": "Agregada el {date}",
+        "statusUnclaimed": "Sin reclamar",
+        "statusDeleted": "Eliminada",
+        "edit": "Editar",
+        "editFor": "Editar {name}",
+        "addWord": "Agregar una palabra",
+        "importWords": "Importar palabras desde un CSV",
+        "uploadDefinition": "Subir una definición",
+        "wordCount": "{count, plural, one {# palabra} other {# palabras}}",
+        "activityHint": "Lo que hicieron los superusuarios en los últimos 30 días. Solo los superusuarios ven esto.",
+        "activity": {
+            "added": "Organizaciones agregadas",
+            "edited": "Ediciones de páginas sin reclamar",
+            "claims": "Solicitudes decididas",
+            "lifecycle": "Eliminadas, restauradas o dejadas sin reclamar",
+            "words": "Palabras agregadas, editadas o quitadas",
+            "exports": "Descargas de la lista de organizaciones",
+            "comments": "Comentarios ocultados, borrados o reportes descartados"
+        },
+        "gapNames": {
+            "phone": "teléfono",
+            "email": "correo",
+            "website": "sitio web",
+            "address": "dirección"
+        },
+        "analytics": {
+            "hint": "De Umami, de los últimos 30 días. No se cuentan los visitantes que activan No rastrear, y no se identifica a nadie.",
+            "asOf": "Cifras de Umami a las {time}.",
+            "notConfigured": "Sin conectar. Configura UMAMI_API_KEY en el servidor para ver visitantes, las organizaciones más vistas y las ciudades más buscadas.",
+            "error": "No se pudieron cargar las cifras de Umami. Inténtalo más tarde o consulta los informes en cloud.umami.is.",
+            "visitors": "Visitantes, últimos 30 días",
+            "pageviews": "Páginas vistas, últimos 30 días",
+            "orgsTitle": "Organizaciones más vistas",
+            "orgsEmpty": "Todavía nadie ha visto páginas de organizaciones.",
+            "views": "{count, plural, one {# visita} other {# visitas}}",
+            "citiesTitle": "Ciudades más buscadas",
+            "citiesHint": "Cada cambio en los filtros cuenta como una búsqueda. Cerca es cuántas organizaciones locales muestra Buscar allí hoy a menos de {radius} millas, sin filtros. Las ciudades con menos de {few} necesitan investigación.",
+            "citiesEmpty": "Todavía no hay búsquedas.",
+            "nearby": "{count, plural, =0 {Ninguna cerca} one {# cerca} other {# cerca}}",
+            "needsResearch": "Necesita investigación",
+            "unknownOrganization": "Ya no está en Communalists"
+        },
+        "backfill": {
+            "title": "Organizaciones anteriores",
+            "hint": "Las organizaciones agregadas antes de que se registraran los datos faltantes todavía no aparecen en las cifras de arriba. Completarlos lee cada organización una vez y no cambia nada de lo que se ve. Solo hace falta hacerlo una vez.",
+            "button": "Completar datos faltantes",
+            "pending": "Completando…",
+            "done": "Listo: se revisaron {read} y se actualizaron {updated}.",
+            "error": "No se pudieron completar los datos faltantes. Inténtalo de nuevo."
+        },
+        "unavailable": "No se pudo cargar esta sección. Inténtalo de nuevo en unos minutos.",
+        "attentionReports": "{count, plural, one {Se reportó # comentario.} other {Se reportaron # comentarios.}}",
+        "attentionReportsLink": "Revisar comentarios reportados",
+        "reportedComments": "Comentarios reportados"
+    },
+    "Dictionary": {
+        "title": "Diccionario",
+        "intro": "Palabras que verás en Communalists y en el trabajo de ayuda mutua, explicadas en lenguaje sencillo.",
+        "back": "Diccionario: {letter}",
+        "eyebrow": "Diccionario",
+        "notTranslated": "Esta palabra todavía no está escrita en {language}, así que se muestra en {shown}.",
+        "related": "Palabras relacionadas",
+        "resources": "Para saber más",
+        "resourceTypes": {
+            "book": "Libro",
+            "video": "Video",
+            "article": "Artículo",
+            "link": "Enlace"
+        },
+        "by": "de {name}",
+        "share": {
+            "copy": "Copiar enlace",
+            "copied": "Enlace copiado.",
+            "failed": "No se pudo copiar. Este es el enlace:"
+        },
+        "inline": {
+            "readMore": "Selecciona para leer más"
+        },
+        "letters": "Letras",
+        "lettersHint": "Elige una letra para ver las palabras que empiezan con ella.",
+        "letterTitle": "Diccionario de ayuda mutua: {letter}",
+        "count": "{count, plural, =0 {Sin palabras} one {# palabra} other {# palabras}}",
+        "emptyLetter": "Todavía no hay palabras que empiecen con {letter}.",
+        "noWordsShort": "(sin palabras)",
+        "metaTitleWord": "{word}: significado y definición",
+        "metaKeywordsWord": "{word}, significado de {word}, definición de {word}, qué es {word}",
+        "setName": "Diccionario de ayuda mutua de Communalists",
+        "otherLetters": "Otras letras",
+        "previousLetter": "Letra anterior: {letter}",
+        "nextLetter": "Letra siguiente: {letter}"
+    },
+    "Discussion": {
+        "title": "Conversación",
+        "count": "{count, plural, =0 {Aún no hay comentarios} one {# comentario} other {# comentarios}}",
+        "intro": "¿Hay una forma más clara de explicar esta palabra, o algo que la definición no dice? Cuéntalo aquí. Vota a favor de los comentarios que más ayuden. Los leemos para mejorar la definición.",
+        "joinTitle": "Únete a la conversación",
+        "joinBody": "Crea una cuenta gratis para comentar y votar. Toma un minuto, y también podrás unirte a organizaciones de ayuda mutua o crear una.",
+        "signUp": "Crear una cuenta",
+        "signIn": "Iniciar sesión",
+        "setupBody": "Termina de configurar tu cuenta para unirte a la conversación. Necesitamos tu nombre para mostrarlo en tus comentarios.",
+        "setup": "Terminar la configuración",
+        "formLabel": "Tu comentario",
+        "formHint": "Tu nombre y tu comentario son públicos. Solo texto. Una línea en blanco empieza un párrafo nuevo.",
+        "charactersLeft": "{count, plural, one {Queda # carácter} other {Quedan # caracteres}}",
+        "tooLongBy": "{count, plural, one {# carácter de más} other {# caracteres de más}}",
+        "language": "Idioma de tu comentario",
+        "post": "Publicar comentario",
+        "posting": "Publicando…",
+        "sortLabel": "Ordenar comentarios",
+        "sortTop": "Más votados",
+        "sortNewest": "Más recientes",
+        "empty": "Aún no hay comentarios. Sé la primera persona en decir qué significa esta palabra para ti.",
+        "showMore": "Ver más comentarios",
+        "loadingMore": "Cargando…",
+        "tryAgain": "Intentar cargar más otra vez",
+        "formerMember": "Antiguo miembro",
+        "you": "(tú)",
+        "hiddenText": "Ocultado por un moderador.",
+        "hiddenModerator": "Ocultado por un moderador. Solo los superusuarios ven el texto de abajo.",
+        "votes": "{count, plural, =0 {Sin votos} one {# voto} other {# votos}}",
+        "upVote": "Votar a favor",
+        "upVoteLabel": "Votar a favor del comentario de {name} ({count, plural, one {# voto} other {# votos}})",
+        "report": "Reportar",
+        "reportLabel": "Reportar el comentario de {name}",
+        "reportTitle": "¿Reportar este comentario?",
+        "reportBody": "Un superusuario lo revisará y podrá ocultarlo o borrarlo. No se le dice a quien lo escribió quién lo reportó.",
+        "reportReason": "¿Qué problema tiene?",
+        "reportReasonMissing": "Elige qué problema tiene.",
+        "reasons": {
+            "spam": "Spam o publicidad",
+            "harassment": "Acoso u odio",
+            "personalInfo": "Comparte información personal de alguien",
+            "misinformation": "Falso o engañoso",
+            "other": "Otra cosa"
+        },
+        "reportSend": "Enviar reporte",
+        "cancel": "Cancelar",
+        "delete": "Borrar",
+        "deleteLabel": "Borrar el comentario de {name}",
+        "deleteMineLabel": "Borrar tu comentario",
+        "deleteTitleMine": "¿Borrar tu comentario?",
+        "deleteTitleOther": "¿Borrar el comentario de {name}?",
+        "deleteBodyMine": "Se quita para todos, con sus votos. No se puede deshacer.",
+        "deleteBodyModerator": "Se quita para todos, con sus votos. No se puede deshacer, pero el registro de superusuarios guarda una copia.",
+        "deleteConfirm": "Borrar",
+        "hide": "Ocultar",
+        "hideLabel": "Ocultar el comentario de {name}",
+        "unhide": "Mostrar de nuevo",
+        "unhideLabel": "Mostrar de nuevo el comentario de {name}",
+        "announce": {
+            "posted": "Comentario publicado.",
+            "voted": "Votaste a favor. Ahora tiene {count, plural, one {# voto} other {# votos}}.",
+            "unvoted": "Quitaste tu voto. {count, plural, =0 {Ahora no tiene votos} one {Ahora tiene # voto} other {Ahora tiene # votos}}.",
+            "reported": "Gracias por reportarlo. Un superusuario lo revisará.",
+            "alreadyReported": "Ya reportaste este comentario. Gracias.",
+            "deleted": "Comentario borrado.",
+            "hidden": "Comentario ocultado.",
+            "unhidden": "Comentario visible de nuevo.",
+            "sortedTop": "Se muestran primero los comentarios más votados.",
+            "sortedNewest": "Se muestran primero los comentarios más recientes.",
+            "loaded": "{count, plural, =0 {No hay más comentarios.} one {Se muestra # comentario más.} other {Se muestran # comentarios más.}}",
+            "languageOne": "Se muestran comentarios en {language}: {count, plural, =0 {aún ninguno} one {#} other {#}}.",
+            "languageAll": "Se muestran comentarios en todos los idiomas: {count}.",
+            "replied": "Respuesta publicada.",
+            "replyDeleted": "Respuesta borrada.",
+            "replyHidden": "Respuesta ocultada.",
+            "replyUnhidden": "Respuesta visible de nuevo."
+        },
+        "errors": {
+            "textRequired": "Escribe tu comentario primero.",
+            "textTooLong": "Acorta tu comentario a {max} caracteres o menos.",
+            "langInvalid": "Elige el idioma de tu comentario.",
+            "signedOut": "Se cerró tu sesión. Inicia sesión de nuevo para continuar.",
+            "setupNeeded": "Primero termina de configurar tu cuenta.",
+            "notAllowed": "No puedes hacer eso.",
+            "notFound": "Ese comentario ya no está. Puede que lo hayan borrado.",
+            "rateLimited": "Publicaste 5 comentarios en la última hora, el máximo permitido. Puedes publicar de nuevo a las {time}.",
+            "ownComment": "No puedes votar ni reportar tu propio comentario.",
+            "hidden": "Un moderador ocultó ese comentario.",
+            "invalid": "Algo estaba mal en esa solicitud. Recarga la página e inténtalo de nuevo.",
+            "generic": "Algo salió mal. Inténtalo de nuevo.",
+            "loadFailed": "No se pudieron cargar los comentarios. Revisa tu conexión e inténtalo de nuevo.",
+            "alreadyReplied": "Este comentario ya tiene una respuesta. Bórrala primero para escribir otra.",
+            "replyTextRequired": "Escribe tu respuesta primero.",
+            "replyTextTooLong": "Acorta tu respuesta a {max} caracteres o menos."
+        },
+        "languageLabel": "Ver comentarios en",
+        "languageOne": "{language} ({count})",
+        "languageAll": "Todos los idiomas ({count})",
+        "emptyLanguage": "Aún no hay comentarios en {language}.",
+        "seeOtherLanguages": "{count, plural, one {Ver # comentario en otros idiomas} other {Ver # comentarios en otros idiomas}}",
+        "writtenIn": "Escrito en {language}",
+        "changeLanguage": "Cambiar",
+        "changeLanguageLabel": "Cambiar el idioma de tu comentario",
+        "unavailable": "Los comentarios no se pudieron cargar ahora. Inténtalo de nuevo en unos minutos.",
+        "organization": {
+            "intro": "Cuéntales a otras personas cómo es este grupo: la ayuda que recibiste, el voluntariado que hiciste, elogios, preocupaciones o preguntas. Vota a favor de los comentarios con los que estás de acuerdo. La organización puede responder a cada comentario.",
+            "empty": "Todavía no hay comentarios. ¿Has trabajado con este grupo? Sé la primera persona en contar cómo fue."
+        },
+        "reply": "Responder",
+        "replyLabel": "Responder al comentario de {name} como {organization}",
+        "replyFrom": "Respuesta de {name}",
+        "replyFromTeam": "Respuesta del equipo de Communalists",
+        "teamName": "el equipo de Communalists",
+        "replyFormLabel": "Tu respuesta como {from}",
+        "replyFormHint": "Es pública y aparece como de {from}, no de ti. Solo texto. Una respuesta por comentario: para cambiarla, bórrala y escribe otra.",
+        "replyLanguage": "Idioma de tu respuesta",
+        "replyPost": "Publicar respuesta",
+        "replyHiddenText": "Respuesta ocultada por un moderador.",
+        "replyHiddenModerator": "Respuesta ocultada por un moderador. Solo los superusuarios ven el texto de abajo.",
+        "reportReplyLabel": "Denunciar la respuesta al comentario de {name}",
+        "reportReplyTitle": "¿Denunciar esta respuesta?",
+        "hideReplyLabel": "Ocultar la respuesta al comentario de {name}",
+        "unhideReplyLabel": "Volver a mostrar la respuesta al comentario de {name}",
+        "deleteReplyLabel": "Borrar la respuesta al comentario de {name}",
+        "deleteReplyTitle": "¿Borrar esta respuesta?",
+        "deleteReplyBody": "Se quita para todos. Después puedes escribir otra.",
+        "deleteReplyBodyModerator": "Se quita para todos. No se puede deshacer, pero el registro de superusuarios guarda una copia.",
+        "replyChangeLanguageLabel": "Cambiar el idioma de tu respuesta"
+    },
+    "AdminComments": {
+        "metaTitle": "Comentarios reportados",
+        "title": "Comentarios reportados",
+        "intro": "Comentarios que la gente reportó, los más reportados primero. Oculta o borra un comentario que rompe las reglas, o descarta el reporte si está bien. Cada acción queda en el registro de superusuarios.",
+        "backToAdmin": "Herramientas de superusuario",
+        "listTitle": "Por revisar",
+        "empty": "No hay comentarios reportados. Nada que revisar.",
+        "on": "En <word></word>",
+        "byOn": "De {name}, {date}",
+        "votes": "{count, plural, =0 {sin votos} one {# voto} other {# votos}}",
+        "gone": "Este comentario ya se borró. Descarta el reporte para quitarlo.",
+        "formerMember": "Antiguo miembro",
+        "reports": "{count, plural, one {Reportado una vez} other {Reportado # veces}}",
+        "reasonCount": "{reason}: {count}",
+        "reasons": {
+            "spam": "Spam o publicidad",
+            "harassment": "Acoso u odio",
+            "personalInfo": "Comparte información personal de alguien",
+            "misinformation": "Falso o engañoso",
+            "other": "Otra cosa"
+        },
+        "hide": "Ocultar",
+        "hideLabel": "Ocultar el comentario de {name}",
+        "delete": "Borrar",
+        "deleteLabel": "Borrar el comentario de {name}",
+        "deleteTitle": "¿Borrar el comentario de {name}?",
+        "deleteBody": "Se quita para todos, con sus votos. No se puede deshacer, pero el registro de superusuarios guarda una copia.",
+        "dismiss": "Descartar reporte",
+        "dismissLabel": "Descartar el reporte del comentario de {name}",
+        "hidden": "Comentario ocultado. Su reporte está cerrado.",
+        "deleted": "Comentario borrado. Su reporte está cerrado.",
+        "dismissed": "Reporte descartado. El comentario sigue igual.",
+        "replyByOn": "Respuesta de {from} al comentario de {name}, {date}",
+        "hideLabelReply": "Ocultar la respuesta de {from} a {name}",
+        "deleteLabelReply": "Borrar la respuesta de {from} a {name}",
+        "deleteTitleReply": "¿Borrar la respuesta de {from}?",
+        "deleteBodyReply": "Se quita para todos; el comentario se queda. No se puede deshacer, pero el registro de superusuarios guarda una copia.",
+        "dismissLabelReply": "Descartar la denuncia sobre la respuesta de {from} a {name}",
+        "goneReply": "Esta respuesta ya se borró. Descarta la denuncia para quitarla.",
+        "hiddenReply": "Respuesta ocultada. Su denuncia está cerrada.",
+        "deletedReply": "Respuesta borrada. Su denuncia está cerrada.",
+        "dismissedReply": "Denuncia descartada. La respuesta se queda como está."
+    },
+    "AdminDefinitions": {
+        "metaTitle": "Diccionario",
+        "title": "Diccionario",
+        "intro": "Todas las palabras del diccionario. Cada una tiene su propia página que cualquiera puede abrir y compartir. Los cambios quedan en el registro de superusuarios.",
+        "backToAdmin": "Herramientas de superusuario",
+        "add": "Agregar una palabra",
+        "viewDictionary": "Ver el diccionario",
+        "pageOnly": "Solo los superusuarios ven esto.",
+        "saved": "Se guardó {word}.",
+        "viewWord": "Ver la página de {word}",
+        "listTitle": "Palabras",
+        "empty": "Todavía no hay palabras. Agrega la primera.",
+        "updatedOn": "Actualizada el {date}",
+        "edit": "Editar",
+        "editWord": "Editar {word}",
+        "view": "Ver",
+        "backToList": "Diccionario",
+        "backToWord": "Volver a {word}",
+        "addTitle": "Agregar una palabra",
+        "editTitle": "Editar “{word}”",
+        "formIntro": "Escribe la palabra en los cuatro idiomas. Usa oraciones cortas y palabras comunes, y explícala para alguien que nunca la ha oído.",
+        "slug": "Dirección",
+        "slugHint": "Letras minúsculas, números y guiones, como mutual-aid. Es la misma en todos los idiomas y no se puede cambiar después, para que los enlaces compartidos sigan funcionando.",
+        "slugFixed": "La dirección no se puede cambiar, para que los enlaces compartidos sigan funcionando.",
+        "word": "Palabra",
+        "definition": "Definición corta",
+        "definitionHint": "Una o dos oraciones, hasta {max} caracteres. Se muestra arriba en la página y dondequiera que la palabra esté marcada.",
+        "details": "Más información (opcional)",
+        "detailsHint": "Solo se muestra en la página de la palabra. Deja una línea en blanco entre párrafos.",
+        "related": "Palabras relacionadas",
+        "relatedHint": "Se enlazan al final de la página. Hasta {max}.",
+        "relatedPicker": {
+            "search": "Busca una palabra para agregar",
+            "placeholder": "Escribe una palabra",
+            "chosen": "Enlazadas: {count} de {max}",
+            "none": "Ninguna todavía. Busca abajo para agregar una.",
+            "remove": "Quitar {word}",
+            "noMatch": "Ninguna otra palabra coincide con “{query}”.",
+            "atMax": "Hay {max} palabras enlazadas, el máximo. Quita una para agregar otra.",
+            "added": "Se agregó {word}. {count} de {max} enlazadas.",
+            "removed": "Se quitó {word}. {count} de {max} enlazadas."
+        },
+        "fieldIn": "{field} ({language})",
+        "summary": "{count, plural, one {Corrige # problema antes de guardar:} other {Corrige # problemas antes de guardar:}}",
+        "saving": "Guardando…",
+        "create": "Agregar palabra",
+        "save": "Guardar cambios",
+        "errors": {
+            "slugRequired": "Escribe una dirección.",
+            "slugFormat": "Usa de 2 a {max} letras minúsculas, números y guiones sueltos, como mutual-aid.",
+            "slugReserved": "El sitio ya usa esa dirección. Elige otra.",
+            "wordRequired": "Escribe la palabra.",
+            "wordTooLong": "Usa {max} caracteres o menos.",
+            "definitionRequired": "Escribe una definición corta.",
+            "definitionTooLong": "Usa {max} caracteres o menos.",
+            "detailsTooLong": "Usa {max} caracteres o menos.",
+            "relatedTooMany": "Elige {max} palabras relacionadas o menos."
+        },
+        "formErrors": {
+            "slugTaken": "Ya hay una palabra con esa dirección. Edita esa palabra o elige otra dirección.",
+            "notFound": "Esa palabra ya no existe. Vuelve al diccionario para ver lo más reciente.",
+            "notAllowed": "Solo los superusuarios pueden hacer esto.",
+            "generic": "Algo salió mal. Inténtalo de nuevo."
+        },
+        "importCsv": "Importar desde un CSV",
+        "imported": "{count, plural, =0 {No se agregó ninguna palabra.} one {Se agregó # palabra.} other {Se agregaron # palabras.}}",
+        "import": {
+            "title": "Importar palabras",
+            "intro": "Agrega muchas palabras a la vez desde un CSV. Primero se revisa cada fila y no se agrega nada hasta que elijas Agregar. Las palabras que ya están en el diccionario se omiten y nunca se cambian: edítalas una por una.",
+            "formatTitle": "El archivo",
+            "formatSlug": "slug: la dirección de la palabra, como mutual-aid. Letras minúsculas, números y guiones.",
+            "formatLanguages": "Para cada idioma (en, es, vi, zh): en_word y en_definition son obligatorias, en_details es opcional. Una línea en blanco dentro de una celda empieza un párrafo nuevo.",
+            "formatRelated": "related (opcional): direcciones de otras palabras separadas por punto y coma, como solidarity;organizer. Deben estar en el diccionario o en el mismo archivo.",
+            "formatLimit": "Hasta {max} filas. Guárdalo desde tu hoja de cálculo como CSV (UTF-8).",
+            "template": "Descargar la plantilla",
+            "file": "Archivo CSV",
+            "fileHint": "Revisar no agrega nada.",
+            "check": "Revisar archivo",
+            "checking": "Revisando…",
+            "summary": "{file}: {total, plural, one {# fila} other {# filas}}. {ready} listas, {exists} ya en el diccionario, {problems} por corregir.",
+            "ignored": "Estas columnas no se usan y se dejaron fuera: {columns}",
+            "add": "{count, plural, one {Agregar # palabra} other {Agregar # palabras}}",
+            "confirmTitle": "{count, plural, one {¿Agregar # palabra?} other {¿Agregar # palabras?}}",
+            "confirmBody": "Aparecen en /dictionary de inmediato, en todos los idiomas. Se omiten las filas que ya están en el diccionario o que tienen problemas. No se puede deshacer, pero puedes editar cada palabra después.",
+            "notYet": "Todavía no",
+            "adding": "Agregando…",
+            "confirm": "{count, plural, one {Agregar # palabra} other {Agregar # palabras}}",
+            "noneReady": "Ninguna fila está lista para agregar. Corrige el archivo y revísalo de nuevo.",
+            "noWord": "Sin palabra en inglés",
+            "line": "Línea {line}",
+            "status": {
+                "ready": "Lista",
+                "exists": "Ya está en el diccionario: se omite",
+                "problems": "{count, plural, one {# problema} other {# problemas}}"
+            },
+            "problems": {
+                "slugRepeated": "Una fila anterior tiene la misma dirección.",
+                "relatedUnknown": "No está en el diccionario ni en este archivo: {value}"
+            },
+            "fileProblems": {
+                "empty": "El archivo no tiene filas.",
+                "tooBig": "El archivo es demasiado grande. Debe pesar menos de 500 KB.",
+                "tooManyRows": "El archivo tiene más de {max} filas. Divídelo en archivos más pequeños.",
+                "missingColumns": "Al archivo le faltan estas columnas: {columns}. Empieza desde la plantilla.",
+                "noFile": "Elige un archivo CSV.",
+                "notAllowed": "Solo los superusuarios pueden hacer esto.",
+                "generic": "Algo salió mal. Inténtalo de nuevo."
+            },
+            "addErrors": {
+                "nothingReady": "Ninguna fila estaba lista, así que no se agregó nada.",
+                "changed": "El diccionario cambió mientras revisabas, así que no se agregó nada. Revisa el archivo de nuevo.",
+                "notAllowed": "Solo los superusuarios pueden hacer esto.",
+                "generic": "Algo salió mal. Inténtalo de nuevo."
+            }
+        },
+        "upload": {
+            "title": "Subir una definición",
+            "intro": "Reemplaza el texto de una palabra, en todos los idiomas, con el texto de un archivo. Verás cada cambio antes de guardar nada. Las palabras relacionadas no cambian.",
+            "formatTitle": "El archivo",
+            "formatOneRow": "Un CSV con una palabra: las mismas columnas que la importación (slug, luego en_word, en_definition y en_details, y lo mismo para es, vi y zh) y una fila.",
+            "formatSlug": "slug debe ser una palabra que ya está en el diccionario. Para agregar una palabra nueva, impórtala.",
+            "formatRelated": "La columna related se ignora. Cambia las palabras relacionadas en el formulario de edición.",
+            "file": "Archivo CSV",
+            "fileHint": "Revisar no cambia nada.",
+            "check": "Revisar archivo",
+            "checking": "Revisando…",
+            "status": {
+                "ready": "{file}: {count, plural, one {# cambio} other {# cambios}} en {word}.",
+                "unchanged": "{file} coincide con {word} tal como está. No hay nada que cambiar.",
+                "notFound": "Ninguna palabra tiene la dirección {slug}. Para agregarla, importa el archivo.",
+                "problems": "{file}: {count, plural, one {# problema} other {# problemas}} que corregir antes de usarlo."
+            },
+            "relatedIgnored": "El archivo incluye palabras relacionadas. Se ignoran: la palabra conserva las que ya tiene.",
+            "ignored": "Estas columnas no se usan y se dejaron fuera: {columns}",
+            "goToImport": "Importar palabras desde un CSV",
+            "changesTitle": "Qué cambia",
+            "now": "Ahora",
+            "new": "Nuevo",
+            "empty": "(vacío)",
+            "update": "Actualizar {word}",
+            "confirmTitle": "¿Actualizar {word}?",
+            "confirmBody": "{count, plural, one {# campo cambia} other {# campos cambian}} de inmediato, en la página de la palabra y donde esté marcada. No se puede deshacer, pero puedes editar la palabra después.",
+            "notYet": "Todavía no",
+            "updating": "Actualizando…",
+            "fileProblems": {
+                "empty": "El archivo no tiene filas.",
+                "missingColumns": "Al archivo le faltan estas columnas: {columns}. Usa la plantilla de la importación.",
+                "notOneRow": "El archivo debe tener exactamente una palabra: un encabezado y una fila. Para agregar muchas palabras, impórtalas.",
+                "tooBig": "El archivo es demasiado grande. Debe pesar menos de 500 KB.",
+                "noFile": "Elige un archivo CSV.",
+                "notAllowed": "Solo los superusuarios pueden hacer esto.",
+                "generic": "Algo salió mal. Inténtalo de nuevo.",
+                "otherWord": "Este archivo es para {fileSlug}, no para {slug}. Súbelo en la página de edición de esa palabra o en Subir una definición."
+            },
+            "saveErrors": {
+                "changed": "La palabra cambió después de revisar el archivo, así que no se guardó nada. Revisa el archivo de nuevo para ver lo más reciente.",
+                "notAllowed": "Solo los superusuarios pueden hacer esto.",
+                "generic": "Algo salió mal. Inténtalo de nuevo."
+            }
+        },
+        "removed": "Se quitó {slug} del diccionario.",
+        "replace": {
+            "title": "Reemplazar desde un archivo",
+            "intro": "Sube un CSV de una sola palabra para {word} y reemplaza su texto en todos los idiomas. Verás cada cambio antes de que se guarde nada. Las palabras relacionadas no cambian, y lo que hayas escrito en el formulario de abajo sin guardar se pierde.",
+            "formTitle": "Editar a mano"
+        },
+        "remove": {
+            "title": "Quitar esta palabra",
+            "intro": "Quita {word} del diccionario para siempre.",
+            "button": "Quitar {word}",
+            "confirmTitle": "¿Quitar {word}?",
+            "confirmBody": "Su página deja de funcionar y se quita de las palabras relacionadas de otras palabras. Donde nuestras páginas la marcan, se muestra como texto normal. Su conversación también se borra. No se puede deshacer, pero el registro de superusuarios guarda una copia de su texto.",
+            "notYet": "Todavía no",
+            "removing": "Quitando…",
+            "errors": {
+                "notFound": "Esa palabra ya no está. Vuelve al diccionario para ver lo más reciente.",
+                "notAllowed": "Solo los superusuarios pueden hacer esto.",
+                "generic": "Algo salió mal. Inténtalo de nuevo."
+            }
+        }
+    },
+    "Errors": {
+        "title": "Algo salió mal",
+        "body": "Esta página no se pudo cargar. Puede ser un problema de nuestra parte. Inténtalo de nuevo o vuelve en unos minutos.",
+        "retry": "Intentar de nuevo",
+        "home": "Ir a la página de inicio",
+        "reference": "Referencia: {digest}"
+    },
+    "NotFound": {
+        "eyebrow": "Página no encontrada",
+        "tried": "Intentaste:",
+        "general": {
+            "metaTitle": "Página no encontrada",
+            "title": "No encontramos esa página",
+            "body": "Puede que la dirección tenga un error, o que la página se haya movido o eliminado.",
+            "home": "Ir a la página de inicio",
+            "organizations": "Buscar organizaciones",
+            "dictionary": "Ver el diccionario"
+        },
+        "word": {
+            "metaTitle": "Palabra no encontrada",
+            "title": "Aún no hay ninguna palabra “{word}” en el diccionario",
+            "body": "Revisa cómo está escrita o explora el diccionario. Agregamos palabras nuevas con el tiempo.",
+            "suggestions": "¿Quisiste decir…?",
+            "browse": "Ver el diccionario"
+        },
+        "organization": {
+            "metaTitle": "Organización no encontrada",
+            "title": "No encontramos ninguna organización en “{handle}”",
+            "body": "Las organizaciones pueden cambiar su dirección, y una dirección antigua deja de funcionar después de un tiempo. También puede que la hayan quitado. Búscala por nombre o lugar.",
+            "find": "Buscar organizaciones",
+            "create": "Crear una organización"
+        },
+        "person": {
+            "metaTitle": "Perfil no encontrado",
+            "title": "No encontramos a nadie con el nombre de usuario “{username}”",
+            "body": "Las personas pueden cambiar su nombre de usuario, y el anterior deja de funcionar. Revisa cómo está escrito o búscala a través de una organización a la que pertenezca.",
+            "find": "Buscar organizaciones"
         }
     }
 }

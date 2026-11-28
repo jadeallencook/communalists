@@ -8,7 +8,7 @@ import { useSignUpForm } from '@/hooks/use-sign-up-form';
 import { signUp } from './actions';
 
 /** Connects the presentational SignUpForm to the signUp server action. */
-export function SignUpFormContainer() {
+export function SignUpFormContainer({ next }: { next?: string }) {
     const locale = useLocale();
     const { state, formAction, pending } = useSignUpForm(signUp);
 
@@ -18,6 +18,7 @@ export function SignUpFormContainer() {
             formAction={formAction}
             pending={pending}
             locale={locale}
+            next={next}
         />
     );
 }

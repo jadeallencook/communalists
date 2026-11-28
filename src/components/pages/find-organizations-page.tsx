@@ -13,6 +13,7 @@ import type {
 import type { ReachScope } from '@/lib/organizations/options';
 import { cn } from '@/lib/utils';
 import { track } from '@/lib/analytics';
+import { NEW_ORGANIZATION_PATH } from '@/lib/paths';
 
 export interface FindOrganizationsPageProps {
     /** The filters form (OrganizationFilters, wired by a container). */
@@ -105,7 +106,7 @@ export function FindOrganizationsPage({
                             </span>
                             <Button asChild variant="outline" size="sm">
                                 <Link
-                                    href="/org/new"
+                                    href={NEW_ORGANIZATION_PATH}
                                     {...track('create-organization', {
                                         from: 'find',
                                     })}

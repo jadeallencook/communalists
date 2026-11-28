@@ -1,20 +1,31 @@
 {
     "Metadata": {
-        "description": "Tools and resources for communities to build and sustain mutual aid networks."
+        "description": "A free platform where neighbors organize. Start or find a mutual aid group near you and run it with tools for requests, lending and events.",
+        "homeTitle": "Communalists: Tools for Mutual Aid Networks",
+        "keywords": "mutual aid, mutual aid network, mutual aid groups, community organizing, community care, neighbors helping neighbors, volunteer, tool library"
     },
     "Header": {
         "skipToContent": "Skip to content",
         "home": "Communalists home",
         "navigation": "Main"
     },
+    "Nav": {
+        "organizations": "Organizations",
+        "dictionary": "Dictionary",
+        "dashboard": "Dashboard",
+        "menu": "Menu",
+        "closeMenu": "Close menu",
+        "yourOrganizations": "Your organizations",
+        "seeAllOrganizations": "See all your organizations",
+        "account": "Account",
+        "admin": "Admin"
+    },
     "HeaderLinks": {
         "signIn": "Sign in",
-        "createAccount": "Create account",
-        "dashboard": "Dashboard"
+        "createAccount": "Create account"
     },
     "AccountMenu": {
         "open": "Account menu for {name}",
-        "dashboard": "Dashboard",
         "settings": "Account settings",
         "signOut": "Sign out",
         "profile": "Your profile"
@@ -26,18 +37,19 @@
         "label": "Toggle theme",
         "light": "Light",
         "dark": "Dark",
-        "system": "System"
+        "system": "System",
+        "heading": "Theme"
     },
     "Home": {
         "banner": {
             "title": "This is what community looks like",
-            "subtitle": "Communalists gives mutual aid networks the tools to organize, share and take care of each other.",
+            "subtitle": "Communalists gives <network>mutual aid networks</network> the tools to organize, share and take care of each other.",
             "imageAlt": "A volunteer hands a plate of hot food to a neighbor at a community meal"
         },
         "cta": "Create account",
         "about": {
             "title": "Built for mutual aid",
-            "body": "Communalists is a free platform where neighbors organize. Start an organization for your mutual aid group, tool library or community club, find groups near you, and run them with tools made for how mutual aid actually works.",
+            "body": "Communalists is a free platform where neighbors organize. Start an <org>organization</org> for your <mutualAid>mutual aid</mutualAid> group, <toolLibrary>tool library</toolLibrary> or community club, find groups near you, and run them with tools made for how mutual aid actually works.",
             "languages": "Available in English, Español, Tiếng Việt and 中文."
         },
         "features": {
@@ -73,10 +85,11 @@
         "region": "San Francisco Bay Area",
         "established": "Established 2022",
         "openSource": "Open source",
-        "build": "Built from commit {commit}"
+        "build": "Built from commit {commit}",
+        "dictionary": "Dictionary"
     },
     "SignUp": {
-        "metaTitle": "Create account",
+        "metaTitle": "Create Account",
         "title": "Create your account",
         "description": "Join Communalists to find and start mutual aid networks near you.",
         "email": "Email",
@@ -95,10 +108,11 @@
             "passwordMismatch": "Passwords don't match."
         },
         "haveAccount": "Already have an account?",
-        "signIn": "Sign in"
+        "signIn": "Sign in",
+        "metaDescription": "Create a free Communalists account to start a mutual aid group or join one near you."
     },
     "SignIn": {
-        "metaTitle": "Sign in",
+        "metaTitle": "Sign In",
         "title": "Sign in",
         "description": "Welcome back. Sign in to your Communalists account.",
         "email": "Email",
@@ -114,10 +128,11 @@
             "invalidCredentials": "That email and password don't match an account.",
             "tooManyAttempts": "Too many attempts. Wait a few minutes and try again.",
             "generic": "Something went wrong. Please try again."
-        }
+        },
+        "metaDescription": "Sign in to Communalists to organize with your mutual aid groups."
     },
     "ForgotPassword": {
-        "metaTitle": "Forgot password",
+        "metaTitle": "Forgot Password",
         "title": "Reset your password",
         "description": "Enter the email you signed up with and we'll send you a link to choose a new password.",
         "email": "Email",
@@ -136,7 +151,7 @@
         }
     },
     "ResetPassword": {
-        "metaTitle": "Choose a new password",
+        "metaTitle": "Choose a New Password",
         "title": "Choose a new password",
         "description": "For {email}.",
         "checking": "Checking your link…",
@@ -169,7 +184,7 @@
         }
     },
     "AccountSetup": {
-        "metaTitle": "Set up your account",
+        "metaTitle": "Set Up Your Account",
         "loading": "Loading your account…",
         "new": {
             "title": "Tell us about yourself",
@@ -205,7 +220,7 @@
         }
     },
     "AccountSettings": {
-        "metaTitle": "Account settings",
+        "metaTitle": "Account Settings",
         "loading": "Loading your settings…",
         "title": "Account settings",
         "description": "Your name, language and city.",
@@ -233,7 +248,7 @@
         "adminLink": "Open super user tools"
     },
     "Find": {
-        "metaTitle": "Find organizations",
+        "metaTitle": "Find Organizations",
         "title": "Find organizations",
         "intro": "Mutual aid groups, clubs and networks near you. Anyone can look; joining takes a free account.",
         "filtersTitle": "Filters",
@@ -257,7 +272,7 @@
         "focusAreas": "Focus areas",
         "languages": "Languages spoken",
         "create": "Create organization",
-        "metaTitleNear": "Mutual aid organizations near {city}",
+        "metaTitleNear": "Mutual Aid Organizations Near {city}",
         "metaDescriptionNear": "Discover mutual aid groups, clubs and networks near {city}. Anyone can look; joining takes a free account.",
         "members": "Members",
         "moreFocusAreas": "{count} more",
@@ -266,7 +281,8 @@
         "showDetails": "Show details",
         "hideDetails": "Hide details",
         "readMore": "Read more",
-        "showLess": "Show less"
+        "showLess": "Show less",
+        "metaKeywordsNear": "mutual aid {name}, mutual aid near {name}, mutual aid groups in {name}, community organizations {name}, volunteer in {name}"
     },
     "Organizations": {
         "focusAreas": {
@@ -390,7 +406,7 @@
             "phoneHint": "Shown publicly, so people can call. Use the organization's line, not a personal cell."
         },
         "new": {
-            "metaTitle": "Create an organization",
+            "metaTitle": "Create an Organization",
             "title": "Create an organization",
             "description": "Set up a home for your group. You'll be its owner."
         },
@@ -463,7 +479,7 @@
             }
         },
         "edit": {
-            "metaTitle": "Edit organization",
+            "metaTitle": "Edit Organization",
             "title": "Edit organization",
             "description": "Changes show on your page right away. Changing the handle changes your address: old links stop working, and the old handle is held for 30 days so nobody else can take it.",
             "handleOwnersOnly": "Only owners can change the handle.",
@@ -485,7 +501,10 @@
                 "notConfirmed": "The name you typed doesn't match.",
                 "generic": "Something went wrong. Try again."
             }
-        }
+        },
+        "metaTitle": "{name} in {place}",
+        "metaDescription": "{name} is a group based in {place}. See what they work on and how to get involved on Communalists.",
+        "metaKeywords": "mutual aid {city}, community organizations {city}"
     },
     "Membership": {
         "signInToJoin": "Sign in to join",
@@ -545,7 +564,9 @@
             "editProfile": "{actor} changed {fields}",
             "claim": "{target} claimed this organization",
             "deleteOrganization": "{actor} deleted this organization",
-            "restoreOrganization": "{actor} restored this organization"
+            "restoreOrganization": "{actor} restored this organization",
+            "replyComment": "{actor} replied to a comment",
+            "deleteReply": "{actor} deleted a reply to a comment"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Reason",
@@ -732,7 +753,7 @@
         "makeUnclaimedConfirm": "Make unclaimed"
     },
     "Claim": {
-        "metaTitle": "Claim an organization",
+        "metaTitle": "Claim an Organization",
         "back": "Back to {name}",
         "title": "Claim {name}",
         "intro": "If you're part of {name}, you can take over this page, or ask us to take it down.",
@@ -776,9 +797,9 @@
         "denied": "We couldn't confirm your last request. You can send a new one with more detail on how to check."
     },
     "Admin": {
-        "metaTitle": "Super user tools",
+        "metaTitle": "Super User Tools",
         "title": "Super user tools",
-        "intro": "Requests to claim or take down unclaimed organizations, and the organizations added for neighbors to find. Only super users see this page.",
+        "intro": "What needs your attention, how Communalists is growing, and the tools for adding organizations and words. Only super users see this page.",
         "claimsTitle": "Claim requests",
         "claimsHint": "Check each request outside the app before you approve it, for example by calling the organization at its public number. Oldest first.",
         "noClaims": "No requests right now.",
@@ -809,11 +830,9 @@
         },
         "keep": "Not yet",
         "deny": "Deny",
-        "unclaimedTitle": "Unclaimed organizations",
         "addUnclaimed": "Add an unclaimed organization",
-        "noUnclaimed": "None yet.",
-        "logTitle": "Recent super user actions",
-        "logHint": "Only super users see this.",
+        "logTitle": "Decisions and changes",
+        "logHint": "Newest first. Adding, editing and downloads are counted above instead, because an import adds hundreds at once.",
         "noLog": "Nothing yet.",
         "log": {
             "createUnclaimed": "{actor} added {org}",
@@ -824,7 +843,19 @@
             "deleteUnclaimed": "{actor} deleted {org}",
             "restoreOrganization": "{actor} restored {org}",
             "makeUnclaimed": "{actor} made {org} unclaimed",
-            "exportOrganizations": "{actor} downloaded the list of organizations"
+            "exportOrganizations": "{actor} downloaded the list of organizations",
+            "createDefinition": "{actor} added the word {word}",
+            "editDefinition": "{actor} edited the word {word}",
+            "backfillDetails": "{actor} filled in missing details on {count, plural, one {# organization} other {# organizations}}",
+            "deleteDefinition": "{actor} removed the word {word}",
+            "hideComment": "{actor} hid a comment on {word}",
+            "unhideComment": "{actor} showed a hidden comment on {word} again",
+            "deleteComment": "{actor} deleted a comment on {word}",
+            "dismissCommentReport": "{actor} dismissed a report on a comment on {word}",
+            "replyComment": "{actor} replied to a comment on {word} for the team",
+            "hideReply": "{actor} hid a reply on {word}",
+            "unhideReply": "{actor} showed a hidden reply on {word} again",
+            "deleteReply": "{actor} deleted a reply on {word}"
         },
         "unknownActor": "A super user",
         "errors": {
@@ -856,7 +887,7 @@
         },
         "importUnclaimed": "Import from a CSV",
         "import": {
-            "metaTitle": "Import organizations",
+            "metaTitle": "Import Organizations",
             "back": "Super user tools",
             "title": "Import organizations",
             "intro": "Add many unclaimed organizations at once from a CSV. Review each one as its page will look, fix or remove rows, then add the ready ones.",
@@ -885,7 +916,7 @@
             "noName": "No name",
             "ready": "Ready to add",
             "needsAttention": "{count, plural, one {# thing to fix} other {# things to fix}}",
-            "rowDetail": "Line {line} · {place} · /org/{handle}",
+            "rowDetail": "Line {line} · {place} · /organization/{handle}",
             "edited": "edited here",
             "verification": "source: {verification}",
             "problemsFor": "What to fix in {name}",
@@ -1003,6 +1034,555 @@
                 "sameWebsite": "Open the existing page. If it's the same group, remove this row.",
                 "invalid": "Edit the row to choose a value from the list."
             }
+        },
+        "dictionaryTitle": "Dictionary",
+        "manageDictionary": "Manage the dictionary",
+        "dictionaryHint": "Words explained in plain language, each with its own page at /dictionary. Only super users add and edit them.",
+        "asOf": "Numbers as of {time}. They can be up to an hour old.",
+        "onThisPage": "On this page",
+        "sections": {
+            "attention": "Needs attention",
+            "overview": "At a glance",
+            "trends": "Trends",
+            "organizations": "Organizations",
+            "dictionary": "Dictionary",
+            "activity": "Team activity",
+            "deleted": "Recently deleted",
+            "analytics": "Visitors"
+        },
+        "waiting": "{days, plural, one {waiting # day} other {waiting # days}}",
+        "overdue": "Over {days, plural, one {# day} other {# days}}",
+        "attentionGaps": "{count, plural, one {# unclaimed page has} other {# unclaimed pages have}} no way to reach the group.",
+        "attentionGapsLink": "See which ones",
+        "attentionClear": "Nothing else needs attention.",
+        "stats": {
+            "organizations": "Active organizations",
+            "organizationsDetail": "{unclaimed} unclaimed · {archived} deleted",
+            "claimed": "Team-added pages claimed",
+            "claimedValue": "{percent}%",
+            "claimedDetail": "{claimed} of {total} · {last30} in the last 30 days",
+            "added": "Organizations added, last 30 days",
+            "users": "Accounts",
+            "usersDetail": "{count} new in the last 7 days",
+            "newUsers": "New accounts, last 30 days",
+            "claims": "Claim requests, last 30 days",
+            "claimsDetail": "All time: {approved} approved · {denied} denied",
+            "compare": "{trend, select, up {Up {change}} down {Down {change}} other {Same}} from the 30 days before"
+        },
+        "trendsHint": "Each bar is one week, ending today, with the latest week on the right.",
+        "trends": {
+            "users": "New accounts per week",
+            "organizations": "Organizations added per week",
+            "claims": "Claim requests per week"
+        },
+        "chartSummary": "{total} in the last 12 weeks, {latest} in the latest week.",
+        "showTable": "Show as a table",
+        "weekColumn": "Week starting",
+        "countColumn": "Count",
+        "organizationsHint": "Add organizations one at a time or from a CSV, and find the pages that still need details.",
+        "downloadExisting": "Download organizations already on Communalists (CSV)",
+        "searchLabel": "Find an organization",
+        "searchHint": "Type the start of its name or its address (handle). Searches every organization, including unclaimed and deleted ones.",
+        "searchButton": "Search",
+        "searchResults": "{count, plural, =0 {No organizations start with “{query}”.} one {# organization starts with “{query}”.} other {# organizations start with “{query}”.}}",
+        "searchMore": "Showing the first {count}. Type more to narrow it down.",
+        "clearSearch": "Clear search",
+        "gapsTitle": "Unclaimed pages missing details",
+        "gapsHint": "Research these and fill them in so neighbors can reach the group. Oldest first. A page leaves the list once it has the detail.",
+        "gapsFilter": "Missing",
+        "gaps": {
+            "contact": "No way to reach them",
+            "phone": "No phone",
+            "email": "No email",
+            "website": "No website",
+            "address": "No address"
+        },
+        "gapsShowing": "Showing {shown} of {count}",
+        "noGaps": "None. Every unclaimed page has this.",
+        "missingList": "Missing: {list}",
+        "recentTitle": "Recently added",
+        "noRecent": "No organizations yet.",
+        "addedOn": "Added {date}",
+        "statusUnclaimed": "Unclaimed",
+        "statusDeleted": "Deleted",
+        "edit": "Edit",
+        "editFor": "Edit {name}",
+        "addWord": "Add a word",
+        "importWords": "Import words from a CSV",
+        "uploadDefinition": "Upload a definition",
+        "wordCount": "{count, plural, one {# word} other {# words}}",
+        "activityHint": "What super users did in the last 30 days. Only super users see this.",
+        "activity": {
+            "added": "Organizations added",
+            "edited": "Edits to unclaimed pages",
+            "claims": "Requests decided",
+            "lifecycle": "Deleted, restored or made unclaimed",
+            "words": "Words added, edited or removed",
+            "exports": "Downloads of the organization list",
+            "comments": "Comments hidden, deleted or reports dismissed"
+        },
+        "gapNames": {
+            "phone": "phone",
+            "email": "email",
+            "website": "website",
+            "address": "address"
+        },
+        "analytics": {
+            "hint": "From Umami, for the last 30 days. Visitors who turn on Do Not Track aren't counted, and nobody is identified.",
+            "asOf": "Umami numbers as of {time}.",
+            "notConfigured": "Not connected. Set UMAMI_API_KEY on the server to see visitors, the most-viewed organizations and the most-searched cities.",
+            "error": "Couldn't load the numbers from Umami. Try again later, or see the reports at cloud.umami.is.",
+            "visitors": "Visitors, last 30 days",
+            "pageviews": "Page views, last 30 days",
+            "orgsTitle": "Most-viewed organizations",
+            "orgsEmpty": "No organization pages viewed yet.",
+            "views": "{count, plural, one {# view} other {# views}}",
+            "citiesTitle": "Most-searched cities",
+            "citiesHint": "Each change to the filters counts as a search. Nearby is how many local organizations Find shows there today within {radius} miles, before filters. Cities with fewer than {few} need research.",
+            "citiesEmpty": "No searches yet.",
+            "nearby": "{count, plural, =0 {None nearby} one {# nearby} other {# nearby}}",
+            "needsResearch": "Needs research",
+            "unknownOrganization": "No longer on Communalists"
+        },
+        "backfill": {
+            "title": "Older organizations",
+            "hint": "Organizations added before missing details were tracked aren't in the counts above yet. Filling them in reads each organization once and changes nothing anyone sees. It only needs to run once.",
+            "button": "Fill in missing details",
+            "pending": "Filling in…",
+            "done": "Done: checked {read}, updated {updated}.",
+            "error": "Couldn't fill in missing details. Try again."
+        },
+        "unavailable": "Couldn't load this section. Try again in a few minutes.",
+        "attentionReports": "{count, plural, one {# comment was reported.} other {# comments were reported.}}",
+        "attentionReportsLink": "Review reported comments",
+        "reportedComments": "Reported comments"
+    },
+    "Dictionary": {
+        "title": "Dictionary",
+        "intro": "Words you'll see on Communalists and in mutual aid work, explained in plain language.",
+        "back": "Dictionary: {letter}",
+        "eyebrow": "Dictionary",
+        "notTranslated": "This word isn't written in {language} yet, so it's shown in {shown}.",
+        "related": "Related words",
+        "resources": "Learn more",
+        "resourceTypes": {
+            "book": "Book",
+            "video": "Video",
+            "article": "Article",
+            "link": "Link"
+        },
+        "by": "by {name}",
+        "share": {
+            "copy": "Copy link",
+            "copied": "Link copied.",
+            "failed": "Couldn't copy. Here's the link:"
+        },
+        "inline": {
+            "readMore": "Select to read more"
+        },
+        "letters": "Letters",
+        "lettersHint": "Choose a letter to see the words that start with it.",
+        "letterTitle": "Mutual Aid Dictionary: {letter}",
+        "count": "{count, plural, =0 {No words} one {# word} other {# words}}",
+        "emptyLetter": "No words start with {letter} yet.",
+        "noWordsShort": "(no words)",
+        "metaTitleWord": "{word}: Meaning and Definition",
+        "metaKeywordsWord": "{word}, {word} meaning, {word} definition, what is {word}",
+        "setName": "Communalists Mutual Aid Dictionary",
+        "otherLetters": "Other letters",
+        "previousLetter": "Previous letter: {letter}",
+        "nextLetter": "Next letter: {letter}"
+    },
+    "Discussion": {
+        "title": "Discussion",
+        "count": "{count, plural, =0 {No comments yet} one {# comment} other {# comments}}",
+        "intro": "Is there a clearer way to explain this word, or something the definition leaves out? Say so here. Up vote the comments that help most. We read them to improve the definition.",
+        "joinTitle": "Join the discussion",
+        "joinBody": "Create a free account to comment and up vote. It takes a minute, and you can also join and start mutual aid organizations.",
+        "signUp": "Create an account",
+        "signIn": "Sign in",
+        "setupBody": "Finish setting up your account to join the discussion. We need your name to show on your comments.",
+        "setup": "Finish setting up",
+        "formLabel": "Your comment",
+        "formHint": "Your name and comment are public. Plain text only. A blank line starts a new paragraph.",
+        "charactersLeft": "{count, plural, one {# character left} other {# characters left}}",
+        "tooLongBy": "{count, plural, one {# character too long} other {# characters too long}}",
+        "language": "Language of your comment",
+        "post": "Post comment",
+        "posting": "Posting…",
+        "sortLabel": "Sort comments",
+        "sortTop": "Top",
+        "sortNewest": "Newest",
+        "empty": "No comments yet. Be the first to say what this word means to you.",
+        "showMore": "Show more comments",
+        "loadingMore": "Loading…",
+        "tryAgain": "Try loading more again",
+        "formerMember": "Former member",
+        "you": "(you)",
+        "hiddenText": "Hidden by a moderator.",
+        "hiddenModerator": "Hidden by a moderator. Only super users see the text below.",
+        "votes": "{count, plural, =0 {No up votes} one {# up vote} other {# up votes}}",
+        "upVote": "Up vote",
+        "upVoteLabel": "Up vote the comment by {name} ({count, plural, one {# up vote} other {# up votes}})",
+        "report": "Report",
+        "reportLabel": "Report the comment by {name}",
+        "reportTitle": "Report this comment?",
+        "reportBody": "A super user will look at it and may hide or delete it. The author isn't told who reported it.",
+        "reportReason": "What’s wrong with it?",
+        "reportReasonMissing": "Choose what’s wrong with it.",
+        "reasons": {
+            "spam": "Spam or advertising",
+            "harassment": "Harassment or hate",
+            "personalInfo": "Shares someone’s personal information",
+            "misinformation": "False or misleading",
+            "other": "Something else"
+        },
+        "reportSend": "Send report",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "deleteLabel": "Delete the comment by {name}",
+        "deleteMineLabel": "Delete your comment",
+        "deleteTitleMine": "Delete your comment?",
+        "deleteTitleOther": "Delete the comment by {name}?",
+        "deleteBodyMine": "It's removed for everyone, with its up votes. This can't be undone.",
+        "deleteBodyModerator": "It's removed for everyone, with its up votes. This can't be undone, but the super user log keeps a copy.",
+        "deleteConfirm": "Delete",
+        "hide": "Hide",
+        "hideLabel": "Hide the comment by {name}",
+        "unhide": "Show again",
+        "unhideLabel": "Show the comment by {name} again",
+        "announce": {
+            "posted": "Comment posted.",
+            "voted": "Up voted. {count, plural, one {# up vote} other {# up votes}} now.",
+            "unvoted": "Up vote taken back. {count, plural, =0 {No up votes} one {# up vote} other {# up votes}} now.",
+            "reported": "Thanks for reporting it. A super user will take a look.",
+            "alreadyReported": "You already reported this comment. Thanks.",
+            "deleted": "Comment deleted.",
+            "hidden": "Comment hidden.",
+            "unhidden": "Comment shown again.",
+            "sortedTop": "Showing the most up voted comments first.",
+            "sortedNewest": "Showing the newest comments first.",
+            "loaded": "{count, plural, =0 {No more comments.} one {# more comment shown.} other {# more comments shown.}}",
+            "languageOne": "Showing comments in {language}: {count, plural, =0 {none yet} one {#} other {#}}.",
+            "languageAll": "Showing comments in all languages: {count}.",
+            "replied": "Reply posted.",
+            "replyDeleted": "Reply deleted.",
+            "replyHidden": "Reply hidden.",
+            "replyUnhidden": "Reply shown again."
+        },
+        "errors": {
+            "textRequired": "Write your comment first.",
+            "textTooLong": "Shorten your comment to {max} characters or fewer.",
+            "langInvalid": "Choose the language of your comment.",
+            "signedOut": "You're signed out. Sign in again to continue.",
+            "setupNeeded": "Finish setting up your account first.",
+            "notAllowed": "You can't do that.",
+            "notFound": "That comment is gone. It may have been deleted.",
+            "rateLimited": "You've posted 5 comments in the last hour, the most allowed. You can post again at {time}.",
+            "ownComment": "You can't up vote or report your own comment.",
+            "hidden": "That comment was hidden by a moderator.",
+            "invalid": "Something was wrong with that request. Reload the page and try again.",
+            "generic": "Something went wrong. Try again.",
+            "loadFailed": "Couldn't load comments. Check your connection and try again.",
+            "alreadyReplied": "This comment already has a reply. Delete it first to write a new one.",
+            "replyTextRequired": "Write your reply first.",
+            "replyTextTooLong": "Shorten your reply to {max} characters or fewer."
+        },
+        "languageLabel": "Show comments in",
+        "languageOne": "{language} ({count})",
+        "languageAll": "All languages ({count})",
+        "emptyLanguage": "No comments in {language} yet.",
+        "seeOtherLanguages": "{count, plural, one {See # comment in other languages} other {See # comments in other languages}}",
+        "writtenIn": "Written in {language}",
+        "changeLanguage": "Change",
+        "changeLanguageLabel": "Change the language of your comment",
+        "unavailable": "Comments couldn't load right now. Try again in a few minutes.",
+        "organization": {
+            "intro": "Tell others what this group is like: help you got, time you volunteered, praise, concerns or questions. Up vote the comments you agree with. The organization can reply to each comment.",
+            "empty": "No comments yet. Have you worked with this group? Be the first to say what it was like."
+        },
+        "reply": "Reply",
+        "replyLabel": "Reply to the comment by {name} as {organization}",
+        "replyFrom": "Reply from {name}",
+        "replyFromTeam": "Reply from the Communalists team",
+        "teamName": "the Communalists team",
+        "replyFormLabel": "Your reply as {from}",
+        "replyFormHint": "It's public and shown as from {from}, not from you. Plain text only. One reply per comment: to change it, delete it and write a new one.",
+        "replyLanguage": "Language of your reply",
+        "replyPost": "Post reply",
+        "replyHiddenText": "Reply hidden by a moderator.",
+        "replyHiddenModerator": "Reply hidden by a moderator. Only super users see the text below.",
+        "reportReplyLabel": "Report the reply to the comment by {name}",
+        "reportReplyTitle": "Report this reply?",
+        "hideReplyLabel": "Hide the reply to the comment by {name}",
+        "unhideReplyLabel": "Show the reply to the comment by {name} again",
+        "deleteReplyLabel": "Delete the reply to the comment by {name}",
+        "deleteReplyTitle": "Delete this reply?",
+        "deleteReplyBody": "It's removed for everyone. You can write a new one afterward.",
+        "deleteReplyBodyModerator": "It's removed for everyone. This can't be undone, but the super user log keeps a copy.",
+        "replyChangeLanguageLabel": "Change the language of your reply"
+    },
+    "AdminComments": {
+        "metaTitle": "Reported comments",
+        "title": "Reported comments",
+        "intro": "Comments people reported, most reported first. Hide or delete a comment that breaks the rules, or dismiss the report if it's fine. Every action goes in the super user log.",
+        "backToAdmin": "Super user tools",
+        "listTitle": "To review",
+        "empty": "No reported comments. Nothing to review.",
+        "on": "On <word></word>",
+        "byOn": "By {name}, {date}",
+        "votes": "{count, plural, =0 {no up votes} one {# up vote} other {# up votes}}",
+        "gone": "This comment was already deleted. Dismiss the report to clear it.",
+        "formerMember": "Former member",
+        "reports": "{count, plural, one {Reported once} other {Reported # times}}",
+        "reasonCount": "{reason}: {count}",
+        "reasons": {
+            "spam": "Spam or advertising",
+            "harassment": "Harassment or hate",
+            "personalInfo": "Shares someone’s personal information",
+            "misinformation": "False or misleading",
+            "other": "Something else"
+        },
+        "hide": "Hide",
+        "hideLabel": "Hide the comment by {name}",
+        "delete": "Delete",
+        "deleteLabel": "Delete the comment by {name}",
+        "deleteTitle": "Delete the comment by {name}?",
+        "deleteBody": "It's removed for everyone, with its up votes. This can't be undone, but the super user log keeps a copy.",
+        "dismiss": "Dismiss report",
+        "dismissLabel": "Dismiss the report on the comment by {name}",
+        "hidden": "Comment hidden. Its report is closed.",
+        "deleted": "Comment deleted. Its report is closed.",
+        "dismissed": "Report dismissed. The comment stays as it is.",
+        "replyByOn": "Reply from {from} to {name}'s comment, {date}",
+        "hideLabelReply": "Hide the reply from {from} to {name}",
+        "deleteLabelReply": "Delete the reply from {from} to {name}",
+        "deleteTitleReply": "Delete the reply from {from}?",
+        "deleteBodyReply": "It's removed for everyone; the comment stays. This can't be undone, but the super user log keeps a copy.",
+        "dismissLabelReply": "Dismiss the report on the reply from {from} to {name}",
+        "goneReply": "This reply was already deleted. Dismiss the report to clear it.",
+        "hiddenReply": "Reply hidden. Its report is closed.",
+        "deletedReply": "Reply deleted. Its report is closed.",
+        "dismissedReply": "Report dismissed. The reply stays as it is."
+    },
+    "AdminDefinitions": {
+        "metaTitle": "Dictionary",
+        "title": "Dictionary",
+        "intro": "Every word in the dictionary. Each one has its own page that anyone can open and share. Changes are recorded in the super user log.",
+        "backToAdmin": "Super user tools",
+        "add": "Add a word",
+        "viewDictionary": "View the dictionary",
+        "pageOnly": "Only super users see this.",
+        "saved": "Saved {word}.",
+        "viewWord": "View the page for {word}",
+        "listTitle": "Words",
+        "empty": "No words yet. Add the first one.",
+        "updatedOn": "Updated {date}",
+        "edit": "Edit",
+        "editWord": "Edit {word}",
+        "view": "View",
+        "backToList": "Dictionary",
+        "backToWord": "Back to {word}",
+        "addTitle": "Add a word",
+        "editTitle": "Edit “{word}”",
+        "formIntro": "Write the word in all four languages. Use short sentences and everyday words, and explain it for someone who has never heard it.",
+        "slug": "Address",
+        "slugHint": "Lowercase letters, numbers and hyphens, like mutual-aid. It’s the same in every language and can’t be changed later, so shared links keep working.",
+        "slugFixed": "The address can’t be changed, so shared links keep working.",
+        "word": "Word",
+        "definition": "Short definition",
+        "definitionHint": "One or two sentences, up to {max} characters. Shown at the top of the page and wherever the word is marked.",
+        "details": "More about it (optional)",
+        "detailsHint": "Shown only on the word’s page. Leave a blank line between paragraphs.",
+        "related": "Related words",
+        "relatedHint": "Linked at the bottom of the page. Up to {max}.",
+        "relatedPicker": {
+            "search": "Find a word to add",
+            "placeholder": "Type a word",
+            "chosen": "Linked: {count} of {max}",
+            "none": "None yet. Search below to add one.",
+            "remove": "Remove {word}",
+            "noMatch": "No other words match “{query}”.",
+            "atMax": "{max} words are linked, the most allowed. Remove one to add another.",
+            "added": "Added {word}. {count} of {max} linked.",
+            "removed": "Removed {word}. {count} of {max} linked."
+        },
+        "fieldIn": "{field} ({language})",
+        "summary": "{count, plural, one {Fix # problem before saving:} other {Fix # problems before saving:}}",
+        "saving": "Saving…",
+        "create": "Add word",
+        "save": "Save changes",
+        "errors": {
+            "slugRequired": "Write an address.",
+            "slugFormat": "Use 2 to {max} lowercase letters, numbers and single hyphens, like mutual-aid.",
+            "slugReserved": "That address is used by the site. Choose another.",
+            "wordRequired": "Write the word.",
+            "wordTooLong": "Use {max} characters or fewer.",
+            "definitionRequired": "Write a short definition.",
+            "definitionTooLong": "Use {max} characters or fewer.",
+            "detailsTooLong": "Use {max} characters or fewer.",
+            "relatedTooMany": "Choose {max} related words or fewer."
+        },
+        "formErrors": {
+            "slugTaken": "A word already has that address. Edit that word instead, or choose another address.",
+            "notFound": "That word is gone. Go back to the dictionary to see the latest.",
+            "notAllowed": "Only super users can do this.",
+            "generic": "Something went wrong. Try again."
+        },
+        "importCsv": "Import from a CSV",
+        "imported": "{count, plural, =0 {No words were added.} one {Added # word.} other {Added # words.}}",
+        "import": {
+            "title": "Import words",
+            "intro": "Add many words at once from a CSV. Every row is checked first, and nothing is added until you choose Add. Words already in the dictionary are skipped, never changed: edit those one at a time.",
+            "formatTitle": "The file",
+            "formatSlug": "slug: the word’s address, like mutual-aid. Lowercase letters, numbers and hyphens.",
+            "formatLanguages": "For each language (en, es, vi, zh): en_word and en_definition are required, en_details is optional. A blank line in a cell starts a new paragraph.",
+            "formatRelated": "related (optional): other words’ addresses, separated by semicolons, like solidarity;organizer. They must be in the dictionary or in the same file.",
+            "formatLimit": "Up to {max} rows. Save it from your spreadsheet as CSV (UTF-8).",
+            "template": "Download the template",
+            "file": "CSV file",
+            "fileHint": "Checking adds nothing.",
+            "check": "Check file",
+            "checking": "Checking…",
+            "summary": "{file}: {total, plural, one {# row} other {# rows}}. {ready} ready, {exists} already in the dictionary, {problems} to fix.",
+            "ignored": "These columns aren’t used and were left out: {columns}",
+            "add": "{count, plural, one {Add # word} other {Add # words}}",
+            "confirmTitle": "{count, plural, one {Add # word?} other {Add # words?}}",
+            "confirmBody": "They appear at /dictionary right away, in every language. Rows already in the dictionary or with problems are skipped. There’s no undo, but you can edit each word afterward.",
+            "notYet": "Not yet",
+            "adding": "Adding…",
+            "confirm": "{count, plural, one {Add # word} other {Add # words}}",
+            "noneReady": "No rows are ready to add. Fix the file and check it again.",
+            "noWord": "No English word",
+            "line": "Line {line}",
+            "status": {
+                "ready": "Ready",
+                "exists": "Already in the dictionary: skipped",
+                "problems": "{count, plural, one {# problem} other {# problems}}"
+            },
+            "problems": {
+                "slugRepeated": "An earlier row has the same address.",
+                "relatedUnknown": "Not in the dictionary or this file: {value}"
+            },
+            "fileProblems": {
+                "empty": "The file has no rows.",
+                "tooBig": "The file is too big. Keep it under 500 KB.",
+                "tooManyRows": "The file has more than {max} rows. Split it into smaller files.",
+                "missingColumns": "The file is missing these columns: {columns}. Start from the template.",
+                "noFile": "Choose a CSV file.",
+                "notAllowed": "Only super users can do this.",
+                "generic": "Something went wrong. Try again."
+            },
+            "addErrors": {
+                "nothingReady": "No rows were ready, so nothing was added.",
+                "changed": "The dictionary changed while you were reviewing, so nothing was added. Check the file again.",
+                "notAllowed": "Only super users can do this.",
+                "generic": "Something went wrong. Try again."
+            }
+        },
+        "upload": {
+            "title": "Upload a definition",
+            "intro": "Replace one word’s text, in every language, with the text in a file. You’ll see every change before anything is saved. Related words stay as they are.",
+            "formatTitle": "The file",
+            "formatOneRow": "A CSV with one word: the same columns as the import (slug, then en_word, en_definition and en_details, and the same for es, vi and zh), and one row.",
+            "formatSlug": "slug must be a word already in the dictionary. To add a new word, import it instead.",
+            "formatRelated": "A related column is ignored. Change related words in the edit form.",
+            "file": "CSV file",
+            "fileHint": "Checking changes nothing.",
+            "check": "Check file",
+            "checking": "Checking…",
+            "status": {
+                "ready": "{file}: {count, plural, one {# change} other {# changes}} to {word}.",
+                "unchanged": "{file} matches {word} as it is now. There’s nothing to change.",
+                "notFound": "No word has the address {slug}. To add it, import the file instead.",
+                "problems": "{file}: {count, plural, one {# problem} other {# problems}} to fix before it can be used."
+            },
+            "relatedIgnored": "The file lists related words. They’re ignored: the word keeps the related words it has.",
+            "ignored": "These columns aren’t used and were left out: {columns}",
+            "goToImport": "Import words from a CSV",
+            "changesTitle": "What changes",
+            "now": "Now",
+            "new": "New",
+            "empty": "(empty)",
+            "update": "Update {word}",
+            "confirmTitle": "Update {word}?",
+            "confirmBody": "{count, plural, one {# field changes} other {# fields change}} right away, on the word’s page and wherever it’s marked. There’s no undo, but you can edit the word afterward.",
+            "notYet": "Not yet",
+            "updating": "Updating…",
+            "fileProblems": {
+                "empty": "The file has no rows.",
+                "missingColumns": "The file is missing these columns: {columns}. Use the import’s template.",
+                "notOneRow": "The file must have exactly one word: a header and one row. To add many words, import them instead.",
+                "tooBig": "The file is too big. Keep it under 500 KB.",
+                "noFile": "Choose a CSV file.",
+                "notAllowed": "Only super users can do this.",
+                "generic": "Something went wrong. Try again.",
+                "otherWord": "This file is for {fileSlug}, not {slug}. Upload it on that word’s edit page, or on Upload a definition."
+            },
+            "saveErrors": {
+                "changed": "The word changed after you checked the file, so nothing was saved. Check the file again to see the latest.",
+                "notAllowed": "Only super users can do this.",
+                "generic": "Something went wrong. Try again."
+            }
+        },
+        "removed": "Removed {slug} from the dictionary.",
+        "replace": {
+            "title": "Replace from a file",
+            "intro": "Upload a one-word CSV for {word} to replace its text in every language. You’ll see every change before anything is saved. Related words stay as they are, and anything you’ve typed in the form below and not saved is lost.",
+            "formTitle": "Edit by hand"
+        },
+        "remove": {
+            "title": "Remove this word",
+            "intro": "Takes {word} out of the dictionary for good.",
+            "button": "Remove {word}",
+            "confirmTitle": "Remove {word}?",
+            "confirmBody": "Its page stops working, and it’s taken off other words’ related words. Where our pages mark it, it shows as plain text. Its discussion is deleted too. There’s no undo, but the super user log keeps a copy of its text.",
+            "notYet": "Not yet",
+            "removing": "Removing…",
+            "errors": {
+                "notFound": "That word is already gone. Go back to the dictionary to see the latest.",
+                "notAllowed": "Only super users can do this.",
+                "generic": "Something went wrong. Try again."
+            }
+        }
+    },
+    "Errors": {
+        "title": "Something went wrong",
+        "body": "This page couldn't load. It may be a problem on our end. Try again, or come back in a few minutes.",
+        "retry": "Try again",
+        "home": "Go to the homepage",
+        "reference": "Reference: {digest}"
+    },
+    "NotFound": {
+        "eyebrow": "Page not found",
+        "tried": "You tried:",
+        "general": {
+            "metaTitle": "Page not found",
+            "title": "We couldn't find that page",
+            "body": "The address may have a typo, or the page may have moved or been removed.",
+            "home": "Go to the homepage",
+            "organizations": "Find organizations",
+            "dictionary": "Browse the dictionary"
+        },
+        "word": {
+            "metaTitle": "Word not found",
+            "title": "There’s no word “{word}” in the dictionary yet",
+            "body": "Check the spelling, or browse the dictionary. New words are added over time.",
+            "suggestions": "Did you mean:",
+            "browse": "Browse the dictionary"
+        },
+        "organization": {
+            "metaTitle": "Organization not found",
+            "title": "We couldn’t find an organization at “{handle}”",
+            "body": "Organizations can change their address, and an old address stops working after a while. It may also have been taken down. Try finding it by name or place.",
+            "find": "Find organizations",
+            "create": "Start an organization"
+        },
+        "person": {
+            "metaTitle": "Profile not found",
+            "title": "We couldn’t find anyone with the username “{username}”",
+            "body": "People can change their username, and the old one stops working. Check the spelling, or find them through an organization they’re in.",
+            "find": "Find organizations"
         }
     }
 }

@@ -14,7 +14,7 @@ export interface NearbyOrganizationsProps {
     place: string;
     /** Already chosen and sorted (nearbyOrganizations), with distance in `detail`. */
     organizations: OrganizationCardProps[];
-    /** /find from this city, for the rest, e.g. "/find/us/ca/san-jose?radius=50". */
+    /** /find/organizations from this city, for the rest, e.g. "/find/organizations/us/ca/san-jose?radius=50". */
     findHref: string;
 }
 

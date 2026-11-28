@@ -1,8 +1,9 @@
 import {
-    LayoutDashboardIcon,
     LogOutIcon,
     SettingsIcon,
+    ShieldIcon,
     UserIcon,
+    UsersRoundIcon,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -10,6 +11,7 @@ import { Button } from '@/components/atoms/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
@@ -17,6 +19,13 @@ import {
 } from '@/components/atoms/dropdown-menu';
 import { Link } from '@/i18n/navigation';
 import { initials } from '@/lib/initials';
+import { organizationPath } from '@/lib/paths';
+
+/** An organization the person belongs to, as the menus list it. */
+export interface MenuOrganization {
+    name: string;
+    handle: string;
+}
 
 export interface AccountMenuProps {
     name: string;
@@ -25,19 +34,33 @@ export interface AccountMenuProps {
     locale: string;
     /** Their profile address; adds "Your profile". Missing mid-setup. */
     username?: string;
+    /** Their organizations, already cut to the few the menu shows. */
+    organizations?: MenuOrganization[];
+    /** They belong to more than `organizations` lists: adds "See all" (the dashboard). */
+    moreOrganizations?: boolean;
+    /** Super users get a link to /admin. The server decides; this only shows it. */
+    isAdmin?: boolean;
     /** In the app, the signOut server action. */
     signOutAction: (formData: FormData) => void | Promise<void>;
 }
 
-/** The signed-in user's menu: initials button → name, Dashboard (phones), Account settings, Sign out. */
+/**
+ * The signed-in user's menu on wide screens: initials button → name, their
+ * organizations, profile, settings, Admin (super users), Sign out. Phones get
+ * the same things in the menu drawer (MobileNav).
+ */
 export function AccountMenu({
     name,
     email,
     locale,
     signOutAction,
     username,
+    organizations = [],
+    moreOrganizations = false,
+    isAdmin = false,
 }: AccountMenuProps) {
     const t = useTranslations('AccountMenu');
+    const nav = useTranslations('Nav');
 
     return (
         <DropdownMenu>
@@ -56,7 +79,7 @@ export function AccountMenu({
                     </span>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align="end" className="w-64">
                 <DropdownMenuLabel className="flex flex-col gap-0.5">
                     <span className="truncate">{name}</span>
                     {email && (
@@ -65,14 +88,36 @@ export function AccountMenu({
                         </span>
                     )}
                 </DropdownMenuLabel>
+                {organizations.length > 0 && (
+                    <>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuGroup>
+                            <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
+                                {nav('yourOrganizations')}
+                            </DropdownMenuLabel>
+                            {organizations.map((org) => (
+                                <DropdownMenuItem key={org.handle} asChild>
+                                    <Link href={organizationPath(org.handle)}>
+                                        <UsersRoundIcon aria-hidden />
+                                        <span className="truncate">
+                                            {org.name}
+                                        </span>
+                                    </Link>
+                                </DropdownMenuItem>
+                            ))}
+                            {moreOrganizations && (
+                                <DropdownMenuItem asChild>
+                                    <Link href="/dashboard">
+                                        <span className="ps-6">
+                                            {nav('seeAllOrganizations')}
+                                        </span>
+                                    </Link>
+                                </DropdownMenuItem>
+                            )}
+                        </DropdownMenuGroup>
+                    </>
+                )}
                 <DropdownMenuSeparator />
-                {/* On wider screens Dashboard is a link in the header instead. */}
-                <DropdownMenuItem asChild className="sm:hidden">
-                    <Link href="/dashboard">
-                        <LayoutDashboardIcon aria-hidden />
-                        {t('dashboard')}
-                    </Link>
-                </DropdownMenuItem>
                 {username && (
                     <DropdownMenuItem asChild>
                         <Link href={`/comrade/${username}`}>
@@ -87,6 +132,14 @@ export function AccountMenu({
                         {t('settings')}
                     </Link>
                 </DropdownMenuItem>
+                {isAdmin && (
+                    <DropdownMenuItem asChild>
+                        <Link href="/admin">
+                            <ShieldIcon aria-hidden />
+                            {nav('admin')}
+                        </Link>
+                    </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <form action={signOutAction}>
                     <input type="hidden" name="locale" value={locale} />

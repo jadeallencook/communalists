@@ -8,7 +8,7 @@ export interface CreateOrganizationPageProps {
     form: ReactNode;
 }
 
-/** /org/new: title, short explanation, and the create form. */
+/** /organization/new: title, short explanation, and the create form. */
 export function CreateOrganizationPage({ form }: CreateOrganizationPageProps) {
     const t = useTranslations('Organizations');
     return (

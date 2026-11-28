@@ -12,6 +12,7 @@
 - Dialogs trap focus, close with Escape, and return focus to what opened them (Radix does this; keep using the `dialog` atom).
 - **After an action, put focus somewhere sensible.** If the thing you acted on disappears (an approved request, a removed member), move focus to the result message or the list heading, not the top of the page.
 - No keyboard traps, no hover-only controls.
+- **Don't `disable` a button while its own request runs** if focus should stay on it (Up vote, sort buttons, dialog triggers): a disabled button drops keyboard focus to the page. Use `aria-disabled` (the `Button` atom dims it) and ignore repeat presses in the handler. Found on the discussion's Up vote button, 2026-11-27 ([features/20](../features/20-comments.md)).
 
 **Screen readers**
 
@@ -33,6 +34,7 @@
 - Targets at least **24×24px** (44px for main actions on phones where we can).
 - Respect **reduced motion**: pulsing skeletons and spinners use `motion-safe:` (or stop) when the person asks for less motion.
 - Nothing times out without warning.
+- **Content that appears on hover** (tooltips, like marked dictionary words) also appears on keyboard focus, can be hovered without disappearing, and closes with Escape (WCAG 1.4.13). Never put the only way to reach something in a hover: a marked word is also a link to its page ([features/19](../features/19-dictionary.md#marked-words-definition)).
 
 **Understanding**
 
@@ -52,11 +54,13 @@
 
 **Fixed 2026-11-23:** the members page squeezed names to one letter per line on phones (now stacked), its actions were borderless text (now outlined, red for remove and ban), and its repeated buttons didn't name the person (now "Remove: Luis Hernández"). Control borders were 1.26:1 in light mode and the focus ring 2.6:1 (now the `control` and `ring` tokens, measured: outlines 4.3:1 light / 5.4:1 dark, focus ring 7.5:1 / 10.6:1, role labels 18:1 / 14.5:1, small grey text 4.74:1 / 7.66:1). The join panel's Leave, the homepage banner's secondary button and the header's Sign in are outlined too.
 
+**Fixed 2026-11-27:** search boxes built on the `Command` atom (the city picker, the dictionary's related-words search) had no focus ring. `InputGroup` draws its ring only for its own `input-group-control` slot, and cmdk's input is a different slot, so `CommandInput` now adds the same ring for `command-input`. When another component wraps an input in `InputGroup`, check that focus shows.
+
 Still to fix:
 
 - **Members page and join panel:** after an action, the row (or button) disappears and focus falls to the top of the page.
-- **/find:** after filters change, the new result counts aren't announced.
+- **/find/organizations:** after filters change, the new result counts aren't announced.
 - **Skeletons and spinners** pulse regardless of reduced-motion settings.
 - **Contrast** measured on the members page only; other pages use the same tokens but haven't been measured one by one.
-- **Header:** the signed-in Dashboard link is still a borderless `ghost` button (common for navigation, and it's marked when current). Sign in is outlined.
+- **Header:** the section links (Organizations, Dictionary, Dashboard) are borderless `ghost` buttons, as is common for navigation; the current one has a fill and an underline. Sign in is outlined. The phone menu drawer (2026-11-27) is a Radix dialog: focus moves in, Esc closes it, focus returns to the Menu button, rows are at least 44px tall, and it doesn't slide with reduced motion. Its Menu button shows a word as well as the icon. The language switcher stays in the header on phones so it can be found without reading the current language.
 - **The Storybook a11y check only reports** (`a11y: { test: 'todo' }`); it doesn't fail anything, and stories aren't run in CI.

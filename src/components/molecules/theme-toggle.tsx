@@ -12,6 +12,47 @@ import {
     DropdownMenuTrigger,
 } from '@/components/atoms/dropdown-menu';
 
+const THEMES = [
+    { value: 'light', Icon: SunIcon },
+    { value: 'dark', Icon: MoonIcon },
+    { value: 'system', Icon: MonitorIcon },
+] as const;
+
+/**
+ * The same choice laid out as three buttons, for the phone menu. The chosen
+ * one is filled and pressed (`aria-pressed`), so it isn't shown by colour alone.
+ */
+export function ThemeOptions() {
+    const t = useTranslations('ThemeToggle');
+    const { theme, setTheme } = useTheme();
+
+    return (
+        <div role="group" aria-labelledby="theme-options-label">
+            <p
+                id="theme-options-label"
+                className="mb-2 text-xs text-muted-foreground"
+            >
+                {t('heading')}
+            </p>
+            <div className="flex flex-wrap gap-2">
+                {THEMES.map(({ value, Icon }) => (
+                    <Button
+                        key={value}
+                        type="button"
+                        size="sm"
+                        variant={theme === value ? 'default' : 'outline'}
+                        aria-pressed={theme === value}
+                        onClick={() => setTheme(value)}
+                    >
+                        <Icon aria-hidden />
+                        {t(value)}
+                    </Button>
+                ))}
+            </div>
+        </div>
+    );
+}
+
 export function ThemeToggle() {
     const t = useTranslations('ThemeToggle');
     const { setTheme } = useTheme();

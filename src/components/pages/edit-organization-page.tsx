@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
 import { Link } from '@/i18n/navigation';
+import { organizationPath } from '@/lib/paths';
 
 export interface EditOrganizationPageProps {
     name: string;
@@ -15,7 +16,7 @@ export interface EditOrganizationPageProps {
     deleteSection?: ReactNode;
 }
 
-/** /org/{handle}/edit: back to the group, a title, and the form filled in. */
+/** /organization/{handle}/edit: back to the group, a title, and the form filled in. */
 export function EditOrganizationPage({
     name,
     handle,
@@ -32,7 +33,7 @@ export function EditOrganizationPage({
                     size="sm"
                     className="self-start"
                 >
-                    <Link href={`/org/${handle}`}>
+                    <Link href={organizationPath(handle)}>
                         <ArrowLeftIcon aria-hidden />
                         {name}
                     </Link>

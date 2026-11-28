@@ -6,6 +6,7 @@ import { Button } from '@/components/atoms/button';
 import { Skeleton } from '@/components/atoms/skeleton';
 import { Link } from '@/i18n/navigation';
 import type { ClaimIntent, ClaimPageState } from '@/lib/organizations/claims';
+import { organizationPath } from '@/lib/paths';
 
 export interface ClaimOrganizationPageProps {
     name: string;
@@ -25,7 +26,7 @@ export interface ClaimOrganizationPageProps {
     locale: string;
 }
 
-/** /org/{handle}/claim: what claiming means, then the request or its status. */
+/** /organization/{handle}/claim: what claiming means, then the request or its status. */
 export function ClaimOrganizationPage({
     name,
     handle,
@@ -41,7 +42,7 @@ export function ClaimOrganizationPage({
     return (
         <section className="mx-auto flex w-full max-w-2xl flex-col gap-8 px-4 py-12">
             <Button asChild variant="outline" size="sm" className="self-start">
-                <Link href={`/org/${handle}`}>
+                <Link href={organizationPath(handle)}>
                     <ArrowLeftIcon aria-hidden />
                     {t('back', { name })}
                 </Link>

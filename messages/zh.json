@@ -1,20 +1,31 @@
 {
     "Metadata": {
-        "description": "帮助社区建立和维持互助网络的工具和资源。"
+        "description": "邻里一起组织的免费平台。创建或找到你附近的互助小组，并用请求、借用和活动工具来运作。",
+        "homeTitle": "Communalists：互助网络的工具",
+        "keywords": "互助, 互助网络, 互助小组, 社区组织, 社区关怀, 邻里互助, 志愿者, 工具图书馆"
     },
     "Header": {
         "skipToContent": "跳到主要内容",
         "home": "Communalists 首页",
         "navigation": "主导航"
     },
+    "Nav": {
+        "organizations": "组织",
+        "dictionary": "词典",
+        "dashboard": "控制台",
+        "menu": "菜单",
+        "closeMenu": "关闭菜单",
+        "yourOrganizations": "你的组织",
+        "seeAllOrganizations": "查看你的所有组织",
+        "account": "账户",
+        "admin": "管理"
+    },
     "HeaderLinks": {
         "signIn": "登录",
-        "createAccount": "创建账户",
-        "dashboard": "控制台"
+        "createAccount": "创建账户"
     },
     "AccountMenu": {
         "open": "{name} 的账户菜单",
-        "dashboard": "控制台",
         "settings": "账户设置",
         "signOut": "退出登录",
         "profile": "你的个人资料"
@@ -26,18 +37,19 @@
         "label": "切换主题",
         "light": "浅色",
         "dark": "深色",
-        "system": "跟随系统"
+        "system": "跟随系统",
+        "heading": "主题"
     },
     "Home": {
         "banner": {
             "title": "这就是社区的样子",
-            "subtitle": "Communalists 为互助网络提供组织、分享和相互照顾的工具。",
+            "subtitle": "Communalists 为<network>互助网络</network>提供组织、分享和相互照顾的工具。",
             "imageAlt": "一位志愿者在社区聚餐中将一盘热饭递给邻居"
         },
         "cta": "创建账户",
         "about": {
             "title": "为互助而建",
-            "body": "Communalists 是一个免费平台，让邻里组织起来。为你的互助小组、工具图书馆或社区俱乐部创建组织，寻找附近的团体，并用专为互助实际运作方式打造的工具来管理它们。",
+            "body": "Communalists 是一个免费平台，让邻里组织起来。为你的<mutualAid>互助</mutualAid>小组、<toolLibrary>工具图书馆</toolLibrary>或社区俱乐部创建<org>组织</org>，寻找附近的团体，并用专为互助实际运作方式打造的工具来管理它们。",
             "languages": "提供 English、Español、Tiếng Việt 和中文版本。"
         },
         "features": {
@@ -73,7 +85,8 @@
         "region": "旧金山湾区",
         "established": "成立于 2022 年",
         "openSource": "开源",
-        "build": "基于提交 {commit} 构建"
+        "build": "基于提交 {commit} 构建",
+        "dictionary": "词典"
     },
     "SignUp": {
         "metaTitle": "创建账户",
@@ -95,7 +108,8 @@
             "passwordMismatch": "两次输入的密码不一致。"
         },
         "haveAccount": "已有账户？",
-        "signIn": "登录"
+        "signIn": "登录",
+        "metaDescription": "创建免费的 Communalists 账户，发起互助小组或加入你附近的小组。"
     },
     "SignIn": {
         "metaTitle": "登录",
@@ -114,7 +128,8 @@
             "invalidCredentials": "电子邮件或密码不正确。",
             "tooManyAttempts": "尝试次数过多。请等几分钟后再试。",
             "generic": "出了点问题，请重试。"
-        }
+        },
+        "metaDescription": "登录 Communalists，与你的互助小组一起组织。"
     },
     "ForgotPassword": {
         "metaTitle": "忘记密码",
@@ -266,7 +281,8 @@
         "showDetails": "查看详情",
         "hideDetails": "收起详情",
         "readMore": "阅读全文",
-        "showLess": "收起"
+        "showLess": "收起",
+        "metaKeywordsNear": "{name}互助, {name}附近的互助, {name}互助小组, {name}社区组织, {name}志愿者"
     },
     "Organizations": {
         "focusAreas": {
@@ -485,7 +501,10 @@
                 "notConfirmed": "你输入的名称不一致。",
                 "generic": "出了点问题，请重试。"
             }
-        }
+        },
+        "metaTitle": "{name}（{place}）",
+        "metaDescription": "{name}是位于{place}的小组。在 Communalists 上了解他们的工作以及如何参与。",
+        "metaKeywords": "{city}互助, {city}社区组织"
     },
     "Membership": {
         "signInToJoin": "登录后加入",
@@ -545,7 +564,9 @@
             "editProfile": "{actor} 更改了{fields}",
             "claim": "{target} 认领了这个组织",
             "deleteOrganization": "{actor} 删除了这个组织",
-            "restoreOrganization": "{actor} 恢复了这个组织"
+            "restoreOrganization": "{actor} 恢复了这个组织",
+            "replyComment": "{actor}回复了一条评论",
+            "deleteReply": "{actor}删除了对一条评论的回复"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "原因",
@@ -778,7 +799,7 @@
     "Admin": {
         "metaTitle": "超级用户工具",
         "title": "超级用户工具",
-        "intro": "认领或撤下未认领组织的请求，以及为方便邻居查找而添加的组织。只有超级用户能看到这个页面。",
+        "intro": "需要你处理的事项、Communalists 的增长情况，以及添加组织和词条的工具。只有超级用户能看到此页面。",
         "claimsTitle": "认领请求",
         "claimsHint": "批准前请在应用之外核实每个请求，例如拨打该组织公开的电话号码。最早的排在前面。",
         "noClaims": "目前没有请求。",
@@ -809,11 +830,9 @@
         },
         "keep": "暂不",
         "deny": "拒绝",
-        "unclaimedTitle": "未认领的组织",
         "addUnclaimed": "添加未认领的组织",
-        "noUnclaimed": "还没有。",
-        "logTitle": "超级用户最近的操作",
-        "logHint": "只有超级用户能看到。",
+        "logTitle": "决定与更改",
+        "logHint": "最新的在前。添加、编辑和下载在上方计数，因为一次导入会同时添加数百条。",
         "noLog": "还没有记录。",
         "log": {
             "createUnclaimed": "{actor} 添加了 {org}",
@@ -824,7 +843,19 @@
             "deleteUnclaimed": "{actor} 删除了 {org}",
             "restoreOrganization": "{actor} 恢复了 {org}",
             "makeUnclaimed": "{actor} 将 {org} 设为未认领",
-            "exportOrganizations": "{actor} 下载了组织列表"
+            "exportOrganizations": "{actor} 下载了组织列表",
+            "createDefinition": "{actor} 添加了词语 {word}",
+            "editDefinition": "{actor} 编辑了词语 {word}",
+            "backfillDetails": "{actor} 为 {count} 个组织补全了缺失信息记录",
+            "deleteDefinition": "{actor} 删除了词语 {word}",
+            "hideComment": "{actor} 隐藏了 {word} 下的一条评论",
+            "unhideComment": "{actor} 重新显示了 {word} 下一条被隐藏的评论",
+            "deleteComment": "{actor} 删除了 {word} 下的一条评论",
+            "dismissCommentReport": "{actor} 驳回了对 {word} 下一条评论的举报",
+            "replyComment": "{actor}代表团队回复了{word}上的一条评论",
+            "hideReply": "{actor}隐藏了{word}上的一条回复",
+            "unhideReply": "{actor}重新显示了{word}上一条被隐藏的回复",
+            "deleteReply": "{actor}删除了{word}上的一条回复"
         },
         "unknownActor": "一位超级用户",
         "errors": {
@@ -885,7 +916,7 @@
             "noName": "无名称",
             "ready": "可以添加",
             "needsAttention": "{count} 处需要修改",
-            "rowDetail": "第 {line} 行 · {place} · /org/{handle}",
+            "rowDetail": "第 {line} 行 · {place} · /organization/{handle}",
             "edited": "已在此修改",
             "verification": "来源：{verification}",
             "problemsFor": "{name} 需要修改的地方",
@@ -1003,6 +1034,555 @@
                 "sameWebsite": "打开已有页面。如果是同一个组织，请移除这一行。",
                 "invalid": "编辑这一行，从列表中选择一个值。"
             }
+        },
+        "dictionaryTitle": "词典",
+        "manageDictionary": "管理词典",
+        "dictionaryHint": "用浅显的语言解释的词语，每个词在 /dictionary 下都有自己的页面。只有超级用户可以添加和编辑。",
+        "asOf": "数据截至 {time}，最多可能延迟一小时。",
+        "onThisPage": "本页内容",
+        "sections": {
+            "attention": "待处理",
+            "overview": "概览",
+            "trends": "趋势",
+            "organizations": "组织",
+            "dictionary": "词典",
+            "activity": "团队动态",
+            "deleted": "最近删除",
+            "analytics": "访客"
+        },
+        "waiting": "已等待 {days} 天",
+        "overdue": "超过 {days} 天",
+        "attentionGaps": "有 {count} 个未认领的页面没有任何联系方式。",
+        "attentionGapsLink": "查看是哪些",
+        "attentionClear": "没有其他需要处理的事项。",
+        "stats": {
+            "organizations": "活跃组织",
+            "organizationsDetail": "{unclaimed} 个未认领 · {archived} 个已删除",
+            "claimed": "团队添加的页面已被认领",
+            "claimedValue": "{percent}%",
+            "claimedDetail": "{total} 个中的 {claimed} 个 · 最近 30 天 {last30} 个",
+            "added": "最近 30 天添加的组织",
+            "users": "账户",
+            "usersDetail": "最近 7 天新增 {count} 个",
+            "newUsers": "最近 30 天的新账户",
+            "claims": "最近 30 天的认领请求",
+            "claimsDetail": "累计：{approved} 个已批准 · {denied} 个已拒绝",
+            "compare": "与前 30 天相比{trend, select, up {增加 {change}} down {减少 {change}} other {持平}}"
+        },
+        "trendsHint": "每根柱子代表截至今天的一周，最近一周在最右边。",
+        "trends": {
+            "users": "每周新账户",
+            "organizations": "每周添加的组织",
+            "claims": "每周认领请求"
+        },
+        "chartSummary": "最近 12 周共 {total}，最近一周 {latest}。",
+        "showTable": "以表格显示",
+        "weekColumn": "周开始日期",
+        "countColumn": "数量",
+        "organizationsHint": "逐个或通过 CSV 添加组织，并找出仍缺少信息的页面。",
+        "downloadExisting": "下载已在 Communalists 上的组织 (CSV)",
+        "searchLabel": "查找组织",
+        "searchHint": "输入组织名称或地址（handle）的开头。搜索所有组织，包括未认领和已删除的。",
+        "searchButton": "搜索",
+        "searchResults": "{count, plural, =0 {没有以“{query}”开头的组织。} other {有 # 个组织以“{query}”开头。}}",
+        "searchMore": "只显示前 {count} 个。输入更多内容以缩小范围。",
+        "clearSearch": "清除搜索",
+        "gapsTitle": "缺少信息的未认领页面",
+        "gapsHint": "请查证并补全这些信息，让邻居能联系到该组织。最早的排在前面。补全该信息后，页面就会离开列表。",
+        "gapsFilter": "缺少",
+        "gaps": {
+            "contact": "没有联系方式",
+            "phone": "没有电话",
+            "email": "没有电子邮件",
+            "website": "没有网站",
+            "address": "没有地址"
+        },
+        "gapsShowing": "显示 {count} 个中的 {shown} 个",
+        "noGaps": "没有。所有未认领页面都有此信息。",
+        "missingList": "缺少：{list}",
+        "recentTitle": "最近添加",
+        "noRecent": "还没有组织。",
+        "addedOn": "添加于 {date}",
+        "statusUnclaimed": "未认领",
+        "statusDeleted": "已删除",
+        "edit": "编辑",
+        "editFor": "编辑 {name}",
+        "addWord": "添加词条",
+        "importWords": "从 CSV 导入词条",
+        "uploadDefinition": "上传定义",
+        "wordCount": "{count} 个词条",
+        "activityHint": "超级用户最近 30 天做了什么。只有超级用户能看到。",
+        "activity": {
+            "added": "添加的组织",
+            "edited": "对未认领页面的编辑",
+            "claims": "已决定的请求",
+            "lifecycle": "删除、恢复或设为未认领",
+            "words": "添加、编辑或删除的词条",
+            "exports": "组织列表的下载",
+            "comments": "隐藏或删除的评论、驳回的举报"
+        },
+        "gapNames": {
+            "phone": "电话",
+            "email": "电子邮件",
+            "website": "网站",
+            "address": "地址"
+        },
+        "analytics": {
+            "hint": "来自 Umami，最近 30 天的数据。开启“请勿跟踪”的访客不计入，也不会识别任何人。",
+            "asOf": "Umami 数据截至 {time}。",
+            "notConfigured": "未连接。在服务器上设置 UMAMI_API_KEY 后，即可查看访客、浏览最多的组织和搜索最多的城市。",
+            "error": "无法从 Umami 加载数据。请稍后再试，或在 cloud.umami.is 查看报告。",
+            "visitors": "最近 30 天的访客",
+            "pageviews": "最近 30 天的页面浏览量",
+            "orgsTitle": "浏览最多的组织",
+            "orgsEmpty": "还没有人浏览组织页面。",
+            "views": "{count} 次浏览",
+            "citiesTitle": "搜索最多的城市",
+            "citiesHint": "每次更改筛选条件都算一次搜索。“附近”是指“查找”页面今天在该城市 {radius} 英里内显示的本地组织数量（未筛选）。少于 {few} 个的城市需要查证补充。",
+            "citiesEmpty": "还没有搜索。",
+            "nearby": "{count, plural, =0 {附近没有} other {附近 # 个}}",
+            "needsResearch": "需要查证",
+            "unknownOrganization": "已不在 Communalists 上"
+        },
+        "backfill": {
+            "title": "较早的组织",
+            "hint": "在开始记录缺失信息之前添加的组织还没有计入上面的数字。补全会读取每个组织一次，不会改变任何人看到的内容。只需运行一次。",
+            "button": "补全缺失信息记录",
+            "pending": "正在补全…",
+            "done": "完成：检查了 {read} 个，更新了 {updated} 个。",
+            "error": "无法补全缺失信息记录。请重试。"
+        },
+        "unavailable": "无法加载此部分。请几分钟后再试。",
+        "attentionReports": "{count, plural, other {有 # 条评论被举报。}}",
+        "attentionReportsLink": "审核被举报的评论",
+        "reportedComments": "被举报的评论"
+    },
+    "Dictionary": {
+        "title": "词典",
+        "intro": "你会在 Communalists 和互助工作中看到的词语，用浅显的语言解释。",
+        "back": "词典：{letter}",
+        "eyebrow": "词典",
+        "notTranslated": "这个词还没有{language}版本，所以用{shown}显示。",
+        "related": "相关词语",
+        "resources": "了解更多",
+        "resourceTypes": {
+            "book": "书籍",
+            "video": "视频",
+            "article": "文章",
+            "link": "链接"
+        },
+        "by": "作者：{name}",
+        "share": {
+            "copy": "复制链接",
+            "copied": "链接已复制。",
+            "failed": "无法复制。链接如下："
+        },
+        "inline": {
+            "readMore": "点击查看详情"
+        },
+        "letters": "字母",
+        "lettersHint": "选择一个字母，查看以它开头的词语。中文词语按拼音首字母排列。",
+        "letterTitle": "互助词典：{letter}",
+        "count": "{count, plural, =0 {没有词语} other {# 个词语}}",
+        "emptyLetter": "还没有以 {letter} 开头的词语。",
+        "noWordsShort": "（没有词语）",
+        "metaTitleWord": "{word}：含义和定义",
+        "metaKeywordsWord": "{word}, {word}的意思, {word}的定义, 什么是{word}",
+        "setName": "Communalists 互助词典",
+        "otherLetters": "其他字母",
+        "previousLetter": "上一个字母：{letter}",
+        "nextLetter": "下一个字母：{letter}"
+    },
+    "Discussion": {
+        "title": "讨论",
+        "count": "{count, plural, =0 {还没有评论} other {# 条评论}}",
+        "intro": "这个词有更清楚的解释方式吗？或者定义漏掉了什么？请在这里说。为最有帮助的评论点赞。我们会阅读它们来改进定义。",
+        "joinTitle": "加入讨论",
+        "joinBody": "创建一个免费账户即可评论和点赞。只需一分钟，你还可以加入或创建互助组织。",
+        "signUp": "创建账户",
+        "signIn": "登录",
+        "setupBody": "请完成账户设置后加入讨论。我们需要你的名字显示在评论上。",
+        "setup": "完成设置",
+        "formLabel": "你的评论",
+        "formHint": "你的名字和评论是公开的。只能用纯文本。空一行即开始新段落。",
+        "charactersLeft": "{count, plural, other {还可输入 # 个字符}}",
+        "tooLongBy": "{count, plural, other {超出 # 个字符}}",
+        "language": "评论所用的语言",
+        "post": "发表评论",
+        "posting": "正在发表…",
+        "sortLabel": "评论排序",
+        "sortTop": "最多点赞",
+        "sortNewest": "最新",
+        "empty": "还没有评论。来第一个说说这个词对你意味着什么吧。",
+        "showMore": "显示更多评论",
+        "loadingMore": "正在加载…",
+        "tryAgain": "再次尝试加载更多",
+        "formerMember": "前成员",
+        "you": "（你）",
+        "hiddenText": "已被管理员隐藏。",
+        "hiddenModerator": "已被管理员隐藏。只有超级用户能看到下面的文字。",
+        "votes": "{count, plural, =0 {没有点赞} other {# 个赞}}",
+        "upVote": "点赞",
+        "upVoteLabel": "为 {name} 的评论点赞（{count, plural, other {# 个赞}}）",
+        "report": "举报",
+        "reportLabel": "举报 {name} 的评论",
+        "reportTitle": "举报这条评论？",
+        "reportBody": "超级用户会查看它，并可能将其隐藏或删除。作者不会知道是谁举报的。",
+        "reportReason": "它有什么问题？",
+        "reportReasonMissing": "请选择它有什么问题。",
+        "reasons": {
+            "spam": "垃圾信息或广告",
+            "harassment": "骚扰或仇恨",
+            "personalInfo": "泄露他人的个人信息",
+            "misinformation": "虚假或误导",
+            "other": "其他原因"
+        },
+        "reportSend": "发送举报",
+        "cancel": "取消",
+        "delete": "删除",
+        "deleteLabel": "删除 {name} 的评论",
+        "deleteMineLabel": "删除你的评论",
+        "deleteTitleMine": "删除你的评论？",
+        "deleteTitleOther": "删除 {name} 的评论？",
+        "deleteBodyMine": "评论及其点赞会对所有人删除。此操作无法撤销。",
+        "deleteBodyModerator": "评论及其点赞会对所有人删除。此操作无法撤销，但超级用户日志会保留一份副本。",
+        "deleteConfirm": "删除",
+        "hide": "隐藏",
+        "hideLabel": "隐藏 {name} 的评论",
+        "unhide": "重新显示",
+        "unhideLabel": "重新显示 {name} 的评论",
+        "announce": {
+            "posted": "评论已发表。",
+            "voted": "已点赞。现在有 {count, plural, other {# 个赞}}。",
+            "unvoted": "已取消点赞。{count, plural, =0 {现在没有点赞} other {现在有 # 个赞}}。",
+            "reported": "感谢你的举报。超级用户会查看。",
+            "alreadyReported": "你已经举报过这条评论了。谢谢。",
+            "deleted": "评论已删除。",
+            "hidden": "评论已隐藏。",
+            "unhidden": "评论已重新显示。",
+            "sortedTop": "正在优先显示点赞最多的评论。",
+            "sortedNewest": "正在优先显示最新的评论。",
+            "loaded": "{count, plural, =0 {没有更多评论了。} other {又显示了 # 条评论。}}",
+            "languageOne": "正在显示{language}评论：{count, plural, =0 {还没有} other {# 条}}。",
+            "languageAll": "正在显示所有语言的评论：{count} 条。",
+            "replied": "回复已发布。",
+            "replyDeleted": "回复已删除。",
+            "replyHidden": "回复已隐藏。",
+            "replyUnhidden": "回复已重新显示。"
+        },
+        "errors": {
+            "textRequired": "请先写下你的评论。",
+            "textTooLong": "请把评论缩短到 {max} 个字符以内。",
+            "langInvalid": "请选择评论所用的语言。",
+            "signedOut": "你已退出登录。请重新登录后继续。",
+            "setupNeeded": "请先完成账户设置。",
+            "notAllowed": "你不能这样做。",
+            "notFound": "这条评论已经不在了，可能已被删除。",
+            "rateLimited": "你在过去一小时内已发表 5 条评论，已达上限。你可以在 {time} 再次发表。",
+            "ownComment": "你不能为自己的评论点赞或举报自己的评论。",
+            "hidden": "这条评论已被管理员隐藏。",
+            "invalid": "这个请求有问题。请刷新页面后重试。",
+            "generic": "出了点问题。请重试。",
+            "loadFailed": "无法加载评论。请检查网络连接后重试。",
+            "alreadyReplied": "这条评论已经有回复了。请先删除它再写新的。",
+            "replyTextRequired": "请先写下你的回复。",
+            "replyTextTooLong": "请把回复缩短到 {max} 个字符以内。"
+        },
+        "languageLabel": "显示评论的语言",
+        "languageOne": "{language}（{count}）",
+        "languageAll": "所有语言（{count}）",
+        "emptyLanguage": "还没有{language}评论。",
+        "seeOtherLanguages": "{count, plural, other {查看其他语言的 # 条评论}}",
+        "writtenIn": "使用{language}撰写",
+        "changeLanguage": "更改",
+        "changeLanguageLabel": "更改评论所用的语言",
+        "unavailable": "暂时无法加载评论。请过几分钟再试。",
+        "organization": {
+            "intro": "告诉大家这个团体是什么样的：你得到的帮助、你做志愿者的经历、称赞、担忧或问题。为你认同的评论点赞。这个组织可以回复每条评论。",
+            "empty": "还没有评论。你和这个团体合作过吗？来第一个分享你的经历吧。"
+        },
+        "reply": "回复",
+        "replyLabel": "以{organization}的名义回复{name}的评论",
+        "replyFrom": "来自{name}的回复",
+        "replyFromTeam": "来自 Communalists 团队的回复",
+        "teamName": "Communalists 团队",
+        "replyFormLabel": "你以{from}名义的回复",
+        "replyFormHint": "回复是公开的，显示为来自{from}，而不是你个人。只限纯文本。每条评论只能有一条回复：要修改，请删除后重写。",
+        "replyLanguage": "回复的语言",
+        "replyPost": "发布回复",
+        "replyHiddenText": "回复已被管理员隐藏。",
+        "replyHiddenModerator": "回复已被管理员隐藏。只有超级用户能看到下面的内容。",
+        "reportReplyLabel": "举报对{name}评论的回复",
+        "reportReplyTitle": "举报这条回复？",
+        "hideReplyLabel": "隐藏对{name}评论的回复",
+        "unhideReplyLabel": "重新显示对{name}评论的回复",
+        "deleteReplyLabel": "删除对{name}评论的回复",
+        "deleteReplyTitle": "删除这条回复？",
+        "deleteReplyBody": "回复会对所有人删除。之后你可以写一条新的。",
+        "deleteReplyBodyModerator": "回复会对所有人删除。此操作无法撤销，但超级用户日志会保留一份副本。",
+        "replyChangeLanguageLabel": "更改回复的语言"
+    },
+    "AdminComments": {
+        "metaTitle": "被举报的评论",
+        "title": "被举报的评论",
+        "intro": "被大家举报的评论，举报最多的排在前面。隐藏或删除违反规则的评论；如果没问题，就驳回举报。每项操作都会记入超级用户日志。",
+        "backToAdmin": "超级用户工具",
+        "listTitle": "待审核",
+        "empty": "没有被举报的评论。没有需要审核的内容。",
+        "on": "在 <word></word>",
+        "byOn": "{name}，{date}",
+        "votes": "{count, plural, =0 {没有点赞} other {# 个赞}}",
+        "gone": "这条评论已被删除。驳回举报即可清除。",
+        "formerMember": "前成员",
+        "reports": "{count, plural, other {被举报 # 次}}",
+        "reasonCount": "{reason}：{count}",
+        "reasons": {
+            "spam": "垃圾信息或广告",
+            "harassment": "骚扰或仇恨",
+            "personalInfo": "泄露他人的个人信息",
+            "misinformation": "虚假或误导",
+            "other": "其他原因"
+        },
+        "hide": "隐藏",
+        "hideLabel": "隐藏 {name} 的评论",
+        "delete": "删除",
+        "deleteLabel": "删除 {name} 的评论",
+        "deleteTitle": "删除 {name} 的评论？",
+        "deleteBody": "评论及其点赞会对所有人删除。此操作无法撤销，但超级用户日志会保留一份副本。",
+        "dismiss": "驳回举报",
+        "dismissLabel": "驳回对 {name} 的评论的举报",
+        "hidden": "评论已隐藏，举报已关闭。",
+        "deleted": "评论已删除，举报已关闭。",
+        "dismissed": "举报已驳回，评论保持不变。",
+        "replyByOn": "{from}对{name}评论的回复，{date}",
+        "hideLabelReply": "隐藏{from}对{name}的回复",
+        "deleteLabelReply": "删除{from}对{name}的回复",
+        "deleteTitleReply": "删除{from}的回复？",
+        "deleteBodyReply": "回复会对所有人删除，评论保留。此操作无法撤销，但超级用户日志会保留一份副本。",
+        "dismissLabelReply": "驳回对{from}给{name}的回复的举报",
+        "goneReply": "这条回复已被删除。驳回举报即可清除。",
+        "hiddenReply": "回复已隐藏。举报已关闭。",
+        "deletedReply": "回复已删除。举报已关闭。",
+        "dismissedReply": "举报已驳回。回复保持不变。"
+    },
+    "AdminDefinitions": {
+        "metaTitle": "词典",
+        "title": "词典",
+        "intro": "词典中的所有词语。每个词都有自己的页面，任何人都可以打开和分享。修改会记录在超级用户日志中。",
+        "backToAdmin": "超级用户工具",
+        "add": "添加词语",
+        "viewDictionary": "查看词典",
+        "pageOnly": "只有超级用户能看到这里。",
+        "saved": "已保存 {word}。",
+        "viewWord": "查看 {word} 的页面",
+        "listTitle": "词语",
+        "empty": "还没有词语。添加第一个吧。",
+        "updatedOn": "更新于 {date}",
+        "edit": "编辑",
+        "editWord": "编辑 {word}",
+        "view": "查看",
+        "backToList": "词典",
+        "backToWord": "返回 {word}",
+        "addTitle": "添加词语",
+        "editTitle": "编辑“{word}”",
+        "formIntro": "用全部四种语言写下这个词。使用简短的句子和日常用语，为从未听说过它的人解释。",
+        "slug": "地址",
+        "slugHint": "小写字母、数字和连字符，例如 mutual-aid。所有语言使用同一个地址，之后不能更改，这样分享出去的链接才能一直有效。",
+        "slugFixed": "地址不能更改，这样分享出去的链接才能一直有效。",
+        "word": "词语",
+        "definition": "简短定义",
+        "definitionHint": "一两句话，最多 {max} 个字符。显示在页面顶部，以及任何标记了这个词的地方。",
+        "details": "更多说明（可选）",
+        "detailsHint": "只显示在这个词的页面上。段落之间空一行。",
+        "related": "相关词语",
+        "relatedHint": "链接显示在页面底部。最多 {max} 个。",
+        "relatedPicker": {
+            "search": "查找要添加的词",
+            "placeholder": "输入一个词",
+            "chosen": "已关联：{count}/{max}",
+            "none": "还没有。在下方搜索来添加。",
+            "remove": "移除 {word}",
+            "noMatch": "没有其他词与“{query}”匹配。",
+            "atMax": "已关联 {max} 个词，已达上限。移除一个才能再添加。",
+            "added": "已添加 {word}。已关联 {count}/{max}。",
+            "removed": "已移除 {word}。已关联 {count}/{max}。"
+        },
+        "fieldIn": "{field}（{language}）",
+        "summary": "{count, plural, other {保存前请修正 # 个问题：}}",
+        "saving": "正在保存…",
+        "create": "添加词语",
+        "save": "保存修改",
+        "errors": {
+            "slugRequired": "请填写地址。",
+            "slugFormat": "使用 2 到 {max} 个小写字母、数字和单个连字符，例如 mutual-aid。",
+            "slugReserved": "网站已在使用这个地址。请换一个。",
+            "wordRequired": "请填写词语。",
+            "wordTooLong": "最多 {max} 个字符。",
+            "definitionRequired": "请填写简短定义。",
+            "definitionTooLong": "最多 {max} 个字符。",
+            "detailsTooLong": "最多 {max} 个字符。",
+            "relatedTooMany": "最多选择 {max} 个相关词语。"
+        },
+        "formErrors": {
+            "slugTaken": "已有词语使用这个地址。请编辑那个词语，或换一个地址。",
+            "notFound": "这个词语已不存在。请返回词典查看最新内容。",
+            "notAllowed": "只有超级用户可以执行此操作。",
+            "generic": "出了点问题。请重试。"
+        },
+        "importCsv": "从 CSV 导入",
+        "imported": "{count, plural, =0 {没有添加任何词语。} other {已添加 # 个词语。}}",
+        "import": {
+            "title": "导入词语",
+            "intro": "从 CSV 文件一次添加多个词语。每一行都会先检查，在你选择“添加”之前不会添加任何内容。词典中已有的词语会被跳过，绝不会被修改：请逐个编辑。",
+            "formatTitle": "文件",
+            "formatSlug": "slug：词语的地址，例如 mutual-aid。使用小写字母、数字和连字符。",
+            "formatLanguages": "每种语言（en、es、vi、zh）：en_word 和 en_definition 必填，en_details 可选。单元格中的空行表示新段落。",
+            "formatRelated": "related（可选）：其他词语的地址，用分号分隔，例如 solidarity;organizer。这些词语必须已在词典中或在同一文件中。",
+            "formatLimit": "最多 {max} 行。请从电子表格另存为 CSV（UTF-8）。",
+            "template": "下载模板",
+            "file": "CSV 文件",
+            "fileHint": "检查不会添加任何内容。",
+            "check": "检查文件",
+            "checking": "正在检查…",
+            "summary": "{file}：共 {total} 行。{ready} 行可添加，{exists} 行已在词典中，{problems} 行需要修正。",
+            "ignored": "以下列未使用，已忽略：{columns}",
+            "add": "{count, plural, other {添加 # 个词语}}",
+            "confirmTitle": "{count, plural, other {添加 # 个词语？}}",
+            "confirmBody": "它们会立即以所有语言显示在 /dictionary。已在词典中或有问题的行会被跳过。此操作无法撤销，但之后可以逐个编辑。",
+            "notYet": "暂不",
+            "adding": "正在添加…",
+            "confirm": "{count, plural, other {添加 # 个词语}}",
+            "noneReady": "没有可添加的行。请修正文件后再检查一次。",
+            "noWord": "没有英文词语",
+            "line": "第 {line} 行",
+            "status": {
+                "ready": "可添加",
+                "exists": "已在词典中：跳过",
+                "problems": "{count, plural, other {# 个问题}}"
+            },
+            "problems": {
+                "slugRepeated": "前面已有一行使用相同的地址。",
+                "relatedUnknown": "不在词典或此文件中：{value}"
+            },
+            "fileProblems": {
+                "empty": "文件中没有任何行。",
+                "tooBig": "文件太大。请保持在 500 KB 以内。",
+                "tooManyRows": "文件超过 {max} 行。请拆分成较小的文件。",
+                "missingColumns": "文件缺少以下列：{columns}。请从模板开始。",
+                "noFile": "请选择一个 CSV 文件。",
+                "notAllowed": "只有超级用户可以执行此操作。",
+                "generic": "出了点问题。请重试。"
+            },
+            "addErrors": {
+                "nothingReady": "没有可添加的行，因此没有添加任何内容。",
+                "changed": "在你检查期间词典有了变化，因此没有添加任何内容。请重新检查文件。",
+                "notAllowed": "只有超级用户可以执行此操作。",
+                "generic": "出了点问题。请重试。"
+            }
+        },
+        "upload": {
+            "title": "上传定义",
+            "intro": "用文件中的内容替换一个词在所有语言中的内容。保存前你会看到每一处更改。相关词保持不变。",
+            "formatTitle": "文件",
+            "formatOneRow": "包含一个词的 CSV：列与导入相同（slug，然后是 en_word、en_definition 和 en_details，es、vi 和 zh 也一样），只有一行。",
+            "formatSlug": "slug 必须是词典中已有的词。要添加新词，请改用导入。",
+            "formatRelated": "related 列会被忽略。请在编辑表单中更改相关词。",
+            "file": "CSV 文件",
+            "fileHint": "检查不会更改任何内容。",
+            "check": "检查文件",
+            "checking": "正在检查…",
+            "status": {
+                "ready": "{file}：{word} 有 {count, plural, other {# 处更改}}。",
+                "unchanged": "{file} 与 {word} 现在的内容相同，没有需要更改的。",
+                "notFound": "没有地址为 {slug} 的词。要添加它，请改用导入。",
+                "problems": "{file}：使用前需要修正 {count, plural, other {# 个问题}}。"
+            },
+            "relatedIgnored": "文件列出了相关词。这些会被忽略：该词保留现有的相关词。",
+            "ignored": "这些列未被使用，已略过：{columns}",
+            "goToImport": "从 CSV 导入词语",
+            "changesTitle": "更改内容",
+            "now": "现在",
+            "new": "新的",
+            "empty": "（空）",
+            "update": "更新{word}",
+            "confirmTitle": "更新{word}？",
+            "confirmBody": "{count, plural, other {# 个字段}}会立即更改，包括该词的页面和所有标记它的地方。无法撤销，但之后可以编辑该词。",
+            "notYet": "暂不",
+            "updating": "正在更新…",
+            "fileProblems": {
+                "empty": "文件没有任何行。",
+                "missingColumns": "文件缺少这些列：{columns}。请使用导入的模板。",
+                "notOneRow": "文件必须只有一个词：一行标题和一行内容。要添加多个词，请改用导入。",
+                "tooBig": "文件太大。请保持在 500 KB 以下。",
+                "noFile": "请选择一个 CSV 文件。",
+                "notAllowed": "只有超级用户可以这样做。",
+                "generic": "出了点问题。请重试。",
+                "otherWord": "这个文件是 {fileSlug} 的，不是 {slug} 的。请在那个词的编辑页面上传，或使用“上传定义”。"
+            },
+            "saveErrors": {
+                "changed": "检查文件后该词已被更改，因此没有保存任何内容。请重新检查文件以查看最新内容。",
+                "notAllowed": "只有超级用户可以这样做。",
+                "generic": "出了点问题。请重试。"
+            }
+        },
+        "removed": "已从词典中删除 {slug}。",
+        "replace": {
+            "title": "用文件替换",
+            "intro": "上传 {word} 的单词 CSV 文件，替换它在所有语言中的文字。保存前你会看到每一处改动。相关词语保持不变；你在下方表单中输入但尚未保存的内容会丢失。",
+            "formTitle": "手动编辑"
+        },
+        "remove": {
+            "title": "删除这个词",
+            "intro": "将 {word} 从词典中永久删除。",
+            "button": "删除 {word}",
+            "confirmTitle": "删除 {word}？",
+            "confirmBody": "它的页面将无法打开，也会从其他词语的相关词语中移除。在我们的页面中标记它的地方，它会显示为普通文字。它的讨论也会被删除。此操作无法撤销，但超级用户日志会保留一份它的文字副本。",
+            "notYet": "暂不",
+            "removing": "正在删除…",
+            "errors": {
+                "notFound": "这个词已经被删除。请返回词典查看最新内容。",
+                "notAllowed": "只有超级用户才能执行此操作。",
+                "generic": "出了点问题，请重试。"
+            }
+        }
+    },
+    "Errors": {
+        "title": "出了点问题",
+        "body": "无法加载此页面。可能是我们这边的问题。请重试，或过几分钟再来。",
+        "retry": "重试",
+        "home": "返回首页",
+        "reference": "参考编号：{digest}"
+    },
+    "NotFound": {
+        "eyebrow": "找不到页面",
+        "tried": "你访问的地址：",
+        "general": {
+            "metaTitle": "找不到页面",
+            "title": "我们找不到这个页面",
+            "body": "地址可能有拼写错误，或者页面已被移动或删除。",
+            "home": "返回首页",
+            "organizations": "查找组织",
+            "dictionary": "浏览词典"
+        },
+        "word": {
+            "metaTitle": "找不到词语",
+            "title": "词典里还没有“{word}”这个词",
+            "body": "请检查拼写，或浏览词典。我们会陆续添加新词。",
+            "suggestions": "你是不是要找：",
+            "browse": "浏览词典"
+        },
+        "organization": {
+            "metaTitle": "找不到组织",
+            "title": "在“{handle}”找不到任何组织",
+            "body": "组织可以更改地址，旧地址过一段时间后会失效。组织也可能已被下架。请试着按名称或地点查找。",
+            "find": "查找组织",
+            "create": "创建组织"
+        },
+        "person": {
+            "metaTitle": "找不到个人资料",
+            "title": "找不到用户名为“{username}”的人",
+            "body": "用户可以更改用户名，旧用户名会失效。请检查拼写，或通过他们所在的组织找到他们。",
+            "find": "查找组织"
         }
     }
 }

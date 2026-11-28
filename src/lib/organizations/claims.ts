@@ -106,4 +106,21 @@ export type AdminAction =
     | 'deleteUnclaimed'
     | 'restoreOrganization'
     | 'makeUnclaimed'
-    | 'exportOrganizations';
+    | 'exportOrganizations'
+    // Filling in missingDetails on older organizations (once).
+    | 'backfillDetails'
+    // Dictionary words (documentation/features/19-dictionary.md).
+    | 'createDefinition'
+    | 'editDefinition'
+    | 'deleteDefinition'
+    // Moderating comments (documentation/features/20-comments.md).
+    | 'hideComment'
+    | 'unhideComment'
+    | 'deleteComment'
+    | 'dismissCommentReport'
+    // Organizations' replies to comments (decision #70): super users hiding
+    // or deleting one, or writing one for the team on an unclaimed page.
+    | 'hideReply'
+    | 'unhideReply'
+    | 'deleteReply'
+    | 'replyComment';

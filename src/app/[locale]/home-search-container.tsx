@@ -8,12 +8,13 @@ import { useLocationPicker } from '@/hooks/use-location-picker';
 import { useRouter } from '@/i18n/navigation';
 import { DEFAULT_PLACE, homeSearchHref } from '@/lib/organizations/directory';
 import { focusAreasByUse, HOME_FOCUS_AREAS } from '@/lib/organizations/options';
+import { findPath } from '@/lib/paths';
 import type { PlaceOption } from '@/lib/places/types';
 
 /**
  * Wires the homepage search: the broadest focus areas as pills (one at a
  * time), the city box starts on the profile's city, or San Francisco, and
- * "Find organizations" opens /find with the chosen focus area and city, or
+ * "Find organizations" opens /find/organizations with the chosen focus area and city, or
  * the starting city when none is chosen.
  */
 export function HomeSearchContainer({
@@ -30,7 +31,7 @@ export function HomeSearchContainer({
 
     return (
         <HeroSearch
-            action={`/${locale}/find`}
+            action={`/${locale}${findPath('organizations')}`}
             focusArea={{
                 options: focusAreasByUse()
                     .slice(0, HOME_FOCUS_AREAS)

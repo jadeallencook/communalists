@@ -19,6 +19,7 @@ import {
 } from '@/components/organisms/organization-profile';
 import { Link } from '@/i18n/navigation';
 import type { ImportProblem } from '@/lib/organizations/import';
+import { organizationPath } from '@/lib/paths';
 
 export interface ImportRowCardProps {
     /** The row's line in the file; also its id. */
@@ -185,12 +186,14 @@ export function ImportRowCard({
                                     <p className="break-words">
                                         {t('alreadyListed')}{' '}
                                         <Link
-                                            href={`/org/${p.match.handle}`}
+                                            href={organizationPath(
+                                                p.match.handle
+                                            )}
                                             className="font-medium underline underline-offset-4"
                                         >
                                             {p.match.name}
                                         </Link>
-                                        {` · ${p.match.place} · /org/${p.match.handle}`}
+                                        {` · ${p.match.place} · ${organizationPath(p.match.handle)}`}
                                         {p.match.unclaimed &&
                                             ` · ${t('matchUnclaimed')}`}
                                     </p>

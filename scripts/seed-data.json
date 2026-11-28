@@ -462,5 +462,117 @@
             "banned": [],
             "claims": []
         }
+    ],
+    "comments": [
+        {
+            "id": "seed-c1",
+            "slug": "mutual-aid",
+            "uid": "seed-maya",
+            "lang": "en",
+            "daysAgo": 6,
+            "text": "I’d add that mutual aid is about doing it together, not charity from above. The people giving help today may need it tomorrow.\n\nMaybe the short definition could say “neighbors” instead of “people”?",
+            "voters": ["seed-luis", "seed-sam", "seed-thanh", "seed-wei"]
+        },
+        {
+            "id": "seed-c2",
+            "slug": "mutual-aid",
+            "uid": "seed-luis",
+            "lang": "es",
+            "daysAgo": 4,
+            "text": "En español también se dice “apoyo mutuo”. Podría estar en la explicación.",
+            "voters": ["seed-maya"]
+        },
+        {
+            "id": "seed-c3",
+            "slug": "mutual-aid",
+            "uid": "seed-thanh",
+            "lang": "vi",
+            "daysAgo": 2,
+            "text": "Có thể thêm ví dụ như tủ lạnh miễn phí hoặc chở nhau đi khám bệnh.",
+            "voters": []
+        },
+        {
+            "id": "seed-c4",
+            "slug": "mutual-aid",
+            "uid": "seed-marcus",
+            "lang": "en",
+            "daysAgo": 1,
+            "text": "Great deals on watches at example.com!!!",
+            "voters": [],
+            "reports": [
+                {
+                    "uid": "seed-maya",
+                    "reason": "spam"
+                },
+                {
+                    "uid": "seed-luis",
+                    "reason": "spam"
+                }
+            ]
+        },
+        {
+            "id": "seed-c5",
+            "slug": "solidarity",
+            "uid": "seed-aisha",
+            "lang": "en",
+            "daysAgo": 3,
+            "text": "Solidarity is also showing up when it isn’t your fight. That could be in the longer part.",
+            "voters": ["seed-maya", "seed-priya"]
+        },
+        {
+            "id": "seed-oc1",
+            "org": "seed-sbma",
+            "uid": "seed-wei",
+            "lang": "en",
+            "daysAgo": 9,
+            "text": "They delivered groceries to my building every Saturday while I was recovering from surgery. Friendly, on time, and nobody asked me to prove anything.",
+            "voters": ["seed-sam", "seed-luis", "seed-linh"]
+        },
+        {
+            "id": "seed-oc2",
+            "org": "seed-sbma",
+            "uid": "seed-marcus",
+            "lang": "en",
+            "daysAgo": 5,
+            "text": "Good people, but the sign-up form for the grocery boxes is only in English. My neighbor only reads Vietnamese and couldn't use it.",
+            "voters": ["seed-linh"],
+            "reply": {
+                "uid": "seed-maya",
+                "lang": "en",
+                "daysAgo": 4,
+                "text": "Thank you, you're right. We're translating the form into Vietnamese and Spanish this month. Until then, call us and we'll fill it in together.",
+                "reports": [
+                    {
+                        "uid": "seed-priya",
+                        "reason": "misinformation"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "seed-oc3",
+            "org": "seed-sbma",
+            "uid": "seed-rosa",
+            "lang": "es",
+            "daysAgo": 2,
+            "text": "El refrigerador comunitario siempre está limpio y lleno. ¡Gracias a todos los voluntarios!",
+            "voters": []
+        },
+        {
+            "id": "seed-oc4",
+            "org": "seed-eastside-showers",
+            "uid": "seed-aisha",
+            "lang": "en",
+            "daysAgo": 3,
+            "text": "Is the shower day still every Sunday? The flyer at the library says Saturday.",
+            "voters": ["seed-daniel"],
+            "reply": {
+                "uid": "seed-jordan",
+                "lang": "en",
+                "daysAgo": 1,
+                "byTeam": true,
+                "text": "Thanks for asking. We've contacted the organizers and will update this page when we hear back."
+            }
+        }
     ]
 }

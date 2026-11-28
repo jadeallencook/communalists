@@ -26,7 +26,7 @@ import type { DirectorySearch } from '@/lib/organizations/directory';
 import { cn } from '@/lib/utils';
 
 export interface OrganizationFiltersProps {
-    /** Where the form submits (GET) without JavaScript: the /find page. */
+    /** Where the form submits (GET) without JavaScript: the /find/organizations page. */
     action: string;
     /** The search shown, from the URL. */
     search: DirectorySearch;
@@ -169,7 +169,7 @@ function Group({
 }
 
 /**
- * The /find filters: city, distance, kinds of groups, focus areas, languages.
+ * The /find/organizations filters: city, distance, kinds of groups, focus areas, languages.
  * No logic: it reports changes. On small screens everything but the city
  * folds behind a Filters button, so results start near the top.
  */

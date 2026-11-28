@@ -36,5 +36,12 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+
+      # Security rules tests run against the Firestore emulator, which needs Java.
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: pnpm test:rules
       - run: pnpm build
       - run: pnpm build-storybook --quiet

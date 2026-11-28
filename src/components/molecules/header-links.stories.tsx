@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import {
     HeaderLinksPlaceholder,
-    SignedInLinks,
+    NavLinks,
     SignedOutLinks,
 } from './header-links';
 
@@ -24,9 +24,41 @@ type Story = StoryObj<typeof meta>;
 export const SignedOut: Story = {};
 export const SignedOutOnSignIn: Story = { args: { current: 'sign-in' } };
 export const SignedOutOnSignUp: Story = { args: { current: 'sign-up' } };
-export const SignedIn: Story = { render: () => <SignedInLinks /> };
-export const SignedInOnDashboard: Story = {
-    render: () => <SignedInLinks current="dashboard" />,
+
+const sections = [
+    { key: 'organizations', href: '/find/organizations' },
+    { key: 'dictionary', href: '/dictionary' },
+] as const;
+
+/** The site's sections, as visitors see them. */
+export const Sections: Story = {
+    render: () => <NavLinks links={[...sections]} />,
 };
-/** While the session is checked. */
+/** Signed in, Dashboard joins at the end. */
+export const SectionsSignedIn: Story = {
+    render: () => (
+        <NavLinks
+            links={[...sections, { key: 'dashboard', href: '/dashboard' }]}
+        />
+    ),
+};
+/** On an organization's page: Organizations is marked as the current section (`aria-current="true"`). */
+export const SectionsInsideOrganizations: Story = {
+    render: () => (
+        <NavLinks
+            links={[
+                { ...sections[0], current: 'true' },
+                sections[1],
+                { key: 'dashboard', href: '/dashboard' },
+            ]}
+        />
+    ),
+};
+/** On /dictionary itself (`aria-current="page"`). */
+export const SectionsOnDictionary: Story = {
+    render: () => (
+        <NavLinks links={[sections[0], { ...sections[1], current: 'page' }]} />
+    ),
+};
+/** While the session is checked (resize to see the phone placeholder). */
 export const Loading: Story = { render: () => <HeaderLinksPlaceholder /> };

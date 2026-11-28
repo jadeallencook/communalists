@@ -44,12 +44,20 @@ The rebuild keeps the prototype's caching ideas ([PR #60](https://github.com/jad
 - Saving settings: the next page shows the new name; browsing goes back to 0.
 - An account mid-setup: 2 reads per gated page (cached miss + fresh confirm).
 
+**Count, don't read, for numbers (2026-11-27, decision #58).** A `count()` aggregation query costs **one read per 1,000 matching documents** (at least one), and it doesn't return the documents. The super-user dashboard shows about 30 numbers and 36 weekly counts for roughly that many reads per cache miss, where listing the 500+ unclaimed organizations cost 500+. If a number needs a condition Firestore can't filter on (like "has no phone, email or website"), store it as a derived field on write (`missingDetails`) and count that. Counts use the same indexes as the matching query, so a filter on two fields plus a range still needs a composite index.
+
+**Scripts that write around the app don't clear the cache.** The `missingDetails` backfill wrote straight to Firestore, and the dashboard kept showing its cached counts until an edit in the app cleared the `directory` tag. After a script runs, expect cached pages to be up to their `cacheLife` old, or make a change in the app that clears the tag.
+
+**If Firebase fails, show an error; never break the app (2026-11-27, [decision #68](../decisions/068-firebase-failures-show-an-error-never-break-the-app.md)).** An index still building, a timeout, a quota error or an outage must never take a page down. A section that reads Firestore catches its own failure and says so in place (the dictionary discussion, `/admin`'s sections). When the read is the page itself, `src/app/[locale]/error.tsx` shows "Something went wrong" with Try again inside the site's header and footer. `src/app/global-error.tsx`, in all four languages, covers the root layout. Log the failure's message (`[area] … failed`), never personal data. A failed read is never shown as a 404 or as empty.
+
+**Deploy indexes before the code that needs them (2026-11-27).** `/admin` crashed in production right after a merge, because its new composite indexes hadn't been deployed: one `FAILED_PRECONDITION` query took down the whole page. Run `firebase deploy --only firestore:indexes --project communalists` and wait until the console shows them as **Enabled** before merging. Pages built on many queries should also let each section fail on its own (decision #60). **It happened again the same evening:** the dictionary discussion ([features/20](../features/20-comments.md)) merged before its three comment indexes were deployed, and its PR even said to deploy _after_ merging. Word pages logged `FAILED_PRECONDITION` (first "requires an index", then "currently building") and browsers showed React errors #419 and #441. The discussion now fails on its own ("Comments couldn't load right now."), and the `prepare-pull-request` skill checks for index changes and asks for the deploy before merging.
+
 **One-off reads still count.** The CSV backup on 2026-11-20 read every document in every collection, so it showed up as a few thousand reads in the console's usage chart. The Firestore Data tab in the console also counts as reads while you browse it.
 
 ## Query limits that shaped the code
 
 - **No substring search.** Name and email search runs on the client over cached results.
-- **Composite indexes.** `stage == X && hasDriver == Y && coordinator == Z` needs an index for each combination of filters. The location and language filters were probably dropped partly for this reason. The `firestore.indexes.json` file isn't in the repo.
+- **Composite indexes.** `stage == X && hasDriver == Y && coordinator == Z` needs an index for each combination of filters. The location and language filters were probably dropped partly for this reason. The prototype's `firestore.indexes.json` wasn't in the repo. The rebuild's is, and lists only the composite indexes a query needs (deploy with `firebase deploy --only firestore:indexes --project communalists`).
 - **`in` queries are capped** (10 IDs then, 30 now). `getUsernames` would break on big threads.
 - `!=` queries exclude documents that lack the field, and need ordering on that field.
 
@@ -70,6 +78,7 @@ What follows from that:
 - **The server is the only gate.** Every server action and container must check authorization itself, for example taking the uid from the verified session cookie, never from the request.
 - **`FIREBASE_SERVICE_ACCOUNT_KEY` is the master key.** Whoever holds it can read and write all data. Keep it only in Vercel's environment variables (marked sensitive). If it leaks, delete it under Project settings → Service accounts and generate a new one.
 - **Opening client access later** (e.g. live updates on a kanban board) means writing real rules for just those collections, scoped by organization membership and role, with emulator tests. Everything else stays denied.
+- **The deny-all rules are tested.** `rules/firestore.rules.test.ts` (`pnpm test:rules`, run in CI) checks that signed-out and signed-in clients can't read, write, delete or list any collection we store. Add each new collection to its list; opening one means changing its tests on purpose ([decision #54](../decisions/054-security-rules-tests-against-the-emulator.md)).
 
 ## Security in the prototype: the big unknown
 

@@ -1,20 +1,31 @@
 {
     "Metadata": {
-        "description": "Công cụ và tài nguyên giúp cộng đồng xây dựng và duy trì mạng lưới tương trợ."
+        "description": "Nền tảng miễn phí để hàng xóm cùng tổ chức. Thành lập hoặc tìm nhóm tương trợ gần bạn, với công cụ cho yêu cầu, cho mượn đồ và sự kiện.",
+        "homeTitle": "Communalists: công cụ cho mạng lưới tương trợ",
+        "keywords": "tương trợ, mạng lưới tương trợ, nhóm tương trợ, tổ chức cộng đồng, chăm sóc cộng đồng, hàng xóm giúp đỡ nhau, tình nguyện, thư viện dụng cụ"
     },
     "Header": {
         "skipToContent": "Chuyển đến nội dung",
         "home": "Trang chủ Communalists",
         "navigation": "Chính"
     },
+    "Nav": {
+        "organizations": "Tổ chức",
+        "dictionary": "Từ điển",
+        "dashboard": "Bảng điều khiển",
+        "menu": "Menu",
+        "closeMenu": "Đóng menu",
+        "yourOrganizations": "Tổ chức của bạn",
+        "seeAllOrganizations": "Xem tất cả tổ chức của bạn",
+        "account": "Tài khoản",
+        "admin": "Quản trị"
+    },
     "HeaderLinks": {
         "signIn": "Đăng nhập",
-        "createAccount": "Tạo tài khoản",
-        "dashboard": "Bảng điều khiển"
+        "createAccount": "Tạo tài khoản"
     },
     "AccountMenu": {
         "open": "Menu tài khoản của {name}",
-        "dashboard": "Bảng điều khiển",
         "settings": "Cài đặt tài khoản",
         "signOut": "Đăng xuất",
         "profile": "Hồ sơ của bạn"
@@ -26,18 +37,19 @@
         "label": "Đổi giao diện",
         "light": "Sáng",
         "dark": "Tối",
-        "system": "Hệ thống"
+        "system": "Hệ thống",
+        "heading": "Giao diện"
     },
     "Home": {
         "banner": {
             "title": "Đây là hình ảnh của cộng đồng",
-            "subtitle": "Communalists mang đến cho các mạng lưới tương trợ những công cụ để tổ chức, chia sẻ và chăm sóc lẫn nhau.",
+            "subtitle": "Communalists mang đến cho các <network>mạng lưới tương trợ</network> những công cụ để tổ chức, chia sẻ và chăm sóc lẫn nhau.",
             "imageAlt": "Một tình nguyện viên trao đĩa thức ăn nóng cho người hàng xóm tại bữa ăn cộng đồng"
         },
         "cta": "Tạo tài khoản",
         "about": {
             "title": "Được xây dựng cho tương trợ",
-            "body": "Communalists là nền tảng miễn phí để hàng xóm cùng nhau tổ chức. Hãy lập một tổ chức cho nhóm tương trợ, thư viện dụng cụ hay câu lạc bộ cộng đồng của bạn, tìm các nhóm gần bạn và vận hành chúng bằng những công cụ được tạo ra cho cách tương trợ thực sự diễn ra.",
+            "body": "Communalists là nền tảng miễn phí để hàng xóm cùng nhau tổ chức. Hãy lập một <org>tổ chức</org> cho nhóm <mutualAid>tương trợ</mutualAid>, <toolLibrary>thư viện dụng cụ</toolLibrary> hay câu lạc bộ cộng đồng của bạn, tìm các nhóm gần bạn và vận hành chúng bằng những công cụ được tạo ra cho cách tương trợ thực sự diễn ra.",
             "languages": "Có sẵn bằng English, Español, Tiếng Việt và 中文."
         },
         "features": {
@@ -73,7 +85,8 @@
         "region": "Khu vực Vịnh San Francisco",
         "established": "Thành lập năm 2022",
         "openSource": "Mã nguồn mở",
-        "build": "Dựng từ commit {commit}"
+        "build": "Dựng từ commit {commit}",
+        "dictionary": "Từ điển"
     },
     "SignUp": {
         "metaTitle": "Tạo tài khoản",
@@ -95,7 +108,8 @@
             "passwordMismatch": "Mật khẩu không khớp."
         },
         "haveAccount": "Đã có tài khoản?",
-        "signIn": "Đăng nhập"
+        "signIn": "Đăng nhập",
+        "metaDescription": "Tạo tài khoản Communalists miễn phí để thành lập nhóm tương trợ hoặc tham gia một nhóm gần bạn."
     },
     "SignIn": {
         "metaTitle": "Đăng nhập",
@@ -114,7 +128,8 @@
             "invalidCredentials": "Email và mật khẩu không khớp với tài khoản nào.",
             "tooManyAttempts": "Quá nhiều lần thử. Vui lòng đợi vài phút rồi thử lại.",
             "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
-        }
+        },
+        "metaDescription": "Đăng nhập Communalists để cùng tổ chức với các nhóm tương trợ của bạn."
     },
     "ForgotPassword": {
         "metaTitle": "Quên mật khẩu",
@@ -266,7 +281,8 @@
         "showDetails": "Xem chi tiết",
         "hideDetails": "Ẩn chi tiết",
         "readMore": "Đọc thêm",
-        "showLess": "Thu gọn"
+        "showLess": "Thu gọn",
+        "metaKeywordsNear": "tương trợ {name}, tương trợ gần {name}, nhóm tương trợ ở {name}, tổ chức cộng đồng {name}, tình nguyện ở {name}"
     },
     "Organizations": {
         "focusAreas": {
@@ -485,7 +501,10 @@
                 "notConfirmed": "Tên bạn nhập không khớp.",
                 "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
             }
-        }
+        },
+        "metaTitle": "{name} tại {place}",
+        "metaDescription": "{name} là một nhóm ở {place}. Xem họ làm gì và cách tham gia trên Communalists.",
+        "metaKeywords": "tương trợ {city}, tổ chức cộng đồng {city}"
     },
     "Membership": {
         "signInToJoin": "Đăng nhập để tham gia",
@@ -545,7 +564,9 @@
             "editProfile": "{actor} đã thay đổi {fields}",
             "claim": "{target} đã nhận tổ chức này",
             "deleteOrganization": "{actor} đã xóa tổ chức này",
-            "restoreOrganization": "{actor} đã khôi phục tổ chức này"
+            "restoreOrganization": "{actor} đã khôi phục tổ chức này",
+            "replyComment": "{actor} đã trả lời một bình luận",
+            "deleteReply": "{actor} đã xóa một câu trả lời cho bình luận"
         },
         "reasonQuoted": "“{reason}”",
         "reason": "Lý do",
@@ -778,7 +799,7 @@
     "Admin": {
         "metaTitle": "Công cụ siêu người dùng",
         "title": "Công cụ siêu người dùng",
-        "intro": "Các yêu cầu nhận hoặc gỡ tổ chức chưa được nhận, và các tổ chức được thêm để hàng xóm tìm thấy. Chỉ siêu người dùng thấy trang này.",
+        "intro": "Những việc cần bạn chú ý, Communalists đang phát triển ra sao, và các công cụ để thêm tổ chức và từ ngữ. Chỉ siêu người dùng thấy trang này.",
         "claimsTitle": "Yêu cầu nhận trang",
         "claimsHint": "Kiểm tra từng yêu cầu bên ngoài ứng dụng trước khi duyệt, ví dụ gọi cho tổ chức theo số điện thoại công khai. Cũ nhất trước.",
         "noClaims": "Hiện không có yêu cầu nào.",
@@ -809,11 +830,9 @@
         },
         "keep": "Chưa",
         "deny": "Từ chối",
-        "unclaimedTitle": "Tổ chức chưa được nhận",
         "addUnclaimed": "Thêm tổ chức chưa được nhận",
-        "noUnclaimed": "Chưa có.",
-        "logTitle": "Hoạt động gần đây của siêu người dùng",
-        "logHint": "Chỉ siêu người dùng thấy mục này.",
+        "logTitle": "Quyết định và thay đổi",
+        "logHint": "Mới nhất trước. Việc thêm, sửa và tải xuống được đếm ở trên, vì một lần nhập thêm hàng trăm mục cùng lúc.",
         "noLog": "Chưa có gì.",
         "log": {
             "createUnclaimed": "{actor} đã thêm {org}",
@@ -824,7 +843,19 @@
             "deleteUnclaimed": "{actor} đã xóa {org}",
             "restoreOrganization": "{actor} đã khôi phục {org}",
             "makeUnclaimed": "{actor} đã chuyển {org} thành chưa được nhận",
-            "exportOrganizations": "{actor} đã tải về danh sách tổ chức"
+            "exportOrganizations": "{actor} đã tải về danh sách tổ chức",
+            "createDefinition": "{actor} đã thêm từ {word}",
+            "editDefinition": "{actor} đã chỉnh sửa từ {word}",
+            "backfillDetails": "{actor} đã điền thông tin còn thiếu cho {count} tổ chức",
+            "deleteDefinition": "{actor} đã xóa từ {word}",
+            "hideComment": "{actor} đã ẩn một bình luận trong {word}",
+            "unhideComment": "{actor} đã hiện lại một bình luận bị ẩn trong {word}",
+            "deleteComment": "{actor} đã xóa một bình luận trong {word}",
+            "dismissCommentReport": "{actor} đã bỏ qua một báo cáo về bình luận trong {word}",
+            "replyComment": "{actor} đã trả lời một bình luận trên {word} thay mặt nhóm",
+            "hideReply": "{actor} đã ẩn một câu trả lời trên {word}",
+            "unhideReply": "{actor} đã hiện lại một câu trả lời bị ẩn trên {word}",
+            "deleteReply": "{actor} đã xóa một câu trả lời trên {word}"
         },
         "unknownActor": "Một siêu người dùng",
         "errors": {
@@ -885,7 +916,7 @@
             "noName": "Không có tên",
             "ready": "Sẵn sàng để thêm",
             "needsAttention": "{count} điều cần sửa",
-            "rowDetail": "Dòng {line} · {place} · /org/{handle}",
+            "rowDetail": "Dòng {line} · {place} · /organization/{handle}",
             "edited": "đã sửa ở đây",
             "verification": "nguồn: {verification}",
             "problemsFor": "Những điều cần sửa ở {name}",
@@ -1003,6 +1034,555 @@
                 "sameWebsite": "Mở trang đã có. Nếu là cùng một nhóm, hãy bỏ dòng này.",
                 "invalid": "Sửa dòng để chọn một giá trị từ danh sách."
             }
+        },
+        "dictionaryTitle": "Từ điển",
+        "manageDictionary": "Quản lý từ điển",
+        "dictionaryHint": "Các từ được giải thích bằng ngôn ngữ dễ hiểu, mỗi từ có trang riêng tại /dictionary. Chỉ siêu người dùng mới thêm và chỉnh sửa.",
+        "asOf": "Số liệu lúc {time}. Có thể cũ tối đa một giờ.",
+        "onThisPage": "Trên trang này",
+        "sections": {
+            "attention": "Cần chú ý",
+            "overview": "Tổng quan",
+            "trends": "Xu hướng",
+            "organizations": "Tổ chức",
+            "dictionary": "Từ điển",
+            "activity": "Hoạt động của nhóm",
+            "deleted": "Đã xóa gần đây",
+            "analytics": "Khách truy cập"
+        },
+        "waiting": "đã chờ {days} ngày",
+        "overdue": "Quá {days} ngày",
+        "attentionGaps": "{count} trang chưa được nhận không có cách nào để liên lạc với nhóm.",
+        "attentionGapsLink": "Xem các trang đó",
+        "attentionClear": "Không còn gì khác cần chú ý.",
+        "stats": {
+            "organizations": "Tổ chức đang hoạt động",
+            "organizationsDetail": "{unclaimed} chưa được nhận · {archived} đã xóa",
+            "claimed": "Trang do nhóm thêm đã được nhận",
+            "claimedValue": "{percent}%",
+            "claimedDetail": "{claimed} trên {total} · {last30} trong 30 ngày qua",
+            "added": "Tổ chức được thêm, 30 ngày qua",
+            "users": "Tài khoản",
+            "usersDetail": "{count} tài khoản mới trong 7 ngày qua",
+            "newUsers": "Tài khoản mới, 30 ngày qua",
+            "claims": "Yêu cầu nhận trang, 30 ngày qua",
+            "claimsDetail": "Tổng cộng: {approved} được duyệt · {denied} bị từ chối",
+            "compare": "{trend, select, up {Tăng {change}} down {Giảm {change}} other {Không đổi}} so với 30 ngày trước đó"
+        },
+        "trendsHint": "Mỗi cột là một tuần, kết thúc hôm nay; tuần gần nhất ở bên phải.",
+        "trends": {
+            "users": "Tài khoản mới mỗi tuần",
+            "organizations": "Tổ chức được thêm mỗi tuần",
+            "claims": "Yêu cầu nhận trang mỗi tuần"
+        },
+        "chartSummary": "{total} trong 12 tuần qua, {latest} trong tuần gần nhất.",
+        "showTable": "Xem dạng bảng",
+        "weekColumn": "Tuần bắt đầu",
+        "countColumn": "Số lượng",
+        "organizationsHint": "Thêm từng tổ chức hoặc từ tệp CSV, và tìm các trang còn thiếu thông tin.",
+        "downloadExisting": "Tải danh sách tổ chức đã có trên Communalists (CSV)",
+        "searchLabel": "Tìm một tổ chức",
+        "searchHint": "Gõ phần đầu tên hoặc địa chỉ (handle) của tổ chức. Tìm trong mọi tổ chức, kể cả chưa được nhận và đã xóa.",
+        "searchButton": "Tìm",
+        "searchResults": "{count, plural, =0 {Không có tổ chức nào bắt đầu bằng “{query}”.} other {# tổ chức bắt đầu bằng “{query}”.}}",
+        "searchMore": "Đang hiện {count} kết quả đầu. Gõ thêm để thu hẹp.",
+        "clearSearch": "Xóa tìm kiếm",
+        "gapsTitle": "Trang chưa được nhận còn thiếu thông tin",
+        "gapsHint": "Tìm hiểu và điền thông tin để hàng xóm có thể liên lạc với nhóm. Cũ nhất trước. Trang sẽ rời danh sách khi đã có thông tin đó.",
+        "gapsFilter": "Thiếu",
+        "gaps": {
+            "contact": "Không có cách liên lạc",
+            "phone": "Không có số điện thoại",
+            "email": "Không có email",
+            "website": "Không có trang web",
+            "address": "Không có địa chỉ"
+        },
+        "gapsShowing": "Đang hiện {shown} trên {count}",
+        "noGaps": "Không có. Mọi trang chưa được nhận đều có thông tin này.",
+        "missingList": "Thiếu: {list}",
+        "recentTitle": "Mới được thêm",
+        "noRecent": "Chưa có tổ chức nào.",
+        "addedOn": "Thêm ngày {date}",
+        "statusUnclaimed": "Chưa được nhận",
+        "statusDeleted": "Đã xóa",
+        "edit": "Sửa",
+        "editFor": "Sửa {name}",
+        "addWord": "Thêm một từ",
+        "importWords": "Nhập từ ngữ từ tệp CSV",
+        "uploadDefinition": "Tải lên định nghĩa",
+        "wordCount": "{count} từ",
+        "activityHint": "Những gì siêu người dùng đã làm trong 30 ngày qua. Chỉ siêu người dùng thấy phần này.",
+        "activity": {
+            "added": "Tổ chức được thêm",
+            "edited": "Lần sửa trang chưa được nhận",
+            "claims": "Yêu cầu đã quyết định",
+            "lifecycle": "Đã xóa, khôi phục hoặc chuyển thành chưa được nhận",
+            "words": "Từ được thêm, sửa hoặc xóa",
+            "exports": "Lần tải danh sách tổ chức",
+            "comments": "Bình luận bị ẩn, bị xóa hoặc báo cáo được bỏ qua"
+        },
+        "gapNames": {
+            "phone": "số điện thoại",
+            "email": "email",
+            "website": "trang web",
+            "address": "địa chỉ"
+        },
+        "analytics": {
+            "hint": "Từ Umami, trong 30 ngày qua. Khách bật Không theo dõi sẽ không được đếm, và không ai bị nhận diện.",
+            "asOf": "Số liệu Umami lúc {time}.",
+            "notConfigured": "Chưa kết nối. Đặt UMAMI_API_KEY trên máy chủ để xem khách truy cập, các tổ chức được xem nhiều nhất và các thành phố được tìm nhiều nhất.",
+            "error": "Không tải được số liệu từ Umami. Hãy thử lại sau, hoặc xem báo cáo tại cloud.umami.is.",
+            "visitors": "Khách truy cập, 30 ngày qua",
+            "pageviews": "Lượt xem trang, 30 ngày qua",
+            "orgsTitle": "Tổ chức được xem nhiều nhất",
+            "orgsEmpty": "Chưa có ai xem trang tổ chức.",
+            "views": "{count} lượt xem",
+            "citiesTitle": "Thành phố được tìm nhiều nhất",
+            "citiesHint": "Mỗi lần đổi bộ lọc được tính là một lần tìm. Gần đó là số tổ chức địa phương mà trang Tìm hiện ở đó hôm nay trong vòng {radius} dặm, chưa lọc. Thành phố có ít hơn {few} tổ chức cần được tìm hiểu thêm.",
+            "citiesEmpty": "Chưa có lượt tìm nào.",
+            "nearby": "{count, plural, =0 {Không có gần đó} other {# gần đó}}",
+            "needsResearch": "Cần tìm hiểu thêm",
+            "unknownOrganization": "Không còn trên Communalists"
+        },
+        "backfill": {
+            "title": "Tổ chức cũ",
+            "hint": "Các tổ chức được thêm trước khi thông tin còn thiếu được theo dõi chưa có trong các số liệu ở trên. Việc điền sẽ đọc mỗi tổ chức một lần và không thay đổi gì mà mọi người thấy. Chỉ cần làm một lần.",
+            "button": "Điền thông tin còn thiếu",
+            "pending": "Đang điền…",
+            "done": "Xong: đã kiểm tra {read}, cập nhật {updated}.",
+            "error": "Không điền được thông tin còn thiếu. Hãy thử lại."
+        },
+        "unavailable": "Không tải được phần này. Hãy thử lại sau vài phút.",
+        "attentionReports": "{count, plural, other {Có # bình luận bị báo cáo.}}",
+        "attentionReportsLink": "Xem bình luận bị báo cáo",
+        "reportedComments": "Bình luận bị báo cáo"
+    },
+    "Dictionary": {
+        "title": "Từ điển",
+        "intro": "Những từ bạn sẽ gặp trên Communalists và trong công việc tương trợ, được giải thích bằng ngôn ngữ dễ hiểu.",
+        "back": "Từ điển: {letter}",
+        "eyebrow": "Từ điển",
+        "notTranslated": "Từ này chưa được viết bằng {language}, nên đang hiển thị bằng {shown}.",
+        "related": "Từ liên quan",
+        "resources": "Tìm hiểu thêm",
+        "resourceTypes": {
+            "book": "Sách",
+            "video": "Video",
+            "article": "Bài viết",
+            "link": "Liên kết"
+        },
+        "by": "của {name}",
+        "share": {
+            "copy": "Sao chép liên kết",
+            "copied": "Đã sao chép liên kết.",
+            "failed": "Không sao chép được. Đây là liên kết:"
+        },
+        "inline": {
+            "readMore": "Chọn để đọc thêm"
+        },
+        "letters": "Chữ cái",
+        "lettersHint": "Chọn một chữ cái để xem các từ bắt đầu bằng chữ đó. Chữ có dấu được xếp theo chữ gốc (Đ theo D).",
+        "letterTitle": "Từ điển tương trợ: {letter}",
+        "count": "{count, plural, =0 {Chưa có từ} other {# từ}}",
+        "emptyLetter": "Chưa có từ nào bắt đầu bằng {letter}.",
+        "noWordsShort": "(chưa có từ)",
+        "metaTitleWord": "{word}: ý nghĩa và định nghĩa",
+        "metaKeywordsWord": "{word}, {word} là gì, nghĩa của {word}, định nghĩa {word}",
+        "setName": "Từ điển tương trợ Communalists",
+        "otherLetters": "Các chữ cái khác",
+        "previousLetter": "Chữ cái trước: {letter}",
+        "nextLetter": "Chữ cái tiếp theo: {letter}"
+    },
+    "Discussion": {
+        "title": "Thảo luận",
+        "count": "{count, plural, =0 {Chưa có bình luận} other {# bình luận}}",
+        "intro": "Có cách nào giải thích từ này rõ hơn, hay định nghĩa còn thiếu điều gì không? Hãy nói ở đây. Bình chọn cho những bình luận hữu ích nhất. Chúng tôi đọc chúng để cải thiện định nghĩa.",
+        "joinTitle": "Tham gia thảo luận",
+        "joinBody": "Tạo tài khoản miễn phí để bình luận và bình chọn. Chỉ mất một phút, và bạn cũng có thể tham gia hoặc lập tổ chức tương trợ.",
+        "signUp": "Tạo tài khoản",
+        "signIn": "Đăng nhập",
+        "setupBody": "Hãy hoàn tất thiết lập tài khoản để tham gia thảo luận. Chúng tôi cần tên của bạn để hiện trên bình luận.",
+        "setup": "Hoàn tất thiết lập",
+        "formLabel": "Bình luận của bạn",
+        "formHint": "Tên và bình luận của bạn là công khai. Chỉ dùng văn bản thuần, không định dạng. Một dòng trống bắt đầu đoạn mới.",
+        "charactersLeft": "{count, plural, other {Còn # ký tự}}",
+        "tooLongBy": "{count, plural, other {Dư # ký tự}}",
+        "language": "Ngôn ngữ của bình luận",
+        "post": "Đăng bình luận",
+        "posting": "Đang đăng…",
+        "sortLabel": "Sắp xếp bình luận",
+        "sortTop": "Nhiều bình chọn",
+        "sortNewest": "Mới nhất",
+        "empty": "Chưa có bình luận. Hãy là người đầu tiên nói từ này có ý nghĩa gì với bạn.",
+        "showMore": "Xem thêm bình luận",
+        "loadingMore": "Đang tải…",
+        "tryAgain": "Thử tải thêm lần nữa",
+        "formerMember": "Cựu thành viên",
+        "you": "(bạn)",
+        "hiddenText": "Đã bị người kiểm duyệt ẩn.",
+        "hiddenModerator": "Đã bị người kiểm duyệt ẩn. Chỉ siêu người dùng thấy nội dung bên dưới.",
+        "votes": "{count, plural, =0 {Chưa có bình chọn} other {# bình chọn}}",
+        "upVote": "Bình chọn",
+        "upVoteLabel": "Bình chọn cho bình luận của {name} ({count, plural, other {# bình chọn}})",
+        "report": "Báo cáo",
+        "reportLabel": "Báo cáo bình luận của {name}",
+        "reportTitle": "Báo cáo bình luận này?",
+        "reportBody": "Một siêu người dùng sẽ xem xét và có thể ẩn hoặc xóa nó. Người viết không được biết ai đã báo cáo.",
+        "reportReason": "Bình luận có vấn đề gì?",
+        "reportReasonMissing": "Hãy chọn vấn đề của bình luận.",
+        "reasons": {
+            "spam": "Thư rác hoặc quảng cáo",
+            "harassment": "Quấy rối hoặc thù ghét",
+            "personalInfo": "Chia sẻ thông tin cá nhân của người khác",
+            "misinformation": "Sai hoặc gây hiểu lầm",
+            "other": "Lý do khác"
+        },
+        "reportSend": "Gửi báo cáo",
+        "cancel": "Hủy",
+        "delete": "Xóa",
+        "deleteLabel": "Xóa bình luận của {name}",
+        "deleteMineLabel": "Xóa bình luận của bạn",
+        "deleteTitleMine": "Xóa bình luận của bạn?",
+        "deleteTitleOther": "Xóa bình luận của {name}?",
+        "deleteBodyMine": "Bình luận bị xóa với mọi người, cùng các bình chọn. Không thể hoàn tác.",
+        "deleteBodyModerator": "Bình luận bị xóa với mọi người, cùng các bình chọn. Không thể hoàn tác, nhưng nhật ký siêu người dùng vẫn giữ một bản sao.",
+        "deleteConfirm": "Xóa",
+        "hide": "Ẩn",
+        "hideLabel": "Ẩn bình luận của {name}",
+        "unhide": "Hiện lại",
+        "unhideLabel": "Hiện lại bình luận của {name}",
+        "announce": {
+            "posted": "Đã đăng bình luận.",
+            "voted": "Đã bình chọn. Hiện có {count, plural, other {# bình chọn}}.",
+            "unvoted": "Đã rút bình chọn. {count, plural, =0 {Hiện chưa có bình chọn} other {Hiện có # bình chọn}}.",
+            "reported": "Cảm ơn bạn đã báo cáo. Một siêu người dùng sẽ xem xét.",
+            "alreadyReported": "Bạn đã báo cáo bình luận này rồi. Cảm ơn bạn.",
+            "deleted": "Đã xóa bình luận.",
+            "hidden": "Đã ẩn bình luận.",
+            "unhidden": "Đã hiện lại bình luận.",
+            "sortedTop": "Đang hiện bình luận có nhiều bình chọn nhất trước.",
+            "sortedNewest": "Đang hiện bình luận mới nhất trước.",
+            "loaded": "{count, plural, =0 {Không còn bình luận nào.} other {Đã hiện thêm # bình luận.}}",
+            "languageOne": "Đang hiện bình luận bằng {language}: {count, plural, =0 {chưa có} other {#}}.",
+            "languageAll": "Đang hiện bình luận bằng mọi ngôn ngữ: {count}.",
+            "replied": "Đã đăng câu trả lời.",
+            "replyDeleted": "Đã xóa câu trả lời.",
+            "replyHidden": "Đã ẩn câu trả lời.",
+            "replyUnhidden": "Đã hiện lại câu trả lời."
+        },
+        "errors": {
+            "textRequired": "Hãy viết bình luận trước.",
+            "textTooLong": "Hãy rút ngắn bình luận còn {max} ký tự trở xuống.",
+            "langInvalid": "Hãy chọn ngôn ngữ của bình luận.",
+            "signedOut": "Bạn đã bị đăng xuất. Hãy đăng nhập lại để tiếp tục.",
+            "setupNeeded": "Hãy hoàn tất thiết lập tài khoản trước.",
+            "notAllowed": "Bạn không thể làm việc đó.",
+            "notFound": "Bình luận đó không còn nữa. Có thể nó đã bị xóa.",
+            "rateLimited": "Bạn đã đăng 5 bình luận trong một giờ qua, mức tối đa cho phép. Bạn có thể đăng tiếp lúc {time}.",
+            "ownComment": "Bạn không thể bình chọn hoặc báo cáo bình luận của chính mình.",
+            "hidden": "Bình luận đó đã bị người kiểm duyệt ẩn.",
+            "invalid": "Yêu cầu đó có lỗi. Hãy tải lại trang và thử lại.",
+            "generic": "Đã xảy ra lỗi. Hãy thử lại.",
+            "loadFailed": "Không tải được bình luận. Hãy kiểm tra kết nối và thử lại.",
+            "alreadyReplied": "Bình luận này đã có câu trả lời. Hãy xóa nó trước khi viết câu mới.",
+            "replyTextRequired": "Hãy viết câu trả lời trước.",
+            "replyTextTooLong": "Hãy rút ngắn câu trả lời xuống còn {max} ký tự trở xuống."
+        },
+        "languageLabel": "Xem bình luận bằng",
+        "languageOne": "{language} ({count})",
+        "languageAll": "Mọi ngôn ngữ ({count})",
+        "emptyLanguage": "Chưa có bình luận bằng {language}.",
+        "seeOtherLanguages": "{count, plural, other {Xem # bình luận bằng ngôn ngữ khác}}",
+        "writtenIn": "Viết bằng {language}",
+        "changeLanguage": "Đổi",
+        "changeLanguageLabel": "Đổi ngôn ngữ của bình luận",
+        "unavailable": "Hiện không tải được bình luận. Hãy thử lại sau vài phút.",
+        "organization": {
+            "intro": "Hãy cho mọi người biết nhóm này như thế nào: sự giúp đỡ bạn nhận được, thời gian bạn làm tình nguyện, lời khen, mối lo ngại hoặc câu hỏi. Bình chọn cho những bình luận bạn đồng ý. Tổ chức có thể trả lời từng bình luận.",
+            "empty": "Chưa có bình luận nào. Bạn đã từng làm việc với nhóm này chưa? Hãy là người đầu tiên chia sẻ trải nghiệm."
+        },
+        "reply": "Trả lời",
+        "replyLabel": "Trả lời bình luận của {name} với tư cách {organization}",
+        "replyFrom": "Trả lời từ {name}",
+        "replyFromTeam": "Trả lời từ nhóm Communalists",
+        "teamName": "nhóm Communalists",
+        "replyFormLabel": "Câu trả lời của bạn với tư cách {from}",
+        "replyFormHint": "Câu trả lời công khai và hiển thị là từ {from}, không phải từ bạn. Chỉ văn bản thuần. Mỗi bình luận một câu trả lời: muốn đổi thì xóa đi và viết lại.",
+        "replyLanguage": "Ngôn ngữ của câu trả lời",
+        "replyPost": "Đăng câu trả lời",
+        "replyHiddenText": "Câu trả lời đã bị người kiểm duyệt ẩn.",
+        "replyHiddenModerator": "Câu trả lời đã bị người kiểm duyệt ẩn. Chỉ siêu người dùng thấy nội dung bên dưới.",
+        "reportReplyLabel": "Báo cáo câu trả lời cho bình luận của {name}",
+        "reportReplyTitle": "Báo cáo câu trả lời này?",
+        "hideReplyLabel": "Ẩn câu trả lời cho bình luận của {name}",
+        "unhideReplyLabel": "Hiện lại câu trả lời cho bình luận của {name}",
+        "deleteReplyLabel": "Xóa câu trả lời cho bình luận của {name}",
+        "deleteReplyTitle": "Xóa câu trả lời này?",
+        "deleteReplyBody": "Câu trả lời sẽ bị xóa với mọi người. Sau đó bạn có thể viết câu mới.",
+        "deleteReplyBodyModerator": "Câu trả lời sẽ bị xóa với mọi người. Không thể hoàn tác, nhưng nhật ký siêu người dùng giữ một bản sao.",
+        "replyChangeLanguageLabel": "Đổi ngôn ngữ của câu trả lời"
+    },
+    "AdminComments": {
+        "metaTitle": "Bình luận bị báo cáo",
+        "title": "Bình luận bị báo cáo",
+        "intro": "Những bình luận bị mọi người báo cáo, bị báo cáo nhiều nhất ở trên. Ẩn hoặc xóa bình luận vi phạm quy định, hoặc bỏ qua báo cáo nếu bình luận không có vấn đề. Mọi thao tác đều được ghi vào nhật ký siêu người dùng.",
+        "backToAdmin": "Công cụ siêu người dùng",
+        "listTitle": "Cần xem xét",
+        "empty": "Không có bình luận bị báo cáo. Không có gì cần xem xét.",
+        "on": "Trong <word></word>",
+        "byOn": "Của {name}, {date}",
+        "votes": "{count, plural, =0 {chưa có bình chọn} other {# bình chọn}}",
+        "gone": "Bình luận này đã bị xóa. Hãy bỏ qua báo cáo để dọn nó đi.",
+        "formerMember": "Cựu thành viên",
+        "reports": "{count, plural, other {Bị báo cáo # lần}}",
+        "reasonCount": "{reason}: {count}",
+        "reasons": {
+            "spam": "Thư rác hoặc quảng cáo",
+            "harassment": "Quấy rối hoặc thù ghét",
+            "personalInfo": "Chia sẻ thông tin cá nhân của người khác",
+            "misinformation": "Sai hoặc gây hiểu lầm",
+            "other": "Lý do khác"
+        },
+        "hide": "Ẩn",
+        "hideLabel": "Ẩn bình luận của {name}",
+        "delete": "Xóa",
+        "deleteLabel": "Xóa bình luận của {name}",
+        "deleteTitle": "Xóa bình luận của {name}?",
+        "deleteBody": "Bình luận bị xóa với mọi người, cùng các bình chọn. Không thể hoàn tác, nhưng nhật ký siêu người dùng vẫn giữ một bản sao.",
+        "dismiss": "Bỏ qua báo cáo",
+        "dismissLabel": "Bỏ qua báo cáo về bình luận của {name}",
+        "hidden": "Đã ẩn bình luận. Báo cáo đã đóng.",
+        "deleted": "Đã xóa bình luận. Báo cáo đã đóng.",
+        "dismissed": "Đã bỏ qua báo cáo. Bình luận vẫn giữ nguyên.",
+        "replyByOn": "Trả lời từ {from} cho bình luận của {name}, {date}",
+        "hideLabelReply": "Ẩn câu trả lời từ {from} cho {name}",
+        "deleteLabelReply": "Xóa câu trả lời từ {from} cho {name}",
+        "deleteTitleReply": "Xóa câu trả lời từ {from}?",
+        "deleteBodyReply": "Câu trả lời bị xóa với mọi người; bình luận vẫn giữ nguyên. Không thể hoàn tác, nhưng nhật ký siêu người dùng giữ một bản sao.",
+        "dismissLabelReply": "Bỏ qua báo cáo về câu trả lời từ {from} cho {name}",
+        "goneReply": "Câu trả lời này đã bị xóa. Hãy bỏ qua báo cáo để dọn nó đi.",
+        "hiddenReply": "Đã ẩn câu trả lời. Báo cáo đã được đóng.",
+        "deletedReply": "Đã xóa câu trả lời. Báo cáo đã được đóng.",
+        "dismissedReply": "Đã bỏ qua báo cáo. Câu trả lời được giữ nguyên."
+    },
+    "AdminDefinitions": {
+        "metaTitle": "Từ điển",
+        "title": "Từ điển",
+        "intro": "Mọi từ trong từ điển. Mỗi từ có trang riêng mà ai cũng có thể mở và chia sẻ. Các thay đổi được ghi vào nhật ký siêu người dùng.",
+        "backToAdmin": "Công cụ siêu người dùng",
+        "add": "Thêm một từ",
+        "viewDictionary": "Xem từ điển",
+        "pageOnly": "Chỉ siêu người dùng mới thấy phần này.",
+        "saved": "Đã lưu {word}.",
+        "viewWord": "Xem trang của {word}",
+        "listTitle": "Các từ",
+        "empty": "Chưa có từ nào. Hãy thêm từ đầu tiên.",
+        "updatedOn": "Cập nhật {date}",
+        "edit": "Sửa",
+        "editWord": "Sửa {word}",
+        "view": "Xem",
+        "backToList": "Từ điển",
+        "backToWord": "Quay lại {word}",
+        "addTitle": "Thêm một từ",
+        "editTitle": "Sửa “{word}”",
+        "formIntro": "Viết từ này bằng cả bốn ngôn ngữ. Dùng câu ngắn và từ ngữ thông dụng, và giải thích cho người chưa từng nghe đến nó.",
+        "slug": "Địa chỉ",
+        "slugHint": "Chữ thường, số và dấu gạch nối, như mutual-aid. Địa chỉ giống nhau ở mọi ngôn ngữ và không thể thay đổi sau này, để các liên kết đã chia sẻ vẫn hoạt động.",
+        "slugFixed": "Không thể thay đổi địa chỉ, để các liên kết đã chia sẻ vẫn hoạt động.",
+        "word": "Từ",
+        "definition": "Định nghĩa ngắn",
+        "definitionHint": "Một hoặc hai câu, tối đa {max} ký tự. Hiển thị ở đầu trang và ở bất cứ nơi nào từ này được đánh dấu.",
+        "details": "Thông tin thêm (không bắt buộc)",
+        "detailsHint": "Chỉ hiển thị trên trang của từ. Để một dòng trống giữa các đoạn.",
+        "related": "Từ liên quan",
+        "relatedHint": "Được liên kết ở cuối trang. Tối đa {max}.",
+        "relatedPicker": {
+            "search": "Tìm một từ để thêm",
+            "placeholder": "Nhập một từ",
+            "chosen": "Đã liên kết: {count} trên {max}",
+            "none": "Chưa có. Tìm bên dưới để thêm.",
+            "remove": "Bỏ {word}",
+            "noMatch": "Không có từ nào khác khớp với “{query}”.",
+            "atMax": "Đã liên kết {max} từ, mức tối đa. Bỏ một từ để thêm từ khác.",
+            "added": "Đã thêm {word}. Đã liên kết {count} trên {max}.",
+            "removed": "Đã bỏ {word}. Đã liên kết {count} trên {max}."
+        },
+        "fieldIn": "{field} ({language})",
+        "summary": "{count, plural, other {Sửa # lỗi trước khi lưu:}}",
+        "saving": "Đang lưu…",
+        "create": "Thêm từ",
+        "save": "Lưu thay đổi",
+        "errors": {
+            "slugRequired": "Hãy viết một địa chỉ.",
+            "slugFormat": "Dùng từ 2 đến {max} chữ thường, số và dấu gạch nối đơn, như mutual-aid.",
+            "slugReserved": "Trang web đã dùng địa chỉ này. Hãy chọn địa chỉ khác.",
+            "wordRequired": "Hãy viết từ.",
+            "wordTooLong": "Dùng tối đa {max} ký tự.",
+            "definitionRequired": "Hãy viết một định nghĩa ngắn.",
+            "definitionTooLong": "Dùng tối đa {max} ký tự.",
+            "detailsTooLong": "Dùng tối đa {max} ký tự.",
+            "relatedTooMany": "Chọn tối đa {max} từ liên quan."
+        },
+        "formErrors": {
+            "slugTaken": "Đã có một từ dùng địa chỉ này. Hãy sửa từ đó, hoặc chọn địa chỉ khác.",
+            "notFound": "Từ này không còn nữa. Quay lại từ điển để xem bản mới nhất.",
+            "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+            "generic": "Đã xảy ra lỗi. Hãy thử lại."
+        },
+        "importCsv": "Nhập từ tệp CSV",
+        "imported": "{count, plural, =0 {Không có từ nào được thêm.} other {Đã thêm # từ.}}",
+        "import": {
+            "title": "Nhập từ",
+            "intro": "Thêm nhiều từ cùng lúc từ một tệp CSV. Mỗi dòng được kiểm tra trước, và không có gì được thêm cho đến khi bạn chọn Thêm. Các từ đã có trong từ điển sẽ được bỏ qua, không bao giờ bị thay đổi: hãy sửa từng từ một.",
+            "formatTitle": "Tệp",
+            "formatSlug": "slug: địa chỉ của từ, như mutual-aid. Chữ thường, số và dấu gạch nối.",
+            "formatLanguages": "Với mỗi ngôn ngữ (en, es, vi, zh): en_word và en_definition là bắt buộc, en_details không bắt buộc. Một dòng trống trong ô sẽ bắt đầu đoạn mới.",
+            "formatRelated": "related (không bắt buộc): địa chỉ của các từ khác, cách nhau bằng dấu chấm phẩy, như solidarity;organizer. Các từ này phải có trong từ điển hoặc trong cùng tệp.",
+            "formatLimit": "Tối đa {max} dòng. Lưu từ bảng tính dưới dạng CSV (UTF-8).",
+            "template": "Tải mẫu",
+            "file": "Tệp CSV",
+            "fileHint": "Kiểm tra không thêm gì cả.",
+            "check": "Kiểm tra tệp",
+            "checking": "Đang kiểm tra…",
+            "summary": "{file}: {total} dòng. {ready} sẵn sàng, {exists} đã có trong từ điển, {problems} cần sửa.",
+            "ignored": "Các cột này không được dùng và đã bị bỏ qua: {columns}",
+            "add": "{count, plural, other {Thêm # từ}}",
+            "confirmTitle": "{count, plural, other {Thêm # từ?}}",
+            "confirmBody": "Các từ sẽ xuất hiện tại /dictionary ngay lập tức, bằng mọi ngôn ngữ. Các dòng đã có trong từ điển hoặc có lỗi sẽ bị bỏ qua. Không thể hoàn tác, nhưng bạn có thể sửa từng từ sau đó.",
+            "notYet": "Chưa",
+            "adding": "Đang thêm…",
+            "confirm": "{count, plural, other {Thêm # từ}}",
+            "noneReady": "Không có dòng nào sẵn sàng để thêm. Hãy sửa tệp và kiểm tra lại.",
+            "noWord": "Không có từ tiếng Anh",
+            "line": "Dòng {line}",
+            "status": {
+                "ready": "Sẵn sàng",
+                "exists": "Đã có trong từ điển: bỏ qua",
+                "problems": "{count, plural, other {# lỗi}}"
+            },
+            "problems": {
+                "slugRepeated": "Một dòng trước đó có cùng địa chỉ.",
+                "relatedUnknown": "Không có trong từ điển hoặc tệp này: {value}"
+            },
+            "fileProblems": {
+                "empty": "Tệp không có dòng nào.",
+                "tooBig": "Tệp quá lớn. Hãy giữ dưới 500 KB.",
+                "tooManyRows": "Tệp có hơn {max} dòng. Hãy chia thành các tệp nhỏ hơn.",
+                "missingColumns": "Tệp thiếu các cột sau: {columns}. Hãy bắt đầu từ mẫu.",
+                "noFile": "Hãy chọn một tệp CSV.",
+                "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+                "generic": "Đã xảy ra lỗi. Hãy thử lại."
+            },
+            "addErrors": {
+                "nothingReady": "Không có dòng nào sẵn sàng, nên không có gì được thêm.",
+                "changed": "Từ điển đã thay đổi trong lúc bạn xem lại, nên không có gì được thêm. Hãy kiểm tra lại tệp.",
+                "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+                "generic": "Đã xảy ra lỗi. Hãy thử lại."
+            }
+        },
+        "upload": {
+            "title": "Tải lên định nghĩa",
+            "intro": "Thay nội dung của một từ, bằng mọi ngôn ngữ, bằng nội dung trong một tệp. Bạn sẽ thấy mọi thay đổi trước khi lưu. Các từ liên quan được giữ nguyên.",
+            "formatTitle": "Tệp",
+            "formatOneRow": "Một tệp CSV có một từ: cùng các cột như khi nhập (slug, rồi en_word, en_definition và en_details, và tương tự cho es, vi và zh), và một hàng.",
+            "formatSlug": "slug phải là một từ đã có trong từ điển. Để thêm từ mới, hãy nhập nó.",
+            "formatRelated": "Cột related bị bỏ qua. Hãy đổi các từ liên quan trong biểu mẫu chỉnh sửa.",
+            "file": "Tệp CSV",
+            "fileHint": "Kiểm tra không thay đổi gì.",
+            "check": "Kiểm tra tệp",
+            "checking": "Đang kiểm tra…",
+            "status": {
+                "ready": "{file}: {count, plural, other {# thay đổi}} cho {word}.",
+                "unchanged": "{file} giống với {word} hiện tại. Không có gì để thay đổi.",
+                "notFound": "Không có từ nào có địa chỉ {slug}. Để thêm từ này, hãy nhập tệp.",
+                "problems": "{file}: {count, plural, other {# vấn đề}} cần sửa trước khi dùng được."
+            },
+            "relatedIgnored": "Tệp có liệt kê từ liên quan. Chúng bị bỏ qua: từ này giữ các từ liên quan hiện có.",
+            "ignored": "Các cột này không được dùng và đã bị bỏ qua: {columns}",
+            "goToImport": "Nhập từ từ tệp CSV",
+            "changesTitle": "Những gì thay đổi",
+            "now": "Hiện tại",
+            "new": "Mới",
+            "empty": "(trống)",
+            "update": "Cập nhật {word}",
+            "confirmTitle": "Cập nhật {word}?",
+            "confirmBody": "{count, plural, other {# mục thay đổi}} ngay lập tức, trên trang của từ và ở mọi nơi từ được đánh dấu. Không thể hoàn tác, nhưng bạn có thể chỉnh sửa từ sau đó.",
+            "notYet": "Chưa",
+            "updating": "Đang cập nhật…",
+            "fileProblems": {
+                "empty": "Tệp không có hàng nào.",
+                "missingColumns": "Tệp thiếu các cột này: {columns}. Hãy dùng mẫu của phần nhập.",
+                "notOneRow": "Tệp phải có đúng một từ: một hàng tiêu đề và một hàng. Để thêm nhiều từ, hãy nhập chúng.",
+                "tooBig": "Tệp quá lớn. Hãy giữ dưới 500 KB.",
+                "noFile": "Hãy chọn một tệp CSV.",
+                "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+                "generic": "Đã xảy ra lỗi. Hãy thử lại.",
+                "otherWord": "Tệp này dành cho {fileSlug}, không phải {slug}. Hãy tải lên ở trang chỉnh sửa của từ đó, hoặc ở Tải lên định nghĩa."
+            },
+            "saveErrors": {
+                "changed": "Từ này đã thay đổi sau khi bạn kiểm tra tệp, nên chưa có gì được lưu. Hãy kiểm tra tệp lại để xem bản mới nhất.",
+                "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+                "generic": "Đã xảy ra lỗi. Hãy thử lại."
+            }
+        },
+        "removed": "Đã xóa {slug} khỏi từ điển.",
+        "replace": {
+            "title": "Thay bằng một tệp",
+            "intro": "Tải lên một tệp CSV có một từ cho {word} để thay nội dung của từ này bằng mọi ngôn ngữ. Bạn sẽ thấy mọi thay đổi trước khi lưu. Các từ liên quan giữ nguyên, và những gì bạn đã gõ trong biểu mẫu bên dưới mà chưa lưu sẽ bị mất.",
+            "formTitle": "Sửa trực tiếp"
+        },
+        "remove": {
+            "title": "Xóa từ này",
+            "intro": "Xóa vĩnh viễn {word} khỏi từ điển.",
+            "button": "Xóa {word}",
+            "confirmTitle": "Xóa {word}?",
+            "confirmBody": "Trang của từ này sẽ không còn hoạt động, và từ này được bỏ khỏi danh sách từ liên quan của các từ khác. Ở những trang của chúng tôi có đánh dấu từ này, nó sẽ hiện như chữ thường. Phần thảo luận của từ này cũng bị xóa. Không thể hoàn tác, nhưng nhật ký siêu người dùng vẫn giữ một bản sao nội dung.",
+            "notYet": "Chưa",
+            "removing": "Đang xóa…",
+            "errors": {
+                "notFound": "Từ này đã bị xóa. Quay lại từ điển để xem bản mới nhất.",
+                "notAllowed": "Chỉ siêu người dùng mới làm được việc này.",
+                "generic": "Đã có lỗi xảy ra. Hãy thử lại."
+            }
+        }
+    },
+    "Errors": {
+        "title": "Đã xảy ra lỗi",
+        "body": "Không tải được trang này. Có thể lỗi từ phía chúng tôi. Hãy thử lại, hoặc quay lại sau vài phút.",
+        "retry": "Thử lại",
+        "home": "Về trang chủ",
+        "reference": "Mã tham chiếu: {digest}"
+    },
+    "NotFound": {
+        "eyebrow": "Không tìm thấy trang",
+        "tried": "Bạn đã thử:",
+        "general": {
+            "metaTitle": "Không tìm thấy trang",
+            "title": "Chúng tôi không tìm thấy trang đó",
+            "body": "Địa chỉ có thể bị gõ sai, hoặc trang đã được chuyển đi hay bị gỡ xuống.",
+            "home": "Về trang chủ",
+            "organizations": "Tìm tổ chức",
+            "dictionary": "Xem từ điển"
+        },
+        "word": {
+            "metaTitle": "Không tìm thấy từ",
+            "title": "Từ điển chưa có từ “{word}”",
+            "body": "Hãy kiểm tra chính tả, hoặc xem từ điển. Từ mới được thêm dần theo thời gian.",
+            "suggestions": "Có phải bạn muốn tìm:",
+            "browse": "Xem từ điển"
+        },
+        "organization": {
+            "metaTitle": "Không tìm thấy tổ chức",
+            "title": "Không tìm thấy tổ chức nào ở “{handle}”",
+            "body": "Tổ chức có thể đổi địa chỉ, và địa chỉ cũ sẽ ngừng hoạt động sau một thời gian. Tổ chức cũng có thể đã bị gỡ xuống. Hãy thử tìm theo tên hoặc nơi chốn.",
+            "find": "Tìm tổ chức",
+            "create": "Lập một tổ chức"
+        },
+        "person": {
+            "metaTitle": "Không tìm thấy hồ sơ",
+            "title": "Không tìm thấy ai có tên người dùng “{username}”",
+            "body": "Mọi người có thể đổi tên người dùng, và tên cũ sẽ ngừng hoạt động. Hãy kiểm tra chính tả, hoặc tìm họ qua một tổ chức họ tham gia.",
+            "find": "Tìm tổ chức"
         }
     }
 }
