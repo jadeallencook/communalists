@@ -243,17 +243,19 @@ describe('directoryHref', () => {
             languages: ['es'],
         });
         expect(directoryHref(filters, 'us/ca/oakland')).toBe(
-            '/find/us/ca/oakland?radius=10&languages=es'
+            '/find/organizations/us/ca/oakland?radius=10&languages=es'
         );
         expect(directoryHref(parseDirectorySearch({}), 'us/ca/oakland')).toBe(
-            '/find/us/ca/oakland'
+            '/find/organizations/us/ca/oakland'
         );
     });
 
-    it('is plain /find without a city', () => {
-        expect(directoryHref(parseDirectorySearch({}))).toBe('/find');
+    it('is plain /find/organizations without a city', () => {
+        expect(directoryHref(parseDirectorySearch({}))).toBe(
+            '/find/organizations'
+        );
         expect(directoryHref(parseDirectorySearch({ radius: '50' }))).toBe(
-            '/find?radius=50'
+            '/find/organizations?radius=50'
         );
     });
 });

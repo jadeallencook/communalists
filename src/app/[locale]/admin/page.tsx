@@ -237,8 +237,8 @@ async function AdminServerContainer({
 
 /**
  * Umami's report, with names for the organizations' handles and, for each
- * searched city, how many local organizations /find shows there today
- * (cached directory reads, the same ones /find uses).
+ * searched city, how many local organizations /find/organizations shows there today
+ * (cached directory reads, the same ones /find/organizations uses).
  */
 async function analyticsProps(
     report: UmamiReport,

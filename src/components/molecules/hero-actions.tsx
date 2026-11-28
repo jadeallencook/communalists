@@ -5,11 +5,12 @@ import { Skeleton } from '@/components/atoms/skeleton';
 import { Link } from '@/i18n/navigation';
 import { track } from '@/lib/analytics';
 import { DEFAULT_PLACE } from '@/lib/organizations/directory';
+import { findPath } from '@/lib/paths';
 
 export interface HeroActionsProps {
     /** Both lead with Browse organizations; the second button is Create account (signed out) or the dashboard (signed in). */
     signedIn: boolean;
-    /** Browse organizations: the visitor's starting city on /find (startingCitySlug). */
+    /** Browse organizations: the visitor's starting city on /find/organizations (startingCitySlug). */
     findHref?: string;
 }
 
@@ -22,7 +23,7 @@ const secondary =
 /** The homepage banner's buttons: browse organizations first, then create an account (or go to the dashboard). */
 export function HeroActions({
     signedIn,
-    findHref = `/find/${DEFAULT_PLACE.slug}`,
+    findHref = `${findPath('organizations')}/${DEFAULT_PLACE.slug}`,
 }: HeroActionsProps) {
     const t = useTranslations('Home');
     return (

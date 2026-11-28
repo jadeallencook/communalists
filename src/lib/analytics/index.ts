@@ -22,7 +22,7 @@ export interface AnalyticsEvents {
     'org-view': { org: string };
     /** An organization's name was clicked in a list. */
     'org-open': { org: string; from: 'find' | 'card' };
-    /** A /find result was expanded. */
+    /** A /find/organizations result was expanded. */
     'org-details': { org: string };
     'org-website': { org: string; url: string };
     'org-social': { org: string; platform: string };
@@ -38,7 +38,7 @@ export interface AnalyticsEvents {
     /** "Claim this organization" on an unclaimed one. */
     'org-claim': { org: string };
     'org-claim-submit': { org: string };
-    /** A /find search was shown. `city` is its path ("us/ca/oakland"). */
+    /** An organization search (/find/organizations) was shown. `city` is its path ("us/ca/oakland"). */
     'find-search': {
         city: string;
         radius: string;
@@ -118,7 +118,7 @@ const camel = (key: string) =>
 const EXCLUDED_PATH = /^\/(?:(?:en|es|vi|zh)\/)?(?:auth|admin)(?:\/|$)/;
 
 /**
- * The only query parameters that leave the browser: /find's filters. Any
+ * The only query parameters that leave the browser: /find/organizations' filters. Any
  * other one (a reset code, ?next=, whatever is added later) is dropped,
  * so a new parameter is private until someone adds it here.
  */

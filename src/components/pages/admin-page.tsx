@@ -37,6 +37,7 @@ import {
 import { Link } from '@/i18n/navigation';
 import type { ClaimIntent } from '@/lib/organizations/claims';
 import { CLAIM_OVERDUE_DAYS } from '@/lib/platform-stats';
+import { organizationPath } from '@/lib/paths';
 
 export type { AdminLogItem };
 
@@ -331,7 +332,11 @@ export function AdminPage({
                                             variant="outline"
                                             size="sm"
                                         >
-                                            <Link href={`/org/${claim.handle}`}>
+                                            <Link
+                                                href={organizationPath(
+                                                    claim.handle
+                                                )}
+                                            >
                                                 {t('viewOrganization', {
                                                     org: claim.orgName,
                                                 })}

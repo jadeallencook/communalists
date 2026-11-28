@@ -8,6 +8,11 @@ import {
 } from './reports';
 
 const rows = [
+    // Paths since decision #63, then the older ones they redirect from.
+    { x: '/en/organization/sbma', y: 6 },
+    { x: '/en/organization/sbma/members', y: 40 },
+    { x: '/en/find/organizations/us/ca/oakland', y: 10 },
+    { x: '/en/find/organizations', y: 60 },
     { x: '/en/org/sbma', y: 10 },
     { x: '/es/org/sbma', y: 4 },
     { x: '/org/sbma', y: 1 },
@@ -66,9 +71,9 @@ describe('parseSiteStats', () => {
 });
 
 describe('topOrganizations', () => {
-    it('adds up languages and leaves out other pages', () => {
+    it('adds up languages and old paths, and leaves out other pages', () => {
         expect(topOrganizations(rows)).toEqual([
-            { key: 'sbma', views: 15 },
+            { key: 'sbma', views: 21 },
             { key: 'oakland-auto-club', views: 7 },
         ]);
     });
@@ -79,9 +84,9 @@ describe('topOrganizations', () => {
 });
 
 describe('topCities', () => {
-    it('adds up languages and decodes the path', () => {
+    it('adds up languages and old paths, and decodes the path', () => {
         expect(topCities(rows)).toEqual([
-            { key: 'us/ca/oakland', views: 25 },
+            { key: 'us/ca/oakland', views: 35 },
             { key: 'us/ca/san-josé', views: 2 },
         ]);
     });

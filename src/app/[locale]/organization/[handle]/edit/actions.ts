@@ -29,6 +29,7 @@ import {
 } from '@/lib/validation/organization';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
+import { organizationPath } from '@/lib/paths';
 
 /**
  * Saves the edit form. Owners and moderators may edit (and super users, as
@@ -102,7 +103,7 @@ export async function updateOrganizationAction(
     for (const uid of result.copyHolders) updateTag(membershipsTag(uid));
     updateTag(ADMIN_LOG_TAG); // super-user edits of unclaimed organizations
     refresh();
-    redirect({ href: `/org/${result.handle}`, locale });
+    redirect({ href: organizationPath(result.handle), locale });
     return {};
 }
 

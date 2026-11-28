@@ -5,6 +5,8 @@
 // one organization (requests, lending library…) don't go here: they get the
 // organization's own navigation. See documentation/features/13-navigation-and-layout.md.
 
+import { NEW_ORGANIZATION_PATH, findPath } from './paths';
+
 export type NavKey = 'organizations' | 'dictionary' | 'dashboard';
 
 export interface NavItem {
@@ -19,9 +21,9 @@ export interface NavItem {
 export const NAV_ITEMS: readonly NavItem[] = [
     {
         key: 'organizations',
-        href: '/find',
+        href: findPath('organizations'),
         audience: 'everyone',
-        sections: ['/find', '/org'],
+        sections: [findPath('organizations'), '/organization'],
     },
     {
         key: 'dictionary',
@@ -52,12 +54,12 @@ const within = (pathname: string, prefix: string) =>
 /**
  * Whether `item` is the page being viewed (`aria-current="page"`) or the
  * section it's in (`aria-current="true"`). `pathname` has no locale.
- * Creating an organization (/org/new) isn't browsing them, so it marks nothing.
+ * Creating an organization (/organization/new) isn't browsing them, so it marks nothing.
  */
 export function navCurrent(item: NavItem, pathname: string): NavCurrent {
     const path = pathname.replace(/\/+$/, '') || '/';
     if (path === item.href) return 'page';
-    if (path === '/org/new') return undefined;
+    if (path === NEW_ORGANIZATION_PATH) return undefined;
     return item.sections.some((prefix) => within(path, prefix))
         ? 'section'
         : undefined;

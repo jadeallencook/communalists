@@ -892,7 +892,7 @@
             "noName": "Sin nombre",
             "ready": "Lista para agregar",
             "needsAttention": "{count, plural, one {# cosa por corregir} other {# cosas por corregir}}",
-            "rowDetail": "Línea {line} · {place} · /org/{handle}",
+            "rowDetail": "Línea {line} · {place} · /organization/{handle}",
             "edited": "editada aquí",
             "verification": "fuente: {verification}",
             "problemsFor": "Qué corregir en {name}",

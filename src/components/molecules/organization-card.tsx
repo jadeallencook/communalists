@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation';
 import { initials } from '@/lib/initials';
 import type { FocusArea } from '@/lib/organizations/options';
 import { track } from '@/lib/analytics';
+import { organizationPath } from '@/lib/paths';
 
 export interface OrganizationCardProps {
     name: string;
@@ -12,7 +13,7 @@ export interface OrganizationCardProps {
     focusAreas: FocusArea[];
     /** The viewer's role, when they're a member. */
     role?: 'owner' | 'moderator' | 'member';
-    /** Replaces the `/org/{handle}` after the focus areas, e.g. "3 mi away · Santa Clara, California". */
+    /** Replaces the `/organization/{handle}` after the focus areas, e.g. "3 mi away · Santa Clara, California". */
     detail?: string;
     /** Added by a super user and not claimed yet: shows "Unclaimed". */
     unclaimed?: boolean;
@@ -39,7 +40,7 @@ export function OrganizationCardSummary({
     // between these, not inside them.
     const parts = [
         ...(areas ? [areas] : []),
-        ...(detail ?? `/org/${handle}`).split(' · '),
+        ...(detail ?? organizationPath(handle)).split(' · '),
     ];
     return (
         <>
@@ -88,7 +89,7 @@ export function OrganizationCardSummary({
 export function OrganizationCard(props: OrganizationCardProps) {
     return (
         <Link
-            href={`/org/${props.handle}`}
+            href={organizationPath(props.handle)}
             {...track('org-open', { org: props.handle, from: 'card' })}
             className="flex items-center gap-4 rounded-lg border p-4 transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         >

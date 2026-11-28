@@ -25,6 +25,7 @@ import {
 } from '@/lib/validation/organization';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
+import { NEW_ORGANIZATION_PATH, organizationPath } from '@/lib/paths';
 
 export async function createOrganizationAction(
     _previous: CreateOrganizationState,
@@ -42,7 +43,10 @@ export async function createOrganizationAction(
     const profile = await getUserProfileFresh(user.uid);
     if (!isSetupComplete(profile)) {
         return redirect({
-            href: { pathname: '/account/setup', query: { next: '/org/new' } },
+            href: {
+                pathname: '/account/setup',
+                query: { next: NEW_ORGANIZATION_PATH },
+            },
             locale,
         });
     }
@@ -93,7 +97,7 @@ export async function createOrganizationAction(
         updateTag(handleTag(created.handle));
         updateTag(DIRECTORY_TAG);
         updateTag(ADMIN_LOG_TAG);
-        redirect({ href: `/org/${created.handle}`, locale });
+        redirect({ href: organizationPath(created.handle), locale });
         return {};
     }
 
@@ -119,10 +123,10 @@ export async function createOrganizationAction(
             : { formError: 'ownedLimit', values };
     }
 
-    // The dashboard lists it, the handle now resolves, and /find shows it.
+    // The dashboard lists it, the handle now resolves, and /find/organizations shows it.
     updateTag(membershipsTag(user.uid));
     updateTag(handleTag(result.handle));
     updateTag(DIRECTORY_TAG);
-    redirect({ href: `/org/${result.handle}`, locale });
+    redirect({ href: organizationPath(result.handle), locale });
     return {};
 }

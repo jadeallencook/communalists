@@ -5,6 +5,7 @@ import { StatTile } from '@/components/molecules/stat-tile';
 import { Link } from '@/i18n/navigation';
 import { FEW_RESULTS } from '@/lib/analytics/reports';
 import { comparePeriods } from '@/lib/platform-stats';
+import { organizationPath, findPath } from '@/lib/paths';
 
 export interface AdminAnalyticsOrganization {
     handle: string;
@@ -14,12 +15,12 @@ export interface AdminAnalyticsOrganization {
 }
 
 export interface AdminAnalyticsCity {
-    /** The /find path, "us/ca/oakland". */
+    /** The /find/organizations path, "us/ca/oakland". */
     slug: string;
     /** "Oakland, California"; the slug when the city isn't known. */
     label: string;
     views: number;
-    /** Local organizations /find shows there today, before filters. */
+    /** Local organizations /find/organizations shows there today, before filters. */
     nearby: number;
 }
 
@@ -120,14 +121,17 @@ export function AdminAnalytics(props: AdminAnalyticsProps) {
                                             <span className="flex min-w-0 flex-col">
                                                 {org.name ? (
                                                     <Link
-                                                        href={`/org/${org.handle}`}
+                                                        href={organizationPath(
+                                                            org.handle
+                                                        )}
                                                         className="font-medium break-words underline underline-offset-2"
                                                     >
                                                         {org.name}
                                                     </Link>
                                                 ) : (
                                                     <span className="font-medium break-words">
-                                                        /org/{org.handle}
+                                                        /organization/
+                                                        {org.handle}
                                                     </span>
                                                 )}
                                                 {!org.name && (
@@ -178,7 +182,7 @@ export function AdminAnalytics(props: AdminAnalyticsProps) {
                                         >
                                             <span className="flex min-w-0 flex-col gap-0.5">
                                                 <Link
-                                                    href={`/find/${city.slug}`}
+                                                    href={`${findPath('organizations')}/${city.slug}`}
                                                     className="font-medium break-words underline underline-offset-2"
                                                 >
                                                     {city.label}

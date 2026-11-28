@@ -29,7 +29,7 @@ type Story = StoryObj<typeof meta>;
 /** Visitors: Create account and Sign in first, then the site's sections. */
 export const SignedOut: Story = {};
 
-/** On /find: Organizations is marked as the current page. */
+/** On /find/organizations: Organizations is marked as the current page. */
 export const SignedOutOnFind: Story = {
     args: {
         links: [{ ...publicLinks[0], current: 'page' }, publicLinks[1]],

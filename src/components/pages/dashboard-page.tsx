@@ -9,6 +9,7 @@ import {
 } from '@/components/molecules/organization-card';
 import { Link } from '@/i18n/navigation';
 import { track } from '@/lib/analytics';
+import { NEW_ORGANIZATION_PATH, findPath } from '@/lib/paths';
 
 export interface DashboardPageProps {
     name: string;
@@ -28,7 +29,7 @@ export interface DashboardPageProps {
 
 /**
  * The signed-in home: your organizations, creating one, and a few
- * organizations near you (all of them on /find). A user can't do much until
+ * organizations near you (all of them on /find/organizations). A user can't do much until
  * they're in an organization.
  */
 export function DashboardPage({
@@ -44,7 +45,7 @@ export function DashboardPage({
     const createButton = canCreate ? (
         <Button asChild>
             <Link
-                href="/org/new"
+                href={NEW_ORGANIZATION_PATH}
                 {...track('create-organization', { from: 'dashboard' })}
             >
                 <PlusIcon aria-hidden />
@@ -140,7 +141,7 @@ export function DashboardPage({
                 )}
                 <Button asChild variant="outline" className="self-start">
                     <Link
-                        href="/find"
+                        href={findPath('organizations')}
                         {...track('browse-organizations', {
                             from: 'dashboard',
                         })}

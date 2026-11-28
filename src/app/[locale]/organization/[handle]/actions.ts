@@ -26,6 +26,7 @@ import {
 import { getUserProfileFresh } from '@/lib/users';
 import { redirect } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
+import { organizationPath } from '@/lib/paths';
 
 // Joining, leaving and moderating. Every check runs again on the server
 // against fresh data (src/lib/organizations → moderateMember etc.); the
@@ -95,7 +96,7 @@ export async function membershipAction(
                 return redirect({
                     href: {
                         pathname: '/account/setup',
-                        query: { next: `/org/${handle}` },
+                        query: { next: organizationPath(handle) },
                     },
                     locale,
                 });
@@ -198,5 +199,5 @@ export async function makeUnclaimedAction(formData: FormData) {
             );
         }
     }
-    redirect({ href: `/org/${handle}`, locale });
+    redirect({ href: organizationPath(handle), locale });
 }

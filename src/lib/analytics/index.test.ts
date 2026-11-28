@@ -55,30 +55,32 @@ describe('sanitizeAnalyticsPayload', () => {
         sanitizeAnalyticsPayload({ url, referrer, title: 'T' }, origin);
 
     it('passes ordinary pages through', () => {
-        expect(send(`${origin}/en/org/oakland-auto-club`)).toEqual({
-            url: `${origin}/en/org/oakland-auto-club`,
+        expect(send(`${origin}/en/organization/oakland-auto-club`)).toEqual({
+            url: `${origin}/en/organization/oakland-auto-club`,
             referrer: '',
             title: 'T',
         });
     });
 
-    it('keeps /find filters and the city path', () => {
+    it('keeps /find/organizations filters and the city path', () => {
         expect(
             send(
-                `${origin}/es/find/us/ca/oakland?radius=10&focusAreas=food&focusAreas=housing`
+                `${origin}/es/find/organizations/us/ca/oakland?radius=10&focusAreas=food&focusAreas=housing`
             )?.url
         ).toBe(
-            `${origin}/es/find/us/ca/oakland?radius=10&focusAreas=food&focusAreas=housing`
+            `${origin}/es/find/organizations/us/ca/oakland?radius=10&focusAreas=food&focusAreas=housing`
         );
     });
 
     it('drops every other query parameter and the hash', () => {
         expect(
-            send(`${origin}/en/sign-in?next=/org/x&email=a@b.c#top`)?.url
+            send(`${origin}/en/sign-in?next=/organization/x&email=a@b.c#top`)
+                ?.url
         ).toBe(`${origin}/en/sign-in`);
-        expect(send(`${origin}/en/find?country=US&placeId=5378538`)?.url).toBe(
-            `${origin}/en/find`
-        );
+        expect(
+            send(`${origin}/en/find/organizations?country=US&placeId=5378538`)
+                ?.url
+        ).toBe(`${origin}/en/find/organizations`);
     });
 
     it('sends nothing from auth links or the super-user tools', () => {
@@ -91,29 +93,33 @@ describe('sanitizeAnalyticsPayload', () => {
     });
 
     it('does not mistake look-alike paths for excluded ones', () => {
-        expect(send(`${origin}/en/org/admin-collective`)).not.toBeNull();
+        expect(
+            send(`${origin}/en/organization/admin-collective`)
+        ).not.toBeNull();
         expect(send(`${origin}/en/authors`)).not.toBeNull();
     });
 
     it('sends nothing for another site or a broken URL', () => {
-        expect(send('https://evil.example/en/find')).toBeNull();
+        expect(send('https://evil.example/en/find/organizations')).toBeNull();
         expect(send('http://[')).toBeNull();
     });
 
     it('cleans referrers: our pages keep their path, other sites their address', () => {
         expect(
             send(
-                `${origin}/en/find`,
+                `${origin}/en/find/organizations`,
                 '/en/auth/action?mode=resetPassword&oobCode=SECRET'
             )?.referrer
         ).toBe('/en/auth/action');
         expect(
-            send(`${origin}/en/find`, '/en/find/us/ca/oakland?radius=10&x=1')
-                ?.referrer
-        ).toBe('/en/find/us/ca/oakland?radius=10');
+            send(
+                `${origin}/en/find/organizations`,
+                '/en/find/organizations/us/ca/oakland?radius=10&x=1'
+            )?.referrer
+        ).toBe('/en/find/organizations/us/ca/oakland?radius=10');
         expect(
             send(
-                `${origin}/en/find`,
+                `${origin}/en/find/organizations`,
                 'https://www.google.com/search?q=mutual+aid+oakland'
             )?.referrer
         ).toBe('https://www.google.com/search');

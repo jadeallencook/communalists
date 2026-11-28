@@ -42,7 +42,7 @@ export function SiteHeader({ nav, account }: SiteHeaderProps) {
                     {nav}
                 </nav>
                 <div className="ms-auto flex items-center gap-1">
-                    {/* It reads the URL, which pages with params (like /org/[handle])
+                    {/* It reads the URL, which pages with params (like /organization/[handle])
                         only know at request time: Next requires <Suspense> there. */}
                     <Suspense
                         fallback={<div aria-hidden className="h-8 w-24" />}

@@ -7,8 +7,8 @@ import { getUserProfile } from '../users';
 import { DEFAULT_PLACE } from './directory';
 
 /**
- * Where /find starts for someone: their profile's city ("us/ca/oakland"), or
- * DEFAULT_PLACE when they're signed out or have no city. Used by plain /find
+ * Where /find/organizations starts for someone: their profile's city ("us/ca/oakland"), or
+ * DEFAULT_PLACE when they're signed out or have no city. Used by plain /find/organizations
  * (which redirects here) and the homepage's Browse button. Decision #52.
  */
 export async function startingCitySlug(uid?: string): Promise<string> {

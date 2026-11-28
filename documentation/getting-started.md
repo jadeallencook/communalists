@@ -57,18 +57,18 @@ Under **More accounts** (collapsed) are eight more: Thanh Nguyễn, Wei Chen, Ai
 
 Everyone except Sam has a username (`/comrade/maya-thompson`, or `/@maya-thompson`), and a few profiles cover each privacy level: Maya and Aisha are public (Aisha hides her groups), Luis and Thanh share with their groups, and Wei shows just her name. Sam's account setup asks for a username, suggested from the name.
 
-| Organization                                              | Shows off                                                                                                                         |
-| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| South Bay Mutual Aid (`/org/sbma`)                        | Local 25 mi, request to join, website, email, Instagram; 2 pending requests (Marcus, Priya) for Maya to approve; long description |
-| Oakland Auto Club (`/org/oakland-auto-club`)              | Local 50 mi, open joining, two moderators, public member list; Thanh is banned (with a reason in the log)                         |
-| Alum Rock Tenants Union (`/org/alum-rock-tenants`)        | Unlisted, invite only, member list shows just the count                                                                           |
-| Mutual Aid Disaster Network (`/org/disaster-network`)     | International reach; Maya has a pending request; long description                                                                 |
-| East Bay Tool Library (`/org/east-bay-tools`)             | Lending, Berkeley, open joining, English only                                                                                     |
-| Fremont Childcare Co-op (`/org/fremont-childcare`)        | Childcare, contact email only                                                                                                     |
-| Santa Clara Community Garden (`/org/sc-community-garden`) | Small radius (5 mi), English and Chinese                                                                                          |
-| Little Saigon Food Pantry (`/org/little-saigon-pantry`)   | One focus area, Vietnamese first                                                                                                  |
-| Eastside Shower Day (`/org/eastside-shower-day`)          | **Unclaimed** (added by Jordan); Priya has a pending claim for Jordan to approve or deny; long description                        |
-| Westside Community Meal (`/org/westside-community-meal`)  | **Unclaimed**, no requests: try claiming it                                                                                       |
+| Organization                                                       | Shows off                                                                                                                         |
+| ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| South Bay Mutual Aid (`/organization/sbma`)                        | Local 25 mi, request to join, website, email, Instagram; 2 pending requests (Marcus, Priya) for Maya to approve; long description |
+| Oakland Auto Club (`/organization/oakland-auto-club`)              | Local 50 mi, open joining, two moderators, public member list; Thanh is banned (with a reason in the log)                         |
+| Alum Rock Tenants Union (`/organization/alum-rock-tenants`)        | Unlisted, invite only, member list shows just the count                                                                           |
+| Mutual Aid Disaster Network (`/organization/disaster-network`)     | International reach; Maya has a pending request; long description                                                                 |
+| East Bay Tool Library (`/organization/east-bay-tools`)             | Lending, Berkeley, open joining, English only                                                                                     |
+| Fremont Childcare Co-op (`/organization/fremont-childcare`)        | Childcare, contact email only                                                                                                     |
+| Santa Clara Community Garden (`/organization/sc-community-garden`) | Small radius (5 mi), English and Chinese                                                                                          |
+| Little Saigon Food Pantry (`/organization/little-saigon-pantry`)   | One focus area, Vietnamese first                                                                                                  |
+| Eastside Shower Day (`/organization/eastside-shower-day`)          | **Unclaimed** (added by Jordan); Priya has a pending claim for Jordan to approve or deny; long description                        |
+| Westside Community Meal (`/organization/westside-community-meal`)  | **Unclaimed**, no requests: try claiming it                                                                                       |
 
 The three long descriptions are there to test the four-line cut and **Read more** in the find page's details drawer.
 

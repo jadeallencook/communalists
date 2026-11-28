@@ -7,6 +7,7 @@ import {
 import { HomeJoinBand, HomePage } from '@/components/pages/home-page';
 import { getSessionUser } from '@/lib/auth/session';
 import { startingCitySlug } from '@/lib/organizations/starting-city';
+import { findPath } from '@/lib/paths';
 
 // The page is static; only the buttons depend on the session, so they stream
 // in behind <Suspense> (no flash of sign-up buttons for signed-in users).
@@ -31,7 +32,12 @@ async function HomeHeroActions() {
     const user = await getSessionUser();
     // Browse goes straight to the visitor's city (their profile's, or the default).
     const city = await startingCitySlug(user?.uid);
-    return <HeroActions signedIn={!!user} findHref={`/find/${city}`} />;
+    return (
+        <HeroActions
+            signedIn={!!user}
+            findHref={`${findPath('organizations')}/${city}`}
+        />
+    );
 }
 
 async function HomeJoin() {

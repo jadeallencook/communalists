@@ -23,29 +23,40 @@ describe('navItemsFor', () => {
 
 describe('navCurrent', () => {
     it('marks the exact page', () => {
-        expect(navCurrent(item('organizations'), '/find')).toBe('page');
+        expect(navCurrent(item('organizations'), '/find/organizations')).toBe(
+            'page'
+        );
         expect(navCurrent(item('dashboard'), '/dashboard/')).toBe('page');
     });
 
     it('marks the section for pages inside it', () => {
-        expect(navCurrent(item('organizations'), '/find/us/ca/oakland')).toBe(
-            'section'
-        );
-        expect(navCurrent(item('organizations'), '/org/south-bay')).toBe(
-            'section'
-        );
+        expect(
+            navCurrent(
+                item('organizations'),
+                '/find/organizations/us/ca/oakland'
+            )
+        ).toBe('section');
+        expect(
+            navCurrent(item('organizations'), '/organization/south-bay')
+        ).toBe('section');
         expect(navCurrent(item('dictionary'), '/dictionary/mutual-aid')).toBe(
             'section'
         );
     });
 
     it("doesn't treat creating an organization as browsing them", () => {
-        expect(navCurrent(item('organizations'), '/org/new')).toBeUndefined();
+        expect(
+            navCurrent(item('organizations'), '/organization/new')
+        ).toBeUndefined();
     });
 
     it('needs a whole path segment to match', () => {
         expect(navCurrent(item('organizations'), '/finder')).toBeUndefined();
         expect(navCurrent(item('organizations'), '/organic')).toBeUndefined();
+        // Other kinds of search (decision #63) aren't this section.
+        expect(
+            navCurrent(item('organizations'), '/find/comrades')
+        ).toBeUndefined();
     });
 
     it('marks nothing elsewhere', () => {

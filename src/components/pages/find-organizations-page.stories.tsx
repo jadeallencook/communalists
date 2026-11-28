@@ -19,7 +19,7 @@ const search = parseDirectorySearch({ country: 'US', placeId: '5392171' });
 
 const filters = (
     <OrganizationFilters
-        action="/en/find"
+        action="/en/find/organizations"
         search={search}
         location={{
             countries: [{ code: 'US', name: 'United States' }],

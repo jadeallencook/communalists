@@ -892,7 +892,7 @@
             "noName": "无名称",
             "ready": "可以添加",
             "needsAttention": "{count} 处需要修改",
-            "rowDetail": "第 {line} 行 · {place} · /org/{handle}",
+            "rowDetail": "第 {line} 行 · {place} · /organization/{handle}",
             "edited": "已在此修改",
             "verification": "来源：{verification}",
             "problemsFor": "{name} 需要修改的地方",

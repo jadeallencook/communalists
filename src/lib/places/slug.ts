@@ -2,7 +2,7 @@ import { normalize } from './normalize';
 import type { PlaceDataset } from './types';
 
 // Readable place paths for URLs: "us/ca/oakland" (country, region, city),
-// e.g. communalists.com/en/find/us/ca/oakland. Pure, so it's tested directly.
+// e.g. communalists.com/en/find/organizations/us/ca/oakland. Pure, so it's tested directly.
 // Design: decision #49.
 
 /** "St. Mary's" → "st-marys", "San José" → "san-jose". */

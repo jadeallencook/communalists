@@ -15,6 +15,7 @@ import {
     type RoleChange,
 } from '@/lib/organizations/membership';
 import { cn } from '@/lib/utils';
+import { organizationPath } from '@/lib/paths';
 
 interface Person {
     uid: string;
@@ -64,7 +65,7 @@ export interface OrganizationMembersPageProps {
     notice?: string;
 }
 
-/** /org/{handle}/members, for owners and moderators: requests, members, bans and the log. */
+/** /organization/{handle}/members, for owners and moderators: requests, members, bans and the log. */
 export function OrganizationMembersPage({
     orgId,
     name,
@@ -141,7 +142,7 @@ export function OrganizationMembersPage({
                     size="sm"
                     className="self-start"
                 >
-                    <Link href={`/org/${handle}`}>
+                    <Link href={organizationPath(handle)}>
                         <ArrowLeftIcon aria-hidden />
                         {name}
                     </Link>
