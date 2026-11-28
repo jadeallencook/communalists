@@ -24,6 +24,7 @@ This skill gets a change into that shape. Background: `documentation/technical/t
    - A meaningful choice has its file in `documentation/decisions/` and a row in the index.
    - UI work meets `documentation/technical/accessibility.md`.
    - New components have stories.
+   - **If `firestore.indexes.json` changed,** the new indexes must be deployed and showing **Enabled** in the Firebase console **before** the PR merges, or production fails with `FAILED_PRECONDITION` (it happened twice on 2026-11-27, `/admin` and the dictionary discussion; `documentation/technical/firebase.md`). Put the deploy command at the top of **For the reviewer** as a step to do before merging, not after.
 3. **Branch.** Run `git fetch origin`. If you're on `main`, create the branch from where you are with `git switch -c <type>/<short-subject>`, like `feat/find-organizations`, `fix/nearby-label` or `docs/pull-request-skill`. Uncommitted changes come along. Use lowercase hyphenated words, and pick a type from the title in step 5. If `main` is behind `origin/main`, say so in the PR. The **Update branch** button or `git merge origin/main` catches it up before merging; never rebase a branch someone else has pulled.
 4. **Commit.**
    - Stage files **by name**. Don't use `git add -A` or `git add .`.

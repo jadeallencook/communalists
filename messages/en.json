@@ -1277,7 +1277,8 @@
         "seeOtherLanguages": "{count, plural, one {See # comment in other languages} other {See # comments in other languages}}",
         "writtenIn": "Written in {language}",
         "changeLanguage": "Change",
-        "changeLanguageLabel": "Change the language of your comment"
+        "changeLanguageLabel": "Change the language of your comment",
+        "unavailable": "Comments couldn't load right now. Try again in a few minutes."
     },
     "AdminComments": {
         "metaTitle": "Reported comments",

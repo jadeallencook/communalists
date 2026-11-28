@@ -14,7 +14,10 @@ import { canModerate } from '@/lib/comments/access';
 import { getCommentCounts, getComments } from '@/lib/comments/store';
 import { viewsFor } from '@/lib/comments/views';
 import { getUserProfile, getUserProfileFresh } from '@/lib/users';
-import type { DiscussionViewer } from '@/components/organisms/discussion';
+import {
+    DiscussionUnavailable,
+    type DiscussionViewer,
+} from '@/components/organisms/discussion';
 import type { Locale } from '@/i18n/routing';
 
 import { DiscussionClient } from './discussion-client';
@@ -37,11 +40,27 @@ export async function DiscussionContainer({
     const moderator = canModerate(target, uid);
     // Readers start with comments in their language; moderators with all.
     const language = defaultLanguageFilter(locale, moderator);
-    const [page, counts] = await Promise.all([
-        getComments(target, 'top', null, language),
-        getCommentCounts(target),
-    ]);
-    const comments = await viewsFor(target, page.comments, { uid, moderator });
+    // The discussion fails on its own: a read that fails (say, an index
+    // still building after a deploy) never takes the word's page with it.
+    let loaded;
+    try {
+        const [page, counts] = await Promise.all([
+            getComments(target, 'top', null, language),
+            getCommentCounts(target),
+        ]);
+        const comments = await viewsFor(target, page.comments, {
+            uid,
+            moderator,
+        });
+        loaded = { page, counts, comments };
+    } catch (error) {
+        console.error(
+            '[comments] loading the discussion failed',
+            (error as Error).message
+        );
+        return <DiscussionUnavailable />;
+    }
+    const { page, counts, comments } = loaded;
     const last = page.comments.at(-1);
     const viewer = await viewerOf(target, uid, moderator);
     return (

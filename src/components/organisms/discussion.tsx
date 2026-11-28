@@ -342,6 +342,31 @@ function ChoiceRow<T extends string>({
     );
 }
 
+/**
+ * When the comments can't load (the server logs why): the section and its
+ * heading stay, with a short note, and the rest of the page is unaffected.
+ */
+export function DiscussionUnavailable() {
+    const t = useTranslations('Discussion');
+    return (
+        <section
+            id={DISCUSSION_ANCHOR}
+            aria-labelledby="discussion-title"
+            className="flex scroll-mt-20 flex-col gap-4 border-t pt-8"
+        >
+            <h2
+                id="discussion-title"
+                className="font-heading text-2xl font-semibold"
+            >
+                {t('title')}
+            </h2>
+            <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+                {t('unavailable')}
+            </p>
+        </section>
+    );
+}
+
 /** While comments load. Pulses only when motion is allowed. */
 export function DiscussionListLoading() {
     return (

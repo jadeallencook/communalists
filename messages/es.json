@@ -1277,7 +1277,8 @@
         "seeOtherLanguages": "{count, plural, one {Ver # comentario en otros idiomas} other {Ver # comentarios en otros idiomas}}",
         "writtenIn": "Escrito en {language}",
         "changeLanguage": "Cambiar",
-        "changeLanguageLabel": "Cambiar el idioma de tu comentario"
+        "changeLanguageLabel": "Cambiar el idioma de tu comentario",
+        "unavailable": "Los comentarios no se pudieron cargar ahora. Inténtalo de nuevo en unos minutos."
     },
     "AdminComments": {
         "metaTitle": "Comentarios reportados",
